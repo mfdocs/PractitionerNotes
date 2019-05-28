@@ -1,21 +1,21 @@
-<div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 07/03/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 1 minute to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><p>There are multiple ways to make an entity read-only, below are a few examples of different ways it can be done.
+<div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 22/03/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 1 minute to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><p>There are multiple ways to make an entity read-only, below are a few examples of different ways it can be done.
 </p><p><b>Option 1</b>
 </p><p>Add the validation rule <b>${current_update.PhaseId.IsChanged}</b> to the ‘Done’ meta phase of the request entity workflow. This option won’t allow the request to be updated under any circumstances after it reaches the ‘Done’ phase.
 </p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="xc bre ex3 1.png" src="/mediawiki/images/9/97/xc_bre_ex3_1.png" width="1656" height="315" data-file-width="1656" data-file-height="315"></a>
 </p><p><b>Option 2</b>
-</p><p>Add the validation rule <b>${current_update.PhaseId.IsChangedcurrent_user.IsPermitted('EMS-Admin-Template(entityType=Request)')}</b> to the ‘Done’ phase of the request entity workflow. This rule won’t allow the entity to be updated if it is in the ‘Done’ meta phase unless the currently logged in user has admin rights defined in their role.
+</p><p>Add the validation rule <b>${current_update.PhaseId.IsChanged || current_user.IsPermitted('EMS-Admin-Template(entityType=Request)')}</b> to the ‘Done’ phase of the request entity workflow. This rule won’t allow the entity to be updated if it is in the ‘Done’ meta phase unless the currently logged in user has admin rights defined in their role.
 </p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="xc bre ex3 2.png" src="/mediawiki/images/3/3e/xc_bre_ex3_2.png" width="1670" height="394" data-file-width="1670" data-file-height="394"></a>
 </p><p><b>Option 3</b>
-</p><p>Add the validation rule <b>${current_update.PhaseId.IsChangedcurrent_user.IsPermitted('EMS-Admin-Template(entityType=Request)')(now() - entity.CloseTime)&lt;3600000)}</b> to the ‘Done’ phase of the request entity workflow. This rule won’t allow the entity to be updated if it is in the ‘Done’ step unless the currently logged in user has admin rights defined in their role <b>or</b> the request was closed within the last hour.
+</p><p>Add the validation rule <b>${current_update.PhaseId.IsChanged || current_user.IsPermitted('EMS-Admin-Template(entityType=Request)') || (now() - entity.CloseTime)&lt;3600000)}</b> to the ‘Done’ phase of the request entity workflow. This rule won’t allow the entity to be updated if it is in the ‘Done’ step unless the currently logged in user has admin rights defined in their role <b>or</b> the request was closed within the last hour.
 </p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="xc bre ex3 3.png" src="/mediawiki/images/d/dc/xc_bre_ex3_3.png" width="1667" height="410" data-file-width="1667" data-file-height="410"></a>
 </p>
 <!-- 
 NewPP limit report
-Cached time: 20190524100706
+Cached time: 20190524101132
 Cache expiry: 86400
 Dynamic content: false
 CPU time usage: 0.012 seconds
-Real time usage: 0.073 seconds
+Real time usage: 0.035 seconds
 Preprocessor visited node count: 2/1000000
 Preprocessor generated node count: 12/1000000
 Post‐expand include size: 0/2097152 bytes
@@ -30,6 +30,6 @@ Transclusion expansion time report (%,ms,calls,template)
 100.00%    0.000      1 -total
 -->
 
-<!-- Saved in parser cache with key docops_wiki:pcache:idhash:219605-0!canonical and timestamp 20190524100706 and revision id 1275499
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:224450-0!canonical and timestamp 20190524101132 and revision id 1345302
  -->
 </div>
