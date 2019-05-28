@@ -1,200 +1,0 @@
-<div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 11/03/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 11 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><p><br>
-</p>
-<div id="toc" class="toc"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none"><div class="toctitle" lang="en" dir="ltr"><h2>Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
-<ul>
-<li class="toclevel-1 tocsection-1"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
-<li class="toclevel-1 tocsection-2"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest#Step_.231_.E2.80.94_Adding_the_Attachment_to_Service_Management_Automation_X"><span class="tocnumber">2</span> <span class="toctext">Step #1 — Adding the Attachment to Service Management Automation X</span></a>
-<ul>
-<li class="toclevel-2 tocsection-3"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest#Setting_the_Request_Headers"><span class="tocnumber">2.1</span> <span class="toctext">Setting the Request Headers</span></a></li>
-<li class="toclevel-2 tocsection-4"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest#Creating_the_Request_Body"><span class="tocnumber">2.2</span> <span class="toctext">Creating the Request Body</span></a></li>
-<li class="toclevel-2 tocsection-5"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest#Reviewing_the_Results"><span class="tocnumber">2.3</span> <span class="toctext">Reviewing the Results</span></a></li>
-<li class="toclevel-2 tocsection-6"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest#Adding_a_file_as_an_attachment"><span class="tocnumber">2.4</span> <span class="toctext">Adding a file as an attachment</span></a></li>
-</ul>
-</li>
-<li class="toclevel-1 tocsection-7"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest#Step_.232_.E2.80.94_Adding_the_Attachment_to_an_Incident"><span class="tocnumber">3</span> <span class="toctext">Step #2 — Adding the Attachment to an Incident</span></a>
-<ul>
-<li class="toclevel-2 tocsection-8"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest#Adding_attachments_to_an_Incident"><span class="tocnumber">3.1</span> <span class="toctext">Adding attachments to an Incident</span></a></li>
-</ul>
-</li>
-<li class="toclevel-1 tocsection-9"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest#Creating_the_REST_body_using_JAVA"><span class="tocnumber">4</span> <span class="toctext">Creating the REST body using JAVA</span></a></li>
-</ul>
-</div>
-
-<h2><span class="mw-headline" id="Introduction">Introduction</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest&amp;veaction=edit&amp;section=1" class="mw-editsection-visualeditor" title="Edit section: Introduction">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest&amp;action=edit&amp;section=1" title="Edit section: Introduction">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
-<p>Service Management Automation X provides <a target="1" rel="nofollow" class="external text" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> APIs that can be used to execute a variety of commands. This chapter describes using the Add Attachment API that is part of the Case Exchange integration to add an attachment to a record.
-</p><p>This process is comprised of two separate actions that must be performed. The first is to add the attachment into the Service Management Automation X system. The second is to take the result of the first step and use that information to update the actual record with the attachment information, which adds the attachment to that record.
-</p><p>Before reading this chapter you should review the following:
-</p>
-<ul><li>Configuring and Using the Postman REST Client</li>
-<li>Importing Users into Service Management Automation X</li></ul>
-<p>This chapter will cover:
-</p>
-<ul><li>The Case Exchange Attachments API URL</li>
-<li>Setting the Request Headers</li>
-<li>Creating the Request Body</li>
-<li>Reviewing the Results</li>
-<li>Replacing the attachments of an Incident</li>
-<li>Adding an attachment to an Incident</li>
-<li>Adding a file as an attachment</li>
-<li>Creating the REST body using JAVA</li></ul>
-<p><br>
-</p>
-<h2><span id="Step_#1_—_Adding_the_Attachment_to_Service_Management_Automation_X"></span><span class="mw-headline" id="Step_.231_.E2.80.94_Adding_the_Attachment_to_Service_Management_Automation_X">Step #1 — Adding the Attachment to Service Management Automation X</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest&amp;veaction=edit&amp;section=2" class="mw-editsection-visualeditor" title="Edit section: Step #1 — Adding the Attachment to Service Management Automation X">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest&amp;action=edit&amp;section=2" title="Edit section: Step #1 — Adding the Attachment to Service Management Automation X">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
-<p>The Case Exchange API URL uses the format https://&lt;MasterNode&gt;/rest/&lt;tenantId&gt;/ces/attachment. To access the API using the PostmanREST client, set the action to “POST” and enter the URL, then add the relevant information to the the body of the request.
-</p><p><br>
-</p>
-<h3><span class="mw-headline" id="Setting_the_Request_Headers">Setting the Request Headers</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest&amp;veaction=edit&amp;section=3" class="mw-editsection-visualeditor" title="Edit section: Setting the Request Headers">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest&amp;action=edit&amp;section=3" title="Edit section: Setting the Request Headers">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
-<p>The ‘Headers’ section must contain two specific headers. The ‘Content-Type’ will be set to ‘multipart/form-data;boundary=YYYY’. The boundary in this example is set to “YYYY”, but any unique boundary may be used. Any change to this boundary must be reflected in the body of the request (see section below).
-</p><p>The ‘User-Agent’ will be set to ‘Apache-HttpClient/4.4.1’. This allows Postman to pass the authorization to Service Management Automation X based on a logged in UI session. There must be a logged in SMA-X session (to the same tenant as the REST request is targeted) for the Postman request to work successfully.<a onclick="javascript:loadingImage(this);" class="image"><img alt="attachments 1.png" src="/mediawiki/images/5/5f/attachments_1.png" width="888" height="501" data-file-width="888" data-file-height="501"></a>
-</p>
-<h3><span class="mw-headline" id="Creating_the_Request_Body">Creating the Request Body</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest&amp;veaction=edit&amp;section=4" class="mw-editsection-visualeditor" title="Edit section: Creating the Request Body">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest&amp;action=edit&amp;section=4" title="Edit section: Creating the Request Body">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
-<p>To create the body of the request, select the ‘Body’ tab and choose the ’raw’ option within the Postman interface. The Body of the Request must contain:
-</p>
-<ul><li>The filename of the attachment</li>
-<li>The type of the attachment</li>
-<li>The attachment contents</li></ul>
-<p>The body is enclosed by the boundary specified in the Content-Type of the request, with two dashes before the first instance of the boundary, and two dashes before and after the second instance. If a different boundary token was used in the previous step, the ‘YYYY’ boundary must be replaced with that token in the example below.
-</p><p>The filename is specified within the ‘Content-Disposition’ line.  The line should read: <b>Content-Disposition:form-data; name="files[]"; filename="test.txt"</b>, where “test.txt” is replaced with whatever the attachment filename should be inside of Service Management Automation X.
-</p><p>The type of the attachment is specified as the ‘Content-Type’ tag. This value should contain the media type and subtype that matches the attachment’s MIME type. You can find a list of these MIME types <a target="1" rel="nofollow" class="external text" href="http://www.sitepoint.com/web-foundations/mime-types-complete-list/">here</a>.
-</p><p>Finally, the contents of the attachment are listed. In the example below, the content is a simple string. This will result in a text file created in Service Management Automation X containing this string, with a filename of “test.txt”.<a onclick="javascript:loadingImage(this);" class="image"><img alt="attachments 2.png" src="/mediawiki/images/7/7b/attachments_2.png" width="888" height="520" data-file-width="888" data-file-height="520"></a>Once all of the information is entered into the request, press the “Send” button to send it to Service Management Automation X.
-</p><p><br>
-</p>
-<h3><span class="mw-headline" id="Reviewing_the_Results">Reviewing the Results</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest&amp;veaction=edit&amp;section=5" class="mw-editsection-visualeditor" title="Edit section: Reviewing the Results">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest&amp;action=edit&amp;section=5" title="Edit section: Reviewing the Results">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
-<p>After a successful request, the response contains the information that is needed to connect the attachment with a specific record inside of Service Management Automation X.
-</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="response 1.png" src="/mediawiki/images/e/e5/response_1.png" width="855" height="249" data-file-width="855" data-file-height="249"></a>
-</p>
-<h3><span class="mw-headline" id="Adding_a_file_as_an_attachment">Adding a file as an attachment</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest&amp;veaction=edit&amp;section=6" class="mw-editsection-visualeditor" title="Edit section: Adding a file as an attachment">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest&amp;action=edit&amp;section=6" title="Edit section: Adding a file as an attachment">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
-<p>In order to add a binary file as an attachment, there are a few changes to the procedures listed in Step #1 above. First, the ‘Content-Type’ should not be specified in the headers of the request.<a onclick="javascript:loadingImage(this);" class="image"><img alt="attachments 3.png" src="/mediawiki/images/b/b9/attachments_3.png" width="888" height="383" data-file-width="888" data-file-height="383"></a>
-</p><p>For the body of the request, select the ‘form-data’ option. Create an entry with a key of ‘files[]’, then select ‘File’ from the dropdown to the right of the value field. Now you may use the ‘Choose Files’ button to select the file that you wish to add as an attachment.
-</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="attachments 4.png" src="/mediawiki/images/8/80/attachments_4.png" width="888" height="383" data-file-width="888" data-file-height="383"></a> 
-</p><p>Once you have selected the file you may send the request. Postman automatically handles the settings for the ‘Content-Disposition’ and ‘Content-Type’ keys that were used in the earlier example. 
-</p>
-<h2><span id="Step_#2_—_Adding_the_Attachment_to_an_Incident"></span><span class="mw-headline" id="Step_.232_.E2.80.94_Adding_the_Attachment_to_an_Incident">Step #2 — Adding the Attachment to an Incident</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest&amp;veaction=edit&amp;section=7" class="mw-editsection-visualeditor" title="Edit section: Step #2 — Adding the Attachment to an Incident">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest&amp;action=edit&amp;section=7" title="Edit section: Step #2 — Adding the Attachment to an Incident">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
-<p>After the attachment has been successfully added, it must be attached to the proper Incident.  To perform this operation, the IncidentAttachments entry must be updated with information from the attachment response. This property contains a special ‘complexTypeProperties’ array in which the specific attachment properties are added. The properties that make up one entry in the complexTypeProperties include:
-</p>
-<ul><li>properties - this is the top level attribute that contains all other attributes
-<ul><li>id - the <b>guid</b> returned in the attachment response</li>
-<li>file_name - the <b>name</b> returned in the attachment response</li>
-<li>file_extension - the extension from the <b>name</b> property above (.txt for example)</li>
-<li>size - the <b>contentLength</b> from the attachment response</li>
-<li>mime_type - the <b>contentType</b> from the attachment response</li>
-<li>Creator - the user that added the attachment, this should be the current login id/email</li></ul></li></ul>
-<p>The Incident is then updated using the standard REST request (this can be the EMS REST API or the Case Exchange API). In our example above, the request body for updating the incident with id ‘27496’ would look like:
-</p>
-<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="p">{</span>  
-   <span class="nt">"entities"</span><span class="p">:[</span>  
-      <span class="p">{</span>  
-         <span class="nt">"entity_type"</span><span class="p">:</span><span class="s2">"Incident"</span><span class="p">,</span>
-         <span class="nt">"properties"</span><span class="p">:{</span>  
-            <span class="nt">"Id"</span><span class="p">:</span><span class="s2">"27496"</span><span class="p">,</span>       
-            <span class="nt">"IncidentAttachments"</span><span class="p">:</span><span class="s2">"{</span>
-<span class="s2">                 \"complexTypeProperties\":[</span>
-<span class="s2">                      {</span>
-<span class="s2">                        \"properties\":{ </span>
-<span class="s2">                            \"id\":\"eac57a20-76e5-4318-842e-e46d3b6269c5\",</span>
-<span class="s2">                            \"file_name\":\"test.txt\",</span>
-<span class="s2">                            \"file_extension\":\"txt\",</span>
-<span class="s2">                            \"size\":\"36\",</span>
-<span class="s2">                            \"mime_type\":\"text/plain\",</span>
-<span class="s2">                            \"Creator\":\"peter.budic@microfocus.com\"</span>
-<span class="s2">                                       }</span>
-<span class="s2">                      }</span>
-<span class="s2">                  ]</span>
-<span class="s2">             }"</span>
-         <span class="p">}</span>
-      <span class="p">}</span>
-   <span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-<p><br> 
-Once the request updates the Incident, the attachment will be linked to the Incident. However, this will replace any other attachments that had been previously linked.
-</p><p><br>
-</p>
-<h3><span class="mw-headline" id="Adding_attachments_to_an_Incident">Adding attachments to an Incident</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest&amp;veaction=edit&amp;section=8" class="mw-editsection-visualeditor" title="Edit section: Adding attachments to an Incident">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest&amp;action=edit&amp;section=8" title="Edit section: Adding attachments to an Incident">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
-<p>In order to add an attachment to an Incident rather than overwrite any existing attachments, an extra REST Request is required to get the existing IncidentAttachments attribute. This can be done with the standard GET REST Request.
-</p><p>When creating the Request Body to update the Incident with the new attachment, the existing ‘complexTypeProperties’ array should be updated with a new array entry that contains the properties of the new attachment (as seen in the above example).
-</p>
-<h2><span class="mw-headline" id="Creating_the_REST_body_using_JAVA">Creating the REST body using JAVA</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest&amp;veaction=edit&amp;section=9" class="mw-editsection-visualeditor" title="Edit section: Creating the REST body using JAVA">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/SMAX_Config/cg_caseExchangeRest&amp;action=edit&amp;section=9" title="Edit section: Creating the REST body using JAVA">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
-<p>The same concepts used with Postman may be used to create requests using a script or application. The same multi-part/form data approach may be used. The file content must be extracted and placed into the body fo the request. The below code shows one example of how the body may be constructed from a Java File object. The File object is referenced as “fi” in the code example. Note that the Content-Type must also be specified, and the code below only supports files of type .jpg, .pdf, or .txt, but could be extended to support other types.
-</p><p><i><b>Important note:</b></i> <i>the following code is presented as an example of one way to create the request body. It should not be interpreted as the best or only way to perform this function and is not officially supported in any way by Micro Focus.</i>
-</p>
-<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="c1">// Attachment file</span>
-<span class="n">File</span> <span class="n">fi</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="err">…</span><span class="o">);</span>
-
-<span class="c1">// Get file extension</span>
-<span class="n">String</span> <span class="n">extension</span> <span class="o">=</span> <span class="s">""</span><span class="o">;</span>
- <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">fi</span><span class="o">.</span><span class="na">toString</span><span class="o">().</span><span class="na">lastIndexOf</span><span class="o">(</span><span class="sc">'.'</span><span class="o">);</span> 
-<span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span> 
-&nbsp;&nbsp;&nbsp; <span class="n">extension</span> <span class="o">=</span> <span class="n">fi</span><span class="o">.</span><span class="na">toString</span><span class="o">().</span><span class="na">substring</span><span class="o">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="o">);</span>
- <span class="o">}</span> 
-<span class="n">String</span> <span class="n">contentType</span> <span class="o">=</span> <span class="s">"text/plain"</span><span class="o">;</span> 
-<span class="k">if</span> <span class="o">(</span> <span class="n">extension</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"jpg"</span><span class="o">))</span>
- &nbsp;&nbsp;&nbsp; <span class="n">contentType</span> <span class="o">=</span> <span class="s">"image/jpeg"</span><span class="o">;</span>
- <span class="k">if</span> <span class="o">(</span> <span class="n">extension</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"pdf"</span><span class="o">))</span> 
-&nbsp;&nbsp;&nbsp; <span class="n">contentType</span> <span class="o">=</span> <span class="s">"application/pdf"</span><span class="o">;</span>
- <span class="k">if</span> <span class="o">(</span> <span class="n">extension</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"png"</span><span class="o">))</span>
- &nbsp;&nbsp;&nbsp; <span class="n">contentType</span> <span class="o">=</span> <span class="s">"image/png"</span><span class="o">;</span>
-
-<span class="c1">// Generate prefix and suffix </span>
-<span class="n">String</span> <span class="n">prefix</span> <span class="o">=</span> <span class="s">"--YYYY\n"</span> <span class="o">+</span> 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="s">"Content-Disposition: form-data; name=\"files[]\"; filename=\""</span><span class="o">+</span> <span class="n">fi</span><span class="o">.</span><span class="na">getName</span><span class="o">()</span>
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="o">+</span><span class="s">"\"\n"</span> <span class="o">+</span> 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="s">"Content-Type: "</span><span class="o">+</span> <span class="n">contentType</span> <span class="o">+</span> <span class="s">"\n"</span> <span class="o">+</span>
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="s">"\n"</span><span class="o">;</span>  <span class="n">String</span> <span class="n">suffix</span> <span class="o">=</span> <span class="s">"\n"</span> <span class="o">+</span> <span class="s">"--YYYY--\n"</span><span class="o">;</span>
-
-<span class="c1">// Calculate total payload length </span>
-<span class="kt">long</span> <span class="n">payloadLength</span> <span class="o">=</span> <span class="n">prefix</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">+</span> <span class="n">fi</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">+</span> <span class="n">suffix</span><span class="o">.</span><span class="na">length</span><span class="o">();</span>
-
-<span class="c1">// Setup connection</span>
-<span class="n">HttpsURLConnection</span> <span class="n">con</span> <span class="o">=</span> <span class="err">…</span>
-<span class="n">con</span><span class="o">.</span><span class="na">setRequestMethod</span><span class="o">(</span><span class="s">"POST"</span><span class="o">);</span>
-
-<span class="c1">// Other headers</span>
-<span class="err">…</span>
-
-<span class="c1">// Set HTTP connection output stream for POST body as non-cached fixed length</span>
-<span class="c1">// The full content of the body is not stored in memory </span>
-<span class="n">con</span><span class="o">.</span><span class="na">setDoOutput</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
- <span class="n">con</span><span class="o">.</span><span class="na">setFixedLengthStreamingMode</span><span class="o">(</span><span class="n">payloadLength</span><span class="o">);</span>
- <span class="n">OutputStream</span> <span class="n">os</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">();</span> 
-<span class="n">DataOutputStream</span> <span class="n">ds</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DataOutputStream</span><span class="o">(</span><span class="n">os</span><span class="o">);</span>
-
-<span class="c1">// Write prefix to stream (as ASCII) </span>
-<span class="n">ds</span><span class="o">.</span><span class="na">writeBytes</span><span class="o">(</span><span class="n">prefix</span><span class="o">);</span>  
-
-<span class="c1">// Write file content to stream (as binary 8-bit octets)</span>
- <span class="n">InputStream</span> <span class="n">is</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FileInputStream</span><span class="o">(</span><span class="n">fi</span><span class="o">);</span> 
-<span class="kt">byte</span><span class="o">[]</span> <span class="n">buffer</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="mi">1024</span><span class="o">];</span> 
-<span class="kt">int</span> <span class="n">bytesRead</span><span class="o">;</span> 
-<span class="k">while</span> <span class="o">((</span><span class="n">bytesRead</span> <span class="o">=</span> <span class="n">is</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">buffer</span><span class="o">))</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">)</span> <span class="o">{</span>
- &nbsp;&nbsp;&nbsp; <span class="n">ds</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">buffer</span><span class="o">,</span> <span class="mi">0</span> <span class="o">,</span> <span class="n">bytesRead</span><span class="o">);</span> 
-<span class="o">}</span>  
-
-<span class="c1">// Write suffix to stream (as ASCII) ds.writeBytes(suffix);  ds.close();</span>
-<span class="c1">// Handle HTTP response …</span>
-</pre></div>
-
-<!-- 
-NewPP limit report
-Cached time: 20190524102002
-Cache expiry: 86400
-Dynamic content: false
-CPU time usage: 0.028 seconds
-Real time usage: 0.059 seconds
-Preprocessor visited node count: 49/1000000
-Preprocessor generated node count: 88/1000000
-Post‐expand include size: 0/2097152 bytes
-Template argument size: 0/2097152 bytes
-Highest expansion depth: 2/40
-Expensive parser function count: 0/100
-Unstrip recursion depth: 0/20
-Unstrip post‐expand size: 9381/5000000 bytes
--->
-<!--
-Transclusion expansion time report (%,ms,calls,template)
-100.00%    0.000      1 -total
--->
-
-<!-- Saved in parser cache with key docops_wiki:pcache:idhash:741706-0!canonical and timestamp 20190524102002 and revision id 1295285
- -->
-</div>
