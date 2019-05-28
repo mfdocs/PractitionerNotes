@@ -1,1 +1,104 @@
- 
+<div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 11/03/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 9 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><p><br>
+</p>
+<div id="toc" class="toc"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none"><div class="toctitle" lang="en" dir="ltr"><h2>Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_bisync#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_bisync#Enabling_BI_Sync_on_your_Service_Management_Automation_X_Tenant"><span class="tocnumber">2</span> <span class="toctext">Enabling BI Sync on your Service Management Automation X Tenant</span></a></li>
+<li class="toclevel-1 tocsection-3"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_bisync#Adding_the_required_record_types_and_fields_necessary_for_generating_the_desired_reports"><span class="tocnumber">3</span> <span class="toctext">Adding the required record types and fields necessary for generating the desired reports</span></a></li>
+<li class="toclevel-1 tocsection-4"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_bisync#Executing_the_REST_call_that_generates_the_data"><span class="tocnumber">4</span> <span class="toctext">Executing the REST call that generates the data</span></a></li>
+<li class="toclevel-1 tocsection-5"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_bisync#Downloading_the_Data"><span class="tocnumber">5</span> <span class="toctext">Downloading the Data</span></a></li>
+<li class="toclevel-1 tocsection-6"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_bisync#Detailed_Use_Case"><span class="tocnumber">6</span> <span class="toctext">Detailed Use Case</span></a>
+<ul>
+<li class="toclevel-2 tocsection-7"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_bisync#Report_1"><span class="tocnumber">6.1</span> <span class="toctext">Report 1</span></a></li>
+<li class="toclevel-2 tocsection-8"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_bisync#Report_2"><span class="tocnumber">6.2</span> <span class="toctext">Report 2</span></a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id="Introduction">Introduction</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_bisync&amp;veaction=edit&amp;section=1" class="mw-editsection-visualeditor" title="Edit section: Introduction">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_bisync&amp;action=edit&amp;section=1" title="Edit section: Introduction">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>The Business Intelligence (BI Sync) Integration module enables you to define the fields and relationships that are available for a specific record type when exporting data for use with an external business intelligence system. BI Sync can be used to export information not currently available in the SMA-X reporting framework&nbsp;
+</p><p>This chapter will include:
+</p>
+<ul><li>Enabling BI Sync on your Service Management Automation X tenant</li>
+<li>Adding the required record types and fields necessary for generating the desired reports</li>
+<li>Executing the REST call that generates the data</li>
+<li>Downloading the data</li></ul>
+<p><br>
+</p>
+<h2><span class="mw-headline" id="Enabling_BI_Sync_on_your_Service_Management_Automation_X_Tenant">Enabling BI Sync on your Service Management Automation X Tenant</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_bisync&amp;veaction=edit&amp;section=2" class="mw-editsection-visualeditor" title="Edit section: Enabling BI Sync on your Service Management Automation X Tenant">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_bisync&amp;action=edit&amp;section=2" title="Edit section: Enabling BI Sync on your Service Management Automation X Tenant">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>BI Sync is a resource intensive feature, and is disabled by default when a new Service Management Automation X tenant is created. To determine if BI Sync is enabled on your tenant, navigate to <b>Administration-&gt;Integrations</b> and then select “<b>BI Integration</b>”. The system will display a message on the screen if the feature is disabled. You must create a ticket with the Service Management Automation X support team in order to enable the BI Sync feature.
+</p><p><br>
+</p>
+<h2><span class="mw-headline" id="Adding_the_required_record_types_and_fields_necessary_for_generating_the_desired_reports">Adding the required record types and fields necessary for generating the desired reports</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_bisync&amp;veaction=edit&amp;section=3" class="mw-editsection-visualeditor" title="Edit section: Adding the required record types and fields necessary for generating the desired reports">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_bisync&amp;action=edit&amp;section=3" title="Edit section: Adding the required record types and fields necessary for generating the desired reports">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>BI Sync allows users to export all desired transactional data available in Service Management Automation X. The first step is configuring the entity types that you wish to export. From the BI Sync menu, select an entity type from the Record type list. Then select all fields from that entity that you wish to export. It is important to note that when specific fields are dependent on other entity type an indicator is seen next to the field name. You will need to export each of these entity types as well. For example, if you are exporting the requested by person of an Incident, both the incident and person entities must be exported.
+</p><p><br>
+</p>
+<h2><span class="mw-headline" id="Executing_the_REST_call_that_generates_the_data">Executing the REST call that generates the data</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_bisync&amp;veaction=edit&amp;section=4" class="mw-editsection-visualeditor" title="Edit section: Executing the REST call that generates the data">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_bisync&amp;action=edit&amp;section=4" title="Edit section: Executing the REST call that generates the data">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>After selecting the entity types and fields that are required, you must execute a REST call to schedule a job which prepares the data. In systems with a large amount of data, it may take several hours until the data is ready for download. 
+</p><p>To start the job execute the following REST call: https://&lt;MasterNode&gt;/rest/&lt;tenantId&gt;/bi/initial . This will perform a FULL synchronization of the data. If you have already downloaded data it is possible to generate a second download that only includes the differences in the data since the last initial synchronization was run. When the REST call is run it will provide a SyncId. The Sync Id is required to be able to tell when the job is done and where the resulting files are stored.
+</p><p><br>
+</p>
+<h2><span class="mw-headline" id="Downloading_the_Data">Downloading the Data</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_bisync&amp;veaction=edit&amp;section=5" class="mw-editsection-visualeditor" title="Edit section: Downloading the Data">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_bisync&amp;action=edit&amp;section=5" title="Edit section: Downloading the Data">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Run the REST call https://&lt;FarmName&gt;/rest/&lt;tenantId&gt;/bi/status/&lt;syncId&gt; in order to see if the Job has completed.
+</p><p>The result of the REST call will include "Status": "COMPLETE", if the job has completed. When complete there will be a “files” section that lists all of the Ids of the files that were created during the export. There may be multiple files for a specific entity type depending on the number of records exported. The files are compressed in Zip format. You will need to download all of these files. In some situations creating an automated script may be the most efficient means of downloading all files. 
+</p><p>Files are named in the format "FileId": "4743431f-6c4b-4f24-87b8-bfe15721da97". To download the file from the browser, ensure you are currently logged into the Service Management Automation X system, then type the following URL into the browser: https:/&lt;FarmName&gt;/rest/&lt;tenantId&gt;/frs/file-list/&lt;FileID&gt;
+</p><p><br>
+</p>
+<h2><span class="mw-headline" id="Detailed_Use_Case">Detailed Use Case</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_bisync&amp;veaction=edit&amp;section=6" class="mw-editsection-visualeditor" title="Edit section: Detailed Use Case">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_bisync&amp;action=edit&amp;section=6" title="Edit section: Detailed Use Case">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>A company named ABC Reporting wants to use a 3rd party tool to run reports on Service Management Automation X transactional data. The customer wishes to use the Tableau Desktop application to generate the following reports:
+</p>
+<ul><li>An Incident report that includes the related Requests that exist for each Incident</li>
+<li>A groups report with the names of each member of the group</li></ul>
+<h3><span class="mw-headline" id="Report_1">Report 1</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_bisync&amp;veaction=edit&amp;section=7" class="mw-editsection-visualeditor" title="Edit section: Report 1">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_bisync&amp;action=edit&amp;section=7" title="Edit section: Report 1">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Data required selecting in BI Sync for the Incident report including the number of related requests:
+</p>
+<ul><li>Incident-&gt; Id, DisplayLabel, Incident caused by Request.</li>
+<li>Request-&gt;Id, DisplayLabel</li></ul>
+<p>After running BI Sync download the files (3 files in total), launch Tableau Desktop. 
+</p><p>From the connect menu, select the Text file option. Navigate and select the Incident_0.csv file. After it loads the other files will be loaded at the same time. The table editor view will open, drag the Incident_0.csv, Request_0.csv and IncidentCausedByRequest_0.csv files into the work area (note: depending on the amount of data there may be multiple files for a specific entity type).<a onclick="javascript:loadingImage(this);" class="image"><img alt="BI Image1.png" src="/mediawiki/images/b/bc/BI_Image1.png" width="1920" height="1176" data-file-width="1920" data-file-height="1176"></a>
+</p><p>Click on the join between the Incident and IncidentCausedByRequest_0.csv, in the Data Source select the incident ID, and select the FirstEntity Incident from the IncidentCausedByRequest_0.csv.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="BI Image2.png" src="/mediawiki/images/9/95/BI_Image2.png" width="386" height="187" data-file-width="386" data-file-height="187"></a>
+</p><p>Click on the join between the IncidentCausedByRequest_0.csv and Request_0.csv. In the Data Source select the secondEntity Request, and in the Request_0.csv select the Id (Request_0.csv).
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="BI Image3.png" src="/mediawiki/images/d/d0/BI_Image3.png" width="386" height="187" data-file-width="386" data-file-height="187"></a>
+</p><p>In the worksheet view, drag the Display Label field from Incident, the Id(Request_0.csv) and the DisplayLabel for the request. The report will now list the Title of the Incidents in Column 1 and the titles of the related requests in Column 3.<a onclick="javascript:loadingImage(this);" class="image"><img alt="BI Image4.png" src="/mediawiki/images/1/1b/BI_Image4.png" width="1054" height="758" data-file-width="1054" data-file-height="758"></a>
+</p>
+<h3><span class="mw-headline" id="Report_2">Report 2</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_bisync&amp;veaction=edit&amp;section=8" class="mw-editsection-visualeditor" title="Edit section: Report 2">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_bisync&amp;action=edit&amp;section=8" title="Edit section: Report 2">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Data required selecting in BI sync for the Group Report that includes the people in each:
+</p>
+<ul><li>Person-&gt; Id, Name, Group Members (See screenshot below)</li>
+<li>Groups-&gt;Id, Name</li></ul>
+<p><a onclick="javascript:loadingImage(this);" class="image"><img alt="BI Image5.png" src="/mediawiki/images/8/82/BI_Image5.png" width="1235" height="888" data-file-width="1235" data-file-height="888"></a>
+</p><p>Launch Tableau and from the connect menu select the Text file option. Navigate and select the PersonGroup_0.csv file, when it loads the other files in the same directory will be loaded. The table editor view will open, drag the PersonGroup_0.csv, Person_0.csv and PersonToGroup_0.csv files into the work area.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="BI Image6.png" src="/mediawiki/images/d/d7/BI_Image6.png" width="1219" height="624" data-file-width="1219" data-file-height="624"></a>
+</p><p>Click on the join between the PersonGroup_0.csv and PersonToGroup_0.csv, in the Data Source select the Id, and select the SecondEntity PersonGroup in PersonToGroup_0.csv.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="BI Image7.png" src="/mediawiki/images/7/7a/BI_Image7.png" width="386" height="187" data-file-width="386" data-file-height="187"></a>
+</p><p>Click on the join between the PersonToGroup_0.csv and Person_0.csv, in the Data Source select the FirstEntity Person, and select the Id(Person 0,csv) under Person_0.csv.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="bi Image8.png" src="/mediawiki/images/e/eb/bi_Image8.png" width="386" height="187" data-file-width="386" data-file-height="187"></a>
+</p><p>Click on Sheet 1 to open the worksheet. Drag in the PersonGroup_0.csv -&gt; Name field into the row and then the Person_0.csv -&gt; Name field. The report will now lists the Groups with the people that are members.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="BI Image9.png" src="/mediawiki/images/7/7c/BI_Image9.png" width="838" height="731" data-file-width="838" data-file-height="731"></a>
+</p>
+<!-- 
+NewPP limit report
+Cached time: 20190524101430
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.036 seconds
+Real time usage: 0.097 seconds
+Preprocessor visited node count: 33/1000000
+Preprocessor generated node count: 44/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 0/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:270681-0!canonical and timestamp 20190524101430 and revision id 1295862
+ -->
+</div>
