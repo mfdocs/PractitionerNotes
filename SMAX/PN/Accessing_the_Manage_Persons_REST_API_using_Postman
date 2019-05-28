@@ -1,1 +1,225 @@
- 
+<div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 11/03/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 8 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><p><br>
+</p>
+<div id="toc" class="toc"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none"><div class="toctitle" lang="en" dir="ltr"><h2>Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI#Manage_Person_API_URL"><span class="tocnumber">2</span> <span class="toctext">Manage Person API URL</span></a></li>
+<li class="toclevel-1 tocsection-3"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI#Configuring_the_upnDataType_field"><span class="tocnumber">3</span> <span class="toctext">Configuring the upnDataType field</span></a></li>
+<li class="toclevel-1 tocsection-4"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI#Adding_a_Contact"><span class="tocnumber">4</span> <span class="toctext">Adding a Contact</span></a></li>
+<li class="toclevel-1 tocsection-5"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI#Updating_a_Contact"><span class="tocnumber">5</span> <span class="toctext">Updating a Contact</span></a></li>
+<li class="toclevel-1 tocsection-6"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI#Adding_a_User"><span class="tocnumber">6</span> <span class="toctext">Adding a User</span></a></li>
+<li class="toclevel-1 tocsection-7"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI#Updating_a_User"><span class="tocnumber">7</span> <span class="toctext">Updating a User</span></a></li>
+<li class="toclevel-1 tocsection-8"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI#Adding_Groups_to_Users"><span class="tocnumber">8</span> <span class="toctext">Adding Groups to Users</span></a></li>
+<li class="toclevel-1 tocsection-9"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI#Adding_roles_to_users"><span class="tocnumber">9</span> <span class="toctext">Adding roles to users</span></a></li>
+<li class="toclevel-1 tocsection-10"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI#Adding_licenses_to_users"><span class="tocnumber">10</span> <span class="toctext">Adding licenses to users</span></a></li>
+<li class="toclevel-1 tocsection-11"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI#Updates_to_multiple_persons"><span class="tocnumber">11</span> <span class="toctext">Updates to multiple persons</span></a></li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id="Introduction">Introduction</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI&amp;veaction=edit&amp;section=1" class="mw-editsection-visualeditor" title="Edit section: Introduction">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI&amp;action=edit&amp;section=1" title="Edit section: Introduction">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Service Management Automation X provides <a href="https://en.wikipedia.org/wiki/Representational_state_transfer" class="extiw" title="wikipedia:Representational state transfer">REST</a> APIs that can be used to execute a variety of commands. This chapter describes using the Manage Persons API, which allows you to create and update users in both Service Management Automation X and the Service Management Automation Service Portal.
+</p><p>Before reading this chapter you should review the following:
+</p>
+<ul><li>Configuring and Using the Postman REST Client</li>
+<li>Importing Users into Service Management Automation X</li></ul>
+<p><br>
+This chapter will cover:
+</p>
+<ul><li>The Manage Person API URL</li>
+<li>Configuring the upnDataType field</li>
+<li>Adding a Contact</li>
+<li>Updating a Contact</li>
+<li>Adding a User</li>
+<li>Updating a User</li>
+<li>Adding Groups to Users</li>
+<li>Adding Roles to Users</li>
+<li>Adding Licenses to Users</li>
+<li>Updating multiple Persons</li></ul>
+<p><br>
+</p>
+<h2><span class="mw-headline" id="Manage_Person_API_URL">Manage Person API URL</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI&amp;veaction=edit&amp;section=2" class="mw-editsection-visualeditor" title="Edit section: Manage Person API URL">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI&amp;action=edit&amp;section=2" title="Edit section: Manage Person API URL">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>The Manage Person API URL uses the format https://&lt;MasterNode&gt;/rest/&lt;tenantId&gt;/ums/managePersons. To access the API using the PostmanREST client, set the action to ‘POST’ and enter the URL, then add the relevant information to the body of the request.<a onclick="javascript:loadingImage(this);" class="image"><img alt="manage persons 1.png" src="/mediawiki/images/3/30/manage_persons_1.png" width="1109" height="292" data-file-width="1109" data-file-height="292"></a>
+</p>
+<h2><span class="mw-headline" id="Configuring_the_upnDataType_field">Configuring the upnDataType field</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI&amp;veaction=edit&amp;section=3" class="mw-editsection-visualeditor" title="Edit section: Configuring the upnDataType field">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI&amp;action=edit&amp;section=3" title="Edit section: Configuring the upnDataType field">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>The Manage Person API uses the UPN field to identify person records. The UPN field is a unique identifier and is by default the email address of the person. In some cases, this is not the desired behavior. If the email is not going to be the UPN then on every use of the Manage Person API to post data the upnDataType needs to be used. In the JSON payload the field name should appear as: 
+"upnDataType":"Customer_UID" (see examples below)
+</p><p><br>
+</p>
+<h2><span class="mw-headline" id="Adding_a_Contact">Adding a Contact</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI&amp;veaction=edit&amp;section=4" class="mw-editsection-visualeditor" title="Edit section: Adding a Contact">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI&amp;action=edit&amp;section=4" title="Edit section: Adding a Contact">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>When adding a person to Service Management Automation X, it is important to determine whether they should be added as a contact or a user. The difference is that a user has the right to log into the system whereas a contact does not. 
+</p><p>
+To add a contact, enter all desired attributes and then add the “IsMaasUser”: “false” flag. If IsMaasUser is not set to false the system will create a user instead of a contact.</p><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="p">{</span>
+	<span class="nt">"operation"</span><span class="p">:</span> <span class="s2">"CREATE_OR_UPDATE"</span><span class="p">,</span>
+	<span class="nt">"users"</span><span class="p">:</span> <span class="p">[{</span>
+		<span class="nt">"properties"</span><span class="p">:</span> <span class="p">{</span>
+			<span class="nt">"Upn"</span><span class="p">:</span> <span class="s2">"MyNewUser@microfocus.com"</span><span class="p">,</span>
+			<span class="nt">"Email"</span><span class="p">:</span><span class="s2">"MyNewUser@microfocus.com"</span><span class="p">,</span>
+			<span class="nt">"FirstName"</span><span class="p">:</span><span class="s2">"My First Name"</span><span class="p">,</span>
+			<span class="nt">"LastName"</span><span class="p">:</span><span class="s2">"My Last Name"</span><span class="p">,</span>
+			<span class="nt">"Location"</span><span class="p">:</span><span class="s2">"London"</span><span class="p">,</span>
+			<span class="nt">"IsMaasUser"</span><span class="p">:</span><span class="s2">"false"</span><span class="p">,</span>		
+			<span class="nt">"OfficePhoneNumber"</span><span class="p">:</span><span class="s2">"867-5309"</span><span class="p">,</span>
+			<span class="nt">"EmployeeNumber"</span><span class="p">:</span> <span class="s2">"4815162342"</span>
+		<span class="p">}</span>
+	<span class="p">}]</span>
+<span class="p">}</span>
+</pre></div>
+<p>The following image shows how the REST call to add a contact would be performed in the Postman client:<a onclick="javascript:loadingImage(this);" class="image"><img alt="manage persons 2.png" src="/mediawiki/images/8/85/manage_persons_2.png" width="1120" height="345" data-file-width="1120" data-file-height="345"></a>
+</p><p>
+If you are using a custom UPN instead of the email address, the upnDataType information also needs to be sent:</p><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="p">{</span>
+	<span class="nt">"operation"</span><span class="p">:</span> <span class="s2">"CREATE_OR_UPDATE"</span><span class="p">,</span>
+	<span class="nt">"users"</span><span class="p">:</span> <span class="p">[{</span>
+		<span class="nt">"properties"</span><span class="p">:</span> <span class="p">{</span>
+		<span class="nt">"upnDataType"</span><span class="p">:</span><span class="s2">"Customer_UID"</span><span class="p">,</span>		
+		<span class="nt">"Upn"</span><span class="p">:</span> <span class="s2">"MyLoginId"</span><span class="p">,</span>
+			<span class="nt">"Email"</span><span class="p">:</span><span class="s2">"MyNewUser@microfocus.com"</span><span class="p">,</span>
+			<span class="nt">"FirstName"</span><span class="p">:</span><span class="s2">"My First Name"</span><span class="p">,</span>
+			<span class="nt">"LastName"</span><span class="p">:</span><span class="s2">"My Last Name"</span><span class="p">,</span>
+			<span class="nt">"Location"</span><span class="p">:</span><span class="s2">"London"</span><span class="p">,</span>
+			<span class="nt">"IsMaasUser"</span><span class="p">:</span><span class="s2">"false"</span><span class="p">,</span>		
+			<span class="nt">"OfficePhoneNumber"</span><span class="p">:</span><span class="s2">"867-5309"</span><span class="p">,</span>
+			<span class="nt">"EmployeeNumber"</span><span class="p">:</span> <span class="s2">"4815162342"</span>
+		<span class="p">}</span>
+	<span class="p">}]</span>
+<span class="p">}</span>
+</pre></div>
+<h2><span class="mw-headline" id="Updating_a_Contact">Updating a Contact</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI&amp;veaction=edit&amp;section=5" class="mw-editsection-visualeditor" title="Edit section: Updating a Contact">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI&amp;action=edit&amp;section=5" title="Edit section: Updating a Contact">edit source</a><span class="mw-editsection-bracket">]</span></span></h2><p>
+To update a contact using the Manage Person API, simply create a REST payload with the desired attributes that also includes the UPN associated with the person. It is important to always include the "<b>IsMaasUser</b>":"false” flag when updating a contact or Service Management Automation X will attempt to convert the contact into a user.</p><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="p">{</span>
+<span class="nt">"operation"</span><span class="p">:</span> <span class="s2">"CREATE_OR_UPDATE"</span><span class="p">,</span>
+	<span class="nt">"users"</span><span class="p">:</span> <span class="p">[{</span>
+		<span class="nt">"properties"</span><span class="p">:</span> <span class="p">{</span>
+			<span class="nt">"Upn"</span><span class="p">:</span> <span class="s2">"MyNewUser@microfocus.com"</span><span class="p">,</span>
+			<span class="nt">"IsMaasUser"</span><span class="p">:</span><span class="s2">"false"</span><span class="p">,</span>	
+			<span class="nt">"EmployeeNumber"</span><span class="p">:</span> <span class="s2">"45555555"</span>
+		<span class="p">}</span>
+	<span class="p">}]</span>
+<span class="p">}</span>
+</pre></div>
+<p>The following image shows how the REST call to update a contact would be performed in the Postman client:<a onclick="javascript:loadingImage(this);" class="image"><img alt="manage persons 3.png" src="/mediawiki/images/8/87/manage_persons_3.png" width="1113" height="300" data-file-width="1113" data-file-height="300"></a>
+</p>
+<h2><span class="mw-headline" id="Adding_a_User">Adding a User</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI&amp;veaction=edit&amp;section=6" class="mw-editsection-visualeditor" title="Edit section: Adding a User">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI&amp;action=edit&amp;section=6" title="Edit section: Adding a User">edit source</a><span class="mw-editsection-bracket">]</span></span></h2><p>
+Adding a user is very similar to adding a contact. However, as discussed in the import person document, users also get an account created in the SMA Suite Administration portal so that they can login to Service Management Automation X. To create a user that can login to Service Management Automation X, add all the required attributes but do not include the <b>IsMaasUser</b> field.  If a record with the same unique identifier (UPN) exists, Service Management Automation X updates the record. If a contact exists then it is converted into a user.  If no record exists, a new user record is added.  </p><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="p">{</span>
+	<span class="nt">"operation"</span><span class="p">:</span> <span class="s2">"CREATE_OR_UPDATE"</span><span class="p">,</span>
+	<span class="nt">"users"</span><span class="p">:</span> <span class="p">[{</span>
+		<span class="nt">"properties"</span><span class="p">:</span> <span class="p">{</span>
+			<span class="nt">"Upn"</span><span class="p">:</span> <span class="s2">"MyNewUser@microfocus.com"</span><span class="p">,</span>
+			<span class="nt">"upnDataType"</span><span class="p">:</span><span class="s2">"Customer_UID"</span><span class="p">,</span> <span class="err">#(only</span> <span class="err">if</span> <span class="err">custom</span> <span class="err">Upn</span> <span class="err">and</span> <span class="err">not</span> <span class="err">Email)</span>
+			<span class="nt">"Email"</span><span class="p">:</span><span class="s2">"MyNewUser@microfocus.com"</span><span class="p">,</span>
+			<span class="nt">"FirstName"</span><span class="p">:</span><span class="s2">"My First Name"</span><span class="p">,</span>
+			<span class="nt">"LastName"</span><span class="p">:</span><span class="s2">"My Last Name"</span><span class="p">,</span>
+			<span class="nt">"Location"</span><span class="p">:</span><span class="s2">"London"</span><span class="p">,</span>	
+			<span class="nt">"OfficePhoneNumber"</span><span class="p">:</span><span class="s2">"867-5309"</span><span class="p">,</span>
+			<span class="nt">"EmployeeNumber"</span><span class="p">:</span> <span class="s2">"4815162342"</span>
+		<span class="p">}</span>
+	<span class="p">}]</span>
+<span class="p">}</span>
+</pre></div>
+<h2><span class="mw-headline" id="Updating_a_User">Updating a User</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI&amp;veaction=edit&amp;section=7" class="mw-editsection-visualeditor" title="Edit section: Updating a User">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI&amp;action=edit&amp;section=7" title="Edit section: Updating a User">edit source</a><span class="mw-editsection-bracket">]</span></span></h2><p>
+Similar to updating contacts, the UPN field is used to search for an existing user. If one is found that record is updated, otherwise a new record is added. Using the body shown below would update the phone number of a user in Service Management Automation X and also in the Service Management Automation Portal.</p><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="p">{</span>
+	<span class="nt">"operation"</span><span class="p">:</span> <span class="s2">"CREATE_OR_UPDATE"</span><span class="p">,</span>
+	<span class="nt">"users"</span><span class="p">:</span> <span class="p">[{</span>
+		<span class="nt">"properties"</span><span class="p">:</span> <span class="p">{</span>
+			<span class="nt">"Upn"</span><span class="p">:</span> <span class="err">MyNewUser@microfocus.com</span><span class="p">,</span>
+			<span class="nt">"upnDataType"</span><span class="p">:</span><span class="s2">"Customer_UID"</span><span class="p">,</span> <span class="err">#(only</span> <span class="err">if</span> <span class="err">custom</span> <span class="err">Upn)</span>
+			<span class="nt">"EmployeeNumber"</span><span class="p">:</span> <span class="s2">"4456234"</span>
+		<span class="p">}</span>
+	<span class="p">}]</span>
+<span class="p">}</span>
+</pre></div>
+<p><br>
+</p>
+<h2><span class="mw-headline" id="Adding_Groups_to_Users">Adding Groups to Users</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI&amp;veaction=edit&amp;section=8" class="mw-editsection-visualeditor" title="Edit section: Adding Groups to Users">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI&amp;action=edit&amp;section=8" title="Edit section: Adding Groups to Users">edit source</a><span class="mw-editsection-bracket">]</span></span></h2><p>
+The Manage Person API provides a way to update the groups that users belong to. Adding an additional parameter to the JSON payload allows groups to be added, replaced or removed.  The group can be added when users are created or when they are updated. The syntax below would add a group to an existing user. The Manage Person API uses the group’s UPN when adding a person to it. If one of the groups is an organizational group then the users organization will be automatically set. </p><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="p">{</span>
+	<span class="nt">"operation"</span><span class="p">:</span> <span class="s2">"CREATE_OR_UPDATE"</span><span class="p">,</span>
+	<span class="nt">"users"</span><span class="p">:</span> <span class="p">[{</span>
+		<span class="nt">"properties"</span><span class="p">:</span> <span class="p">{</span>
+			<span class="nt">"Upn"</span><span class="p">:</span> <span class="s2">"MyNewUser@microfocus.com"</span>
+		<span class="p">},</span>
+		<span class="nt">"groups"</span><span class="p">:{</span><span class="nt">"ADD"</span><span class="p">:[</span><span class="s2">"Marketing"</span><span class="p">,</span><span class="s2">"Accounting"</span><span class="p">]}</span>	
+	<span class="p">}]</span>
+<span class="p">}</span>
+</pre></div>
+<p>Using the Postman client, adding groups to a user would look like:<a onclick="javascript:loadingImage(this);" class="image"><img alt="manage persons 4.png" src="/mediawiki/images/d/dc/manage_persons_4.png" width="1116" height="277" data-file-width="1116" data-file-height="277"></a>Another option available is to replace all groups the user has with a new (or multiple) group:<a href="./itom/File:manage_persons_5.png" class="image"><img alt="manage persons 5.png" src="/mediawiki/images/0/03/manage_persons_5.png" width="1116" height="296" data-file-width="1116" data-file-height="296"></a>It’s also possible to remove any group or groups from a user (any groups not included would remain a group of the user)<a href="./itom/File:manage_persons_6.png" class="image"><img alt="manage persons 6.png" src="/mediawiki/images/4/44/manage_persons_6.png" width="1111" height="276" data-file-width="1111" data-file-height="276"></a>
+</p>
+<h2><span class="mw-headline" id="Adding_roles_to_users">Adding roles to users</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI&amp;veaction=edit&amp;section=9" class="mw-editsection-visualeditor" title="Edit section: Adding roles to users">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI&amp;action=edit&amp;section=9" title="Edit section: Adding roles to users">edit source</a><span class="mw-editsection-bracket">]</span></span></h2><p>
+Similar to adding groups, roles can be added to users in the same manner using ADD, REPLACE or REMOVE. The JSON syntax is identical, with the exception of the “roles” attribute name. </p><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="p">{</span>
+	<span class="nt">"operation"</span><span class="p">:</span> <span class="s2">"CREATE_OR_UPDATE"</span><span class="p">,</span>
+	<span class="nt">"users"</span><span class="p">:</span> <span class="p">[{</span>
+		<span class="nt">"properties"</span><span class="p">:</span> <span class="p">{</span>
+			<span class="nt">"Upn"</span><span class="p">:</span> <span class="s2">"MyNewUser@microfocus.com"</span>
+		<span class="p">},</span>
+		<span class="nt">"roles"</span><span class="p">:{</span><span class="nt">"ADD"</span><span class="p">:[</span><span class="s2">"Self-Service Portal User"</span><span class="p">]}</span>	
+	<span class="p">}]</span>
+<span class="p">}</span>
+</pre></div>
+<p>When adding a role(s), existing roles remaining in place:<a onclick="javascript:loadingImage(this);" class="image"><img alt="manage persons 7.png" src="/mediawiki/images/5/53/manage_persons_7.png" width="1121" height="309" data-file-width="1121" data-file-height="309"></a>
+</p><p>When replacing roles, any existing roles are removed and the new ones added:<a onclick="javascript:loadingImage(this);" class="image"><img alt="manage persons 8.png" src="/mediawiki/images/5/51/manage_persons_8.png" width="1098" height="295" data-file-width="1098" data-file-height="295"></a>
+</p><p>When removing a role, existing ones remain:<a onclick="javascript:loadingImage(this);" class="image"><img alt="manage persons 9.png" src="/mediawiki/images/e/ed/manage_persons_9.png" width="1118" height="278" data-file-width="1118" data-file-height="278"></a>
+</p>
+<h2><span class="mw-headline" id="Adding_licenses_to_users">Adding licenses to users</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI&amp;veaction=edit&amp;section=10" class="mw-editsection-visualeditor" title="Edit section: Adding licenses to users">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI&amp;action=edit&amp;section=10" title="Edit section: Adding licenses to users">edit source</a><span class="mw-editsection-bracket">]</span></span></h2><p>
+The Manage Persons API can also be used to set the license information for a specific user. </p><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="p">{</span>
+	<span class="nt">"operation"</span><span class="p">:</span> <span class="s2">"CREATE_OR_UPDATE"</span><span class="p">,</span>
+	<span class="nt">"users"</span><span class="p">:</span> <span class="p">[{</span>
+		<span class="nt">"properties"</span><span class="p">:</span> <span class="p">{</span>
+			<span class="nt">"Upn"</span><span class="p">:</span> <span class="s2">"MyNewUser@microfocus.com"</span>
+		<span class="p">},</span>
+		<span class="nt">"licenses"</span><span class="p">:{</span>
+			<span class="nt">"ADD"</span><span class="p">:[{</span>
+            <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"Named Users"</span><span class="p">,</span>
+            <span class="nt">"capacity"</span><span class="p">:</span> <span class="s2">"5"</span>
+          <span class="p">}]</span>
+		      <span class="p">}</span>	
+    	<span class="p">}]</span>
+<span class="p">}</span>
+</pre></div><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="manage persons 10.png" src="/mediawiki/images/7/72/manage_persons_10.png" width="801" height="274" data-file-width="801" data-file-height="274"></a>
+</p><h2><span class="mw-headline" id="Updates_to_multiple_persons">Updates to multiple persons</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI&amp;veaction=edit&amp;section=11" class="mw-editsection-visualeditor" title="Edit section: Updates to multiple persons">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_managePersonsAPI&amp;action=edit&amp;section=11" title="Edit section: Updates to multiple persons">edit source</a><span class="mw-editsection-bracket">]</span></span></h2><p>
+One advantage to the Manage Persons API is that you can run updates on multiple records at the same time. When updating a large number of persons, using a script is often the best method for generating the JSON payload. In the example below, multiple contacts are being added to the system.</p><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="p">{</span>
+	<span class="nt">"operation"</span><span class="p">:</span> <span class="s2">"CREATE_OR_UPDATE"</span><span class="p">,</span>
+	<span class="nt">"users"</span><span class="p">:</span> <span class="p">[{</span>
+		<span class="nt">"properties"</span><span class="p">:</span> <span class="p">{</span>
+			<span class="nt">"IsMaasUser"</span><span class="p">:</span><span class="s2">"false"</span><span class="p">,</span>	
+			<span class="nt">"FirstName"</span><span class="p">:</span> <span class="s2">"Steve"</span><span class="p">,</span>
+			<span class="nt">"Upn"</span><span class="p">:</span> <span class="s2">"MyNewUser@microfocus.com"</span><span class="p">,</span>
+			<span class="nt">"OfficePhoneNumber"</span><span class="p">:</span> <span class="s2">"5557788"</span><span class="p">,</span>
+			<span class="nt">"LastName"</span><span class="p">:</span> <span class="s2">"Smith"</span><span class="p">,</span>
+			<span class="nt">"Location"</span><span class="p">:</span> <span class="s2">"London"</span><span class="p">,</span>
+			<span class="nt">"Email"</span><span class="p">:</span> <span class="s2">"MyNewUser@microfocus.com"</span>
+		<span class="p">}</span>
+	<span class="p">},</span> <span class="p">{</span>
+		<span class="nt">"properties"</span><span class="p">:</span> <span class="p">{</span>
+			<span class="nt">"IsMaasUser"</span><span class="p">:</span><span class="s2">"false"</span><span class="p">,</span>	
+			<span class="nt">"FirstName"</span><span class="p">:</span> <span class="s2">"Jason"</span><span class="p">,</span>
+			<span class="nt">"Upn"</span><span class="p">:</span> <span class="s2">"MyNewUser4@microfocus.com"</span><span class="p">,</span>
+			<span class="nt">"OfficePhoneNumber"</span><span class="p">:</span> <span class="s2">"5557781234"</span><span class="p">,</span>
+			<span class="nt">"LastName"</span><span class="p">:</span> <span class="s2">"Smith"</span><span class="p">,</span>
+			<span class="nt">"Location"</span><span class="p">:</span> <span class="s2">"London"</span><span class="p">,</span>
+			<span class="nt">"Email"</span><span class="p">:</span> <span class="s2">"MyNewUser4@microfocus.com"</span>
+		<span class="p">}</span>
+	<span class="p">}]</span>
+<span class="p">}</span>
+</pre></div><p>In Postman (note that the entire Body is not shown in the image):<a onclick="javascript:loadingImage(this);" class="image"><img alt="manage persons 11.png" src="/mediawiki/images/5/5c/manage_persons_11.png" width="1110" height="585" data-file-width="1110" data-file-height="585"></a>
+</p>
+<!-- 
+NewPP limit report
+Cached time: 20190524101401
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.076 seconds
+Real time usage: 0.740 seconds
+Preprocessor visited node count: 120/1000000
+Preprocessor generated node count: 236/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 13408/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:260124-0!canonical and timestamp 20190524101400 and revision id 1295876
+ -->
+</div>
