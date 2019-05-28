@@ -1,1 +1,90 @@
- 
+<div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 11/03/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 9 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><div class="mw-collapsible-content"><div class="Admonition_Tip"><span class="autonumber">Configuring Service Management Automation X</span><div class="mw-collapsible">
+<div class="mw-collapsible-content">
+<p>Service Management Automation X provides an excellent experience out of the box. However, it is likely that each customer of the product will have different processes they would like to follow, and most have different services they wish to provide to their own customers.
+</p><p>Service Management Automation X provides a variety of ways to configure each process to better provide the correct experience for every customer. It is very important to understand the different customization options available. Just as important is understanding the correct methods to use them to provide a seamless transition between the development of these custom configurations and the activation of them in a production environment.
+</p><p>The configuration abilities in Service Management Automation X fit into one of two primary categories:
+</p>
+<ul><li>System configuration</li></ul>
+<ul><li>Data configuration</li></ul>
+<p><br>
+System configuration changes affect the underlying structure, workflow, business rules, or other low-level definition of a particular process (such as incident or change management). Configuration changes at this level will affect every record created for the specific process. System configuration changes cannot be made directly in a production system, and instead must follow a specific development to production (dev2prod) process.
+</p><p>Data configuration changes are created by creating or modifying specific records that support the higher level processes. An example of a data configuration change is the creation of a new service offering that will be used in the request management process. Changes at this level only affect a process record that references it. Data configuration changes are almost always made directly in the production environment.
+</p><p><br><br>
+</p>
+</div>
+</div>
+</div>
+</div>
+<p><br>
+</p>
+<h2><span class="mw-headline" id="Making_Changes_to_our_System_Behavior">Making Changes to our System Behavior</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/GettingStarted/ConfigureSMAX&amp;veaction=edit&amp;section=1" class="mw-editsection-visualeditor" title="Edit section: Making Changes to our System Behavior">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/GettingStarted/ConfigureSMAX&amp;action=edit&amp;section=1" title="Edit section: Making Changes to our System Behavior">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>If there is anything certain in this world, it’s that some of the more important managers in the company will want us to change how our Service Management Automation X system works. In truth, Service Management Automation X has some great functionality built in, but there's no way that it can know the intricacies (and sometimes straight-up craziness) of how we handle the processes in our company.
+</p><p>Luckily, Service Management Automation X comes with a wide array of configuration options that we can use to tune each process to our “real world” methodologies. While we aren't going into the nuts and bolts of all of the methods right now, I think it is important to go over the best practices for making certain types of configuration changes. Otherwise, we might lose some changes that we make, or even put our system in a bad state, by not following the proper procedures.
+</p><p>We can classify our configuration changes into two categories: <b>system configuration</b> and <b>data configuration</b>. This is an important distinction to make because the best practices for making changes in each category is very different.
+</p><p><br>
+</p>
+<h2><span class="mw-headline" id="System_Configuration">System Configuration</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/GettingStarted/ConfigureSMAX&amp;veaction=edit&amp;section=2" class="mw-editsection-visualeditor" title="Edit section: System Configuration">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/GettingStarted/ConfigureSMAX&amp;action=edit&amp;section=2" title="Edit section: System Configuration">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>System configuration changes include modifications tied to a process at a low level. When we make changes at this level, it can change the behavior in every record of a specific type (like an incident or a change). For example, adding a field to the incident records is a system configuration type of change — that field is now available in every incident record.
+</p><p>Because these type of changes have such a large effect, system configuration changes cannot be made directly in our production system. Service Management Automation X simply won't allow us to do so. There is a specific process we need to follow to create these changes in a development system, test them, and then move them into production. We'll look at this process (called dev2prod for short) in detail, but first, let’s make sure we understand what types of changes are system configuration changes.
+</p><p>System configuration changes are primarily made in the 'Records' utility. This utility allows us to add fields, change forms, add custom actions, or modify the process workflow of a specific record type. It should be clear that changes to this low-level information are system configuration changes, but there are a few other places we need to consider.
+</p><p>Lists, roles, and localization resources are also considered system configuration information. These bits of information are so tied into the underlying structure of the record definitions they need to use the same process to ensure everything keeps working correctly.
+</p><p>So it looks like our system configuration information includes any changes made to the following areas:
+</p>
+<ul><li>Records -&gt; Fields</li>
+<li>Records -&gt; Forms</li>
+<li>Records -&gt; Rules</li>
+<li>Records -&gt; Processes</li>
+<li>Records -&gt; Notifications</li>
+<li>Records -&gt; Custom actions</li>
+<li>Lists</li>
+<li>Roles</li>
+<li>Localization (for field labels, notifications, etc.)</li></ul>
+<p>We know that we can’t change any of these areas in our production system, so how do we do it? We need to follow the dev2prod process and the accompanying tools that Service Management Automation X provides. This will ensure that all of our changes apply to production correctly, causing no problems or downtime.
+</p><p>One important point of clarification: fields that are created as user options (as part of an offering or model definition) and any lists specific to a user option are not considered system configuration items and are not included in the dev2prod process. User options are part of the data configuration process.
+</p><p><br>
+</p>
+<h2><span class="mw-headline" id="Data_Configuration">Data Configuration</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/GettingStarted/ConfigureSMAX&amp;veaction=edit&amp;section=3" class="mw-editsection-visualeditor" title="Edit section: Data Configuration">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/GettingStarted/ConfigureSMAX&amp;action=edit&amp;section=3" title="Edit section: Data Configuration">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Data configuration does not change the behavior of a process directly. Instead, it is referenced by a record, which may have an effect on the overall process. An obvious example here is a service offering. While a specific service offering does not affect the workflow of every request, selecting an offering will influence the behavior of that specific record.
+</p><p>Changes in data configuration areas <b>are not handled as part of the dev2prod process</b> and must be either made directly in the production system or imported into production from an external file (although importing is not always an option for every type of configuration data).
+</p><p>There are numerous examples of data configuration areas in Service Management Automation X, and while the overall method of creating these types of data is similar, there are small differences we will investigate. For now, let’s list out the record types that are considered part of data configuration:
+</p>
+<ul><li>Service Management Automation Service Portal settings</li>
+<li>Routing definitions</li>
+<li>Record categories</li>
+<li>Integration settings</li>
+<li>Service categories</li>
+<li>Service definitions</li>
+<li>Service offerings</li>
+<li>Fulfillment plans</li>
+<li>Time periods</li>
+<li>Service/support agreements</li>
+<li>Change/incident/release models</li>
+<li>Templates</li>
+<li>Approval definitions</li>
+<li>SLT settings</li></ul>
+<p>Changes in these areas must be performed in the production system, which may seem risky at first. However, there are a few best practices that will ensure that we will not cause any issues in the production system if we follow them.
+</p>
+<!-- 
+NewPP limit report
+Cached time: 20190524101044
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.008 seconds
+Real time usage: 0.012 seconds
+Preprocessor visited node count: 21/1000000
+Preprocessor generated node count: 38/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 0/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:202437-0!canonical and timestamp 20190524101044 and revision id 1295818
+ -->
+</div>
