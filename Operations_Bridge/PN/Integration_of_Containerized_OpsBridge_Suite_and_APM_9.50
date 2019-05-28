@@ -1,38 +1,38 @@
-<div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 12/12/2018</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 28 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><p>This topic provides information to Integrate Containerized OpsBridge Suite and APM 9.50.
+<div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 10/12/2018</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 15 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><p>This topic provides information to Integrate Containerized OpsBridge Suite and APM 9.50.
 To begin with the integration make appropriate selections in the <a target="1" rel="nofollow" class="external text" href="https://docs.microfocus.com/OMi/10.70/OBM_Integrations_Guide/Content/Integrations.htm#">Integrations Guide for OBM</a> for your integration, in this case APM and BSM, RTSM and APM 9.40. (The integration of 9.50 may be completed by selecting 9.40).
-</p><p>This document does not replace the <a target="1" rel="nofollow" class="external text" href="https://docs.microfocus.com/OMi/10.70/OBM_Integrations_Guide/Content/Integrations.htm#">Integrations Guide for OBM</a> documentation, but enhances it where possible with tips and tricks. More information on the integration may be found in the <a target="1" rel="nofollow" class="external text" href="https://softwaresupport.softwaregrp.com/web/softwaresupport/document/-/facetsearch/document/KM01695512">Integrations Catalog</a>.
-</p><p>Each instance of the APM Integration is represented in OBM as a connected server. If you are integrating multiple APMs, each one will be a separate connected server.
+</p><p>It is not the purpose of this document to replace the <a target="1" rel="nofollow" class="external text" href="https://docs.microfocus.com/OMi/10.70/OBM_Integrations_Guide/Content/Integrations.htm#">Integrations Guide for OBM</a> documentation, but to enhance it where possible with tips and tricks. More information on the integration may be found in the <a target="1" rel="nofollow" class="external text" href="https://softwaresupport.softwaregrp.com/web/softwaresupport/document/-/facetsearch/document/KM01695512">Integrations Catalog</a>.
+Each instance of the APM Integration is represented in OBM as a connected server. If you are integrating multiple APMs, each one will be a separate connected server.
 </p>
 <div id="toc" class="toc"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none"><div class="toctitle" lang="en" dir="ltr"><h2>Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
 <ul>
-<li class="toclevel-1 tocsection-1"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM#APM_-_OBM_Integration_Process_Overview"><span class="tocnumber">1</span> <span class="toctext">APM - OBM Integration Process Overview</span></a>
+<li class="toclevel-1 tocsection-1"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM#APM_-_OBM_Integration_Process_Overview"><span class="tocnumber">1</span> <span class="toctext">APM - OBM Integration Process Overview</span></a>
 <ul>
-<li class="toclevel-2 tocsection-2"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM#Task_1._Install_the_Data_Flow_Probe:"><span class="tocnumber">1.1</span> <span class="toctext">Task 1. Install the Data Flow Probe:</span></a></li>
-<li class="toclevel-2 tocsection-3"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM#Task_2._Configure_LWSSO:"><span class="tocnumber">1.2</span> <span class="toctext">Task 2. Configure LWSSO:</span></a></li>
-<li class="toclevel-2 tocsection-4"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM#Task_3._.28Optional.29_Create_the_integration_user:"><span class="tocnumber">1.3</span> <span class="toctext">Task 3. <i>(Optional)</i> Create the integration user:</span></a></li>
-<li class="toclevel-2 tocsection-5"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM#Task_4._Enable_Alert_and_Status_Forwarding"><span class="tocnumber">1.4</span> <span class="toctext">Task 4. Enable Alert and Status Forwarding</span></a></li>
-<li class="toclevel-2 tocsection-6"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM#Task_5._Create_OBM_authentication_user_name_and_password"><span class="tocnumber">1.5</span> <span class="toctext">Task 5. Create OBM authentication user name and password</span></a></li>
-<li class="toclevel-2 tocsection-7"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM#Task_6._Importing_Certificates_for_REST_Service"><span class="tocnumber">1.6</span> <span class="toctext">Task 6. Importing Certificates for REST Service</span></a></li>
-<li class="toclevel-2 tocsection-8"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM#Task_7._Set_up_an_APM_Connected_Server_in_OBM:"><span class="tocnumber">1.7</span> <span class="toctext">Task 7. Set up an APM Connected Server in OBM:</span></a></li>
-<li class="toclevel-2 tocsection-9"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM#Task_8_-_Using_unsecured_HTTP_REST_access"><span class="tocnumber">1.8</span> <span class="toctext">Task 8 - Using unsecured HTTP REST access</span></a></li>
-<li class="toclevel-2 tocsection-10"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM#Task_9_-_KPI_Assignments_in_OBM"><span class="tocnumber">1.9</span> <span class="toctext">Task 9 - KPI Assignments in OBM</span></a></li>
-<li class="toclevel-2 tocsection-11"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM#Task_10_-_Optional._Additional_APM-OBM_Integration_Configurations"><span class="tocnumber">1.10</span> <span class="toctext">Task 10 - <i>Optional</i>. Additional APM-OBM Integration Configurations</span></a></li>
-<li class="toclevel-2 tocsection-12"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM#Task_11_-_Optional._Create_and_forward_EUM_alerts_to_OBM"><span class="tocnumber">1.11</span> <span class="toctext">Task 11 - Optional. Create and forward EUM alerts to OBM</span></a></li>
+<li class="toclevel-2 tocsection-2"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM#Step_1._Install_the_Data_Flow_Probe:"><span class="tocnumber">1.1</span> <span class="toctext">Step 1. Install the Data Flow Probe:</span></a></li>
+<li class="toclevel-2 tocsection-3"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM#Step_2._Configure_LWSSO:"><span class="tocnumber">1.2</span> <span class="toctext">Step 2. Configure LWSSO:</span></a></li>
+<li class="toclevel-2 tocsection-4"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM#Step_3._.5BOptional.5D:"><span class="tocnumber">1.3</span> <span class="toctext">Step 3. [Optional]:</span></a></li>
+<li class="toclevel-2 tocsection-5"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM#Step_4._Set_up_an_APM_Connected_Server_in_OBM:"><span class="tocnumber">1.4</span> <span class="toctext">Step 4. Set up an APM Connected Server in OBM:</span></a></li>
+<li class="toclevel-2 tocsection-6"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM#Step_5._Enable_Alert_and_Status_Forwarding"><span class="tocnumber">1.5</span> <span class="toctext">Step 5. Enable Alert and Status Forwarding</span></a></li>
+<li class="toclevel-2 tocsection-7"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM#Step_6._Create_OBM_authentication_user_name_and_password"><span class="tocnumber">1.6</span> <span class="toctext">Step 6. Create OBM authentication user name and password</span></a></li>
+<li class="toclevel-2 tocsection-8"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM#Step_7._Importing_Certificates_for_REST_Service"><span class="tocnumber">1.7</span> <span class="toctext">Step 7. Importing Certificates for REST Service</span></a></li>
+<li class="toclevel-2 tocsection-9"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM#Step_8_-_Optional_-_Perform_the_steps_as_documented_in_Integrations_Guide_for_OBM_if_preferred"><span class="tocnumber">1.8</span> <span class="toctext">Step 8 - Optional - Perform the steps as documented in&nbsp;Integrations Guide for OBM if preferred</span></a></li>
+<li class="toclevel-2 tocsection-10"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM#Step_9_-_Perform_the_steps_as_documented_in_Integrations_Guide_for_OBM"><span class="tocnumber">1.9</span> <span class="toctext">Step 9 - Perform the steps as documented in Integrations Guide for OBM</span></a></li>
+<li class="toclevel-2 tocsection-11"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM#Step_10_-_Optional"><span class="tocnumber">1.10</span> <span class="toctext">Step 10 - Optional</span></a></li>
+<li class="toclevel-2 tocsection-12"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM#Step_11_-_Optional"><span class="tocnumber">1.11</span> <span class="toctext">Step 11 - Optional</span></a></li>
 </ul>
 </li>
-<li class="toclevel-1 tocsection-13"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM#Troubleshooting"><span class="tocnumber">2</span> <span class="toctext">Troubleshooting</span></a></li>
-<li class="toclevel-1 tocsection-14"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM#Related_topics"><span class="tocnumber">3</span> <span class="toctext">Related topics</span></a></li>
+<li class="toclevel-1 tocsection-13"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM#Troubleshooting"><span class="tocnumber">2</span> <span class="toctext">Troubleshooting</span></a></li>
+<li class="toclevel-1 tocsection-14"><a href="https://staging.docs.microfocus.com/itom/Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM#Related_topics"><span class="tocnumber">3</span> <span class="toctext">Related topics</span></a></li>
 </ul>
 </div>
 
-<h2><span class="mw-headline" id="APM_-_OBM_Integration_Process_Overview">APM - OBM Integration Process Overview</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=1" class="mw-editsection-visualeditor" title="Edit section: APM - OBM Integration Process Overview">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=1" title="Edit section: APM - OBM Integration Process Overview">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h2><span class="mw-headline" id="APM_-_OBM_Integration_Process_Overview">APM - OBM Integration Process Overview</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=1" class="mw-editsection-visualeditor" title="Edit section: APM - OBM Integration Process Overview">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=1" title="Edit section: APM - OBM Integration Process Overview">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
 <ol><li>Topology Sync – Pull from APM to OBM</li>
 <li>Status Change Alerts – APM sends status change alerts to OBM</li>
 <li>Initial Status Sync – OBM receives the status of each CI in APM</li>
 <li>Downtime Sync – Downtime defined in OBM will apply to APM</li></ol>
-<h3><span class="mw-headline" id="Task_1._Install_the_Data_Flow_Probe:">Task 1. Install the Data Flow Probe:</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=2" class="mw-editsection-visualeditor" title="Edit section: Task 1. Install the Data Flow Probe:">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=2" title="Edit section: Task 1. Install the Data Flow Probe:">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
-<p>Integration with the Container Deployment Foundation (CDF) suites has different requirements from the classic version of the same suite. This document provides the steps required for integrating a Data Flow Probe with the OpsBridge Suite CDF.
-</p><p>The <a target="1" rel="nofollow" class="external text" href="https://docs.microfocus.com/itom/Operations_Bridge_Manager:2018.05.001/OMi_DFP_Install">Installing a Data Flow Probe</a> topic provides step-by-step instructions to install, update, start, and manage the Data Flow Probe (DFP), given the understanding that it was written for the classic versions, not the CDF versions. This section follows the flow of that Installing a Data Flow Probe topic.
+<h3><span class="mw-headline" id="Step_1._Install_the_Data_Flow_Probe:">Step 1. Install the Data Flow Probe:</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=2" class="mw-editsection-visualeditor" title="Edit section: Step 1. Install the Data Flow Probe:">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=2" title="Edit section: Step 1. Install the Data Flow Probe:">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Integration with the Container Deployment Foundation (CDF) suites has different requirements from the classic version of the same suite. This document will provide the steps required for integrating a Data Flow Probe with the OpsBridge Suite CDF.
+</p><p>More information is available in  <a target="1" rel="nofollow" class="external text" href="https://docs.microfocus.com/itom/Operations_Bridge_Manager:2018.05.001/OMi_DFP_Install">Installing a Data Flow Probe</a> topic provides step-by-step instructions to install, update, start, and manage the Data Flow Probe (DFP), given the understanding that it was written for the classic versions, not the CDF versions. This document was created following the flow of that guide.
 </p><p>While following the steps in <a target="1" rel="nofollow" class="external text" href="https://docs.microfocus.com/itom/Operations_Bridge_Manager:2018.05.001/OMi_DFP_Install">Installing a Data Flow Probe</a> topic, after importing the certificate into the DFP keystore, a prompt appears for a password, the password is <b>changeit</b>.
 </p><p>You may use this consolidated document for the integration of the DFP and to complete the integration of APM 9.40/9.50 with OpsBridge Suite.
 </p><p><b>Compare UCMDB version to DFP version:</b>
@@ -79,116 +79,85 @@ The version of the DFP must be the same as the UCMDB version. Depending on the d
 <li>set the <code>serverPortHttps = 443</code></li></ul></li></ol>
 <p><b>Import the corresponding certificates to the Java keystore of the Data Flow Probe</b>
 </p><p>All CDF suites have TLS enabled, and the certificate import process is different than with a “classic version” of the suite. When using a DFP with Containerized OpsBridge Suite, you will need to import the certificate from nginx, which runs on the &lt;External Access Host&gt;, instead of the OBM system. The nginx web server does the SSL termination from outside into the CDF. This is because most external communication into the CDF cluster begins with the &lt;External Access Host&gt; instead of directly communicating with OBM.
-</p><p>The certificate must be imported from the CDF Management Portal’s web server. The following two scripts helps in certificate import. The first should to be run on the &lt;External_Access_Host&gt; to export the cert, and the second should to be run on the DFP node to import the certificate.
+</p><p>The certificate must be imported from the CDF Management Portal’s web server. While there are a few ways to do this, following two scripts helps in certificate import. The first is to be run on the &lt;External_Access_Host&gt; to export the cert, and the second is to be run on the DFP node to import the certificate.
 </p><p><b>Export the certificate from the nginx web server on the &lt;External_Access_Host&gt;</b>
 </p><p>Log on as the root user to execute the following scripts:
 </p><p><code>echo | openssl s_client -showcerts -servername &lt;External_Access_Host_FQDN&gt; -connect &lt;External_Access_Host_FQDN&gt;:443 2&gt;/dev/null | sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p' &gt; /root/certificate.pem</code>
+</p><p><b>Convert the file into the .der format</b>:
+<code>openssl x509 -outform der -in certificate.pem -out certificate.der</code>
 </p><p><b>Copy the certificate to the DFP Node</b>:
-</p><p><code>scp /root/certificate.pem &lt;DFP Node&gt;:/tmp</code>
+<code>scp /root/certificate.der &lt;DFP Node&gt;:/tmp</code>
 </p><p><b>Import the Certificate into the JRE’s trust store on the DFP Node</b>:
 </p><p>From a command prompt on the DFP system import the certificate using the following command:
 </p>
-<ol><li>The <code>&lt;CA cert&amp;gt.pem</code> file is the file just exported from the openssl script above.</li>
-<li>The <code>&lt;ca cert alias&gt;</code> is a name you will create to identify this certificate.</li></ol>
-<p><code>&lt;Data Flow Probe install folder&gt;/bin/jre/bin/keytool -import -trustcacerts -file &lt;CA cert&gt;.pem -alias &lt;ca cert alias&gt; -keystore &lt;Data Flow Probe install folder&gt;/bin/jre/lib/security/cacerts</code>
-</p><p>When prompted for the password, type the default password: <code>changeit</code>
+<ol><li>The &lt;CA cert&gt;.der file is the file just exported from the openssl script above.</li>
+<li>The &lt;ca cert alias&gt; is a name you will create to identify this certificate.</li></ol>
+<p><code>&lt;Data Flow Probe install folder&gt;/bin/jre/bin/keytool -import -trustcacerts -file &lt;CA cert&gt;.der -alias &lt;ca cert alias&gt; -keystore &lt;Data Flow Probe install folder&gt;/bin/jre/lib/security/cacerts</code>
+</p><p>When prompted for the password, enter the default password: changeit
 </p><p><b>Start the Data Flow Probe</b>:
 </p><p>Linux: <code>&lt;Data Flow Probe install folder&gt;/ProbeGateway.sh console</code>
 </p><p>Windows: <code>&lt;Data Flow Probe install folder&gt;\bin\gateway.bat console</code>
 </p><p>Other arguments for ProbeGateway are start and stop. The console argument provides diagnostic output and is especially useful for the first startup.
 </p><p>The following section provides Data Flow Probe integration steps specific to the APM integration. 
 </p><p><b>Import the APM server certificate into the DFP’s JRE’s trust store</b>:
-</p><p>Windows: <code>openssl s_client -showcerts -servername &lt;FQDN_APM_Gateway&gt; -connect &lt;FQDN_APM_Gateway&gt;:443</code>
-</p><p>From the command output, copy the content beginning with -----BEGIN CERTIFICATE until END CERTIFICATE----- into a file. Save the file with the name <code>certificate.pem</code>.
-</p><p>Linux: <code>echo | openssl s_client -showcerts -servername &lt;FQDN_APM_Gateway&gt; -connect &lt;FQDN_APM_Gateway&gt;:443 2&gt;/dev/null | sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p' &gt; /root/certificate.pem</code>
-</p><p><b>Import the APM certificate into JRE's trust store:</b>
-</p><p><code>&lt;Data Flow Probe install folder&gt;/bin/jre/bin/keytool -import -trustcacerts -file /tmp/certificate.der -alias &lt;nginx CA cert alias&gt; -keystore &lt;Data Flow Probe install folder&gt;/bin/jre/lib/security/cacerts</code>
+</p><p><code>openssl s_client -showcerts -servername &lt;FQDN_APM_Gateway&gt; -connect &lt;FQDN_APM_Gateway&gt;:443</code>
+</p><p>From the command output, copy the content beginning with -----BEGIN CERTIFICATE until END CERTIFICATE----- and copy it into a file. Save the file with the name <code>certificate.pem</code>.
+</p><p>Convert the file into the <code>.der</code> format: <code>openssl x509 -outform der -in certificate.pem -out certificate.der</code>
+</p><p>Import the APM certificate into JRE's trust store: <code>&lt;Data Flow Probe install folder&gt;/bin/jre/bin/keytool -import -trustcacerts -file certificate.pem -alias &lt;nginx CA cert alias&gt; -keystore &lt;Data Flow Probe install folder&gt;/bin/jre/lib/security/cacerts</code>
 </p><p><b>Import the APM certificate into the OBM container</b>
-<b>Copy the APM certificate to the persistent storage of the OBM Container by running the following command from the APM Server:</b>
-</p><p><code>scp /tmp/certificate.pem &lt;NFS_Server&gt;: /var/vols/itom/omi0/omi/opt/HP/BSM/Temp</code>
-</p><p>On the CDF Master Node, execute the following commands:
-</p><p><code>kubectl exec omi-0 -c omi -n opsbridge1 -ti bash</code>
-</p><p><code>&lt;OBM_Home&gt;/JRE/bin/keytool -import -trustcacerts -file /opt/HP/BSM/Temp/certificate.pem -alias &lt;APM CA cert&gt; -keystore /opt/HP/BSM/JRE/lib/security/cacerts</code>
-</p><p>Restart the containerized OBM by executing the command:
-</p><p><code>kubectl delete pod omi-0 -n opsbridge1</code>.
+</p><p>Execute the following commands:
+<code>kubectl exec omi-0 -c omi -n opsbridge1 -ti bash</code>
+</p><p><code>&lt;OBM_Home&gt;/JRE/bin/keytool -import -trustcacerts -file &lt;APM CA cert&gt;.pem -alias &lt;APM CA cert&gt; -keystore /opt/HP/BSM/JRE/lib/security/cacerts</code>
+</p><p>Restart the containerized OBM by executing the command: <code>kubectl delete pod omi-0 -n opsbridge1</code>.
 </p><p>If OBM is configured for HA, import the APM cert into the omi-1 instance with the same steps.
+</p><p>Copy the cert to the DFP server and import it.
+</p><p>Import the certificate by running the command: <code>&lt;Data Flow Probe install folder&gt;/bin/jre/bin/keytool -import -trustcacerts -keystore &lt;Data Flow Probe install folder&gt;/bin/jre/lib/security/cacerts -storepass changeit -alias ANYCERTID -file &lt;location of file&gt;</code>
+</p><p>The <code>&lt;Data Flow Probe install folder&gt;</code> is <code>/opt/UCMDB/DataFlowProbe</code>
 </p><p><b>Continue the Integration</b>:
-<a onclick="javascript:loadingImage(this);" class="image"><img alt="OpsB 2018.11 IntgOpsBAPM.jpg" src="/mediawiki/images/6/64/OpsB_2018.11_IntgOpsBAPM.jpg" width="978" height="982" data-file-width="978" data-file-height="982"></a>
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="OpsB 2018.11 IntgOpsBAPM.jpg" src="/mediawiki/images/6/64/OpsB_2018.11_IntgOpsBAPM.jpg" width="978" height="982" data-file-width="978" data-file-height="982"></a>
 </p>
-<h3><span class="mw-headline" id="Task_2._Configure_LWSSO:">Task 2. Configure LWSSO:</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=3" class="mw-editsection-visualeditor" title="Edit section: Task 2. Configure LWSSO:">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=3" title="Edit section: Task 2. Configure LWSSO:">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
-<p>CDF Suites will be pre-configured with LWSSO out of the box. To configure APM to use the same single sign on, from the CDF Management Portal click <b>ADMINISTRATION &gt; IdM Administration &gt; System Settings &gt; HPSSO Initial String</b> and copy the Initial String. Use the copied init string to configure the LWSSO in APM.
-</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="OpsB 2018.08 IntgOpsBAPM2.jpg" src="/mediawiki/images/8/89/OpsB_2018.08_IntgOpsBAPM2.jpg" width="904" height="315" data-file-width="904" data-file-height="315"></a>
+<h3><span class="mw-headline" id="Step_2._Configure_LWSSO:">Step 2. Configure LWSSO:</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=3" class="mw-editsection-visualeditor" title="Edit section: Step 2. Configure LWSSO:">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=3" title="Edit section: Step 2. Configure LWSSO:">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>CDF Suites will be preconfigured with LWSSO out of the box. To configure APM to use the same single sign on, copy the “Initial String” from the CDF Management Portal by selecting <b>ADMINISTRATION &gt; IdM Administration &gt; System Settings &gt; HPSSO Initial String</b>. Copy the init string and use it to configure the LWSSO in APM.
+<a onclick="javascript:loadingImage(this);" class="image"><img alt="OpsB 2018.08 IntgOpsBAPM2.jpg" src="/mediawiki/images/8/89/OpsB_2018.08_IntgOpsBAPM2.jpg" width="904" height="315" data-file-width="904" data-file-height="315"></a>
+</p><p><br>
 </p>
 <ul><li>Click the <b>System Settings</b> tab</li>
 <li>Click <b>Initial String</b></li>
 <li>Click <b>Show Value</b> to see and copy the initial string. <br><a onclick="javascript:loadingImage(this);" class="image"><img alt="OpsB 2018.08 showvalue.jpg" src="/mediawiki/images/d/df/OpsB_2018.08_showvalue.jpg" width="326" height="183" data-file-width="326" data-file-height="183"></a></li></ul>
-<h3><span id="Task_3._(Optional)_Create_the_integration_user:"></span><span class="mw-headline" id="Task_3._.28Optional.29_Create_the_integration_user:">Task 3. <i>(Optional)</i> Create the integration user:</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=4" class="mw-editsection-visualeditor" title="Edit section: Task 3. (Optional) Create the integration user:">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=4" title="Edit section: Task 3. (Optional) Create the integration user:">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
-<p><b>Note:</b> Do not perform this step if you upgraded from BSM 9.2x and already created an integration user. It will be created automatically as part of the upgrade.
-</p><p>You can, optionally, create a dedicated user for integrations between other products (including OBM) and APM. This user enables a product that uses the APM client SDK to be authenticated in the server SDK and execute the APIs. Applications written with this API set must log on with integration user credentials.
+<h3><span id="Step_3._[Optional]:"></span><span class="mw-headline" id="Step_3._.5BOptional.5D:">Step 3. [Optional]:</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=4" class="mw-editsection-visualeditor" title="Edit section: Step 3. [Optional]:">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=4" title="Edit section: Step 3. [Optional]:">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p><b>Note</b>: Steps 5, 6 and 7 should be completed before the OBM to APM Setup section of the Connected Server Configuration in Step 4.
 </p>
-<ol><li>In your OBM deployment, open the RTSM JMX console in a web browser:  <code>http://localhost:21212/jmx-console/</code></li>
-<li>Under <code>UCMDB</code>, click <b>service=UCMDB&nbsp;Authorization Services</b></li>
-<li>Locate the <b>createUser</b> operation. This method accepts the following parameters:
-<ul><li><b>customerId</b> - the customer ID.</li>
-<li><b>username</b> - the integration user's name.</li>
-<li><b>userDisplayName</b> - the integration user's display name.</li>
-<li><b>userLoginName</b>. the integration user's login name.</li>
-<li><b>password</b>. The integration user's password.  The password policy requires the password to include at least one one upper case, one lower case, one numeric, and one special character (<code>,/\:._?&amp;%=+-[]()|</code>). Click <b>Invoke</b>.</li></ul></li>
-<li>In a single-tenant environment, locate the <b>setRolesForUser</b> method and enter the following parameters:
-<ul><li><b>userName</b> - the integration user's name.</li>
-<li><b>roles</b> - SuperAdmin. Click <b>Invoke</b>.</li></ul></li>
-<li>Locate the <b>setUserServerAdministratorValue</b> method and enter the following parameters:
-<ul><li><b>customerID</b> - the customer ID.</li>
-<li><b>userLoginName</b> - the integration user's login name.</li>
-<li><b>serverAdministratorValue</b> - select <b>True</b>. Click <b>Invoke</b>.</li></ul></li>
-<li>In a multi-tenant environment, locate the <b>grantRolesToUserForAllTenants</b> method and enter the following parameters to assign the role in connection with all tenants:
-<ul><li><b>userName</b> - The integration user's name.</li>
-<li><b>roles</b> - SuperAdmin. Click <b>Invoke</b>.  Alternatively, to assign the role in connection with specific tenants, invoke the grantRolesToUserForTenants method, using the same user name and roles parameter values. For the tenantNames parameter, enter the required tenants.</li></ul></li>
-<li>You may continue create more users, or close the&nbsp;JMX console.</li>
-<li>Log on to APM as an administrator.</li>
-<li>Click <b>Admin &gt;&nbsp;RTSM&nbsp;Administration</b>.</li>
-<li>From the <b>Administration</b> tab, run <b>Package Manager</b>.</li>
-<li>Click <b>New</b>.</li>
-<li>Enter a name for the new package, and click <b>Next</b>.</li>
-<li>In the Resource Selection tab, under <b>Administration</b>, click <b>Integration Users</b>.</li>
-<li>Select a user or users that you created by using the JMX console.</li>
-<li>Click&nbsp;<b>Next</b> and then <b>Finish</b>. Your new package appears in the Package&nbsp;Name list in Package Manager.</li></ol>
-<p>The integration user is defined per customer. To create a stronger integration user for cross-customer usage, use a <b>systemUser</b> with the <b>isSuperIntegrationUser</b> flag set to <b>true</b>. Use the <b>systemUser</b> methods&nbsp;(createSystemUser, removeSystemUser, showAllSystemUsers, changeSystemUserPassword, canSuperIntegrationUserAuthenticate, and so on).
-</p><p>There are two out-of-the-box system users; we recommend to change their passwords after the installation by using the <b>changeSystemUserPassword</b> method.
+<h3><span class="mw-headline" id="Step_4._Set_up_an_APM_Connected_Server_in_OBM:">Step 4. Set up an APM Connected Server in OBM:</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=5" class="mw-editsection-visualeditor" title="Edit section: Step 4. Set up an APM Connected Server in OBM:">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=5" title="Edit section: Step 4. Set up an APM Connected Server in OBM:">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Perform these steps to configure the connected server and ensure to click the <b>Save</b> button between each step:
 </p>
-<ul><li><b>sysadmin</b>/<b>sysadmin</b></li>
-<li><b>UISysadmin</b>/<b>UISysadmin</b> (this user is also the Super Integration User <b>SuperIntegrationUser</b>)</li></ul>
-<p>If you change the UISysadmin password by using <b>changeSystemUserPassword</b>, you must execute the following method: 
+<ul><li>Complete the “General” and “Server Properties” section.</li>
+<li>Clear “Enable sending event updates to the APM server”.</li>
+<li>Clear any check-boxes in the Synchronization section, and click <b>Save</b>.</li></ul>
+<p><br>
+<b>Step A: Topology</b>
+</p><p>Provide the DFB configuration, and click <b>Save</b>.
+</p><p><br>
+<b>Step B: OBM to APM Setup</b>
+</p><p>The OBM to APM setup will require the following before completing Step B of the Connected Server configuration.
 </p>
-<ul><li>In the JMX console, locate the <b>UCMDB-UI:name=UCMDB&nbsp;Integration</b> service.</li>
-<li>Run <b>setCMDBSuperIntegrationUser</b> with the user name and new password of the integration user.</li></ul>
-<h3><span class="mw-headline" id="Task_4._Enable_Alert_and_Status_Forwarding">Task 4. Enable Alert and Status Forwarding</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=5" class="mw-editsection-visualeditor" title="Edit section: Task 4. Enable Alert and Status Forwarding">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=5" title="Edit section: Task 4. Enable Alert and Status Forwarding">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
-<p>In order to enable alert and status forwarding, you must manually deploy the OprEvent template on the OBM side.
+<ul><li>Clear Topology check-box.</li>
+<li>Install policy before step B in the connected server (see Step 5)</li>
+<li>Configure OBM authentication username and password (see Step 6)</li>
+<li>Import certs from [OBM containers] into APM before Step B (see Step 7)</li>
+<li>Delete OBM container to restart after cert import.</li></ul>
+<p><br>
+<b>Step C: Synchronization</b>
 </p>
-<ol><li>On your OBM  deployment, navigate to:  <b>Administration &gt; Monitoring &gt; Policy Templates</b>.</li>
-<li>Expand the following:  <b>Templates grouped by type &gt; Events &gt; Event from REST web service</b></li>
-<li>Click <b>OprEvent</b> template.</li>
-<li>Click <b>Assign and Deploy Template</b>.</li>
-<li>Select omi-0 and (for HA) omi-1 for deployment</li>
-<li>Click <b>Next</b>.</li>
-<li>Click <b>Next</b>.</li>
-<li>Click <b>Finish</b>.</li></ol>
-<h3><span class="mw-headline" id="Task_5._Create_OBM_authentication_user_name_and_password">Task 5. Create OBM authentication user name and password</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=6" class="mw-editsection-visualeditor" title="Edit section: Task 5. Create OBM authentication user name and password">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=6" title="Edit section: Task 5. Create OBM authentication user name and password">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
-<p>As part of the new integration between APM and OBM, embedded OBM under APM no longer exists, and the integration relies on connecting to OBM via REST.
-</p><p>APM users should set an OBM user name and password for sending events from APM to OBM.
+<ul><li>Clear OBM to APM Setup check-box.</li>
+<li>Select <b>Synchronize Downtime</b> check-box.</li>
+<li>Click Save.</li></ul>
+<h3><span class="mw-headline" id="Step_5._Enable_Alert_and_Status_Forwarding">Step 5. Enable Alert and Status Forwarding</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=6" class="mw-editsection-visualeditor" title="Edit section: Step 5. Enable Alert and Status Forwarding">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=6" title="Edit section: Step 5. Enable Alert and Status Forwarding">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Perform the steps as documented in <a target="1" rel="nofollow" class="external text" href="https://docs.microfocus.com/OMi/10.70/OBM_Integrations_Guide/Content/Integrations.htm#">Integrations Guide for OBM</a>, except in containerized environment, select the OMi-0 and (for HA) OMi-1 CIs for deployment.
 </p>
-<ol><li>Run the following command on the agent to which the policy was deployed in the previous task. This will set the user name/password for the web service that APM is using (you must set the same username and password on APM): <br><code>&lt;<i>OBM_Home</i>&gt;/opr/bin/opr-rest-ws-policy-configuration.[bat|sh] -enable_auth -credentials -username &lt;<i>username</i>&gt; [-password &lt;<i>password</i>&gt;]</code></li>
-<li>Run the following commands to stop and start the agent to save this change:  <br><code>ovc -stop</code>  <br><code>ovc -start</code></li></ol>
-<p>Follow these steps on APM:
+<h3><span class="mw-headline" id="Step_6._Create_OBM_authentication_user_name_and_password">Step 6. Create OBM authentication user name and password</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=7" class="mw-editsection-visualeditor" title="Edit section: Step 6. Create OBM authentication user name and password">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=7" title="Edit section: Step 6. Create OBM authentication user name and password">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Perform the steps as documented in <a target="1" rel="nofollow" class="external text" href="https://docs.microfocus.com/OMi/10.70/OBM_Integrations_Guide/Content/Integrations.htm#">Integrations Guide for OBM</a>, except for “step b” run ovc -stop and then ovc -start instead of ovc -status. The ovc -status command may be run after the start command.
 </p>
-<ol><li>In APM, select <b>Admin &gt; Platform &gt; Setup and Maintenance &gt; Infrastructure Settings</b>.</li>
-<li>Select <b>Foundations</b>.</li>
-<li>Select <b>OMi Integration</b>.</li>
-<li>In the <b>OMi Integration - General Settings</b> table:
-<ul><li>Locate <b>Login</b> and enter the user name you used in step 1 to create your OBMauthorization user name.</li>
-<li>Locate <b>Password</b> and enter the password you used in step 1 to create your OBMauthorization password. Use the user name and password that you created above.</li></ul></li>
-<li>Save the changes.</li></ol>
-<h3><span class="mw-headline" id="Task_6._Importing_Certificates_for_REST_Service">Task 6. Importing Certificates for REST Service</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=7" class="mw-editsection-visualeditor" title="Edit section: Task 6. Importing Certificates for REST Service">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=7" title="Edit section: Task 6. Importing Certificates for REST Service">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<h3><span class="mw-headline" id="Step_7._Importing_Certificates_for_REST_Service">Step 7. Importing Certificates for REST Service</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=8" class="mw-editsection-visualeditor" title="Edit section: Step 7. Importing Certificates for REST Service">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=8" title="Edit section: Step 7. Importing Certificates for REST Service">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
 <p>The REST Service uses port 30005 for communication. Use the netstat command to check for port 30005 to be open on the &lt;External_Access_Host&gt;.
 </p><p><code># netstat -an | grep 30005</code>
 </p><p><code>tcp6     0     0&nbsp;:::30005    :::*    LISTEN</code>
@@ -217,119 +186,27 @@ status:
 &nbsp; loadBalancer: {}
 " | kubectl create -f -</pre>
 <p><b>Import the Certificates for REST Service</b>
-</p><p>When the OprEvent policy was deployed to omi0 and/or omi1, perform the following: 
+</p><p>On one of the OBM gateway servers where the policy was deployed, list the OBM certificates for the REST service, by entering ovcert -list in a command prompt.
+</p><p>Export the certificate by using the command: <code>ovcert -exporttrusted -file &lt;location of file&gt; -alias &lt;trusted certificate name&gt;</code>
+</p><p>For example: <code>ovcert -exporttrusted -file c:\trust.pem -alias CA_c37b8bd5-5b9b-4626-be18-c78ef76040e5_2048</code>
+</p><p>where, <code>c:\trust.pem</code> is the location for the file which will be exported.
+</p><p><code>CA_&lt;UUID&gt;_2048</code> is the CA certificate of OBM (where &lt;UUID&gt; is the ID retrieved when using the ovcoreid -ovrg server command).
+</p><p>Import the OBM certificate by running the following command from the <code>&lt;APM_Home&gt;/JRE64/bin</code> folder on the APM gateway and data processing servers:
+</p><p><code>&lt;APM_Home&gt;/JRE64/bin/keytool -import -trustcacerts -keystore &lt;APM_Home&gt;/JRE64/lib/security/cacerts -storepass changeit -alias ANYCERTID -file &lt;location of file&gt;</code>
+</p><p>Restart the APM server on both the gateway and data processing server.
 </p>
-<ol><li>On the &lt;External_Access_Host&gt; run the following command to connect to the OBM container. <br><code>kubectl exec omi-0 -c omi -n opsbridge1 bash -ti</code> <br><code>su - omiuser</code> <br><code>ovcert -exporttrusted -file /opt/HP/BSM/Temp/OpsBTrust.pem -alias CA_&lt;UUID&gt;_2048</code></li>
-<li>Copy the &lt;OBM trusted certificate&gt; to the APM server accordingly: <br><b>Linux APM Server:</b> <br><code>scp root@&lt;nfs_server&gt;:/var/vols/itom/omi0/omi/opt/HP/BSM/Temp/OpsBTrust.pem /tmp</code> <br><b>Windows APM Server:</b> <br>
-<ol><li>Use your favorite tool to copy the file to the windows APM server.</li>
-<li>Import the OBM certificate by running the following command from the <code>&lt;APM_Home&gt;/JRE64/bin</code> folder on the APM gateway and data processing servers: <br><code>&lt;APM_Home&gt;/JRE64/bin/keytool -import -trustcacerts -keystore &lt;APM_Home&gt;/JRE64/lib/security/cacerts -storepass changeit -alias ANYCERTID -file &lt;location of file&gt;</code></li></ol></li>
-<li>Restart the APM server on both the gateway and data processing server.</li></ol>
-<h3><span class="mw-headline" id="Task_7._Set_up_an_APM_Connected_Server_in_OBM:">Task 7. Set up an APM Connected Server in OBM:</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=8" class="mw-editsection-visualeditor" title="Edit section: Task 7. Set up an APM Connected Server in OBM:">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=8" title="Edit section: Task 7. Set up an APM Connected Server in OBM:">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
-<p>Perform these steps to configure the connected server and ensure to click the <b>Save</b> button between each step:
-</p>
-<ul><li>Complete the “General” and “Server Properties” section.</li>
-<li>Clear “Enable sending event updates to the APM server”.</li>
-<li>Clear any check-boxes in the Synchronization section, and click <b>Save</b>.</li></ul>
-<p><br>
-<b>Task A: Topology</b>
-</p><p>Provide the DFP configuration, and click <b>Save</b>.
-</p><p><br>
-<b>Task B: OBM to APM Setup</b>
-</p><p>The OBM to APM setup will require the following before completing Step B of the Connected Server configuration.
-</p>
-<ul><li>Clear Topology check-box.</li>
-<li>Install policy before step B in the connected server (see Task 4)</li>
-<li>Configure OBM authentication username and password (see Task 5)</li>
-<li>Import certs from [OBM containers] into APM before Step B (see Task 6)</li>
-<li>Delete OBM container to restart after cert import.</li></ul>
-<p><br>
-<b>Task C: Synchronization</b>
-</p>
-<ul><li>Clear OBM to APM Setup check-box.</li>
-<li>Select <b>Synchronize Downtime</b> check-box.</li>
-<li>Click Save.</li></ul>
-<h3><span class="mw-headline" id="Task_8_-_Using_unsecured_HTTP_REST_access">Task 8 - Using unsecured HTTP REST access</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=9" class="mw-editsection-visualeditor" title="Edit section: Task 8 - Using unsecured HTTP REST access">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=9" title="Edit section: Task 8 - Using unsecured HTTP REST access">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
-<p>The default communication method is HTTPS. In order to use HTTP, perform the following:
-</p>
-<ol><li>Access APM JMX, for example:  <code>http://&lt;localhost&gt;:29000/mbean?objectname=OMi-Integration%3Aservice%3DSettings</code></li>
-<li>Type the URL to connect to OBM by using <b>setOmiUrl</b>  method, for example:  <b>http://&lt;OBM GW&gt;:30005</b></li>
-<li>To view the settings, use the method <b>getOmiUrl</b>.</li></ol>
-<h3><span class="mw-headline" id="Task_9_-_KPI_Assignments_in_OBM">Task 9 - KPI Assignments in OBM</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=10" class="mw-editsection-visualeditor" title="Edit section: Task 9 - KPI Assignments in OBM">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=10" title="Edit section: Task 9 - KPI Assignments in OBM">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
-<p>BSM sends KPI status information for certain CI types to OBM. By default, this is done for Business Application CIs, but BSM can also send KPI status changes for other CI Types. Such a KPI status change is sent to OBM in the form of a special event with a Health Indicator (HI) that contains the KPI name and the new status. These KPI change events are processed separately from other events and are not stored in the event database.
-</p><p>When a KPI change event arrives in OBM, the following is triggered:
-</p>
-<ul><li>Assuming an “Application Availability KPI change event” arrives, a corresponding Health Indicator “Application Availability” is created automatically (for the corresponding CI type).</li>
-<li>If the CI Type does not yet have a KPI assignment for that specific KPI, then a new KPI assignment is created automatically that uses the HI “Application Availability” to set the KPI “Application Availability” and no further steps are necessary. The KPI status of the “Application Availability” KPI will be synchronized automatically.</li>
-<li>If the CI Type already has a KPI assignment, then the KPI assignment needs to be adjusted manually.</li></ul>
-<p>Since OBM already has an out-of-the-box KPI assignment for Business Application CIs, you must perform the following manual steps.
-</p>
-<ol><li>In OBM, navigate to <b>Administration &gt; Service Health &gt; CI Status Calculation &gt; KPI&nbsp;Assignments</b>.</li>
-<li>Select the CI Types <b>ConfigurationItem &gt; BusinessElement &gt; BusinessApplication</b>.</li>
-<li>Pause the assignments for BPM&nbsp;and RUM. These are predefined KPI assignments, which are not suitable for an OBM system.</li></ol>
-<h3><span class="mw-headline" id="Task_10_-_Optional._Additional_APM-OBM_Integration_Configurations">Task 10 - <i>Optional</i>. Additional APM-OBM Integration Configurations</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=11" class="mw-editsection-visualeditor" title="Edit section: Task 10 - Optional. Additional APM-OBM Integration Configurations">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=11" title="Edit section: Task 10 - Optional. Additional APM-OBM Integration Configurations">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
-<p><b>Integrating BSM with a new, second instance of OBM</b>
-</p><p>To integrate BSM with a new instance of OBM, after disconnecting the original OBM system from BSM, perform the following:
-</p><p><b>Note:</b> It is not possible to simultaneously connect two OBM systems to one BSM system. The original OBM system must first be disconnected before connecting a new OBM instance to BSM.
-</p>
-<ol><li>Connect BSM to OBM and execute the topology synchronization following the steps in Set up an APM&nbsp;connected server in OBM and complete the integration.</li>
-<li>After the topology synchronization, go to the <b>OBM Integration Studio</b> and select the Integration Point with the name "<code>APM2OMi &lt;<i>name of connected server</i>&gt;</code>".</li>
-<li>On the right side, select one of the two <code>sync_*</code> jobs.</li>
-<li>On the toolbar, click <b>Clear caches...</b>. After completion, click <b>Full synchronization</b>.</li>
-<li>The global IDs generated by the new OBM instance are now properly pushed to BSM.</li></ol>
-<p><b>Display BSM&nbsp;data in OBM</b>
-</p><p>BSM user interface components can be directly integrated into the OBM Workspaces to view and drill down to detailed&nbsp;BSM&nbsp;information.
-</p><p><b>Note:</b> All APM systems connected to OBM must be the same version and/or provide the same features.
-</p>
-<ol><li>On the OBM server, navigate to <b>Workspaces &gt;&nbsp;My Workspace</b></li>
-<li>Create a new page:
-<ol><li>Click the <b>New Page</b> icon on the toolbar.</li>
-<li>Click <b>Add Component</b> to open the Component Gallery.</li>
-<li>Select APM from the list on the left of the Component Gallery to display the BSM components.</li>
-<li>Double-click the desired BSM.</li></ol></li></ol>
-<p>It is not possible to apply a filter to the user interface components from the BSMs that are displayed in OBM. The following BSM use cases are supported:
-</p>
-<ul><li>Selecting BSM components from the OBM components gallery and opening them in a frame inside the OBM components dashboard.</li>
-<li>Wiring in case of a CI change. For example, a CI 1 is selected and its associated data is displayed. If now a different CI, CI 2, is selected, the data displayed changes to data associated with CI 2.</li></ul>
-<p>The following components are currently available in OBM:
-</p>
-<ul><li><b>Platform components</b>  Top View  Hierarchy  Application Health  APM&nbsp;Based&nbsp;Impact</li>
-<li><b>BPM&nbsp;components</b>  Application Summary  BPM Performance Matrix  BPM Performance Status  BPM Error Summary Distribution by Category/Type  Application Health Business Summary  BPM Error Summary Distribution by Location/BPM Custom Attributes  BPM Error Summary Distribution by Transaction  Metrics Over Time</li>
-<li><b>RUM&nbsp;components</b>  Application Health Performance  Application Health Availability  RUM Event Count By classification</li>
-<li><b>SiteScope components</b>  Cross Performance Reports  SiteScope Multi View</li>
-<li><b>Service Level&nbsp;Management components</b>  SLA Summary  Current Status Snapshot  Historic Status Snapshot</li></ul>
-<p><br>
-<b>Other configurations</b>
-</p><p>There are several OBM Integration Infrastructure setting that will enable you to customize your BSM-OBM Integration.
-</p><p>To customize the BSM-OBM integration:
-</p>
-<ol><li>In the BSM application, select <b>Admin</b> &gt; <b>Platform</b> &gt; <b>Setup and Maintenance</b> &gt; <b>Infrastructure Settings</b>.</li>
-<li>Select <b>Foundations</b> &gt; <b>OMi Integration</b>.</li>
-<li>Configure the OBM Integration settings as follows:
-<ul><li><b>HI Statuses Sync - CITs configuration file.</b> Define which CI types to include in the HI status synchronization. The following CI types are included by default: <b>node</b>, <b>running_software</b>, <b>business_application</b>. You can add additional CI types or remove existing ones. The CI type name is the internal name (not the display name, for example, the display name is business_application, not Business Application). You can view the CI type name  under <b>RTSM &gt; CIT manager</b>.</li>
-<li><b>KPIs list per CI type (Business Application).</b> Define which KPI to use for synchronizing the KPI status change. The following CI type is included by default: <b>Application Availability</b> and <b>Application Performance</b> for CI type <b>business_application</b>. You can add additional KPIs and CI types or remove existing ones. Keep in mind that the TQL integration for topology synchronization jobs must be modified to cover the same CI type. If the CIs and the GID are missing from OM, no status change will be reflected.</li>
-<li><b>Events chunk size.</b> Size of chunk of events sent during initial KPI/HI synchronization. You can enter a number between 1 and 500.</li>
-<li><b>Interval between session.</b> Interval between events chunks sending sessions (seconds). You can enter a number between 1 and 10.</li>
-<li><b>Event forwarding CI Alert name if status improved.</b> Enter the event description that is generated when status changes and becomes better.</li>
-<li><b>Event forwarding CI Alert name if status worsened.</b> Enter the event description that is generated when status changes and becomes worse.</li></ul></li></ol>
-<p>In addition, you can use the tql - <b>CIs_For_CIStatusChange_in_OMi</b> to define which CIs to use to synchronize KPI status changes.
-</p>
-<h3><span class="mw-headline" id="Task_11_-_Optional._Create_and_forward_EUM_alerts_to_OBM">Task 11 - Optional. Create and forward EUM alerts to OBM</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=12" class="mw-editsection-visualeditor" title="Edit section: Task 11 - Optional. Create and forward EUM alerts to OBM">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=12" title="Edit section: Task 11 - Optional. Create and forward EUM alerts to OBM">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
-<p>It is best practice to forward End User Management (EUM) related information to OBM. With EUM alerts, you can:
-</p>
-<ul><li>Configure conditions and event based triggers or time based triggers. For example, you can send an alert when a transaction fail or exceeds a specified amount of time.</li>
-<li>Filter the alert by transaction, location, or mobile device</li>
-<li>Configure the notification frequency</li></ul>
-<p>By creating EUM alerts, you can pass critical events for&nbsp;EUM&nbsp;applications that are not part of the integration to OBM. When you create EUM alerts you should tailor them according to your specific requirements. In the Actions tab, be sure to select <b>Generate Event</b>. Events that are created in this manner are automatically forwarded to OBM.
-</p><p>For information about creating and managing EUM alerts, see  the <i>BSM Application Administration Guide</i>.
-</p>
-<h2><span class="mw-headline" id="Troubleshooting">Troubleshooting</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=13" class="mw-editsection-visualeditor" title="Edit section: Troubleshooting">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=13" title="Edit section: Troubleshooting">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h3><span class="mw-headline" id="Step_8_-_Optional_-_Perform_the_steps_as_documented_in_Integrations_Guide_for_OBM_if_preferred">Step 8 - Optional - Perform the steps as documented in&nbsp;<a target="1" rel="nofollow" class="external text" href="https://docs.microfocus.com/OMi/10.70/OBM_Integrations_Guide/Content/Integrations.htm#">Integrations Guide for OBM</a> if preferred</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=9" class="mw-editsection-visualeditor" title="Edit section: Step 8 - Optional - Perform the steps as documented in&nbsp;Integrations Guide for OBM if preferred">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=9" title="Edit section: Step 8 - Optional - Perform the steps as documented in&nbsp;Integrations Guide for OBM if preferred">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<h3><span class="mw-headline" id="Step_9_-_Perform_the_steps_as_documented_in_Integrations_Guide_for_OBM">Step 9 - Perform the steps as documented in <a target="1" rel="nofollow" class="external text" href="https://docs.microfocus.com/OMi/10.70/OBM_Integrations_Guide/Content/Integrations.htm#">Integrations Guide for OBM</a></span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=10" class="mw-editsection-visualeditor" title="Edit section: Step 9 - Perform the steps as documented in Integrations Guide for OBM">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=10" title="Edit section: Step 9 - Perform the steps as documented in Integrations Guide for OBM">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<h3><span class="mw-headline" id="Step_10_-_Optional">Step 10 - Optional</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=11" class="mw-editsection-visualeditor" title="Edit section: Step 10 - Optional">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=11" title="Edit section: Step 10 - Optional">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<h3><span class="mw-headline" id="Step_11_-_Optional">Step 11 - Optional</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=12" class="mw-editsection-visualeditor" title="Edit section: Step 11 - Optional">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=12" title="Edit section: Step 11 - Optional">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<h2><span class="mw-headline" id="Troubleshooting">Troubleshooting</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=13" class="mw-editsection-visualeditor" title="Edit section: Troubleshooting">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=13" title="Edit section: Troubleshooting">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
 <p><b>Issue</b>: If the APM component gallery looks like the following image without the thumbnail graphics after the Integration:
 </p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="OpsB 2018.08 IntgTSG.jpg" src="/mediawiki/images/3/31/OpsB_2018.08_IntgTSG.jpg" width="644" height="513" data-file-width="644" data-file-height="513"></a>
 </p><p>OR if the error appears in web browser <i>Content was blocked because it was not signed by a valid security certificate</i>
 </p><p><b>Resolution</b>: Import the APM certificate into your browser.
 </p><p><br>
 </p>
-<h2><span class="mw-headline" id="Related_topics">Related topics</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=14" class="mw-editsection-visualeditor" title="Edit section: Related topics">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.08/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=14" title="Edit section: Related topics">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h2><span class="mw-headline" id="Related_topics">Related topics</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;veaction=edit&amp;section=14" class="mw-editsection-visualeditor" title="Edit section: Related topics">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2018.11/Practitioner_notes/Intg_OpsB_APM&amp;action=edit&amp;section=14" title="Edit section: Related topics">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
 <p><a target="1" rel="nofollow" class="external text" href="https://docs.microfocus.com/OMi/10.70/OBM_Integrations_Guide/Content/Integrations.htm#">Integrations Guide for OBM</a>
 </p><p><a target="1" rel="nofollow" class="external text" href="https://softwaresupport.softwaregrp.com/web/softwaresupport/document/-/facetsearch/document/KM01695512">Integrations Catalog</a>
 </p><p><a target="1" rel="nofollow" class="external text" href="https://docs.microfocus.com/itom/Operations_Bridge_Manager:2018.05.001/OMi_DFP_Install">Installing a Data Flow Probe</a>
@@ -337,25 +214,25 @@ status:
 </p>
 <!-- 
 NewPP limit report
-Cached time: 20190524095020
+Cached time: 20190524095220
 Cache expiry: 86400
 Dynamic content: false
-CPU time usage: 0.048 seconds
-Real time usage: 0.107 seconds
-Preprocessor visited node count: 86/1000000
-Preprocessor generated node count: 132/1000000
+CPU time usage: 0.032 seconds
+Real time usage: 0.063 seconds
+Preprocessor visited node count: 66/1000000
+Preprocessor generated node count: 90/1000000
 Post‐expand include size: 0/2097152 bytes
 Template argument size: 0/2097152 bytes
 Highest expansion depth: 2/40
 Expensive parser function count: 0/100
 Unstrip recursion depth: 0/20
-Unstrip post‐expand size: 433/5000000 bytes
+Unstrip post‐expand size: 398/5000000 bytes
 -->
 <!--
 Transclusion expansion time report (%,ms,calls,template)
 100.00%    0.000      1 -total
 -->
 
-<!-- Saved in parser cache with key docops_wiki:pcache:idhash:259019-0!canonical and timestamp 20190524095020 and revision id 877834
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:285537-0!canonical and timestamp 20190524095220 and revision id 875290
  -->
 </div>
