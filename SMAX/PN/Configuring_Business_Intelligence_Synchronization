@@ -1,1 +1,96 @@
- 
+<div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 11/03/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 6 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><p><br>
+</p>
+<div id="toc" class="toc"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none"><div class="toctitle" lang="en" dir="ltr"><h2>Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_specific_use_cases/cg_uc_bisync#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_specific_use_cases/cg_uc_bisync#Use_Case"><span class="tocnumber">2</span> <span class="toctext">Use Case</span></a>
+<ul>
+<li class="toclevel-2 tocsection-3"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_specific_use_cases/cg_uc_bisync#Configuration_Steps_-_Summary"><span class="tocnumber">2.1</span> <span class="toctext">Configuration Steps - Summary</span></a></li>
+<li class="toclevel-2 tocsection-4"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_specific_use_cases/cg_uc_bisync#Configuration_Steps_-_Detail"><span class="tocnumber">2.2</span> <span class="toctext">Configuration Steps - Detail</span></a>
+<ul>
+<li class="toclevel-3 tocsection-5"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_specific_use_cases/cg_uc_bisync#1._Add_the_record_types_and_fields_required_to_generate_the_desired_reports"><span class="tocnumber">2.2.1</span> <span class="toctext">1. Add the record types and fields required to generate the desired reports</span></a></li>
+<li class="toclevel-3 tocsection-6"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_specific_use_cases/cg_uc_bisync#2._Execute_the_REST_call_in_order_to_generate_and_download_the_data"><span class="tocnumber">2.2.2</span> <span class="toctext">2. Execute the REST call in order to generate and download the data</span></a></li>
+<li class="toclevel-3 tocsection-7"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_specific_use_cases/cg_uc_bisync#3._Load_the_data_into_Microsoft_Excel"><span class="tocnumber">2.2.3</span> <span class="toctext">3. Load the data into Microsoft Excel</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id="Introduction">Introduction</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_specific_use_cases/cg_uc_bisync&amp;veaction=edit&amp;section=1" class="mw-editsection-visualeditor" title="Edit section: Introduction">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_specific_use_cases/cg_uc_bisync&amp;action=edit&amp;section=1" title="Edit section: Introduction">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>The Business Intelligence (BI Sync) Integration module enables you to define the fields and relationships that are synced for a record type when integrating with an external business intelligence system. This can help you export your data to a third party system with different reporting tools. BI Sync exports additional information not currently available in the SMA-X reporting framework.&nbsp;
+</p><p><b>IMPORTANT NOTE:</b>
+<i>Business Intelligence Synchronization is a resource-intensive feature. This document describes the specific use case of exporting people and groups to excel using BI Sync so they can be grouped and reported on. BI Sync does not have the ability to have two sets of configuration. While it might be acceptable to run an initial sync more than once with low volume entities like people/groups, it would not be a good idea with large volume entities like request/incident. There is also a monthly quota per tenant that will get used rapidly if a large number of entities are exported consistently.</i> 
+</p><p><br>
+</p>
+<h2><span class="mw-headline" id="Use_Case">Use Case</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_specific_use_cases/cg_uc_bisync&amp;veaction=edit&amp;section=2" class="mw-editsection-visualeditor" title="Edit section: Use Case">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_specific_use_cases/cg_uc_bisync&amp;action=edit&amp;section=2" title="Edit section: Use Case">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>A company named ABC Reporting wants a report that lists all the users and all of the groups they belong to using Microsoft Excel.
+Data required selecting in BI Sync to report on groups and group membership:
+</p>
+<ul><li>Person-&gt; Id, Name, Group members.</li>
+<li>Group-&gt;Id, Name.</li></ul>
+<h3><span class="mw-headline" id="Configuration_Steps_-_Summary">Configuration Steps - Summary</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_specific_use_cases/cg_uc_bisync&amp;veaction=edit&amp;section=3" class="mw-editsection-visualeditor" title="Edit section: Configuration Steps - Summary">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_specific_use_cases/cg_uc_bisync&amp;action=edit&amp;section=3" title="Edit section: Configuration Steps - Summary">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<ol><li>Add the record types and fields required to generate the desired reports</li>
+<li>Execute the REST call in order to generate and download the data</li>
+<li>Load the data into Microsoft Excel</li></ol>
+<p><br>
+</p>
+<h3><span class="mw-headline" id="Configuration_Steps_-_Detail">Configuration Steps - Detail</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_specific_use_cases/cg_uc_bisync&amp;veaction=edit&amp;section=4" class="mw-editsection-visualeditor" title="Edit section: Configuration Steps - Detail">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_specific_use_cases/cg_uc_bisync&amp;action=edit&amp;section=4" title="Edit section: Configuration Steps - Detail">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<h4><span class="mw-headline" id="1._Add_the_record_types_and_fields_required_to_generate_the_desired_reports">1. Add the record types and fields required to generate the desired reports</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_specific_use_cases/cg_uc_bisync&amp;veaction=edit&amp;section=5" class="mw-editsection-visualeditor" title="Edit section: 1. Add the record types and fields required to generate the desired reports">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_specific_use_cases/cg_uc_bisync&amp;action=edit&amp;section=5" title="Edit section: 1. Add the record types and fields required to generate the desired reports">edit source</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>BI Sync allows users to export all transactional data available in Service Management Automation X. Select an entity type from the record type list. Select all the fields that are required, note when the fields are dependent on other entity types an indicator is next to the field name. All of these entity types will also need selecting. If related records are required these also need to be included.
+</p><p><b>Fields required for Groups entity:</b>
+￼<a onclick="javascript:loadingImage(this);" class="image"><img alt="BISync-1.png" src="/mediawiki/images/c/c7/BISync-1.png" width="1149" height="547" data-file-width="1149" data-file-height="547"></a>
+</p><p><b>Fields required for Person entity:</b>
+￼
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="BISync-2.png" src="/mediawiki/images/c/c2/BISync-2.png" width="1154" height="687" data-file-width="1154" data-file-height="687"></a>Click save.
+</p><p><br>
+</p>
+<h4><span class="mw-headline" id="2._Execute_the_REST_call_in_order_to_generate_and_download_the_data">2. Execute the REST call in order to generate and download the data</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_specific_use_cases/cg_uc_bisync&amp;veaction=edit&amp;section=6" class="mw-editsection-visualeditor" title="Edit section: 2. Execute the REST call in order to generate and download the data">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_specific_use_cases/cg_uc_bisync&amp;action=edit&amp;section=6" title="Edit section: 2. Execute the REST call in order to generate and download the data">edit source</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>While logged into SMA-X, open a new tab in the browser and launch the Postman Chrome extension. 
+Execute the REST call to run the BI sync job:
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="BI sync 1.png" src="/mediawiki/images/6/69/BI_sync_1.png" width="1008" height="745" data-file-width="1008" data-file-height="745"></a>
+</p><p>Using the SyncId from the above call, execute the REST call to get the status and the file names created by BI Sync:
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="BI sync 2.png" src="/mediawiki/images/2/27/BI_sync_2.png" width="990" height="824" data-file-width="990" data-file-height="824"></a>
+</p><p>There will be a number of files, record the names of all of the files, open another tab in the browser and enter the URL:
+<a target="1" rel="nofollow" class="external free" href="https://msast002pngx.domain.com/rest/">https://msast002pngx.domain.com/rest/</a>&lt;TenantID&gt;/frs/file-list/&lt;FILEID&gt;<a onclick="javascript:loadingImage(this);" class="image"><img alt="BI Sync 3b.png" src="/mediawiki/images/2/28/BI_Sync_3b.png" width="1136" height="42" data-file-width="1136" data-file-height="42"></a>A file download will start and a file in the format &lt;Entity_type&gt;.zip, repeat for each of the FileID values obtained in the status REST call.
+</p>
+<h4><span class="mw-headline" id="3._Load_the_data_into_Microsoft_Excel">3. Load the data into Microsoft Excel</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_specific_use_cases/cg_uc_bisync&amp;veaction=edit&amp;section=7" class="mw-editsection-visualeditor" title="Edit section: 3. Load the data into Microsoft Excel">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_specific_use_cases/cg_uc_bisync&amp;action=edit&amp;section=7" title="Edit section: 3. Load the data into Microsoft Excel">edit source</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>There should be at least 3 files in total after downloading all the files:
+￼
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="Bi sync 4.png" src="/mediawiki/images/3/3e/Bi_sync_4.png" width="641" height="310" data-file-width="641" data-file-height="310"></a>
+</p><p>Open each of the files and save them as Excel files. Open the file that stores the relationships between the people and groups, the file is named ‘PersonToGroup’.
+Add two new columns Group Name and Person Name after the SecondEntity_PersonGroup column. In the Group Name field paste the formula <b>=VLOOKUP(D2,PersonGroup_0!C$2:D$800,2,FALSE)</b> when you save the formula a file selector will open. Select the Person_group_0.xlsx file created above.
+</p><p>In the Person Name field paste the formula <b>=VLOOKUP(C2, Person_0!C$2:D$800,2,FALSE)</b> into the field and select the Person_0.xlsx file when the file selector window opens.
+</p><p>Note that the “800” in the above formulas can be replaced with the total number of rows in the referenced spreadsheet.
+In excel it should look like the following:
+￼
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="Bi sync 5.png" src="/mediawiki/images/7/77/Bi_sync_5.png" width="991" height="316" data-file-width="991" data-file-height="316"></a>
+</p><p>Copy the formula for the columns E and F for all entries and add a filter to the top row. It is now possible to filter on group or person and see all of the associated values.
+￼
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="Bi sync 6.png" src="/mediawiki/images/c/ca/Bi_sync_6.png" width="667" height="365" data-file-width="667" data-file-height="365"></a>
+</p>
+<!-- 
+NewPP limit report
+Cached time: 20190524101304
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.032 seconds
+Real time usage: 0.124 seconds
+Preprocessor visited node count: 29/1000000
+Preprocessor generated node count: 40/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 0/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:259096-0!canonical and timestamp 20190524101304 and revision id 1295888
+ -->
+</div>
