@@ -1,1 +1,399 @@
- 
+<div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 05/03/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 19 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><p><br>
+</p>
+<div id="toc" class="toc"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none"><div class="toctitle" lang="en" dir="ltr"><h2>Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1"><a href="https://staging.docs.microfocus.com/itom/Data_Center_Automation:2019.02/WhitepaperHighAvailability#Overview"><span class="tocnumber">1</span> <span class="toctext">Overview</span></a></li>
+<li class="toclevel-1"><a href="https://staging.docs.microfocus.com/itom/Data_Center_Automation:2019.02/WhitepaperHighAvailability#HA_summary"><span class="tocnumber">2</span> <span class="toctext">HA summary</span></a></li>
+<li class="toclevel-1"><a href="https://staging.docs.microfocus.com/itom/Data_Center_Automation:2019.02/WhitepaperHighAvailability#Host_services_monitoring"><span class="tocnumber">3</span> <span class="toctext">Host services monitoring</span></a></li>
+<li class="toclevel-1"><a href="https://staging.docs.microfocus.com/itom/Data_Center_Automation:2019.02/WhitepaperHighAvailability#Docker_runtime_high_availability"><span class="tocnumber">4</span> <span class="toctext">Docker runtime high availability</span></a></li>
+<li class="toclevel-1"><a href="https://staging.docs.microfocus.com/itom/Data_Center_Automation:2019.02/WhitepaperHighAvailability#Docker_container_high_availability"><span class="tocnumber">5</span> <span class="toctext">Docker container high availability</span></a></li>
+<li class="toclevel-1"><a href="https://staging.docs.microfocus.com/itom/Data_Center_Automation:2019.02/WhitepaperHighAvailability#Kubernetes_high_availability"><span class="tocnumber">6</span> <span class="toctext">Kubernetes high availability</span></a></li>
+<li class="toclevel-1"><a href="https://staging.docs.microfocus.com/itom/Data_Center_Automation:2019.02/WhitepaperHighAvailability#Container_Deployment_Foundation_lifecycle_high_availability"><span class="tocnumber">7</span> <span class="toctext">Container Deployment Foundation lifecycle high availability</span></a>
+<ul>
+<li class="toclevel-2"><a href="https://staging.docs.microfocus.com/itom/Data_Center_Automation:2019.02/WhitepaperHighAvailability#Kubernetes_basic_restart_policy"><span class="tocnumber">7.1</span> <span class="toctext">Kubernetes basic restart policy</span></a></li>
+<li class="toclevel-2"><a href="https://staging.docs.microfocus.com/itom/Data_Center_Automation:2019.02/WhitepaperHighAvailability#Liveness_and_readiness_probes"><span class="tocnumber">7.2</span> <span class="toctext">Liveness and readiness probes</span></a></li>
+<li class="toclevel-2"><a href="https://staging.docs.microfocus.com/itom/Data_Center_Automation:2019.02/WhitepaperHighAvailability#Multiple_component_instances"><span class="tocnumber">7.3</span> <span class="toctext">Multiple component instances</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="https://staging.docs.microfocus.com/itom/Data_Center_Automation:2019.02/WhitepaperHighAvailability#Container_resource_requirements_and_limits"><span class="tocnumber">8</span> <span class="toctext">Container resource requirements and limits</span></a>
+<ul>
+<li class="toclevel-2"><a href="https://staging.docs.microfocus.com/itom/Data_Center_Automation:2019.02/WhitepaperHighAvailability#Request.2FLimit"><span class="tocnumber">8.1</span> <span class="toctext">Request/Limit</span></a></li>
+<li class="toclevel-2"><a href="https://staging.docs.microfocus.com/itom/Data_Center_Automation:2019.02/WhitepaperHighAvailability#Kubelet_pod_eviction"><span class="tocnumber">8.2</span> <span class="toctext">Kubelet pod eviction</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="https://staging.docs.microfocus.com/itom/Data_Center_Automation:2019.02/WhitepaperHighAvailability#Storage_high_availability"><span class="tocnumber">9</span> <span class="toctext">Storage high availability</span></a>
+<ul>
+<li class="toclevel-2"><a href="https://staging.docs.microfocus.com/itom/Data_Center_Automation:2019.02/WhitepaperHighAvailability#Node_local_storage_for_Kubernetes_code_and_runtime_data"><span class="tocnumber">9.1</span> <span class="toctext">Node local storage for Kubernetes code and runtime data</span></a></li>
+<li class="toclevel-2"><a href="https://staging.docs.microfocus.com/itom/Data_Center_Automation:2019.02/WhitepaperHighAvailability#Persistent_container_storage"><span class="tocnumber">9.2</span> <span class="toctext">Persistent container storage</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="https://staging.docs.microfocus.com/itom/Data_Center_Automation:2019.02/WhitepaperHighAvailability#Component_replicated_database"><span class="tocnumber">10</span> <span class="toctext">Component replicated database</span></a></li>
+<li class="toclevel-1"><a href="https://staging.docs.microfocus.com/itom/Data_Center_Automation:2019.02/WhitepaperHighAvailability#Component_external_databases"><span class="tocnumber">11</span> <span class="toctext">Component external databases</span></a></li>
+<li class="toclevel-1"><a href="https://staging.docs.microfocus.com/itom/Data_Center_Automation:2019.02/WhitepaperHighAvailability#Multi-master_and_HA_virtual_IP"><span class="tocnumber">12</span> <span class="toctext">Multi-master and HA virtual IP</span></a>
+<ul>
+<li class="toclevel-2"><a href="https://staging.docs.microfocus.com/itom/Data_Center_Automation:2019.02/WhitepaperHighAvailability#Leader_election_for_ETCD"><span class="tocnumber">12.1</span> <span class="toctext">Leader election for ETCD</span></a></li>
+<li class="toclevel-2"><a href="https://staging.docs.microfocus.com/itom/Data_Center_Automation:2019.02/WhitepaperHighAvailability#HA_virtual_IP"><span class="tocnumber">12.2</span> <span class="toctext">HA virtual IP</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="https://staging.docs.microfocus.com/itom/Data_Center_Automation:2019.02/WhitepaperHighAvailability#Embedded_Postgres_database_high_availability"><span class="tocnumber">13</span> <span class="toctext">Embedded Postgres database high availability</span></a></li>
+<li class="toclevel-1"><a href="https://staging.docs.microfocus.com/itom/Data_Center_Automation:2019.02/WhitepaperHighAvailability#High_availability_through_use_of_external_databases"><span class="tocnumber">14</span> <span class="toctext">High availability through use of external databases</span></a></li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id="Overview">Overview</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;veaction=edit&amp;section=T-1" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;action=edit&amp;section=T-1" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<div class="Admonition_Note">
+<p><span class="autonumber">Note about ITOM Suites</span><br>
+All of the high availability (HA) aspects that apply to Container Deployment Foundation containers executing on top of Kubernetes also apply to ITOM Suite containers when a suite is deployed and running on top of the Container Deployment Foundation and underlying Kubernetes. For specific documentation and guidance for a particular ITOM Suite, refer to the Suite documentation.
+</p>
+</div>
+<p>High availability is the result applying/using the following technologies and configurations:
+</p>
+<ul><li>Highly available redundant storage</li>
+<li>Highly available database instances</li>
+<li>Servers in active/active or active/passive configuration (with or without load balancing)</li>
+<li>Services in active/active or active/passive configuration (with or without load balancing)</li>
+<li>Intra-service data replication (clustering)</li>
+<li>Fast restart in case of failure of a single instance of a server providing a particular service</li>
+<li>Keep-alive monitoring</li>
+<li>Automatic restart on termination</li></ul>
+<p>The Container Deployment Foundation employs various techniques listed above to achieve HA for its foundational services.
+</p><p>Not all foundational services have the same level of HA, and the level of achievable HA is dependent on the installation configuration: single or multiple master, single or multiple worker nodes.
+</p><p>The Container Deployment Foundation can be installed in 4 different configurations, where complete HA is available only in MMMW:
+</p>
+<ul><li>Single combined master + worker node (SCMW)</li>
+<li>Two nodes: single master, single worker (SMSW)</li>
+<li>Multiple workers: single master, multiple workers (SMMW)</li>
+<li>Multi-master: multiple master nodes, multiple worker nodes (MMMW)</li></ul>
+<p>In the multi-master configuration, the level of HA is highest. In the single combined master + worker configuration, the level of HA is lowest.
+</p><p>The level of HA is achieved by adding up all of the various techniques employed at different levels of the software stack, from bottom to top:
+</p>
+<ul><li>Host + storage</li>
+<li>Docker</li>
+<li>Container Deployment Foundation ETCD, Vault and Flannel</li>
+<li>Kubelet</li>
+<li>Kubernetes services (API server, controller manager, scheduler, DNS, etc)</li>
+<li>Container Deployment Foundation foundational services</li>
+<li>Suite containers</li></ul>
+<p>Each layer builds upon the previous layer and adds additional HA functionality.
+</p><p>The following levels of HA are defined:
+</p>
+<ul><li>Basic:
+<ul><li>Has Docker HA</li>
+<li>No Kubernetes HA</li>
+<li>Incomplete selected CDF services multiple instances; others liveness and/or readiness probes</li>
+<li>Embedded databases HA (optional)</li>
+<li>None or partial use of external databases</li>
+<li>None or partial use of HA storage</li></ul></li>
+<li>Intermediate:
+<ul><li>Has Docker HA</li>
+<li>Has Kubernetes HA</li>
+<li>Incomplete selected CDF services multiple instances; others liveness and/or readiness probes</li>
+<li>Embedded databases HA (optional)</li>
+<li>None or partial use of external databases</li>
+<li>None or partial use of HA storage</li></ul></li>
+<li>Complete:
+<ul><li>Has Docker HA</li>
+<li>Has Kubernetes HA</li>
+<li>Selected (most) CDF services multiple instances; others liveness and/or readiness probes</li>
+<li>Embedded database HA or external databases used (customer-supported clustered HA is assumed)</li>
+<li>HA storage</li></ul></li></ul>
+<p>The following table shows the maximum level of HA that can be achieved depending in the installed configuration.
+</p>
+<div class="Admonition_Note">
+<p><span class="autonumber">Note</span><br>
+In the 2018.11 release, all foundational services have HA configuration or behavior.
+</p>
+</div> 
+<a class="buttonfullscr" onclick="javascript:loadingTableButton(this);"><button class="flscrbtn"><i class="material-icons flscricn">open_in_new</i><div style="margin: auto 5px;">View Fullscreen</div></button></a><table>
+<tbody><tr>
+<th><b>Install configuration</b>
+</th>
+<th><b>Can achieve HA level with embedded DB</b>
+</th>
+<th><b>Can achieve HA level with external DB and HA storage</b>
+</th></tr>
+<tr>
+<td>Single combined master + worker node
+</td>
+<td>Basic
+</td>
+<td>Basic
+</td></tr>
+<tr>
+<td>Two nodes: single master, single worker
+</td>
+<td>Basic
+</td>
+<td>Basic
+</td></tr>
+<tr>
+<td>Multiple workers: single master, multiple workers
+</td>
+<td>Basic
+</td>
+<td>Basic/Intermediate
+</td></tr>
+<tr>
+<td>Multi-master: multiple master nodes, multiple worker nodes
+</td>
+<td>Complete
+</td>
+<td>Complete
+</td></tr></tbody></table>
+<h2><span class="mw-headline" id="HA_summary">HA summary</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;veaction=edit&amp;section=T-2" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;action=edit&amp;section=T-2" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>For a full component list and their HA configuration, see <a href="./itom/ITOM_Container_Deployment_Foundation:2019.02/WhitepaperAppendix5" title="ITOM Container Deployment Foundation:2019.02/WhitepaperAppendix5">APPENDIX 4: CDF component HA configuration</a>
+</p><p>A CDF component is highly available through a combination of the following individual techniques:
+</p>
+<ul><li>Host service monitoring and restart</li>
+<li>Multiple Docker nodes</li>
+<li>Docker container restart policy</li>
+<li>Kubernetes high availability configuration</li>
+<li>Kubernetes container restart policy</li>
+<li>Kubernetes liveness probe</li>
+<li>Kubernetes readiness probe</li>
+<li>Multiple instances</li>
+<li>Using an embedded replicated database</li>
+<li>Using an embedded or external, highly-available database</li></ul>
+<h2><span class="mw-headline" id="Host_services_monitoring">Host services monitoring</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;veaction=edit&amp;section=T-3" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;action=edit&amp;section=T-3" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>The following services are run directly on the host:
+</p>
+<ul><li>Bootstrap Docker daemon</li>
+<li>Workload Docker daemon</li>
+<li>Kubernetes Kubelet</li>
+<li>Kubernetes Kube-proxy</li></ul>
+<p>These processes run as systemd services and are monitored by the systemd services subsystem.
+</p><p>When these processes crash, they will be automatically restarted.
+</p>
+<h2><span class="mw-headline" id="Docker_runtime_high_availability">Docker runtime high availability</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;veaction=edit&amp;section=T-4" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;action=edit&amp;section=T-4" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>The Docker runtime itself can be considered to be highly available only in case of a multi-master, multi-worker node CDF cluster.
+</p><p>In this case, foundational services and deployed suites run across multiple Docker hosts whereby Kubernetes provide the desired / required level of high availability.
+</p><p>For details, please read the following sections.
+</p>
+<h2><span class="mw-headline" id="Docker_container_high_availability">Docker container high availability</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;veaction=edit&amp;section=T-5" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;action=edit&amp;section=T-5" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>The Docker runtime has limited support for HA for containers that it runs.
+</p><p>Essentially, Docker containers can be decorated with a flag so that they restart automatically when they exit.
+</p><p>Other levels of high availability have to be achieved by software that complements the Docker runtime, such as container orchestration, storage HA or other techniques.
+</p><p>All components of the Container Deployment Foundation that run directly on Docker (thus without being scheduled or monitored by Kubernetes or another external process), use the following restart policy:
+</p><p>“unless-stopped” (*)
+</p><p>This applies to the following components containers:
+</p>
+<ul><li>ETCD</li>
+<li>Vault</li>
+<li>Flannel</li>
+<li>Keepalived</li>
+<li>Fluentd</li></ul>
+<p>The above configuration ensures that the above containers are restarted if they terminate for any reason, except if they were already stopped before the Docker daemon starts.
+</p><p>(*) Source: <a target="1" rel="nofollow" class="external text" href="https://docs.docker.com/engine/reference/run/">https://docs.docker.com/engine/reference/run/#restart-policies---restart</a>
+</p>
+<h2><span class="mw-headline" id="Kubernetes_high_availability">Kubernetes high availability</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;veaction=edit&amp;section=T-6" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;action=edit&amp;section=T-6" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>The Kubernetes project describes HA <span class="underline">for Kubernetes</span> (*) requirements:
+</p>
+<ul><li>Multiple master and multiple worker nodes</li>
+<li>A redundant, reliable data storage layer for Kubernetes</li>
+<li>Replicated Kubernetes API servers</li>
+<li>Multiple kube-DNS, controller, scheduler instances</li>
+<li>Leader election for controller and scheduler components</li>
+<li>Kubelet component on worker nodes talks to load-balanced master API server endpoint</li></ul>
+<p>(*) Source: <a target="1" rel="nofollow" class="external free" href="https://kubernetes.io/docs/admin/high-availability/">https://kubernetes.io/docs/admin/high-availability/</a>
+</p><p>The Kubernetes installation inside the Container Deployment Foundation supports all of the above Kubernetes HA requirements, if the platform is installed with multiple master nodes.
+</p>
+<a class="buttonfullscr" onclick="javascript:loadingTableButton(this);"><button class="flscrbtn"><i class="material-icons flscricn">open_in_new</i><div style="margin: auto 5px;">View Fullscreen</div></button></a><table>
+<tbody><tr>
+<th><b>Requirement</b>
+</th>
+<th><b>CDF support</b>
+</th></tr>
+<tr>
+<td>Multiple master and multiple worker nodes
+</td>
+<td>
+<ul><li>CDF can be installed with multiple master and multiple worker nodes.</li>
+<li>On a multiple master setup, a virtual IP address can be defined, assigned and kept alive across multiple master nodes.</li></ul>
+</td></tr>
+<tr>
+<td>A redundant, reliable data storage layer for Kubernetes
+</td>
+<td>
+<ul><li>ETCD (the Kubernetes backend configuration database) is configured to run in clustered mode with replicated data across all master nodes.</li></ul>
+</td></tr>
+<tr>
+<td>Replicated API servers
+</td>
+<td>
+<ul><li>The Kubernetes API server runs on every master node.</li></ul>
+</td></tr>
+<tr>
+<td>Leader election for controller and scheduler components
+</td>
+<td>
+<ul><li>The “--leader-elect” flag is set to “true” for the controller and scheduler components on each master node.</li></ul>
+</td></tr>
+<tr>
+<td>Kubelet component on worker nodes talks to load-balanced master endpoint
+</td>
+<td>
+<ul><li>The Kubelet is configured to talk to the configured HA virtual IP address that is kept alive and automatically assigned to two master nodes.</li></ul>
+</td></tr></tbody></table>
+<h2><span class="mw-headline" id="Container_Deployment_Foundation_lifecycle_high_availability">Container Deployment Foundation lifecycle high availability</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;veaction=edit&amp;section=T-7" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;action=edit&amp;section=T-7" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>See: <a target="1" rel="nofollow" class="external free" href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/">https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/</a>
+</p><p>The Container Deployment Foundation consists of more foundational services than just the Kubernetes services.
+</p><p>These services also can be configured for various levels of HA:
+</p>
+<ul><li>Basic Kubernetes restart policy</li>
+<li>Kubernetes liveness / readiness probes</li>
+<li>Multiple instances</li></ul>
+<h3><span class="mw-headline" id="Kubernetes_basic_restart_policy">Kubernetes basic restart policy</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;veaction=edit&amp;section=T-8" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;action=edit&amp;section=T-8" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Kubernetes will restart pods that crash. This can be influenced by configuring the restartPolicy setting in the pod specification. If absent, the default value is “Always”.
+</p><p>CDF pod specifications do not explicitly contain the restartPolicy setting so the above default is applied.
+</p><p>This means that when containers inside pods crash, they will always be restarted. And the restart will always occur on the same node.
+</p>
+<h3><span class="mw-headline" id="Liveness_and_readiness_probes">Liveness and readiness probes</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;veaction=edit&amp;section=T-9" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;action=edit&amp;section=T-9" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>On top of the default restart, Kubernetes can restart pods when a probe fails.
+</p><p>Two probe types exist:
+</p>
+<ul><li>Liveness: restart containers when a probe fails</li>
+<li>Readiness: only send traffic to a pod when all readiness probes for all containers for that pod probe succeed</li></ul>
+<p>All CDF components have liveness (and readiness when accepting network traffic) probes defined.
+</p>
+<h3><span class="mw-headline" id="Multiple_component_instances">Multiple component instances</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;veaction=edit&amp;section=T-10" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;action=edit&amp;section=T-10" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Additional high availability can be achieved by running multiple instances of a CDF component connected to an external database (HA assumed) or connected to a cluster-local replicated database.
+</p><p>The following CDF components support multiple instances:
+</p>
+<ul><li>Vault: on every master when in MMMW cluster configuration</li>
+<li>ETCD: on every master when in MMMW cluster configuration</li>
+<li>Flannel: one instance on every cluster node</li>
+<li>IDM: multiple instances on master nodes</li>
+<li>Ingress controller: multiple instances on master nodes</li>
+<li>Kubernetes-vault: multiple instances on master nodes</li>
+<li>Kube-registry: multiple instances on master nodes</li>
+<li>Postgres: two-node cluster running on master node(s)</li>
+<li>Fluentd: one instance on every cluster node</li>
+<li>Logrotate: one instance on every cluster node</li></ul>
+<div class="Admonition_Note">
+<p><span class="autonumber">Note</span><br>
+Micro Focus may run multiple instances of other components in subsequent releases.
+</p>
+</div>
+<h2><span class="mw-headline" id="Container_resource_requirements_and_limits">Container resource requirements and limits</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;veaction=edit&amp;section=T-11" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;action=edit&amp;section=T-11" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h3><span id="Request/Limit"></span><span class="mw-headline" id="Request.2FLimit">Request/Limit</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;veaction=edit&amp;section=T-12" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;action=edit&amp;section=T-12" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>All Kubernetes-managed container specifications for the foundational services contain resource request and limit configurations. (*)
+</p>
+<ul><li>Resource request: allows the Kubernetes scheduler to improve container scheduling based on available resources on the worker nodes.</li>
+<li>Resource limits: allows the Kubelet to terminate and or evict pods that exceed allowed memory and CPU.</li></ul>
+<p>(*) Source: <a target="1" rel="nofollow" class="external free" href="https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/">https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/</a>
+</p><p>Resource request and limit helps in achieving high availability because:
+</p>
+<ul><li>A container will not be scheduled to an already fully loaded node which may cause the node to run out of resources.</li>
+<li>A node will not be continuously overloaded if a container exceeds its memory and/or CPU limits.</li>
+<li>A container that is terminated or evicted because it has exceeded its memory and/or CPU limits may be rescheduled on another node that has a lower overall usage.</li></ul>
+<p>All the Kubernetes and CDF foundational services have resource request and limits defined. This is defined via the YAML specification and typically looks like below excerpt. The actual values vary from service to service.
+</p>
+<pre class="syntaxhighlighter-pre">resources:
+  requests:
+    cpu: 100m
+    memory: 100Mi
+  limits:
+    cpu: 100m
+    memory: 200Mi
+</pre>
+<p>The following services run either directly on Docker or on the host outside of Kubernetes’ control and have following limits:
+</p>
+<ul><li>Kubelet ,Kube-proxy, Etcd, Vault, Flannel, Keepalived
+<ul><li>None</li></ul></li>
+<li>Bootstrap Docker, workload Docker
+<ul><li>Systemd LimitNOFILE=1048576</li>
+<li>Systemd LimitNPROC=1048576</li></ul></li></ul>
+<p>ITOM Suite YAML deployment specifications also use the resource request and limit annotations to help the Kubernetes scheduler and Kubelet in scheduling and ongoing node workload management.
+</p>
+<h3><span class="mw-headline" id="Kubelet_pod_eviction">Kubelet pod eviction</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;veaction=edit&amp;section=T-13" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;action=edit&amp;section=T-13" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>On CDF worker nodes only, Kubelet will start to evict pods when they use too much system resources:
+</p><p>Out of the box policy:
+</p>
+<pre class="syntaxhighlighter-pre">--eviction-hard=memory.available&lt;500Mi,nodefs.available&lt;5Gi,imagefs.available&lt;5Gi
+--system-reserved=memory=1.5Gi
+</pre>
+<p>The above policy means that if there is less than 500MB RAM available, Pods will be re evicted. Same if the file system free space for volumes and logs falls below 5GB or the file system space for container runtime image storing falls below 5 GB.
+</p><p>The Kubelet configuration takes a reserved amount of memory into account for system use (non-Kubernetes). By default this is set to 1.5GB.
+</p>
+<ul><li>This may seem high but it includes provisions for: the host OS, two Docker daemons, Kubelet and Vault, ETCD and Flannel containers.</li>
+<li>The value includes the memory.available value from the eviction policy.</li></ul>
+<p>When Pods are evicted, they will be rescheduled to either the same node (provided sufficient resources have been reclaimed) or another node with sufficient available resources.
+</p><p>Kubernetes details: see <a target="1" rel="nofollow" class="external free" href="https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource">https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource</a>
+</p>
+<h2><span class="mw-headline" id="Storage_high_availability">Storage high availability</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;veaction=edit&amp;section=T-14" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;action=edit&amp;section=T-14" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h3><span class="mw-headline" id="Node_local_storage_for_Kubernetes_code_and_runtime_data">Node local storage for Kubernetes code and runtime data</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;veaction=edit&amp;section=T-15" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;action=edit&amp;section=T-15" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>The Container Deployment Foundation core binaries are located in &lt;CDF root&gt;.
+</p><p>The Docker data and log directories are located in &lt;CDF root&gt;/data and &lt;CDF root&gt;/logs.
+</p><p>Only the top level &lt;CDF root&gt; installation directory can be configured at install time through the install.properties file. The location cannot be changed after the installation.
+</p><p>To increase the level of HA, the master and worker nodes /opt partition can be setup to be hosted on a form of fast local SSD storage or storage such as SAN or NAS arrays.
+</p><p>Additionally, it is recommended to use logical volume management (LVM) in the local partitioning scheme for /opt so that the storage can be expanded very simply if the partition is in danger of running out of space.
+</p>
+<h3><span class="mw-headline" id="Persistent_container_storage">Persistent container storage</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;veaction=edit&amp;section=T-16" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;action=edit&amp;section=T-16" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Persistent container storage is hosted using NFS. No other persistent container storage types are supported by the Container Deployment Foundation.
+</p><p>A typical Linux OS - hosted single NFS server does not offer much in terms of HA.
+</p><p>To increase the level of HA for the NFS storage, various options exist:
+</p>
+<ul><li>The NFS server data partitions uses software or hardware RAID</li>
+<li>The NFS server data partitions is hosted on network attached storage. Example:
+<ul><li>StoreEasy Storage</li></ul></li>
+<li>The NFS server itself is virtualized and provided by the storage array software/hardware. Examples:
+<ul><li>3PAR File Persona Software</li>
+<li>NetApp</li>
+<li>Other storage vendors may offer similar capabilities. Refer to the vendor documentation for details.</li></ul></li>
+<li>Setup an active/passive NFS server in an HA cluster. This approach is available and documented from various Linux vendors / distributions. Links:
+<ul><li>Red Hat: <a target="1" rel="nofollow" class="external free" href="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/High_Availability_Add-On_Administration/ch-nfsserver-HAAA.html">https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/High_Availability_Add-On_Administration/ch-nfsserver-HAAA.html</a></li>
+<li>(*) SUSE: <a target="1" rel="nofollow" class="external free" href="https://www.suse.com/documentation/sle-ha-12/singlehtml/book_sleha_techguides/book_sleha_techguides.html">https://www.suse.com/documentation/sle-ha-12/singlehtml/book_sleha_techguides/book_sleha_techguides.html</a></li></ul></li></ul>
+<p>(*) SUSE Linux is not a supported host OS for the Container Deployment Foundation.
+</p>
+<h2><span class="mw-headline" id="Component_replicated_database">Component replicated database</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;veaction=edit&amp;section=T-17" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;action=edit&amp;section=T-17" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>The ETCD component will use a replicated database in MMMW cluster configuration. The database will be replicated across all master nodes.
+</p>
+<h2><span class="mw-headline" id="Component_external_databases">Component external databases</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;veaction=edit&amp;section=T-18" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;action=edit&amp;section=T-18" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>The CDF components can be configured to use an external database. See also section “High availability through use of external databases”.
+</p>
+<h2><span class="mw-headline" id="Multi-master_and_HA_virtual_IP">Multi-master and HA virtual IP</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;veaction=edit&amp;section=T-19" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;action=edit&amp;section=T-19" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h3><span class="mw-headline" id="Leader_election_for_ETCD">Leader election for ETCD</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;veaction=edit&amp;section=T-20" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;action=edit&amp;section=T-20" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>When installing a CDF with multiple masters, the supported number is 3 master nodes. This is so that the leader election for ETCD’s distributed database scheme works properly.
+</p>
+<h3><span class="mw-headline" id="HA_virtual_IP">HA virtual IP</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;veaction=edit&amp;section=T-21" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;action=edit&amp;section=T-21" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>All of the master nodes participate in the HA virtual IP configuration. This is so that a pre-defined IP address configurable through the CDF installer configuration file (install.properties) can be bound to all of the master nodes depending on which one is found to be alive or load-balance across all master nodes if they are both found to be active.
+</p><p>For this to work, the installer sets up and runs a copy of keepalived and nginx load balancer to make the Kubernetes API server highly available. They are setup to run on the workload Docker instance.
+</p>
+<h2><span class="mw-headline" id="Embedded_Postgres_database_high_availability">Embedded Postgres database high availability</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;veaction=edit&amp;section=T-22" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;action=edit&amp;section=T-22" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>The embedded database instances are configured for HA through the use of multiple database instances and replication. See <a href="./itom/ITOM_Container_Deployment_Foundation:2019.02/WhitepaperDatabases" title="ITOM Container Deployment Foundation:2019.02/WhitepaperDatabases">Databases</a>.
+</p><p>The embedded Postgres database instances also benefit from the underlying host, container runtime and Kubernetes HA technologies.
+</p><p>The database files are stored on the externally provisioned persistent volumes. See Storage high availability to increase the level of HA by providing underlying HA storage.
+</p>
+<h2><span class="mw-headline" id="High_availability_through_use_of_external_databases">High availability through use of external databases</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;veaction=edit&amp;section=T-23" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperHighAvailability&amp;action=edit&amp;section=T-23" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<div class="Admonition_Note">
+<p><span class="autonumber">Note</span><br>
+</p>
+This document does not cover setting up external database HA.</div>
+<p>Connecting the Container Deployment Foundation services and/or an installed ITOM Suite to (an) external database(s) contributes positively to the level of HA (similarly to using an embedded HA PostgreSQL instance).
+</p><p>The Container Deployment Foundation itself does supports connecting its services to (an) external database(s).
+</p><p>Connecting ITOM Suites to (an) external database(s) is supported and described in the ITOM Suite documentation.
+</p>
+<!-- 
+NewPP limit report
+Cached time: 20190524073159
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.028 seconds
+Real time usage: 0.054 seconds
+Preprocessor visited node count: 42/1000000
+Preprocessor generated node count: 108/1000000
+Post‐expand include size: 18091/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 303/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:723996-0!canonical and timestamp 20190524073159 and revision id 1225131
+ -->
+</div>
