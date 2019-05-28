@@ -1,1 +1,55 @@
- 
+<div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 07/03/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 2 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><p>There may be situations where the information needed in an email notification is not supported by the standard DSL functionality. An example of this would be the name of the requester’s manager or the name of the owner of an assignment group.
+</p><p>This rule example will add the following to the create request email notification:
+</p>
+<ul><li>The requester’s manager’s email address.</li>
+<li>The name of the owner of the service desk group.</li>
+<li>The name of the 1<sup>st</sup> level support group of the actual service assigned to the request.</li></ul>
+<p><br>
+In order to add the parameters to the email notification, the following steps are needed:
+</p>
+<ul><li>Creating the parameter name in the email notification template.</li>
+<li>Determining the DSL syntax for the fields that will populate the parameter in the template.</li>
+<li>Adding the DSL that captures the value into the rule that sends the notification.</li></ul>
+<p><br>
+</p><p><b>Creating the parameter name</b>
+</p><p>In the ‘Records’ editor, select the ‘Request’ entity and then locate the ‘CreateRequest’ template under the ‘Notifications’ tab:
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="xc bre notification 1.png" src="/mediawiki/images/8/86/xc_bre_notification_1.png" width="579" height="120" data-file-width="579" data-file-height="120"></a>
+<a onclick="javascript:loadingImage(this);" class="image"><img alt="xc bre notification 2b.png" src="/mediawiki/images/8/8b/xc_bre_notification_2b.png" width="682" height="110" data-file-width="682" data-file-height="110"></a>
+</p><p>In the content of the email template add parameter reference names that will be used to store the desired field values. In this example the names are going to be ‘RequestersManagerName’. ‘OwnerOfServiceDeskGroupsName’ and ‘ServiceFirstLevelSupportGroupName’. The reference names can be any value and will only appear in the notification rule itself.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="xc bre notification 2.png" src="/mediawiki/images/2/26/xc_bre_notification_2.png" width="564" height="349" data-file-width="564" data-file-height="349"></a>
+</p><p>Find the rule in the request workflow that will send the notification template edited with the parameters. Click on the parameters field of the rule.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="xc bre notification 3.png" src="/mediawiki/images/2/27/xc_bre_notification_3.png" width="629" height="78" data-file-width="629" data-file-height="78"></a>
+</p><p>The fields added to the notification will automatically appear in the form that appears.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="xc bre notification 4.png" src="/mediawiki/images/9/9e/xc_bre_notification_4.png" width="962" height="323" data-file-width="962" data-file-height="323"></a>
+</p><p>Click on the function (‘fx’) button on each field and add the DSL expression that will look up each of the values. In this rule example the values added to the fields are ${entity.ServiceDeskGroup.Owner.Name}, ${entity.RegisteredForActualService.SupportLevel1Group.Name} and ${entity.RequestedByPerson.Manager.Email}.
+</p><p><br>
+The values will appear as below after getting added to the form.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="xc bre notification 5.png" src="/mediawiki/images/b/b7/xc_bre_notification_5.png" width="595" height="238" data-file-width="595" data-file-height="238"></a>
+</p><p>The email the user receives then contains the required information, as seen below:
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="xc bre notification 6.png" src="/mediawiki/images/7/70/xc_bre_notification_6.png" width="427" height="333" data-file-width="427" data-file-height="333"></a>
+</p><p><br>
+</p>
+<!-- 
+NewPP limit report
+Cached time: 20190524100802
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.024 seconds
+Real time usage: 0.136 seconds
+Preprocessor visited node count: 2/1000000
+Preprocessor generated node count: 12/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 0/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:223692-0!canonical and timestamp 20190524100802 and revision id 1275495
+ -->
+</div>
