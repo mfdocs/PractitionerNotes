@@ -1,1 +1,472 @@
- 
+<div class="mw-parser-output"><p>The document describes how to use a tool provided by Micro Focus to set up a PostgreSQL High Availability (HA) environment for the Service Management Automation (SMA) suite. <br>
+</p><p><b>Important</b>: The information contained in this example regarding PostgreSQL HA implementation is provided by Micro Focus as a courtesy to our customers and partners. This documentation does not replace any PostgreSQL reference, and Micro Focus encourages you to conduct additional research regarding PostgreSQL HA technology by consulting with sources outside of this document. Micro Focus hereby disclaims all liability associated with the use and accuracy of this information. As PostgreSQL technology evolves, Micro Focus may or may not update this reference. <br>
+</p><p>This document is based on the following assumptions:
+</p>
+<ul><li>You do not have a self-managed network or your VIP is not stable.</li>
+<li>You have a load balancer ready for use with external PostgreSQL for SMA.</li></ul>
+<p>Once you have installed the SMA suite with a singleton external PostgreSQL database, you can run this tool to extend the database to a high availability (HA) setup, as shown in the following diagram.&nbsp; <br>
+<a onclick="javascript:loadingImage(this);" class="image"><img alt="PractitionersNotes/SMAX SetExtpSQLHA1.png" src="/mediawiki/images/7/75/PractitionersNotes/SMAX_SetExtpSQLHA1.png" width="624" height="397" data-file-width="624" data-file-height="397"></a>
+</p><p><b>Limitations</b>
+</p>
+<ul><li>After a failover occurs, the original primary DB node is detached from the cluster, and you need to manually bring the back as a standby DB node.</li>
+<li>You need to configure another pgpool/watchdog to prevent split-brain of the PG cluster. This is not addressed in this document.</li></ul>
+<p><b>Note</b>: In this document, the load balancer IP is used instead of the VIP. 
+</p>
+<div id="toc" class="toc"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none"><div class="toctitle" lang="en" dir="ltr"><h2>Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/PractitionersNotes/SetExtpSQLHA#Overview_of_SMA_PGHA_setup_process"><span class="tocnumber">1</span> <span class="toctext">Overview of SMA PGHA setup process</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/PractitionersNotes/SetExtpSQLHA#Prepare_an_environment"><span class="tocnumber">2</span> <span class="toctext">Prepare an environment</span></a>
+<ul>
+<li class="toclevel-2 tocsection-3"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/PractitionersNotes/SetExtpSQLHA#Step_1:_Determine_the_VM_role"><span class="tocnumber">2.1</span> <span class="toctext">Step 1: Determine the VM role</span></a></li>
+<li class="toclevel-2 tocsection-4"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/PractitionersNotes/SetExtpSQLHA#Step_2:_Install_PostgreSQL_on_the_two_DB_hosts"><span class="tocnumber">2.2</span> <span class="toctext">Step 2: Install PostgreSQL on the two DB hosts</span></a></li>
+<li class="toclevel-2 tocsection-5"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/PractitionersNotes/SetExtpSQLHA#Step_3:_Install_SMA_with_the_master_db_.28dbnode1.29_as_the_external_database"><span class="tocnumber">2.3</span> <span class="toctext">Step 3: Install SMA with the master db (dbnode1) as the external database</span></a></li>
+<li class="toclevel-2 tocsection-6"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/PractitionersNotes/SetExtpSQLHA#Step_4:_Install_iptables_service_on_the_two_DB_hosts"><span class="tocnumber">2.4</span> <span class="toctext">Step 4: Install iptables service on the two DB hosts&nbsp;</span></a></li>
+<li class="toclevel-2 tocsection-7"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/PractitionersNotes/SetExtpSQLHA#Step_5:_Enable_user.2Fpassword_login_for_the_two_DB_hosts"><span class="tocnumber">2.5</span> <span class="toctext">Step 5: Enable user/password login for the two DB hosts</span></a></li>
+<li class="toclevel-2 tocsection-8"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/PractitionersNotes/SetExtpSQLHA#Step_6:_Install_ansible_as_root_on_the_deployment_host"><span class="tocnumber">2.6</span> <span class="toctext">Step 6: Install ansible as root on the deployment host</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-9"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/PractitionersNotes/SetExtpSQLHA#Run_deployment_scripts"><span class="tocnumber">3</span> <span class="toctext">Run deployment scripts</span></a>
+<ul>
+<li class="toclevel-2 tocsection-10"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/PractitionersNotes/SetExtpSQLHA#Step_1:_Upload_the_tool_package_to_deployment_node"><span class="tocnumber">3.1</span> <span class="toctext">Step 1: Upload the tool package to deployment node</span></a></li>
+<li class="toclevel-2 tocsection-11"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/PractitionersNotes/SetExtpSQLHA#Step_2:_Prepare_Linux_user_.22pgha.22_on_each_of_the_three_nodes"><span class="tocnumber">3.2</span> <span class="toctext">Step 2: Prepare Linux user "pgha" on each of the three nodes</span></a></li>
+<li class="toclevel-2 tocsection-12"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/PractitionersNotes/SetExtpSQLHA#Step_3:_Deploy_PGHA_with_two_PostgreSQL_servers_and_two_Pgpools"><span class="tocnumber">3.3</span> <span class="toctext">Step 3: Deploy PGHA with two PostgreSQL servers and two Pgpools</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-13"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/PractitionersNotes/SetExtpSQLHA#Con.EF.AC.81gure_the_load_balancer"><span class="tocnumber">4</span> <span class="toctext">Conﬁgure the load balancer</span></a>
+<ul>
+<li class="toclevel-2 tocsection-14"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/PractitionersNotes/SetExtpSQLHA#Step_1:_Create_an_Azure_Internal_load_balancer"><span class="tocnumber">4.1</span> <span class="toctext">Step 1: Create an Azure Internal load balancer</span></a></li>
+<li class="toclevel-2 tocsection-15"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/PractitionersNotes/SetExtpSQLHA#Step_2:_Con.EF.AC.81gure_a_loopback_interface_on_the_two_DB_nodes"><span class="tocnumber">4.2</span> <span class="toctext">Step 2: Conﬁgure a loopback interface on the two DB nodes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-16"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/PractitionersNotes/SetExtpSQLHA#Replace_db_host_ip_and_port_with_those_of_the_load_balancer"><span class="tocnumber">5</span> <span class="toctext">Replace db host ip and port with those of the load balancer</span></a>
+<ul>
+<li class="toclevel-2 tocsection-17"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/PractitionersNotes/SetExtpSQLHA#Step_1:_Update_CDF_IDM_DB_host_and_port"><span class="tocnumber">5.1</span> <span class="toctext">Step 1: Update CDF IDM DB host and port</span></a></li>
+<li class="toclevel-2 tocsection-18"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/PractitionersNotes/SetExtpSQLHA#Step_2:_Update_suite_DB_host_and_port_in_con.EF.AC.81gmap"><span class="tocnumber">5.2</span> <span class="toctext">Step 2: Update suite DB host and port in conﬁgmap</span></a></li>
+<li class="toclevel-2 tocsection-19"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/PractitionersNotes/SetExtpSQLHA#Step_3:_Restart_SMA"><span class="tocnumber">5.3</span> <span class="toctext">Step 3: Restart SMA</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-20"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/PractitionersNotes/SetExtpSQLHA#Appendix"><span class="tocnumber">6</span> <span class="toctext">Appendix</span></a>
+<ul>
+<li class="toclevel-2 tocsection-21"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/PractitionersNotes/SetExtpSQLHA#Understand_the_PG_promotion_process"><span class="tocnumber">6.1</span> <span class="toctext">Understand the PG promotion process</span></a></li>
+<li class="toclevel-2 tocsection-22"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/PractitionersNotes/SetExtpSQLHA#How_to_restart_the_PGHA_system"><span class="tocnumber">6.2</span> <span class="toctext">How to restart the PGHA system</span></a></li>
+<li class="toclevel-2 tocsection-23"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/PractitionersNotes/SetExtpSQLHA#How_to_bring_the_original_primary_node_back_as_the_standby_server"><span class="tocnumber">6.3</span> <span class="toctext">How to bring the original primary node back as the standby server</span></a>
+<ul>
+<li class="toclevel-3 tocsection-24"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/PractitionersNotes/SetExtpSQLHA#Step_1._Run_commands_on_the_new_primary_node_.28dbnode2.29"><span class="tocnumber">6.3.1</span> <span class="toctext">Step 1. Run commands on the new primary node (dbnode2)</span></a></li>
+<li class="toclevel-3 tocsection-25"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/PractitionersNotes/SetExtpSQLHA#Step_2._Run_commands_on_the_original_primary_node_.28dbnode1.29"><span class="tocnumber">6.3.2</span> <span class="toctext">Step 2. Run commands on the original primary node (dbnode1)</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-26"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/PractitionersNotes/SetExtpSQLHA#How_to_restore_the_system_after_an_unexpected_DB_failover"><span class="tocnumber">6.4</span> <span class="toctext">How to restore the system after an unexpected DB failover</span></a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id="Overview_of_SMA_PGHA_setup_process">Overview of SMA PGHA setup process</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;veaction=edit&amp;section=1" class="mw-editsection-visualeditor" title="Edit section: Overview of SMA PGHA setup process">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;action=edit&amp;section=1" title="Edit section: Overview of SMA PGHA setup process">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>The following diagram illustrates the process of setting up PGHA for SMA. 
+<a onclick="javascript:loadingImage(this);" class="image"><img alt="PractitionersNotes/SMAX SetExtpSQLHA2.png" src="/mediawiki/images/9/98/PractitionersNotes/SMAX_SetExtpSQLHA2.png" width="1214" height="560" data-file-width="1214" data-file-height="560"></a>
+</p>
+<h2><span class="mw-headline" id="Prepare_an_environment">Prepare an environment</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;veaction=edit&amp;section=2" class="mw-editsection-visualeditor" title="Edit section: Prepare an environment">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;action=edit&amp;section=2" title="Edit section: Prepare an environment">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Our lab test is based on the following software and hardware configurations. This is not an exhaustive list. Technically, other configurations may also be supported. 
+</p><p><b>Software</b>
+</p>
+<ul><li>PostgreSQL version: 9.5.15</li>
+<li>PGPOOL Version: 4.0.2</li>
+<li>LINUX OS: CentOS 7.5</li></ul>
+<p><b>Hardware</b>
+</p>
+<ul><li>Three VMs with CentOS 7.5
+<ul><li>One VM with a public IP, which will be used to deploy the environment. You can release this VM once the PGHA environment is set up. This VM is referred to as the deployment node (“dpnode) ”.</li>
+<li>Two VMs without a public IP, which will be used as the DB nodes. The two VMs must be able to access the Internet via a proxy to perform yum installation. These two VMs are referred to as DB node 1 (dbnode1) and DB node 2 (dbnode2), respectively.</li></ul></li>
+<li>A load balancer (LB)</li></ul>
+<h3><span class="mw-headline" id="Step_1:_Determine_the_VM_role">Step 1: Determine the VM role</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;veaction=edit&amp;section=3" class="mw-editsection-visualeditor" title="Edit section: Step 1: Determine the VM role">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;action=edit&amp;section=3" title="Edit section: Step 1: Determine the VM role">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Add the IP/hostname mappings in the /etc/hosts files on the three hosts. For example:
+</p>
+<pre>172.17.2.4&nbsp;&nbsp;&lt;dpnode hostname&gt;
+172.17.2.5&nbsp;&nbsp;&lt;dbnode1 hostname&gt;
+172.17.2.6&nbsp;&nbsp;&lt;dbnode2 hostname&gt;
+</pre>
+<p>Run commands to change the host names:
+</p>
+<ol><li>Run this command on the deployment node as root: <br><code>hostname &lt;dpnode hostname&gt;</code></li>
+<li>Run this command on the db node1 as root: <br><code>hostname &lt;dbnode1 hostname&gt;</code>&nbsp;</li>
+<li>Run this command on the db node2 as root: <br><code>hostname &lt;dbnode2 hostname&gt;</code></li>
+<li>Check that the host name in each /etc/hostname file is same as the hostname you set.</li></ol>
+<h3><span class="mw-headline" id="Step_2:_Install_PostgreSQL_on_the_two_DB_hosts">Step 2: Install PostgreSQL on the two DB hosts</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;veaction=edit&amp;section=4" class="mw-editsection-visualeditor" title="Edit section: Step 2: Install PostgreSQL on the two DB hosts">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;action=edit&amp;section=4" title="Edit section: Step 2: Install PostgreSQL on the two DB hosts">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Install PostgreSQL on the two DB hosts (dbnode1 and dbnode2) as follows.
+</p><p>Run below commands as root:
+</p>
+<pre>yum install -y https://download.postgresql.org/pub/repos/yum/9.5/redhat/rhel-7- x86_64/pgdg-centos95-9.5-3.noarch.rpm
+yum install -y postgresql95-server
+/usr/pgsql-9.5/bin/postgresql95-setup &nbsp;initdb systemctl enable postgresql-9.5
+systemctl start postgresql-9.5
+</pre>
+<p><b>Note:</b> Set the 'postgres' user’s password so that the user on dbnode2 can ssh to dbnode1.
+</p>
+<pre>#passwd postgres
+</pre>
+<h3><span id="Step_3:_Install_SMA_with_the_master_db_(dbnode1)_as_the_external_database"></span><span class="mw-headline" id="Step_3:_Install_SMA_with_the_master_db_.28dbnode1.29_as_the_external_database">Step 3: Install SMA with the master db (dbnode1) as the external database</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;veaction=edit&amp;section=5" class="mw-editsection-visualeditor" title="Edit section: Step 3: Install SMA with the master db (dbnode1) as the external database">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;action=edit&amp;section=5" title="Edit section: Step 3: Install SMA with the master db (dbnode1) as the external database">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>For details, see the SMA installation documentation. &nbsp;
+</p>
+<h3><span class="mw-headline" id="Step_4:_Install_iptables_service_on_the_two_DB_hosts">Step 4: Install iptables service on the two DB hosts&nbsp;</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;veaction=edit&amp;section=6" class="mw-editsection-visualeditor" title="Edit section: Step 4: Install iptables service on the two DB hosts&nbsp;">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;action=edit&amp;section=6" title="Edit section: Step 4: Install iptables service on the two DB hosts&nbsp;">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Run the following commands as root on the two DB hosts (dbnode1 and dbnode2):
+</p>
+<pre>yum install -y iptables-services 
+systemctl enable iptables 
+systemctl start iptables
+</pre>
+<p>Check&nbsp;the &nbsp;/etc/sysconﬁg/iptables file, and make sure the "-A INPUT -j REJECT --reject-with icmp-host-prohibited" line exists at the bottom of the ﬁlter section.&nbsp;
+</p><p>Restart the iptables service:
+</p>
+<pre>#Run command as root 
+systemctl restart iptables
+</pre>
+<p>Make sure port 5432 on dbnode1 can be accessed from dbnode2 and vice versa. To do this, run the commands below on both dbnode1 and dbnode2:
+</p>
+<pre>yum install nc
+nc dbnode1 5432
+nc dbnode2 5432
+</pre>
+<p>After running the “nc” command, there should be no error. You can press Ctrl+C to exit.&nbsp;
+</p>
+<h3><span id="Step_5:_Enable_user/password_login_for_the_two_DB_hosts"></span><span class="mw-headline" id="Step_5:_Enable_user.2Fpassword_login_for_the_two_DB_hosts">Step 5: Enable user/password login for the two DB hosts</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;veaction=edit&amp;section=7" class="mw-editsection-visualeditor" title="Edit section: Step 5: Enable user/password login for the two DB hosts">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;action=edit&amp;section=7" title="Edit section: Step 5: Enable user/password login for the two DB hosts">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Perform the following steps on the two DB hosts, so that you can ssh to dbnode2 with user/password from dbnode1 and vice versa. Skip this step if this is already done in your environment. 
+</p>
+<ol><li>Open the /etc/ssh/sshd_conﬁg file.</li>
+<li>Locate this line:    <code>PasswordAuthentication no</code></li>
+<li>Change this line to:   <code>PasswordAuthentication yes</code></li>
+<li>Restart the sshd service:   <code>systemctl restart sshd</code></li></ol>
+<p>Once this step is completed, you can ssh to the two DB hosts from the deployment node with user/password.
+</p>
+<h3><span class="mw-headline" id="Step_6:_Install_ansible_as_root_on_the_deployment_host">Step 6: Install ansible as root on the deployment host</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;veaction=edit&amp;section=8" class="mw-editsection-visualeditor" title="Edit section: Step 6: Install ansible as root on the deployment host">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;action=edit&amp;section=8" title="Edit section: Step 6: Install ansible as root on the deployment host">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Run the following commands:
+</p>
+<pre>yum install -y python-devel python-pip python 
+yum install -y openssl-devel
+curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py 
+python /tmp/get-pip.py
+pip install paramiko PyYAML Jinja2 httplib2 six 
+pip install ansible
+</pre>
+<h2><span class="mw-headline" id="Run_deployment_scripts">Run deployment scripts</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;veaction=edit&amp;section=9" class="mw-editsection-visualeditor" title="Edit section: Run deployment scripts">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;action=edit&amp;section=9" title="Edit section: Run deployment scripts">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>You can download the scripts from the <a target="1" rel="nofollow" class="external text" href="https://marketplace.microfocus.com/itom/content/service-management-automation-2019-02">Market Place</a>.
+</p>
+<h3><span class="mw-headline" id="Step_1:_Upload_the_tool_package_to_deployment_node">Step 1: Upload the tool package to deployment node</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;veaction=edit&amp;section=10" class="mw-editsection-visualeditor" title="Edit section: Step 1: Upload the tool package to deployment node">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;action=edit&amp;section=10" title="Edit section: Step 1: Upload the tool package to deployment node">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Upload the pgha-deploy.tar file to the /tmp folder. 
+</p>
+<h3><span id="Step_2:_Prepare_Linux_user_&quot;pgha&quot;_on_each_of_the_three_nodes"></span><span class="mw-headline" id="Step_2:_Prepare_Linux_user_.22pgha.22_on_each_of_the_three_nodes">Step 2: Prepare Linux user "pgha" on each of the three nodes</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;veaction=edit&amp;section=11" class="mw-editsection-visualeditor" title="Edit section: Step 2: Prepare Linux user &quot;pgha&quot; on each of the three nodes">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;action=edit&amp;section=11" title="Edit section: Step 2: Prepare Linux user &quot;pgha&quot; on each of the three nodes">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Run the following commands as root on each of three hosts to create a “pgha” user and specify a password for it.
+</p>
+<pre>groupadd pgha
+useradd pgha -g pgha 
+passwd pgha
+</pre>
+<p>Change user "<i><b>pgha</b></i>" to a sudo user:
+</p>
+<pre>#visudo
+</pre>
+<p>Insert the following line below the “root ALL=(ALL) ALL” line, as shown below:
+</p>
+<pre>pgha&nbsp;&nbsp; ALL=(ALL)        ALL
+</pre>
+<h3><span class="mw-headline" id="Step_3:_Deploy_PGHA_with_two_PostgreSQL_servers_and_two_Pgpools">Step 3: Deploy PGHA with two PostgreSQL servers and two Pgpools</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;veaction=edit&amp;section=12" class="mw-editsection-visualeditor" title="Edit section: Step 3: Deploy PGHA with two PostgreSQL servers and two Pgpools">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;action=edit&amp;section=12" title="Edit section: Step 3: Deploy PGHA with two PostgreSQL servers and two Pgpools">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<ol><li>Verify the network connectivity between the deployment node (acting as the Ansible Management Node) and the two DB Node servers by making an ssh connection from the deployment node to the DB nodes.&nbsp;
+<pre>su - pgha
+
+ssh-keygen -t rsa -f ~/.ssh/id_rsa 
+
+ssh-copy-id 
+
+pgha@&lt;dpnode host name&gt; 
+
+ssh-copy-id pgha@&lt;dbnode1 host name&gt;
+
+ssh-copy-id pgha@&lt;dbnode2 host name&gt;&nbsp;</pre>
+After this step is completed, ssh calls should be executed without a password prompt.&nbsp;</li>
+
+<li>Deﬁne Ansible nodes (hosts) on the deployment node.
+
+Run the following commands:
+<pre>su - pgha
+
+cp /tmp/pgha-deploy.tar /home/pgha 
+
+tar xvf pgha-deploy.tar
+
+cp pgha-deploy/inventory/hosts.example pgha-deploy/inventory/hosts.default
+
+cp pgha-deploy/group_vars/pghad.yml.example pgha-deploy/group_vars/pghad.yml 
+
+cd pgha-deploy</pre></li>
+<li>Edit the inventory/hosts.default file as follows:
+<pre>[dp]
+
+&lt;dpnode hostname&gt;
+
+[db_m]
+
+&lt;dbnode1 hostname&gt;
+
+[db_s]
+
+&lt;dbnode2 hostname&gt;
+
+[db:children] db_m
+
+db_s
+
+[pghad:children] dp
+
+db
+
+[internet:children] dp</pre></li>
+<li>Check the Ansible node hosts ﬁle on the deployment node. To do this, run these commands as the pgha user:
+<pre>cd /home/pgha/pgha-deploy
+
+ansible pghad -u pgha -m ping -c paramiko</pre>
+<p>The result should resemble the following:
+</p>
+<pre>dpnode | SUCCESS =&gt;&nbsp; { 
+
+&nbsp;&nbsp;&nbsp;"changed": false, 
+
+&nbsp;&nbsp;&nbsp;"ping": "pong"
+
+}
+
+dbnode2 | SUCCESS =&gt; { 
+
+&nbsp;&nbsp;&nbsp;"changed": false, 
+
+&nbsp;&nbsp;&nbsp;"ping": "pong"
+
+}
+
+dbnode1 | SUCCESS =&gt; { 
+
+&nbsp;&nbsp;&nbsp;"changed": false, 
+
+&nbsp;&nbsp;&nbsp;"ping": "pong"
+
+}</pre></li>
+<li>Set the Ethernet interface name in group vars on the deployment node (dpnode).
+
+Run the following command as root on the db nodes (dbnode1 and dbnode2), to check the Ethernet interface name:
+<pre># ifconfig –a</pre>
+<p>On the deployment node (dpnode), modify the "interface" value to be the db node's. By default, the value is eth0: 
+</p>
+<pre># vi /home/pgha/pgha-deploy/group_vars/pghad.yml</pre></li>
+<li>Run the PG HA deployment script on dpnode by running the commands as the “pgha” user:
+
+<pre>cd /home/pgha/pgha-deploy
+
+ansible-playbook pghad.yml -c paramiko --ask-become-pass -u pgha 2&gt;&amp;1 | tee setup.out</pre></li>
+<li>Check the PostgreSQL HA status on one of the db nodes (dbnode1 or dbnode2) by running the following command:
+
+<pre>psql -h &lt;dbnode1 hostmame&gt; -p 9999 -U postgres -c 'show pool_nodes'&nbsp;</pre>
+<p>Example:&nbsp;&nbsp;
+</p>
+<pre>#psql -h dbnode1 -p 9999 -U postgres -c 'show pool_nodes'
+Password for user postgres: 
+ node_id | hostname | port | status | lb_weight |  role   | select_cnt | load_balance_node | replication_delay | last_status_change  
+---------+----------+------+--------+-----------+---------+------------+-------------------+-------------------+---------------------
+ 0       | dbnode1  | 5432 | up     | 0.500000 | primary | 2          | true              | 0                 | 2018-12-07 14:52:12
+ 1       | dbnode2  | 5432 | up     | 0.500000 | standby | 0          | false             | 0                 | 2018-12-07 14:53:50</pre></li>
+<li>If the status of the db node is down, you need to bring it up by running the following pcp command as root or the “postgres” user: 
+<pre>pcp_attach_node -h &lt;dbnode host&gt; -p 9898 -U postgres -n &lt;node_id&gt;</pre>
+<p>For example:
+</p>
+<pre>pcp_attach_node -h dbnode1 -p 9898 -U postgres -n 1</pre>
+<b>Note:</b> You can get the node_id of a node that is down by running the psql command “show pgool_nodes”.</li>
+
+<li>Check the replication by running the following command on any of the three hosts: 
+<pre>psql -h &lt;dbnode1&gt; -p 9999 -U postgres -c 'select sent_location,replay_location from pg_stat_replication'</pre>
+<p>The result should resemble the following:
+</p>
+<pre>
+sent_location | replay_location
+
+---------------+----------------- 
+
+0/1EFF50C8 | 0/1EFF5050
+
+(1 row)&nbsp;&nbsp;</pre></li></ol>
+<h2><span id="Conﬁgure_the_load_balancer"></span><span class="mw-headline" id="Con.EF.AC.81gure_the_load_balancer">Conﬁgure the load balancer</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;veaction=edit&amp;section=13" class="mw-editsection-visualeditor" title="Edit section: Conﬁgure the load balancer">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;action=edit&amp;section=13" title="Edit section: Conﬁgure the load balancer">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Configure the load balancer to redirect DB requests to the Pgpools. The following steps use an Azure internal load balancer as an example.
+</p>
+<h3><span class="mw-headline" id="Step_1:_Create_an_Azure_Internal_load_balancer">Step 1: Create an Azure Internal load balancer</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;veaction=edit&amp;section=14" class="mw-editsection-visualeditor" title="Edit section: Step 1: Create an Azure Internal load balancer">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;action=edit&amp;section=14" title="Edit section: Step 1: Create an Azure Internal load balancer">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Use TCP on port 9999 as the health probe. For details, refer to the <a href="./itom/SMAX:2019.02/CreateAzureLb" title="SMAX:2019.02/CreateAzureLb">SMA documentation</a>.
+</p>
+<h3><span id="Step_2:_Conﬁgure_a_loopback_interface_on_the_two_DB_nodes"></span><span class="mw-headline" id="Step_2:_Con.EF.AC.81gure_a_loopback_interface_on_the_two_DB_nodes">Step 2: Conﬁgure a loopback interface on the two DB nodes</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;veaction=edit&amp;section=15" class="mw-editsection-visualeditor" title="Edit section: Step 2: Conﬁgure a loopback interface on the two DB nodes">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;action=edit&amp;section=15" title="Edit section: Step 2: Conﬁgure a loopback interface on the two DB nodes">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<ol><li>Run the following commands as root on dbnode1 and dbnode2:   <code>cd /home/pgha/pgha-deploy</code>  <code>./create-loop.sh &lt;ILB IP&gt;</code>&nbsp;</li>
+<li>Run "ifconﬁg" to see if the "lo:1" interface has been created. Note that you may need to reboot the db hosts to make it take eﬀect.</li></ol>
+<h2><span class="mw-headline" id="Replace_db_host_ip_and_port_with_those_of_the_load_balancer">Replace db host ip and port with those of the load balancer</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;veaction=edit&amp;section=16" class="mw-editsection-visualeditor" title="Edit section: Replace db host ip and port with those of the load balancer">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;action=edit&amp;section=16" title="Edit section: Replace db host ip and port with those of the load balancer">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Perform the following steps to set the load balancer’s IP address as the db host, and its listening port as the db port.
+</p>
+<h3><span class="mw-headline" id="Step_1:_Update_CDF_IDM_DB_host_and_port">Step 1: Update CDF IDM DB host and port</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;veaction=edit&amp;section=17" class="mw-editsection-visualeditor" title="Edit section: Step 1: Update CDF IDM DB host and port">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;action=edit&amp;section=17" title="Edit section: Step 1: Update CDF IDM DB host and port">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Run the following commands as root:
+</p>
+<pre>cd /opt/kubernetes/bin
+./updateExternalDbInfo -H &lt;ILB ip address&gt; -p &lt;ILB listening port&gt; -c true -t 
+EXTERNAL_PG -d &lt;cdf idm database&gt; -u &lt;cdf idm db user&gt;
+</pre>
+<p>Here is an example
+</p>
+<pre>./updateExternalDbInfo -H 16.101.101.101 -p 9999 -c true -t 
+EXTERNAL_PG -d defaultdb -u cdfidm
+DEFAULT DB Password:
+Confirm DEFAULT DB Password:
+configmap "default-database-configmap" replaced
+Update the CA certificate to default-database-configmap success
+Update DEFAULT database configuration successfully.
+Please restart your IDM Pods following below steps: 
+1) Get idm pod name list using below command
+kubectl get pods -n core | grep -v idm-postgres | grep idm | awk '{print $1}'
+2) Delete idm pods one by one using below command
+kubectl delete pod &lt;idm-pod-name&gt; -n core
+</pre>
+<h3><span id="Step_2:_Update_suite_DB_host_and_port_in_conﬁgmap"></span><span class="mw-headline" id="Step_2:_Update_suite_DB_host_and_port_in_con.EF.AC.81gmap">Step 2: Update suite DB host and port in conﬁgmap</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;veaction=edit&amp;section=18" class="mw-editsection-visualeditor" title="Edit section: Step 2: Update suite DB host and port in conﬁgmap">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;action=edit&amp;section=18" title="Edit section: Step 2: Update suite DB host and port in conﬁgmap">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Run the following command as root on a master node of the SMA suite:
+</p>
+<pre>#kubectl edit cm database-configmap -n &lt;namespace&gt; -o yaml
+</pre>
+<p>You need to modify the following parameter values:
+</p>
+<pre>autopass_db_host: &lt;LB ip address&gt; 
+autopass_db_port: &lt;LB listening port&gt; 
+bo_db_host: &lt;LB ip address&gt; 
+bo_db_port: &lt;LB listening port&gt; 
+idm_db_host: &lt;LB ip address&gt; 
+idm_db_port: &lt;LB listening port&gt; 
+smarta_db_host: &lt;LB ip address&gt; 
+smarta_db_port: &lt;LB listening port&gt; 
+xruntime_db_host: &lt;LB ip address&gt; 
+xruntime_db_port: &lt;LB listening port&gt;
+</pre>
+<h3><span class="mw-headline" id="Step_3:_Restart_SMA">Step 3: Restart SMA</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;veaction=edit&amp;section=19" class="mw-editsection-visualeditor" title="Edit section: Step 3: Restart SMA">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;action=edit&amp;section=19" title="Edit section: Step 3: Restart SMA">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Run the following commands as root:
+</p>
+<pre>cd /opt/kubernetes/scripts
+./cdfctl.sh runlevel set –l DOWN –n &lt;suite namespace&gt;
+./cdfctl.sh runlevel set –l UP –n &lt;suite namespace&gt;
+</pre>
+<h2><span class="mw-headline" id="Appendix">Appendix</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;veaction=edit&amp;section=20" class="mw-editsection-visualeditor" title="Edit section: Appendix">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;action=edit&amp;section=20" title="Edit section: Appendix">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>This section provides information that can help you better understand the PGHA setup process and troubleshoot problems.
+</p>
+<h3><span class="mw-headline" id="Understand_the_PG_promotion_process">Understand the PG promotion process</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;veaction=edit&amp;section=21" class="mw-editsection-visualeditor" title="Edit section: Understand the PG promotion process">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;action=edit&amp;section=21" title="Edit section: Understand the PG promotion process">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Understand how the standby PG node is promoted to primary.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="PractitionersNotes/SMAX SetExtpSQLHA4.png" src="/mediawiki/images/6/67/PractitionersNotes/SMAX_SetExtpSQLHA4.png" width="944" height="557" data-file-width="944" data-file-height="557"></a>
+</p>
+<h3><span class="mw-headline" id="How_to_restart_the_PGHA_system">How to restart the PGHA system</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;veaction=edit&amp;section=22" class="mw-editsection-visualeditor" title="Edit section: How to restart the PGHA system">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;action=edit&amp;section=22" title="Edit section: How to restart the PGHA system">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Sometimes, you need to restart the PGHA system. For example, you need to modify certain PostgreSQL parameters (for example, for performance tuning), and these parameters require a restart to take effect. To restart the PGHA system, perform the following steps:
+</p>
+<ol><li>Run the command below on the two DB nodes to stop the Pgpool service: <br>  <code>systemctl stop pgpool</code></li>
+<li>Run the command below on the two DB nodes to stop PostgreSQL:   <br><code>systemctl stop postgresql-9.5</code></li>
+<li>If needed, modify PostgreSQL parameters on the two DB nodes. For details, see your PostgreSQL documentation.</li>
+<li>Start PostgreSQL on the two DB nodes:  <br> <code>systemctl start postgresql-9.5</code></li>
+<li>Run the command below on the two DB nodes to start the Pgpool service:  <br> <code>systemctl start pgpool</code></li></ol>
+<h3><span class="mw-headline" id="How_to_bring_the_original_primary_node_back_as_the_standby_server">How to bring the original primary node back as the standby server</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;veaction=edit&amp;section=23" class="mw-editsection-visualeditor" title="Edit section: How to bring the original primary node back as the standby server">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;action=edit&amp;section=23" title="Edit section: How to bring the original primary node back as the standby server">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>When a failover happens, the standby PostgreSQL server is promoted to the primary server, and the original primary server is detached. For this reason, you need to manually bring it back as the standby server. To do this, perform the following steps.
+</p>
+<h4><span id="Step_1._Run_commands_on_the_new_primary_node_(dbnode2)"></span><span class="mw-headline" id="Step_1._Run_commands_on_the_new_primary_node_.28dbnode2.29">Step 1. Run commands on the new primary node (dbnode2)</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;veaction=edit&amp;section=24" class="mw-editsection-visualeditor" title="Edit section: Step 1. Run commands on the new primary node (dbnode2)">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;action=edit&amp;section=24" title="Edit section: Step 1. Run commands on the new primary node (dbnode2)">edit source</a><span class="mw-editsection-bracket">]</span></span></h4>
+<ol><li>Add a replication user entry for dbnode1 in ﬁle /var/lib/pgsql/9.5/data/pg_hba.conf:<br> <code>host      replication repl_dbnode2       &lt;dbnode1 ip&gt;/32 md5</code></li>
+<li>Reload the pg_hba.conf:  <br><code>su - postgres</code><br>       <code>psql -c 'SELECT pg_reload_conf();'</code></li>
+<li>Create a replication slot:   <br><code>psql -c "SELECT pg_create_physical_replication_slot('pg_haa2');"</code></li></ol>
+<h4><span id="Step_2._Run_commands_on_the_original_primary_node_(dbnode1)"></span><span class="mw-headline" id="Step_2._Run_commands_on_the_original_primary_node_.28dbnode1.29">Step 2. Run commands on the original primary node (dbnode1)</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;veaction=edit&amp;section=25" class="mw-editsection-visualeditor" title="Edit section: Step 2. Run commands on the original primary node (dbnode1)">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;action=edit&amp;section=25" title="Edit section: Step 2. Run commands on the original primary node (dbnode1)">edit source</a><span class="mw-editsection-bracket">]</span></span></h4>
+<ol><li>Perform PG basebackup. 
+
+Before you perform a PG sync from the current primary node, you’d better create a backup of the current PGDATA. If you have specified another PGDATA folder instead of the default folder “/var/lib/pgsql/9.5/data”, you need to change the commands accordingly. 
+
+<pre>su - postgres
+
+cd /var/lib/pgsql/9.5
+
+mv data data.bak
+
+export PGPASSWORD=PASSWORD
+
+pg_basebackup -U repl_dbnode2 -X stream -D ./data -h &lt;dbnode2&gt;&nbsp; -p 5432</pre></li>
+<li>Modify the primary_conninfo in recovery.conf &nbsp;as user postgres: 
+
+<pre>cd data
+
+mv recovery.done recovery.conf
+
+vi recovery.conf</pre>
+In the primary_conninfo line, change the host name to the new primary host name.</li>
+
+<li>Start postgres
+
+<pre>systemctl start postgresql-9.5</pre></li>
+<li>Check the replication:
+
+<pre>psql -h &lt;dbnode hostname&gt; -p 9999 -U postgres -c 'select sent_location,replay_location from pg_stat_replication'</pre></li>
+<li>To check the PGPOOL status:
+
+<pre>psql -h &lt;dbnode hostname&gt; -p 9999 -U postgres -c 'show pool_nodes'&nbsp;</pre></li></ol>
+<h3><span class="mw-headline" id="How_to_restore_the_system_after_an_unexpected_DB_failover">How to restore the system after an unexpected DB failover</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;veaction=edit&amp;section=26" class="mw-editsection-visualeditor" title="Edit section: How to restore the system after an unexpected DB failover">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.02/PractitionersNotes/SetExtpSQLHA&amp;action=edit&amp;section=26" title="Edit section: How to restore the system after an unexpected DB failover">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>DB failover will happen when the primary PostgreSQL database server is unavailable. In this case, if you want to bring the original primary database back as the primary database, you can perform the following steps to restore your system. However, if new primary DB server stores new business data that does not exist in the original primary DB server, performing this step will cause data loss. For this reason, you are not recommended to do so in a production environment. &nbsp;
+</p>
+<ol><li>Stop the two pgpool services by running the following command on the two DB nodes: 
+
+<pre>systemctl stop pgpool</pre>
+<p>If the services cannot be stopped, continue to run the following commands:
+</p>
+<pre>ps -ef|grep pgpool|awk -F' ' '{ print $2 }'|xargs kill -9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+
+rm -f /tmp/.*.9999&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+
+rm -f /tmp/.*.9898&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</pre></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<li>Stop the PostgreSQL service on the two DB nodes: 
+
+<pre>systemctl stop postgresql-9.5</pre></li>
+<li>Start the original primary PostgreSQL server (dbnode1). </li>
+
+<li>Switch the new primary db server (dbnode2) to standby mode:
+
+<ol><li>Back up the &lt;PG DATA&gt; folder with a new folder name (for example databackup.001).</li>
+
+<li>Perform PG basebackup to sync data from the original primary server.</li>
+
+<li>Copy the databackup.001/recovery.done file to the &lt;PG DATA&gt;/recovery.conf folder.</li>
+
+<li>At the bottom of the postgresql.conf file, add a new line:
+
+<pre>&nbsp;hot_standby='on'</pre></li>
+<li>Start the PostgreSQL Server.</li>
+
+<li>Run SQL to check that if this database is running in standby mode:
+
+<pre>SELECT pg_is_in_recovery()</pre></li>
+<li>Check that the replication is going on:
+
+<pre>psql -h &lt;dbnode hostname&gt; -p 9999 -U postgres -c 'select sent_location,replay_location from pg_stat_replication'</pre></li></ol>
+</li><li>Start pgpool on both DB hosts:
+
+<pre>systemctl start pgpool</pre></li>
+<li>Check the PostgreSQL HA status on one of the db nodes (dbnode1 or dbnode2), as described previously.</li></ol>
+<p><br>
+</p>
+<!-- 
+NewPP limit report
+Cached time: 20190524103448
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.040 seconds
+Real time usage: 0.083 seconds
+Preprocessor visited node count: 314/1000000
+Preprocessor generated node count: 676/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 3385/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:770309-0!canonical and timestamp 20190524103447 and revision id 1372966
+ -->
+</div>
