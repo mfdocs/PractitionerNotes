@@ -1,1 +1,313 @@
- 
+<div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 07/03/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 16 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><p><br>
+</p><p>Networking in the CDF is based on Docker and Kubernetes networking concepts and implementation so first some information about these.
+</p>
+<div id="toc" class="toc"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none"><div class="toctitle" lang="en" dir="ltr"><h2>Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/Networking#Docker"><span class="tocnumber">1</span> <span class="toctext">Docker</span></a></li>
+<li class="toclevel-1"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/Networking#CDF"><span class="tocnumber">2</span> <span class="toctext">CDF</span></a>
+<ul>
+<li class="toclevel-2"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/Networking#Cluster_network_configuration"><span class="tocnumber">2.1</span> <span class="toctext">Cluster network configuration</span></a></li>
+<li class="toclevel-2"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/Networking#Network_fabric_for_Kubernetes"><span class="tocnumber">2.2</span> <span class="toctext">Network fabric for Kubernetes</span></a></li>
+<li class="toclevel-2"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/Networking#Flannel"><span class="tocnumber">2.3</span> <span class="toctext">Flannel</span></a>
+<ul>
+<li class="toclevel-3"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/Networking#Host-gw_configuration_and_data_flow"><span class="tocnumber">2.3.1</span> <span class="toctext">Host-gw configuration and data flow</span></a></li>
+<li class="toclevel-3"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/Networking#Vxlan_configuration_and_data_flow"><span class="tocnumber">2.3.2</span> <span class="toctext">Vxlan configuration and data flow</span></a></li>
+<li class="toclevel-3"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/Networking#Using_Flannel_with_Docker"><span class="tocnumber">2.3.3</span> <span class="toctext">Using Flannel with Docker</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/Networking#Pods_and_Services"><span class="tocnumber">2.4</span> <span class="toctext">Pods and Services</span></a></li>
+<li class="toclevel-2"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/Networking#Ingress_.2F_egress"><span class="tocnumber">2.5</span> <span class="toctext">Ingress / egress</span></a>
+<ul>
+<li class="toclevel-3"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/Networking#Ingress"><span class="tocnumber">2.5.1</span> <span class="toctext">Ingress</span></a></li>
+<li class="toclevel-3"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/Networking#Egress"><span class="tocnumber">2.5.2</span> <span class="toctext">Egress</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/Networking#Name_resolution_.28DNS.29"><span class="tocnumber">2.6</span> <span class="toctext">Name resolution (DNS)</span></a>
+<ul>
+<li class="toclevel-3"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/Networking#When_a_customer_DNS_resolution_is_available"><span class="tocnumber">2.6.1</span> <span class="toctext">When a customer DNS resolution is available</span></a></li>
+<li class="toclevel-3"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/Networking#When_a_customer_DNS_resolution_is_not_available"><span class="tocnumber">2.6.2</span> <span class="toctext">When a customer DNS resolution is not available</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/Networking#Ports"><span class="tocnumber">2.7</span> <span class="toctext">Ports</span></a></li>
+<li class="toclevel-2"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/Networking#CDF_Connections_map"><span class="tocnumber">2.8</span> <span class="toctext">CDF Connections map</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="https://staging.docs.microfocus.com/itom/SMAX:2019.02/Networking#ITOM_Suites"><span class="tocnumber">3</span> <span class="toctext">ITOM Suites</span></a></li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id="Docker">Docker</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;veaction=edit&amp;section=T-1" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;action=edit&amp;section=T-1" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>See: <a target="1" rel="nofollow" class="external free" href="https://docs.docker.com/engine/userguide/networking/">https://docs.docker.com/engine/userguide/networking/</a>
+</p><p>In the default Docker networking model every container has a single network interface eth0 which is mapped into the container from a virtual interface (veth) at the host level that Docker creates for every container. These virtual interfaces are connected to a bridge-type interface “docker0” and a subnet from which the containers receive an IP address.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="cdferwp201801 fig14.png" src="/mediawiki/images/thumb/e/e6/cdferwp201801_fig14.png/800px-cdferwp201801_fig14.png" width="800" height="325" srcset="/mediawiki/images/thumb/e/e6/cdferwp201801_fig14.png/1200px-cdferwp201801_fig14.png 1.5x, /mediawiki/images/e/e6/cdferwp201801_fig14.png 2x" data-file-width="1244" data-file-height="505"></a>
+</p><p>Figure - Docker host/container networking
+</p><p>This model allows each container on a Docker host to talk to every other container on the same host but not to a container running on another host.
+</p><p>To allow cross-host communication requires setting up port forwarding and/or proxying.
+</p><p>Cross-host communication is required in a Kubernetes cluster which almost always consists of multiple Docker hosts.
+</p>
+<h2><span class="mw-headline" id="CDF">CDF</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;veaction=edit&amp;section=T-2" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;action=edit&amp;section=T-2" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h3><span class="mw-headline" id="Cluster_network_configuration">Cluster network configuration</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;veaction=edit&amp;section=T-3" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;action=edit&amp;section=T-3" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p><a onclick="javascript:loadingImage(this);" class="image"><img alt="cdferwp201801 fig15.png" src="/mediawiki/images/thumb/a/a1/cdferwp201801_fig15.png/900px-cdferwp201801_fig15.png" width="900" height="437" srcset="/mediawiki/images/thumb/a/a1/cdferwp201801_fig15.png/1350px-cdferwp201801_fig15.png 1.5x, /mediawiki/images/a/a1/cdferwp201801_fig15.png 2x" data-file-width="1747" data-file-height="849"></a>
+</p><p>Figure - Cluster network diagram
+</p>
+<h3><span class="mw-headline" id="Network_fabric_for_Kubernetes">Network fabric for Kubernetes</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;veaction=edit&amp;section=T-4" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;action=edit&amp;section=T-4" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>See: <a target="1" rel="nofollow" class="external free" href="https://kubernetes.io/docs/concepts/cluster-administration/networking/">https://kubernetes.io/docs/concepts/cluster-administration/networking/</a>
+</p><p>Setting up port forwarding across multiple containers, hosts and users is not a viable model as the number of containers, hosts and users rises.
+</p><p>Therefore Kubernetes requires a slightly different network fabric configuration.
+</p><p>Kubernetes by itself will not work if you were to install it across multiple Docker hosts without the configuration of some network fabric.
+</p><p>The fabric provides the ability for each container on every host to talk to every other container on every other node.
+</p><p>No network address translation (NAT) is required. The Kubernetes documentation words this nicely as three items:
+</p>
+<ul><li>all containers can communicate with all other containers without NAT</li>
+<li>all nodes can communicate with all containers (and vice-versa) without NAT</li>
+<li>the IP that a container sees itself as is the same IP that others see it as</li></ul>
+<h3><span class="mw-headline" id="Flannel">Flannel</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;veaction=edit&amp;section=T-5" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;action=edit&amp;section=T-5" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>When the CDF installs and configures Kubernetes, it configures additional network fabric. In the 2018.11 release, the CDF supports only the Flannel network fabric.
+</p><p>Every host gets its own flannel daemon running which creates a subnet allocated in a preset range: 172.16.0.0/16 for containers and 172.17.17.0/24 for Kubernetes services.
+</p><p>The subnet configuration is handed over to the Docker daemon which uses it to generate IP addresses for its containers.
+</p><p>The subnet that Flannel generates is unique for cluster node. This guarantees that all Pods get a cluster-wide unique IP address. The uniqueness is guaranteed by Flannel using Etcd to store the subnet definitions.
+</p><p>The Flannel subnet is passed onto the Workload Docker daemon using the --bip option. This happens at install time.
+</p><p>The subnet that Flannel generates does not change for a node during the node lifecycle. It persists across reboots.
+</p><p>CDF supports two flannel configuration modes:
+</p>
+<ul><li>host-gw
+<ul><li>Packet forwarding via iptables rules set by flanneld</li>
+<li>Packets not encapsulated</li>
+<li>Requires layer 2 connectivity between nodes</li>
+<li>Packet forwarding occurs at the physical layer ie NIC</li>
+<li>Requires all CDF nodes to be in a single subnet</li></ul></li>
+<li>vxlan
+<ul><li>Packet forwarding via Linux kernel VXLAN functionality</li>
+<li>Creates a virtual L2 network over a physical L3 network.</li>
+<li>Works by encapsulating L2 packet in an L3 packet.</li>
+<li>Requires only the master nodes to be in the same subnet</li></ul></li></ul>
+<h5><span class="mw-headline" id="Host-gw_configuration_and_data_flow">Host-gw configuration and data flow</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;veaction=edit&amp;section=T-6" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;action=edit&amp;section=T-6" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h5>
+<p><a onclick="javascript:loadingImage(this);" class="image"><img alt="cdferwp201801 fig16.png" src="/mediawiki/images/thumb/2/29/cdferwp201801_fig16.png/900px-cdferwp201801_fig16.png" width="900" height="549" srcset="/mediawiki/images/thumb/2/29/cdferwp201801_fig16.png/1350px-cdferwp201801_fig16.png 1.5x, /mediawiki/images/2/29/cdferwp201801_fig16.png 2x" data-file-width="1362" data-file-height="831"></a>
+</p><p>Figure - Flannel host-gw configuration and data flow
+</p>
+<h5><span class="mw-headline" id="Vxlan_configuration_and_data_flow">Vxlan configuration and data flow</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;veaction=edit&amp;section=T-7" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;action=edit&amp;section=T-7" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h5>
+<p><a onclick="javascript:loadingImage(this);" class="image"><img alt="cdferwp201801 fig17.png" src="/mediawiki/images/6/6f/cdferwp201801_fig17.png" width="900" height="303" data-file-width="541" data-file-height="182"></a>
+</p><p>Figure - Flannel vxlan configuration and data flow
+</p>
+<div class="Admonition_Note">
+<p><span class="autonumber">Note</span><br>
+The Bootstrap Docker daemon does not use the Flannel generated subnet. This daemon’s container subnet is a separate Docker self-generated subnet. However, it is not actively used by any bootstrap containers. All bootstrap containers running on the Bootstrap Docker instance share the host IP through the use of the --net=host switch when started.
+</p>
+</div>
+<h5><span class="mw-headline" id="Using_Flannel_with_Docker">Using Flannel with Docker</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;veaction=edit&amp;section=T-8" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;action=edit&amp;section=T-8" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h5>
+<p>See also <a href="./itom/ITOM_Container_Deployment_Foundation:2019.02/WhitepaperAppendix1" title="ITOM Container Deployment Foundation:2019.02/WhitepaperAppendix1">APPENDIX 1: Docker and Flannel</a>
+</p><p>The Workload Docker daemon assigns DHCP IP addresses for the containers on this node from its assigned network CIDR.
+</p><p>Kubernetes records this container IP address and stores the information in Etcd and decorates the pause container with the network information.
+</p><p>IP address allocation has two exceptions:
+</p><p>Case 1: containers that share the host IP address:
+</p>
+<ul><li>Containers started directly on Bootstrap Docker with --net=host: Etcd, Vault, Flannel, keepalived</li>
+<li>Kubernetes Pods started on Workload Docker with “hostNetwork: true”: Kubernetes API server, Kubernetes controller manager, Kube Proxy, Kube Scheduler</li></ul>
+<p>Case 2: Kubernetes Services (Kind:Service): assigned from a network defined when the Kubernetes API server is started. This does not overlap with any Pod IPs.
+</p>
+<pre class="syntaxhighlighter-pre"># kubectl describe svc mng-portal -n core
+
+Name: mng-portal
+Namespace: core
+Labels: app=mng-portal
+Annotations: &lt;none&gt;
+Selector: app=mng-portal
+Type: ClusterIP
+IP: 172.17.17.117
+Port: &lt;unset&gt; 80/TCP
+TargetPort: 9090/TCP
+Endpoints: 172.16.98.2:9090
+Session Affinity: None
+Events: &lt;none&gt;
+</pre>
+<p>The cluster services IP address is specified on the Kubernetes API server, see &lt;CDF_ROOT&gt;/manifests/kube-apiserver.yaml:
+</p>
+<pre class="syntaxhighlighter-pre">…..
+- command:
+- /hyperkube
+- apiserver
+# - --advertise-address=myd-vm01847.mycompany.net
+- --bind-address=0.0.0.0
+- --etcd-servers=https://myd-vm01847.mycompany.net:4001
+- --insecure-port=0
+- --secure-port=8443
+# - --token-auth-file=/etc/kubernetes/ssl/token
+- --service-cluster-ip-range=172.17.17.0/24
+…..
+</pre>
+<p>All other CDF system/core containers have an IP addresses assigned by the Workload Docker daemon from the network defined by Flannel.
+</p><p>The following diagram shows a practical example:
+</p>
+<ul><li>The host node has a statically assigned IP address from 16.0.0.0/16</li>
+<li>The Bootstrap Docker is only accessible via localhost and has a self-generated container subnet of 172.17.0.0/16. This subnet is <b>unused</b> because all the CDF containers on the Bootstrap Docker share there IP address with the host.</li>
+<li>The Workload Docker is only accessible via localhost and has a container subnet selected from 172.16.0.0/16. The actual subnet will be selected by Flannel for this node.</li>
+<li>The three CDF system services that run on the Bootstrap Docker share the host’s IP address.</li>
+<li>Kubernetes Kubelet runs directly on the node and shares the host’s IP address.</li>
+<li>Various other Kubernetes components run containerized but share the host’s IP address (*).</li>
+<li>All other CDF and Suite components run containerized and get an IP addressed assigned in the 172.16.0.0/16 Flannel selected subnet (*2).</li></ul>
+<p><a onclick="javascript:loadingImage(this);" class="image"><img alt="cdferwp201801 fig18.png" src="/mediawiki/images/thumb/b/b5/cdferwp201801_fig18.png/900px-cdferwp201801_fig18.png" width="900" height="397" srcset="/mediawiki/images/thumb/b/b5/cdferwp201801_fig18.png/1350px-cdferwp201801_fig18.png 1.5x, /mediawiki/images/thumb/b/b5/cdferwp201801_fig18.png/1800px-cdferwp201801_fig18.png 2x" data-file-width="1815" data-file-height="800"></a>
+</p><p>Figure - CDF networking
+</p><p>The Pod is decorated with the DHCP IP address in the local node subnet address range.
+</p><p>All containers that make up the Pod share the same IP address. Inside the Pod, containers can talk to each other’s processes using “localhost”.
+</p><p>The decoration is stored on a container called “pause”, using the image gcr.io/google_containers/pause-amd64:3.0 (different CDF releases may use a newer or different image). These containers are only visible when using direct “docker” commands.
+</p><p>For more detail on Flannel, see: <a target="1" rel="nofollow" class="external free" href="https://github.com/coreos/flannel">https://github.com/coreos/flannel</a>
+</p><p>Kubernetes clusters are closed from a network perspective. All intra-container traffic stays inside the cluster. No outside access to any internal cluster services is possible. All Ingress has to be declared explicitly: traffic from outside the cluster is only possible if explicitly allowed.
+</p><p>Cross-node traffic is secured using TLS.
+</p>
+<div class="Admonition_Note">
+<p><span class="autonumber">Note</span><br>
+Refer to the Suite documentation for any exceptions.
+</p>
+</div>
+<h3><span class="mw-headline" id="Pods_and_Services">Pods and Services</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;veaction=edit&amp;section=T-9" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;action=edit&amp;section=T-9" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Pods in Kubernetes are ephemeral. They can be created and destroyed dynamically. When destroyed, they will not have the same network identify.
+</p><p>For this reason, Services were defined as a logical group of Pods. Services are long lived. Services load balance incoming traffic across the set of Pods that they group.
+</p><p>A service represents a micro-service, such as a web server or a database engine. Services can be discovered using environment variables (every container gets injected with all of the services in its namespace) or DNS (services are named get a fixed long-lived DNS name and can be addressed this way).
+</p><p>Inside the cluster containers can talk to micro-services exposed via Services without having to know where the service runs, how many replicas serve it or what its IP address is.
+</p><p>Cluster services receive IP address from the cluster service IP range. This is preset to 172.17.17.0/24. All cluster services will receive an IP address allocated in this range. (This range is a configuration parameter to the Kubernetes API server, see <a target="1" rel="nofollow" class="external free" href="https://kubernetes.io/docs/admin/kube-apiserver/">https://kubernetes.io/docs/admin/kube-apiserver/</a>, --service-cluster-ip-range parameter.
+</p>
+<h3><span id="Ingress_/_egress"></span><span class="mw-headline" id="Ingress_.2F_egress">Ingress / egress</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;veaction=edit&amp;section=T-10" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;action=edit&amp;section=T-10" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<h5><span class="mw-headline" id="Ingress">Ingress</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;veaction=edit&amp;section=T-11" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;action=edit&amp;section=T-11" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h5>
+<p>To access a service from an external network requires adding some additional information to expose it via a port on all nodes or via a load balancer.
+</p><p>In the CDF services are of type clusterIP so by default they are not visible from outside the cluster. They may or may not be grouped under an Ingress controller to provide a unified URL namespace and access to the cluster services.
+</p><p>The CDF registers the following services:
+</p><p>Run: <code>kubectl get svc --all-namespaces</code>
+</p>
+<pre class="syntaxhighlighter-pre">NAMESPACE NAME TYPE CLUSTER-IP EXTERNAL-IP PORT(S) AGE
+
+core cdf-suitefrontend-svc ClusterIP 172.17.17.181 &lt;none&gt; 8443/TCP 11d
+core cdf-svc ClusterIP 172.17.17.41 &lt;none&gt; 8080/TCP,8443/TCP 11d
+core default-postgresql-svc ClusterIP 172.17.17.161 &lt;none&gt; 5432/TCP 14d
+core idm-postgresql-svc ClusterIP 172.17.17.194 &lt;none&gt; 5432/TCP 14d
+core idm-svc ClusterIP 172.17.17.196 &lt;none&gt; 443/TCP 11d
+core kube-dns ClusterIP 172.17.17.78 &lt;none&gt; 53/UDP,53/TCP 11d
+core kube-registry ClusterIP 172.17.17.129 &lt;none&gt; 5000/TCP 11d
+core kubernetes-vault ClusterIP None &lt;none&gt; 80/TCP,8898/TCP 11d
+core mng-portal ClusterIP 172.17.17.117 &lt;none&gt; 80/TCP 11d
+core suite-conf-svc-demo ClusterIP 172.17.17.130 &lt;none&gt; 8080/TCP,8081/TCP 14d
+core suite-db-svc ClusterIP 172.17.17.26 &lt;none&gt; 5432/TCP 11d
+core suite-installer-svc ClusterIP 172.17.17.4 &lt;none&gt; 8080/TCP,8443/TCP 11d
+default kubernetes ClusterIP 172.17.17.1 &lt;none&gt; 443/TCP 15d
+demo2 app-api-svc ClusterIP 172.17.17.136 &lt;none&gt; 8060/TCP 14d
+demo2 app-ui-svc NodePort 172.17.17.86 &lt;none&gt; 82:23082/TCP 14d
+demo2 autopass-lm-svc ClusterIP 172.17.17.39 &lt;none&gt; 5814/TCP 14d
+demo2 demo-chatops-login-svc ClusterIP 172.17.17.3 &lt;none&gt; 3100/TCP 14d
+demo2 demo-chatops-mattermost-svc ClusterIP 172.17.17.159 &lt;none&gt; 3000/TCP 14d
+demo2 demo-chatops-mattermost-svc2 ClusterIP 172.17.17.178 &lt;none&gt; 3000/TCP 14d
+demo2 itom-chatops-slack-svc NodePort 172.17.17.172 &lt;none&gt; 3000:21835/TCP,9001:9001/TCP 14d
+demo2 itom-chatops-slack-svc2 NodePort 172.17.17.48 &lt;none&gt; 3000:11095/TCP,9002:9002/TCP 14d
+demo2 postgres-svc ClusterIP 172.17.17.145 &lt;none&gt; 5432/TCP 14d
+kube-system heapster ClusterIP 172.17.17.131 &lt;none&gt; 80/TCP 11d
+</pre>
+<p>There are services for ultimately externally-facing services, and services that will never be exposed.
+</p><p>By default, none of the services are exposed externally. The default Kubernetes service type is ClusterIP which keeps the services externally invisible but internally fully visible.
+</p><p>To allow external access for CDF services, an Ingress definition processed by an Ingress controller is needed or redefinition of a service to type nodePort.
+</p><p>For example, to access the CDF Management Portal, an Ingress definition is created. Run: <code>kubectl describe ing mng-portal -n core</code>
+</p>
+<pre class="syntaxhighlighter-pre">Name: mng-portal
+Namespace: core
+Address: 16.59.63.32
+Default backend: default-http-backend:80 (&lt;none&gt;)
+TLS:
+nginx-default-secret terminates myd-vm01841.mfswlab.net
+Rules:
+Host Path Backends
+---- ---- --------
+myd-vm01841.mfswlab.net
+/ mng-portal:80 (&lt;none&gt;)
+/mngPortal mng-portal:80 (&lt;none&gt;)
+Annotations:
+enable-cors: true
+rewrite-target: /
+secure-backends: true
+</pre>
+<ul><li>Both the / and /mngPortal URLs will redirect traffic to the mng-portal service port 80.</li>
+<li>TLS termination happens at the Ingress layer.</li></ul>
+<p>The mng-portal service is defined as follows. Run: <code>kubectl describe svc mng-portal -n core</code>
+</p>
+<pre class="syntaxhighlighter-pre">Name: mng-portal
+Namespace: core
+Labels: app=mng-portal
+Annotations: &lt;none&gt;
+Selector: app=mng-portal
+Type: ClusterIP
+IP: 172.17.17.117
+Port: &lt;unset&gt; 80/TCP
+TargetPort: 9090/TCP
+Endpoints: 172.16.98.5:9090
+Session Affinity: None
+Events: &lt;none&gt;
+</pre>
+<ul><li>The service itself is of type ClusterIP so only visible externally when explicitly described by an Ingress rule.</li>
+<li>The cluster internal IP is 172.17.17.117.</li>
+<li>The actual Management Portal service is running inside a Pod with IP address 172.16.98.5 on port 9090.</li></ul>
+<p>Ingress for Suites is similar to CDF Ingress.
+</p>
+<div class="Admonition_Note">
+<p><span class="autonumber">Note</span><br>
+</p>
+ Suites may not use Ingress rules and Ingress controller but rather expose their functionality via nodePort-type services or a combination of both.</div>
+<h5><span class="mw-headline" id="Egress">Egress</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;veaction=edit&amp;section=T-12" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;action=edit&amp;section=T-12" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h5>
+<p>All containers can talk to the outside world. They are only limited by firewall and network rules at the host and host network(s) level.
+</p>
+<h3><span id="Name_resolution_(DNS)"></span><span class="mw-headline" id="Name_resolution_.28DNS.29">Name resolution (DNS)</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;veaction=edit&amp;section=T-13" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;action=edit&amp;section=T-13" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<h5><span class="mw-headline" id="When_a_customer_DNS_resolution_is_available">When a customer DNS resolution is available</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;veaction=edit&amp;section=T-14" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;action=edit&amp;section=T-14" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h5>
+<p>Inside the cluster, a container resolves a DNS names as follows:
+</p>
+<pre class="syntaxhighlighter-pre">"&lt;namespace&gt;.svc.cluster.local",
+"svc.cluster.local",
+"cluster.local",
+"&lt;search in host /etc/resolv.conf&gt;"
+</pre>
+<p>So if a container running in Kubernetes namespace “suite1” wants to talk to service svc1, then it will try the following path:
+</p>
+<pre class="syntaxhighlighter-pre">svc1.suite1.svc.cluster.local",
+svc1.svc.cluster.local",
+svc1.cluster.local",
+svc1.&lt;prefix(es)&gt; from search statement in host /etc/resolv.conf
+</pre>
+<h5><span class="mw-headline" id="When_a_customer_DNS_resolution_is_not_available">When a customer DNS resolution is not available</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;veaction=edit&amp;section=T-15" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;action=edit&amp;section=T-15" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h5>
+<p>All of the internal Kubernetes resolution will be unaffected. Hostnames outside of the cluster (including the host nodes) will have to be statically specified.
+</p><p>For this purpose, customers can specify a fixed hostname-to-IP list using a Kubernetes config map. See the Administration Guide for details.
+</p>
+<h3><span class="mw-headline" id="Ports">Ports</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;veaction=edit&amp;section=T-16" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;action=edit&amp;section=T-16" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Open port requirements for CDF are listed in <a href="./itom/ITOM_Platform:2019.02/PrepareServer" title="ITOM Platform:2019.02/PrepareServer">Prepare the server</a>.
+</p>
+<h3><span class="mw-headline" id="CDF_Connections_map">CDF Connections map</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;veaction=edit&amp;section=T-17" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;action=edit&amp;section=T-17" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<div class="MediaTransformError" style="width: 900px; height: 451px; display:inline-block;">Error creating thumbnail: File missing</div>
+<h2><span class="mw-headline" id="ITOM_Suites">ITOM Suites</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;veaction=edit&amp;section=T-18" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/WhitepaperNetworking&amp;action=edit&amp;section=T-18" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Accessing Suite functionality can be via defined Ingress resources and its controller and/or directly via services exposed using nodePort or both.
+</p><p>Suites may use:
+</p>
+<ul><li>“clusterIP” services exposed via Ingress resource and Ingress controller in the suite namespace</li>
+<li>“nodePort” services available on a particular port on every cluster node</li>
+<li>A hybrid of both approaches.</li></ul>
+<p>Refer to the Suite installation/administration guides for details.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="cdferwp201801 fig19.png" src="/mediawiki/images/thumb/5/56/cdferwp201801_fig19.png/900px-cdferwp201801_fig19.png" width="900" height="422" srcset="/mediawiki/images/5/56/cdferwp201801_fig19.png 1.5x" data-file-width="1269" data-file-height="595"></a>
+</p><p>Figure - Cluster ingress
+</p><p>Refer to the Suite installation/administration documentation for details on accessible end points.
+</p>
+<!-- 
+NewPP limit report
+Cached time: 20190524103605
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.036 seconds
+Real time usage: 0.110 seconds
+Preprocessor visited node count: 49/1000000
+Preprocessor generated node count: 142/1000000
+Post‐expand include size: 12811/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 3652/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:430640-0!canonical and timestamp 20190524103605 and revision id 1259975
+ -->
+</div>
