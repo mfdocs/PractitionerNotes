@@ -1,15 +1,18 @@
-<div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 11/03/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 14 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><div class="mw-collapsible-content"><div class="Admonition_Tip"><span class="autonumber">Core Data</span><div class="mw-collapsible">
+<div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 01/04/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 16 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><div class="mw-collapsible-content"><div class="Admonition_Tip"><span class="autonumber">Core Data</span><div class="mw-collapsible">
 <div class="mw-collapsible-content">
-<p>In chapter 2 we tackle the concepts around the core data of the Service Management Automation X suite: people, locations, and groups (and we’ll throw in roles for good measure).
-</p><p>As we introduce new record types, we will be building up the Service Management Automation X Data Model. The complete data model can be found <a href="./itom/SMAX:2018.05/PractitionersNotes/GettingStarted/DataModel" title="SMAX:2018.05/PractitionersNotes/GettingStarted/DataModel">here</a>.
+<p><br>
+In chapter 2 we tackle the concepts around the core data of the Service Management Automation X suite: people, locations, and groups (and we’ll throw in roles for good measure).
+</p><p>As we introduce new record types, we will be building up the Service Management Automation X Data Model. In each chapter, we will investigate the core files for each concept or module introduced as well as their immediate relationships to other record types. This also means that not every relationship may be shown for each record type, which greatly reduces the complexity of each image. At the end of this guide, we will describe the data model in detail, but it is difficult to display every relationship in the system in one image. The complete data model can be found <a href="./itom/SMAX:2018.08/PractitionersNotes/GettingStarted/DataModel" title="SMAX:2018.08/PractitionersNotes/GettingStarted/DataModel">here</a>.
 </p><p>In our Data Model, each box is color-coded. These colors represent the <b>badge color</b> for records of that type within SMAX. The color families also help to visualize the overall modules that certain collections of records create.
 </p><p>Putting the Core Data record types into our data model is a bit problematic, as they relate in some way to almost every other record type in the system. Instead of drawing all of those lines and making our model unreadable, here we present a simplified data model showing only the relationships between these objects.
 </p>
-<div class="center"><div class="floatnone"><a onclick="javascript:loadingImage(this);" class="image"><img alt="people.png" src="/mediawiki/images/e/e2/people.png" width="459" height="183" data-file-width="459" data-file-height="183"></a></div></div>
-<p>Note the icons for Person, Location, Entitlement Rule and Group. On our data models from here on out we will add these icons to any boxes that have relationships to each type. For example, Incident records reference several types of Core Data, giving the following representation:
+<div class="center"><div class="floatnone"><a onclick="javascript:loadingImage(this);" class="image"><img alt="XCoreData.gif" src="/mediawiki/images/3/3b/XCoreData.gif" width="436" height="210" data-file-width="436" data-file-height="210"></a></div></div>
+<p><br>
+Note the icons for Person, Location, Entitlement Rule, Time period and Group. On our data models from here on out we will add these icons to any boxes that have relationships to each type. For example, Incident records reference several types of Core Data, giving the following representation:
 </p>
-<div class="center"><div class="floatnone"><a onclick="javascript:loadingImage(this);" class="image"><img alt="IncidentOnly.png" src="/mediawiki/images/d/d5/IncidentOnly.png" width="125" height="83" data-file-width="125" data-file-height="83"></a></div></div>
-<p>In this way, the icons show that the Incident has relationships to Person, Group, and Location.
+<div class="center"><div class="floatnone"><a onclick="javascript:loadingImage(this);" class="image"><img alt="IncidentExample.gif" src="/mediawiki/images/d/d6/IncidentExample.gif" width="124" height="81" data-file-width="124" data-file-height="81"></a></div></div>
+<p><br>
+In this way, the icons show that the Incident has relationships to Person, Group, and Location.
 </p><p>By the end of this section Glenn will: 
 </p>
 <ul><li>Understand which people he needs to include in the Service Management Automation X implementation</li>
@@ -18,8 +21,6 @@
 <li>Learn about the two different types of Groups in Service Management Automation X; Functional and Organizational</li>
 <li>Define what makes up a Location</li>
 <li>See how certain information can be made available only to certain users</li></ul>
-<p><br>
-</p>
 </div>
 </div>
 </div>
@@ -28,40 +29,40 @@
 </p>
 <div id="toc" class="toc"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none"><div class="toctitle" lang="en" dir="ltr"><h2>Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
 <ul>
-<li class="toclevel-1 tocsection-1"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/GettingStarted/CoreData#People"><span class="tocnumber">1</span> <span class="toctext">People</span></a></li>
-<li class="toclevel-1 tocsection-2"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/GettingStarted/CoreData#Groups"><span class="tocnumber">2</span> <span class="toctext">Groups</span></a></li>
-<li class="toclevel-1 tocsection-3"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/GettingStarted/CoreData#Roles"><span class="tocnumber">3</span> <span class="toctext">Roles</span></a></li>
-<li class="toclevel-1 tocsection-4"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/GettingStarted/CoreData#Locations"><span class="tocnumber">4</span> <span class="toctext">Locations</span></a></li>
-<li class="toclevel-1 tocsection-5"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/GettingStarted/CoreData#Entitlement_Rules"><span class="tocnumber">5</span> <span class="toctext">Entitlement Rules</span></a></li>
+<li class="toclevel-1 tocsection-1"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.08/PractitionersNotes/GettingStarted/CoreData#People"><span class="tocnumber">1</span> <span class="toctext">People</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.08/PractitionersNotes/GettingStarted/CoreData#Groups"><span class="tocnumber">2</span> <span class="toctext">Groups</span></a></li>
+<li class="toclevel-1 tocsection-3"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.08/PractitionersNotes/GettingStarted/CoreData#Roles"><span class="tocnumber">3</span> <span class="toctext">Roles</span></a></li>
+<li class="toclevel-1 tocsection-4"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.08/PractitionersNotes/GettingStarted/CoreData#Locations"><span class="tocnumber">4</span> <span class="toctext">Locations</span></a></li>
+<li class="toclevel-1 tocsection-5"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.08/PractitionersNotes/GettingStarted/CoreData#Entitlement_Rules"><span class="tocnumber">5</span> <span class="toctext">Entitlement Rules</span></a></li>
+<li class="toclevel-1 tocsection-6"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.08/PractitionersNotes/GettingStarted/CoreData#Time_Periods"><span class="tocnumber">6</span> <span class="toctext">Time Periods</span></a></li>
 </ul>
 </div>
 
-<h2><span class="mw-headline" id="People">People</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/GettingStarted/CoreData&amp;veaction=edit&amp;section=1" class="mw-editsection-visualeditor" title="Edit section: People">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/GettingStarted/CoreData&amp;action=edit&amp;section=1" title="Edit section: People">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h2><span class="mw-headline" id="People">People</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/GettingStarted/CoreData&amp;veaction=edit&amp;section=1" class="mw-editsection-visualeditor" title="Edit section: People">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/GettingStarted/CoreData&amp;action=edit&amp;section=1" title="Edit section: People">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
 <p>The first thing I need to do is to figure out who needs to be part of the system, and what they will do inside of it.
 </p><p>First, all the people that provide one or more of our services (I know we haven’t talked about services yet, but for now think of them as anything someone might ask us for) need to be in the system so they can see all of the incoming user requests, get notifications about or possible issues, and work on any tasks we need to assign to them. In most cases, we refer to these users as <b>agents</b>.
 </p><p>Second, there are all the people that want to consume our services that need a way to interact with us to request the services, report issues with their ability to consume the service, or even just ask questions about the services. This type of user is most often referred to as an '<b>end user'</b> or '<b>service requester'</b>.
 </p><p>Finally, there are all the people that will not be using the system itself but may be referenced inside of it. One example is our external vendors. These users won’t log into the system, but our agents might want to call them or send them a copy of a request via email, so we need their contact information in the system.
 </p><p>In Service Management Automation X there are two types of people; <b>users</b> and <b>contacts</b>. Users are people that can log into the system, while contacts cannot. From our previous examples, our agents and end users will exist as users, while the rest (external vendors, etc.) will be contacts.
 </p><p>We already have all our Users in our company’s Active Directory (AD), which we can import directly into SMAX. We'll have to do extra work to also get all our contacts into the system. One thing, we should make sure we check that our current AD data is correct before we move any of it into our new system.
-</p><p>You can find more information about People in the Service Management Automation X Help Guide <a target="1" rel="nofollow" class="external text" href="http://docs.microfocus.com/ITSMA/2018.05/NG/SM_X/Content/Search.htm#search-people">here</a>.
+</p><p>You can find more information about People in the help center.
 </p>
-<h2><span class="mw-headline" id="Groups">Groups</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/GettingStarted/CoreData&amp;veaction=edit&amp;section=2" class="mw-editsection-visualeditor" title="Edit section: Groups">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/GettingStarted/CoreData&amp;action=edit&amp;section=2" title="Edit section: Groups">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h2><span class="mw-headline" id="Groups">Groups</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/GettingStarted/CoreData&amp;veaction=edit&amp;section=2" class="mw-editsection-visualeditor" title="Edit section: Groups">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/GettingStarted/CoreData&amp;action=edit&amp;section=2" title="Edit section: Groups">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
 <p>Once all our people are in the system, we need to organize them into the proper groups. Service Management Automation X uses groups for a variety of reasons, including sending notifications, specifying who can approve processes, or to assign work. Service Management Automation X has two distinct types of groups: organizational and functional.
 </p><p><b>Organizational groups</b> contain all the boxes on the company’s org chart. We can represent all our business units, departments, and the company itself as separate but related organization groups. We’ll define the company itself as an organization, and then all the internal business units and their contained departments. The organizational group also contains information about the owner/manager of the Group and all of the members of the organization. Note that a person can only belong to one organizational group. Our best practice will be to add the person to the organizational group at the bottom of the org chart hierarchy – so in our case, we'll add people to their department.
 </p><p><b>Functional groups</b> contain a list of people responsible for a specific job function or process within the system. These groups can encompass people who belong to several different organizational groups or could further break up organizational groups into different functions they support. For example, within a department that builds a specific product we can create separate functional groups for the database team, the UI team, and the Application team. It is also important to note that people can belong to multiple functional groups, so people that support multiple processes can belong to all of the necessary teams.
 </p><p>The main thing we will use functional groups for is to assign 'work'. When we want a specific 'team' to work on a request, incident, change, or even a task, we do that by assigning a functional group to the record we want them to work on. From there, we can also assign a specific group member to the record, so it is not only important to define the groups but to make sure the correct people are part of the group.
 </p><p>Again, we have most of the organizational information we need in our Active Directory system to import into Service Management Automation X. However, we will most likely need to do additional work to create the functional groups and get the right people into each one.
-</p><p>If you would like more detailed information on groups, check the <a target="1" rel="nofollow" class="external text" href="http://docs.microfocus.com/ITSMA/2018.05/NG/SM_X/Content/Search.htm#search-groups">online help here</a>.
-</p><p><br>
+</p><p>More detailed information on groups can be found in the help center.
 </p>
-<h2><span class="mw-headline" id="Roles">Roles</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/GettingStarted/CoreData&amp;veaction=edit&amp;section=3" class="mw-editsection-visualeditor" title="Edit section: Roles">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/GettingStarted/CoreData&amp;action=edit&amp;section=3" title="Edit section: Roles">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h2><span class="mw-headline" id="Roles">Roles</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/GettingStarted/CoreData&amp;veaction=edit&amp;section=3" class="mw-editsection-visualeditor" title="Edit section: Roles">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/GettingStarted/CoreData&amp;action=edit&amp;section=3" title="Edit section: Roles">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
 <p>Once we have all of the people and groups, it’s time to determine who can do what in our system. Service Management Automation X handles this by allowing us to set specific permissions inside of roles. We can assign these roles to either a group or a specific person. Unless there is someone that requires a specific exception, we should concentrate on setting the roles for groups (rather than on the users) as this will require much less administrative work on our part.
 </p><p>Service Management Automation X comes with a good number of roles already defined that reflect industry best practice recommendations. In our case, I think these will be enough and we won’t have to add any ourselves, but if that becomes necessary we can do so.
 </p><p>One thing to remember is that all users will have the ‘Self-Service Portal User’ role defined for them by default. This has all of the permissions needed to log into and use the Service Management Automation Service Portal. Therefore we won’t need to assign any role for users that will only access the system through the portal.
 </p><p>Remember that a person can have multiple roles. Therefore we don’t have to create a specific role for someone who is both an Incident Manager and a Financial Manager.<span class="Apple-converted-space">  </span>Instead, we make sure they have both existing Roles.
-</p><p>More information on roles may be found in the <a target="1" rel="nofollow" class="external text" href="http://docs.microfocus.com/ITSMA/2018.05/NG/SM_X/Content/Search.htm#search-roles">online help</a>.
+</p><p>More information on roles may be found in the help center.
 </p>
-<h2><span class="mw-headline" id="Locations">Locations</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/GettingStarted/CoreData&amp;veaction=edit&amp;section=4" class="mw-editsection-visualeditor" title="Edit section: Locations">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/GettingStarted/CoreData&amp;action=edit&amp;section=4" title="Edit section: Locations">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h2><span class="mw-headline" id="Locations">Locations</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/GettingStarted/CoreData&amp;veaction=edit&amp;section=4" class="mw-editsection-visualeditor" title="Edit section: Locations">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/GettingStarted/CoreData&amp;action=edit&amp;section=4" title="Edit section: Locations">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
 <p>Along with knowing who the people are in our system, it would be a good idea to know where those people are, right? For that, we need to add locations to Service Management Automation X. SMAX defines locations in a hierarchy similar to the organizations we previously defined. Each location also has a specific type which ties it to where it fits on the hierarchy. The location types we can define include:
 </p>
 <ul><li>Region</li>
@@ -82,22 +83,27 @@
 </p><p>We won’t have time right now to define everything down to the detail that Service Management Automation X allows. So what we should do is determine what we will use locations for and make sure we define enough to support those processes. For that, we need to look at what processes make use of locations.
 </p><p>The first and most obvious use of locations is to determine where a person or piece of equipment is physically located. Our Active Directory already has most of this information in it, but we will have to define the locations in the system before we can put anything in them. Therefore, we want to export that information and then massage it with the location types, then import it into Service Management Automation X. That should get us a good start on defining our cubes and rooms, as well as defining the parents such as floors, buildings, sites, cities, countries, and regions.
 </p><p>Another use of Locations we will get to eventually is linking locations with the stockrooms that support them. This information is used in the service request and asset management processes to reserve 'in stock' devices/assets for delivery to a supported location. While this will be important later, we can put off these definitions for a little while.
-</p><p>But when we’re ready to dive in, let's be sure to reference the <a target="1" rel="nofollow" class="external text" href="http://docs.microfocus.com/ITSMA/2018.05/NG/SM_X/Content/Search.htm#search-locations">online help for locations</a> for more information.
+</p><p>But when we’re ready to dive in, let's be sure to reference the <a href="./itom/SMAX:2018.08/1700_Admin/locManagement" title="SMAX:2018.08/1700 Admin/locManagement">online help for locations</a> for more information.
 </p><p><br>
 </p>
-<h2><span class="mw-headline" id="Entitlement_Rules">Entitlement Rules</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/GettingStarted/CoreData&amp;veaction=edit&amp;section=5" class="mw-editsection-visualeditor" title="Edit section: Entitlement Rules">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/GettingStarted/CoreData&amp;action=edit&amp;section=5" title="Edit section: Entitlement Rules">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h2><span class="mw-headline" id="Entitlement_Rules">Entitlement Rules</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/GettingStarted/CoreData&amp;veaction=edit&amp;section=5" class="mw-editsection-visualeditor" title="Edit section: Entitlement Rules">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/GettingStarted/CoreData&amp;action=edit&amp;section=5" title="Edit section: Entitlement Rules">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
 <p>We'll eventually use locations, groups, and roles in what Service Management Automation X calls entitlement rules. These rules restrict what our end users see in the Service Management Automation Service Portal. For example, we might only allow requests for certain services from a certain location or group. We won’t be setting up any of these rules yet, but it's something to keep in the back of our minds while we are defining our locations, groups, and roles.
-</p><p>If you can’t wait to find out more about Entitlement Rules, head to the <a target="1" rel="nofollow" class="external text" href="http://docs.microfocus.com/ITSMA/2018.05/NG/SM_X/Content/Search.htm#search-entitlement%20rules">online help guide</a>.
+</p><p>If you can’t wait to find out more about Entitlement Rules, head to the <a href="./itom/SMAX:2018.08/1700_Admin/sspaERulesAddEdit" title="SMAX:2018.08/1700 Admin/sspaERulesAddEdit">online help guide</a>.
+</p><p><br>
+</p>
+<h2><span class="mw-headline" id="Time_Periods">Time Periods</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/GettingStarted/CoreData&amp;veaction=edit&amp;section=6" class="mw-editsection-visualeditor" title="Edit section: Time Periods">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.08/PractitionersNotes/GettingStarted/CoreData&amp;action=edit&amp;section=6" title="Edit section: Time Periods">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Everyone -- and in our line of work every<i>thing</i> -- has a schedule. Service Management Automation X allows us to create schedules for work schedules, holidays, maintenance and blackout schedules, and special events. The Time Period Management module enables user to create and manage complex time periods for use in a variety of places inside of the product. 
+</p><p>Additional information on Time Periods may be found <a href="./itom/SMAX:2018.08/2100_TimeManagement/tmTimeManagement" title="SMAX:2018.08/2100 TimeManagement/tmTimeManagement">here</a>.
 </p>
 <!-- 
 NewPP limit report
-Cached time: 20190524100840
+Cached time: 20190524101619
 Cache expiry: 86400
 Dynamic content: false
-CPU time usage: 0.016 seconds
-Real time usage: 0.051 seconds
-Preprocessor visited node count: 28/1000000
-Preprocessor generated node count: 44/1000000
+CPU time usage: 0.024 seconds
+Real time usage: 0.057 seconds
+Preprocessor visited node count: 50/1000000
+Preprocessor generated node count: 84/1000000
 Post‐expand include size: 0/2097152 bytes
 Template argument size: 0/2097152 bytes
 Highest expansion depth: 2/40
@@ -110,6 +116,6 @@ Transclusion expansion time report (%,ms,calls,template)
 100.00%    0.000      1 -total
 -->
 
-<!-- Saved in parser cache with key docops_wiki:pcache:idhash:201676-0!canonical and timestamp 20190524100840 and revision id 1295820
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:741683-0!canonical and timestamp 20190524101619 and revision id 1386405
  -->
 </div>
