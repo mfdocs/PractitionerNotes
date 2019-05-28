@@ -1,1 +1,133 @@
- 
+<div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 07/03/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 9 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><p><br>
+This topic provides information on Red Hat KVM host integration with Data Protector and backup/restore on online virtual machines (VMs) in Red Hat KVM host.
+</p>
+<div id="toc" class="toc"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none"><div class="toctitle" lang="en" dir="ltr"><h2>Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="https://staging.docs.microfocus.com/itom/Data_Protector:2019.02/KVMIntegration#Red_Hat_Kernel-based_Virtual_Machine"><span class="tocnumber">1</span> <span class="toctext">Red Hat Kernel-based Virtual Machine</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="https://staging.docs.microfocus.com/itom/Data_Protector:2019.02/KVMIntegration#Data_Protector_and_Red_Hat_KVM_integration"><span class="tocnumber">2</span> <span class="toctext">Data Protector and Red Hat KVM integration</span></a>
+<ul>
+<li class="toclevel-2 tocsection-3"><a href="https://staging.docs.microfocus.com/itom/Data_Protector:2019.02/KVMIntegration#Use_cases"><span class="tocnumber">2.1</span> <span class="toctext">Use cases</span></a></li>
+<li class="toclevel-2 tocsection-4"><a href="https://staging.docs.microfocus.com/itom/Data_Protector:2019.02/KVMIntegration#Supported_disk_types"><span class="tocnumber">2.2</span> <span class="toctext">Supported disk types</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-5"><a href="https://staging.docs.microfocus.com/itom/Data_Protector:2019.02/KVMIntegration#Prerequisites"><span class="tocnumber">3</span> <span class="toctext">Prerequisites</span></a>
+<ul>
+<li class="toclevel-2 tocsection-6"><a href="https://staging.docs.microfocus.com/itom/Data_Protector:2019.02/KVMIntegration#Storage_requirements"><span class="tocnumber">3.1</span> <span class="toctext">Storage requirements</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-7"><a href="https://staging.docs.microfocus.com/itom/Data_Protector:2019.02/KVMIntegration#Install_Red_Hat_KVM"><span class="tocnumber">4</span> <span class="toctext">Install Red Hat KVM</span></a></li>
+<li class="toclevel-1 tocsection-8"><a href="https://staging.docs.microfocus.com/itom/Data_Protector:2019.02/KVMIntegration#Backup_online_VMs_in_Red_Hat_KVM_host"><span class="tocnumber">5</span> <span class="toctext">Backup online VMs in Red Hat KVM host</span></a></li>
+<li class="toclevel-1 tocsection-9"><a href="https://staging.docs.microfocus.com/itom/Data_Protector:2019.02/KVMIntegration#Restore_VMs"><span class="tocnumber">6</span> <span class="toctext">Restore VMs</span></a></li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id="Red_Hat_Kernel-based_Virtual_Machine">Red Hat Kernel-based Virtual Machine</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Data_Protector:2019.02/KVMIntegration&amp;veaction=edit&amp;section=1" class="mw-editsection-visualeditor" title="Edit section: Red Hat Kernel-based Virtual Machine">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Data_Protector:2019.02/KVMIntegration&amp;action=edit&amp;section=1" title="Edit section: Red Hat Kernel-based Virtual Machine">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Red Hat Kernel-based Virtual Machine (KVM) is an open source virtualization technology built into Linux. Specifically,
+KVM lets you turn Linux into a hypervisor that allows a host machine to run multiple, isolated virtual environments
+called guests or virtual machines (VMs).
+</p><p>KVM converts Linux into a type-1 (bare-metal) hypervisor. All hypervisors need some operating system-level
+components such as a memory manager, process scheduler, input/output (I/O) stack, device drivers, security
+manager, a network stack, and more—to run VMs. KVM has all these components because it’s part of the Linux kernel.
+Every VM is implemented as a regular Linux process, scheduled by the standard Linux scheduler, with dedicated virtual
+hardware like a network card, graphics adapter, CPU(s), memory, and disks.
+</p>
+<h2><span class="mw-headline" id="Data_Protector_and_Red_Hat_KVM_integration">Data Protector and Red Hat KVM integration</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Data_Protector:2019.02/KVMIntegration&amp;veaction=edit&amp;section=2" class="mw-editsection-visualeditor" title="Edit section: Data Protector and Red Hat KVM integration">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Data_Protector:2019.02/KVMIntegration&amp;action=edit&amp;section=2" title="Edit section: Data Protector and Red Hat KVM integration">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Data Protector uses scripts to backup the live, running, or online VMs in a Red Hat KVM host. The scripts are saved in the pre-exec and post-exec areas of the backup specification. The pre-exec script creates a live external snapshot of the VM and saves it in the local/SAN storage mount point configured for <code>$BACKUPDIR</code> variable in the backup script. This script uses all the Red Hat KVM features and functionality to carry out the operations.
+</p><p>The restoration of the VMs is based on the post-exec scripts for restore. In Data Protector, select the backed up directory (as specified in the <code>$BACKUPDIR</code> variable) for choosing the VMs for restore. These selected VMs are copied to restored path <code>$RESTORED_PATH</code> variable as defined in the restore script KVM_snap_Restore.sh.
+Select the VM directory from the <code>$BACKUPDIR</code> variable in the backup script and choose a restore path <code>$RESTORED_PATH</code> variable defined in the restore script.
+</p><p><a onclick="javascript:loadingImage(this);" class="image" title="DP KVMRedHatIntegration.png"><img alt="DP KVMRedHatIntegration.png" src="/mediawiki/images/7/73/DP_KVMRedHatIntegration.png" width="1245" height="638" data-file-width="1245" data-file-height="638"></a>
+</p>
+<h3><span class="mw-headline" id="Use_cases">Use cases</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Data_Protector:2019.02/KVMIntegration&amp;veaction=edit&amp;section=3" class="mw-editsection-visualeditor" title="Edit section: Use cases">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Data_Protector:2019.02/KVMIntegration&amp;action=edit&amp;section=3" title="Edit section: Use cases">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>The Data Protector and Red Hat KVM integration support the following use cases:
+</p>
+<ul><li>Single VM backup and restore</li>
+<li>Multi VM backup and single VM restore</li>
+<li>Multi VM backup and multi VM restore</li></ul>
+<h3><span class="mw-headline" id="Supported_disk_types">Supported disk types</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Data_Protector:2019.02/KVMIntegration&amp;veaction=edit&amp;section=4" class="mw-editsection-visualeditor" title="Edit section: Supported disk types">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Data_Protector:2019.02/KVMIntegration&amp;action=edit&amp;section=4" title="Edit section: Supported disk types">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>There is no limit to disk types supported. Red Hat KVM scripts uses the <b>virsh</b> utility to create a snapshot.
+</p>
+<h2><span class="mw-headline" id="Prerequisites">Prerequisites</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Data_Protector:2019.02/KVMIntegration&amp;veaction=edit&amp;section=5" class="mw-editsection-visualeditor" title="Edit section: Prerequisites">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Data_Protector:2019.02/KVMIntegration&amp;action=edit&amp;section=5" title="Edit section: Prerequisites">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<ul><li>Ensure the KVM host is imported on the Cell Manager.</li>
+<li>Ensure that the utility packages <b>virt-manager 1.4.3</b> or later versions and <b>virsh 3.9.0</b> or later versions are installed.</li>
+<li>Ensure there is enough free storage (SAN or local filesystem) for backing up all the online VMs in Red Hat KVM host.</li></ul>
+<h3><span class="mw-headline" id="Storage_requirements">Storage requirements</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Data_Protector:2019.02/KVMIntegration&amp;veaction=edit&amp;section=6" class="mw-editsection-visualeditor" title="Edit section: Storage requirements">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Data_Protector:2019.02/KVMIntegration&amp;action=edit&amp;section=6" title="Edit section: Storage requirements">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<ol><li>Mount your backup filesystem as <b>/kvmbackup</b>.</li>
+<li>Create a SAN or local filesystem with a storage that can backup all the online VMs in Red Hat KVM host for any given backup session. For example, consider three online VMs in a Red Hat KVM host with sizes 10 GB, 20 GB, and 30 GB.
+<ul><li>If you are backing up all three VMs, ensure that the /kvmbackup directory has a free storage of minimum 75-80 GB.</li>
+<li>If you are backing up VMs individually, ensure that the /kvmbackup directory has a free storage more than the VM with the largest size.</li>
+<li>The storage mentioned is only an indicated storage space. Actual storage space may vary depending on your environment.</li></ul></li>
+<li>Consider also the growth in your Red Hat KVM environment while planning your storage.</li></ol>
+<h2><span class="mw-headline" id="Install_Red_Hat_KVM">Install Red Hat KVM</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Data_Protector:2019.02/KVMIntegration&amp;veaction=edit&amp;section=7" class="mw-editsection-visualeditor" title="Edit section: Install Red Hat KVM">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Data_Protector:2019.02/KVMIntegration&amp;action=edit&amp;section=7" title="Edit section: Install Red Hat KVM">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Install KVM using the <b>qemu-kvm-rhev</b> package to avail the online VM snapshot capability.
+</p><p><br>
+</p>
+<h2><span class="mw-headline" id="Backup_online_VMs_in_Red_Hat_KVM_host">Backup online VMs in Red Hat KVM host</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Data_Protector:2019.02/KVMIntegration&amp;veaction=edit&amp;section=8" class="mw-editsection-visualeditor" title="Edit section: Backup online VMs in Red Hat KVM host">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Data_Protector:2019.02/KVMIntegration&amp;action=edit&amp;section=8" title="Edit section: Backup online VMs in Red Hat KVM host">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>To integrate Red Hat KVM host with Data Protector and then to backup online VMs in it, complete the following steps:
+</p>
+<ol><li>Download the KVM scripts zip package from <a target="1" rel="nofollow" class="external text" href="https://marketplace.microfocus.com/itom">ITOM Marketplace</a>. Contact <a target="1" rel="nofollow" class="external text" href="http://softwaresupport.softwaregrp.com/">Customer Support</a> if you have any issues.</li>
+<li>Log into Red Hat KVM host and extract the downloaded scripts in the <b>/opt/omni/lbin</b> path. The following scripts are extracted:
+<ul><li>KVM_snap_backup.sh</li>
+<li>KVM_cleanup_post_backup.sh</li>
+<li>KVM_snap_Restore.sh</li></ul></li>
+<li>Change the file permission on the scripts to read, write and execute:
+<ul><li>chmod 755 KVM_snap_backup.sh</li>
+<li>chmod 755 KVM_cleanup_post_backup.sh</li>
+<li>chmod 755 KVM_snap_Restore.sh</li></ul></li>
+<li>Edit the KVM_snap_backup.sh script file. Example: <b>vi KVM_snap_backup.sh</b>.
+<ul><li>If you do not wish to backup all the online VMs, edit the <b>$VMS</b> variable to manually input the VMs to be backed up. By default, all the online VMs are backed up.</li>
+<li>Define your SAN/local storage filesystem mount point. Update the <b>$BACKUPDIR</b> variable with the storage mount point path.<br>Example: BACKUPDIR=/kvmbackup/$VM/$(date +'%d-%m-%Y%H%M%S')</li></ul></li>
+<li>Edit the KVM_post_cleanup_backup.sh script file. Example: <b>vi KVM_post_cleanup_backup.sh</b>.<br>Update the <b>$BACKUPDIR</b> variable with the storage mount point path.<br>Example: BACKUPDIR=/kvmbackup.</li>
+<li>Log into the Cell Manager.</li>
+<li>Import Red Hat KVM host into the Cell Manager, if not imported already.</li>
+<li>Create a tape or disk device on the Cell Manager to store the Red Hat KVM host backup. For information on creating a tape or disk device, see Data Protector documentation at <a target="1" rel="nofollow" class="external free" href="https://docs.microfocus.com/?DP">https://docs.microfocus.com/?DP</a>.</li>
+<li>Launch Data Protector and go to <b>Backup</b> context.</li>
+<li>Select <b>Filesystem</b> in the left navigation and go to <b>Options</b> tab.</li>
+<li>Enter a description in the Description field in <b>Backup Specification Options</b> area.</li>
+<li>Click <b>Advanced</b> in <b>Backup Specification Options</b> area. Specify the following:
+<ul><li>Pre-exec area:
+<ul><li>Specify <b>KVM_snap_backup.sh</b> in <b>Pre-exec script</b> field (browse and select the script file from the <code>/opt/omni/lbin</code> path).</li>
+<li>Specify the Red Hat KVM host name in the <b>On client</b> field.</li></ul></li>
+<li>Post-exec area:
+<ul><li>Specify <b>Post_backup_cleanup_KVMsnapshot.sh</b> in the <b>Pre-exec script</b> field (browse and select the script file from the <code>/opt/omni/lbin</code> path).</li>
+<li>Specify Red Hat KVM host name in the <b>On client</b> field.</li></ul></li></ul></li>
+<li>Click <b>OK</b> in the Backup Option window.</li>
+<li>Select the default protection period for all backed up files and directories in the <b>Filesystem Options</b> area.</li>
+<li>Select the default protection period for all backed up disk images in the <b>Disk Image Options</b> area.</li>
+<li>Click <b>Apply</b> in the Backup context to save the backup specification.</li>
+<li>Start the full backup and monitor the progress.</li></ol>
+<h2><span class="mw-headline" id="Restore_VMs">Restore VMs</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Data_Protector:2019.02/KVMIntegration&amp;veaction=edit&amp;section=9" class="mw-editsection-visualeditor" title="Edit section: Restore VMs">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Data_Protector:2019.02/KVMIntegration&amp;action=edit&amp;section=9" title="Edit section: Restore VMs">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>To restore a backed up VM, complete the following steps:
+</p>
+<ol><li>Launch Data Protector and select <b>Restore</b> context.</li>
+<li>Select the Red Hat KVM host backup session from the <b>Filesystem</b> tree in the left navigation.<br>OR, select the object that you wish to restore. Object hierarchy is <b>/kvmbackup/&lt;VM_Name&gt;/&lt;Date&amp;Time&gt;/</b>.</li>
+<li>Select the VM and underlying files to restore the VM.</li>
+<li>Select the default restore location in the <b>Destination</b> tab. If the $RESTORE_PATH value is different than $BACKUPDIR value, then select the $RESTORE_PATH value in Destination tab.</li>
+<li>Go to <b>Options</b> tab and click <b>Advanced</b>.</li>
+<li>Specify <b>KVM_snap_Restore.sh</b> in Post-exec script field (browse and the script file from the <b>/opt/omni/lbin</b> path).</li>
+<li>Click <b>Restore</b>.</li>
+<li>Check the VM status in Red Hat KVM host after the restore is complete.</li></ol>
+
+<!-- 
+NewPP limit report
+Cached time: 20190524090929
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.016 seconds
+Real time usage: 0.050 seconds
+Preprocessor visited node count: 37/1000000
+Preprocessor generated node count: 48/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 0/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:732251-0!canonical and timestamp 20190524090929 and revision id 1264685
+ -->
+</div>
