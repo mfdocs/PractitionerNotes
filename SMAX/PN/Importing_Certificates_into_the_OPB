@@ -1,0 +1,73 @@
+<div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 11/03/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 5 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><p><br>
+</p>
+<div id="toc" class="toc"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none"><div class="toctitle" lang="en" dir="ltr"><h2>Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_opb_certificates#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_opb_certificates#Finding_the_location_of_the_Service_Management_Automation_X_OPB_controller_log"><span class="tocnumber">2</span> <span class="toctext">Finding the location of the Service Management Automation X OPB controller log</span></a></li>
+<li class="toclevel-1 tocsection-3"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_opb_certificates#Finding_the_location_of_the_Service_Management_Automation_X_OPB_trusted_keystore"><span class="tocnumber">3</span> <span class="toctext">Finding the location of the Service Management Automation X OPB trusted keystore</span></a></li>
+<li class="toclevel-1 tocsection-4"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_opb_certificates#Obtaining_the_certificate_of_the_remote_server"><span class="tocnumber">4</span> <span class="toctext">Obtaining the certificate of the remote server</span></a></li>
+<li class="toclevel-1 tocsection-5"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_opb_certificates#Adding_the_certificate_to_the_trusted_keystore"><span class="tocnumber">5</span> <span class="toctext">Adding the certificate to the trusted keystore</span></a></li>
+<li class="toclevel-1 tocsection-6"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_opb_certificates#How_to_identify_if_the_certificate_is_present"><span class="tocnumber">6</span> <span class="toctext">How to identify if the certificate is present</span></a></li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id="Introduction">Introduction</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_opb_certificates&amp;veaction=edit&amp;section=1" class="mw-editsection-visualeditor" title="Edit section: Introduction">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_opb_certificates&amp;action=edit&amp;section=1" title="Edit section: Introduction">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>When creating an integration to Service Management Automation X with a remote system that has an SSL address, it is possible that the certificate of the remote server must be imported into the trusted keystore file of the On-Premise Bridge (OPB). The cacerts file stores public certificates of root Certificate Authority (CA). If there is a problem with the connection between the OPB and the remote system, check the controller.log file of the OPB for the error defined below. If the error exists, then you may be required to follow the procedure described in this document.
+</p><p><i>javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target</i>
+</p><p>This chapter will include:
+</p>
+<ul><li>Finding the location of the Service Management Automation X OPB controller log</li>
+<li>Finding the location of the Service Management Automation X OPB trusted keystore</li>
+<li>Obtaining the certificate of the remote server</li>
+<li>Adding the certificate to the trusted keystore</li>
+<li>How to identify if the certificate is present</li></ul>
+<h2><span class="mw-headline" id="Finding_the_location_of_the_Service_Management_Automation_X_OPB_controller_log">Finding the location of the Service Management Automation X OPB controller log</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_opb_certificates&amp;veaction=edit&amp;section=2" class="mw-editsection-visualeditor" title="Edit section: Finding the location of the Service Management Automation X OPB controller log">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_opb_certificates&amp;action=edit&amp;section=2" title="Edit section: Finding the location of the Service Management Automation X OPB controller log">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>The default location of the controller.log file is in the <i>C:\Program Files\HP\On-Premise Bridge Agent\product\log\controller</i> directory. Once the log file is located, search the log file for the HandshakeException error. If the error appears, the Fully Qualified Domain Name (FQDN) will be logged, which will allow you to verify that the endpoint in question was indeed the one that is giving the error.<a onclick="javascript:loadingImage(this);" class="image"><img alt="OPB Image1.png" src="/mediawiki/images/9/96/OPB_Image1.png" width="943" height="146" data-file-width="943" data-file-height="146"></a>
+</p>
+<h2><span class="mw-headline" id="Finding_the_location_of_the_Service_Management_Automation_X_OPB_trusted_keystore">Finding the location of the Service Management Automation X OPB trusted keystore</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_opb_certificates&amp;veaction=edit&amp;section=3" class="mw-editsection-visualeditor" title="Edit section: Finding the location of the Service Management Automation X OPB trusted keystore">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_opb_certificates&amp;action=edit&amp;section=3" title="Edit section: Finding the location of the Service Management Automation X OPB trusted keystore">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>The default OPB trusted keystore file is named <b>cacerts</b> and is located in the <i>C:\Program Files\HP\On-Premise Bridge Agent\product\util\3rd-party\jre\lib\security</i> directory. The OPB has its own file and should not be confused with any other Java installation on the machine. 
+</p><p><br>
+</p>
+<h2><span class="mw-headline" id="Obtaining_the_certificate_of_the_remote_server">Obtaining the certificate of the remote server</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_opb_certificates&amp;veaction=edit&amp;section=4" class="mw-editsection-visualeditor" title="Edit section: Obtaining the certificate of the remote server">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_opb_certificates&amp;action=edit&amp;section=4" title="Edit section: Obtaining the certificate of the remote server">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>In most cases there is a company created certificate available and the server administrator will be able to send it to you. In cases where this is not available, it is also possible to use a browser (FireFox for example) to export the certificate so that it can be imported into the OPB’s trusted keystore.  
+</p><p><br>
+</p>
+<h2><span class="mw-headline" id="Adding_the_certificate_to_the_trusted_keystore">Adding the certificate to the trusted keystore</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_opb_certificates&amp;veaction=edit&amp;section=5" class="mw-editsection-visualeditor" title="Edit section: Adding the certificate to the trusted keystore">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_opb_certificates&amp;action=edit&amp;section=5" title="Edit section: Adding the certificate to the trusted keystore">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>The java keytool utility is used to import certificates into the trusted keystore. To run the utility, open a command windows and navigate to C:\Program Files\HP\On-Premise Bridge Agent\product\util\3rd-party\jre\bin directory. The format of the necessary command is as follows: 
+</p><p>keytool -import -keystore ..\lib\security\cacerts -alias "new Alias" –file myCert.crt . 
+</p><p>In this example the <b>myCert.crt</b> file is the certificate of the remote server, <b>cacerts</b> is the trusted keystore, and the alias is a label set for the certificate. When prompted for a password, “changeit” is the default.
+</p>
+<pre>C:\Program Files\Micro Focus\On-Premise Bridge Agent\product\util\3rd-party\jre\bin&gt;keytool -import -keystore ..\lib\security\cacerts -alias "new Alias" -file c:\myCert.crt
+</pre>
+<h2><span class="mw-headline" id="How_to_identify_if_the_certificate_is_present">How to identify if the certificate is present</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_opb_certificates&amp;veaction=edit&amp;section=6" class="mw-editsection-visualeditor" title="Edit section: How to identify if the certificate is present">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_opb_certificates&amp;action=edit&amp;section=6" title="Edit section: How to identify if the certificate is present">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Java uses a tool named keytool to list or import any certificates in the trusted keystore file. Using this tool allows you to list all of the certificates that were imported into the keystore. Open a command window and navigate to the <i>C:\Program Files\HP\On-Premise Bridge Agent\product\util\3rd-party\jre\bin</i> directory. Run the keytool while pointing to the cacerts file. Syntax for the command is: <i><b>keytool –list –v –keystore ..\lib\security\cacerts &gt; c:\contents.txt</b></i>
+</p>
+<pre>C:\Program Files\Micro Focus\On-Premise Bridge Agent\product\util\3rd-party\jre\bin&gt;keytool -list -v -keystore ..\lib\security\cacerts &gt; c:\contents.txt
+Enter keystore password:  changeit
+</pre>
+<p>The default password for the keystore is “changeit”. Once executed, a file named c:\contents.txt will list the entire content of the keystore. It is possible to search through this file in notepad or a similar text editor in order to confirm that the certificate for the remote server to confirm was loaded correctly.
+</p>
+<!-- 
+NewPP limit report
+Cached time: 20190524101416
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.016 seconds
+Real time usage: 0.043 seconds
+Preprocessor visited node count: 25/1000000
+Preprocessor generated node count: 36/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 0/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:270679-0!canonical and timestamp 20190524101416 and revision id 1295878
+ -->
+</div>
