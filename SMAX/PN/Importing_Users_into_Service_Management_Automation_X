@@ -1,1 +1,92 @@
- 
+<div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 11/03/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 9 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><p><br>
+</p>
+<div id="toc" class="toc"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none"><div class="toctitle" lang="en" dir="ltr"><h2>Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers#Types_of_Person_records_in_Service_Management_Automation_X"><span class="tocnumber">2</span> <span class="toctext">Types of Person records in Service Management Automation X</span></a></li>
+<li class="toclevel-1 tocsection-3"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers#Determining_how_to_create_users_and_contacts"><span class="tocnumber">3</span> <span class="toctext">Determining how to create users and contacts</span></a>
+<ul>
+<li class="toclevel-2 tocsection-4"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers#Adding_users_manually_through_My_Account_in_the_portal"><span class="tocnumber">3.1</span> <span class="toctext">Adding users manually through My Account in the portal</span></a></li>
+<li class="toclevel-2 tocsection-5"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers#Manage_Persons_API"><span class="tocnumber">3.2</span> <span class="toctext">Manage Persons API</span></a></li>
+<li class="toclevel-2 tocsection-6"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers#Importing_data_from_a_CSV_file"><span class="tocnumber">3.3</span> <span class="toctext">Importing data from a CSV file</span></a></li>
+<li class="toclevel-2 tocsection-7"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers#Single_Sign-On_.28SSO.29"><span class="tocnumber">3.4</span> <span class="toctext">Single Sign-On (SSO)</span></a></li>
+<li class="toclevel-2 tocsection-8"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers#LDAP_Integration"><span class="tocnumber">3.5</span> <span class="toctext">LDAP Integration</span></a></li>
+<li class="toclevel-2 tocsection-9"><a href="https://staging.docs.microfocus.com/itom/SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers#Connect-It_integration"><span class="tocnumber">3.6</span> <span class="toctext">Connect-It integration</span></a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id="Introduction">Introduction</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers&amp;veaction=edit&amp;section=1" class="mw-editsection-visualeditor" title="Edit section: Introduction">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers&amp;action=edit&amp;section=1" title="Edit section: Introduction">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>The process for importing person records into Service Management Automation X is a multi-step process. It involves adding people to both the Suite Administration portal and Service Management Automation X. The following outlines the procedure for configuring users in Service Management Automation X.&nbsp;
+</p><p>This chapter will cover:
+</p>
+<ul><li>Types of person records</li>
+<li>Determining how you plan on creating users and contacts</li>
+<li>Enabling the SSO integration between the Portal and Service Management Automation X</li>
+<li>LDAP integration</li>
+<li>Connect-it integration</li></ul>
+<p><br>
+</p>
+<h2><span class="mw-headline" id="Types_of_Person_records_in_Service_Management_Automation_X">Types of Person records in Service Management Automation X</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers&amp;veaction=edit&amp;section=2" class="mw-editsection-visualeditor" title="Edit section: Types of Person records in Service Management Automation X">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers&amp;action=edit&amp;section=2" title="Edit section: Types of Person records in Service Management Automation X">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>There are two types of Person records in Service Management Automation X: “Users” who are able to login to the Self-Service portal or the agent interface, and “Contacts” who are not able to login. Person records are automatically set to be users if there is an account in the Suite Administration portal that matches the UPN of the person in Service Management Automation X. The person is set as a contact if there is not a matching account. It is possible to switch a person record from a contact to a user by adding a user account to the Suite Administration portal with a matching UPN. Similarly, removing the user account from the Suite Administration portal changes the Person record from a contact to a user.
+</p><p><br>
+</p>
+<h2><span class="mw-headline" id="Determining_how_to_create_users_and_contacts">Determining how to create users and contacts</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers&amp;veaction=edit&amp;section=3" class="mw-editsection-visualeditor" title="Edit section: Determining how to create users and contacts">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers&amp;action=edit&amp;section=3" title="Edit section: Determining how to create users and contacts">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>An important concept to understand is that for a user to be able to login to Service Management Automation X they need a record in two places. One record in the Suite Administration portal and another in Service Management Automation X. There is an automatic process that duplicates all users that exist in the Suite Administration portal into Service Management Automation X and makes the matching UPN in SMA-X a user. The methods of creating users and contacts are outlined below.
+</p>
+<h3><span class="mw-headline" id="Adding_users_manually_through_My_Account_in_the_portal">Adding users manually through My Account in the portal</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers&amp;veaction=edit&amp;section=4" class="mw-editsection-visualeditor" title="Edit section: Adding users manually through My Account in the portal">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers&amp;action=edit&amp;section=4" title="Edit section: Adding users manually through My Account in the portal">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Users can be added and managed directly through the Suite Administration portal by clicking on the Users menu item and then selecting ‘New’. In this scenario, the portal manages the accounts and passwords directly. The Email, First and Last Names, and Phone numbers are added to the Portal and pushed to Service Management Automation X. Additional attributes can be added through a person’s profile in the administration UI of Service Management Automation X. If the user is added to the Portal and a matching UPN exists in Service Management Automation X, the Service Management Automation X record would be switched from a contact into a user.
+</p>
+<h3><span class="mw-headline" id="Manage_Persons_API">Manage Persons API</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers&amp;veaction=edit&amp;section=5" class="mw-editsection-visualeditor" title="Edit section: Manage Persons API">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers&amp;action=edit&amp;section=5" title="Edit section: Manage Persons API">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>The <a target="1" rel="nofollow" class="external text" href="https://docs.microfocus.com/ITSMA/2018.05/NG/SM_X/Content/8000_DeveloperGuide/ApiRESTUMS.htm">Manage Persons REST API</a> provides a way to create or update users and contacts on both the portal and in Service Management Automation X at the same time. The Manage Persons API can also populate user or contact attributes such as the location, organizational group, functional group and role (role can’t be changed using the other methods, but can be updated manually in the UI). A script needs to be generated in the format below that identifies the various attributes. The manage person API matches the name of the location and role and the UPN for the group. If one of the groups specified is an organizational group the user’s organization group is set with this value. If the Manage Persons API finds an existing account in the portal with the same UPN it will update that user, not create a new one. 
+</p><p>JSON Syntax to create a user:
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="ImportUsers1.png" src="/mediawiki/images/9/9b/ImportUsers1.png" width="333" height="365" data-file-width="333" data-file-height="365"></a>
+</p><p>JSON syntax to create a contact:
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="ImportUsers2.png" src="/mediawiki/images/b/b2/ImportUsers2.png" width="316" height="273" data-file-width="316" data-file-height="273"></a>
+</p>
+<h3><span class="mw-headline" id="Importing_data_from_a_CSV_file">Importing data from a CSV file</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers&amp;veaction=edit&amp;section=6" class="mw-editsection-visualeditor" title="Edit section: Importing data from a CSV file">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers&amp;action=edit&amp;section=6" title="Edit section: Importing data from a CSV file">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Contacts (Not users, so no account in the portal) can be imported directly into Service Management Automation X through the import data section of the Records-&gt;Person menu. By specifying the *.Name* next to the fieldname, locations and organizational groups can also be added (“Location.Name” for example) but unlike the Manage Persons API, the role can’t be added. Contacts do not have a record in the Suite Administration portal so they are unable to login to Service Management Automation X. If however a user is created in the Suite Administration portal, then the person would automatically be switched from a contact to a user. 
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="import person.png" src="/mediawiki/images/b/b6/import_person.png" width="1210" height="324" data-file-width="1210" data-file-height="324"></a>
+</p><p><br>
+</p>
+<h3><span id="Single_Sign-On_(SSO)"></span><span class="mw-headline" id="Single_Sign-On_.28SSO.29">Single Sign-On (SSO)</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers&amp;veaction=edit&amp;section=7" class="mw-editsection-visualeditor" title="Edit section: Single Sign-On (SSO)">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers&amp;action=edit&amp;section=7" title="Edit section: Single Sign-On (SSO)">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>An integration can be set up that will allow an Active Directory to control the user and password information of a Service Management Automation X user. When a user logs into Service Management Automation X SSO, a portal user will automatically be created based on the information that exists on the AD server for the Email, First and Last Names and Phone numbers. It’s also possible to create the user accounts using the other methods described above so that if the matching user information already exists in the portal or a contact exists in Service Management Automation X, that account would be used.
+A best practice to consider is to pre-populate Service Management Automation X data for any person that may login using SSO. On first login if the information has already been populated any specific entitlements the user may have in the Self-Service Portal based on location or group membership will already be configured and the user will be able to see their offerings immediately. Similarly, if the user has special rights defined by roles that provide additional access, if not pre-populated the user may have to open a request to grant them extra information.
+</p><p><br>
+</p>
+<h3><span class="mw-headline" id="LDAP_Integration">LDAP Integration</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers&amp;veaction=edit&amp;section=8" class="mw-editsection-visualeditor" title="Edit section: LDAP Integration">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers&amp;action=edit&amp;section=8" title="Edit section: LDAP Integration">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>An out of box configurable integration is available that imports contacts into Service Management Automation X from one of the supported LDAP versions. This integration is configured in the Service Management Automation X UI and uses the OPB (On-Premise Bridge) to connect to LDAP. It will create new users or update existing users based on a matching UPN. There are configurable filters that allow the integration to determine which users are imported based on criteria set in their profile. 
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="ImportUsers3.png" src="/mediawiki/images/d/de/ImportUsers3.png" width="694" height="524" data-file-width="694" data-file-height="524"></a>
+</p><p>The integration also supports the selection of attributes to move from a user’s LDAP profile to Service Management Automation X. Any fields in LDAP can be configured to move to Service Management Automation X. The User principal name (UPN) is the unique value that Service Management Automation X uses for user reconciliation. If the UPN does not exist in Service Management Automation X a new user is created. if the User principal name exists the attributes for that user are updated.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="ImportUsers4.png" src="/mediawiki/images/3/37/ImportUsers4.png" width="860" height="468" data-file-width="860" data-file-height="468"></a>
+</p><p>￼
+</p><p><br>
+</p>
+<h3><span class="mw-headline" id="Connect-It_integration">Connect-It integration</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers&amp;veaction=edit&amp;section=9" class="mw-editsection-visualeditor" title="Edit section: Connect-It integration">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/SMAX_Config/cg_importUsers&amp;action=edit&amp;section=9" title="Edit section: Connect-It integration">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Service Management Automation X can also make use of the Connect-It integration that is able to add users to Service Management Automation X by getting the information directly from an Active Directory. Information regarding using the integration can be found here.
+</p>
+<!-- 
+NewPP limit report
+Cached time: 20190524101338
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.024 seconds
+Real time usage: 0.092 seconds
+Preprocessor visited node count: 37/1000000
+Preprocessor generated node count: 48/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 0/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:260121-0!canonical and timestamp 20190524101338 and revision id 1295874
+ -->
+</div>
