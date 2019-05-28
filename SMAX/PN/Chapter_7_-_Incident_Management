@@ -1,1 +1,66 @@
- 
+<div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 11/03/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 5 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><div class="mw-collapsible-content"><div class="Admonition_Tip"><span class="autonumber">Incident Management</span><div class="mw-collapsible">
+<div class="mw-collapsible-content">
+<p><br>
+An Incident encompasses any disruption or degradation of a service, whether the service is internal or external. Issues with redundant hardware (or software) are also handled as an incident, even if the degradation is not apparent to an end user.
+</p><p>The goal of the incident management process is to resolve the disruption or degradation as quickly as possible. This may often involve enacting a workaround (such as rebooting a server or restarting a specific service) rather than a permanent fix.
+</p><p>When a similar issue occurs multiple times, each instance should be tracked as a separate Incident. This allows other processes (such as problem management), as well as reporting, to discover trends that will help to find the root cause of the recurring incidents.
+</p>
+<div class="center"><div class="floatnone"><a onclick="javascript:loadingImage(this);" class="image"><img alt="Incident1.png" src="/mediawiki/images/9/99/Incident1.png" width="303" height="543" data-file-width="303" data-file-height="543"></a></div></div>
+</div>
+</div>
+</div>
+</div>
+<p><br>
+</p><p><br>
+</p>
+<h2><span class="mw-headline" id="Setting_up_Incident_Management">Setting up Incident Management</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/GettingStarted/IncidentManagement&amp;veaction=edit&amp;section=1" class="mw-editsection-visualeditor" title="Edit section: Setting up Incident Management">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/GettingStarted/IncidentManagement&amp;action=edit&amp;section=1" title="Edit section: Setting up Incident Management">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Previously we set up our request management process to handle everything coming from the consumers of our services. Now we’ll set up the processes we use to support how we provide those services to our end users.
+</p><p>The first of the “back-office” processes we’ll set up is the incident process. Incident management is triggered when there is an outage or degradation detected in one of our services. We may detect the outage or degradation by monitoring software, it may be found by one of our technicians, or it could even be reported by an end user through a support request. When incidents happen, our IT managers get very grumpy, so we need to set up our process to handle them as quickly as possible.
+</p><p>In terms of setting up incident management, you’ll be happy to hear we’ve already done most of the setup already. Incident uses the same record categories we created for request, and the same knowledge database we pre-populated with our existing articles. We can set up some new surveys for incidents just like we did for request as well.
+</p><p>We should set up a few views and reports that are very similar to the ones we created for request. For the reports on the dashboard let’s add:
+</p>
+<ul><li>My incidents by priority</li>
+<li>Incidents by group</li>
+<li>Incidents by service</li>
+<li>Incident Volume in the Past Month</li></ul>
+<p>Then we can add a few views for our specific service desks to help them out. I’ll set one up to show all the critical incidents, then we can work with the Incident managers to create exactly what they need.
+</p><p><br>
+</p>
+<h2><span class="mw-headline" id="Incident_Models">Incident Models</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/GettingStarted/IncidentManagement&amp;veaction=edit&amp;section=2" class="mw-editsection-visualeditor" title="Edit section: Incident Models">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2018.05/PractitionersNotes/GettingStarted/IncidentManagement&amp;action=edit&amp;section=2" title="Edit section: Incident Models">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Another tool we have for incident management is the concept of incident models. Similar to the offerings we have in request management, incident models contain the information to guide our agents through the process of solving common types of Incidents. This information could include:
+</p>
+<ul><li>Default values for any field (“A production database incident always has an impact of ‘Enterprise’”)</li>
+<li>A list of tasks necessary to resolve the incident</li>
+<li>Unique information needed for this type of incident defined as user options (“for major incidents, the agent needs to enter a conference line number”)</li>
+<li>Any business rules specific to this type of incident (from sending extra notifications to bringing in information from an external system)</li>
+<li>As we run into common or similar incidents, our incident managers can create these Models to improve our responsiveness going forward. For now, we can just create a ‘major incident’ model that when selected will:</li>
+<li>Set the impact and urgency of the incident to the highest levels</li>
+<li>Create tasks for the owner of the affected service to start a conference line and send notifications to our critical response team</li>
+<li>Trigger an extra review by our problem management team after the incident is resolved</li></ul>
+<p><br>
+All of the details around <a target="1" rel="nofollow" class="external text" href="http://docs.microfocus.com.com/ITSMA/2018.05/NG/SM_X/Content/Search.htm#search-incident%20models">incident models</a> can be found online as well.
+</p>
+<!-- 
+NewPP limit report
+Cached time: 20190524100914
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.012 seconds
+Real time usage: 0.035 seconds
+Preprocessor visited node count: 16/1000000
+Preprocessor generated node count: 32/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 0/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:201681-0!canonical and timestamp 20190524100914 and revision id 1295832
+ -->
+</div>
