@@ -1,1 +1,173 @@
- 
+<h1>Integrate Cloud Optimizer 3.03 with containerized Operations Bridge Manager 2018.08</h1><div><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">This section provides steps integrate Cloud Optimizer (CO) 3.03
+and containerized OpsBridge<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">Manager (OBM) that is part of OpsB 2018.08 suite.<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><b><span style="font-size: 12pt; font-family: DejaVuSansCondensed-Bold;">Step 1: Import the CO Management Pack
+package into OBM<o:p></o:p></span></b></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">1. Log on to the CO user interface in any of the supported browser
+and navigate to<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><b><span style="font-size: 12pt; font-family: DejaVuSansCondensed-Bold;">Settings &gt; Integration</span></b><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">.<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">2. Scroll down and click </span><b><span style="font-size: 12pt; font-family: DejaVuSansCondensed-Bold;">Download ZIP Package (OMi) </span></b><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">to download the OBM package:<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">3. Prepare the package for upload.<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">4. Extract the downloaded file to the path shown below. Copy the
+file<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><i><span style="font-size: 12pt; font-family: DejaVuSansCondensed-Oblique;">OMi_Integration_Pack_for_vPV.zip </span></i><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">into the </span><b><span style="font-size: 12pt; font-family: DejaVuSansCondensed-Bold;">OMi pod</span></b><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">.<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">5. Copy this file into a temp location on OBM box using any
+file-copy tool (like FileZilla or<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">WinSCP) over ssh. Verify that the file exists after copying it in
+the temp location.<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">6. Copy the file to the OMi pod (assuming the zip file was copied
+to /tmp):<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size:
+12.0pt;font-family:DejaVuSansCondensed;mso-bidi-font-family:DejaVuSansCondensed;
+color:#333333">kubectl cp /tmp/OMi_Integration_Pack_for_vPV.zip<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size:
+12.0pt;font-family:DejaVuSansCondensed;mso-bidi-font-family:DejaVuSansCondensed;
+color:#333333">opsbridge1/omi-0:/tmp/OMi_Integration_Pack_for_vPV.zip -c omi<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">7. Verify that the file is on pod’s /tmp directory:<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size:
+12.0pt;font-family:DejaVuSansCondensed;mso-bidi-font-family:DejaVuSansCondensed;
+color:#333333">kubectl exec omi-0 -c omi -n opsbridge1 ls /tmp<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">8. Connect to the OBM's pod command line:<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size:
+12.0pt;font-family:DejaVuSansCondensed;mso-bidi-font-family:DejaVuSansCondensed;
+color:#333333">kubectl exec omi-0 -c omi -n opsbridge1 bash –ti<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">9. Navigate to /tmp:<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size:
+12.0pt;font-family:DejaVuSansCondensed;mso-bidi-font-family:DejaVuSansCondensed;
+color:#333333">cd /tmp<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">10. Unzip the package:<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size:
+12.0pt;font-family:DejaVuSansCondensed;mso-bidi-font-family:DejaVuSansCondensed;
+color:#333333">unzip *vPV*<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">11. Navigate to the folder – twice (there are 2 levels of
+vPV_OMi_Integration folders)<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size:
+12.0pt;font-family:DejaVuSansCondensed;mso-bidi-font-family:DejaVuSansCondensed;
+color:#333333">cd vPV_OMi_Integration<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size:
+12.0pt;font-family:DejaVuSansCondensed;mso-bidi-font-family:DejaVuSansCondensed;
+color:#333333">cd vPV_OMi_Integration<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">12. Run the installer:<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size:
+12.0pt;font-family:DejaVuSansCondensed;mso-bidi-font-family:DejaVuSansCondensed;
+color:#333333">./vPV_integration_install.sh -i<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">13. Once the installation is complete, verify that the package was
+installed successfully on<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">OBM by navigating to </span><b><span style="font-size: 12pt; font-family: DejaVuSansCondensed-Bold;">Administration &gt; RTSM Administration &gt; Administration &gt;<o:p></o:p></span></b></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><b><span style="font-size: 12pt; font-family: DejaVuSansCondensed-Bold;">Package Manager </span></b><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">and verifying for HPOprvPV package in the
+list.<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><b><span style="font-size: 12pt; font-family: DejaVuSansCondensed-Bold;">Step 2: Install the Operations Agent (OA)
+in CO system and activate it with OBM as<o:p></o:p></span></b></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><b><span style="font-size: 12pt; font-family: DejaVuSansCondensed-Bold;">monitored node<o:p></o:p></span></b></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">1. See the </span><span style="font-size:10.0pt;font-family:DejaVuSansCondensed;
+mso-bidi-font-family:DejaVuSansCondensed;color:#3A84E7">Support Matrices </span><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">for Cloud Optimizer to know the supported OA
+versions.<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">2. Download the OA installer. See the </span><span style="font-size:10.0pt;font-family:DejaVuSansCondensed;mso-bidi-font-family:
+DejaVuSansCondensed;color:#3A84E7">OA Installation Documentation </span><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">for the instructions on<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">downloading and installing OA and activating the system with OBM.<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">3. After activating the OA installed system with OBM, make sure
+that on running the </span><i><span style="font-size: 12pt; font-family: DejaVuSansCondensed-Oblique;">ovc<o:p></o:p></span></i></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">command, all the agent processes are in RUNNING state.<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><b><span style="font-size: 12pt; font-family: DejaVuSansCondensed-Bold;">Step 3: Deploy Management
+Aspects/Templates to the CO system and start<o:p></o:p></span></b></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><b><span style="font-size: 12pt; font-family: DejaVuSansCondensed-Bold;">monitoring<o:p></o:p></span></b></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">1. Log on to OBM user interface and navigate to </span><b><span style="font-size: 12pt; font-family: DejaVuSansCondensed-Bold;">Administration &gt; Monitoring &gt;<o:p></o:p></span></b></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><b><span style="font-size: 12pt; font-family: DejaVuSansCondensed-Bold;">Management templates and Aspects &gt; vPV
+Management Pack</span></b><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">.<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">2. Deploy </span><i><span style="font-size: 12pt; font-family: DejaVuSansCondensed-Oblique;">vPV Monitor </span></i><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">Management
+Pack on CO.<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">While deploying, in the </span><b><span style="font-size: 12pt; font-family: DejaVuSansCondensed-Bold;">Parameter Summary </span></b><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">section, you may set the parameter<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><b><span style="font-size: 12pt; font-family: DejaVuSansCondensed-Bold;">Alarm Flag </span></b><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">to </span><span style="font-size:12.0pt;
+font-family:DejaVuSansCondensed;mso-bidi-font-family:DejaVuSansCondensed;
+color:#333333">true </span><span style="font-size: 12pt; font-family: DejaVuSansCondensed;">for CO to forward VCenter
+alarms and events.<o:p></o:p></span></p>
+
+<p class="MsoNormal"><span style="font-size: 12pt; line-height: 107%; font-family: DejaVuSansCondensed;">The
+Containerized OBM and CO are integrated.</span><o:p></o:p></p></div>
