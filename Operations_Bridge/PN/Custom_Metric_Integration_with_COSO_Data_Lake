@@ -1,4 +1,4 @@
-<h1>Custom metric integration to the COSO Data Lake for OpsBridge reporting solutions</h1><p>This section describes how to extend the COSO Data Lake to collect custom metrics to enable custom reporting using Business Value Dashboard or your own BI reporting tools.<br></p><p>This section covers the following topics:</p><p></p><ul><li>Custom metric collection concepts</li><li>Metric life cycle</li><li>Steps to create your custom content</li><li>Fully functional end to end example</li></ul><p></p><h2>Custom metric collection concepts</h2><p>There are two approaches to ingesting Operations Agent custom metrics into the COSO Data Lake:<br></p><h3>Collection Services</h3><p>The Collection Service is a containerized micro service designed to centrally collect large amounts of data from the remote Operations Agents’ Performance Collection Component and store it in the COSO Data Lake. It supports collecting data from all Operations Agent supported platforms, and all supported versions. The Collection Service is horizontally scalable. It spawns one or more Agent Metric Collector containers, depending on the number of collections you configure, which in turn define the nodes from which to collect data.</p><p>This is the recommended approach where the data is used for reporting purposes and doesn’t require real time analytics or central thresholding.</p><p>You use the Content Administration Service, a containerized micro service, to configure the Collection Service to collect data from the Operations Agents on a scheduled basis.&nbsp; The data collection mechanism uses the CODA client APIs to connect to the Operations Agent, which uses HTTPS-based communications by default, and falls back to HTTP,&nbsp; if HTTPS is unavailable.&nbsp; Note that the Collection Service requires a certificate from OBM, before the agent metric collection can start.&nbsp; The Content Administration Service also configures the COSO Data Lake to store and manage the data.</p><h3>OBM policies</h3><p>OBM policies are used to collect data from any of these sources:</p><p></p><ul><li>XML File</li><li>Structured Log File</li><li>REST web service</li><li>Performance Collection Component</li></ul><p></p><p>In this case the data is typically used for real time graphing and central thresholding purposes, but it can also be used for reporting since it is stored in the COSO Data Lake. You deploy OBM policies to the Operations Agents that configure what data to send to the COSO Data Lake via an HTTPS POST and how frequently.</p><p>Metric Streaming Configuration policies are supported on all Operations Agent platforms.&nbsp; All other metric collection policy types are supported on Windows and Linux platforms only.</p><p>You use the Content Administration Service to configure the COSO Data Lake to store and manage the data.</p><p>The following diagram shows the components used in collecting custom metrics.</p><div><br></div><div><img src="https://docs.microfocus.com/mediawiki/images/PN/diag1.png"><br></div><p class="MsoNormal"><br></p><h2><img src="https://docs.microfocus.com/mediawiki/images/PN/diag2.PNG"><br></h2><h2><br></h2><h2>Metric life cycle</h2><p class="MsoNormal">You need to consider what metrics to collect, whether aggregation is required and how long to retain the data in the COSO Data Lake.</p><h3>Define</h3><p class="MsoNormal">This involves defining how the COSO Data Lake is configured to process custom metrics:<br></p><p class="MsoNormal"></p><ul><li>Database table(s) in Vertica</li><li>Kafka topic though which data is ingested (not applicable for the Agent Metric Collector of the Collection Service)</li><li>Connection between the Kafka topic and the database table (not applicable for the Agent Metric Collector of the Collection Service)</li></ul><p></p><p class="MsoNormal">This information is defined in a well-known JSON file format and configured using the Content Administration Service.<br></p><h3>Collect and ingest</h3><h4>Collection Service</h4><p class="MsoNormal">For the reporting use case, the recommended method of Operations Agent metric collection is to use the Collection Service.&nbsp; The metrics to collect, the agents from which to collect and how frequently to collect are defined in a well-known JSON file format and configured using the Content Administration Service.</p><h4>OBM policies</h4><p class="MsoNormal">If you use OBM policies to post the data to COSO, then you need to create, assign and deploy the policies.&nbsp; The policies contain which metrics to collect from the local agent and how frequently to send the data to the COSO Data Lake. The Operations Agent, apart from acting as a source of system performance metrics, also acts as a metric integration framework, and provides the following options to integrate metrics to the COSO Data Lake.</p><p class="MsoNormal"><br></p><p class="MsoNormal">Note: A <span class="MsoHyperlink"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/ConfigureDataForwardingPolicies">Data
+<p><span style="font-family: MetricHPE; font-size: 16px;">This section describes how to extend the COSO Data Lake to collect custom metrics to enable custom reporting using Business Value Dashboard or your own BI reporting tools.</span></p><p>This section covers the following topics:</p><p></p><ul><li>Custom metric collection concepts</li><li>Metric life cycle</li><li>Steps to create your custom content</li><li>Fully functional end to end example</li></ul><p></p><h2>Custom metric collection concepts</h2><p>There are two approaches to ingesting Operations Agent custom metrics into the COSO Data Lake:<br></p><h3>Collection Services</h3><p>The Collection Service is a containerized micro service designed to centrally collect large amounts of data from the remote Operations Agents’ Performance Collection Component and store it in the COSO Data Lake. It supports collecting data from all Operations Agent supported platforms, and all supported versions. The Collection Service is horizontally scalable. It spawns one or more Agent Metric Collector containers, depending on the number of collections you configure, which in turn define the nodes from which to collect data.</p><p>This is the recommended approach where the data is used for reporting purposes and doesn’t require real time analytics or central thresholding.</p><p>You use the Content Administration Service, a containerized micro service, to configure the Collection Service to collect data from the Operations Agents on a scheduled basis.&nbsp; The data collection mechanism uses the CODA client APIs to connect to the Operations Agent, which uses HTTPS-based communications by default, and falls back to HTTP,&nbsp; if HTTPS is unavailable.&nbsp; Note that the Collection Service requires a certificate from OBM, before the agent metric collection can start.&nbsp; The Content Administration Service also configures the COSO Data Lake to store and manage the data.</p><h3>OBM policies</h3><p>OBM policies are used to collect data from any of these sources:</p><p></p><ul><li>XML File</li><li>Structured Log File</li><li>REST web service</li><li>Performance Collection Component</li></ul><p></p><p>In this case the data is typically used for real time graphing and central thresholding purposes, but it can also be used for reporting since it is stored in the COSO Data Lake. You deploy OBM policies to the Operations Agents that configure what data to send to the COSO Data Lake via an HTTPS POST and how frequently.</p><p>Metric Streaming Configuration policies are supported on all Operations Agent platforms.&nbsp; All other metric collection policy types are supported on Windows and Linux platforms only.</p><p>You use the Content Administration Service to configure the COSO Data Lake to store and manage the data.</p><p>The following diagram shows the components used in collecting custom metrics.</p><div><br></div><div><img src="https://docs.microfocus.com/mediawiki/images/PN/diag1.png"><br></div><p class="MsoNormal"><br></p><h2><img src="https://docs.microfocus.com/mediawiki/images/PN/diag2.PNG"><br></h2><h2><br></h2><h2>Metric life cycle</h2><p class="MsoNormal">You need to consider what metrics to collect, whether aggregation is required and how long to retain the data in the COSO Data Lake.</p><h3>Define</h3><p class="MsoNormal">This involves defining how the COSO Data Lake is configured to process custom metrics:<br></p><p class="MsoNormal"></p><ul><li>Database table(s) in Vertica</li><li>Kafka topic though which data is ingested (not applicable for the Agent Metric Collector of the Collection Service)</li><li>Connection between the Kafka topic and the database table (not applicable for the Agent Metric Collector of the Collection Service)</li></ul><p></p><p class="MsoNormal">This information is defined in a well-known JSON file format and configured using the Content Administration Service.<br></p><h3>Collect and ingest</h3><h4>Collection Service</h4><p class="MsoNormal">For the reporting use case, the recommended method of Operations Agent metric collection is to use the Collection Service.&nbsp; The metrics to collect, the agents from which to collect and how frequently to collect are defined in a well-known JSON file format and configured using the Content Administration Service.</p><h4>OBM policies</h4><p class="MsoNormal">If you use OBM policies to post the data to COSO, then you need to create, assign and deploy the policies.&nbsp; The policies contain which metrics to collect from the local agent and how frequently to send the data to the COSO Data Lake. The Operations Agent, apart from acting as a source of system performance metrics, also acts as a metric integration framework, and provides the following options to integrate metrics to the COSO Data Lake.</p><p class="MsoNormal"><img src="https://docs.microfocus.com/mediawiki/images/PN/diag6.PNG"><br></p><p class="MsoNormal">Note: A <span class="MsoHyperlink"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/ConfigureDataForwardingPolicies">Data
 Forwarding</a></span> policy is also required to match the data from the
 collection policies and post it to the URL of the target COSO system.<br></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">You can also stream out-of-the-box system metrics to COSO
 via <span class="MsoHyperlink"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/ConfigureMetricStreamingConfigurationPolicies">Metric
@@ -85,7 +85,198 @@ to integrate<o:p></o:p></span></h3>
 the Collection Service approach, ensure that the Operation Agent contains the
 custom metrics that you want to collect into the COSO Data Lake.&nbsp; You can store custom metrics in the
 Operations Agent’s Performance Collection Component in either of these
-recommended ways:</span></p><p class="MsoNormal"><ul><li>Use a Perl script to log the metrics.&nbsp; See Using Perl Application Programming Interface for Submitting Custom Data for details.&nbsp; Also see the Easily collect custom metrics using Perl and visualize in OBM blog article for a working example.</li><li>Create a metrics policy.&nbsp; Data sources are database, Perl script, Structured Log File, XML File.</li><li>Use a measurement threshold policy to log metrics defined in the Source tab such as from an External Source, MIB, Program, Perfmon by clicking the “Store in Coda” checkbox for the required source.&nbsp; See Configure Measurement Threshold Policies for details.&nbsp;</li></ul></p>
+recommended ways:</span></p><p class="MsoNormal"></p><ul><li>Use a Perl script to log the metrics.&nbsp; See Using Perl Application Programming Interface for Submitting Custom Data for details.&nbsp; Also see the Easily collect custom metrics using Perl and visualize in OBM blog article for a working example.</li><li>Create a metrics policy.&nbsp; Data sources are database, Perl script, Structured Log File, XML File.</li><li>Use a measurement threshold policy to log metrics defined in the Source tab such as from an External Source, MIB, Program, Perfmon by clicking the “Store in Coda” checkbox for the required source.&nbsp; See Configure Measurement Threshold Policies for details.&nbsp;</li></ul><p></p>
 
 <h3><span lang="EN-AU">Step 2: Define the COSO
-Data Lake configuration<o:p></o:p></span></h3></div><div><img src="https://docs.microfocus.com/mediawiki/images/PN/diag4.PNG"><br></div><div><br></div><div><br></div>
+Data Lake configuration<o:p></o:p></span></h3></div><div><img src="https://docs.microfocus.com/mediawiki/images/PN/diag4_4.PNG"><br></div><div><br></div><div>Configuring the COSO Data Lake involves configuring the
+artifacts listed below.&nbsp; Each content artifact
+should be placed in a well-known folder location, which is understood by the Content
+Administration Service.<br></div><div><p class="MsoNormal"><o:p></o:p></p>
+
+<p class="MsoNormal">In a working directory of your choice, create the content
+folder structure shown in the following table.&nbsp;
+Replace &lt;content name&gt; with a unique alphanumeric name for your new
+content.<o:p></o:p></p>
+
+<span style="font-size:11.0pt;line-height:107%;font-family:&quot;Calibri&quot;,sans-serif;
+mso-ascii-theme-font:minor-latin;mso-fareast-font-family:Calibri;mso-fareast-theme-font:
+minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;
+mso-bidi-theme-font:minor-bidi;mso-ansi-language:EN-US;mso-fareast-language:
+EN-US;mso-bidi-language:AR-SA">The schema and bulk upload configuration are
+mandatory.&nbsp; All other configuration is
+optional</span><br></div><div><br></div><div><img src="https://docs.microfocus.com/mediawiki/images/PN/diag8.PNG"><br></div><div><br></div><div><h3><span lang="EN-AU">Step 3: Define the metric
+collection rules<o:p></o:p></span></h3>
+
+<p class="MsoNormal">The Collection Service can:<o:p></o:p></p><p class="MsoNormal"><ul><li>Collect metrics from all supported Operations Agent versions.</li><li>Collect from agents running on all supported operating systems.</li><li>Collect data for all Management Packs or Connectors which log metrics to the agent’s Performance Collection Component.</li><li>Collect summarized data for all agent supported summary levels.</li><li>Collect at a highest frequency of 5 minutes (recommended default is one hour).</li><li>Collect data for a configurable initial history or maximum history after a time gap.</li></ul></p></div><div><p class="MsoNormal">The metric collection definition is a JSON file you create
+in the /opr/integration/collection/oa/&lt;content name&gt; folder
+location.&nbsp; It contains these fields which
+are all mandatory:<o:p></o:p></p><p class="MsoNormal"><img src="https://docs.microfocus.com/mediawiki/images/PN/diag9.PNG"><br></p><p class="MsoNormal">Each collection definition will result in spawning a new
+Agent Metric Collector container instance.<o:p></o:p></p><p class="MsoNormal">To horizontally scale for a large number of nodes, you can
+duplicate a collection definition each with a subset of nodes defined in the
+TQL and/or node list file.<o:p></o:p></p><p class="MsoNormal">The Collection Service writes the collected data to a
+content configured output directory in a CSV file format.&nbsp; This data is uploaded to the COSO Data Lake using
+the bulk upload rules defined by the content. <o:p></o:p></p><h3><span lang="EN-AU">Step 4: Create BVD reports<o:p></o:p></span></h3><p class="MsoNormal">Business Value Dashboard is well documented. The <span class="MsoHyperlink"><a href="https://docs.microfocus.com/itom/Business_Value_Dashboard:2019.05/ReleaseNotes">documentation
+section</a></span> provides all the details required to create a Business Value
+Dashboard. <o:p></o:p></p><p class="MsoNormal">BVD reports can be pre-created, included in the content, and
+configured using the <span style="font-family:&quot;Courier New&quot;">content-service.sh</span>
+CLI provided by the Content Administration Service.<o:p></o:p></p><p class="MsoNormal">The BVD dashboards can be made part of the COSO Data Lake content
+by exporting the dashboards and data collectors using the bvd-cli command and placing
+exported file in the folder location opr/integration/bvd/dashboard/&lt;content
+name&gt;.<o:p></o:p></p><p class="MsoNormal"><span lang="EN-AU">NOTE: You
+can use Bring Your Own Business Intelligence (BYOBI) tools (MS Power BI,
+Tableau, Qlik, etc.) to access the COSO Data Lake data for reporting and business
+intelligence (BI) needs with 3rd-party tools.<o:p></o:p></span></p><h3><span lang="EN-AU">Step 5: Package the content
+artifacts<o:p></o:p></span></h3><p class="MsoNormal">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</p><p class="MsoNormal">The COSO Data Lake content must adhere to a well-known
+folder structure as shown in this table.&nbsp;<o:p></o:p></p><p class="MsoNormal"><img src="https://docs.microfocus.com/mediawiki/images/PN/diag10.PNG"><br></p><p class="MsoNormal">To create new content, create one or more of the above
+mentioned artifacts, and create a ZIP file. <o:p></o:p></p><p class="MsoNormal">For configuring content that is not part of the
+out-of-the-box content set:<o:p></o:p></p><p class="MsoNormal"><ul><li>Put the content ZIP file in the &lt;conf volume&gt;/content-administration/var/content-administration/content/custom directory.&nbsp; For example:&nbsp;</li></ul></p></div><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><p class="MsoNormal">/var/vols/itom/conf/content-administration/var/content-administration/content/custom/</p></div></blockquote></blockquote><div><p class="MsoNormal"><ul><li>Ensure the file ownership is set to the same SYSTEM_USER_ID and SYSTEM_GROUP_ID specified for the NFS directory owner, which is 1999 and 1999 by default.&nbsp; For example:</li></ul></p></div><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><p class="MsoNormal">chown 1999:1999 myContent.zip</p></div></blockquote></blockquote><div><p class="MsoNormal"><ul><li>Log in to the Content Administration Service container as follows:</li></ul></p></div><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><p class="MsoNormal">Run the following command to get the opsbridge namespace and the content-administration pod names:</p></div></blockquote></blockquote><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><p class="MsoNormal">kubectl get pods --all-namespaces | grep content-administration</p></div></blockquote></blockquote></blockquote><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><p class="MsoNormal">Log in to the content-administration container:</p></div></blockquote></blockquote><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><p class="MsoNormal">kubectl exec -ti &lt;content-administration pod&gt; -c content-administration -n &lt;namespace&gt; bash</p></div></blockquote></blockquote></blockquote><div><p class="MsoNormal"><ul><li>Execute the content configuration CLI ./opsb-content-service.sh as described below</li></ul></p><div><b style="text-indent: -0.25in;"><span style="font-size:10.5pt;line-height:107%;
+font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
+color:#333333"><br></span></b></div><div><b style="text-indent: -0.25in;"><span style="font-size:10.5pt;line-height:107%;
+font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
+color:#333333">Usage:</span></b><br></div><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal" style="margin-top:7.5pt;margin-right:0in;margin-bottom:0in;
+margin-left:0in;margin-bottom:.0001pt;line-height:normal"><span style="font-family:&quot;Courier New&quot;">opsb-content-service.sh -conf
+&lt;conf_types&gt; -category &lt;categ_value&gt; [-stopOA]</span><span style="font-size:10.5pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#333333"><o:p></o:p></span></p><p class="MsoNormal" style="margin-top:7.5pt;margin-right:0in;margin-bottom:0in;
+margin-left:0in;margin-bottom:.0001pt;line-height:normal"><span style="font-size:10.5pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#333333">Where<o:p></o:p></span></p><p class="MsoNormal" style="margin-top:7.5pt;margin-right:0in;margin-bottom:0in;
+margin-left:0in;margin-bottom:.0001pt;line-height:normal"><span style="font-family:&quot;Courier New&quot;">&lt;conf_types&gt;</span><span style="font-size:10.5pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#333333"> can be </span><span style="font-family:&quot;Courier New&quot;">metadata,
+retention, enrichment,bvd,roll-up,oa</span><span style="font-size:10.5pt;
+font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
+color:#333333"> (separated with,) or </span><span style="font-family:&quot;Courier New&quot;">all</span><span style="font-size:10.5pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#333333"> which configures all supported configuration
+types.<br>
+</span><span style="font-family:&quot;Courier New&quot;">&lt;categ_value&gt;</span><span style="font-size:10.5pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#333333"> is the category to be configured.&nbsp; The category value is the folder name of the configuration.
+One category at a time can be specified. </span><span style="font-family:&quot;Courier New&quot;">all</span><span style="font-size:10.5pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#333333"> configures all categories.<br>
+</span><span style="font-family:&quot;Courier New&quot;">-stopOA</span><span style="font-size:10.5pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#333333">:&nbsp; &nbsp; &nbsp;This option works with the
+</span><span style="font-family:&quot;Courier New&quot;">oa</span><span style="font-size:
+10.5pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
+color:#333333"> conf type and stops all configured metric collections for given
+category.<o:p></o:p></span></p><p class="MsoNormal" style="margin-top:7.5pt;margin-right:0in;margin-bottom:0in;
+margin-left:0in;margin-bottom:.0001pt;line-height:normal"><b><span style="font-size:10.5pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#333333">Examples:</span></b><span style="font-size:
+10.5pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
+color:#333333"><br>
+</span><span style="font-family:&quot;Courier New&quot;">opsb-content-service.sh -conf
+all -category all<br>
+opsb-content-service.sh -conf metadata -category Infra<br>
+opsb-content-service.sh -conf all -category DEM<br>
+opsb-content-service.sh -conf retention, enrichment -category all<br>
+opsb-content-service.sh -conf metadata,enrichment,oa,bvd -category Infra<br>
+opsb-content-service.sh -conf oa -category Infra -stopOA // To stop OA
+collection for all Infra metrics</span></p><h2><span lang="EN-AU">Modify custom content<o:p></o:p></span></h2><p class="MsoNormal"><span lang="EN-AU">The core
+aspect to consider for content modification is whether a particular
+configuration interface allows modification or not. Content configuration
+primarily involves configuring:<o:p></o:p></span></p><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt"><ul><li><span lang="EN-AU">COSO Data Lake</span></li><li><span lang="EN-AU">Collection Service</span></li><li><span lang="EN-AU">BVD</span></li></ul></p><p class="MsoNormal">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</p><p class="MsoNormal"><span lang="EN-AU">The following
+changes to existing content are supported:<o:p></o:p></span></p><p class="MsoNormal"><span lang="EN-AU"><img src="https://docs.microfocus.com/mediawiki/images/PN/diag11.PNG"><br></span></p><h2><span lang="EN-AU">Delete custom content<o:p></o:p></span></h2><p class="MsoNormal"><span lang="EN-AU">The Content
+Administration Service currently does not support deletion operations for the
+COSO Data Lake artifacts.<o:p></o:p></span></p><p class="MsoNormal"><span lang="EN-AU">Data
+Collection of a specific custom content from Operation Agents can be stopped
+using the Content Administration Service. <o:p></o:p></span></p><p class="MsoNormal"><span lang="EN-AU">Example:<o:p></o:p></span></p><p class="MsoNormal"><span lang="EN-AU">
+
+
+
+
+
+
+
+</span></p><p class="MsoNormal"><span style="font-family:&quot;Courier New&quot;">opsb-content-service.sh
+-conf oa -category Infra –stopOA<o:p></o:p></span></p><h1><span lang="EN-AU">Fully functional end to
+end example<o:p></o:p></span></h1><h2>Choose the Apache metrics to integrate to the COSO Data Lake<o:p></o:p></h2><div><div><ul><li>The OBM Management Pack for Apache Web Server monitors the following Apache metrics and stores them in the Operations Agent’s Performance Collection Component (oacore):</li></ul></div></div></div><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><div><div>SERVER_NAME (http configuration filename), PORT (http port), IP_ADDRESS, PERC_CPU_USAGE, MEM_USAGE_MB, BYTES_PER_SEC, REQS_PER_SEC, BYTES_PER_REQ, PROC_RATE, BUSY_WORKERS, IDLE_WORKERS, TOTAL_ACCESS, TOTAL_KBYTES, RESP_TIME_MICROSEC</div></div></div></blockquote><div><div><div><ul><li>Make sure that the Apache Web Server metrics are logged to the Operations Agent. The Apache metrics are stored in APACHE_DATA data source and APACHE_PERF metric class. For example, this is a snippet of Apache Web Server metrics stored in the Operations Agent’s store.</li></ul></div><div># /opt/OV/bin/ovcodautil -ds APACHE_DATA -o APACHE_PERF –rawonly -last<br></div><div>06/03/19 09:25:02 AM|SERVER_NAME&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|/etc/httpd/conf/httpd.conf|</div><div>06/03/19 09:25:02 AM|PORT&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp; 8080|</div><div>06/03/19 09:25:02 AM|IP_ADDRESS&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |10.11.16.2|</div><div>06/03/19 09:25:02 AM|PERC_CPU_USAGE&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp; 0.00|</div><div>06/03/19 09:25:02 AM|MEM_USAGE_MB&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp;27.26|</div><div>06/03/19 09:25:02 AM|BYTES_PER_SEC&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|&nbsp; &nbsp; &nbsp;14.47|</div><div>06/03/19 09:25:02 AM|REQS_PER_SEC&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp; 0.02|</div><div>06/03/19 09:25:02 AM|BYTES_PER_REQ&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|&nbsp; &nbsp; 743.58|</div><div>06/03/19 09:25:02 AM|PROC_RATE&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|&nbsp; &nbsp; &nbsp;16.67|</div><div>06/03/19 09:25:02 AM|BUSY_WORKERS&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1|</div><div>06/03/19 09:25:02 AM|IDLE_WORKERS&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;5|</div><div>06/03/19 09:25:02 AM|TOTAL_ACCESS&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp; 6259|</div><div>06/03/19 09:25:02 AM|TOTAL_KBYTES&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp; 4545|</div><div>06/03/19 09:25:02 AM|RESP_TIME_MICROSEC&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp; 0.00|</div><div><ul><li>Create the Apache metrics collection content with the following folder structure. The collection content must adhere to a well-known directory structure.</li></ul></div></div><div><br></div><div><img src="https://docs.microfocus.com/mediawiki/images/PN/diag12.PNG"><br></div><p class="MsoListParagraphCxSpFirst" style="text-indent:-.25in;mso-list:l0 level1 lfo1"><br></p><p class="MsoNormal">Execute the following commands to create the directory
+structure on NFS server:<o:p></o:p></p><p class="MsoListParagraphCxSpFirst"><span style="font-size: 9pt; line-height: 107%; font-family: &quot;Courier New&quot;;">mkdir -p
+/tmp/Apache_Metrics_Integration_Content/opr/integration/collection/oa/Apache<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size: 9pt; line-height: 107%; font-family: &quot;Courier New&quot;;">mkdir -p
+/tmp/Apache_Metrics_Integration_Content/opr/integration/coso/blk-upload/ingestion-conf/Apache<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size: 9pt; line-height: 107%; font-family: &quot;Courier New&quot;;">mkdir -p
+/tmp/Apache_Metrics_Integration_Content/opr/integration/coso/blk-upload/load-conf/Apache<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size: 9pt; line-height: 107%; font-family: &quot;Courier New&quot;;">mkdir -p
+/tmp/Apache_Metrics_Integration_Content/opr/integration/coso/enrichment/daily/Apache<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size: 9pt; line-height: 107%; font-family: &quot;Courier New&quot;;">mkdir -p /tmp/Apache_Metrics_Integration_Content/opr/integration/coso/enrichment/hourly/Apache<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size: 9pt; line-height: 107%; font-family: &quot;Courier New&quot;;">mkdir -p
+/tmp/Apache_Metrics_Integration_Content/opr/integration/coso/enrichment/forecast/Apache<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size: 9pt; line-height: 107%; font-family: &quot;Courier New&quot;;">mkdir -p
+/tmp/Apache_Metrics_Integration_Content/opr/integration/coso/metadata/Apache<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size: 9pt; line-height: 107%; font-family: &quot;Courier New&quot;;">mkdir -p
+/tmp/Apache_Metrics_Integration_Content/opr/integration/coso/retention<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size: 9pt; line-height: 107%; font-family: &quot;Courier New&quot;;">chmod –R 644
+/tmp/Apache_Metrics_Integration_Content<o:p></o:p></span></p><p class="MsoListParagraphCxSpFirst" style="text-indent:-.25in;mso-list:l0 level1 lfo1">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</p><p class="MsoListParagraphCxSpLast"><span style="font-size: 9pt; line-height: 107%; font-family: &quot;Courier New&quot;;">chown –R
+1999:1999 /tmp/Apache_Metrics_Integration_Content<o:p></o:p></span></p><p class="MsoListParagraphCxSpLast"><span style="font-size: 9pt; line-height: 107%; font-family: &quot;Courier New&quot;;"><br></span></p><p class="MsoListParagraphCxSpLast"><span style="font-size: 9pt; line-height: 107%; font-family: &quot;Courier New&quot;;"><br></span></p><p class="MsoListParagraphCxSpFirst" style="text-indent:-.25in;mso-list:l0 level1 lfo1"><br></p></div>
