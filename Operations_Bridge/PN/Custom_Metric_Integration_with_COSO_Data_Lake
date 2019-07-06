@@ -107,7 +107,7 @@ mandatory.&nbsp; All other configuration is
 optional</span><br></div><div><br></div><div><img src="https://docs.microfocus.com/mediawiki/images/PN/diag8.PNG"><br></div><div><br></div><div><h3><span lang="EN-AU">Step 3: Define the metric
 collection rules<o:p></o:p></span></h3>
 
-<p class="MsoNormal">The Collection Service can:<o:p></o:p></p><p class="MsoNormal"><ul><li>Collect metrics from all supported Operations Agent versions.</li><li>Collect from agents running on all supported operating systems.</li><li>Collect data for all Management Packs or Connectors which log metrics to the agent’s Performance Collection Component.</li><li>Collect summarized data for all agent supported summary levels.</li><li>Collect at a highest frequency of 5 minutes (recommended default is one hour).</li><li>Collect data for a configurable initial history or maximum history after a time gap.</li></ul></p></div><div><p class="MsoNormal">The metric collection definition is a JSON file you create
+<p class="MsoNormal">The Collection Service can:<o:p></o:p></p><p class="MsoNormal"></p><ul><li>Collect metrics from all supported Operations Agent versions.</li><li>Collect from agents running on all supported operating systems.</li><li>Collect data for all Management Packs or Connectors which log metrics to the agent’s Performance Collection Component.</li><li>Collect summarized data for all agent supported summary levels.</li><li>Collect at a highest frequency of 5 minutes (recommended default is one hour).</li><li>Collect data for a configurable initial history or maximum history after a time gap.</li></ul><p></p></div><div><p class="MsoNormal">The metric collection definition is a JSON file you create
 in the /opr/integration/collection/oa/&lt;content name&gt; folder
 location.&nbsp; It contains these fields which
 are all mandatory:<o:p></o:p></p><p class="MsoNormal"><img src="https://docs.microfocus.com/mediawiki/images/PN/diag9.PNG"><br></p><p class="MsoNormal">Each collection definition will result in spawning a new
@@ -147,7 +147,7 @@ artifacts<o:p></o:p></span></h3><p class="MsoNormal">
 </p><p class="MsoNormal">The COSO Data Lake content must adhere to a well-known
 folder structure as shown in this table.&nbsp;<o:p></o:p></p><p class="MsoNormal"><img src="https://docs.microfocus.com/mediawiki/images/PN/diag10.PNG"><br></p><p class="MsoNormal">To create new content, create one or more of the above
 mentioned artifacts, and create a ZIP file. <o:p></o:p></p><p class="MsoNormal">For configuring content that is not part of the
-out-of-the-box content set:<o:p></o:p></p><p class="MsoNormal"><ul><li>Put the content ZIP file in the &lt;conf volume&gt;/content-administration/var/content-administration/content/custom directory.&nbsp; For example:&nbsp;</li></ul></p></div><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><p class="MsoNormal">/var/vols/itom/conf/content-administration/var/content-administration/content/custom/</p></div></blockquote></blockquote><div><p class="MsoNormal"><ul><li>Ensure the file ownership is set to the same SYSTEM_USER_ID and SYSTEM_GROUP_ID specified for the NFS directory owner, which is 1999 and 1999 by default.&nbsp; For example:</li></ul></p></div><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><p class="MsoNormal">chown 1999:1999 myContent.zip</p></div></blockquote></blockquote><div><p class="MsoNormal"><ul><li>Log in to the Content Administration Service container as follows:</li></ul></p></div><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><p class="MsoNormal">Run the following command to get the opsbridge namespace and the content-administration pod names:</p></div></blockquote></blockquote><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><p class="MsoNormal">kubectl get pods --all-namespaces | grep content-administration</p></div></blockquote></blockquote></blockquote><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><p class="MsoNormal">Log in to the content-administration container:</p></div></blockquote></blockquote><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><p class="MsoNormal">kubectl exec -ti &lt;content-administration pod&gt; -c content-administration -n &lt;namespace&gt; bash</p></div></blockquote></blockquote></blockquote><div><p class="MsoNormal"><ul><li>Execute the content configuration CLI ./opsb-content-service.sh as described below</li></ul></p><div><b style="text-indent: -0.25in;"><span style="font-size:10.5pt;line-height:107%;
+out-of-the-box content set:<o:p></o:p></p><p class="MsoNormal"></p><ul><li>Put the content ZIP file in the &lt;conf volume&gt;/content-administration/var/content-administration/content/custom directory.&nbsp; For example:&nbsp;</li></ul><p></p></div><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><p class="MsoNormal">/var/vols/itom/conf/content-administration/var/content-administration/content/custom/</p></div></blockquote></blockquote><div><p class="MsoNormal"></p><ul><li>Ensure the file ownership is set to the same SYSTEM_USER_ID and SYSTEM_GROUP_ID specified for the NFS directory owner, which is 1999 and 1999 by default.&nbsp; For example:</li></ul><p></p></div><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><p class="MsoNormal">chown 1999:1999 myContent.zip</p></div></blockquote></blockquote><div><p class="MsoNormal"></p><ul><li>Log in to the Content Administration Service container as follows:</li></ul><p></p></div><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><p class="MsoNormal">Run the following command to get the opsbridge namespace and the content-administration pod names:</p></div></blockquote></blockquote><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><p class="MsoNormal">kubectl get pods --all-namespaces | grep content-administration</p></div></blockquote></blockquote></blockquote><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><p class="MsoNormal">Log in to the content-administration container:</p></div></blockquote></blockquote><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><p class="MsoNormal">kubectl exec -ti &lt;content-administration pod&gt; -c content-administration -n &lt;namespace&gt; bash</p></div></blockquote></blockquote></blockquote><div><p class="MsoNormal"></p><ul><li>Execute the content configuration CLI ./opsb-content-service.sh as described below</li></ul><p></p><div><b style="text-indent: -0.25in;"><span style="font-size:10.5pt;line-height:107%;
 font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
 color:#333333"><br></span></b></div><div><b style="text-indent: -0.25in;"><span style="font-size:10.5pt;line-height:107%;
 font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
@@ -188,7 +188,7 @@ opsb-content-service.sh -conf oa -category Infra -stopOA // To stop OA
 collection for all Infra metrics</span></p><h2><span lang="EN-AU">Modify custom content<o:p></o:p></span></h2><p class="MsoNormal"><span lang="EN-AU">The core
 aspect to consider for content modification is whether a particular
 configuration interface allows modification or not. Content configuration
-primarily involves configuring:<o:p></o:p></span></p><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt"><ul><li><span lang="EN-AU">COSO Data Lake</span></li><li><span lang="EN-AU">Collection Service</span></li><li><span lang="EN-AU">BVD</span></li></ul></p><p class="MsoNormal">
+primarily involves configuring:<o:p></o:p></span></p><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt"></p><ul><li><span lang="EN-AU">COSO Data Lake</span></li><li><span lang="EN-AU">Collection Service</span></li><li><span lang="EN-AU">BVD</span></li></ul><p></p><p class="MsoNormal">
 
 
 
@@ -279,4 +279,1946 @@ structure on NFS server:<o:p></o:p></p><p class="MsoListParagraphCxSpFirst"><spa
 
 
 </p><p class="MsoListParagraphCxSpLast"><span style="font-size: 9pt; line-height: 107%; font-family: &quot;Courier New&quot;;">chown –R
-1999:1999 /tmp/Apache_Metrics_Integration_Content<o:p></o:p></span></p><p class="MsoListParagraphCxSpLast"><span style="font-size: 9pt; line-height: 107%; font-family: &quot;Courier New&quot;;"><br></span></p><p class="MsoListParagraphCxSpLast"><span style="font-size: 9pt; line-height: 107%; font-family: &quot;Courier New&quot;;"><br></span></p><p class="MsoListParagraphCxSpFirst" style="text-indent:-.25in;mso-list:l0 level1 lfo1"><br></p></div>
+1999:1999 /tmp/Apache_Metrics_Integration_Content<o:p></o:p></span></p><h2>Steps to integrate Apache metrics to the COSO Data Lake<o:p></o:p></h2><h3>Pre-requisites<o:p></o:p></h3><p class="MsoListParagraphCxSpFirst" style="text-indent:-.25in;mso-list:l9 level1 lfo1"><!--[if !supportLists]-->1.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Install and configure OpsBridge Suite 2019.05 with
+the COSO Data Lake and Collection Services capabilities (<span class="MsoHyperlink"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/Install">https://docs.microfocus.com/itom/Operations_Bridge:2019.05/Install</a></span>).<o:p></o:p></p><p class="MsoListParagraphCxSpLast" style="text-indent:-.25in;mso-list:l9 level1 lfo1"><!--[if !supportLists]-->2.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Install and deploy the OBM Management Pack for Apache
+Web Server on a managed node (<span class="MsoHyperlink"><a href="https://marketplace.microfocus.com/itom/content/obm-management-pack-for-apache-web-server">https://marketplace.microfocus.com/itom/content/obm-management-pack-for-apache-web-server</a></span>).<o:p></o:p></p><h3>Define metric collection rules<o:p></o:p></h3><p class="MsoNormal">The metric collection rules consist of a configuration JSON
+file which defines the metrics to be collected, Operations Agents (managed
+nodes) from which to collect the metrics and the frequency of collection.<o:p></o:p></p><p class="MsoNormal">Create a collection configuration file
+“Apache_MetricCollection.json” under the /tmp/Apache_Metrics_Integration_Content/opr/integration/collection/oa/Apache
+folder. The “Apache_MetricCollection.json” collection configuration file is
+provided in <b>APPENDIX A</b>.<o:p></o:p></p><p class="MsoListParagraphCxSpFirst" style="margin-left:0in;mso-add-space:auto">The
+Apache_MetricCollection.json contains:<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="text-indent:-.25in;mso-list:l7 level1 lfo3"><!--[if !supportLists]--><span style="font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><!--[endif]--><b>name</b>.
+This is a unique name for each custom collection content based on which a new
+collector container is spawned by the agent metric collector.<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-bottom:6.0pt;mso-add-space:
+auto;text-indent:-.25in;mso-list:l7 level1 lfo3"><!--[if !supportLists]--><span style="font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><!--[endif]--><b>node_selection_details</b>.
+You can get the managed nodes either by using a TQL query or from a node list
+file you create which contains the IP addresses or FQDNs of the managed nodes
+from which you want to collect the metrics.<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-top:0in;margin-right:0in;
+margin-bottom:12.0pt;margin-left:1.0in;mso-add-space:auto;text-indent:-.25in;
+mso-list:l7 level2 lfo3"><!--[if !supportLists]--><span style="font-family:&quot;Courier New&quot;;
+mso-fareast-font-family:&quot;Courier New&quot;">o<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp; </span></span><!--[endif]-->If
+OBM is in mixed mode, you must create a list of nodes from where you want to
+collect the Apache performance metrics and specify the name of the node list file
+in the <b>file_selection_list</b>.<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-top:0in;margin-right:0in;
+margin-bottom:12.0pt;margin-left:1.0in;mso-add-space:auto;text-indent:-.25in;
+mso-list:l7 level2 lfo3"><!--[if !supportLists]--><span style="font-family:&quot;Courier New&quot;;
+mso-fareast-font-family:&quot;Courier New&quot;">o<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp; </span></span><!--[endif]-->If
+OBM is containerized, you can specify a TQL query name in the <b>tql_selection_list</b> and/or customize the
+node list.<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-top:0in;margin-right:0in;
+margin-bottom:12.0pt;margin-left:1.0in;mso-add-space:auto;text-indent:-.25in;
+mso-list:l7 level2 lfo3"><!--[if !supportLists]--><span style="font-family:&quot;Courier New&quot;;
+mso-fareast-font-family:&quot;Courier New&quot;">o<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp; </span></span><!--[endif]-->In
+this example, create a node list and save it at
+&lt;conf-volume&gt;/content-administration/var/content-administration/content/custom/nodelist.txt.
+This ensures that the node list is accessible to the Node Resolver. You can use
+any editor to create a text file containing a line separated list of IP
+addresses or FQDN of the nodes from which you want to collect the metrics.<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-top:0in;margin-right:0in;
+margin-bottom:12.0pt;margin-left:1.0in;mso-add-space:auto;text-indent:-.25in;
+mso-list:l7 level2 lfo3"><!--[if !supportLists]--><span style="font-family:&quot;Courier New&quot;;
+mso-fareast-font-family:&quot;Courier New&quot;">o<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp; </span></span><!--[endif]-->You
+can get the list of managed nodes by executing the below command on OBM server
+and create a node list:<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-top:0in;margin-right:0in;
+margin-bottom:12.0pt;margin-left:1.5in;mso-add-space:auto;text-indent:-.25in;
+mso-list:l7 level3 lfo3"><!--[if !supportLists]--><span style="font-family:Wingdings;
+mso-fareast-font-family:Wingdings;mso-bidi-font-family:Wingdings">§<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp; </span></span><!--[endif]-->On
+Windows (PowerShell): <span style="font-size:9.0pt;mso-bidi-font-size:11.0pt;
+line-height:107%;font-family:&quot;Courier New&quot;">C:\HPBSM\opr\bin\opr-node.bat -ln
+-view_name Apache_Deployment -username &lt;username&gt; -password &lt;password&gt;
+| Select-String "Primary" | %{$_.Line.Split("=")[-1]}</span><o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-top:0in;margin-right:0in;
+margin-bottom:12.0pt;margin-left:1.5in;mso-add-space:auto;text-indent:-.25in;
+mso-list:l7 level3 lfo3"><!--[if !supportLists]--><span style="font-family:Wingdings;
+mso-fareast-font-family:Wingdings;mso-bidi-font-family:Wingdings">§<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp; </span></span><!--[endif]-->On
+Linux: <span style="font-size:9.0pt;mso-bidi-font-size:11.0pt;line-height:107%;
+font-family:&quot;Courier New&quot;">/opt/HP/BSM/opr/bin/opr-node -list_nodes -view_name
+Apache_Deployment -username &lt;username&gt; -password &lt;password&gt; | awk
+'/^Primary DNS Name/ {print $NF}'</span><o:p></o:p></p><p class="MsoListParagraphCxSpLast" style="text-indent:-.25in;mso-list:l7 level1 lfo3"><!--[if !supportLists]--><span style="font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><!--[endif]--><b>data_collection_details</b>.
+This section defines the frequency of the collection, history details and data
+source list. The data source list defines the Operations Agent data source
+name, metric class and list of metrics.</p><h3>Define the COSO Data Lake configuration<o:p></o:p></h3><p class="MsoNormal">The COSO Data Lake configurations include schema, bulk upload,
+data enrichment, custom roll up and data retention artifacts. The schema and
+bulk upload configurations are mandatory and all other configuration is optional.<o:p></o:p></p><p class="MsoListParagraphCxSpFirst" style="margin-left:.25in;mso-add-space:auto;
+text-indent:-.25in;mso-list:l6 level2 lfo2"><!--[if !supportLists]-->1.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Configure the schema (metadata) artifact which configures
+the Vertica DB schema to store Apache metrics, the associated Kafka topic, and
+Kafka to Vertica ingestion.<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:.75in;mso-add-space:
+auto;text-indent:-.25in;mso-list:l5 level1 lfo4"><!--[if !supportLists]--><span style="font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><!--[endif]-->Create the Apache metadata (schema)
+configuration file "APACHE_PERF.json" under the “/tmp/Apache_Metrics_Integration_Content/opr/integration/coso/metadata/Apache”
+folder. The “APACHE_PERF.json" configuration file is provided in <b>APPENDIX B</b>.</p><p class="MsoListParagraphCxSpMiddle" style="margin-left:.25in;mso-add-space:
+auto">NOTE: In addition to Apache metrics, the agent metric collector also
+collects data for below fields from the respective managed node for data
+identification which aids in report simplification. These additional fields
+(column names) will be present in the csv file by default. Hence these fields can
+be included in the schema configurations.<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:.75in;mso-add-space:
+auto;text-indent:-.25in;mso-list:l2 level1 lfo9"><!--[if !supportLists]--><span style="font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><!--[endif]-->MonitoredSystem (Collector fetches the value from
+the node resolver list) <o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:.75in;mso-add-space:
+auto;text-indent:-.25in;mso-list:l2 level1 lfo9"><!--[if !supportLists]--><span style="font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><!--[endif]-->MonitoredSystemID (Collector fetches data from GBL_SYSTEM_ID
+metric)<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:.75in;mso-add-space:
+auto;text-indent:-.25in;mso-list:l2 level1 lfo9"><!--[if !supportLists]--><span style="font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><!--[endif]-->MonitoredSystemTimezone (Collector fetches data
+from GBL_GMTOFFSET metric)<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:.75in;mso-add-space:
+auto;text-indent:-.25in;mso-list:l2 level1 lfo9"><!--[if !supportLists]--><span style="font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><!--[endif]-->host_name (Collector fetches the value from the
+node resolver list)<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:.75in;mso-add-space:
+auto;text-indent:-.25in;mso-list:l2 level1 lfo9"><!--[if !supportLists]--><span style="font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><!--[endif]-->Class (Collector fetches the class name from the
+collection configuration file)<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:.75in;mso-add-space:
+auto;text-indent:-.25in;mso-list:l2 level1 lfo9"><!--[if !supportLists]--><span style="font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><!--[endif]-->DataSource (Collector fetches the datasource
+name from the collection configuration file)<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:.75in;mso-add-space:
+auto;text-indent:-.25in;mso-list:l2 level1 lfo9"><!--[if !supportLists]--><span style="font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><!--[endif]-->timestamp_utc (Collector fetches the timestamp
+value from the managed node oacore database record timestamp)<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:.75in;mso-add-space:
+auto;text-indent:-.25in;mso-list:l2 level1 lfo9"><!--[if !supportLists]--><span style="font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><!--[endif]-->tenant_id (For future use)</p><p class="MsoListParagraphCxSpMiddle" style="margin-left:.25in;mso-add-space:
+auto;text-indent:-.25in;mso-list:l6 level2 lfo2"><!--[if !supportLists]-->2.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Configure the “blk-upload” ingestion artifact
+which represents the configuration to allow the ingestion of csv files through the
+shared file system.<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:.75in;mso-add-space:
+auto;text-indent:-.25in;mso-list:l10 level1 lfo5"><!--[if !supportLists]--><span style="font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><!--[endif]-->Create the bulk upload ingestion configuration
+file “ingestion_apache_perf.json” under the “/tmp/Apache_Metrics_Integration_Content/opr/integration/coso/blk-upload/ingestion-conf/Apache”
+folder. The “ingestion_apache_perf.json” configuration file is provided in <b>APPENDIX C</b>.</p><p class="MsoListParagraphCxSpMiddle" style="margin-left:.25in;mso-add-space:
+auto;text-indent:-.25in;mso-list:l6 level2 lfo2"><!--[if !supportLists]-->3.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Configure the “blk-upload” load artifact which represents
+the configuration to load the CSV file from the file system to the Vertica
+database.<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:.75in;mso-add-space:
+auto;text-indent:-.25in;mso-list:l10 level1 lfo5"><!--[if !supportLists]--><span style="font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><!--[endif]-->Create the bulk upload load configuration file “load_put_apache_perf.json”
+under the “/tmp/Apache_Metrics_Integration_Content/opr/integration/coso/blk-upload/load-conf/Apache”
+folder. The “load_put_apache_perf.json” configuration file is provided in <b>APPENDIX D</b>.&nbsp;</p><p class="MsoListParagraphCxSpMiddle" style="margin-left:.25in;mso-add-space:
+auto;text-indent:-.25in;mso-list:l6 level2 lfo2"><!--[if !supportLists]-->4.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Configure the enrichment artifact which defines
+the aggregation rules. Pre aggregation rules aggregate data from the source dataset
+(table name) and store the aggregated data in the destination dataset (table
+name). The destination dataset (table name) contains all the groupby fields and
+fields specified in the aggregation rules.<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:.75in;mso-add-space:
+auto;text-indent:-.25in;mso-list:l10 level1 lfo5"><!--[if !supportLists]--><span style="font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><!--[endif]-->Create the hourly aggregation configuration file
+“Apache_perf_Hourly.json” file under the “/tmp/Apache_Metrics_Integration_Content/opr/integration/coso/enrichment/hourly/Apache”
+folder. This configuration involves aggregating raw data in to time grains like
+hourly. The “Apache_perf_Hourly.json" configuration file is provided in <b>APPENDIX E.</b><o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:.75in;mso-add-space:
+auto;text-indent:-.25in;mso-list:l10 level1 lfo5"><!--[if !supportLists]--><span style="font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><!--[endif]-->Create the daily aggregation configuration file “Apache_perf_Daily.json”
+under the “/tmp/Apache_Metrics_Integration_Content/opr/integration/coso/enrichment/daily/Apache”
+folder. This configuration involves aggregating raw data in to time grains like
+daily. The “Apache_perf_Daily.json" configuration file is provided in <b>APPENDIX F.</b><o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:.75in;mso-add-space:
+auto;text-indent:-.25in;mso-list:l10 level1 lfo5"><!--[if !supportLists]--><span style="font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><!--[endif]-->Create the forecast aggregation configuration
+file “Forecast_Apacheperf.json” under the “/tmp/Apache_Metrics_Integration_Content/opr/integration/coso/enrichment/forecast/Apache”
+folder. Time Series forecast configuration allows you to forecast the value of
+a metric/field at a specific configurable point of time in the future
+(ForecastPoint) or compute the days to exceed a given threshold value (Days to
+Threshold or DTT). The “Forecast_Apacheperf.json" configuration file is
+provided in <b>APPENDIX G.</b></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:.25in;mso-add-space:
+auto;text-indent:-.25in;mso-list:l6 level2 lfo2"><!--[if !supportLists]-->5.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Configure the retention artifact which sets the
+retention period based on which records are deleted from the Vertica database.
+As data is ingested continuously to the store, it is necessary to age out the
+data thus limiting the used storage space. The default retention for dataset
+(table name) and entity dataset (table name) can be set globally. The default
+retention period is applied if a specific retention period is not configured
+for the dataset (table name). The records in the store older than the
+configured retention period are deleted periodically. The deletes are hard
+deletes, so it is not possible to recover the records once deleted from the
+store.<o:p></o:p></p><p class="MsoListParagraphCxSpLast" style="margin-left:.75in;mso-add-space:auto;
+text-indent:-.25in;mso-list:l10 level1 lfo5"><!--[if !supportLists]--><span style="font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><!--[endif]-->Create retention configuration file
+“retention_raw.json” under the /tmp/Apache_Metrics_Integration_Content/opr/integration/coso/retention
+folder. The “retention_raw.json" configuration file is provided in <b>APPENDIX H.</b></p><h2>Create BVD reports to visualize the Apache metrics<o:p></o:p></h2><p class="MsoNormal">Refer to the Business Value Dashboard <span class="MsoHyperlink"><a href="https://docs.microfocus.com/itom/Business_Value_Dashboard:2019.05/ReleaseNotes">documentation</a></span>
+to create dashboards based on the Apache data. Once you create the dashboards,
+place all the bvd files under the “Apache_Metrics_Integration_Content/opr/integration/bvd/dashboard/Apache”
+folder. <o:p></o:p></p><p class="MsoListParagraph" style="margin-left:0in;mso-add-space:auto">Note: Creating
+the BVD dashboards (bvd files) is optional. You can also create your own
+reports using any one of the BYOBI (Bring Your Own Business Intelligence) tools
+(<span class="MsoHyperlink"><a href="https://marketplace.microfocus.com/itom/content/byobi">https://marketplace.microfocus.com/itom/content/byobi</a></span>)
+to visualize the data.</p><h2>Package the Apache content artifacts<o:p></o:p></h2><p class="MsoListParagraphCxSpFirst" style="margin-left:.25in;mso-add-space:auto;
+text-indent:-.25in;mso-list:l8 level1 lfo6"><!--[if !supportLists]-->1.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Create the Apache content zip file.<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:.75in;mso-add-space:
+auto;text-indent:-.25in;mso-list:l3 level2 lfo8"><!--[if !supportLists]-->a.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Login to the NFS server<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:.75in;mso-add-space:
+auto;text-indent:-.25in;mso-list:l3 level2 lfo8"><!--[if !supportLists]--><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;line-height:107%;font-family:
+&quot;Courier New&quot;;mso-fareast-font-family:&quot;Courier New&quot;">b.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp; </span></span><!--[endif]--><span style="font-size:9.0pt;mso-bidi-font-size:11.0pt;line-height:107%;font-family:
+&quot;Courier New&quot;">cd /tmp</span><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;"><o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:.75in;mso-add-space:
+auto;text-indent:-.25in;mso-list:l3 level2 lfo8"><!--[if !supportLists]--><span style="font-family:&quot;Courier New&quot;;mso-fareast-font-family:&quot;Courier New&quot;">c.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp; </span></span><!--[endif]--><span style="font-size:9.0pt;mso-bidi-font-size:11.0pt;line-height:107%;font-family:
+&quot;Courier New&quot;">zip -r Apache_Metrics_Integration_Content.zip
+Apache_Metrics_Integration_Content</span><span style="font-family:&quot;Courier New&quot;"><o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:.75in;mso-add-space:
+auto;text-indent:-.25in;mso-list:l3 level2 lfo8"><!--[if !supportLists]--><span style="font-size:9.0pt;line-height:107%;mso-bidi-font-family:Calibri;
+mso-bidi-theme-font:minor-latin">d.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><!--[endif]--><span style="font-size:9.0pt;line-height:107%;
+font-family:&quot;Courier New&quot;">mv Apache_Metrics_Integration_Content.zip &lt;NFS
+share&gt;/conf/content-administration/var/content-administration/content/custom</span><span style="font-size:9.0pt;line-height:107%"><o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:.25in;mso-add-space:
+auto;text-indent:-.25in;mso-list:l8 level1 lfo6"><!--[if !supportLists]-->2.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Create a node list file which contains the IP
+addresses or FQDNs of the managed nodes from which you want to collect the
+metrics and place the node list under &lt;NFS
+share&gt;/conf/content-administration/var/content-administration/content/custom
+directory.<o:p></o:p></p><p class="MsoListParagraphCxSpLast" style="margin-left:.25in;mso-add-space:auto;
+text-indent:-.25in;mso-list:l8 level1 lfo6"><!--[if !supportLists]-->3.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Ensure the file ownership is set to the same
+SYSTEM_USER_ID and SYSTEM_GROUP_ID specified for the NFS directory owner, which
+is 1999 and 1999 by default. For example:<o:p></o:p></p><p class="MsoNormal" style="margin-left:.25in"><span style="font-size:10.0pt;
+mso-bidi-font-size:11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">chown
+1999:1999 Apache_Metrics_Integration_Content.zip<o:p></o:p></span></p><p class="MsoListParagraph" style="margin-left:.25in;mso-add-space:auto;
+text-indent:-.25in;mso-list:l8 level1 lfo6"><!--[if !supportLists]-->4.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Log in to the Content Administration Service
+container<o:p></o:p></p><p class="MsoNormal" style="margin-left:.25in"><span style="font-size:10.0pt;
+mso-bidi-font-size:11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">kubectl
+exec -it &lt;itom-opsb-content-administration pod&gt; -c
+itom-opsb-content-administration -n &lt;opsb-namespace&gt; bash<o:p></o:p></span></p><p class="MsoListParagraph" style="margin-left:.25in;mso-add-space:auto;
+text-indent:-.25in;mso-list:l8 level1 lfo6"><!--[if !supportLists]-->5.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Execute the below command to integrate Apache
+metrics to the COSO Data Lake.<o:p></o:p></p><p class="MsoNormal" style="margin-left:.25in"><span style="font-size:10.0pt;
+mso-bidi-font-size:11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">/opt/content-administration/bin/opsb-content-service.sh
+-conf all -category Apache</span></p><h2>Dataflow validation<o:p></o:p></h2><p class="MsoNormal" style="line-height:normal">The execution of the <span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;font-family:&quot;Courier New&quot;">opsb-content-service.sh
+</span>CLI:<o:p></o:p></p><p class="MsoListParagraphCxSpFirst" style="text-indent:-.25in;line-height:normal;
+mso-list:l1 level1 lfo10"><!--[if !supportLists]--><span style="font-family:Symbol;
+mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><!--[endif]-->Creates Apache schemas and data enrichment rules
+in Vertica based on the configuration files provided.<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="text-indent:-.25in;line-height:normal;
+mso-list:l1 level1 lfo10"><!--[if !supportLists]--><span style="font-family:Symbol;
+mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><!--[endif]-->Configures the Collection Service (Agent Metric
+Collector) to collect metrics from Operations Agents. <o:p></o:p></p><p class="MsoListParagraphCxSpLast" style="text-indent:-.25in;line-height:normal;
+mso-list:l1 level1 lfo10"><!--[if !supportLists]--><span style="font-family:Symbol;
+mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><!--[endif]-->Uploads BVD dashboards and queries to BVD if
+there are any bvd configuration files packaged with the content zip file.<o:p></o:p></p><p class="MsoNormal" style="line-height:normal">For every agent metric collection
+definition, the Collection Service spawns a new Agent Metric Collector pod called
+itom-co-collector-&lt;*&gt; that performs the collection. Check the pod is
+running. <o:p></o:p></p><p class="MsoNormal" style="line-height:normal"><span style="font-size:10.0pt;
+mso-bidi-font-size:11.0pt;font-family:&quot;Courier New&quot;">kubectl get pods
+--all-namespaces | grep itom-co-collector<o:p></o:p></span></p><p class="MsoNormal" style="line-height:normal">The collected data is stored (in
+the csv files) in the staging directory &lt;db-volume&gt;/di/data-processor/data/csv-direct-load/AGENT_METRIC_COLLECTOR.
+The COSO Data Lake component processes the csv files from the stage location
+and loads the metrics to the Vertica table (APACHE_PERF).<o:p></o:p></p><p class="MsoNormal" style="line-height:normal">After successful processing, it
+moves the csv files to the archive folder (&lt;db-volume&gt;/di/data-processor/data/csv-direct-load/archive).
+Also, the error and failure logs are created under respective folders (&lt;db-volume&gt;/di/data-processor/data/csv-direct-load/error
+and &lt;db-volume&gt;/di/data-processor/data/csv-direct-load/failure). It may
+take several minutes before you see data in the Vertica table APACHE_PERF.<o:p></o:p></p><p class="MsoNormal" style="line-height:normal">In the Vertica database, all the
+apache related table names are created in the opsbridge_store schema.<o:p></o:p></p><p class="MsoListParagraphCxSpFirst" style="text-indent:-.25in;line-height:normal;
+mso-list:l0 level1 lfo11"><!--[if !supportLists]--><span style="font-family:Symbol;
+mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><!--[endif]-->apache_perf (raw table)<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="text-indent:-.25in;line-height:normal;
+mso-list:l0 level1 lfo11"><!--[if !supportLists]--><span style="font-family:Symbol;
+mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><!--[endif]-->apache_perf_aggregation_hourly (aggregated table)<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="text-indent:-.25in;line-height:normal;
+mso-list:l0 level1 lfo11"><!--[if !supportLists]--><span style="font-family:Symbol;
+mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><!--[endif]-->apache_perf_aggregation_daily (aggregated table)<o:p></o:p></p><p class="MsoListParagraphCxSpLast" style="text-indent:-.25in;line-height:normal;
+mso-list:l0 level1 lfo11"><!--[if !supportLists]--><span style="font-family:Symbol;
+mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><!--[endif]-->apache_perf_aggregation_forecast (forecast table)<o:p></o:p></p><h2>Troubleshooting<o:p></o:p></h2><p class="MsoNormal" style="line-height:normal">After executing the <span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;font-family:&quot;Courier New&quot;">opsb-content-service.sh</span>
+script, you can follow the steps below to understand the execution status. Note
+the fields listed below that you will have to update with actual values on your
+system.<o:p></o:p></p><p class="MsoNormal" style="line-height:normal">NOTE1: You need to replace the &lt;opsb-namespace&gt;
+placeholder with actual opsbridge namespace present in your system.&nbsp; Run this command to see your opsbridge
+namespace:<o:p></o:p></p><p class="MsoNormal" style="line-height:normal"><span style="font-size:10.0pt;
+mso-bidi-font-size:11.0pt;font-family:&quot;Courier New&quot;">kubectl get ns | awk
+'/opsbridge/ {print $1}'</span><span style="font-family:&quot;Courier New&quot;"><o:p></o:p></span></p><p class="MsoNormal" style="line-height:normal">NOTE2: You need to replace the itom-co-collector-&lt;n&gt;-&lt;*&gt;
+with actual collector pod name running on your system.<o:p></o:p></p><p class="MsoNormal" style="line-height:normal">NOTE3: In the log file paths, you
+need to replace the placeholder &lt;*&gt; with the latest running pod name.&nbsp; Run this command to get the current pod names
+and which nodes they run on:<o:p></o:p></p><p class="MsoNormal" style="line-height:normal"><span style="font-size:10.0pt;
+mso-bidi-font-size:11.0pt;font-family:&quot;Courier New&quot;">kubectl get pods -n
+$(kubectl get ns | awk '/opsbridge/ {print $1}') -owide</span></p><p class="MsoListParagraphCxSpFirst" style="text-indent:-.25in;line-height:normal;
+mso-list:l4 level1 lfo7"><!--[if !supportLists]-->1.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><!--[endif]-->itom-opsb-content-administration
+log (opsb-content-service and opsb-content-service-cli.log)<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;text-indent:-.25in;line-height:normal;mso-list:l4 level2 lfo7"><!--[if !supportLists]-->a.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Go to the &lt;log-volume&gt;/itom-opsb-content-administration/log/opsbridge-&lt;*&gt;__itom-opsb-content-administration-&lt;*&gt;__itom-opsb-content-administration__&lt;*&gt;
+directory.<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;text-indent:-.25in;line-height:normal;mso-list:l4 level2 lfo7"><!--[if !supportLists]-->b.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->View opsb-content-service.log and
+opsb-content-service-cli.log to make sure that there are no errors. These log
+files contain information on all the artifacts (bvd, metadata, blk-upload,
+enrichment, retention) configuration for Apache content.<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="text-indent:-.25in;line-height:normal;
+mso-list:l4 level1 lfo7"><!--[if !supportLists]-->2.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><!--[endif]-->itom-opsb-node-resolver
+log (node-resolver-collector.log)<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;text-indent:-.25in;line-height:normal;mso-list:l4 level2 lfo7"><!--[if !supportLists]-->a.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Go to the &lt;log-volume&gt;/itom-opsb-node-resolver/log/opsbridge-&lt;*&gt;__itom-opsb-node-resolver-&lt;*&gt;__opsb-node-resolver__&lt;*&gt;
+directory.<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;text-indent:-.25in;line-height:normal;mso-list:l4 level2 lfo7"><!--[if !supportLists]-->b.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->View the node-resolver-collector.log file and
+make sure that the Agent Metric Collector triggered the collection for the
+request by getting the node list from the node list file or TQL based query
+with Response code 200.<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;text-indent:-.25in;line-height:normal;mso-list:l4 level2 lfo7"><!--[if !supportLists]-->c.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Example snippet from the log file:<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:15:25.274702 collection.go:206:
+Starting collection for configuration file :: Apachews_MetricCollection<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:15:25.274723 collection.go:262: TQL
+list is empty ... skipping UCMDB based node resolution<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:15:25.274735 collection.go:268:
+[Apachews_MetricCollection] :: Attempting to get nodelist from the file
+nodelist.txt<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:15:25.274821 collection.go:273:
+[Apachews_MetricCollection] :: Successfully got NodeList from NodeList File.
+Total number of nodes received from the file nodelist.txt is 2<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:15:25.274850 collection.go:327: Total
+number of unique nodes found is&nbsp; 1<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:15:25.274862 collection.go:328: The
+Nodes to be passed to CM will be&nbsp;
+[nodename.abc.net]<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:15:25.275700 collection.go:364:
+Successfully submitted the collection request to Collection Manager.<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:15:25.275731 collection.go:316:
+[Apachews_MetricCollection] :: Total time to Process = 1.048232ms<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:15:25.275744 collection.go:170:
+Successfully triggered collection for the request. Response Code 200</span><o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="text-indent:-.25in;line-height:normal;
+mso-list:l4 level1 lfo7"><!--[if !supportLists]-->3.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><!--[endif]-->itom-collect-once-collection-manager
+log (Collection-manager.log)<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;text-indent:-.25in;line-height:normal;mso-list:l4 level2 lfo7"><!--[if !supportLists]-->a.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Get the worker node where
+itom-collect-once-collection-manager pod is running by executing the command:<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">kubectl -n &lt;opsb-namespace&gt; get pods -o wide |
+grep itom-collect-once-collection-manager<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;text-indent:-.25in;line-height:normal;mso-list:l4 level2 lfo7"><!--[if !supportLists]-->b.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Login to the worker node where the itom-collect-once-collection-manager
+pod is running.<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;text-indent:-.25in;line-height:normal;mso-list:l4 level2 lfo7"><!--[if !supportLists]-->c.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Go to the /var/log/cdf-deployments/opsbridge-&lt;*&gt;/opsbridge-&lt;*&gt;__itom-collect-once-collection-manager-&lt;*&gt;__itom-collect-once-collection-manager__&lt;*&gt;
+directory.<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;text-indent:-.25in;line-height:normal;mso-list:l4 level2 lfo7"><!--[if !supportLists]-->d.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->View the collection-manager.log and make sure
+that the Agent metric collection has been submitted for service
+itom-co-collector-svc-1 with receive response code 200.<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;text-indent:-.25in;line-height:normal;mso-list:l4 level2 lfo7"><!--[if !supportLists]-->e.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Example snippet from the log file:<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:25.284410 helper.go:35: Sending
+collection request at [2019-06-17 08:45:25.284281201 +0000 UTC
+m=+1556765.642769416]<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:25.284518 agent.go:160: Sending
+collection cancel request to gRPC server at: itom-co-collector-svc-1:40002<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:25.290263 agent.go:77: Received
+Status no: 200<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:25.290395 agent.go:54:&nbsp; Agent metric collection has been submitted
+for service itom-co-collector-svc-1<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:26.427818 grpc_server.go:17: Update
+status received for node:<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:26.427901 grpc_server.go:35:
+Updating status for<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:26.427925 status.go:129: Received
+status update request-&gt; url=[Apachews_MetricCollection], status=[0],
+CollType=[metric]<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:26.427952 status.go:145: Updating
+[Apachews_MetricCollection] with new status [0] for metric collection<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:26.427958 status.go:158: Data map
+populating<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:26.427965 status.go:164: Returning
+data populated<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:26.428036 scheduler.go:421: No
+reference to the Target found in the system:</span><o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="text-indent:-.25in;line-height:normal;
+mso-list:l4 level1 lfo7"><!--[if !supportLists]-->4.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><!--[endif]-->New
+collector pod (itom-co-collector-&lt;n&gt;-&lt;*&gt;)<o:p></o:p></p><p class="MsoListParagraphCxSpLast" style="margin-left:1.0in;mso-add-space:auto;
+text-indent:-.25in;line-height:normal;mso-list:l4 level2 lfo7"><!--[if !supportLists]-->a.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Check the new collector container initiated to
+start the collection by executing the command:<o:p></o:p></p><p class="MsoNormal" style="margin-left:1.0in;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;font-family:&quot;Courier New&quot;">kubectl
+-n &lt;opsb-namespace&gt; get pods | grep itom-co-collector</span><span style="font-family:&quot;Courier New&quot;"><o:p></o:p></span></p><p class="MsoNormal" style="margin-left:1.0in;line-height:normal">Make sure new
+collector is running with 2/2 status.<o:p></o:p></p><p class="MsoListParagraphCxSpFirst" style="margin-left:1.0in;mso-add-space:auto;
+text-indent:-.25in;line-height:normal;mso-list:l4 level2 lfo7"><!--[if !supportLists]-->b.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Example snippet:<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">itom-co-collector-1-7d97665d94-w4rkh&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2/2&nbsp;&nbsp;&nbsp;&nbsp; Running&nbsp;&nbsp;&nbsp;&nbsp;
+0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 13d</span><o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="text-indent:-.25in;line-height:normal;
+mso-list:l4 level1 lfo7"><!--[if !supportLists]-->5.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><!--[endif]-->itom-co-collector
+log (agent-metric-collector.log)<o:p></o:p></p><p class="MsoListParagraphCxSpLast" style="margin-left:1.0in;mso-add-space:auto;
+text-indent:-.25in;line-height:normal;mso-list:l4 level2 lfo7"><!--[if !supportLists]-->a.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Get the worker node where the itom-co-collector-&lt;n&gt;-&lt;*&gt;
+pod is running by executing the command:<o:p></o:p></p><p class="MsoNormal" style="margin-left:1.0in;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;font-family:&quot;Courier New&quot;">kubectl
+get pods -n &lt;opsb-namespace&gt; -o wide | grep itom-co-collector<o:p></o:p></span></p><p class="MsoListParagraphCxSpFirst" style="margin-left:1.0in;mso-add-space:auto;
+text-indent:-.25in;line-height:normal;mso-list:l4 level2 lfo7"><!--[if !supportLists]-->b.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Login to the worker node where the itom-co-collector-&lt;n&gt;
+pod is running<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;text-indent:-.25in;line-height:normal;mso-list:l4 level2 lfo7"><!--[if !supportLists]-->c.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Go to /var/log/cdf-deployments/opsbridge-&lt;*&gt;/opsbridge-&lt;*&gt;__itom-co-collector-1-&lt;*&gt;__agent-metric-collector__&lt;*&gt;<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;text-indent:-.25in;line-height:normal;mso-list:l4 level2 lfo7"><!--[if !supportLists]-->d.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->View the agent-metric-collector.log file and
+make sure that Collection starts from respective nodes (present in the
+nodelist) with status manager status code 200<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;text-indent:-.25in;line-height:normal;mso-list:l4 level2 lfo7"><!--[if !supportLists]-->e.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Example snippet from the log file:<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">[2019-06-17 08:55:25.291] [agent_metric_collector]
+[info] Start rpc received for collection config: Apachews_MetricCollection<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">[2019-06-17 08:55:25.291] [agent_metric_collector]
+[info] Total node list recieved for collection config[Apachews_MetricCollection]:
+1<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">[2019-06-17 08:55:25.291] [agent_metric_collector]
+[info] Starting 1 collection threads<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">[2019-06-17 08:55:25.291] [agent_metric_collector]
+[info] Total pending tasks: 1<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">[2019-06-17 08:55:25.291] [agent_metric_collector]
+[info] Received a node to collect: nodename.abc.net<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">[2019-06-17 08:55:25.291] [agent_metric_collector]
+[info] Start file writer,Csv files are written to
+csvpath/AGENT_METRIC_COLLECTOR/itom-co-collector-svc-1_<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">[2019-06-17 08:55:25.291] [agent_metric_collector]
+[info] Start node collection: nodename.abc.net<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">[2019-06-17 08:55:25.292] [agent_metric_collector]
+[info] Connect to the agent node: https://nodename.abc.net<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">[2019-06-17 08:55:26.411] [agent_metric_collector]
+[info] Size of data for file writer: 1<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">[2019-06-17 08:55:26.411] [agent_metric_collector]
+[info] Filewriter got 1 metric data chunks from a queue.<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">[2019-06-17 08:55:26.411] [agent_metric_collector]
+[info] Sending update to collection manager with status:0<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">[2019-06-17 08:55:26.412] [agent_metric_collector]
+[info] Status Manager: Response code:200<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">[2019-06-17 08:55:26.412] [agent_metric_collector]
+[info] Time taken to collect metrics of node: nodename.abc.net- 1120
+milliseconds<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">[2019-06-17 08:55:26.414] [agent_metric_collector]
+[info] No task is available<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">[2019-06-17 08:55:26.416] [agent_metric_collector]
+[info] Flush temporary
+file(csvpath/AGENT_METRIC_COLLECTOR/itom-co-collector-svc-1_APACHE_DATA_APACHE_PERF.txt)<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">[2019-06-17 08:55:26.421] [agent_metric_collector]
+[info] Size of data for file writer: 0<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">[2019-06-17 08:55:26.421] [agent_metric_collector]
+[info] Filewriter got 0 metric data chunks from a queue.<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">[2019-06-17 08:55:26.421] [agent_metric_collector]
+[info] Filewriter task finished<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">[2019-06-17 08:55:26.421] [agent_metric_collector]
+[info] Data has been written to csv files.<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">[2019-06-17 08:55:26.421] [agent_metric_collector]
+[info] Time taken for Collection of all nodes of collection config:
+Apachews_MetricCollection completed in 1130 milliseconds</span><o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="text-indent:-.25in;line-height:normal;
+mso-list:l4 level1 lfo7"><!--[if !supportLists]-->6.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><!--[endif]-->csv
+file generation by the Agent Metric Collector.<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;text-indent:-.25in;line-height:normal;mso-list:l4 level2 lfo7"><!--[if !supportLists]-->a.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->The Agent Metric Collector collects and dumps
+metrics in the form of csv files under the &lt;db-volume&gt;/di/data-processor/data/csv-direct-load/AGENT_METRIC_COLLECTOR
+staging folder.<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="text-indent:-.25in;line-height:normal;
+mso-list:l4 level1 lfo7"><!--[if !supportLists]-->7.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><!--[endif]-->itom-di-dp-worker-dpl
+log (csv-direct-load-itom-di-dp-worker-dpl-&lt;*&gt;.log)<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;text-indent:-.25in;line-height:normal;mso-list:l4 level2 lfo7"><!--[if !supportLists]-->a.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Go to the &lt;log-volume&gt;/log/opsbridge-49jnx/opsbridge-&lt;*&gt;__itom-di-dp-worker-dpl-&lt;*&gt;__dp-worker__nodename.abc.net
+directory.<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;text-indent:-.25in;line-height:normal;mso-list:l4 level2 lfo7"><!--[if !supportLists]-->b.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->View the csv-direct-load-itom-di-dp-worker-dpl-5c4fdcd575-47f55.log
+file and make sure that the COSO Data Lake component is processing the csv file
+successfully. The COSO Data Lake component processes the csv files present in
+the staged location (&lt;db-volume&gt;/di/data-processor/data/csv-direct-load/AGENT_METRIC_COLLECTOR)
+and enables storing the metrics to the Vertica database<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;text-indent:-.25in;line-height:normal;mso-list:l4 level2 lfo7"><!--[if !supportLists]-->c.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><!--[endif]-->Example snippet from the log file:<o:p></o:p></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:54 [undef] INFO Started Execution<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:54 [undef] INFO Input arguments:
+taskId=LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV Direct Load
+taskflowId=LOAD_APACHE_PERF_APACHE_PERF_CSV runtimeId=ZIyx8l2hJ09m4aCf
+mappingFile=mappings/LOAD_APACHE_PERF_mapping.json columnDelimiter=,
+rowDelimiter=\n escapeChar=\ encloseByChar=" nullString=\"\"
+folder=AGENT_METRIC_COLLECTOR<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:54 [undef] INFO TaskflowId:
+LOAD_APACHE_PERF_APACHE_PERF_CSV, TaskId&nbsp;
+LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV Direct Load, runtimeId
+ZIyx8l2hJ09m4aCf<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:54
+[LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV Direct Load, ZIyx8l2hJ09m4aCf] INFO
+Starting CSV Load<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:54
+[LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV Direct Load, ZIyx8l2hJ09m4aCf] INFO
+Parsing Json&nbsp; mapping file :
+/data-processor/conf/csv-direct-load/mappings/LOAD_APACHE_PERF_mapping.json<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:54
+[LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV Direct Load, ZIyx8l2hJ09m4aCf] INFO no
+validation errors</span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:54 [LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV
+Direct Load, ZIyx8l2hJ09m4aCf] INFO Number of mappings : 1<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:54
+[LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV Direct Load, ZIyx8l2hJ09m4aCf] INFO Find
+files matching wildcards<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:54 [LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV
+Direct Load, ZIyx8l2hJ09m4aCf] INFO Looking in foldername
+/data-processor/data/csv-direct-load/AGENT_METRIC_COLLECTOR with pattern
+*APACHE_PERF*.csv</span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:54
+[LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV Direct Load, ZIyx8l2hJ09m4aCf] INFO Processing
+file
+/data-processor/data/csv-direct-load/AGENT_METRIC_COLLECTOR/itom-co-collector-svc-1_APACHE_DATA_APACHE_PERF_1560761126.csv<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:54
+[LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV Direct Load, ZIyx8l2hJ09m4aCf] INFO
+validated csv file !</span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:54
+[LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV Direct Load, ZIyx8l2hJ09m4aCf] INFO
+building a copy command</span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:54
+[LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV Direct Load, ZIyx8l2hJ09m4aCf] INFO
+building basic copy command<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:54
+[LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV Direct Load, ZIyx8l2hJ09m4aCf] INFO Size
+of CSV
+/data-processor/data/csv-direct-load/work/itom-co-collector-svc-1_APACHE_DATA_APACHE_PERF_1560761126.csv
+is less than 100 MB<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:54 [LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV
+Direct Load, ZIyx8l2hJ09m4aCf] INFO Parsing the list of columns<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:54
+[LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV Direct Load, ZIyx8l2hJ09m4aCf] INFO
+Column List :
+"MonitoredSystem","MonitoredSystemID","MonitoredSystemTimezone","host_name","Class","DataSource","timestamp_utc","SERVER_NAME","PORT","IP_ADDRESS","PERC_CPU_USAGE","MEM_USAGE_MB","BYTES_PER_SEC","REQS_PER_SEC","BYTES_PER_REQ","PROC_RATE","BUSY_WORKERS","IDLE_WORKERS","TOTAL_ACCESS","TOTAL_KBYTES","RESP_TIME_MICROSEC"</span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:55
+[LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV Direct Load, ZIyx8l2hJ09m4aCf] INFO
+Executing vertica copy<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:55
+[LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV Direct Load, ZIyx8l2hJ09m4aCf] INFO copy
+command result:&nbsp; SUCCESS<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:55
+[LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV Direct Load, ZIyx8l2hJ09m4aCf] INFO
+Archiving files based on copy Result : SUCCESS<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:55
+[LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV Direct Load, ZIyx8l2hJ09m4aCf] INFO
+compress and move<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:55 [LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV
+Direct Load, ZIyx8l2hJ09m4aCf] INFO Compressing and moving to
+/data-processor/data/csv-direct-load/archive/itom-co-collector-svc-1_APACHE_DATA_APACHE_PERF_1560761126.tgz<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:55 [LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV
+Direct Load, ZIyx8l2hJ09m4aCf] INFO Completed CSV Load<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:55
+[LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV Direct Load, ZIyx8l2hJ09m4aCf] INFO
+-------CSV Direct load run summary ------<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:55
+[LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV Direct Load, ZIyx8l2hJ09m4aCf] INFO Total
+Files processed in current run&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+: 1<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:55
+[LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV Direct Load, ZIyx8l2hJ09m4aCf] INFO
+Success&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 1<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:55
+[LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV Direct Load, ZIyx8l2hJ09m4aCf] INFO
+Failures due to CSV issues (Validation, CSV format): 0<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:55
+[LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV Direct Load, ZIyx8l2hJ09m4aCf] INFO
+Failed file loads (connection or other issues)&nbsp;&nbsp;&nbsp;&nbsp; : 0<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:55
+[LOAD_APACHE_PERF_APACHE_PERF_CSV.CSV Direct Load, ZIyx8l2hJ09m4aCf] INFO
+---------------------------------------<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle" style="margin-left:1.0in;mso-add-space:
+auto;line-height:normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;
+font-family:&quot;Courier New&quot;">2019/06/17 08:45:55 [undef] INFO Exit code 0</span><o:p></o:p></p><p class="MsoListParagraphCxSpLast" style="text-indent:-.25in;line-height:normal;
+mso-list:l4 level1 lfo7"><!--[if !supportLists]-->8.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><!--[endif]-->Once
+the csv files are processed by the COSO Data Lake component, it moves the csv
+files to the &lt;db-volume&gt;/di/data-processor/data/csv-direct-load/archive
+folder. The errors and warnings are logged under &lt;db-volume&gt;/di/data-processor/data/csv-direct-load/error
+and &lt;db-volume&gt;/di/data-processor/data/csv-direct-load/failure folders
+respectively.<o:p></o:p></p><p class="MsoNormal" style="line-height:normal"><o:p>&nbsp;</o:p><span style="font-family: MetricHPE_Medium;">APPENDIX A</span></p><h1><o:p></o:p></h1><p class="MsoNormal"><o:p>&nbsp;</o:p>&nbsp;<span style="font-size: 10pt; line-height: 107%; font-family: &quot;Courier New&quot;;">{</span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp; "name":
+"Apachews_MetricCollection",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp; "node_selection_details":{<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "tql_selection_list":[],<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+"file_selection_list":["nodelist.txt"]<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp; },<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp; "data_collection_details":{<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "collection_interval_mins":60,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "initial_history_mins":60,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "max_history_mins":360,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "datasource_list":[<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+"datasource":"APACHE_DATA",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "class_metric_list":[<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+"class_name":"APACHE_PERF",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "alias":[],<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "summary_level_mins":5,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "metric_list":[<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+"SERVER_NAME",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "PORT",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "IP_ADDRESS",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "PERC_CPU_USAGE",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "MEM_USAGE_MB",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "BYTES_PER_SEC",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "REQS_PER_SEC",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "BYTES_PER_REQ",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "PROC_RATE",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "BUSY_WORKERS",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "IDLE_WORKERS",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"TOTAL_ACCESS",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "TOTAL_KBYTES",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "RESP_TIME_MICROSEC"<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp; }<o:p></o:p></span></p><p class="MsoListParagraphCxSpLast"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">}<o:p></o:p></span></p><p class="MsoNormal">Refer back to “Step 3: Define the metric collection rules”
+for a description of the JSON properties.</p><h1><a name="_APPENDIX_B"></a>APPENDIX B</h1><p class="MsoListParagraphCxSpFirst">&nbsp;<span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;line-height:107%;font-family:
+&quot;Courier New&quot;">{<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp; "name" : "APACHE_PERF",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp; "displayName" : "APACHE
+PERFORMANCE METRIC TABLE NAME",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp; "description" : "APACHE_PERF
+raw table created under opsbridge_store schema in vertica to store Apache
+metrics.",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp; "isInternal" : false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp; "schema" :
+"opsbridge_store",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp; "fields" : [ {<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "name":
+"MonitoredSystem",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "displayName": "Monitored
+System",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "description":
+"MonitoredSystem is the name of the column created under apache_perf table
+to store managed node FQDN",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;
+"type": "string",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp; &nbsp; "maxLength": 255,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isKey": false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isNullable": false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isPrimaryKey": false<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; {<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "name":
+"MonitoredSystemID",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "displayName": "Monitored
+System Identifier",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "description":
+"MonitoredSystemID is the name of the column created under apache_perf
+table to store managed node System ID",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "type": "string",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp; &nbsp; "maxLength": 255,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isKey": false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isNullable": false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isPrimaryKey": false<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; {<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "name":
+"MonitoredSystemTimezone",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "displayName": "Monitored
+System Timezone",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "description":
+"MonitoredSystemTimezone is the name of the column created under
+apache_perf table to store managed node timezone",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "type": "string",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp; &nbsp; "maxLength": 255,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isKey": false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isNullable": false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isPrimaryKey": false<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; {<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "name": "host_name",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "displayName": "Fully
+Qualified Domain Name(FQDN)",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "description": "host_name is
+the name of the column created under apache_perf table to store FQDN of the managed
+node.",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "type": "string",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp; &nbsp; "maxLength": 255,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isKey": false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isNullable": false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isPrimaryKey": false<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; {<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "name": "Class",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "displayName": "Apache
+Metric Class Name",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "description": "Class is the
+name of the column created under apache_perf table to store apache metric class
+name",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "type": "string",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp; &nbsp; "maxLength": 255,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isKey": false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isNullable": false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isPrimaryKey": false<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; {<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "name": "DataSource",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "displayName": "Apache Data
+Source name",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "description": "DataSource
+is the name of the column created under apache_perf table to store apache data
+source name",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "type": "string",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp; &nbsp; "maxLength": 255,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isKey": false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isNullable": false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isPrimaryKey": false<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "name": "tenant_id",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "displayName": "tenant identifier",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "description": "tenant ID is the name of the
+column created under apache_perf table to store tenent information",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "type": "string",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "maxLength": 80,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "isKey": false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "isNullable": true,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "isTenantOwner": true,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "isPrimaryKey": false<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "name": "SERVER_NAME",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "displayName": "Apache
+configuration name",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "description": "SERVER_NAME
+is the name of the column created under apache_perf table to store Apache http/(s)
+configuration file name.",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "type": "string",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp; &nbsp; "maxLength": 255,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isKey": false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isNullable": false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isPrimaryKey": false<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; {<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "name": "PORT",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "displayName": "Apache PORT
+Number",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "description": "PORT is the
+name of the column created under apache_perf table to store port number in
+which apache is configured.",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "type" : "integer",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isKey" : false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isNullable" : false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isPrimaryKey" : false<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; {<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "name": "IP_ADDRESS",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "displayName": "IP address
+of the Apache node name",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "description": "IP_ADDRESS
+is the name of the column created under apache_perf table to store IP address
+of the system where apache web server is configured",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "type": "string",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp; &nbsp; "maxLength": 255,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isKey": false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isNullable": false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isPrimaryKey": false<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; {<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "name":
+"PERC_CPU_USAGE",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "displayName": "Percentage
+Cpu Usage",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "description":
+"PERC_CPU_USAGE is the name of the column created under apache_perf table
+to store CPU usage.",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "type" : "double",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isKey" : false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isNullable" : false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isPrimaryKey" : false<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; {<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "name": "MEM_USAGE_MB",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "displayName": "Memory
+Usage",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "description": "MEM_USAGE_MB
+is the name of the column created under apache_perf table to store Memory
+Usage.",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "type" : "double",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isKey" : false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isNullable" : false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isPrimaryKey" : false<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; {<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "name":
+"BYTES_PER_SEC",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "displayName": "Bytes Per
+Second",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "description":
+"BYTES_PER_SEC is the name of the column created under apache_perf table
+to store bytes per second value.",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "type" : "double",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isKey" : false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isNullable" : false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isPrimaryKey" : false<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "name" : "REQS_PER_SEC",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "displayName" : "Requests
+Per Second",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "description" :
+"REQS_PER_SEC is the name of the column created under apache_perf table to
+store total request per second value.",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "type" : "double",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isKey" : false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isNullable" : false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isPrimaryKey" : false<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; {<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "name" :
+"BYTES_PER_REQ",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "displayName" : "Bytes Per
+Request",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "description" :
+"BYTES_PER_REQ is the name of the column created under apache_perf table
+to store bytes per request value.",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;
+"type" : "double",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isKey" : false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isNullable" : false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isPrimaryKey" : false<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; {<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "name" : "PROC_RATE",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "displayName" : "Process
+information pseudo-filesystem",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "description" : "PROC_RATE
+is the name of the column created under apache_perf table to store Proc rate
+value.",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "type" : "double",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isKey" : false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isNullable" : false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isPrimaryKey" : false<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; {<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "name" :
+"BUSY_WORKERS",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "displayName" : "Busy
+Workers",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "description" :
+"BUSY_WORKERS is the name of the column created under apache_perf table to
+store total busy workers",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "type" : "integer",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isKey" : false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isNullable" : false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isPrimaryKey" : false<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; {<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "name" : "IDLE_WORKERS",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "displayName" : "Idle
+Workers",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "description" :
+"IDLE_WORKERS is the name of the column created under apache_perf table to
+store total idle workers",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "type" : "integer",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isKey" : false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isNullable" : false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isPrimaryKey" : false<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; {<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "name" :
+"TOTAL_ACCESS",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "displayName" : "Total
+Access Deatils",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "description" :
+"TOTAL_ACCESS is the name of the column created under apache_perf table to
+store access information.",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "type" : "integer",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isKey" : false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isNullable" : false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isPrimaryKey" : false<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; {<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "name" :
+"TOTAL_KBYTES",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "displayName" : "Total
+KiloBytes",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "description" :
+"TOTAL_KBYTES is the name of the column created under apache_perf table to
+store total KiloBytes inforamtion.",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "type" : "integer",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isKey" : false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isNullable" : false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isPrimaryKey" : false<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; {<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "name" :
+"RESP_TIME_MICROSEC",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "displayName" : "Response
+Time MicroSeconds",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "description" : "RESP_TIME_MICROSEC
+is the name of the column created under apache_perf table to store total
+response time inforamtion ",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "type" : "double",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isKey" : false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isNullable" : true,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isPrimaryKey" : false<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; {<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "name": "timestamp_utc",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "displayName": "timestamp in
+utc",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "description":
+"timestamp_utc is the name of the column created under apache_perf table
+to store timestamp value",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "type": "integer",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isKey": false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isSampleTime": true,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isNullable": false,<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isPrimaryKey": false<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp; } ],<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp; "defaultLoadMethods" : [
+"none" ],<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp; "sortOrder":[<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "MonitoredSystem",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "timestamp_utc",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "SERVER_NAME"<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ],<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "shardDefinition":{<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "shardType":"distribute",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "shardKeys":[<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "MonitoredSystem",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "timestamp_utc",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;"SERVER_NAME"<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp; "tags" : [ {<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "name" :
+"opsbridge_store",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "value" :
+"APACHE_PERF",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; "isInternal" : false<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp; },{<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;"name" :
+"retentionProfile",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp; &nbsp; &nbsp; &nbsp;"value" :
+"metrics_raw",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp; &nbsp; &nbsp; &nbsp;"isInternal" : false<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }] <o:p></o:p></span></p><p class="MsoListParagraphCxSpLast"><span style="font-size: 9pt; line-height: 107%; font-family: &quot;Courier New&quot;;">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</span></p><p class="MsoListParagraphCxSpLast"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">}<o:p></o:p></span></p><p class="MsoListParagraphCxSpLast"><span style="font-size: 9pt; line-height: 107%; font-family: &quot;Courier New&quot;;"><br></span></p><p class="MsoListParagraphCxSpLast"><span style="font-size: 9pt; line-height: 107%; font-family: &quot;Courier New&quot;;"><br></span></p><p class="MsoListParagraphCxSpFirst" style="text-indent:-.25in;mso-list:l0 level1 lfo1"><br></p></div>
