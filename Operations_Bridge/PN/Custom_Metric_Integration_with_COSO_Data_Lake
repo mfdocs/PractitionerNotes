@@ -1,4 +1,100 @@
-<p><span style="font-family: MetricHPE; font-size: 16px;">This section describes how to extend the COSO Data Lake to collect custom metrics to enable custom reporting using Business Value Dashboard or your own BI reporting tools.</span></p><p>This section covers the following topics:</p><p></p><ul><li>Custom metric collection concepts</li><li>Metric life cycle</li><li>Steps to create your custom content</li><li>Fully functional end to end example</li></ul><p></p><h2>Custom metric collection concepts</h2><p>There are two approaches to ingesting Operations Agent custom metrics into the COSO Data Lake:<br></p><h3>Collection Services</h3><p>The Collection Service is a containerized micro service designed to centrally collect large amounts of data from the remote Operations Agents’ Performance Collection Component and store it in the COSO Data Lake. It supports collecting data from all Operations Agent supported platforms, and all supported versions. The Collection Service is horizontally scalable. It spawns one or more Agent Metric Collector containers, depending on the number of collections you configure, which in turn define the nodes from which to collect data.</p><p>This is the recommended approach where the data is used for reporting purposes and doesn’t require real time analytics or central thresholding.</p><p>You use the Content Administration Service, a containerized micro service, to configure the Collection Service to collect data from the Operations Agents on a scheduled basis.&nbsp; The data collection mechanism uses the CODA client APIs to connect to the Operations Agent, which uses HTTPS-based communications by default, and falls back to HTTP,&nbsp; if HTTPS is unavailable.&nbsp; Note that the Collection Service requires a certificate from OBM, before the agent metric collection can start.&nbsp; The Content Administration Service also configures the COSO Data Lake to store and manage the data.</p><h3>OBM policies</h3><p>OBM policies are used to collect data from any of these sources:</p><p></p><ul><li>XML File</li><li>Structured Log File</li><li>REST web service</li><li>Performance Collection Component</li></ul><p></p><p>In this case the data is typically used for real time graphing and central thresholding purposes, but it can also be used for reporting since it is stored in the COSO Data Lake. You deploy OBM policies to the Operations Agents that configure what data to send to the COSO Data Lake via an HTTPS POST and how frequently.</p><p>Metric Streaming Configuration policies are supported on all Operations Agent platforms.&nbsp; All other metric collection policy types are supported on Windows and Linux platforms only.</p><p>You use the Content Administration Service to configure the COSO Data Lake to store and manage the data.</p><p>The following diagram shows the components used in collecting custom metrics.</p><div><br></div><div><img src="https://docs.microfocus.com/mediawiki/images/PN/diag1.png"><br></div><h2>Metric life cycle</h2><p class="MsoNormal">You need to consider what metrics to collect, whether aggregation is required and how long to retain the data in the COSO Data Lake.</p><p class="MsoNormal"><img src="https://docs.microfocus.com/mediawiki/images/PN/diag2.PNG"><br></p><h3>Define</h3><p class="MsoNormal">This involves defining how the COSO Data Lake is configured to process custom metrics:<br></p><p class="MsoNormal"></p><ul><li>Database table(s) in Vertica</li><li>Kafka topic though which data is ingested (not applicable for the Agent Metric Collector of the Collection Service)</li><li>Connection between the Kafka topic and the database table (not applicable for the Agent Metric Collector of the Collection Service)</li></ul><p></p><p class="MsoNormal">This information is defined in a well-known JSON file format and configured using the Content Administration Service.<br></p><h3>Collect and ingest</h3><h4>Collection Service</h4><p class="MsoNormal">For the reporting use case, the recommended method of Operations Agent metric collection is to use the Collection Service.&nbsp; The metrics to collect, the agents from which to collect and how frequently to collect are defined in a well-known JSON file format and configured using the Content Administration Service.</p><h4>OBM policies</h4><p class="MsoNormal">If you use OBM policies to post the data to COSO, then you need to create, assign and deploy the policies.&nbsp; The policies contain which metrics to collect from the local agent and how frequently to send the data to the COSO Data Lake. The Operations Agent, apart from acting as a source of system performance metrics, also acts as a metric integration framework, and provides the following options to integrate metrics to the COSO Data Lake.</p><p class="MsoNormal"><img src="https://docs.microfocus.com/mediawiki/images/PN/diag6.PNG"><br></p><p class="MsoNormal">Note: A <span class="MsoHyperlink"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/ConfigureDataForwardingPolicies">Data
+<p><span style="font-family: MetricHPE; font-size: 16px;">This section describes how to extend the COSO Data Lake to collect custom metrics to enable custom reporting using Business Value Dashboard or your own BI reporting tools.</span></p><p>This section covers the following topics:</p><p></p><ul><li>Custom metric collection concepts</li><li>Metric life cycle</li><li>Steps to create your custom content</li><li>Fully functional end to end example</li></ul><p></p><h2>Custom metric collection concepts</h2><p>There are two approaches to ingesting Operations Agent custom metrics into the COSO Data Lake:<br></p><h3>Collection Services</h3><p>The Collection Service is a containerized micro service designed to centrally collect large amounts of data from the remote Operations Agents’ Performance Collection Component and store it in the COSO Data Lake. It supports collecting data from all Operations Agent supported platforms, and all supported versions. The Collection Service is horizontally scalable. It spawns one or more Agent Metric Collector containers, depending on the number of collections you configure, which in turn define the nodes from which to collect data.</p><p>This is the recommended approach where the data is used for reporting purposes and doesn’t require real time analytics or central thresholding.</p><p>You use the Content Administration Service, a containerized micro service, to configure the Collection Service to collect data from the Operations Agents on a scheduled basis.&nbsp; The data collection mechanism uses the CODA client APIs to connect to the Operations Agent, which uses HTTPS-based communications by default, and falls back to HTTP,&nbsp; if HTTPS is unavailable.&nbsp; Note that the Collection Service requires a certificate from OBM, before the agent metric collection can start.&nbsp; The Content Administration Service also configures the COSO Data Lake to store and manage the data.</p><h3>OBM policies</h3><p>OBM policies are used to collect data from any of these sources:</p><p></p><ul><li>XML File</li><li>Structured Log File</li><li>REST web service</li><li>Performance Collection Component</li></ul><p></p><p>In this case the data is typically used for real time graphing and central thresholding purposes, but it can also be used for reporting since it is stored in the COSO Data Lake. You deploy OBM policies to the Operations Agents that configure what data to send to the COSO Data Lake via an HTTPS POST and how frequently.</p><p>Metric Streaming Configuration policies are supported on all Operations Agent platforms.&nbsp; All other metric collection policy types are supported on Windows and Linux platforms only.</p><p>You use the Content Administration Service to configure the COSO Data Lake to store and manage the data.</p><p>The following diagram shows the components used in collecting custom metrics.</p><div><br></div><div><img src="https://docs.microfocus.com/mediawiki/images/PN/diag1.png"><br></div><h2>Metric life cycle</h2><p class="MsoNormal">You need to consider what metrics to collect, whether aggregation is required and how long to retain the data in the COSO Data Lake.</p><p class="MsoNormal"><img src="https://docs.microfocus.com/mediawiki/images/PN/diag2.PNG"><br></p><h3>Define</h3><p class="MsoNormal">This involves defining how the COSO Data Lake is configured to process custom metrics:<br></p><p class="MsoNormal"></p><ul><li>Database table(s) in Vertica</li><li>Kafka topic though which data is ingested (not applicable for the Agent Metric Collector of the Collection Service)</li><li>Connection between the Kafka topic and the database table (not applicable for the Agent Metric Collector of the Collection Service)</li></ul><p></p><p class="MsoNormal">This information is defined in a well-known JSON file format and configured using the Content Administration Service.<br></p><h3>Collect and ingest</h3><h4>Collection Service</h4><p class="MsoNormal">For the reporting use case, the recommended method of Operations Agent metric collection is to use the Collection Service.&nbsp; The metrics to collect, the agents from which to collect and how frequently to collect are defined in a well-known JSON file format and configured using the Content Administration Service.</p><h4>OBM policies</h4><p class="MsoNormal">If you use OBM policies to post the data to COSO, then you need to create, assign and deploy the policies.&nbsp; The policies contain which metrics to collect from the local agent and how frequently to send the data to the COSO Data Lake. The Operations Agent, apart from acting as a source of system performance metrics, also acts as a metric integration framework, and provides the following options to integrate metrics to the COSO Data Lake.</p><p class="MsoNormal"><br></p><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="208" valign="top" style="width: 155.8pt; border-width: 1pt; border-left-style: solid; border-color: windowtext; border-image: initial; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b>Data source<o:p></o:p></b></p>
+  </td>
+  <td width="208" valign="top" style="width: 155.85pt; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b>Policy type<o:p></o:p></b></p>
+  </td>
+  <td width="208" valign="top" style="width: 155.85pt; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b>Description<o:p></o:p></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="208" valign="top" style="width: 155.8pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">XML file</p>
+  </td>
+  <td width="208" valign="top" style="width: 155.85pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span class="MsoHyperlink"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/ConfigureXMLFilePolicies">Generic
+  Output from XML File</a></span></p>
+  </td>
+  <td width="208" valign="top" style="width: 155.85pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Metric records stored in an XML file can be integrated to the COSO
+  Data Lake.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="208" valign="top" style="width: 155.8pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Structured log file</p>
+  </td>
+  <td width="208" valign="top" style="width: 155.85pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span class="MsoHyperlink"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/ConfigureStructuredLogfilePolicies">Generic
+  Output from Structured Log File</a></span></p>
+  </td>
+  <td width="208" valign="top" style="width: 155.85pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Metric records stored in a structured format such as CSV format can
+  be integrated to the COSO Data Lake.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="208" valign="top" style="width: 155.8pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">REST web service:</p>
+  <p class="MsoListParagraphCxSpFirst" style="margin-top:0in;margin-right:0in;
+  margin-bottom:0in;margin-left:.25in;margin-bottom:.0001pt;mso-add-space:auto;
+  text-indent:-.25in;line-height:normal;mso-list:l0 level1 lfo1"><!--[if !supportLists]--><span style="font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+  Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span></span><!--[endif]-->XML input with transformation</p>
+  <p class="MsoListParagraphCxSpLast" style="margin-top:0in;margin-right:0in;
+  margin-bottom:0in;margin-left:.25in;margin-bottom:.0001pt;mso-add-space:auto;
+  text-indent:-.25in;line-height:normal;mso-list:l0 level1 lfo1"><!--[if !supportLists]--><span style="font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+  Symbol">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span></span><!--[endif]-->JSON input in pass-through mode, no
+  transformation</p>
+  </td>
+  <td width="208" valign="top" style="width: 155.85pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span class="MsoHyperlink"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/ConfigureRESTWebServiceListenerPolicies">Generic
+  Output from REST Web Service</a></span></p>
+  </td>
+  <td width="208" valign="top" style="width: 155.85pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Metric records stored in XML or JSON format can be integrated to the COSO
+  Data Lake.&nbsp; It is recommended to use
+  this policy with JSON format data for maximum throughput.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="208" valign="top" style="width: 155.8pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Performance Collection Component</p>
+  </td>
+  <td width="208" valign="top" style="width: 155.85pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Generic Output from Agent Store</p>
+  </td>
+  <td width="208" valign="top" style="width: 155.85pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Metric records stored in the Performance Collection Component can be
+  integrated to the COSO Data Lake.&nbsp;
+  Refer to the example policies in the Microsoft SQL Server Management
+  Pack or the IBM WebSphere Management Pack for how the policy is configured
+  using the raw policy editor.&nbsp; Note: In
+  OBM 2018.11 and 2019.05, these example policies are using the Generic Output
+  from Structured Log File policy type, but their syntax applies to the Generic
+  Output from Agent Store policy type.</p>
+  </td>
+ </tr>
+</tbody></table><p class="MsoNormal">Note: A <span class="MsoHyperlink"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/ConfigureDataForwardingPolicies">Data
 Forwarding</a></span> policy is also required to match the data from the
 collection policies and post it to the URL of the target COSO system.<br></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">You can also stream out-of-the-box system metrics to COSO
 via <span class="MsoHyperlink"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/ConfigureMetricStreamingConfigurationPolicies">Metric
@@ -104,13 +200,279 @@ minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:&quot;Times Ne
 mso-bidi-theme-font:minor-bidi;mso-ansi-language:EN-US;mso-fareast-language:
 EN-US;mso-bidi-language:AR-SA">The schema and bulk upload configuration are
 mandatory.&nbsp; All other configuration is
-optional</span><br></div><div><br></div><div><img src="https://docs.microfocus.com/mediawiki/images/PN/diag8.PNG"><br></div><div><br></div><div><h3><span lang="EN-AU">Step 3: Define the metric
+optional</span><br></div><div><br></div><div><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="122" valign="top" style="width: 98.65pt; border-width: 1pt; border-left-style: solid; border-color: windowtext; border-image: initial; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Configuration<b><o:p></o:p></b></p>
+  </td>
+  <td width="242" valign="top" style="width: 229.6pt; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Description<b><o:p></o:p></b></p>
+  </td>
+  <td width="343" valign="top" style="width: 139.25pt; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Content folder<b><o:p></o:p></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="122" valign="top" style="width: 98.65pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Schema<b><o:p></o:p></b></p>
+  </td>
+  <td width="242" valign="top" style="width: 229.6pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">This involves configuring the Vertica DB Schema, the associated Kafka
+  Topic, and Kafka to Vertica ingestion.</p>
+  </td>
+  <td width="343" valign="top" style="width: 139.25pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">/opr/integration/coso/metadata/&lt;content name&gt;</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="122" valign="top" style="width: 98.65pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Bulk upload<b><o:p></o:p></b></p>
+  </td>
+  <td width="242" valign="top" style="width: 229.6pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">If data is collected in CSV format and needs to be bulk uploaded to the
+  Vertica database, which is the case when using the Collection Service, then bulk
+  upload rules should be configured.</p>
+  </td>
+  <td width="343" valign="top" style="width: 139.25pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">/opr/integration/coso/blk-upload/ingestion-conf/&lt;content name&gt;</p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">/opr/integration/coso/blk-upload/load-conf/&lt;content name&gt;</p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="122" valign="top" style="width: 98.65pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Data enrichment<b><o:p></o:p></b></p>
+  </td>
+  <td width="242" valign="top" style="width: 229.6pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Data enrichment is primarily about aggregating data to hourly and/or
+  daily values with min, max, sum, count, average, lastval, percentile functions.&nbsp; If your reports need data to be
+  pre-aggregated, you should define data enrichment rules.</p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">The enrichment function also allows to forecast data, which is
+  typically used to identify the days to reach a particular threshold value, or
+  simply to know the metric value at a future point in time. Linear forecast is
+  applied, wherein the forecast value is computed using the standard linear
+  equation y=mx+c.</p>
+  </td>
+  <td width="343" valign="top" style="width: 139.25pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">/opr/integration/coso/enrichment/hourly/&lt;content name&gt;</p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">/opr/integration/coso/enrichment/daily/&lt;content name&gt;</p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">/opr/integration/coso/enrichment/forecast/&lt;content name&gt;</p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="122" valign="top" style="width: 98.65pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Roll up<b><o:p></o:p></b></p>
+  </td>
+  <td width="242" valign="top" style="width: 229.6pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">If your reports need a custom data roll-up (e.g. counting all events
+  of a particular severity), then it can be achieved through custom roll up
+  scripts, which are essentially custom SQLs embedded in a Perl script
+  submitted to Vertica.</p>
+  </td>
+  <td width="343" valign="top" style="width: 139.25pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">/opr/integration/coso/roll-up/perl/&lt;content name&gt;</p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">/opr/integration/coso/roll-up/task/&lt;content name&gt;</p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">/opr/integration/coso/roll-up/task-flow/&lt;content name&gt;</p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="122" valign="top" style="width: 98.65pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Data retention<b><o:p></o:p></b></p>
+  </td>
+  <td width="242" valign="top" style="width: 229.6pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Data of different granularity should be retained for different
+  durations, for example, daily metrics for a year, raw metrics for a week
+  etc.&nbsp; You should define the data
+  retention profile for your different data sets. &nbsp;If you don’t specify data retention, then
+  the global retention will apply if you have set it.</p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Note: The deletes are hard deletes, so it is not possible to recover
+  the records once deleted.</p>
+  </td>
+  <td width="343" valign="top" style="width: 139.25pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">/opr/integration/coso/retention/&lt;content name&gt;</p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+</tbody></table></div><div><h3><span lang="EN-AU">Step 3: Define the metric
 collection rules<o:p></o:p></span></h3>
 
 <p class="MsoNormal">The Collection Service can:<o:p></o:p></p><p class="MsoNormal"></p><ul><li>Collect metrics from all supported Operations Agent versions.</li><li>Collect from agents running on all supported operating systems.</li><li>Collect data for all Management Packs or Connectors which log metrics to the agent’s Performance Collection Component.</li><li>Collect summarized data for all agent supported summary levels.</li><li>Collect at a highest frequency of 5 minutes (recommended default is one hour).</li><li>Collect data for a configurable initial history or maximum history after a time gap.</li></ul><p></p></div><div><p class="MsoNormal">The metric collection definition is a JSON file you create
 in the /opr/integration/collection/oa/&lt;content name&gt; folder
 location.&nbsp; It contains these fields which
-are all mandatory:<o:p></o:p></p><p class="MsoNormal"><img src="https://docs.microfocus.com/mediawiki/images/PN/diag9.PNG"><br></p><p class="MsoNormal">Each collection definition will result in spawning a new
+are all mandatory:<o:p></o:p></p><p class="MsoNormal"><br></p><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="width: 479.7pt; border-left: none;">
+ <tbody><tr style="mso-yfti-irow:0;mso-yfti-firstrow:yes;height:19.35pt">
+  <td width="166" valign="top" style="width: 124.4pt; border-width: 1pt; border-left-style: solid; border-color: windowtext; border-image: initial; padding: 0in 5.4pt; height: 19.35pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b>Field name<o:p></o:p></b></p>
+  </td>
+  <td width="474" valign="top" style="width: 355.3pt; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-left: none; padding: 0in 5.4pt; height: 19.35pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b>Description<o:p></o:p></b></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:1;height:19.35pt">
+  <td width="166" valign="top" style="width: 124.4pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 19.35pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">name</p>
+  </td>
+  <td width="474" valign="top" style="width: 355.3pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 19.35pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">The name field uniquely identifies a particular collection definition</p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:2;height:18.35pt">
+  <td width="166" valign="top" style="width: 124.4pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 18.35pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">node_selection_details</p>
+  </td>
+  <td width="474" valign="top" style="width: 355.3pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 18.35pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">The list of nodes from which to collect data can be fetched either
+  from the RTSM by specifying a TQL or from one or more files manually updated
+  by the user or both. If both are used, then they are combined and
+  de-duplicated. You can specify maximum of 2000 nodes per collection. If you
+  have more than 2000 nodes, we recommend to split the collection.</p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">The node list file must be placed in the NFS location specified in
+  the collection definition. It is read periodically for updates. </p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Note: The nodes can be fetched from the RTSM for OBM running in the
+  container-based environment only.</p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">The node list file format is one hostname or IP address per line. The
+  node list file should be present in the same location where custom content
+  zip is present. i.e., &lt;conf volume&gt;/content-administration/var/content-administration/content/custom</p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:3;height:19.35pt">
+  <td width="166" valign="top" style="width: 124.4pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 19.35pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">collection_interval_mins</p>
+  </td>
+  <td width="474" valign="top" style="width: 355.3pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 19.35pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">The collection interval can be multiple of 5 minutes, with 60 minutes
+  recommended.</p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:4;height:18.35pt">
+  <td width="166" valign="top" style="width: 124.4pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 18.35pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">initial_history_mins</p>
+  </td>
+  <td width="474" valign="top" style="width: 355.3pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 18.35pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">The starting time of history collection, when collecting for the
+  first time.&nbsp; For example, if you
+  specify 10080 minutes (1 week) then the first time the metrics are collected
+  from the agent the Collection Service will collect the last week of metric
+  values and then the delta thereafter.</p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:5;height:19.35pt">
+  <td width="166" valign="top" style="width: 124.4pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 19.35pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">max_history_mins</p>
+  </td>
+  <td width="474" valign="top" style="width: 355.3pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 19.35pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">The starting time of history collection, when collecting after a time
+  gap.&nbsp; For example, if you specify 360
+  minutes then if the Collection Service has been unable to collect metrics
+  from an agent for a period of time then it will collect a maximum of the last
+  6 hours and then the delta thereafter.</p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:6;height:18.35pt">
+  <td width="166" valign="top" style="width: 124.4pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 18.35pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">datasource</p>
+  </td>
+  <td width="474" valign="top" style="width: 355.3pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 18.35pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">The agent data source from which to collect metrics. &nbsp;You can see a list of data sources on an
+  agent by running <span style="font-family:&quot;Courier New&quot;">ovcodautil -showds</span>.</p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:7;height:19.35pt">
+  <td width="166" valign="top" style="width: 124.4pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 19.35pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">class_name</p>
+  </td>
+  <td width="474" valign="top" style="width: 355.3pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 19.35pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">The class names in the selected data source from which to collect
+  metrics.&nbsp; You can see a list of classes
+  and their metrics for each data source by running <span style="font-family:
+  &quot;Courier New&quot;">ovcodautil -obj</span> on an agent.</p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:8;height:18.35pt">
+  <td width="166" valign="top" style="width: 124.4pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 18.35pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">class_metric_list</p>
+  </td>
+  <td width="474" valign="top" style="width: 355.3pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 18.35pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">The list of metrics to collect, from the data source and class
+  selected. </p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:9;height:19.35pt">
+  <td width="166" valign="top" style="width: 124.4pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 19.35pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">alias</p>
+  </td>
+  <td width="474" valign="top" style="width: 355.3pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 19.35pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Used to create duplicate file copies per class. Multiple aliases can
+  be defined. </p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:10;mso-yfti-lastrow:yes;height:18.35pt">
+  <td width="166" valign="top" style="width: 124.4pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 18.35pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">summary_level_mins</p>
+  </td>
+  <td width="474" valign="top" style="width: 355.3pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 18.35pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">The summarization level to be used for the data collection per class.
+  &nbsp;This leverages the Operations Agent
+  functionality to summarize delta, gauge and counter types correctly.</p>
+  </td>
+ </tr>
+</tbody></table><p class="MsoNormal">Each collection definition will result in spawning a new
 Agent Metric Collector container instance.<o:p></o:p></p><p class="MsoNormal">To horizontally scale for a large number of nodes, you can
 duplicate a collection definition each with a subset of nodes defined in the
 TQL and/or node list file.<o:p></o:p></p><p class="MsoNormal">The Collection Service writes the collected data to a
@@ -145,7 +507,114 @@ artifacts<o:p></o:p></span></h3><p class="MsoNormal">
 
 
 </p><p class="MsoNormal">The COSO Data Lake content must adhere to a well-known
-folder structure as shown in this table.&nbsp;<o:p></o:p></p><p class="MsoNormal"><img src="https://docs.microfocus.com/mediawiki/images/PN/diag10.PNG"><br></p><p class="MsoNormal">To create new content, create one or more of the above
+folder structure as shown in this table.&nbsp;<o:p></o:p></p><p class="MsoNormal"><br></p><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="180" valign="top" style="width: 134.75pt; border-width: 1pt; border-left-style: solid; border-color: windowtext; border-image: initial; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Artifact</p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="444" valign="top" style="width: 332.75pt; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Folder Location</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="180" valign="top" style="width: 134.75pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b>Schema metadata<o:p></o:p></b></p>
+  </td>
+  <td width="444" valign="top" style="width: 332.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">/opr/integration/coso/metadata/&lt;content name&gt;</p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b>&nbsp;</b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="180" valign="top" style="width: 134.75pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b>Data enrichment rules<o:p></o:p></b></p>
+  </td>
+  <td width="444" valign="top" style="width: 332.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">/opr/integration/coso/enrichment/hourly/&lt;content name&gt;</p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">/opr/integration/coso/enrichment/daily/&lt;content name&gt;</p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">/opr/integration/coso/enrichment/forecast/&lt;content name&gt;</p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="180" valign="top" style="width: 134.75pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b>Data retention rules<o:p></o:p></b></p>
+  </td>
+  <td width="444" valign="top" style="width: 332.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">/opr/integration/coso/retention/&lt;content name&gt;</p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="180" valign="top" style="width: 134.75pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b>Data custom roll up rules<o:p></o:p></b></p>
+  </td>
+  <td width="444" valign="top" style="width: 332.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">/opr/integration/coso/roll-up/perl/&lt;content name&gt;</p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">/opr/integration/coso/roll-up/task/&lt;content name&gt;</p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">/opr/integration/coso/roll-up/task-flow/&lt;content name&gt;</p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;tab-stops:205.15pt"><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="180" valign="top" style="width: 134.75pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b>Data bulk upload rules<o:p></o:p></b></p>
+  </td>
+  <td width="444" valign="top" style="width: 332.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">/opr/integration/coso/blk-upload/ingestion-conf/&lt;content name&gt;</p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">/opr/integration/coso/blk-upload/load-conf/&lt;content name&gt;</p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;tab-stops:233.0pt"><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="180" valign="top" style="width: 134.75pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b>Metric collection definition<o:p></o:p></b></p>
+  </td>
+  <td width="444" valign="top" style="width: 332.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">/opr/integration/collection/oa/&lt;content name&gt;</p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="180" valign="top" style="width: 134.75pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b>BVD dashboards<o:p></o:p></b></p>
+  </td>
+  <td width="444" valign="top" style="width: 332.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">/opr/integration/bvd/dashboard/&lt;content name&gt;</p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+</tbody></table><p class="MsoNormal">To create new content, create one or more of the above
 mentioned artifacts, and create a ZIP file. <o:p></o:p></p><p class="MsoNormal">For configuring content that is not part of the
 out-of-the-box content set:<o:p></o:p></p><p class="MsoNormal"></p><ul><li>Put the content ZIP file in the &lt;conf volume&gt;/content-administration/var/content-administration/content/custom directory.&nbsp; For example:&nbsp;</li></ul><p></p></div><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><p class="MsoNormal">/var/vols/itom/conf/content-administration/var/content-administration/content/custom/</p></div></blockquote></blockquote><div><p class="MsoNormal"></p><ul><li>Ensure the file ownership is set to the same SYSTEM_USER_ID and SYSTEM_GROUP_ID specified for the NFS directory owner, which is 1999 and 1999 by default.&nbsp; For example:</li></ul><p></p></div><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><p class="MsoNormal">chown 1999:1999 myContent.zip</p></div></blockquote></blockquote><div><p class="MsoNormal"></p><ul><li>Log in to the Content Administration Service container as follows:</li></ul><p></p></div><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><p class="MsoNormal">Run the following command to get the opsbridge namespace and the content-administration pod names:</p></div></blockquote></blockquote><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><p class="MsoNormal">kubectl get pods --all-namespaces | grep content-administration</p></div></blockquote></blockquote></blockquote><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><p class="MsoNormal">Log in to the content-administration container:</p></div></blockquote></blockquote><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><p class="MsoNormal">kubectl exec -ti &lt;content-administration pod&gt; -c content-administration -n &lt;namespace&gt; bash</p></div></blockquote></blockquote></blockquote><div><p class="MsoNormal"></p><ul><li>Execute the content configuration CLI ./opsb-content-service.sh as described below</li></ul><p></p><div><b style="text-indent: -0.25in;"><span style="font-size:10.5pt;line-height:107%;
 font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
@@ -235,7 +704,102 @@ primarily involves configuring:<o:p></o:p></span></p><p class="MsoNormal" style=
 
 
 </p><p class="MsoNormal"><span lang="EN-AU">The following
-changes to existing content are supported:<o:p></o:p></span></p><p class="MsoNormal"><span lang="EN-AU"><img src="https://docs.microfocus.com/mediawiki/images/PN/diag11.PNG"><br></span></p><h2><span lang="EN-AU">Delete custom content<o:p></o:p></span></h2><p class="MsoNormal"><span lang="EN-AU">The Content
+changes to existing content are supported:<o:p></o:p></span></p><p class="MsoNormal"><span lang="EN-AU"><br></span></p><p class="MsoNormal"><span lang="EN-AU"></span></p><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="180" valign="top" style="width: 134.75pt; border-width: 1pt; border-left-style: solid; border-color: windowtext; border-image: initial; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b>Artifact<o:p></o:p></b></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b>&nbsp;</b></p>
+  </td>
+  <td width="444" valign="top" style="width: 332.75pt; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b>Modification Support <o:p></o:p></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="180" valign="top" style="width: 134.75pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Schema metadata</p>
+  </td>
+  <td width="444" valign="top" style="width: 332.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Re-running the Metadata configuration attempts to update the current
+  schema. Only addition of columns is supported.<b><o:p></o:p></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="180" valign="top" style="width: 134.75pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Data enrichment rules</p>
+  </td>
+  <td width="444" valign="top" style="width: 332.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Re-running the Data Enrichment configuration updates the existing
+  enrichment rules which are applied from this point onwards. </p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:3;height:31.9pt">
+  <td width="180" valign="top" style="width: 134.75pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 31.9pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Data retention rules</p>
+  </td>
+  <td width="444" valign="top" style="width: 332.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 31.9pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">There is a default retention profile associated with each data set.
+  The default profile has no retention period set, which means data would be
+  stored forever. The user has the option to modify the retention period
+  setting for the default profile. The user can also define retention for an individual
+  data set, through a table name specific profile. The retention profile
+  specific to a data set overrides the global default retention. </p>
+  </td>
+ </tr>
+ <tr>
+  <td width="180" valign="top" style="width: 134.75pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Data custom roll up rules</p>
+  </td>
+  <td width="444" valign="top" style="width: 332.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Re-running the Custom Roll-up configuration updates the existing roll
+  up rules.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="180" valign="top" style="width: 134.75pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Data bulk upload rules</p>
+  </td>
+  <td width="444" valign="top" style="width: 332.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;tab-stops:233.0pt">Re-running the Data Bulk Upload configuration
+  updates the existing bulk upload rules.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="180" valign="top" style="width: 134.75pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Metric collection definition</p>
+  </td>
+  <td width="444" valign="top" style="width: 332.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Re-configuring the collection effectively stops the existing
+  collection, of that particular name, and restarts the collection. All the
+  aspects of a Collection Definition can be modified.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="180" valign="top" style="width: 134.75pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">BVD dashboards</p>
+  </td>
+  <td width="444" valign="top" style="width: 332.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">BVD Dashboards can be re-published by re-running the BVD
+  configuration.</p>
+  </td>
+ </tr>
+</tbody></table><h2><span lang="EN-AU"><br></span></h2><h2><span lang="EN-AU">Delete custom content<o:p></o:p></span></h2><p class="MsoNormal"><span lang="EN-AU">The Content
 Administration Service currently does not support deletion operations for the
 COSO Data Lake artifacts.<o:p></o:p></span></p><p class="MsoNormal"><span lang="EN-AU">Data
 Collection of a specific custom content from Operation Agents can be stopped
@@ -249,7 +813,7 @@ using the Content Administration Service. <o:p></o:p></span></p><p class="MsoNor
 
 </span></p><p class="MsoNormal"><span style="font-family:&quot;Courier New&quot;">opsb-content-service.sh
 -conf oa -category Infra –stopOA<o:p></o:p></span></p><h2><span lang="EN-AU">Fully functional end to
-end example</span></h2><h3>Choose the Apache metrics to integrate to the COSO Data Lake</h3><h2><o:p></o:p></h2><div><div><ul><li>The OBM Management Pack for Apache Web Server monitors the following Apache metrics and stores them in the Operations Agent’s Performance Collection Component (oacore):</li></ul></div></div></div><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><div><div>SERVER_NAME (http configuration filename), PORT (http port), IP_ADDRESS, PERC_CPU_USAGE, MEM_USAGE_MB, BYTES_PER_SEC, REQS_PER_SEC, BYTES_PER_REQ, PROC_RATE, BUSY_WORKERS, IDLE_WORKERS, TOTAL_ACCESS, TOTAL_KBYTES, RESP_TIME_MICROSEC</div></div></div></blockquote><div><div><div><ul><li>Make sure that the Apache Web Server metrics are logged to the Operations Agent. The Apache metrics are stored in APACHE_DATA data source and APACHE_PERF metric class. For example, this is a snippet of Apache Web Server metrics stored in the Operations Agent’s store.</li></ul></div><div># /opt/OV/bin/ovcodautil -ds APACHE_DATA -o APACHE_PERF –rawonly -last<br></div><div>06/03/19 09:25:02 AM|SERVER_NAME&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|/etc/httpd/conf/httpd.conf|</div><div>06/03/19 09:25:02 AM|PORT&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp; 8080|</div><div>06/03/19 09:25:02 AM|IP_ADDRESS&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |10.11.16.2|</div><div>06/03/19 09:25:02 AM|PERC_CPU_USAGE&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp; 0.00|</div><div>06/03/19 09:25:02 AM|MEM_USAGE_MB&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp;27.26|</div><div>06/03/19 09:25:02 AM|BYTES_PER_SEC&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|&nbsp; &nbsp; &nbsp;14.47|</div><div>06/03/19 09:25:02 AM|REQS_PER_SEC&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp; 0.02|</div><div>06/03/19 09:25:02 AM|BYTES_PER_REQ&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|&nbsp; &nbsp; 743.58|</div><div>06/03/19 09:25:02 AM|PROC_RATE&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|&nbsp; &nbsp; &nbsp;16.67|</div><div>06/03/19 09:25:02 AM|BUSY_WORKERS&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1|</div><div>06/03/19 09:25:02 AM|IDLE_WORKERS&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;5|</div><div>06/03/19 09:25:02 AM|TOTAL_ACCESS&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp; 6259|</div><div>06/03/19 09:25:02 AM|TOTAL_KBYTES&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp; 4545|</div><div>06/03/19 09:25:02 AM|RESP_TIME_MICROSEC&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp; 0.00|</div><div><ul><li>Create the Apache metrics collection content with the following folder structure. The collection content must adhere to a well-known directory structure.</li></ul></div></div><div><br></div><div><img src="https://docs.microfocus.com/mediawiki/images/PN/diag12.PNG"><br></div><p class="MsoListParagraphCxSpFirst" style="text-indent:-.25in;mso-list:l0 level1 lfo1"><br></p><p class="MsoNormal">Execute the following commands to create the directory
+end example</span></h2><div><span lang="EN-AU">This fully functional example content can be downloaded from&nbsp;&nbsp;<a href="https://marketplace.microfocus.com/itom/content/apache-web-server-content-for-coso-data-lake" target="_blank">here</a>&nbsp;</span></div><p class="MsoNormal"><o:p></o:p></p><h3>Choose the Apache metrics to integrate to the COSO Data Lake</h3><h2><o:p></o:p></h2><div><div><ul><li>The OBM Management Pack for Apache Web Server monitors the following Apache metrics and stores them in the Operations Agent’s Performance Collection Component (oacore):</li></ul></div></div></div><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><div><div>SERVER_NAME (http configuration filename), PORT (http port), IP_ADDRESS, PERC_CPU_USAGE, MEM_USAGE_MB, BYTES_PER_SEC, REQS_PER_SEC, BYTES_PER_REQ, PROC_RATE, BUSY_WORKERS, IDLE_WORKERS, TOTAL_ACCESS, TOTAL_KBYTES, RESP_TIME_MICROSEC</div></div></div></blockquote><div><div><div><ul><li>Make sure that the Apache Web Server metrics are logged to the Operations Agent. The Apache metrics are stored in APACHE_DATA data source and APACHE_PERF metric class. For example, this is a snippet of Apache Web Server metrics stored in the Operations Agent’s store.</li></ul></div><div># /opt/OV/bin/ovcodautil -ds APACHE_DATA -o APACHE_PERF –rawonly -last<br></div><div>06/03/19 09:25:02 AM|SERVER_NAME&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|/etc/httpd/conf/httpd.conf|</div><div>06/03/19 09:25:02 AM|PORT&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp; 8080|</div><div>06/03/19 09:25:02 AM|IP_ADDRESS&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |10.11.16.2|</div><div>06/03/19 09:25:02 AM|PERC_CPU_USAGE&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp; 0.00|</div><div>06/03/19 09:25:02 AM|MEM_USAGE_MB&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp;27.26|</div><div>06/03/19 09:25:02 AM|BYTES_PER_SEC&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|&nbsp; &nbsp; &nbsp;14.47|</div><div>06/03/19 09:25:02 AM|REQS_PER_SEC&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp; 0.02|</div><div>06/03/19 09:25:02 AM|BYTES_PER_REQ&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|&nbsp; &nbsp; 743.58|</div><div>06/03/19 09:25:02 AM|PROC_RATE&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|&nbsp; &nbsp; &nbsp;16.67|</div><div>06/03/19 09:25:02 AM|BUSY_WORKERS&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1|</div><div>06/03/19 09:25:02 AM|IDLE_WORKERS&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;5|</div><div>06/03/19 09:25:02 AM|TOTAL_ACCESS&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp; 6259|</div><div>06/03/19 09:25:02 AM|TOTAL_KBYTES&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp; 4545|</div><div>06/03/19 09:25:02 AM|RESP_TIME_MICROSEC&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |&nbsp; &nbsp; &nbsp; 0.00|</div><div><ul><li>Create the Apache metrics collection content with the following folder structure. The collection content must adhere to a well-known directory structure.</li></ul></div></div><div><br></div><div><img src="https://docs.microfocus.com/mediawiki/images/PN/diag12.PNG"><br></div><p class="MsoListParagraphCxSpFirst" style="text-indent:-.25in;mso-list:l0 level1 lfo1"><br></p><p class="MsoNormal">Execute the following commands to create the directory
 structure on NFS server:<o:p></o:p></p><p class="MsoListParagraphCxSpFirst"><span style="font-size: 9pt; line-height: 107%; font-family: &quot;Courier New&quot;;">mkdir -p
 /tmp/Apache_Metrics_Integration_Content/opr/integration/collection/oa/Apache<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size: 9pt; line-height: 107%; font-family: &quot;Courier New&quot;;">mkdir -p
 /tmp/Apache_Metrics_Integration_Content/opr/integration/coso/blk-upload/ingestion-conf/Apache<o:p></o:p></span></p><p class="MsoListParagraphCxSpMiddle"><span style="font-size: 9pt; line-height: 107%; font-family: &quot;Courier New&quot;;">mkdir -p
@@ -2222,7 +2786,372 @@ to store timestamp value",<o:p></o:p></span></p><p class="MsoListParagraphCxSpMi
 
 </span></p><p class="MsoListParagraphCxSpLast"><span style="font-size:10.0pt;mso-bidi-font-size:
 11.0pt;line-height:107%;font-family:&quot;Courier New&quot;">}<o:p></o:p></span></p><p class="MsoListParagraphCxSpLast"><span style="font-size:10.0pt;mso-bidi-font-size:
-11.0pt;line-height:107%;font-family:&quot;Courier New&quot;"><span style="font-family: MetricHPE; font-size: 16px;">Mandatory fields are marked with an asterisk (*).</span><br></span></p><p class="MsoListParagraphCxSpLast"><span style="font-size: 9pt; line-height: 107%; font-family: &quot;Courier New&quot;;"><img src="https://docs.microfocus.com/mediawiki/images/PN/diag13.PNG"><br></span></p><p class="MsoListParagraphCxSpLast"><span style="font-size: 9pt; line-height: 107%; font-family: &quot;Courier New&quot;;"><img src="https://docs.microfocus.com/mediawiki/images/PN/diag14.PNG"><br></span></p><p class="MsoListParagraphCxSpLast"><span style="font-size: 9pt; line-height: 107%; font-family: &quot;Courier New&quot;;"><img src="https://docs.microfocus.com/mediawiki/images/PN/diag15.PNG"><br></span></p><h2>APPENDIX C</h2><h1><o:p></o:p></h1><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;"><span style="font-family: MetricHPE; font-size: 16px;">Mandatory fields are marked with an asterisk (*).</span><br></span></p><p class="MsoListParagraphCxSpLast"><span style="font-size:10.0pt;mso-bidi-font-size:
+11.0pt;line-height:107%;font-family:&quot;Courier New&quot;"><span style="font-family: MetricHPE; font-size: 16px;"><br></span></span></p><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="150" valign="top" style="width: 112.25pt; border-width: 1pt; border-left-style: solid; border-color: windowtext; border-image: initial; padding: 0in 5.4pt;">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>Field
+  name<o:p></o:p></b></p>
+  </td>
+  <td width="102" valign="top" style="width: 76.5pt; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>Sub-field
+  name<o:p></o:p></b></p>
+  </td>
+  <td width="372" valign="top" style="width: 278.75pt; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>Description<o:p></o:p></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="150" valign="top" style="width: 112.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">name*</p>
+  </td>
+  <td width="102" valign="top" style="width: 76.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="372" valign="top" style="width: 278.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Name of the table. This field defines the table name that gets
+  created in Vertica to store Apache metrics.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="150" valign="top" style="width: 112.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">displayName</p>
+  </td>
+  <td width="102" valign="top" style="width: 76.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="372" valign="top" style="width: 278.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Display Name. You can have user friendly name to represent the table
+  name created with “name” field value.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="150" valign="top" style="width: 112.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">description</p>
+  </td>
+  <td width="102" valign="top" style="width: 76.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="372" valign="top" style="width: 278.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Description of the table name.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="150" valign="top" style="width: 112.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">isInternal</p>
+  </td>
+  <td width="102" valign="top" style="width: 76.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="372" valign="top" style="width: 278.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">True if the table name is used for internal computation only and not
+  available for external consumers. i.e., the table is not visible through data
+  access interface and visible through only administration interface. Default
+  value is false.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="150" valign="top" style="width: 112.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">schema</p>
+  </td>
+  <td width="102" valign="top" style="width: 76.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="372" valign="top" style="width: 278.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">The schema in which the table name should be created.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="150" valign="top" style="width: 112.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">fields*</p>
+  </td>
+  <td width="102" valign="top" style="width: 76.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="372" valign="top" style="width: 278.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Fields (column names) in the table.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="150" rowspan="9" valign="top" style="width: 112.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="102" valign="top" style="width: 76.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">name*</p>
+  </td>
+  <td width="372" valign="top" style="width: 278.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Name of the column created under APACHE_PERF table name. </p>
+  </td>
+ </tr>
+ <tr>
+  <td width="102" valign="top" style="width: 76.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">displayName</p>
+  </td>
+  <td width="372" valign="top" style="width: 278.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Display Name of the column. You can have user friendly name to
+  represent the column name.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="102" valign="top" style="width: 76.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">description</p>
+  </td>
+  <td width="372" valign="top" style="width: 278.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Description of the column.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="102" valign="top" style="width: 76.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">type*</p>
+  </td>
+  <td width="372" valign="top" style="width: 278.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Type of the column (boolean, string, uuid, integer, numeric, double,
+  date, time, time_tz, timestamp, timestamp_tz). </p>
+  </td>
+ </tr>
+ <tr>
+  <td width="102" valign="top" style="width: 76.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">maxLength</p>
+  </td>
+  <td width="372" valign="top" style="width: 278.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Length of the column if type is “string”</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="102" valign="top" style="width: 76.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">isKey</p>
+  </td>
+  <td width="372" valign="top" style="width: 278.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">True if the column is an entity key column which has unique records.
+  Default value is false.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="102" valign="top" style="width: 76.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">isSampleTime</p>
+  </td>
+  <td width="372" valign="top" style="width: 278.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">True if the column represents timestamp in time series data. This
+  flag should be set to true for only one field in the table name. The field
+  type of sample time field should be one of integer, timestamp or
+  timestamp_tz. When the type is integer, the value of the field should be in
+  unix epoch. The default is false.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="102" valign="top" style="width: 76.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">isNullable</p>
+  </td>
+  <td width="372" valign="top" style="width: 278.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">True if the column can contain null values. The default value is true.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="102" valign="top" style="width: 76.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">isPrimaryKey</p>
+  </td>
+  <td width="372" valign="top" style="width: 278.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">True if the column is primary key column. It must contain a unique
+  value for each row and it cannot contain null values. The default value is
+  false.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="150" valign="top" style="width: 112.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">defaultLoadMethods</p>
+  </td>
+  <td width="102" valign="top" style="width: 76.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="372" valign="top" style="width: 278.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Default data load methods for this table name. You can provide
+  “kafka-json-load”, “csv-file-load” or “none” values. If kafka-json-load is
+  specified in default load methods, data will be loaded from a topic with the name
+  the same as the table name. If csv-load is specified in default load methods,
+  then CSVs with the file pattern {tablename}* will be loaded from the csv
+  direct folder of the data processor periodically. The CSV columns are assumed
+  to have a one to one mapping to the table name columns. If the load method is
+  empty, then kafka-json-load is set as the default load method. The default
+  load methods should be set to none if the default load configuration need not
+  be created for this table.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="150" valign="top" style="width: 112.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">sortOrder</p>
+  </td>
+  <td width="102" valign="top" style="width: 76.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="372" valign="top" style="width: 278.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Defines the fields the data is sorted on while storing. The columns
+  should be specified in ascending order of cardinality of the column for
+  better performance.&nbsp; This example sorts
+  on MonitoredSystem first and within each MonitoredSystem it further sorts by
+  timestamp_utc.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="150" valign="top" style="width: 112.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">shardDefinition</p>
+  </td>
+  <td width="102" valign="top" style="width: 76.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="372" valign="top" style="width: 278.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Describes the sharding policy for the table name. Sharding is a
+  database architecture pattern related to horizontal partitioning - the
+  practice of separating one table's rows into multiple different tables, known
+  as partitions. Each partition has the same schema and columns, but also
+  entirely different rows. The advantage of defining sharding is that it can
+  help to facilitate horizontal scaling.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="150" rowspan="2" valign="top" style="width: 112.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="102" valign="top" style="width: 76.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">shardType</p>
+  </td>
+  <td width="372" valign="top" style="width: 278.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">shardTypes are “distribute” or “replicate”. Set the value to
+  "distribute" to distribute the data based on shard keys. Set the
+  value to "replicate" to copy the complete table on all nodes.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="102" valign="top" style="width: 76.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">shardKeys</p>
+  </td>
+  <td width="372" valign="top" style="width: 278.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">List of fields (column names) to be used to distribute the data
+  across different database nodes. In this example, MonitoredSystem and timestamp_utc
+  are the shard column names. Data will be distributed based on these column
+  names for horizontal scaling.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="150" valign="top" style="width: 112.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">tags</p>
+  </td>
+  <td width="102" valign="top" style="width: 76.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="372" valign="top" style="width: 278.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">List of tags associated with table definition. This is a name value
+  pair. If retention period is defined, then associate the 'retentionProfile'
+  tag to set the retention profile that needs to be applied on this table.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="150" rowspan="3" valign="top" style="width: 112.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="102" valign="top" style="width: 76.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">name*</p>
+  </td>
+  <td width="372" valign="top" style="width: 278.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Name of the parameter.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="102" valign="top" style="width: 76.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">value</p>
+  </td>
+  <td width="372" valign="top" style="width: 278.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Value of the parameter.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="102" valign="top" style="width: 76.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">isInternal</p>
+  </td>
+  <td width="372" valign="top" style="width: 278.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">If the tag is internal, it will not be returned as part of metadata
+  when queried through data access interface. It will be accessible only to
+  administration interface.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="150" valign="top" style="width: 112.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="102" valign="top" style="width: 76.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="372" valign="top" style="width: 278.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+</tbody></table><p class="MsoListParagraphCxSpLast"><span style="font-size: 9pt; line-height: 107%; font-family: &quot;Courier New&quot;;"><br></span></p><h2>APPENDIX C</h2><h1><o:p></o:p></h1><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
 normal">&nbsp;<span style="font-size:10.0pt;
 mso-bidi-font-size:11.0pt;font-family:&quot;Courier New&quot;">{<o:p></o:p></span></p><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
 normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;font-family:
@@ -2283,7 +3212,166 @@ normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;font-family:
 
 
 
-</span></p><p class="MsoNormal">Mandatory fields are marked with an asterisk (*).<o:p></o:p></p><p class="MsoNormal"><img src="https://docs.microfocus.com/mediawiki/images/PN/diag16.PNG"><br></p><h2>APPENDIX D</h2><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+</span></p><p class="MsoNormal">Mandatory fields are marked with an asterisk (*).<o:p></o:p></p><p class="MsoNormal"><br></p><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="212" valign="top" style="width: 169.9pt; border-width: 1pt; border-left-style: solid; border-color: windowtext; border-image: initial; padding: 0in 5.4pt;">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>Field
+  name<o:p></o:p></b></p>
+  </td>
+  <td width="176" valign="top" style="width: 137.55pt; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>Sub-field
+  name<o:p></o:p></b></p>
+  </td>
+  <td width="318" valign="top" style="width: 160.05pt; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>Description<o:p></o:p></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="212" valign="top" style="width: 169.9pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">name*</p>
+  </td>
+  <td width="176" valign="top" style="width: 137.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="318" valign="top" style="width: 160.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Name of the CSV ingestion configuration used to uniquely identify the
+  ingestion configuration.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="212" valign="top" style="width: 169.9pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">csvFolder</p>
+  </td>
+  <td width="176" valign="top" style="width: 137.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="318" valign="top" style="width: 160.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Name of the staging directory created under &lt;db-volume&gt;/di/data-processor/data/csv-direct-load
+  location. This is a staging folder where the agent metric collector collects
+  all the csv files.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="212" valign="top" style="width: 169.9pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">csvConfiguration*</p>
+  </td>
+  <td width="176" valign="top" style="width: 137.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="318" valign="top" style="width: 160.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="212" valign="top" style="width: 169.9pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="176" valign="top" style="width: 137.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">fileNamePatterns*</p>
+  </td>
+  <td width="318" valign="top" style="width: 160.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Wild card filename pattern. All the csv files created in the staging
+  folder use this fileNamePattern. For example, all the apache related csv
+  files will be created with the “APACHE_PERF” key. The preceding wildcard is
+  replaced by the agent metric collector pod name and Apache data source name.
+  The end wild card is replaced by the timestamp. </p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">For example: itom-co-collector-svc-1_APACHE_DATA_APACHE_PERF_1561044326.csv</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="212" valign="top" style="width: 169.9pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="176" valign="top" style="width: 137.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">columnDelimiter</p>
+  </td>
+  <td width="318" valign="top" style="width: 160.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Delimiter character to separate columns in CSV. Default value is
+  comma. Empty values (two consecutive delimiters) are considered as empty
+  string values for string data types.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="212" valign="top" style="width: 169.9pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="176" valign="top" style="width: 137.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">encloseByChar</p>
+  </td>
+  <td width="318" valign="top" style="width: 160.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">The character that is used to enclose data containing a column
+  delimiter. If escape is used to escape the column delimiter, quoting is not
+  needed.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="212" valign="top" style="width: 169.9pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="176" valign="top" style="width: 137.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">rowDelimiter</p>
+  </td>
+  <td width="318" valign="top" style="width: 160.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Delimiter character to separate rows/records in CSV. Default value is
+  a Unix new line character.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="212" valign="top" style="width: 169.9pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="176" valign="top" style="width: 137.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">escapeChar</p>
+  </td>
+  <td width="318" valign="top" style="width: 160.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">The special characters in the CSV data should be escaped with this
+  character. Default value is backslash. Set this value to NO ESCAPE if there
+  is no need for an escape character.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="212" valign="top" style="width: 169.9pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="176" valign="top" style="width: 137.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">nullString</p>
+  </td>
+  <td width="318" valign="top" style="width: 160.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">The string that should be considered as a null value.</p>
+  </td>
+ </tr>
+</tbody></table><h2><br></h2><h2>APPENDIX D</h2><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
 normal">&nbsp;<span style="font-size:10.0pt;
 mso-bidi-font-size:11.0pt;font-family:&quot;Courier New&quot;">{<o:p></o:p></span></p><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
 normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;font-family:
@@ -2710,7 +3798,127 @@ normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;font-family:
 
 
 
-</p><p class="MsoNormal">Mandatory fields are marked with an asterisk (*).<o:p></o:p></p><p class="MsoNormal"><img src="https://docs.microfocus.com/mediawiki/images/PN/diag17.PNG"><br></p><p class="MsoNormal"><br></p><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt">NOTE: If you
+</p><p class="MsoNormal">Mandatory fields are marked with an asterisk (*).<o:p></o:p></p><p class="MsoNormal"><br></p><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="218" valign="top" style="width: 153.85pt; border-width: 1pt; border-left-style: solid; border-color: windowtext; border-image: initial; padding: 0in 5.4pt;">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>Field
+  name<o:p></o:p></b></p>
+  </td>
+  <td width="214" valign="top" style="width: 160.8pt; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>Sub-field
+  name<o:p></o:p></b></p>
+  </td>
+  <td width="204" valign="top" style="width: 152.85pt; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>Description<o:p></o:p></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="218" valign="top" style="width: 153.85pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">name*</p>
+  </td>
+  <td width="214" valign="top" style="width: 160.8pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="204" valign="top" style="width: 152.85pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Name used to uniquely identify the CSV load configuration.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="218" valign="top" style="width: 153.85pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">csvIngestionConfigurationName*</p>
+  </td>
+  <td width="214" valign="top" style="width: 160.8pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="204" valign="top" style="width: 152.85pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Name of the CSV ingestion configuration. This value should exactly match
+  the ingestion configuration “name” field in Appendix C</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="218" valign="top" style="width: 153.85pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">mapping*</p>
+  </td>
+  <td width="214" valign="top" style="width: 160.8pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="204" valign="top" style="width: 152.85pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="218" rowspan="5" valign="top" style="width: 153.85pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="214" valign="top" style="width: 160.8pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">fileNamePattern*</p>
+  </td>
+  <td width="204" valign="top" style="width: 152.85pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">The csv file name pattern. This value should exactly match the ingestion
+  configuration “fileNamePatterns” field in Appendix C.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="214" valign="top" style="width: 160.8pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">schemaName</p>
+  </td>
+  <td width="204" valign="top" style="width: 152.85pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">The schema in which the table name is created.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="214" valign="top" style="width: 160.8pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">dataSetName*</p>
+  </td>
+  <td width="204" valign="top" style="width: 152.85pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">The table name. This value should exactly match the metadata
+  configuration “name” field in Appendix B.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="214" valign="top" style="width: 160.8pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">sourceFieldName</p>
+  </td>
+  <td width="204" valign="top" style="width: 152.85pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Source field name present in the csv file (metric_list in Appendix A)
+  from which the value should be fetched. For example MEM_USAGE_MB.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="214" valign="top" style="width: 160.8pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">targetFieldName*</p>
+  </td>
+  <td width="204" valign="top" style="width: 152.85pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">The target field (column) name in which the value is to be stored. Map
+  the destination column name present in the APACHE_PERF table (Appendix B)
+  with the sourceFieldName. For example MEM_USAGE_MB column name created in
+  Appendix B.</p>
+  </td>
+ </tr>
+</tbody></table><p class="MsoNormal"><br></p><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt">NOTE: If you
 are using the pre-defined fields (MonitoredSystem, MonitoredSystemID,
 MonitoredSystemTimezone, host_name, Class, DataSource, timestamp_utc) which are
 not present in the collection configuration file (Appendix A), you still need
@@ -3158,7 +4366,231 @@ normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;font-family:
 
 
 
-</p><p class="MsoNormal">Mandatory fields are marked with an asterisk (*).<o:p></o:p></p><p class="MsoNormal"><img src="https://docs.microfocus.com/mediawiki/images/PN/diag19.PNG"><br></p><h2 style="margin-top:0in;line-height:normal"><br>APPENDIX F</h2><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+</p><p class="MsoNormal">Mandatory fields are marked with an asterisk (*).<o:p></o:p></p><p class="MsoNormal"><br></p><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="160" valign="top" style="width: 120.05pt; border-width: 1pt; border-left-style: solid; border-color: windowtext; border-image: initial; padding: 0in 5.4pt;">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>Field
+  name<o:p></o:p></b></p>
+  </td>
+  <td width="213" valign="top" style="width: 159.9pt; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>Sub-field
+  name<o:p></o:p></b></p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>Description<o:p></o:p></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="160" valign="top" style="width: 120.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">name*</p>
+  </td>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Name to represent the hourly aggregate configuration. The value of
+  this parameter should be unique across all aggregate definitions.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="160" valign="top" style="width: 120.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">sourceDataSet*</p>
+  </td>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Name of the raw table (APACHE_PERF) created in Appendix B to perform
+  the aggregation. The table name can refer to an aggregated table also.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="160" valign="top" style="width: 120.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">sourceSchema</p>
+  </td>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Name of the schema in which the source table is defined. If not
+  defined, the default schema is used as the source schema.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="160" valign="top" style="width: 120.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">destinationDataSet*</p>
+  </td>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Name of the destination table name. The table name gets created with
+  the value provided in this field to store hourly aggregated data. If a table
+  with a destination table name already exists in the source schema an error is
+  returned.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="160" valign="top" style="width: 120.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">aggregateRules*</p>
+  </td>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="160" rowspan="3" valign="top" style="width: 120.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">aggregationType*</p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Set this value to indicate the type of aggregation
+  (GenericAggregateRuleConfiguration or PercentileAggregateRuleConfiguration)</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">sourceField*</p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Name of the column (created in Appendix B) for which you need hourly
+  aggregation.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">destinationField*</p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Name of the column in which the hourly aggregated data should be
+  stored.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="160" valign="top" style="width: 120.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">aggregationFunction*</p>
+  </td>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Pre-defined aggregate functions. You can provide aggregation
+  functions such as, min, max, sum, count, average, lastval in this field.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="160" valign="top" style="width: 120.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">groupByFields*</p>
+  </td>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">The fields to group together by while aggregating the data.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="160" valign="top" style="width: 120.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">groupByInterval</p>
+  </td>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Specify the summarization interval to be applied if the field in
+  groupBy is a sample time field. The sample time field should be of type
+  integer and should contain values in unix epoch. The value specified in
+  groupByInterval is in minutes. The groupByInterval value cannot be greater
+  than 1440 (1 day) minutes.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="160" valign="top" style="width: 120.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">lagTime</p>
+  </td>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Specify the lag time in minutes that should be considered for pre
+  aggregation to handle late arrivals.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="160" valign="top" style="width: 120.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">sortOrder</p>
+  </td>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Defines the fields the data is sorted on while storing. The columns
+  should be specified in ascending order of cardinality of the column for
+  better performance.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="160" valign="top" style="width: 120.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">defaultTaskFlow</p>
+  </td>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Indicates if the aggregation should be included in the out of the box
+  task flow. Set this value as false if the aggregation is part of a custom
+  task flow.</p>
+  </td>
+ </tr>
+</tbody></table><h2 style="margin-top:0in;line-height:normal"><br><br></h2><h2 style="margin-top:0in;line-height:normal">APPENDIX F</h2><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
 normal">&nbsp;<span style="font-size:10.0pt;
 mso-bidi-font-size:11.0pt;font-family:&quot;Courier New&quot;">{<o:p></o:p></span></p><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
 normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;font-family:
@@ -3602,7 +5034,230 @@ normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;font-family:
 
 
 
-</p><p class="MsoNormal">Mandatory fields are marked with an asterisk (*).<o:p></o:p></p><p class="MsoNormal"><img src="https://docs.microfocus.com/mediawiki/images/PN/diag20.PNG"><br></p><p class="MsoNormal"><img src="https://docs.microfocus.com/mediawiki/images/PN/diag21.PNG"><br></p><p class="MsoNormal"><br></p><h2>APPENDIX G</h2><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+</p><p class="MsoNormal">Mandatory fields are marked with an asterisk (*).<o:p></o:p></p><p class="MsoNormal"><br></p><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="160" valign="top" style="width: 120.05pt; border-width: 1pt; border-left-style: solid; border-color: windowtext; border-image: initial; padding: 0in 5.4pt;">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>Field
+  name<o:p></o:p></b></p>
+  </td>
+  <td width="213" valign="top" style="width: 159.9pt; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>Sub-field
+  name<o:p></o:p></b></p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>Description<o:p></o:p></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="160" valign="top" style="width: 120.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">name*</p>
+  </td>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Name to represent the daily aggregate configuration. The value of
+  this parameter should be unique across all aggregate definitions.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="160" valign="top" style="width: 120.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">sourceDataSet*</p>
+  </td>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Hourly aggregation table name created in Appendix E. </p>
+  </td>
+ </tr>
+ <tr>
+  <td width="160" valign="top" style="width: 120.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">sourceSchema</p>
+  </td>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Name of the schema in which the source table is defined. If not
+  defined, the default schema is used as the source schema.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="160" valign="top" style="width: 120.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">destinationDataSet*</p>
+  </td>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Name of the destination table. The table name gets created with the
+  value provided in this field to store daily aggregated data. If a table with a
+  destination table name already exists in the source schema an error is
+  returned.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="160" valign="top" style="width: 120.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">aggregateRules*</p>
+  </td>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="160" rowspan="3" valign="top" style="width: 120.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">aggregationType*</p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Set this value to indicate the type of aggregation
+  (GenericAggregateRuleConfiguration or PercentileAggregateRuleConfiguration)</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">sourceField*</p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Name of the column (destinationField in Appendix E) for which you
+  need daily aggregation.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">destinationField*</p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Name of the column in which the daily aggregated data should be
+  stored.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="160" valign="top" style="width: 120.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">aggregationFunction*</p>
+  </td>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Pre-defined aggregate functions. You can provide aggregation
+  functions such as, min, max, sum, count, average, lastval in this field.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="160" valign="top" style="width: 120.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">groupByFields*</p>
+  </td>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">The fields to group together by while aggregating the data.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="160" valign="top" style="width: 120.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">groupByInterval</p>
+  </td>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Specify the summarization interval to be applied if the field in
+  groupBy is a sample time field. The sample time field should be of type
+  integer and should contain values in Unix epoch. The value specified in
+  groupByInterval is in minutes. The groupByInterval value cannot be greater
+  than 1440 (1 day) minutes.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="160" valign="top" style="width: 120.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">lagTime</p>
+  </td>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Specify the lag time in minutes that should be considered for pre
+  aggregation to handle late arrivals.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="160" valign="top" style="width: 120.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">sortOrder</p>
+  </td>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Defines the fields the data is sorted on while storing. The columns
+  should be specified in ascending order of cardinality of the column for
+  better performance.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="160" valign="top" style="width: 120.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">defaultTaskFlow</p>
+  </td>
+  <td width="213" valign="top" style="width: 159.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="254" valign="top" style="width: 187.55pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Indicates if the aggregation should be included in the out of the box
+  task flow. Set this value as false if the aggregation is part of a custom
+  task flow.</p>
+  </td>
+ </tr>
+</tbody></table><p class="MsoNormal"><br></p><h2>APPENDIX G</h2><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
 normal">&nbsp;<span style="font-size:10.0pt;
 mso-bidi-font-size:11.0pt;font-family:&quot;Courier New&quot;">{<o:p></o:p></span></p><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
 normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;font-family:
@@ -4063,7 +5718,309 @@ normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;font-family:
 
 
 
-</p><p class="MsoNormal">Mandatory fields are marked with an asterisk (*).<o:p></o:p></p><p class="MsoNormal"><img src="https://docs.microfocus.com/mediawiki/images/PN/diag22.PNG"><br></p><p class="MsoNormal"><img src="https://docs.microfocus.com/mediawiki/images/PN/diag23.PNG"><br></p><p class="MsoNormal"><img src="https://docs.microfocus.com/mediawiki/images/PN/diag24.PNG"><br></p><h2>APPENDIX H&nbsp;</h2><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+</p><p class="MsoNormal">Mandatory fields are marked with an asterisk (*).<o:p></o:p></p><p class="MsoNormal"><br></p><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="177" valign="top" style="width: 132.55pt; border-width: 1pt; border-left-style: solid; border-color: windowtext; border-image: initial; padding: 0in 5.4pt;">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>Field
+  name<o:p></o:p></b></p>
+  </td>
+  <td width="200" valign="top" style="width: 149.9pt; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>Sub-field
+  name<o:p></o:p></b></p>
+  </td>
+  <td width="247" valign="top" style="width: 185.05pt; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>Description<o:p></o:p></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="177" valign="top" style="width: 132.55pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">name*</p>
+  </td>
+  <td width="200" valign="top" style="width: 149.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="247" valign="top" style="width: 185.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Name to represent the forecast configuration. The value of this
+  parameter should be unique across all forecast definitions.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="177" valign="top" style="width: 132.55pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">algorithm</p>
+  </td>
+  <td width="200" valign="top" style="width: 149.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="247" valign="top" style="width: 185.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Algorithm used to forecast.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="177" valign="top" style="width: 132.55pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">sourceDataSet*</p>
+  </td>
+  <td width="200" valign="top" style="width: 149.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="247" valign="top" style="width: 185.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Name of the source table (Daily aggregation table name created in
+  Appendix F). The table name can refer to an aggregated table. </p>
+  </td>
+ </tr>
+ <tr>
+  <td width="177" valign="top" style="width: 132.55pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">sourceSchema</p>
+  </td>
+  <td width="200" valign="top" style="width: 149.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="247" valign="top" style="width: 185.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Name of the schema in which the source table is defined. If not
+  defined, the default schema is used as the source schema.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="177" valign="top" style="width: 132.55pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">destinationDataSet*</p>
+  </td>
+  <td width="200" valign="top" style="width: 149.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="247" valign="top" style="width: 185.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Name of the forecast table. The table name gets created with the
+  value specified in this field to store forecast information. If a table with the
+  destination table name already exists, in the source schema an error is returned.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="177" valign="top" style="width: 132.55pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">analysisPeriod</p>
+  </td>
+  <td width="200" valign="top" style="width: 149.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="247" valign="top" style="width: 185.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">The time period in days that is considered for deriving the forecast
+  model. This is an optional parameter. If not given, six weeks of history is
+  considered for analysis. The period prior to the maximum value of the sample
+  time field is used as the analysis period.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="177" valign="top" style="width: 132.55pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">keyFields</p>
+  </td>
+  <td width="200" valign="top" style="width: 149.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="247" valign="top" style="width: 185.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">The fields to be considered as the entity key. The analysis data is
+  filtered per entity and the prediction model is computed per entity. This
+  field is optional. If not specified, all the fields marked as entity key in the
+  source table are considered as key fields.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="177" valign="top" style="width: 132.55pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">forecastDefinition*</p>
+  </td>
+  <td width="200" valign="top" style="width: 149.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="247" valign="top" style="width: 185.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="177" valign="top" style="width: 132.55pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="200" valign="top" style="width: 149.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">sourceField*</p>
+  </td>
+  <td width="247" valign="top" style="width: 185.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Name of the source column name (destinationField value defined in
+  Appendix F)</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="177" rowspan="9" valign="top" style="width: 132.55pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="200" valign="top" style="width: 149.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">forecastField*</p>
+  </td>
+  <td width="247" valign="top" style="width: 185.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Name of the column in the forecast table that holds the forecast value.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="200" valign="top" style="width: 149.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">forecastFieldDisplayName</p>
+  </td>
+  <td width="247" valign="top" style="width: 185.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Display Name to represent the forecast field.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="200" valign="top" style="width: 149.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">forecastFieldDescription</p>
+  </td>
+  <td width="247" valign="top" style="width: 185.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Description of the forecast field.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="200" valign="top" style="width: 149.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">forecastRule*</p>
+  </td>
+  <td width="247" valign="top" style="width: 185.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">The ForecastRuleFP rule allows forecasting the field value for a
+  particular point in the future. Forecast DTT type provides Days To Threshold
+  value.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="200" valign="top" style="width: 149.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">forecastRuleType*</p>
+  </td>
+  <td width="247" valign="top" style="width: 185.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Set either ForecastRuleFP or ForecastRuleDTT.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="200" valign="top" style="width: 149.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">forecastPoint*</p>
+  </td>
+  <td width="247" valign="top" style="width: 185.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Number of days to forecast.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="200" valign="top" style="width: 149.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">forecastThresholdValue*</p>
+  </td>
+  <td width="247" valign="top" style="width: 185.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">The threshold value for which the days to exceed needs to be computed.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="200" valign="top" style="width: 149.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">minValueCondition*</p>
+  </td>
+  <td width="247" valign="top" style="width: 185.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Set the forecast value to the value given in the 'forecastValue'
+  field if the computed forecast value is less than 'minValue'. If forecastValue
+  is not specified, then the value is set as minValue.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="200" valign="top" style="width: 149.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">maxValueCondition*</p>
+  </td>
+  <td width="247" valign="top" style="width: 185.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Set the forecast value to the value given in the 'forecastValue'
+  field if the computed forecast value is greater than 'maxValue'. If forecastValue
+  is not specified, then the value is set as maxValue.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="177" valign="top" style="width: 132.55pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Schedule*</p>
+  </td>
+  <td width="200" valign="top" style="width: 149.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">type*</p>
+  </td>
+  <td width="247" valign="top" style="width: 185.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Schedule type, only fixed delay is supported at present. </p>
+  </td>
+ </tr>
+ <tr>
+  <td width="177" valign="top" style="width: 132.55pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="200" valign="top" style="width: 149.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">value*</p>
+  </td>
+  <td width="247" valign="top" style="width: 185.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Provide the delay between different runs of the task flow in minutes.
+  It’s a schedule interval of the task flow to be executed by the COSO Data
+  Lake component. For example, if you provide 5 mins, the task gets executed at
+  every 5 minute interval by the COSO Data Lake component.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="177" valign="top" style="width: 132.55pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">defaultTaskFlow</p>
+  </td>
+  <td width="200" valign="top" style="width: 149.9pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width="247" valign="top" style="width: 185.05pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Indicates if the forecast should be included in an out of the box
+  task flow. Set this value as false if the aggregation is part of a custom
+  task flow. The default value is true.</p>
+  </td>
+ </tr>
+</tbody></table><h2><br></h2><h2>APPENDIX H&nbsp;</h2><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
 normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;font-family:
 &quot;Courier New&quot;">{<o:p></o:p></span></p><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
 normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;font-family:
@@ -4087,4 +6044,41 @@ normal"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;font-family:
 
 
 
-</p><p class="MsoNormal">Mandatory fields are marked with an asterisk (*).<o:p></o:p></p><p class="MsoNormal"><img src="https://docs.microfocus.com/mediawiki/images/PN/diag25.PNG"><br></p><p class="MsoListParagraphCxSpFirst" style="text-indent:-.25in;mso-list:l0 level1 lfo1"><br></p><p class="MsoListParagraphCxSpFirst" style="text-indent:-.25in;mso-list:l0 level1 lfo1"><br></p></div>
+</p><p class="MsoNormal">Mandatory fields are marked with an asterisk (*).<o:p></o:p></p><p class="MsoNormal"><br></p><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="312" valign="top" style="width: 233.75pt; border-width: 1pt; border-left-style: solid; border-color: windowtext; border-image: initial; padding: 0in 5.4pt;">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>Field
+  name<o:p></o:p></b></p>
+  </td>
+  <td width="312" valign="top" style="width: 233.75pt; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>Description<o:p></o:p></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="312" valign="top" style="width: 233.75pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">profileName*</p>
+  </td>
+  <td width="312" valign="top" style="width: 233.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">There are default profiles associated with each table name. To apply
+  the retention period to any of the table names, you need to associate this
+  profile name with a respective configuration file. For example, to apply the
+  retention period to the APACHE_PERF raw table, you need to associate the
+  profile name “metrics_raw” in the metadata configuration file under the tags
+  field in Appendix B.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="312" valign="top" style="width: 233.75pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">retentionPeriod*</p>
+  </td>
+  <td width="312" valign="top" style="width: 233.75pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Retention period in days</p>
+  </td>
+ </tr>
+</tbody></table><p class="MsoListParagraphCxSpFirst" style="text-indent:-.25in;mso-list:l0 level1 lfo1"><br></p><p class="MsoListParagraphCxSpFirst" style="text-indent:-.25in;mso-list:l0 level1 lfo1"><br></p></div>
