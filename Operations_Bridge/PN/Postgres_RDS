@@ -1,0 +1,108 @@
+<h1 style="margin-bottom:0px;">Postgres RDS</h1><div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 26/06/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 2 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><p>Select Postgres for the database Engine <br> <a onclick="javascript:loadingImage(this);" class="image"><img alt="OpsBridge2019.02RDS1.jpg" src="/mediawiki/images/4/4d/OpsBridge2019.02RDS1.jpg" width="806" height="800" data-file-width="806" data-file-height="800"></a> <br> For testing purposes, a Dev/Test instance will be provisioned. Select a Production instance Use Case to support a production deployment of OpsBridge. <br> <a href="./itom/File:OpsBridge2019.02RDS2.jpg" class="image"><img alt="OpsBridge2019.02RDS2.jpg" src="/mediawiki/images/3/30/OpsBridge2019.02RDS2.jpg" width="821" height="468" data-file-width="821" data-file-height="468"></a> <br> Specify the following Database Details and Advanced Settings
+</p>
+<a class="buttonfullscr" onclick="javascript:loadingTableButton(this);"><button class="flscrbtn"><i class="material-icons flscricn">open_in_new</i><div style="margin: auto 5px;">View Fullscreen</div></button></a><table>
+<tbody><tr>
+<th>Setting
+</th>
+<th>Value
+</th></tr>
+<tr>
+<td>DB Engine
+</td>
+<td><b>PostgresSQL 9.5.12-R1</b>
+</td></tr>
+<tr>
+<td>DB Instance Type
+</td>
+<td><b>Based on required sizing</b>
+</td></tr>
+<tr>
+<td>Multi-AZ Deployment
+</td>
+<td><b>Enable if HA for Database is required</b>
+</td></tr>
+<tr>
+<td>Storage Type
+</td>
+<td><b>General Purpose</b>
+</td></tr>
+<tr>
+<td>Allocated Storage
+</td>
+<td><b>As required per deployment sizing</b>
+</td></tr>
+<tr>
+<td>Master Username
+</td>
+<td><b>postgres</b>
+</td></tr></tbody></table>
+<a class="buttonfullscr" onclick="javascript:loadingTableButton(this);"><button class="flscrbtn"><i class="material-icons flscricn">open_in_new</i><div style="margin: auto 5px;">View Fullscreen</div></button></a><table>
+<tbody><tr>
+<th>Setting
+</th>
+<th>Value
+</th></tr>
+<tr>
+<td>VPC
+</td>
+<td><b>select VPC created for the OpsBridge deployment.</b>
+</td></tr>
+<tr>
+<td>Subnet Group
+</td>
+<td><b>Subnet group created for RDS</b>
+</td></tr>
+<tr>
+<td>Public Available
+</td>
+<td><b>NO</b>
+</td></tr>
+<tr>
+<td>Availability Zone
+</td>
+<td><b>Default</b>
+</td></tr>
+<tr>
+<td>VPC Security
+</td>
+<td><b>Security Group created for RDS</b>
+</td></tr>
+<tr>
+<td>Database Name
+</td>
+<td><b>DB name 'postgres'</b>
+</td></tr></tbody></table>
+<p>Both CDF and the OpsBridge Suite require databases to be created prior to the installation. Since the Postgres RDS instance is only available internally, a Postgres client will need to be installed on one of the nodes. The Bastion server will be used in this example, however any of the Master or Worker nodes can be used as well.
+</p>
+<ol><li>Connect to the Bastion server and install the Postgres 9.5 client by running these commands. <br> " yum install <a target="1" rel="nofollow" class="external free" href="https://download.postgresql.org/pub/repos/yum/9.5/redhat/rhel-7-x86_64/pgdg-centos95-9.5-3.noarch.rpm">https://download.postgresql.org/pub/repos/yum/9.5/redhat/rhel-7-x86_64/pgdg-centos95-9.5-3.noarch.rpm</a>" <br> " yum install postgresql95"</li>
+<li>Connect to the Postgres Server by running this command: <br> " /usr/pgsql-9.5/bin/psql -h &lt;fqdn of Postgres RDS Server&gt; --username=postgres"</li>
+<li>Create a role for the Suite databases at the "postgres=&gt;" prompt <br> 'CREATE ROLE &lt;user&gt; WITH LOGIN PASSWORD '&lt;password&gt;';</li>
+<li>Grant the role to the Postgres user <br> 'GRANT &lt;user&gt; to postgres;'</li>
+<li>Create the databases for both CDF and OpsBridge  <br> 'CREATE DATABASE cdf_idm OWNER &lt;user&gt;;' <br>'CREATE DATABASE autopassdb OWNER &lt;user&gt;;' <br>'CREATE DATABASE bvd OWNER &lt;user&gt;;' <br>'CREATE DATABASE rtsm OWNER &lt;user&gt;;' <br>'CREATE DATABASE mgmt OWNER &lt;user&gt;;' <br>'CREATE DATABASE event OWNER &lt;user&gt;;'</li>
+<li>Create extensions for each of the Suite databases by running these commands while connected to Postgres with psql: <br>  '\c event' <br> 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp";' <br> '\c event' 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp";' <br> Repeat these commands on the rtsm and mgmt databases.</li></ol>
+<p><br>
+</p>
+<!-- 
+NewPP limit report
+Cached time: 20190714193634
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.012 seconds
+Real time usage: 0.031 seconds
+Preprocessor visited node count: 15/1000000
+Preprocessor generated node count: 38/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 0/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:850379-0!canonical and timestamp 20190714193634 and revision id 1499509
+ -->
+</div>
