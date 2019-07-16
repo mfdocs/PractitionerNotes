@@ -1,0 +1,63 @@
+<h1 style="margin-bottom:0px;">Check the default route for the localhost and default gateway settings</h1><div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 26/06/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 2 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><a class="buttonfullscr" onclick="javascript:loadingTableButton(this);"><button class="flscrbtn"><i class="material-icons flscricn">open_in_new</i><div style="margin: auto 5px;">View Fullscreen</div></button></a><table>
+<tbody><tr>
+<th>Role
+</th>
+<th>Location
+</th>
+<th>Privileges required
+</th></tr>
+<tr>
+<td>System administrator
+</td>
+<td>All nodes
+</td>
+<td>Root or sudo
+</td></tr></tbody></table>
+<h3><span class="mw-headline" id="Set_the_default_route_setting_and_disable_IPv6_information">Set the default route setting and disable IPv6 information</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/PrepareServer&amp;veaction=edit&amp;section=T-14" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/PrepareServer&amp;action=edit&amp;section=T-14" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>You must set the default route for the localhost and the default gateway address on all master and worker nodes, and on all NFS servers.<br>
+</p>
+<ol>
+<li>Log on to the node or server and then run the following command to check your default route setting.<br>
+<code>grep 127.0.0.1 /etc/hosts</code><br>
+If there is no return value, run the following command to set the default route setting.<br>
+<code>echo "127.0.0.1 localhost" &gt;&gt; /etc/hosts</code>
+</li><li>Open the <code>/etc/hosts</code> files with a supported editor and make sure the IPv6 information has been commented out.<br>
+For example:<br>
+<pre>#::1         localhost localhost.localdomain localhost6 localhost6.localdomain6 </pre></li>
+</ol>
+<h3><span class="mw-headline" id="Check_the_default_gateway_setting">Check the default gateway setting</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/PrepareServer&amp;veaction=edit&amp;section=T-15" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/PrepareServer&amp;action=edit&amp;section=T-15" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>To check the default gateway address on a node, run the following command on the node:<br>
+<code>ip route | grep default</code><br>
+If your terminal resembles the following after you run the command, the default gateway address is already set: 
+</p>
+<pre>default via 192.0.2.1 dev ens32  proto static  metric 100
+</pre>
+<p>If the default gateway is not set on the node, run the following command on the node to add a default gateway:<br>
+<code>route add default gw &lt;<i>IP address</i>&gt; &lt;<i>interface name</i>&gt;</code><br>
+For example, you run the following command: <br><code>route add default gw 192.0.2.24 eth0</code>
+</p><p><br>
+</p>
+<!-- 
+NewPP limit report
+Cached time: 20190714193537
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.008 seconds
+Real time usage: 0.021 seconds
+Preprocessor visited node count: 111/1000000
+Preprocessor generated node count: 320/1000000
+Post‐expand include size: 1448/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 161/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:850606-0!canonical and timestamp 20190714193537 and revision id 1500981
+ -->
+</div>
