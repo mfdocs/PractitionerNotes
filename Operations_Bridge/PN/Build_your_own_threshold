@@ -1,0 +1,695 @@
+<h1 style="margin-bottom:0px;">Build your own threshold</h1><div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 26/06/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 23 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><p><br>
+Central Thresholding is a part of Performance Management capability. You can set thresholds for any of the collected metrics. If there is a threshold violation, alerts are generated and forwarded to OBM.
+</p><p>The Thresholding Service provides REST API interface to create, read, modify and delete threshold configuration definitions. The API details are described in details in subsequent section.
+</p>
+<div id="toc" class="toc"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none"><div class="toctitle" lang="en" dir="ltr"><h2>Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/BYOTCentralThreshold#REST_APIs"><span class="tocnumber">1</span> <span class="toctext">REST APIs</span></a>
+<ul>
+<li class="toclevel-2 tocsection-2"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/BYOTCentralThreshold#Create_:_Define_a_new_threshold"><span class="tocnumber">1.1</span> <span class="toctext">Create&nbsp;: Define a new threshold</span></a></li>
+<li class="toclevel-2 tocsection-3"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/BYOTCentralThreshold#Read_:_Get_threshold_configuration_details_that_are_defined"><span class="tocnumber">1.2</span> <span class="toctext">Read&nbsp;: Get threshold configuration details that are defined</span></a></li>
+<li class="toclevel-2 tocsection-4"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/BYOTCentralThreshold#Update_:_Update_or_modify_an_existing_threshold_definition."><span class="tocnumber">1.3</span> <span class="toctext">Update&nbsp;: Update or modify an existing threshold definition.</span></a></li>
+<li class="toclevel-2 tocsection-5"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/BYOTCentralThreshold#Delete:_Delete_or_remove_a_defined_threshold_configuration."><span class="tocnumber">1.4</span> <span class="toctext">Delete: Delete or remove a defined threshold configuration.</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-6"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/BYOTCentralThreshold#Threshold_Configuration"><span class="tocnumber">2</span> <span class="toctext">Threshold Configuration</span></a></li>
+<li class="toclevel-1 tocsection-7"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/BYOTCentralThreshold#Threshold_Violation"><span class="tocnumber">3</span> <span class="toctext">Threshold Violation</span></a></li>
+<li class="toclevel-1 tocsection-8"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/BYOTCentralThreshold#OBM_adaptation_of_thresholding_for_VMware_Virtualization"><span class="tocnumber">4</span> <span class="toctext">OBM adaptation of thresholding for VMware Virtualization</span></a>
+<ul>
+<li class="toclevel-2 tocsection-9"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/BYOTCentralThreshold#How_they_work.3F"><span class="tocnumber">4.1</span> <span class="toctext">How they work?</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-10"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/BYOTCentralThreshold#Using_baselining_in_Central_Thresholding"><span class="tocnumber">5</span> <span class="toctext">Using baselining in Central Thresholding</span></a></li>
+<li class="toclevel-1 tocsection-11"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/BYOTCentralThreshold#BYOT_.28Build_Your_Own_Threshold.29"><span class="tocnumber">6</span> <span class="toctext">BYOT (Build Your Own Threshold)</span></a>
+<ul>
+<li class="toclevel-2 tocsection-12"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/BYOTCentralThreshold#Steps_for_BYOT"><span class="tocnumber">6.1</span> <span class="toctext">Steps for BYOT</span></a></li>
+<li class="toclevel-2 tocsection-13"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/BYOTCentralThreshold#Example_-_Simple_Threshold"><span class="tocnumber">6.2</span> <span class="toctext">Example - Simple Threshold</span></a></li>
+<li class="toclevel-2 tocsection-14"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/BYOTCentralThreshold#Example_-_Simple_Threshold_with_multiple_severities"><span class="tocnumber">6.3</span> <span class="toctext">Example - Simple Threshold with multiple severities</span></a></li>
+<li class="toclevel-2 tocsection-15"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/BYOTCentralThreshold#Example_-_Thresholds_with_Classifications"><span class="tocnumber">6.4</span> <span class="toctext">Example - Thresholds with Classifications</span></a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id="REST_APIs">REST APIs</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;veaction=edit&amp;section=1" class="mw-editsection-visualeditor" title="Edit section: REST APIs">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;action=edit&amp;section=1" title="Edit section: REST APIs">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h3><span class="mw-headline" id="Create_:_Define_a_new_threshold">Create&nbsp;: Define a new threshold</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;veaction=edit&amp;section=2" class="mw-editsection-visualeditor" title="Edit section: Create&nbsp;: Define a new threshold">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;action=edit&amp;section=2" title="Edit section: Create&nbsp;: Define a new threshold">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p><b>URL</b>
+</p>
+<pre>/rest/centralthreshold/
+</pre>
+<p><b>Method</b>
+</p><p>POST
+</p><p><b>Header</b>
+</p><p>content-type&nbsp;: application/json
+</p><p><b>JSON Body</b>
+</p><p>As defined in Threshold Configuration
+</p><p><b>Description</b>
+</p><p>This API is to create a new threshold with the unique name <code>&lt;ThresholdConfigName&gt;</code>. If a threshold configuration of the same name already exists, then this operation will fail.
+</p>
+<h3><span class="mw-headline" id="Read_:_Get_threshold_configuration_details_that_are_defined">Read&nbsp;: Get threshold configuration details that are defined</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;veaction=edit&amp;section=3" class="mw-editsection-visualeditor" title="Edit section: Read&nbsp;: Get threshold configuration details that are defined">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;action=edit&amp;section=3" title="Edit section: Read&nbsp;: Get threshold configuration details that are defined">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p><b>URL</b>
+</p>
+<pre>/rest/centralthreshold/
+/rest/centralthreshold/&lt;ThresholdConfigName&gt;
+/rest/centralthreshold?Summaryonly=true
+/rest/centralthreshold&lt;ThresholdConfigName&gt;?Summaryonly=true
+</pre>
+<p><b>Method</b>
+</p><p>GET
+</p><p><b>Header</b>
+</p><p>content-type&nbsp;: application/json
+</p><p><b>JSON Body</b>
+</p><p>As defined in Threshold Configuration
+</p><p><b>Description</b>
+</p><p>The 1st API of this type is to get details of all the defined thresholds as a JSON array. The 2nd API is to get the details of the threshold definition named &lt;ThresholdConfigName&gt;. The 3rd and 4th ones are the derivatives of the 1st and 2nd ones respectively, where only a few fields are fetched instead of all the details.
+</p>
+<h3><span class="mw-headline" id="Update_:_Update_or_modify_an_existing_threshold_definition.">Update&nbsp;: Update or modify an existing threshold definition.</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;veaction=edit&amp;section=4" class="mw-editsection-visualeditor" title="Edit section: Update&nbsp;: Update or modify an existing threshold definition.">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;action=edit&amp;section=4" title="Edit section: Update&nbsp;: Update or modify an existing threshold definition.">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p><b>URL</b>
+</p>
+<pre>/rest/centralthreshold/&lt;ThresholdConfigName&gt;
+</pre>
+<p><b>Method</b>
+</p><p>PUT
+</p><p><b>Header</b>
+</p><p>content-type&nbsp;: application/json
+</p><p><b>JSON Body</b>
+</p><p>As defined in Threshold Configuration
+</p><p><b>Description</b>
+</p><p>This API is to update or modify an existing threshold definition named &lt;ThresholdConfigName&gt;. The &lt;ThresholdConfigName&gt; in the URL must match the one in the body. The earlier defined configuration is replaced with the new configuration body. This operation fails if a configuration with the given name does not already exist. It will NOT define a new threshold configuration.
+</p>
+<h3><span class="mw-headline" id="Delete:_Delete_or_remove_a_defined_threshold_configuration.">Delete: Delete or remove a defined threshold configuration.</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;veaction=edit&amp;section=5" class="mw-editsection-visualeditor" title="Edit section: Delete: Delete or remove a defined threshold configuration.">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;action=edit&amp;section=5" title="Edit section: Delete: Delete or remove a defined threshold configuration.">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p><b>URL</b>
+</p>
+<pre>/rest/centralthreshold/&lt;ThresholdConfigName&gt;
+</pre>
+<p><b>Method</b>
+</p><p>DELETE
+</p><p><b>Header</b>
+</p><p>content-type&nbsp;: application/json
+</p><p><b>JSON Body</b>
+</p><p>As defined in Threshold Configuration
+</p><p><b>Description</b>
+</p><p>This API removes a defined threshold configuration named <code>&lt;ThresholdConfigName&gt;</code>.
+</p>
+<h2><span class="mw-headline" id="Threshold_Configuration">Threshold Configuration</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;veaction=edit&amp;section=6" class="mw-editsection-visualeditor" title="Edit section: Threshold Configuration">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;action=edit&amp;section=6" title="Edit section: Threshold Configuration">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<pre>{
+    "ThresholdConfigurationName"&nbsp;: &lt;Config Name&gt;, //Mandatory - All rules here to be served by one pipeline.
+    "DataStreamID"&nbsp;: &lt;kafka topic name&gt;, // Mandatory - Kafka topic to be scanned
+    "ForwardToURL"&nbsp;: &lt;endpoint URL&gt;, // Mandatory - URL to which threshold violation data is forwarded
+    "ForwardAs"&nbsp;: &lt;Data format&gt;, // Optional - JSON (default) or XML
+    "Classifications"&nbsp;: [ // Optional - CI (or record) Grouping
+        {
+            "ClassificationName"&nbsp;: &lt;Name String&gt;, //Mandatory
+            "Condition"&nbsp;: {/*JsonLogic based condition evaluating to true/false*/}, //Mandatory
+            "Classifications"&nbsp;: [ //Optional - Next Level of nested sub-classifications
+                :
+                :
+                :
+            ],
+            "Thresholds"&nbsp;: [ //Mandatory - Thresholds for those that do not fit in any sub-classifications
+                {
+                    "Severity"&nbsp;: &lt;Severity String&gt;, //Mandatory
+                    "Condition"&nbsp;: {/*JsonLogic based condition evaluating to true/false*/} //Mandatory
+                }
+                {
+                    "Severity"&nbsp;: &lt;Severity String&gt;, //Mandatory
+                    "Condition"&nbsp;: {/*JsonLogic based condition evaluating to true/false*/} //Mandatory
+                }
+                :
+                :
+            ]
+        },
+        {
+        }
+    ],
+    "Thresholds"&nbsp;: [ //Optional - Thresholds for those that do not fit in any classifications
+        {
+            "Severity"&nbsp;: &lt;Severity String&gt;, //Mandatory
+            "Condition"&nbsp;: {/*JsonLogic based condition evaluating to true/false*/} //Mandatory
+        }
+        :
+        :
+        :
+    ]
+}</pre><p>Before you create your configuration file, make sure you follow the threshold configuration schema to create your own thresholds. This JSON conforms to the JSON schema as described in <a href="./itom/Operations_Bridge:2019.05/ThresholdConfigurationSchema" title="Operations Bridge:2019.05/ThresholdConfigurationSchema">Threshold configuration schema</a>.
+</p><p>The classification conditions are matched top-to-bottom and depth-first (for sub-classifications) equivalent to a if-elseif-elseif with nesting kind of condition evaluation. So the classification can be sensitive to the order of the rule conditions specified.
+</p><p>Similar to the classifications, the threshold conditions too are matched top-to-bottom in a if-elseif-elseif kind of condition evaluation. There is no nesting involved though. So here too the severity detected and reported can be sensitive to the order of the conditions specified.
+</p>
+<h2><span class="mw-headline" id="Threshold_Violation">Threshold Violation</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;veaction=edit&amp;section=7" class="mw-editsection-visualeditor" title="Edit section: Threshold Violation">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;action=edit&amp;section=7" title="Edit section: Threshold Violation">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<pre>{
+   “ViolationDetails”&nbsp;: {
+       “ConfigurationName”&nbsp;: &lt;Config Name&gt;, //Threshold config for which this violation is being reported
+       “DataStreamID”&nbsp;: &lt;Kafka Topic Name&gt;, //Stream ID that is scanned
+       “Severity”&nbsp;: &lt;Severity String&gt;, //Severity as defined for the matched threshold condition
+       “Classifications”&nbsp;: [ //Array describing the (nested) group membership
+           &lt;ClassificationName&gt;,
+           &lt;Next Level ClassificationName&gt;
+           :
+           :
+       ]
+   },
+   "OriginalData"&nbsp;: { //The original matched record on the data stream
+       “Field1”&nbsp;: &lt;value&gt;,
+       :
+       :
+       “Field-n”&nbsp;: &lt;value&gt;
+   }
+}</pre><p>The threshold violation JSON that is POST’ed to the <code>&lt;ForwardToURL&gt;</code> if the <code>&lt;ForwardAs&gt;</code> is set to “JSON” or not set at all, is described here. If the <code>&lt;ForwardAs&gt;</code> is set to “XML” then an XML equivalent of the above JSON is sent. However, for ease of use, the “Classifications” array of strings is converted to a single concatenated string with “/” (slash) as the separator. The XML equivalent is shown below.
+</p><pre>&lt;root&gt;
+   &lt;ViolationDetails&gt;
+       &lt;ConfigurationName&gt; Config Name &lt;/ConfigurationName&gt;
+       &lt;DataStreamID&gt; Kafka Topic Name &lt;/DataStreamID&gt;
+       &lt;Severity&gt; Severity String &lt;/Severity&gt;
+       &lt;Classifications&gt; {ClassificationName}/{Next Level ClassificationName}/{..}/{..} &lt;/Classifications&gt;
+   &lt;/ViolationDetails&gt;
+   &lt;OriginalData&gt;
+       &lt;Field-1&gt; value &lt;/Field-1&gt;
+       :
+       :
+       &lt;Field-n&gt; value &lt;/Field-n&gt;
+   &lt;/OriginalData&gt;
+&lt;/root&gt;</pre>
+<h2><span class="mw-headline" id="OBM_adaptation_of_thresholding_for_VMware_Virtualization">OBM adaptation of thresholding for VMware Virtualization</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;veaction=edit&amp;section=8" class="mw-editsection-visualeditor" title="Edit section: OBM adaptation of thresholding for VMware Virtualization">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;action=edit&amp;section=8" title="Edit section: OBM adaptation of thresholding for VMware Virtualization">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>In the 2018.11 release, alerting on performance bottlenecks in VMware Virtualization infrastructure is done using the central thresholding feature.
+</p><p>While the actual data (metric) scanning and threshold violation detection is done by the thresholding service, the work of threshold configuration, appropriate API invocation to configure threshold, and finally, the generation of the OBM alert, is achieved using config file policies, policy instrumentations in PERL, and, Event via REST policies respectively.
+</p><p>Each threshold configuration is set using a separate config file policy, where the config file content is the JSON body for the REST API to (re)configure the threshold definitions.
+</p><p>The common policy instrumentations <code>loadThresholdConfig.pl</code> and <code>removeThresholdConfig.pl</code> are used as <code>InstallCommand</code> and <code>DeinstallCommand</code> in all these config file policies.
+</p><p>After you install the OBM MP for VMWare Infrastructure 1.100, the vCenter Threshold aspect is created on OBM. Operations Bridge 2018.11 ships four config file policies, two Event via REST policies and two PERL policy instrumentation scripts which are as follows:
+</p>
+<ul><li>Instrumentation
+<ul><li>loadThresholdConfig.pl</li>
+<li>removeThresholdConfig.pl</li></ul></li>
+<li>Config file policies
+<ul><li>VMWARE_vCenterHostCPUThreshold (ESX Host CPU utilization)</li>
+<li>VMWARE_vCenterHostMemThreshold (ESX Host Memory utilization)</li>
+<li>VMWARE_vCenterVMCPUThreshold (VM CPU utilization)</li>
+<li>VMWARE_vCenterVMMemThreshold (VM Memory utilization)</li></ul></li>
+<li>Event via REST policies
+<ul><li>VMWARE_vCenterHostThresholdMapping (Rules for CPU and Mem alerts for ESX Hosts)</li>
+<li>VMWARE_vCenterVMThresholdMapping (Rules for CPU and Mem alerts for VMs)</li></ul></li></ul>
+<h3><span id="How_they_work?"></span><span class="mw-headline" id="How_they_work.3F">How they work?</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;veaction=edit&amp;section=9" class="mw-editsection-visualeditor" title="Edit section: How they work?">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;action=edit&amp;section=9" title="Edit section: How they work?">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>The aspect “vCenter Threshold” needs to be deployed to the Collect Once Data Broker Operations Agent to start detect the threshold violations. The aspect can be deployed to any other Operations Agent that has necessary access to the Central Threshold Service, but only after modifying the <code>&lt;ForwardToURL&gt;</code> field in the file content of the config file policies appropriately.
+</p><p>Upon deployment on the agent, each of the config file policies save their content body in the file determined by <code>&lt;Application&gt;</code> <code>&lt;Subgroup&gt;</code> and <code>&lt;Filename&gt;</code> of the policy.
+</p><p>The PERL script <code>loadThresholdConfig.pl</code> which is the InstallCommand of the config file policies, takes 4 arguments - <code>&lt;Application&gt;</code> <code>&lt;Subgroup&gt;</code> <code>&lt;Filename&gt;</code> and <code>&lt;ThresholdConfigName&gt;</code>. This script then reads the file <code>&lt;OvConfDir&gt;/&lt;Application&gt;/&lt;Subgroup&gt;/&lt;Filename&gt;</code> to read its content that is then used as the body of the POST for REST API to (re)configure the threshold definitions. The last argument of <code>&lt;ThresholdConfigName&gt;</code> helps the script to determine if the REST API to configure a new threshold has to be invoked, or, if the API for reconfiguration should be invoked. The script maintains a persistent list of threshold config definitions identified by the unique <code>&lt;ThresholdConfigName&gt;</code>. Upon deploying a config file policy that defines a new threshold config, the API to add a new threshold config is invoked. If a policy is re-deployed for an existing threshold config, the API to reconfigure or modify the threshold config is invoked.
+</p><p>Un-deploying these config file policies result in invocation of the <code>DeinstallCommand</code>. <code>removeThresholdConfig.pl</code> that gets the <code>&lt;ThresholdConfigName&gt;</code> as an argument to it. This script then invokes the REST API call to remove the corresponding threshold config definition.
+</p><p>Along with the config file policies, the aspect also contains Event via REST policies. Each of these policies processes the input data (threshold violations) sent on the associated REST endpoint, and generates an appropriate OBM event based on the rules and mappings defined in the policy.
+</p><p>Every threshold violation detected from a particular threshold config is forwarded to the associated REST endpoint defined by the field <code>&lt;ForwardToURL&gt;</code>. This field is set to the URL of an Event via REST policy endpoint, so that the threshold violation data can be processed further to generate the OBM events.
+</p><p>Also, since the Event via REST policies can process only XML data, the optional field <code>&lt;ForwardAs&gt;</code> of the threshold configuration in the config file policies is set to “XML”, so that the threshold violation data is forwarded to these Event via REST policies in XML data format instead of the default JSON format.
+</p>
+<h2><span class="mw-headline" id="Using_baselining_in_Central_Thresholding">Using baselining in Central Thresholding</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;veaction=edit&amp;section=10" class="mw-editsection-visualeditor" title="Edit section: Using baselining in Central Thresholding">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;action=edit&amp;section=10" title="Edit section: Using baselining in Central Thresholding">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>As in the case of earlier features of central thresholding, baselining can be configured and then thresholded upon for metric records on the stream. The techniques of windowing and suppression can also be applied on them for effective thresholding.
+</p><p>To configure baselining on a metric stream for thresholding, one needs to additionally provide the following configuration parameters in the threshold configuration under the section Baseline.
+</p>
+<a class="buttonfullscr" onclick="javascript:loadingTableButton(this);"><button class="flscrbtn"><i class="material-icons flscricn">open_in_new</i><div style="margin: auto 5px;">View Fullscreen</div></button></a><table>
+<tbody><tr>
+<td><b>KeyFields</b>
+</td>
+<td><b>Array of Strings (Field Names)</b>
+</td>
+<td><b>Mandatory</b>
+</td>
+<td><b>List of fields to identify CIs</b>
+</td></tr>
+<tr>
+<td>FieldsToBaseline
+</td>
+<td>Array of Strings (Field Names)
+</td>
+<td>Mandatory
+</td>
+<td>List of metrics to baseline
+</td></tr>
+<tr>
+<td>DefaultInterceptAdaptionParameter
+</td>
+<td>Number
+</td>
+<td>Optional (Default = 0.056)
+</td>
+<td>Alpha
+</td></tr>
+<tr>
+<td>DefaultTrendAdaptionParameter
+</td>
+<td>Number
+</td>
+<td>Optional (Default = 0.00034)
+</td>
+<td>Beta
+</td></tr>
+<tr>
+<td>DefaultSeasonalAdaptionParameter
+</td>
+<td>Number
+</td>
+<td>Optional (Default = 0.2)
+</td>
+<td>Gamma
+</td></tr>
+<tr>
+<td>DefaultUpperNormalDeviation
+</td>
+<td>Number
+</td>
+<td>Optional (Default = 3.0)
+</td>
+<td>Upper side multiplicative factor
+</td></tr>
+<tr>
+<td>DefaultLowerNormalDeviation
+</td>
+<td>Number
+</td>
+<td>Optional (Default = 3.0)
+</td>
+<td>Lower side multiplicative factor
+</td></tr>
+<tr>
+<td>RecordsPerSeason
+</td>
+<td>Number
+</td>
+<td>Optional (Default = 12)
+</td>
+<td>Data points in a season
+</td></tr>
+<tr>
+<td>InitializationSeasons
+</td>
+<td>Number
+</td>
+<td>Optional (Default = 6)
+</td>
+<td>Number of seasons
+</td></tr></tbody></table>
+<p>For every metric configured to be baselined, four additional fields will be available in the record that can be used in the conditions to determine the threshold violation.
+</p><p>If a metric called metric1 is configured to be baselined, then four more associated fields will be available for the threshold condition evaluation. These field are -
+</p><p><b>metric1</b>BaselineAvg
+</p><p><b>metric1</b>BaselineDevi
+</p><p><b>metric1</b>UpperNorm
+</p><p><b>metric1</b>LowerNorm
+</p><p>To determine a baseline violation on the upper side, you can compare if the value of <b>metric1</b> is greater than the value of <b>metric1UpperNorm</b>.
+</p><p>So a simple JSON logic based condition expression can be -
+</p>
+<pre>{“&gt;” : [{“var” : “metric1”}, {“var” : “metric1UpperNorm”}]}
+</pre>
+<p>So a simple threshold condition can be -
+</p>
+<pre>"Thresholds"&nbsp;: [
+{
+"Severity"&nbsp;: “Warning”,
+"Condition"&nbsp;: {“&gt;”&nbsp;: [{“var”&nbsp;: “metric1”}, {“var”&nbsp;: “metric1UpperNorm”}]}
+},
+{
+"Severity"&nbsp;: “Normal”
+}
+]</pre>
+<h2><span id="BYOT_(Build_Your_Own_Threshold)"></span><span class="mw-headline" id="BYOT_.28Build_Your_Own_Threshold.29">BYOT (Build Your Own Threshold)</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;veaction=edit&amp;section=11" class="mw-editsection-visualeditor" title="Edit section: BYOT (Build Your Own Threshold)">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;action=edit&amp;section=11" title="Edit section: BYOT (Build Your Own Threshold)">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>This section describes how one can define their own thresholding configuration. Examples shown here are to define thresholds on free space availability of datastores in a VMware virtualization infrastructure. However, the same concepts can be applied to any data across various domains.
+</p>
+<h3><span class="mw-headline" id="Steps_for_BYOT">Steps for BYOT</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;veaction=edit&amp;section=12" class="mw-editsection-visualeditor" title="Edit section: Steps for BYOT">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;action=edit&amp;section=12" title="Edit section: Steps for BYOT">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>You must create a JSON payload to configure a threshold. The mandatory fields, and the optional fields as necessary must be set to appropriate values.
+</p>
+<ol><li><b>ThresholdConfigurationName</b> (Mandatory) - A unique configuration name should be given to the newly defined threshold. The name “VMwareDatastoreFreeThreshold” can be one such name.</li>
+<li><b>DatastreamID</b> (Mandatory) - One should be aware of the kafka topic name for the intended data to be scanned. The VMware datastore metrics are available in VMWARE_DATASTORE_METRICS kafka topic.</li>
+<li><b>ForwardToURL</b> (Mandatory) - One should setup or configure a HTTP(S) receiver to receive the threshold violation data. In case of a OBM environment, one can create and deploy a Event via REST policy to receive threshold violation data and process further to generate OBM events. The source URL of this Event via REST policy can then be used to set this JSON field.</li>
+<li><b>ForwardAs</b> (Optional) - If not set, or explicitly set to “JSON”, the HTTP(S) receiver of threshold violations will receive the data in JSON format. However, in case an Event via REST policy is configured to receive the threshold violation data, this field must be set to “XML” as the Event via REST policies can only process XML data.</li>
+<li><b>Thresholds</b> (Optional at top level / Mandatory within classifications) - You can set multiple threshold levels as an array. Each threshold consists of a mandatory “Severity” that is reported back in the threshold violation data, and a mandatory JsonLogic based boolean “Condition” that is evaluated to determine the violation.</li>
+<li><b>Classifications</b> (Optional) - One can define rules to classify the records in different groups and sub-groups and apply different threshold conditions for different classifications. Every classification consists of a mandatory “ClassificationName” that is reported back in the threshold violation data, a mandatory JsonLogic based boolean “Condition” that is evaluated to determine the membership to this classification, a mandatory “Thresholds” (similar to the one explained above) that is applicable to records that gets classified to this classification, and an optional nested “Classifications” that defines the next level of sub-classification.</li></ol>
+<h3><span class="mw-headline" id="Example_-_Simple_Threshold">Example - Simple Threshold</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;veaction=edit&amp;section=13" class="mw-editsection-visualeditor" title="Edit section: Example - Simple Threshold">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;action=edit&amp;section=13" title="Edit section: Example - Simple Threshold">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>This example is to notify a “Warning” whenever the datastore free space availability is less than 10% of its capacity.
+</p><p>The kafka topic for datastore metrics is <code>VMWARE_DATASTORE_METRICS</code> and the available metrics of interest are <code>Capacity_megaBytes</code> and <code>Free_megaBytes</code>. So the intended algorithm is as follows:
+</p>
+<pre>Scan
+          VMWARE_DATASTORE_METRICS
+Notify
+           “Warning”
+When
+           ((Free_megaBytes / Capacity_megaBytes) * 100) &lt; 10</pre>
+<p>Now, you need to create the JsonLogic equivalent of the expression to be evaluated. JsonLogic uses a prefix notation for the expressions.<br>
+Extracting a metric field, say, <code>Capacity_megaBytes</code> from the data in JsonLogic is as follows:<br>
+<code>{“var”&nbsp;: “Capacity_megaBytes”}</code><br>
+The expression - <code>Free_megaBytes</code> / <code>Capacity_megaBytes</code> in JsonLogic is as follows:<br>
+</p>
+<pre>{
+   “/”&nbsp;: [
+       {“var”&nbsp;: “Free_megaBytes”},
+       {“var”&nbsp;: “Capacity_megaBytes”}
+   ]
+}</pre>
+<p>The expression - (<code>Free_megaBytes</code> / <code>Capacity_megaBytes</code>) * 100 in JsonLogic is as follows:
+</p>
+<pre>{
+   “*”&nbsp;: [
+       {
+           “/”&nbsp;: [
+               {“var”&nbsp;: “Free_megaBytes”},
+               {“var”&nbsp;: “Capacity_megaBytes”}
+           ]
+       },
+       100
+   ]
+}</pre>
+<p>The expression - ((<code>Free_megaBytes</code> / <code>Capacity_megaBytes</code>) * 100) &lt; 10 is as follows:
+</p>
+<pre>{
+   “&lt;”&nbsp;: [
+       {
+           “*”&nbsp;: [
+               {
+                   “/”&nbsp;: [
+                       {“var”&nbsp;: “Free_megaBytes”},
+                       {“var”&nbsp;: “Capacity_megaBytes”}
+                   ]
+               },
+               100
+           ]
+       },
+       10
+   ]
+}</pre>
+<p>The shortened form of the expression is:<br>
+<code>{“&lt;”&nbsp;: [{“*”&nbsp;: [{“/”&nbsp;: [{“var”&nbsp;: “Free_megaBytes”},{“var”&nbsp;: “Capacity_megaBytes”}]}, 100]}, 10]}</code><br>
+Now, the expression is created, let us create the complete Threshold Configuration.
+</p>
+<ul><li>Let the Threshold Configuration Name be <code>VMwareDatastoreFreeThreshold</code>.</li>
+<li>Let us say the threshold violations will be received by a Events via REST policy that is deployed on the OBM container agent and has the source configured as <code>vmware_ds_threshold</code>. Then the HTTP receiver URL will be - <pre>http://omi-0:30005/bsmc/rest/events/vmware_ds_threshold</pre></li>
+<li>Since the policy can only process XML data, the threshold violations needs to be notified in XML.</li>
+<li>The severity of the threshold condition is “Warning”</li></ul>
+<p>The Threshold Configuration will be as follows:<br>
+</p>
+<pre>{
+   "ThresholdConfigurationName"&nbsp;: “VMwareDatastoreFreeThreshold”,
+   "DataStreamID"&nbsp;: “VMWARE_DATASTORE_METRICS”,
+   "ForwardToURL"&nbsp;: “http://omi-0:30005/bsmc/rest/events/vmware_ds_threshold”,
+   "ForwardAs"&nbsp;: “XML”,
+   "Thresholds"&nbsp;: [
+       {
+           "Severity"&nbsp;: “Warning”,
+           "Condition"&nbsp;: {
+“&lt;”&nbsp;: [{“*”&nbsp;: [{“/”&nbsp;: [{“var”&nbsp;: “Free_megaBytes”},{“var”&nbsp;: “Capacity_megaBytes”}]}, 100]}, 10]}
+       }
+   ]
+}</pre>
+<p>The policy instrumentation's too can be leveraged.
+</p>
+<h3><span class="mw-headline" id="Example_-_Simple_Threshold_with_multiple_severities">Example - Simple Threshold with multiple severities</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;veaction=edit&amp;section=14" class="mw-editsection-visualeditor" title="Edit section: Example - Simple Threshold with multiple severities">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;action=edit&amp;section=14" title="Edit section: Example - Simple Threshold with multiple severities">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Now, let us extend the Threshold Configuration to configure multiple thresholds of different severities.
+In addition to notifying a “Warning” whenever the datastore free space availability is less than 10% of its capacity, we also want to notify a “Critical” violation when the free space availability is less than 5%.
+The intended algorithm is as follows:
+</p>
+<pre>Scan
+          VMWARE_DATASTORE_METRICS
+Threshold
+         Notify
+               “Critical”
+When
+          ((Free_megaBytes / Capacity_megaBytes) * 100) &lt; 5
+       Notify
+               “Warning”
+When
+          ((Free_megaBytes / Capacity_megaBytes) * 100) &lt; 10</pre>
+<p>The Threshold Configuration will be as follows -
+</p>
+<pre>{
+   "ThresholdConfigurationName"&nbsp;: “VMwareDatastoreFreeThreshold”,
+   "DataStreamID"&nbsp;: “VMWARE_DATASTORE_METRICS”,
+   "ForwardToURL"&nbsp;: “http://omi-0:30005/bsmc/rest/events/vmware_ds_threshold”,
+   "ForwardAs"&nbsp;: “XML”,
+   "Thresholds"&nbsp;: [
+       {
+           "Severity"&nbsp;: “Critical”,
+           "Condition"&nbsp;: {
+“&lt;”&nbsp;: [{“*”&nbsp;: [{“/”&nbsp;: [{“var”&nbsp;: “Free_megaBytes”},{“var”&nbsp;: “Capacity_megaBytes”}]}, 100]}, 5]}
+       },
+       {
+           "Severity"&nbsp;: “Warning”,
+           "Condition"&nbsp;: {
+“&lt;”&nbsp;: [{“*”&nbsp;: [{“/”&nbsp;: [{“var”&nbsp;: “Free_megaBytes”},{“var”&nbsp;: “Capacity_megaBytes”}]}, 100]}, 10]}
+       }
+   ]
+}</pre>
+<p>While configuring multiple threshold levels, it is important to note that the threshold conditions are evaluated in a top-to-bottom order in a if-elseif-elseif way. So, in the above example, it is important that the “Critical” threshold is defined before the “Warning” threshold. In case the order is reversed, a situation where the datastore is only 2% free will result in a “Warning” instead of the intended “Critical” violation.<br>
+One way to get unaffected by the order of the conditions is to create exclusive conditions. In this example one can set the condition for "Critical" to be Freespace &lt; 5% and the Condition for "Warning" to be Freespace &gt;= 5% and &lt; 10%. Such exclusive conditions can then be set in any order without affecting the outcome.
+</p>
+<h3><span class="mw-headline" id="Example_-_Thresholds_with_Classifications">Example - Thresholds with Classifications</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;veaction=edit&amp;section=15" class="mw-editsection-visualeditor" title="Edit section: Example - Thresholds with Classifications">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/BYOTCentralThreshold&amp;action=edit&amp;section=15" title="Edit section: Example - Thresholds with Classifications">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Let us now add rules to classify the datastores in different groups and define different threshold conditions for them.
+Lets say the VMFS datastores should have lower thresholds than that of NFS or other types of datastores, so that one can be warned of unavailability of space on VMFS datastores earlier than other types of datastores. Also, the VMFS datastores used in the Datacenter “GoldDC” that hosts high priority applications, should have even lower threshold, so that they are warned about the unavailability of space at the earliest to reduce the risk of any downtime.
+The intended algorithm is -
+</p>
+<pre>If (“type” IS “VMFS”) &amp;&amp; (“datacenter” IS “GoldDC”) then “Critical” level is 20 and “Warning” level is 30
+If (“type” IS “VMFS”) &amp;&amp; (“datacenter” ISNOT “GoldDC”) then “Critical” level is 10 and “Warning” level is 20
+If (“type” IS “NFS”) then Critical level is 5 and Warning level is 10
+If (“type” ISNOT (“VMFS” or “NFS”)  then Critical level is 2 and Warning level is 5 //Default.</pre>
+<p>The Threshold Configuration is as follows:
+</p>
+<pre>{
+   "ThresholdConfigurationName"&nbsp;: “VMwareDatastoreFreeThreshold”,
+   "DataStreamID"&nbsp;: “VMWARE_DATASTORE_METRICS”,
+   "ForwardToURL"&nbsp;: “http://omi-0:30005/bsmc/rest/events/vmware_ds_threshold”,
+   "ForwardAs"&nbsp;: “XML”,
+   “Classifications”&nbsp;: [
+       {
+           “ClassificationName”&nbsp;: “VMFS_DS”,
+           “Condition”&nbsp;: {“==”&nbsp;: [{“var”&nbsp;: “type”}, “VMFS”]}
+           “Classifications”&nbsp;: [
+               {
+                   “ClassificationName”&nbsp;: “GoldDC”,
+                   “Condition”&nbsp;: {“==”&nbsp;: [{“var”&nbsp;: “datacenter_name”}, “GoldDC”]}
+                   "Thresholds"&nbsp;: [
+                       {
+                           "Severity"&nbsp;: “Critical”,
+                           "Condition"&nbsp;: {“&lt;”&nbsp;: [...., 20]}
+                       },
+                       {
+                           "Severity"&nbsp;: “Warning”,
+                           "Condition"&nbsp;: {“&lt;”&nbsp;: [...., 30]}
+                       }
+                   ]
+               }
+           ],
+           "Thresholds"&nbsp;: [
+               {
+                   "Severity"&nbsp;: “Critical”,
+                   "Condition"&nbsp;: {“&lt;”&nbsp;: [...., 10]}
+               },
+               {
+                   "Severity"&nbsp;: “Warning”,
+                   "Condition"&nbsp;: {“&lt;”&nbsp;: [...., 20]}
+               }
+           ]
+       },
+       {
+           “ClassificationName”&nbsp;: “NFS_DS”,
+           “Condition”&nbsp;: {“==”&nbsp;: [{“var”&nbsp;: “type”}, “NFS”]}
+           "Thresholds"&nbsp;: [
+               {
+                   "Severity"&nbsp;: “Critical”,
+                   "Condition"&nbsp;: {“&lt;”&nbsp;: [...., 5]}
+               },
+               {
+                   "Severity"&nbsp;: “Warning”,
+                   "Condition"&nbsp;: {“&lt;”&nbsp;: [...., 10]}
+               }
+           ]
+       }
+   ],
+   "Thresholds"&nbsp;: [
+       {
+           "Severity"&nbsp;: “Critical”,
+           "Condition"&nbsp;: {“&lt;”&nbsp;: [...., 2]}
+       },
+       {
+           "Severity"&nbsp;: “Warning”,
+           "Condition"&nbsp;: {“&lt;”&nbsp;: [...., 5]}
+       }
+   ]
+}</pre>
+<p>Please note that as in the case of threshold conditions, the classification rules too are evaluated as <code>if-elseif-elseif</code> conditions. They are order sensitive unless they are exclusive conditions.<br>
+The below table describes the different threshold violation data for different data values:
+</p>
+<a class="buttonfullscr" onclick="javascript:loadingTableButton(this);"><button class="flscrbtn"><i class="material-icons flscricn">open_in_new</i><div style="margin: auto 5px;">View Fullscreen</div></button></a><table>
+<tbody><tr>
+<th>Data Values
+</th>
+<th>Violation Data JSON
+</th>
+<th>Violation Data XML
+</th></tr>
+<tr>
+<td>type = VMFS
+<p>datacenter = GoldDC
+</p><p>Free Space = 37%
+</p>
+</td>
+<td>No violation
+</td>
+<td>No violation
+</td></tr>
+<tr>
+<td>type = VMFS
+<p>datacenter = GoldDC
+</p><p>Free Space = 15%
+</p>
+</td>
+<td><pre>{
+   “ViolationDetails”&nbsp;: {
+       “ConfigurationName”&nbsp;:
+           “VMwareDatastoreFreeThreshold”,
+       “DataStreamID”&nbsp;:
+           “VMWARE_DATASTORE_METRICS”,
+       “Severity”&nbsp;: “Critical”,
+       “Classifications”&nbsp;: [
+           “VMFS_DS”,
+           “GoldDC”
+       ]
+   },
+   "OriginalData"&nbsp;: {
+       :
+       :
+   }
+}</pre>
+</td>
+<td><pre>&lt;root&gt;
+   &lt;ViolationDetails&gt;
+       &lt;ConfigurationName&gt;
+           VMwareDatastoreFreeThreshold
+       &lt;/ConfigurationName&gt;
+       &lt;DataStreamID&gt;
+           VMWARE_DATASTORE_METRICS
+       &lt;/DataStreamID&gt;
+       &lt;Severity&gt;Critical&lt;/Severity&gt;
+       &lt;Classifications&gt;
+           VMFS_DS/GoldDC
+       &lt;/Classifications&gt;
+   &lt;/ViolationDetails&gt;
+   &lt;OriginalData&gt;
+       :
+       :
+   &lt;/OriginalData&gt;
+&lt;/root&gt;</pre>
+</td></tr>
+<tr>
+<td>type = VMFS
+<p>datacenter = SilverDC
+</p><p>Free Space = 15%
+</p>
+</td>
+<td><pre>{
+   “ViolationDetails”&nbsp;: {
+       :
+       :
+       “Severity”&nbsp;: “Warning”,
+       “Classifications”&nbsp;: [
+           “VMFS_DS”
+       ]
+   },
+   "OriginalData"&nbsp;: {
+       :
+   }
+}</pre>
+</td>
+<td><pre>&lt;root&gt;
+   &lt;ViolationDetails&gt;
+       :
+       :
+       &lt;Severity&gt;Warning&lt;/Severity&gt;
+       &lt;Classifications&gt;
+           VMFS_DS
+       &lt;/Classifications&gt;
+   &lt;/ViolationDetails&gt;
+   &lt;OriginalData&gt;
+       :
+   &lt;/OriginalData&gt;
+&lt;/root&gt;</pre>
+</td></tr>
+<tr>
+<td>type = NFS
+<p>datacenter = GoldDC
+</p><p>Free Space = 7%
+</p>
+</td>
+<td><pre>{
+   “ViolationDetails”&nbsp;: {
+       :
+       :
+       “Severity”&nbsp;: “Warning”,
+       “Classifications”&nbsp;: [
+           “NFS_DS”
+       ]
+   },
+   "OriginalData"&nbsp;: {
+       :
+   }
+}</pre>
+</td>
+<td><pre>&lt;root&gt;
+   &lt;ViolationDetails&gt;
+       :
+       :
+       &lt;Severity&gt;Warning&lt;/Severity&gt;
+       &lt;Classifications&gt;
+           NFS_DS
+       &lt;/Classifications&gt;
+   &lt;/ViolationDetails&gt;
+   &lt;OriginalData&gt;
+       :
+   &lt;/OriginalData&gt;
+&lt;/root&gt;</pre>
+</td></tr>
+<tr>
+<td>type = Other
+<p>datacenter = GoldDC
+</p><p>Free Space = 3%
+</p><p>(This is similar to the previous 2 examples too)
+</p>
+</td>
+<td><pre>{
+   “ViolationDetails”&nbsp;: {
+       :
+       :
+       “Severity”&nbsp;: “Warning”,
+       “Classifications”&nbsp;: null
+   },
+   "OriginalData"&nbsp;: {
+       :
+   }
+}</pre>
+</td>
+<td><pre>&lt;root&gt;
+   &lt;ViolationDetails&gt;
+       :
+       :
+       &lt;Severity&gt;Warning&lt;/Severity&gt;
+       &lt;Classifications/&gt;
+   &lt;/ViolationDetails&gt;
+   &lt;OriginalData&gt;
+       :
+   &lt;/OriginalData&gt;
+&lt;/root&gt;</pre>
+</td></tr></tbody></table>
+
+<!-- 
+NewPP limit report
+Cached time: 20190715100036
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.040 seconds
+Real time usage: 0.062 seconds
+Preprocessor visited node count: 208/1000000
+Preprocessor generated node count: 532/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 10526/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:736014-0!canonical and timestamp 20190715100036 and revision id 1440144
+ -->
+</div>
