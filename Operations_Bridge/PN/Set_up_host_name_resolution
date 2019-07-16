@@ -1,0 +1,62 @@
+<h1 style="margin-bottom:0px;">Set up host name resolution</h1><div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 26/06/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 1 minute to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><p><br>
+</p><p>If Domain Name Service (DNS) is not configured in your environment, you must configure the hosts file on every node (master and worker) in the cluster.  
+</p>
+<h2><span class="mw-headline" id="Configure_the_hosts_file_in_the_etc_directory">Configure the hosts file in the etc directory</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/ConfigHostNameResolution&amp;veaction=edit&amp;section=T-1" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/ConfigHostNameResolution&amp;action=edit&amp;section=T-1" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<a class="buttonfullscr" onclick="javascript:loadingTableButton(this);"><button class="flscrbtn"><i class="material-icons flscricn">open_in_new</i><div style="margin: auto 5px;">View Fullscreen</div></button></a><table>
+<tbody><tr>
+<th>Role
+</th>
+<th>Location
+</th>
+<th>Privileges required
+</th></tr>
+<tr>
+<td>System administrator
+</td>
+<td>All nodes
+</td>
+<td>Root or sudo
+</td></tr></tbody></table>
+<ol>
+<li>Log on to the node as a root or sudo user.</li>
+<li>Run the following command to navigate to the <code> /etc</code> directory:<br><br>
+<code>cd /etc</code></li>
+<li>Open the hosts file under <code>/etc</code> with a text editor. </li>
+<li>Modify the hosts file by adding the text that corresponds to the number of master nodes in the installation.
+<ul><li>One master node; using the master node as the external access host for CDF management portal later.<br><br>
+<code>&lt;MASTER_IP&gt; &lt;Your_MASTER_FQDN&gt;</code></li>
+<li>One master node; not using the master node as the external access host for CDF management portal later.<br><br>
+<code>&lt;MASTER_IP&gt; &lt;Your_MASTER_FQDN&gt;</code><br>
+<code>&lt;MASTER_IP&gt; &lt;Your_EXTERNAL_ACCESS_HOST&gt;</code></li>
+<li>More than one master.<br><br>
+<code>&lt;MASTER1_IP&gt; &lt;Your_first_MASTER_FQDN&gt;</code><br>
+<code>&lt;MASTER2_IP&gt; &lt;Your_second_MASTER_FQDN&gt;</code><br>
+<code>&lt;MASTER3_IP&gt; &lt;Your_third_MASTER_FQDN&gt;</code><br>
+<code>&lt;HA_VIRTUAL_IP&gt; &lt;Your_EXTERNAL_ACCESS_HOST&gt; </code></li></ul></li>
+<li>Save the hosts file.</li>
+</ol>
+
+<!-- 
+NewPP limit report
+Cached time: 20190714193748
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.004 seconds
+Real time usage: 0.018 seconds
+Preprocessor visited node count: 6/1000000
+Preprocessor generated node count: 36/1000000
+Post‐expand include size: 1379/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 0/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:850605-0!canonical and timestamp 20190714193748 and revision id 1500980
+ -->
+</div>
