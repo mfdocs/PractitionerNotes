@@ -1,0 +1,39 @@
+<h1 style="margin-bottom:0px;">Configure the install.properties file</h1><div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 26/06/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 1 minute to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><p><br>
+To configure the install.properties file for CDF installation, perform the following configurations:
+</p>
+<ul>
+<li>Set the <b>FLANNEL_BACKEND_TYPE</b> parameter to <b>vxlan</b>.</li>
+<li>In a production environment, you need to set up two thin pools for each cluster node and then configure the THINPOOL_DEVICE parameter. You can get the value by running <b>lvs -o+seg_monitor</b>.  For example: THINPOOL_DEVICE="/dev/mapper/docker-thinpool , /dev/mapper/docker_bootstrap-thinpool_bootstrap".</li>
+<li>Do <b>NOT</b> specify the parameter <b>HA_VIRTUAL_IP</b>. This parameter is for all master nodes located in one subnet installation.</li>
+<li>Do <b>NOT</b> specify the parameters: <b>AWS_MASTER_NODES, AWS_REGION, CLOUD_PROVIDER</b>. These parameters are for automatic AWS installation.</li>
+<li>Enable swap on the master and worker nodes, and set FAIL_SWAP_ON to false. </li>
+<li>Configure the <b>LOAD_BALANCER_HOST</b> parameter as the DNS name of the <b>Network Load Balancer</b> created in section <a href="./itom/Operations_Bridge:2019.05/NLoBalOpsB" title="Operations Bridge:2019.05/NLoBalOpsB">Network Load Balancer</a>. <br>You can find <b>DNS Name</b> of the <b>Network Load Balancer</b> under its <b>Description</b> tab, as shown below:<br><br>
+<a onclick="javascript:loadingImage(this);" class="image"><img alt="OpsBridge2019.02NlB8.jpg" src="/mediawiki/images/3/39/OpsBridge2019.02NlB8.jpg" width="723" height="565" data-file-width="723" data-file-height="565"></a><br></li>
+</ul>
+<p>For more settings, refer to:
+<a href="./itom/Operations_Bridge:2019.05/ConfigureInstallPropertiesFile" title="Operations Bridge:2019.05/ConfigureInstallPropertiesFile">Configure the install.properties file</a>.
+</p>
+<!-- 
+NewPP limit report
+Cached time: 20190714193546
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.016 seconds
+Real time usage: 0.041 seconds
+Preprocessor visited node count: 6/1000000
+Preprocessor generated node count: 20/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 0/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:850389-0!canonical and timestamp 20190714193546 and revision id 1500583
+ -->
+</div>
