@@ -1,0 +1,335 @@
+<h1 style="margin-bottom:0px;">Container Deployment Foundation (CDF)</h1><div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 26/06/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 5 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><p><br> 
+</p>
+<div id="toc" class="toc"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none"><div class="toctitle" lang="en" dir="ltr"><h2>Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/ContainerDeployFoundation#Layered_and_containerized"><span class="tocnumber">1</span> <span class="toctext">Layered and containerized</span></a></li>
+<li class="toclevel-1"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/ContainerDeployFoundation#Architecture"><span class="tocnumber">2</span> <span class="toctext">Architecture</span></a></li>
+<li class="toclevel-1"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/ContainerDeployFoundation#Portable_infrastructure"><span class="tocnumber">3</span> <span class="toctext">Portable infrastructure</span></a>
+<ul>
+<li class="toclevel-2"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/ContainerDeployFoundation#Maximize_containerization"><span class="tocnumber">3.1</span> <span class="toctext">Maximize containerization</span></a></li>
+<li class="toclevel-2"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/ContainerDeployFoundation#Single_Docker_Daemon"><span class="tocnumber">3.2</span> <span class="toctext">Single Docker Daemon</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/ContainerDeployFoundation#Use_of_Open_Source"><span class="tocnumber">4</span> <span class="toctext">Use of Open Source</span></a></li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id="Layered_and_containerized">Layered and containerized</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperContainerDeploymentFoundation&amp;veaction=edit&amp;section=T-1" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperContainerDeploymentFoundation&amp;action=edit&amp;section=T-1" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>The CDF provides a common runtime platform for containerized ITOM Suites. Similar to the Suites the CDF is almost completely containerized. The CDF uses a layered approach with host, Docker, Kubernetes, CDF core and Suite as the layers.
+</p><p>The following diagram shows the layers for a classic on-premise CDF installation with embedded Kubernetes.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="pic1.png" src="/mediawiki/images/d/d6/pic1.png" width="800" height="608" data-file-width="671" data-file-height="510"></a>
+</p><p>The following table shows the detailed layer components
+</p>
+<a class="buttonfullscr" onclick="javascript:loadingTableButton(this);"><button class="flscrbtn"><i class="material-icons flscricn">open_in_new</i><div style="margin: auto 5px;">View Fullscreen</div></button></a><table>
+<tbody><tr>
+<th><b>Layer</b>
+</th>
+<th><b>Component</b>
+</th>
+<th><b>Containerized?</b>
+</th>
+<th><b>Purpose</b>
+</th>
+<th><b>Maintained by</b>
+</th>
+<th><b>Supported by</b>
+</th></tr>
+<tr>
+<td>Hosts
+</td>
+<td>Host OS
+</td>
+<td>No
+</td>
+<td>Base OS&nbsp;; supported Linux distro
+</td>
+<td>Depends on chosen Linux distro
+</td>
+<td>Customer
+</td></tr>
+<tr>
+<td>System
+</td>
+<td>Docker
+</td>
+<td>No
+</td>
+<td>Container runtime
+</td>
+<td>Docker
+</td>
+<td>Micro Focus
+</td></tr>
+<tr>
+<td>Kubernetes/Core
+</td>
+<td>Etcd
+</td>
+<td>Yes
+</td>
+<td>Configuration database for Vault and Kubernetes
+</td>
+<td>CoreOS
+</td>
+<td>Micro Focus
+</td></tr>
+<tr>
+<td>Kubernetes/Core
+</td>
+<td>Flannel
+</td>
+<td>Yes
+</td>
+<td>Network fabric for container-to-container communication
+</td>
+<td>CoreOS
+</td>
+<td>Micro Focus
+</td></tr>
+<tr>
+<td>CDF Core
+</td>
+<td>Vault
+</td>
+<td>Yes
+</td>
+<td>Secure configuration data store&nbsp;; certificate generation
+</td>
+<td>Hashicorp
+</td>
+<td>Micro Focus
+</td></tr>
+<tr>
+<td>Kubernetes
+</td>
+<td>Kubelet
+</td>
+<td>No
+</td>
+<td>Primary node agent for Kubernetes
+</td>
+<td>Google
+</td>
+<td>Micro Focus
+</td></tr>
+<tr>
+<td>Kubernetes
+</td>
+<td>Kube-proxy
+</td>
+<td>No
+</td>
+<td>kube-proxy&nbsp;enables the Kubernetes service abstraction by maintaining network rules on the host and performing connection forwarding.
+</td>
+<td>Google
+</td>
+<td>Micro Focus
+</td></tr>
+<tr>
+<td>Kubernetes
+</td>
+<td>API server, controller and scheduler
+</td>
+<td>Yes
+</td>
+<td>Container orchestration
+</td>
+<td>Google
+</td>
+<td>Micro Focus
+</td></tr>
+<tr>
+<td>CDF Core
+</td>
+<td>Kubernetes-vault
+</td>
+<td>Yes
+</td>
+<td>Vault token generation &amp; distribution&nbsp;; certificate generation
+</td>
+<td>Boostport.com and MF
+</td>
+<td>Micro Focus
+</td></tr>
+<tr>
+<td>CDF Core
+</td>
+<td>Heapster, Metrics Server
+</td>
+<td>Yes
+</td>
+<td>Monitoring
+</td>
+<td>Google
+</td>
+<td>Micro Focus
+</td></tr>
+<tr>
+<td>CDF Core
+</td>
+<td>Fluentd
+</td>
+<td>Yes
+</td>
+<td>Log collection and forwarding.
+</td>
+<td>CNCF
+</td>
+<td>Micro Focus
+</td></tr>
+<tr>
+<td>CDF Core
+</td>
+<td>All Micro Focus code
+</td>
+<td>Yes
+</td>
+<td>CDF core
+</td>
+<td>Micro Focus
+</td>
+<td>Micro Focus
+</td></tr>
+<tr>
+<td>Suite
+</td>
+<td>All Micro Focus Suite code
+</td>
+<td>Yes
+</td>
+<td>Suite
+</td>
+<td>Micro Focus
+</td>
+<td>Micro Focus
+</td></tr></tbody></table>
+<h2><span class="mw-headline" id="Architecture">Architecture</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperContainerDeploymentFoundation&amp;veaction=edit&amp;section=T-2" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperContainerDeploymentFoundation&amp;action=edit&amp;section=T-2" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>The following 3 diagrams explain the functional composition of the CDF.
+</p><p>The first diagram shows CDF consumers (UI and CLI), all CDF services in various layers.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="pic2.png" src="/mediawiki/images/thumb/3/38/pic2.png/800px-pic2.png" width="800" height="468" srcset="/mediawiki/images/thumb/3/38/pic2.png/1200px-pic2.png 1.5x, /mediawiki/images/3/38/pic2.png 2x" data-file-width="1440" data-file-height="842"></a>
+</p><p>Figure - CDF architecture
+</p><p>This second diagrams shows the CDF services, such as those that provide authentication/authorization, the CDF API server and others.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="pic3.png" src="/mediawiki/images/thumb/7/7e/pic3.png/800px-pic3.png" width="800" height="480" srcset="/mediawiki/images/thumb/7/7e/pic3.png/1200px-pic3.png 1.5x, /mediawiki/images/thumb/7/7e/pic3.png/1600px-pic3.png 2x" data-file-width="1640" data-file-height="985"></a>
+</p><p>Figure - CDF services
+</p><p>This third diagram shows the CDF system services, such as the configuration database, secure configuration store and the network fabric.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="whitepaper4.png" src="/mediawiki/images/thumb/3/30/whitepaper4.png/800px-whitepaper4.png" width="800" height="327" srcset="/mediawiki/images/3/30/whitepaper4.png 1.5x" data-file-width="1073" data-file-height="439"></a>
+</p><p>Figure - CDF system
+</p><p>This next diagram shows a layer diagram with these main parts:
+</p>
+<ul><li>Core system services: ETCD, Vault, Flannel</li>
+<li>Container orchestration: Kubernetes</li>
+<li>CDF core: hybrid of Micro Focus components and open source</li>
+<li>A containerized ITOM suite</li></ul>
+<p><a onclick="javascript:loadingImage(this);" class="image"><img alt="pic5b.png" src="/mediawiki/images/thumb/f/f0/pic5b.png/800px-pic5b.png" width="800" height="368" srcset="/mediawiki/images/thumb/f/f0/pic5b.png/1200px-pic5b.png 1.5x, /mediawiki/images/thumb/f/f0/pic5b.png/1600px-pic5b.png 2x" data-file-width="1755" data-file-height="808"></a>
+</p><p>Figure - CDF component stack (high-level)
+</p><p>The following figure shows a more detailed component diagram:
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="pic6b.png" src="/mediawiki/images/thumb/0/0a/pic6b.png/800px-pic6b.png" width="800" height="436" srcset="/mediawiki/images/thumb/0/0a/pic6b.png/1200px-pic6b.png 1.5x, /mediawiki/images/thumb/0/0a/pic6b.png/1600px-pic6b.png 2x" data-file-width="1802" data-file-height="981"></a>
+</p><p>Figure – CDF detailed component diagram
+</p><p>The components that make up the layers can run on the same host if master and worker node are one and the same.
+</p><p>However, typically multi-node configurations will be employed and in such cases, not all components run on all nodes.
+</p><p>The following diagram shows the component distribution across the master and worker node types:
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="pic7.png" src="/mediawiki/images/thumb/c/c6/pic7.png/800px-pic7.png" width="800" height="443" srcset="/mediawiki/images/thumb/c/c6/pic7.png/1200px-pic7.png 1.5x, /mediawiki/images/thumb/c/c6/pic7.png/1600px-pic7.png 2x" data-file-width="1783" data-file-height="987"></a>
+</p><p>Figure - Components by node type
+</p>
+<h2><span class="mw-headline" id="Portable_infrastructure">Portable infrastructure</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperContainerDeploymentFoundation&amp;veaction=edit&amp;section=T-3" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperContainerDeploymentFoundation&amp;action=edit&amp;section=T-3" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h3><span class="mw-headline" id="Maximize_containerization">Maximize containerization</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperContainerDeploymentFoundation&amp;veaction=edit&amp;section=T-4" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperContainerDeploymentFoundation&amp;action=edit&amp;section=T-4" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Almost all of the CDF components (except Docker, Kubernetes Kubelet and Kube-Proxy) run containerized as per recommendation from the Kubernetes project.
+</p><p>This increases portability because the touch points where direct compatibility with the underlying OS is required are minimized.
+</p><p>Running components like Docker, Kubelet and Kube-proxy as host-native processes is for following reasons:
+</p>
+<ul><li>Simply required: Docker</li>
+<li>Kubelet options listed on <a target="1" rel="nofollow" class="external free" href="https://kubernetes.io/docs/admin/kubelet/">https://kubernetes.io/docs/admin/kubelet/</a> describe containerized Kubelet as an experimental feature.</li>
+<li>Kubernetes recommends running Kubelet and Kube-Proxy outside of a container.</li>
+<li>Micro Focus performance testing for Kubelet and Kube-Proxy.</li></ul>
+<h3><span class="mw-headline" id="Single_Docker_Daemon">Single Docker Daemon</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperContainerDeploymentFoundation&amp;veaction=edit&amp;section=T-5" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperContainerDeploymentFoundation&amp;action=edit&amp;section=T-5" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>The CDF employs a single instance of Docker per node. This Docker instance runs Kubernetes, the CDF core and the Suite.
+</p><p>At installation time, a Docker instance is configured and started. Run: <code>ps -ef | grep dockerd</code>
+</p>
+<pre class="syntaxhighlighter-pre">root 7173 1 0 Apr10&nbsp;? 00:28:06 dockerd -H unix:///var/run/docker-bootstrap.sock --exec-root=/var/run/docker-bootstrap -g /opt/kubernetes/data/docker-bootstrap -p /var/run/docker-bootstrap.pid
+root 8916 1 3 Apr10&nbsp;? 12:21:34 dockerd --bip=172.77.33.1/24 --mtu=1500 -H tcp://127.0.0.1:4243 -H unix:///var/run/docker.sock -g /opt/kubernetes/data/docker
+</pre>
+<p>The Docker instance is installed and controlled as a regular systemd service.
+</p><p><code># systemctl | grep -E docker.*service</code>
+</p><p>Shows:
+</p>
+<pre class="syntaxhighlighter-pre">docker.service loaded active running   Docker Application Container Engine
+</pre>
+<h2><span class="mw-headline" id="Use_of_Open_Source">Use of Open Source</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperContainerDeploymentFoundation&amp;veaction=edit&amp;section=T-6" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperContainerDeploymentFoundation&amp;action=edit&amp;section=T-6" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Micro Focus uses unmodified Open Source components wherever possible.
+</p><p>The open source components come bundled with the CDF installation.
+</p><p>Support and maintenance of the open source components is Micro Focus’ responsibility.
+</p><p>The following table lists the main open source components that make up the CDF:
+</p>
+<a class="buttonfullscr" onclick="javascript:loadingTableButton(this);"><button class="flscrbtn"><i class="material-icons flscricn">open_in_new</i><div style="margin: auto 5px;">View Fullscreen</div></button></a><table>
+<tbody><tr>
+<th><b>Use</b>
+</th>
+<th><b>Maintainer link</b>
+</th></tr>
+<tr>
+<td>Container runtime
+</td>
+<td>Docker: <a target="1" rel="nofollow" class="external free" href="https://www.docker.com/">https://www.docker.com/</a>
+</td></tr>
+<tr>
+<td>Container orchestration
+</td>
+<td>Kubernetes: <a target="1" rel="nofollow" class="external free" href="https://kubernetes.io/">https://kubernetes.io/</a>
+</td></tr>
+<tr>
+<td>Distributed configuration database
+</td>
+<td>Etcd: <a target="1" rel="nofollow" class="external free" href="https://github.com/coreos/etcd">https://github.com/coreos/etcd</a>
+</td></tr>
+<tr>
+<td>Container network fabric
+</td>
+<td>Flannel: <a target="1" rel="nofollow" class="external free" href="https://github.com/coreos/flannel">https://github.com/coreos/flannel</a>
+</td></tr>
+<tr>
+<td>Secure configuration store / certificates
+</td>
+<td>Vault: <a target="1" rel="nofollow" class="external free" href="https://github.com/hashicorp/vault">https://github.com/hashicorp/vault</a>
+</td></tr>
+<tr>
+<td>Token and certificate generation/maintenance
+</td>
+<td>Kubernetes-vault: <a target="1" rel="nofollow" class="external free" href="https://github.com/Boostport/kubernetes-vault">https://github.com/Boostport/kubernetes-vault</a>
+</td></tr>
+<tr>
+<td>Monitoring and metrics
+</td>
+<td>Heapster: <a target="1" rel="nofollow" class="external free" href="https://github.com/kubernetes/heapster">https://github.com/kubernetes/heapster</a>
+<p>Metrics Server: <a target="1" rel="nofollow" class="external free" href="https://kubernetes.io/docs/tasks/debug-application-cluster/resource-metrics-pipeline/">https://kubernetes.io/docs/tasks/debug-application-cluster/resource-metrics-pipeline/</a>
+</p>
+</td></tr>
+<tr>
+<td>Log collection and forwarding
+</td>
+<td>Fluentd: <a target="1" rel="nofollow" class="external free" href="https://github.com/fluent">https://github.com/fluent</a>
+</td></tr></tbody></table>
+
+<!-- 
+NewPP limit report
+Cached time: 20190715100207
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.024 seconds
+Real time usage: 0.115 seconds
+Preprocessor visited node count: 17/1000000
+Preprocessor generated node count: 66/1000000
+Post‐expand include size: 5853/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 508/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:795619-0!canonical and timestamp 20190715100207 and revision id 1398426
+ -->
+</div>
