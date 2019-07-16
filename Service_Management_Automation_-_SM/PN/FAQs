@@ -1,1 +1,265 @@
+<p id="mwAg">The following are some frequently asked questions about installing and using Service Management Automation (SMA).</p>
+
+<h2 id="Installation"> <span id="FAQs.28SMAX.29-Installation" class="ve-pasteProtect">Installation</span> </h2>
+<h3 id="How_do_I_know_the_image_tag_for_pods.3F"> <span id="FAQs.28SMAX.29-HowdoIknowtheimagetagforpods.3F" class="ve-pasteProtect">How do I know the image tag for pods?</span> </h3>
+
+<p id="mwAw"><b id="mwBA">Answer</b>:<br id="mwBQ">
+Run the following command:&nbsp;<br id="mwBg">
+<code id="mwBw">kubectl describe pods <span typeof="mw:Entity" id="mwCA" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">&lt;</span>pod names<span typeof="mw:Entity" id="mwCQ" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">&gt;</span> -n <span typeof="mw:Entity" id="mwCg" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">&lt;</span>namespace<span typeof="mw:Entity" id="mwCw" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">&gt;</span></code></p>
+
+<h3 id="What_should_I_do_if_one_of_my_pods_fails.3F"><span id="FAQs.28SMAX.29-WhatshallIdoifoneofmypodsfails.3F" class="ve-pasteProtect">What should I do if one of my pods fails?</span></h3>
+<p id="mwDA"><b id="mwDQ">Answer</b>:<br id="mwDg">&nbsp;Run the following command:</p>
+
+<p id="mwDw"><code id="mwEA">kubectl delete pod <i id="mwEQ"><span typeof="mw:Entity" id="mwEg" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">&lt;</span>name of the pod that failed<span typeof="mw:Entity" id="mwEw" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">&gt;</span></i> -n <i id="mwFA"><span typeof="mw:Entity" id="mwFQ" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">&lt;</span>namespace<span typeof="mw:Entity" id="mwFg" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">&gt;</span></i></code></p>
+
+<h3 id="Is_there_a_way_to_remove_and_restart_the_suite.C2.A0image_installation.3F"> Is there a way to remove and restart the suite&nbsp;image installation? </h3>
+
+<p id="mwFw"><b id="mwGA">Question details</b>:</p>
+
+<p id="mwGQ">My Service Management Automation&nbsp;suite installation failed somewhere. I had issues with the image push and one image was not pushed.&nbsp;</p>
+
+<p id="mwGg"><b id="mwGw">Answer</b>:</p>
+
+<p id="mwHA">Re-import the images by running the image import script again. You can run the image import script multiple times. For more information, see&nbsp;<a href="https://docs.microfocus.com/itomw/Service_Management_Automation_-_SM:2019.08/downloadContainerImages" rel="mw:WikiLink" title="Service Management Automation - SM:2019.08/downloadContainerImages" id="mwHQ" data-ve-attributes="{&quot;rel&quot;:&quot;mw:WikiLink&quot;}">Download the container images</a>.</p>
+
+<h3 id="Where_are_the_docker_proxy_settings_stored_in_the_CDF_environment.3F"> <span id="FAQs.28SMAX.29-WherearethedockerproxysettingsstoredintheCDFenvironment.3F" class="ve-pasteProtect">Where are the docker proxy settings stored in the CDF environment?</span> </h3>
+
+<p id="mwHg"><b id="mwHw">Answer</b>:</p>
+
+<p id="mwIA">These settings are in both the /usr/lib/systemd/system/docker.service.d and /usr/lib/systemd/system/docker-bootstrap.service.d in the <b id="mwIQ">http_proxy.conf</b> files.</p>
+
+<p id="mwIg">[Service]</p>
+
+<p id="mwIw">Environment= <span typeof="mw:Entity" id="mwJA" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">"</span>http_proxy=<span class="nolink ve-pasteProtect" id="mwJQ">http://<span typeof="mw:Entity" id="mwJg" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">&lt;</span>proxy<span typeof="mw:Entity" id="mwJw" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">&gt;</span>:<span typeof="mw:Entity" id="mwKA" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">&lt;</span>port<span typeof="mw:Entity" id="mwKQ" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">&gt;</span></span><span typeof="mw:Entity" id="mwKg" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">"</span> <span typeof="mw:Entity" id="mwKw" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">"</span>https_proxy=<span class="nolink ve-pasteProtect" id="mwLA">http://<span typeof="mw:Entity" id="mwLQ" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">&lt;</span>proxy<span typeof="mw:Entity" id="mwLg" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">&gt;</span>:<span typeof="mw:Entity" id="mwLw" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">&lt;</span>port<span typeof="mw:Entity" id="mwMA" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">&gt;</span></span><span typeof="mw:Entity" id="mwMQ" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">"</span> <span typeof="mw:Entity" id="mwMg" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">"</span>no_proxy=localhost,127.0.0.1<span typeof="mw:Entity" id="mwMw" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">"</span></p>
+
+<p id="mwNA">If the proxy is configured incorrectly, you may not be able to run <b id="mwNQ">downloadimages.sh</b> successfully. After updating these proxy settings, run <b id="mwNg">kube-restart.sh</b> from /opt/kubernetes/bin, and then <b id="mwNw">downloadimages.sh</b> should work.</p>
+
+<h3 id="How_do_I_know_the_namespace_being_used_for_Service_Management_Automation.3F"> <span id="FAQs.28SMAX.29-HowdoIknowthenamespacebeingusedforServiceManagementAutomation.3F" class="ve-pasteProtect">How do I know the namespace being used for Service Management Automation?</span> </h3>
+
+<p id="mwOA"><b id="mwOQ">Answer</b>:</p>
+
+<p id="mwOg">ITOM Plaform supports only one instance of the suite. It automatically assigns a namespace (itsma-xxxxx) for your suite&nbsp;installation. To see the namespace being used for your current suite&nbsp;installation, log in to CDF, and then navigate to <b id="mwOw">SUITE</b> <span typeof="mw:Entity" id="mwPA" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">&gt;</span> <b id="mwPQ">Management</b>.</p>
+
+<h3 id="What_should_I_do_if_an_suite_update_fails.3F"> <span id="FAQs.28SMAX.29-WhatshallIdoifansuiteupdatefails.3F" class="ve-pasteProtect">What should I do if an suite update fails?</span> </h3>
+
+<p id="mwPg"><b id="mwPw">Question details</b>:</p>
+
+<p id="mwQA">When upgrading the suite images from the CDF user interface (<b id="mwQQ">SUITE</b> <span typeof="mw:Entity" id="mwQg" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">&gt;</span> <b id="mwQw">Management</b> <span typeof="mw:Entity" id="mwRA" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">&gt;</span> More Actions icon (<span class="confluence-embedded-file-wrapper ve-pasteProtect" id="mwRQ"><figure-inline typeof="mw:Image" class="mw-default-size confluence-embedded-image" data-mw="{&quot;caption&quot;:&quot;19895688.png&quot;}" id="mwRg" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Image&quot;}"><a href="https://docs.microfocus.com/itomw/File:2018.02/attachments/19895687/19895688.png" id="mwRw"><img resource="./File:2018.02/attachments/19895687/19895688.png" width="15" height="25" src="https://docs.microfocus.com/mediawiki/images/9/90/2018.02/attachments/19895687/19895688.png" data-file-width="15" data-file-height="25" data-file-type="bitmap" id="mwSA" data-ve-attributes="{&quot;resource&quot;:&quot;./File:2018.02/attachments/19895687/19895688.png&quot;}"></a></figure-inline></span>) <span typeof="mw:Entity" id="mwSQ" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">&gt;</span> <b id="mwSg">Update</b>), after I click <b id="mwSw">NEXT</b> on the storage configuration page, a message "The https://&lt;ingresshost&gt;/update might be temporarily down or it may have moved permanently to a new web address." is displayed.</p>
+
+<p id="mwTA"><b id="mwTQ">Answer</b>:</p>
+
+<p id="mwTg">Follow the steps below to reload this page and finish the suite update.</p>
+
+<ol id="mwTw"><li id="mwUA"> Log in to the <span class="nolink ve-pasteProtect" id="mwUQ"><b id="mwUg">https://&lt;ingresshost&gt;/update</b></span> page on a new tab in the same browser.</li>
+<li id="mwUw"> Reload the frame in the suite upgrade page where an error message is displayed.</li>
+<li id="mwVA"> Click <b id="mwVQ">APPLY</b> on the page that opens to finish the suite update.</li></ol>
+
+<h3 id="What_should_I_do_if_I_cannot_uninstall_the_suite_from_the_CDF_user_interface.3F"> <span id="FAQs.28SMAX.29-WhatshallIdoifIcannotuninstallthesuitefromtheCDFuserinterface.3F" class="ve-pasteProtect">What should I do if I cannot uninstall the suite from the CDF user interface?</span> </h3>
+
+<p id="mwVg"><b id="mwVw">Question details</b>:</p>
+
+<p id="mwWA">I want to uninstall Service Management Automation&nbsp;because the installation failed. However, the Uninstall menu option (<b id="mwWQ">SUITE</b> <span typeof="mw:Entity" id="mwWg" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">&gt;</span> <b id="mwWw">Management</b> <span typeof="mw:Entity" id="mwXA" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">&gt;</span> More Action icon&nbsp;<span class="confluence-embedded-file-wrapper ve-pasteProtect" id="mwXQ"><figure-inline typeof="mw:Image" class="mw-default-size confluence-embedded-image" data-mw="{&quot;caption&quot;:&quot;19895688.png&quot;}" id="mwXg" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Image&quot;}"><a href="https://docs.microfocus.com/itomw/File:2018.02/attachments/19895687/19895688.png" id="mwXw"><img resource="./File:2018.02/attachments/19895687/19895688.png" width="15" height="25" src="https://docs.microfocus.com/mediawiki/images/9/90/2018.02/attachments/19895687/19895688.png" data-file-width="15" data-file-height="25" data-file-type="bitmap" id="mwYA" data-ve-attributes="{&quot;resource&quot;:&quot;./File:2018.02/attachments/19895687/19895688.png&quot;}"></a></figure-inline></span><span typeof="mw:Entity" id="mwYQ" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Entity&quot;}">&gt;</span> <b id="mwYg">Uninstall</b>) does not work. What should I do?</p>
+
+<p id="mwYw"><b id="mwZA">Answer</b>:</p>
+
+<p id="mwZQ">Recreate the suite-db pods with the following commands:</p>
+
+<pre typeof="mw:Extension/pre" about="#mwt3" data-mw="{&quot;name&quot;:&quot;pre&quot;,&quot;attrs&quot;:{},&quot;body&quot;:{&quot;extsrc&quot;:&quot;kubectl get pods -n core\n\nkubectl delete pod &amp;lt;pod name of suite-db&amp;gt; -n core&quot;}}" id="mwZg" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Extension/pre&quot;,&quot;about&quot;:&quot;#mwt3&quot;}">kubectl get pods -n core
+
+kubectl delete pod &lt;pod name of suite-db&gt; -n core</pre>
+
+<p id="mwZw">Alternatively, you can restart the virtual machine where the suite-db is installed.</p>
+
+<h2 id="Load_balancing"> <span id="FAQs.28SMAX.29-Loadbalancing" class="ve-pasteProtect">Load balancing</span> </h2>
+
+<h3 id="What_if_the_customer_plans_to_use_a_Citrix_based_load_balancer_outside_of_Service_Management_Automation.3F_Will_there_be_any_impact_on_the_suite_load_balancer.3F"> What if the customer plans to use a Citrix based load balancer outside of Service Management Automation? Will there be any impact on the suite load balancer? </h3>
+
+<p id="mwaA"><b id="mwaQ">Answer</b>:</p>
+
+<p id="mwag">As the Service Management Automation suite has its own load balancer already, it does not need an external load balancer.</p>
+
+<h3 id="Do_we_really_need_an_external_load_balancer_if_the_suite_is_providing_a_load_balancer_itself.3F"> <span id="FAQs.28SMAX.29-Dowereallyneedanexternalloadbalancerifthesuiteisprovidingaloadbalanceritself.3F" class="ve-pasteProtect">Do we really need an external load balancer if the suite is providing a load balancer itself?</span> </h3>
+
+<p id="mwaw"><b id="mwbA">Answer</b>:</p>
+
+<p id="mwbQ">As the suite has its own load balancer already, it does not need an external load balancer.</p>
+
+<h3 id="If_an_external_load_balancer_is_also_used.2C_will_the_external_load_balancer_connect_with_the_suite_load_balancer.3F"> <span id="FAQs.28SMAX.29-Ifanexternalloadbalancerisalsoused.2Cwilltheexternalloadbalancerconnectwiththesuiteloadbalancer.3F" class="ve-pasteProtect"> If an external load balancer is also used, will the external load balancer connect with the suite load balancer?</span> </h3>
+
+<p id="mwbg"><b id="mwbw">Answer</b>:</p>
+
+<p id="mwcA"><span id="mwcQ" class="ve-pasteProtect" data-ve-attributes="{&quot;style&quot;:&quot;color: black;&quot;}">As suite has its own load balancer already, it does not need an external Load Balancer. In the event that you have already an external load balancer, it connects to the suite&nbsp;load balancer.</span></p>
+
+<h2 id="Database_support"> <span id="FAQs.28SMAX.29-Databasesupport" class="ve-pasteProtect">Database support</span> </h2>
+
+<h3 id="How_do_I_access_the_internal_Postgres_database_for_the_suite.C2.A0CMDB.3F"> <span id="FAQs.28SMAX.29-HowdoIaccesstheinternalPostgresdatabaseforthesuiteCMDB.3F" class="ve-pasteProtect">How do I access the internal Postgres database for the suite&nbsp;CMDB?</span> </h3>
+
+<p id="mwcg"><span id="mwcw" class="ve-pasteProtect" data-ve-attributes="{&quot;style&quot;:&quot;color: rgb(0,0,0);&quot;}"><b id="mwdA">Question details</b>:</span></p>
+
+<p id="mwdQ"><span id="mwdg" class="ve-pasteProtect" data-ve-attributes="{&quot;style&quot;:&quot;color: rgb(0,0,0);&quot;}">If CMDB uses the internal Postgres database, can I open the Postgres UI and browse through the contents of the database?</span></p>
+
+<p id="mwdw"><span id="mweA" class="ve-pasteProtect" data-ve-attributes="{&quot;style&quot;:&quot;color: rgb(0,0,0);&quot;}"><b id="mweQ">Answer</b>:&nbsp;</span></p>
+
+<p id="mweg"><span id="mwew" class="ve-pasteProtect" data-ve-attributes="{&quot;style&quot;:&quot;color: rgb(0,0,0);&quot;}">The&nbsp;CMDB's Postgres database in the suite has an exposed node port. You can use an external Postgres client to access the database server and browse through the contents of the database.&nbsp;</span></p>
+
+<div class="table-wrap" id="mwfA">
+
+<table id="mwfQ">
+<tbody id="mwfg"><tr id="mwfw"><td id="mwgA"> CMDB Postgres port</td>
+<td id="mwgQ"> 31402</td></tr>
+<tr id="mwgg">
+<td id="mwgw"> CMDB Browser ports</td>
+<td id="mwhA"> 31403, 31404</td></tr>
+<tr id="mwhQ">
+<td id="mwhg"> CMDB Server ports</td>
+<td id="mwhw"> 31400, 31401</td></tr>
+</tbody></table>
+
+</div>
+
+<h3 id="What_are_the_requirements_for_using_Oracle_databases_for_the_containerized_CMDB.3F"> What are the requirements for using Oracle databases for the containerized CMDB?</h3>
+
+<p id="mwiA"><b id="mwiQ">Answer</b>:<br id="mwig"></p>
+
+<p id="mwiw">The configuration is the same as the classic configuration.</p>
+
+<h3 id="Is_one_PostgreSQL_database_enough_for_production.3F"> Is one PostgreSQL database enough for production?</h3>
+<p id="mwjA">It is recommended to use HA enabled external PostgreSQL database for production. There are several PG HA solutions in the community and commercial support is also available in the market.</p>
+
+<h3 id="What_is_stored_into_database_and_file_system.3F">What is stored into database and file system? </h3>
+<p id="mwjQ">The database stores all transactional and foundational data, for example, tickets, changes, CIs, People, Locations and general Codeless Configuration data. The file system stores attachments and search index data.</p>
+
+<h3 id="Is_it_recommended_to_have_a_cluster_about_database_and_file_system.3F">Is it recommended to have a cluster about database and file system?</h3>
+<p id="mwjg">Yes, a clustered/redundant DB server and NFS server are also recommended for production use.</p>
+
+<h3 id="Can_I_have_any_desynchronization_between_file_system_and_database.3F">Can I have any desynchronization between file system and database?</h3>
+<p id="mwjw"><b id="mwkA">Question details</b>:<br id="mwkQ">
+Can I have any desynchronization between file system and database? It could be a problem if the application is up and the database is down. What happens to the file system?<br id="mwkg"></p>
+
+<p id="mwkw"><b id="mwlA">Answer</b>:<br id="mwlQ">
+Transactional and application data is stored in the database. The file system stores logs, IDOL index files, and some deployment configuration and property files. In the case of the database being down, the full system will be out of service too. All application transactions rely on DB operations, and this includes user login and authentication. So, although the file system may work fine, desynchronization is not an issue as the application would not be interacting with it until the database service is back. Also, compared to DB access, files on the file system are changed far less frequently.</p>
+
+<h2 id="Master_data_onboarding"> <span id="FAQs.28SMAX.29-Masterdataonboarding" class="ve-pasteProtect">Master data onboarding</span> </h2>
+
+<h3 id="How_do_I_push_CIs_from_a_standalone_UCMDB_to_the_suite_CMDB.3F"> <span id="FAQs.28SMAX.29-HowdoIpushCIsfromastandaloneUCMDBtothesuiteCMDB.3F" class="ve-pasteProtect">How do I push CIs from a standalone UCMDB to the suite CMDB?</span> </h3>
+
+<p id="mwlg"><b id="mwlw">Question details</b>:<br id="mwmA"></p>
+
+<p id="mwmQ">I have the suite installed and have the standalone UCMDB. I want to push the CIs from the standalone UCMDB to the suite CMDB. What are the URL and host details that I should give the standalone UCMDB?</p>
+
+<p id="mwmg"><b id="mwmw">Answer</b>:<br id="mwnA"></p>
+
+<p id="mwnQ">The current release supports pushing CIs from a standalone UCMDB to the suite&nbsp;CMDB. Refer to <a href="https://docs.microfocus.com/itomw/Universal_CMDB:2019.05/IntegPushJob" rel="mw:WikiLink" title="Universal CMDB:2019.05/IntegPushJob" id="mwng" data-ve-attributes="{&quot;rel&quot;:&quot;mw:WikiLink&quot;}">How to Work with Data Push Jobs</a>&nbsp;for the&nbsp;URL and host details.</p>
+
+<h2 id="Identity_Manager_.28IDM.29"> Identity Manager (IDM) </h2>
+
+<h3 id="What_is_the_role_of_IDM_in_the_suite.3F"> <span id="FAQs.28SMAX.29-WhatistheroleofIDMinthesuite.3F" class="ve-pasteProtect">What is the role of IDM in the suite?</span> </h3>
+
+<p id="mwnw"><b id="mwoA">Answer</b>:<br id="mwoQ">
+IDM is used for user authentication. IDM connects to the customer's LDAP server.</p>
+
+<h2 id="DNS"> <span id="FAQs.28SMAX.29-DNS" class="ve-pasteProtect">DNS </span></h2>
+<h3 id="What_is_the_role_of_DNS_in_the_suite.3F"> What is the role of DNS in the suite? </h3>
+<p id="mwog"><b id="mwow">Answer</b>:<br id="mwpA">
+Kubernetes DNS in the suite&nbsp;is only used for internal services.</p>
+<h3 id="Can_we_configure_or_use_external_DNS.3F"> Can we configure or use external DNS? </h3>
+<p id="mwpQ"><b id="mwpg">Answer</b>:<br id="mwpw">
+No.</p>
+
+<h2 id="Integrations"> <span id="FAQs.28SMAX.29-Integrations" class="ve-pasteProtect">Integrations</span> </h2>
+
+<h3 id="What_happens_if_the_suite.C2.A0load_balancer_fails_or_crashes.3F"><span id="FAQs.28SMAX.29-Whathappensifthesuiteloadbalancerfailsorcrashes.3F" class="ve-pasteProtect">What happens if the suite&nbsp;load balancer fails or crashes?&nbsp;</span></h3>
+<p id="mwqA"><b id="mwqQ">Answer</b><i id="mwqg">:</i></p>
+
+<p id="mwqw">The suite provides a self-recovery mechanism for the load balancer.</p>
+
+<h3 id="Can_we_configure_external_mail_servers_for_notifications_in_the_suite.3F"><span id="FAQs.28SMAX.29-Canweconfigureexternalmailserversfornotificationsinthesuite.3F" class="ve-pasteProtect">Can we configure external mail servers for notifications in the suite?</span></h3>
+<p id="mwrA"><b id="mwrQ">Answer</b><i id="mwrg">:</i></p>
+
+<p id="mwrw">Yes, the suite can work with an external mail server, which can be configured from the Suite Administration interface.</p>
+
+<h2 id="Reverse_proxy"> <span id="FAQs.28SMAX.29-Reverseproxy" class="ve-pasteProtect">Reverse proxy</span> </h2>
+
+<h3 id="What_is_the_role_of_Reverse_Proxy.3F"><span id="FAQs.28SMAX.29-WhatistheroleofReverseProxy.3F" class="ve-pasteProtect">What is the role of Reverse Proxy?</span></h3>
+<p id="mwsA"><b id="mwsQ">Answer:</b></p>
+
+<p id="mwsg"><span id="mwsw" class="ve-pasteProtect" data-ve-attributes="{&quot;style&quot;:&quot;color: black;&quot;}">It is Nginx based, the single gateway for incoming traffic. It works for routing, and authentication gateway.</span></p>
+
+<h2 id="Miscellaneous"> <span id="FAQs.28SMAX.29-Miscellaneous" class="ve-pasteProtect">Miscellaneous</span> </h2>
+
+<h3 id="What_should_I_do_if_a_502_error_occurs_when_users_attempt_to_log_in_to_the_suite.3F"> <span id="FAQs.28SMAX.29-WhatshallIdoifa502erroroccurswhenusersattempttologintothesuite.3F" class="ve-pasteProtect">What should I do if a 502 error occurs when users attempt to log in to the suite?</span> </h3>
+
+<p id="mwtA"><b id="mwtQ">Answer</b>:<br id="mwtg"></p>
+
+<p id="mwtw">Perform the following steps on a master node to restart the frontend ingress:</p>
+
+<ol id="mwuA">
+
+<li id="mwuQ">Run the command below to get the pod name:
+
+<pre typeof="mw:Extension/pre" about="#mwt5" data-mw="{&quot;name&quot;:&quot;pre&quot;,&quot;attrs&quot;:{},&quot;body&quot;:{&quot;extsrc&quot;:&quot;kubectl get pod  -n <suite namespace> |grep nginx&quot;}}" id="mwug" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Extension/pre&quot;,&quot;about&quot;:&quot;#mwt5&quot;}">kubectl get pod  -n &lt;suite namespace&gt; |grep nginx</pre>
+
+</li>
+
+<li id="mwuw">Run the command below to delete the pod:
+
+<pre typeof="mw:Extension/pre" about="#mwt7" data-mw="{&quot;name&quot;:&quot;pre&quot;,&quot;attrs&quot;:{},&quot;body&quot;:{&quot;extsrc&quot;:&quot;kubectl delete pod <pod name> -n <suite namespace>&quot;}}" id="mwvA" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:Extension/pre&quot;,&quot;about&quot;:&quot;#mwt7&quot;}">kubectl delete pod &lt;pod name&gt; -n &lt;suite namespace&gt;</pre>
+
+</li>
+
+</ol>
+
+<h3 id="Can_I_have_part_of_the_application_in_K8S_and_part_.28for_example.2C_database_and_file_system.29_in_legacy_mode.3F">Can I have part of the application in K8S and part (for example, database and file system) in legacy mode?</h3>
+<p id="mwvQ"><b id="mwvg">Answer</b>:<br id="mwvw">
+Yes. Database and file system can be in legacy mode, meaning that they are external and not managed by K8S. <br id="mwwA"></p>
+
+<h3 id="Which_component_uses_RabbitMQ_.3F">Which component uses RabbitMQ ? </h3>
+<p id="mwwQ"><b id="mwwg">Answer</b>:<br id="mwww">
+The Service Portal is using RabbitMQ.<br id="mwxA"></p>
+
+<h3 id="Which_part_is_critical_for_a_reboot.3F_If_I_reboot_the_database_.28not_in_K8S.29.2C_is_the_application_able_to_go_on_without_rebooting_itself.3F">Which part is critical for a reboot? If I reboot the database (not in K8S), is the application able to go on without rebooting itself? </h3>
+<p id="mwxQ"><b id="mwxg">Answer</b>:<br id="mwxw">
+If multi-master is deployed, the sequence of rebooting master nodes is critical because K8S needs at least two master nodes functioning to keep the cluster running.<br id="mwyA">
+If database is rebooted, some of the pods will get restarted by K8S because the liveness check failed due to database error. Once the database is back again, the pods will come back as well.<br id="mwyQ"></p>
+
+<h3 id="Which_solution_do_you_advice_to_monitor_ITSMA.3F_Prometheus_with_Grafana_and_AlertManager.3F">Which solution do you advice to monitor ITSMA? Prometheus with Grafana and AlertManager?  </h3>
+<p id="mwyg"><b id="mwyw">Answer</b>:<br id="mwzA">
+We recommend Prometheus with Grafana.</p>
+
+<h3 id="Is_it_easy_to_export_docker_images_between_two_machines.3F">Is it easy to export docker images between two machines?</h3>
+<p id="mwzQ"><b id="mwzg">Answer</b>:<br id="mwzw">
+Yes. It is quite easy to do this using the ‘docker save/load’ or ‘docker export/import’ command.</p>
  
+<h3 id="Can_I_verify_the_logs_from_outside_of_Linux_server.3F">Can I verify the logs from outside of Linux server? </h3>
+<p id="mw0A"><b id="mw0Q">Answer</b>:<br id="mw0g">
+Yes, the log files are the same. But the logs viewed in management portal are just stdout. There are more files on log volume.</p>
+ 
+<h3 id="What_operations_cannot_be_performed_from_the_management_portal_UI.2C_and_I_have_to_log_in_to_the_K8S_server.3F">What operations cannot be performed from the management portal UI, and I have to log in to the K8S server?</h3>
+<p id="mw0w"><b id="mw1A">Answer:</b><br id="mw1Q">
+The management portal manages the K8S resources only. So for the cases like below, you will need to log in to the servers:<br id="mw1g"></p>
+        <ul id="mw1w"><li id="mw2A"> You encounter issues around Docker or Kubernetes cluster status, for example, a node is not reachable, or Docker crashes.<br id="mw2Q"> </li>
+            <li id="mw2g">You need advanced functions that are only available with command line:<br id="mw2w">
+ <ul id="mw3A">
+<li id="mw3Q">Using CDF command lines, for example, kube-stop and kube-restart.<br id="mw3g">  </li>
+                    <li id="mw3w">Going into the Docker container for trouble shooting, for example, kubectl exec –it.<br id="mw4A">See <a href="https://kubernetes.io/docs/reference/kubectl/overview/" rel="mw:ExtLink" id="mw4Q" data-ve-attributes="{&quot;rel&quot;:&quot;mw:ExtLink&quot;}">https://kubernetes.io/docs/reference/kubectl/overview/</a> for more details.<br id="mw4g"></li>
+                    <li id="mw4w">Using Docker commands, for example, docker inspect and docker pull.<br id="mw5A"></li>
+</ul>
+</li>
+            <li id="mw5Q">You want to view more detailed logs. <br id="mw5g">The detailed logs are not visible in the management portal. However, it’s not required to log in to the K8S server specifically. Any Linux box that can access the NFS volume should work fine.  </li>
+        </ul>
+
+<h3 id="What_are_the_recommended_possibilities_to_monitor_the_suite.3F">What are the recommended possibilities to monitor the suite?</h3>
+<p id="mw5w"><b id="mw6A">Answer</b>:<br id="mw6Q">
+From the CDF portal, click <b id="mw6g">LAUNCH DASHBOARD</b>,  under <b id="mw6w">Namespace</b> choose the suite namespace to make sure all deployments and pods are in desired status.<br id="mw7A"></p>
+
+<h3 id="What_are_the_items_that_we_have_to_monitor_to_ensure_that_the_suite_works_correctly.3F_Can_we_use_a_product_like_Zabbix_or_BMC_TrueSight_for_monitoring.3F">What are the items that we have to monitor to ensure that the suite works correctly? Can we use a product like Zabbix or BMC TrueSight for monitoring?</h3>
+<p id="mw7Q"><b id="mw7g">Answer</b>:<br id="mw7w">
+Currently, we leverage Kubernetes/Docker level monitoring, and we have a whitepaper on Prometheus. For more details, see
+<a href="http://blog.kubernetes.io/2017/05/kubernetes-monitoring-guide.html" rel="mw:ExtLink" id="mw8A" data-ve-attributes="{&quot;rel&quot;:&quot;mw:ExtLink&quot;}">http://blog.kubernetes.io/2017/05/kubernetes-monitoring-guide.html</a>.
+<br id="mw8Q">
+There are several levels of monitoring:<br id="mw8g"></p>
+<ul id="mw8w">
+<li id="mw9A">Infra: NFS volume, VM hosts, and infra networking</li>
+<li id="mw9Q">Kubernetes nodes<span typeof="mw:DisplaySpace mw:Placeholder" id="mw9g" class="ve-pasteProtect" data-ve-attributes="{&quot;typeof&quot;:&quot;mw:DisplaySpace mw:Placeholder&quot;}">&nbsp;</span>: CPU, Memory, Network IO, available disk spaces for all disk partitions</li>
+<li id="mw9w">Docker containers: CPU, Memory, Network IO</li>
+<li id="mw-A">Suite application: Customer can set up the monitoring the same way as the classic deployment by accessing the applications through URL.</li></ul>
