@@ -1,0 +1,260 @@
+<h1 style="margin-bottom:0px;">Deployment models</h1><div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 26/06/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 17 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><p><br> 
+</p>
+<div id="toc" class="toc"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none"><div class="toctitle" lang="en" dir="ltr"><h2>Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/DeployModels#Deployment_options"><span class="tocnumber">1</span> <span class="toctext">Deployment options</span></a>
+<ul>
+<li class="toclevel-2"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/DeployModels#CDF_with_embedded_Docker.2FKubernetes"><span class="tocnumber">1.1</span> <span class="toctext">CDF with embedded Docker/Kubernetes</span></a></li>
+<li class="toclevel-2"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/DeployModels#CDF_without_embedded_Docker.2FKubernetes"><span class="tocnumber">1.2</span> <span class="toctext">CDF without embedded Docker/Kubernetes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/DeployModels#CDF_configurations"><span class="tocnumber">2</span> <span class="toctext">CDF configurations</span></a>
+<ul>
+<li class="toclevel-2"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/DeployModels#With_embedded_Docker.2FKubernetes"><span class="tocnumber">2.1</span> <span class="toctext">With embedded Docker/Kubernetes</span></a></li>
+<li class="toclevel-2"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/DeployModels#Without_embedded_Kubernetes"><span class="tocnumber">2.2</span> <span class="toctext">Without embedded Kubernetes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/DeployModels#Bundling_of_suite_and_CDF"><span class="tocnumber">3</span> <span class="toctext">Bundling of suite and CDF</span></a></li>
+<li class="toclevel-1"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/DeployModels#Suite_deployment_architecture"><span class="tocnumber">4</span> <span class="toctext">Suite deployment architecture</span></a></li>
+<li class="toclevel-1"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/DeployModels#Suite_installation"><span class="tocnumber">5</span> <span class="toctext">Suite installation</span></a>
+<ul>
+<li class="toclevel-2"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/DeployModels#With_embedded_Kubernetes."><span class="tocnumber">5.1</span> <span class="toctext">With embedded Kubernetes.</span></a></li>
+<li class="toclevel-2"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/DeployModels#Without_embedded_Kubernetes_2"><span class="tocnumber">5.2</span> <span class="toctext">Without embedded Kubernetes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/DeployModels#Packaging"><span class="tocnumber">6</span> <span class="toctext">Packaging</span></a>
+<ul>
+<li class="toclevel-2"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/DeployModels#Layers"><span class="tocnumber">6.1</span> <span class="toctext">Layers</span></a></li>
+<li class="toclevel-2"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/DeployModels#Docker_Hub"><span class="tocnumber">6.2</span> <span class="toctext">Docker Hub</span></a></li>
+<li class="toclevel-2"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/DeployModels#Suite_metadata"><span class="tocnumber">6.3</span> <span class="toctext">Suite metadata</span></a></li>
+<li class="toclevel-2"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/DeployModels#Image_download_options"><span class="tocnumber">6.4</span> <span class="toctext">Image download options</span></a>
+<ul>
+<li class="toclevel-3"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/DeployModels#Images_in_the_local_registry"><span class="tocnumber">6.4.1</span> <span class="toctext">Images in the local registry</span></a></li>
+<li class="toclevel-3"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/DeployModels#Straight_from_Docker_Hub"><span class="tocnumber">6.4.2</span> <span class="toctext">Straight from Docker Hub</span></a></li>
+<li class="toclevel-3"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/DeployModels#Customer-managed_private_registry"><span class="tocnumber">6.4.3</span> <span class="toctext">Customer-managed private registry</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/DeployModels#Customer-managed_private_registry_with_use_of_local_registry"><span class="tocnumber">6.5</span> <span class="toctext">Customer-managed private registry with use of local registry</span></a></li>
+<li class="toclevel-2"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/DeployModels#Images_in_the_local_registry_sourced_from_a_local_directory"><span class="tocnumber">6.6</span> <span class="toctext">Images in the local registry sourced from a local directory</span></a></li>
+<li class="toclevel-2"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/DeployModels#Download_and_upload_of_images"><span class="tocnumber">6.7</span> <span class="toctext">Download and upload of images</span></a>
+<ul>
+<li class="toclevel-3"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/DeployModels#Download"><span class="tocnumber">6.7.1</span> <span class="toctext">Download</span></a></li>
+<li class="toclevel-3"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/DeployModels#Upload"><span class="tocnumber">6.7.2</span> <span class="toctext">Upload</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/DeployModels#JDBC_drivers"><span class="tocnumber">6.8</span> <span class="toctext">JDBC drivers</span></a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id="Deployment_options">Deployment options</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;veaction=edit&amp;section=T-1" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;action=edit&amp;section=T-1" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>The following flowchart shows the deployment options, based on whether you want to use the embedded Docker/Kubernetes bundled with CDF or not.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="pic8.png" src="/mediawiki/images/thumb/6/6a/pic8.png/800px-pic8.png" width="800" height="541" srcset="/mediawiki/images/6/6a/pic8.png 1.5x" data-file-width="1021" data-file-height="691"></a>
+</p><p>CDF can be deployed with or without embedded Kubernetes.
+</p><p>Deployment can occur on physical machines or virtual machines. 
+</p><p>Virtual machines can be located on-premise in your datacenter or in the cloud.
+</p>
+<h3><span id="CDF_with_embedded_Docker/Kubernetes"></span><span class="mw-headline" id="CDF_with_embedded_Docker.2FKubernetes">CDF with embedded Docker/Kubernetes</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;veaction=edit&amp;section=T-2" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;action=edit&amp;section=T-2" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p><a onclick="javascript:loadingImage(this);" class="image"><img alt="pic9.png" src="/mediawiki/images/thumb/7/77/pic9.png/450px-pic9.png" width="450" height="237" srcset="/mediawiki/images/thumb/7/77/pic9.png/675px-pic9.png 1.5x, /mediawiki/images/thumb/7/77/pic9.png/900px-pic9.png 2x" data-file-width="973" data-file-height="513"></a>
+</p><p>For on-premise installations or installation in the cloud on customer managed virtual machines, use CDF with embedded Docker and Kubernetes.
+</p><p>The CDF is installed on a regular Linux OS host. No special configuration except a number of prerequisite packages is required. Refer to the Suite installation documentation for the package prerequisites. Some Suites may have additional configuration requirements for the cluster hosts, please consult the Suite installation documentation.
+</p><p>Micro Focus recommends minimal installations of the supported Linux distributions. Refer to the platform matrix for the supported Linux distributions.
+</p><p>There is no requirement for Internet access for the servers that will host the CDF infrastructure. However, if the 1<sup>st</sup> master server has Internet access (direct or via proxy) then this will improve the installation experience as the Suite container images can be downloaded directly on the node where they will need to be imported from into the local Docker registry.
+</p><p>The only components that execute directly on the hosts are the installer, Docker and Kubernetes Kubelet and Kube-Proxy. All of the other CDF components are containerized.
+</p><p>This layering applies to physical servers, virtual servers or cloud-based servers.
+</p>
+<h3><span id="CDF_without_embedded_Docker/Kubernetes"></span><span class="mw-headline" id="CDF_without_embedded_Docker.2FKubernetes">CDF without embedded Docker/Kubernetes</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;veaction=edit&amp;section=T-3" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;action=edit&amp;section=T-3" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p><a onclick="javascript:loadingImage(this);" class="image"><img alt="pic10.png" src="/mediawiki/images/thumb/5/58/pic10.png/450px-pic10.png" width="450" height="236" srcset="/mediawiki/images/thumb/5/58/pic10.png/675px-pic10.png 1.5x, /mediawiki/images/thumb/5/58/pic10.png/900px-pic10.png 2x" data-file-width="974" data-file-height="510"></a>
+</p><p>For cloud-based installations on a managed Kubernetes instance, use CDF without embedded Docker and Kubernetes.
+</p><p>The CDF is installed directly onto a dedicated or shared managed Kubernetes cluster in the cloud. How such a cluster is made available depends on the cloud vendor.
+</p><p>In this setup, CDF only installs containerized components and does not install any of its underlying Docker/Kubernetes infrastructure.
+</p><p>How exactly a cluster is setup inside the cloud vendor's datacenter is unknown. Master nodes are typically off limits and/or not visible at all. In some environments, Pods scheduling is not possible on master nodes.
+</p><p>Command-line worker node access may be possible, again this depends on the vendor.
+</p><p>CDF assumes that master and worker node access using command line SSH is not possible and that the only access to a managed Kubernetes instance is remote and via kubectl (possibly via a bastion host).
+</p><p>So for all intents and purpose, master nodes are black boxes. And worker nodes are grey-ish-to-black boxes.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="pic11.png" src="/mediawiki/images/thumb/b/b7/pic11.png/450px-pic11.png" width="450" height="292" srcset="/mediawiki/images/thumb/b/b7/pic11.png/675px-pic11.png 1.5x, /mediawiki/images/thumb/b/b7/pic11.png/900px-pic11.png 2x" data-file-width="1526" data-file-height="990"></a>
+</p>
+<h2><span class="mw-headline" id="CDF_configurations">CDF configurations</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;veaction=edit&amp;section=T-4" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;action=edit&amp;section=T-4" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h3><span id="With_embedded_Docker/Kubernetes"></span><span class="mw-headline" id="With_embedded_Docker.2FKubernetes">With embedded Docker/Kubernetes</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;veaction=edit&amp;section=T-5" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;action=edit&amp;section=T-5" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>The CDF can be deployed in various configurations for various purposes: single node, multiple nodes and multiple nodes with multiple master nodes.
+</p><p>The diagram below shows the four basic configurations and the typical use-cases.
+</p><p>For production use the two rightmost configurations can be used, although only the rightmost multiple master with multiple workers has the highest level of high availability (HA). For a discussion about HA see <a href="./itom/ITOM_Container_Deployment_Foundation:2019.05/WhitepaperHighAvailability" title="ITOM Container Deployment Foundation:2019.05/WhitepaperHighAvailability">High availability (HA)</a>.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="cdfarch201811 6.png" src="/mediawiki/images/thumb/a/af/cdfarch201811_6.png/899px-cdfarch201811_6.png" width="899" height="502" srcset="/mediawiki/images/thumb/a/af/cdfarch201811_6.png/1349px-cdfarch201811_6.png 1.5x, /mediawiki/images/a/af/cdfarch201811_6.png 2x" data-file-width="1744" data-file-height="974"></a>
+</p><p>Figure - CDF deployment configurations
+</p>
+<h3><span class="mw-headline" id="Without_embedded_Kubernetes">Without embedded Kubernetes</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;veaction=edit&amp;section=T-6" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;action=edit&amp;section=T-6" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>The picture for an installation on a managed Kubernetes instance is similar as above except that none of the CDF components will run on master nodes.
+</p><p>How high-availability is achieved for the Kubernetes layer (or if you even have this option) is up to the discretion of the cloud vendor.
+</p>
+<h2><span class="mw-headline" id="Bundling_of_suite_and_CDF">Bundling of suite and CDF</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;veaction=edit&amp;section=T-7" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;action=edit&amp;section=T-7" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>The CDF is only installed when an ITOM Suite is installed. CDF is a means to and end: the installation and lifecycle management of an ITOM suite. The installation process of Suite and CDF has been merged into a seamless flow.
+</p>
+<h2><span class="mw-headline" id="Suite_deployment_architecture">Suite deployment architecture</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;veaction=edit&amp;section=T-8" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;action=edit&amp;section=T-8" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>A next-generation Suite deployment is fully containerized. (*)
+</p><p>Suite functionality is split into capabilities which themselves have been split into front- and backend services.
+</p><p>A Suite deployment always also has installation, configuration and administration services.
+</p><p>Actual services (front- or backend) are modeled using Kubernetes controllers such as Deployment or Replication Controllers. These deploy a number of Pods (1 to <i>n</i>, the unit of scheduling in Kubernetes) which in turn consist of 1 to <i>n</i> containers.
+</p><p>Each container executes (typically) a single process such as web server or a database engine.
+</p><p>A simplified architecture may look like this:
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="cdferwp201801 fig8.png" src="/mediawiki/images/thumb/a/a5/cdferwp201801_fig8.png/800px-cdferwp201801_fig8.png" width="800" height="478" srcset="/mediawiki/images/a/a5/cdferwp201801_fig8.png 1.5x" data-file-width="1060" data-file-height="634"></a>
+</p><p>Figure - Simplified application architecture
+</p><p>A sample deployment of a Suite is shown below.
+</p><p>It shows how public endpoints are defined using Ingress rules and exposed via the Ingress controller and the resulting unified URL namespace that this creates. The Suite functionality is grouped into capabilities, implemented as front- and backend services.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="cdferwp201801 fig9.png" src="/mediawiki/images/thumb/4/4c/cdferwp201801_fig9.png/800px-cdferwp201801_fig9.png" width="800" height="533" srcset="/mediawiki/images/4/4c/cdferwp201801_fig9.png 1.5x" data-file-width="1090" data-file-height="726"></a>
+</p><p>Figure - Sample application deployment
+</p><p>(*) During the transition phase from classic deployment to containerized deployment it is likely that some parts of the Suite installation still consist of classic installations. This hybrid mode will be addressed over time as the Suite components are re-architected so they can be deployed and run as a set of microservices inside containers.
+</p>
+<h2><span class="mw-headline" id="Suite_installation">Suite installation</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;veaction=edit&amp;section=T-9" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;action=edit&amp;section=T-9" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>The steps to install the ITOM Suite and the underlying CDF are as follows.
+</p>
+<h3><span class="mw-headline" id="With_embedded_Kubernetes.">With embedded Kubernetes.</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;veaction=edit&amp;section=T-10" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;action=edit&amp;section=T-10" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<ul><li>Prepare systems for installation</li>
+<li>Download and unpack the CDF compressed archive.</li>
+<li>Download and unpack the metadata for the ITOM Suite</li>
+<li>Copy the bootstrap installation files to the 1<sup>st</sup> master node.</li>
+<li>(optional) Configure the installation for master and worker nodes using the install.properties file. Alternatively installation options can also be specified on the command line.</li>
+<li>On the 1<sup>st</sup> master node, start the installation of the ITOM Suite.</li></ul>
+<p>Refer to the Suite installation/administration guide for complete package prerequisites.
+</p><p>The installations are supported using command line script and/or UI-based, as shown in the table below. Silent installation of CDF and suite is also supported.
+</p>
+<a class="buttonfullscr" onclick="javascript:loadingTableButton(this);"><button class="flscrbtn"><i class="material-icons flscricn">open_in_new</i><div style="margin: auto 5px;">View Fullscreen</div></button></a><table>
+<tbody><tr>
+<th><b>Component</b>
+</th>
+<th><b>Command line-based install</b>
+</th>
+<th><b>UI-based install</b>
+</th>
+<th><b>Silent install</b>
+</th></tr>
+<tr>
+<td>CDF 1<sup>st</sup> Master
+</td>
+<td>Yes (*)
+</td>
+<td>Yes (*2)
+</td>
+<td>Yes
+</td></tr>
+<tr>
+<td>CDF additional Masters
+</td>
+<td>Yes
+</td>
+<td>Yes
+</td>
+<td>Yes
+</td></tr>
+<tr>
+<td>CDF Worker
+</td>
+<td>Yes
+</td>
+<td>Yes
+</td>
+<td>Yes
+</td></tr>
+<tr>
+<td>Suite
+</td>
+<td>Yes
+</td>
+<td>Yes
+</td>
+<td>Yes (*3)
+</td></tr></tbody></table>
+<p>(*)(*2) The installation of the 1<sup>st</sup> master node requires access to a command line to bootstrap the installation. Once past an initial bootstrap phase, the installation is continued using a web browser.
+(*3) Silent installation of a suite needs to be explicitly supported by suite. The suite configuration pod needs to support silent install using the service controller pattern (/deploy URL). Consult the suite documentation to check if silent installation is supported.
+</p>
+<h3><span class="mw-headline" id="Without_embedded_Kubernetes_2">Without embedded Kubernetes</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;veaction=edit&amp;section=T-11" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;action=edit&amp;section=T-11" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<ul><li>Deploy/prepare a managed Kubernetes instance</li>
+<li>Download and unpack the CDF compressed archive.</li>
+<li>Download and unpack the metadata for the ITOM Suite</li>
+<li>Bootstrap the CDF into the managed Kubernetes cluster.</li>
+<li>Connect to the suite installer using the supplied external load balancer FQDN port 3000.</li></ul>
+<p>Refer to the Suite installation/administration guide for complete package prerequisites.
+</p><p>The installations are supported using command line script and/or UI-based, as shown in the table below. Silent installation of CDF and suite (*) is also supported.
+</p><p>(*) Silent installation of a suite needs to be explicitly supported by suite. The suite configuration pod needs to support silent install using the service controller pattern (/deploy URL). Consult the suite documentation to check if silent installation is supported.
+</p>
+<h2><span class="mw-headline" id="Packaging">Packaging</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;veaction=edit&amp;section=T-12" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;action=edit&amp;section=T-12" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h3><span class="mw-headline" id="Layers">Layers</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;veaction=edit&amp;section=T-13" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;action=edit&amp;section=T-13" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>The CDF code is split and located on the Micro Focus Software Depot and on Docker Hub. Micro Focus endeavors to place a maximum number of binaries in Docker Hub. The binaries on the Micro Focus Software Depot are required for bootstrapping.
+</p><p>The Micro Focus Software Depot binaries come as a single compressed and digitally signed archive.
+</p><p>The remaining CDF binaries and the Suite binaries are located in Docker Hub. These binaries come as pre-packaged and digitally signed container images.
+</p><p>All of the Suite code (except for the classically installed parts) is hosted in Docker Hub. The container image repositories are private and require authentication (by Docker Hub) and authorization (by Micro Focus). All of the images are digitally signed.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="pic12.png" src="/mediawiki/images/thumb/b/bf/pic12.png/900px-pic12.png" width="900" height="379" srcset="/mediawiki/images/b/bf/pic12.png 1.5x" data-file-width="1179" data-file-height="496"></a>
+</p><p>Figures - Suite and CDF binaries delivery - with embedded Kubernetes
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="pic13.png" src="/mediawiki/images/thumb/6/68/pic13.png/900px-pic13.png" width="900" height="354" srcset="/mediawiki/images/6/68/pic13.png 1.5x" data-file-width="1178" data-file-height="464"></a>
+</p><p>Figures - Suite and CDF binaries delivery - without embedded Kubernetes
+</p>
+<h3><span class="mw-headline" id="Docker_Hub">Docker Hub</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;veaction=edit&amp;section=T-14" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;action=edit&amp;section=T-14" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Authentication is provided by Docker Hub. Access requires a Docker Hub account. Micro Focus does not create Docker Hub accounts, Micro Focus only authorizes Docker Hub accounts.
+</p><p>Once a Docker Hub account has been created, and with a valid agreement in place with Micro Focus for Suite access, Micro Focus will authorize access to one or more Suite container image repositories.
+</p><p>A typical suite may require anywhere from 10 to 100+ container image repositories.
+</p><p>Micro Focus container images will only work within the CDF and within a particular Suite deployment. It is not supported to download and execute individual containers based on the Suite repository images.
+</p>
+<h3><span class="mw-headline" id="Suite_metadata">Suite metadata</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;veaction=edit&amp;section=T-15" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;action=edit&amp;section=T-15" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>An ITOM suite is described by suite metadata. The metadata describes the composition of a suite and a set of runtime requirements such as volumes for persistent storage. The figure below shows the setup.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="pic14a.png" src="/mediawiki/images/thumb/a/a0/pic14a.png/900px-pic14a.png" width="900" height="406" srcset="/mediawiki/images/thumb/a/a0/pic14a.png/1350px-pic14a.png 1.5x, /mediawiki/images/thumb/a/a0/pic14a.png/1800px-pic14a.png 2x" data-file-width="1833" data-file-height="827"></a>
+</p><p>During the development cycle, the suite metadata is constructed so that when the development cycle is complete, the new version of the suite is described by it.
+</p><p>The metadata is then provided as a download and the downloaded archive can be fed into the installer.
+</p>
+<h3><span class="mw-headline" id="Image_download_options">Image download options</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;veaction=edit&amp;section=T-16" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;action=edit&amp;section=T-16" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<h4><span class="mw-headline" id="Images_in_the_local_registry">Images in the local registry</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;veaction=edit&amp;section=T-17" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;action=edit&amp;section=T-17" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>All CDF releases before 2019.05 have supported this way of getting the images from Docker Hub and providing them to the installation. The process consists of downloading the images from Docker Hub and uploading them to the local registry embedded in the installed CDF. This can happen before or during the installation.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="pic15.png" src="/mediawiki/images/1/16/pic15.png" width="900" height="659" data-file-width="812" data-file-height="595"></a>
+</p>
+<h4><span class="mw-headline" id="Straight_from_Docker_Hub">Straight from Docker Hub</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;veaction=edit&amp;section=T-18" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;action=edit&amp;section=T-18" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>This scenario is not supported. The limiting factor is the redistribution of JDBC drivers. See section on JDBC drivers for more information.
+</p>
+<h4><span class="mw-headline" id="Customer-managed_private_registry">Customer-managed private registry</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;veaction=edit&amp;section=T-19" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;action=edit&amp;section=T-19" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>In this scenario, the customer has an on-premise or cloud registry to which the images are upload before the installation starts. An installation parameter defines the external registry (and any credentials in case image pulling is not anonymous) and after that any require image is pulled by the Docker daemons on the nodes as and when required.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="pic17.png" src="/mediawiki/images/thumb/d/d3/pic17.png/900px-pic17.png" width="900" height="573" srcset="/mediawiki/images/d/d3/pic17.png 1.5x" data-file-width="915" data-file-height="583"></a>
+</p>
+<h3><span class="mw-headline" id="Customer-managed_private_registry_with_use_of_local_registry">Customer-managed private registry with use of local registry</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;veaction=edit&amp;section=T-20" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;action=edit&amp;section=T-20" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Customers can combine the use of the embedded local registry with an external customer-managed registry. This scenario can be used if the bandwidth to the external registry is low and therefore it's faster to pre-download the images and proceed as in scenario "Images in the local registry".
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="pic18.png" src="/mediawiki/images/thumb/8/83/pic18.png/900px-pic18.png" width="900" height="421" srcset="/mediawiki/images/8/83/pic18.png 1.5x" data-file-width="1207" data-file-height="565"></a>
+</p>
+<h3><span class="mw-headline" id="Images_in_the_local_registry_sourced_from_a_local_directory">Images in the local registry sourced from a local directory</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;veaction=edit&amp;section=T-21" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;action=edit&amp;section=T-21" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>To avoid image download/upload during installation, but still have the convenience of fast local embedded image registry, the installation can be started while providing the images from a local folder on disk. During the installation, the images will be automatically uploaded to the embedded local registry.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="pic19.png" src="/mediawiki/images/thumb/a/af/pic19.png/900px-pic19.png" width="900" height="445" srcset="/mediawiki/images/a/af/pic19.png 1.5x" data-file-width="1147" data-file-height="567"></a>
+</p>
+<h3><span class="mw-headline" id="Download_and_upload_of_images">Download and upload of images</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;veaction=edit&amp;section=T-22" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;action=edit&amp;section=T-22" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<h4><span class="mw-headline" id="Download">Download</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;veaction=edit&amp;section=T-23" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;action=edit&amp;section=T-23" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>The figure below shows the flow, files and components involved in downloading images. On an admin workstation, the suite metadata (and optionally a silent installation configuration file) are fed into the generate_download_bundle.sh script. This script calculates a delta set of images and generates an offline-download.zip file. (The same happens during the installation if no external registry was passed and images are found to be missing)
+</p><p>The offine-download.zip contains the list of images to be downloaded and the download script itself. When run, the download script transfers the images from Docker Hub (or another external registry such as customer private registry or cloud registry) to the admin workstation and stores the images in a folder.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="pic20.png" src="/mediawiki/images/thumb/0/08/pic20.png/900px-pic20.png" width="900" height="499" srcset="/mediawiki/images/0/08/pic20.png 1.5x" data-file-width="1113" data-file-height="617"></a>
+</p>
+<h4><span class="mw-headline" id="Upload">Upload</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;veaction=edit&amp;section=T-24" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;action=edit&amp;section=T-24" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>The offline-download.zip file also contains a script to upload images. Using this script, the user can upload images to any supported registry, ranging from the local embedded registry inside the CDF cluster or a supported external registry, for example a private customer registry or a cloud registry.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="pic21.png" src="/mediawiki/images/thumb/1/12/pic21.png/900px-pic21.png" width="900" height="564" srcset="/mediawiki/images/1/12/pic21.png 1.5x" data-file-width="1089" data-file-height="682"></a>
+</p>
+<h3><span class="mw-headline" id="JDBC_drivers">JDBC drivers</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;veaction=edit&amp;section=T-25" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.05/WhitepaperDeploymentModels&amp;action=edit&amp;section=T-25" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>License restrictions limit Micro Focus to redistribute the JDBC drivers for the Oracle database. These drivers are required if customers want to deploy CDF using Oracle as the external database engine.
+</p><p>JDBC drivers can be supplied to the installer so a jdbc-drivers-container image can be created containing the correct drivers. If the deployment configuration includes an external image registry then the driver image can be created separately using a dedicated script. This script also covers day 2 use-cases where the JDBC drivers need to be updated or patched.
+</p>
+<!-- 
+NewPP limit report
+Cached time: 20190715100218
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.052 seconds
+Real time usage: 0.218 seconds
+Preprocessor visited node count: 30/1000000
+Preprocessor generated node count: 84/1000000
+Post‐expand include size: 14503/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 0/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:795620-0!canonical and timestamp 20190715100218 and revision id 1398428
+ -->
+</div>
