@@ -1,0 +1,151 @@
+<h1 style="margin-bottom:0px;">Database (Amazon RDS)</h1><div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 26/06/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 3 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><p>Amazon RDS is a web service that makes it easier to set up, operate, and scale a relational database in the AWS cloud. It provides cost-efficient, resizable capacity for an industry-standard relational database and manages common database administration tasks.
+<br>
+</p>
+<h2><span class="mw-headline" id="Create_and_configure_RDS">Create and configure RDS</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/DataOpsB&amp;veaction=edit&amp;section=1" class="mw-editsection-visualeditor" title="Edit section: Create and configure RDS">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/DataOpsB&amp;action=edit&amp;section=1" title="Edit section: Create and configure RDS">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<ol><li>Create a <b>Security Group</b> used to control access to database at: <a target="1" rel="nofollow" class="external free" href="https://console.aws.amazon.com/ec2/v2/home#SecurityGroups">https://console.aws.amazon.com/ec2/v2/home#SecurityGroups</a>.<br>It should include rules that resemble the following:<br><br><a onclick="javascript:loadingImage(this);" class="image"><img alt="OpsBridge2019.02Postgres1.jpg" src="/mediawiki/images/5/55/OpsBridge2019.02Postgres1.jpg" width="710" height="346" data-file-width="710" data-file-height="346"></a><br>
+<ul><li>Select <b>VPC</b> created in section <a href="./itom/SMAX:2019.02/CreateVpcInstance" title="SMAX:2019.02/CreateVpcInstance">VPC preparation</a>.</li>
+<li>Replace <b>Source</b> with your <b>VPC CIDR</b>.</li></ul></li>
+<li>Create a <b>Subnet Group</b> at <a target="1" rel="nofollow" class="external free" href="https://console.aws.amazon.com/rds/home#db-subnet-groups">https://console.aws.amazon.com/rds/home#db-subnet-groups</a>.<br> It should include the private subnets where RDS instances will be launched.<br><br><a onclick="javascript:loadingImage(this);" class="image"><img alt="sma 1805 aws rds 2.png" src="/mediawiki/images/thumb/b/bc/sma_1805_aws_rds_2.png/650px-sma_1805_aws_rds_2.png" width="650" height="388" srcset="/mediawiki/images/b/bc/sma_1805_aws_rds_2.png 1.5x" data-file-width="813" data-file-height="485"></a><br>
+<ul><li>Select <b>VPC</b> created in section <a href="./itom/SMAX:2019.02/CreateVpcInstance" title="SMAX:2019.02/CreateVpcInstance">VPC preparation</a>.<br></li>
+<li>Select <b>Availability Zone</b>.</li>
+<li>Select <b>private subnets</b>.<br><br><div class="Admonition_Note"><span class="autonumber">Note </span> You can use the private subnets prepared in section <a href="./itom/SMAX:2019.02/CreateExtraSubnets" title="SMAX:2019.02/CreateExtraSubnets">Subnet Preparation</a>. If you want to isolate database service, you can create more extra private subnets. </div></li></ul></li>
+<li>Create a <b>DB instance</b> at <a target="1" rel="nofollow" class="external free" href="https://console.aws.amazon.com/rds/home">https://console.aws.amazon.com/rds/home</a>.
+<ol><li>On the <b>Select engine</b> page, choose <b>Postgres</b>, and then click <b>Next</b>. For more supported RDS engines, see Support matrix.</li>
+<li>On the Production page, select <b>Production</b> or <b>Dev/Test</b>, depending on whether you will use the database instance in a production or test environment, and then click <b>Next Step</b>.</li>
+<li>On the <b>Specify DB Details</b> page, fill the fields with the information in the table below, and then click <b>Next Step</b>.<br></li></ol></li></ol>
+<dl><dd><dl><dd><dl><dd><dl><dd><dl><dd><a class="buttonfullscr" onclick="javascript:loadingTableButton(this);"><button class="flscrbtn"><i class="material-icons flscricn">open_in_new</i><div style="margin: auto 5px;">View Fullscreen</div></button></a><table class="confluenceTable tablesorter">
+
+<tbody><tr class="sortableHeader">
+<th class="confluenceTh sortableHeader" data-column="0"><div class="tablesorter-header-inner">
+Parameter</div>
+</th>
+<th class="confluenceTh sortableHeader" data-column="1"><div class="tablesorter-header-inner">
+Value</div>
+</th></tr>
+<tr>
+<td class="confluenceTd">DB Engine Version
+</td>
+<td class="confluenceTd">PostgreSQL 9.5.15-R1
+</td></tr>
+<tr>
+<td class="confluenceTd">DB instance class
+</td>
+<td class="confluenceTd">Select a value depending on your sizing profile (see <a href="./itom/SMAX:2019.02/AWSManualSizing" title="SMAX:2019.02/AWSManualSizing">Sizing considerations</a>).
+</td></tr>
+<tr>
+<td class="confluenceTd">Multi-AZ Deployment
+</td>
+<td class="confluenceTd">Yes/No, depending on whether HA is required for the database
+</td></tr>
+<tr>
+<td class="confluenceTd">Storage Type
+</td>
+<td class="confluenceTd">General Purpose (SSD)
+</td></tr>
+<tr>
+<td class="confluenceTd">Allocated Storage
+</td>
+<td class="confluenceTd">
+<p>Select a value depending on your sizing profile (see <a href="./itom/SMAX:2019.02/AWSManualSizing" title="SMAX:2019.02/AWSManualSizing">Sizing considerations</a>)
+</p>
+</td></tr>
+<tr>
+<td class="confluenceTd">
+<p>Settings
+</p>
+</td>
+<td class="confluenceTd">
+<p>Value depends on your deployment plan, make sure to use "postgres" as your <b>Master username</b>
+</p>
+</td></tr></tbody></table></dd></dl></dd></dl></dd></dl></dd></dl></dd></dl>
+<dl><dd><dl><dd><dl><dd><dl><dd>d. On the <b>Configure Advanced Settings</b> page, fill the fields with the information in the table below, and then click <b>Launch DB Instance</b>.<br></dd></dl></dd></dl></dd></dl></dd></dl>
+<dl><dd><dl><dd><dl><dd><dl><dd><dl><dd><a class="buttonfullscr" onclick="javascript:loadingTableButton(this);"><button class="flscrbtn"><i class="material-icons flscricn">open_in_new</i><div style="margin: auto 5px;">View Fullscreen</div></button></a><table class="confluenceTable tablesorter">
+
+<tbody><tr class="sortableHeader">
+<th class="confluenceTh sortableHeader" data-column="0"><div class="tablesorter-header-inner">
+<p>Setting
+</p>
+</div>
+</th>
+<th class="confluenceTh sortableHeader" data-column="1"><div class="tablesorter-header-inner">
+<p>Value
+</p>
+</div>
+</th></tr>
+<tr>
+<td class="confluenceTd">
+<p>VPC
+</p>
+</td>
+<td class="confluenceTd">
+<p>The VPC that you created
+</p>
+</td></tr>
+<tr>
+<td class="confluenceTd">
+<p>Subnet Group
+</p>
+</td>
+<td class="confluenceTd">
+<p>The <b>Subnet Group</b> you created at previous step
+</p>
+</td></tr>
+<tr>
+<td class="confluenceTd">
+<p>Public Accessible
+</p>
+</td>
+<td class="confluenceTd">
+<p>No
+</p>
+</td></tr>
+<tr>
+<td class="confluenceTd">
+<p>Availability Zone
+</p>
+</td>
+<td class="confluenceTd">
+<p>Use the default value
+</p>
+</td></tr>
+<tr>
+<td class="confluenceTd">
+<p>VPC Security Group(s)
+</p>
+</td>
+<td class="confluenceTd">The <b>Security Group</b> you created at previous step
+</td></tr>
+<tr>
+<td class="confluenceTd">
+<p>DB Parameter Group
+</p>
+</td>
+<td class="confluenceTd">Database name use "postgres"
+</td></tr></tbody></table></dd></dl></dd></dl></dd></dl></dd></dl></dd></dl>
+<dl><dd><dl><dd><dl><dd><dl><dd>e. When the instance status is <b>"available"</b>, make a note of the endpoint. You will need this information to configure the database  when installing the suite later.</dd></dl></dd></dl></dd></dl></dd></dl>
+<p><br>
+</p>
+<!-- 
+NewPP limit report
+Cached time: 20190714193554
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.024 seconds
+Real time usage: 0.053 seconds
+Preprocessor visited node count: 24/1000000
+Preprocessor generated node count: 56/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 0/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:850378-0!canonical and timestamp 20190714193554 and revision id 1499507
+ -->
+</div>
