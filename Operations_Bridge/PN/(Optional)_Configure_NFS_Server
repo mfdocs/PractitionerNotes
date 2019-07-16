@@ -1,0 +1,204 @@
+<h1 style="margin-bottom:0px;">(Optional) Configure NFS Server</h1><div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 26/06/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 7 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><p><br>
+</p><p>
+This section describes how to manually configure NFS shares for CDF and the suite.&nbsp;</p><div class="Admonition_Note"><span class="autonumber">Note </span>Operations Bridge supports both EFS and NFS file systems. Skip this section and see <i>Amazon EFS</i> if you plan to use EFS file system.</div>
+<div id="toc" class="toc"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none"><div class="toctitle" lang="en" dir="ltr"><h2>Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/ConfgureAWSNFS#Install_an_NFS_server"><span class="tocnumber">1</span> <span class="toctext">Install an NFS server</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/ConfgureAWSNFS#Configure_NFS"><span class="tocnumber">2</span> <span class="toctext">Configure NFS&nbsp;</span></a></li>
+<li class="toclevel-1 tocsection-3"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/ConfgureAWSNFS#Configure_a_standalone_NFS_server"><span class="tocnumber">3</span> <span class="toctext">Configure a standalone NFS server</span></a></li>
+<li class="toclevel-1 tocsection-4"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/ConfgureAWSNFS#Configure_NFS_server_on_the_master_node"><span class="tocnumber">4</span> <span class="toctext">Configure NFS server on the master node</span></a></li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id="Install_an_NFS_server">Install an NFS server</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/ConfgureAWSNFS&amp;veaction=edit&amp;section=1" class="mw-editsection-visualeditor" title="Edit section: Install an NFS server">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/ConfgureAWSNFS&amp;action=edit&amp;section=1" title="Edit section: Install an NFS server">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>To install an NFS server, follow these steps:
+</p>
+<ol><li>Log on to the NFS server.&nbsp;  To do this, run the following command from your provisioning environment: <b>ssh -i &lt;private key created in step 1&gt; centos@&lt;public ip of the EC2 instance created in step 1&gt;&nbsp;</b></li>
+<li>Run the&nbsp;<b>rpm -qa|grep rpcbind</b>&nbsp;command to see if the&nbsp;rpcbind&nbsp;package is installed on the host.&nbsp;If not, run the following command to install it:&nbsp; <b>yum install rpcbind</b></li>
+<li>Run the&nbsp;rpm -qa|grep&nbsp;nfs-utils&nbsp;command&nbsp;to see if the '<b>nfs-utils'</b>&nbsp;package is install on the host. If not,&nbsp;run the following command to install it:&nbsp; <b>yum install -y nfs-utils</b></li>
+<li>Run the following commands to enable the rpcbind&nbsp;and nfs-server services:   <b>systemctl enable rpcbind</b>   <b>systemctl start rpcbind</b>   <b>systemctl enable nfs-server</b>   <b>systemctl start nfs-server</b></li></ol>
+<h2><span class="mw-headline" id="Configure_NFS">Configure NFS&nbsp;</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/ConfgureAWSNFS&amp;veaction=edit&amp;section=2" class="mw-editsection-visualeditor" title="Edit section: Configure NFS&nbsp;">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/ConfgureAWSNFS&amp;action=edit&amp;section=2" title="Edit section: Configure NFS&nbsp;">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>To save information such as configuration files or databases, the information must be stored in a persistent volume provided by a Network File System (NFS) that is outside the container. To install Container Deployment Foundation (CDF) and then deploy the Operations Bridge suite on CDF, you need to export NFS volumes to store CDF and Operations Bridge data. You can set up the NFS server either on the master node or on a separate server. Export the NFS volumes for CDF and Operations Bridge as described in the following table:
+</p>
+<ul><li>The NFS parent export path is referred to as <code>&lt;NFS&gt;</code>. An example of <code>&lt;NFS&gt;</code> is: <code>/var/vols/itom.</code></li>
+<li>The <code>NFS volume name</code> column is used for reference when configuring file storage during installation.</li></ul>
+<p>The following NFS directories must be set up during the installation:
+</p>
+<a class="buttonfullscr" onclick="javascript:loadingTableButton(this);"><button class="flscrbtn"><i class="material-icons flscricn">open_in_new</i><div style="margin: auto 5px;">View Fullscreen</div></button></a><table class="mw-collapsible">
+<tbody><tr>
+<th>Component
+</th>
+<th>NFS volume name
+</th>
+<th>Description
+</th>
+<th>Example export path
+</th></tr>
+<tr>
+<td>CDF
+</td>
+<td>
+<ul><li>itom-vol-claim</li>
+<li>db-single-vol</li>
+<li>db-backup-vol</li>
+<li>itom-logging-vol</li></ul>
+</td>
+<td>
+<ul><li>CDF core volume</li>
+<li>CDF database volume</li>
+<li>CDF database backup volume</li>
+<li>Volume for ITOM CDF logs at remote destination</li></ul>
+</td>
+<td>
+<ul><li>&lt;NFS&gt;/core</li>
+<li>&lt;NFS&gt;/db-single-vol</li>
+<li>&lt;NFS&gt;/db-backup-vol</li>
+<li>&lt;NFS&gt;/fluentd_log</li></ul>
+</td></tr>
+<tr>
+<td>Operations Bridge
+</td>
+<td>
+<ul><li>conf-volume</li>
+<li>db-volume</li>
+<li>log-volume</li>
+<li>obm-volume-0</li>
+<li>obm-volume-1</li>
+<li>db-node1-vol</li>
+<li>db-node2-vol</li></ul>
+</td>
+<td>
+<ul><li>Operations Bridge Suite related configuration files.</li>
+<li>Operations Bridge Suite related database and runtime files.</li>
+<li>Operations Bridge Suite related log files.</li>
+<li>OBM volume 0 (StatefulSet pod) related files.</li>
+<li>OBM volume 1 (StatefulSet pod) related files.</li>
+<li>Volume required if you configure HA for embedded PostgreSQL.</li>
+<li>Volume required if you configure HA for embedded PostgreSQL.</li></ul>
+</td>
+<td>
+<ul><li>&lt;NFS&gt;/conf</li>
+<li>&lt;NFS&gt;/data</li>
+<li>&lt;NFS&gt;/log</li></ul>
+<ul><li>&lt;NFS&gt;/omi0</li>
+<li>&lt;NFS&gt;/omi1</li>
+<li>&lt;NFS&gt;/db-node1-vol</li>
+<li>&lt;NFS&gt;/db-node2-vol</li></ul>
+</td></tr></tbody></table>
+<p>Depending on the capabilities you want to deploy, you might have to configure additional volumes later on. To export the logs to the destination folder defined in <code>FLUENTD_LOG_LOCATION</code> parameter in the <code>install.properties</code> file, see <i>Set up a remote destination to export CDF logs</i> page.
+</p><p>You can configure NFS server in one of the following ways:
+</p>
+<ul><li>Configure a separate NFS server&nbsp;: Recommended</li>
+<li>Configure NFS server on the master node</li></ul>
+<h2><span class="mw-headline" id="Configure_a_standalone_NFS_server">Configure a standalone NFS server</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/ConfgureAWSNFS&amp;veaction=edit&amp;section=3" class="mw-editsection-visualeditor" title="Edit section: Configure a standalone NFS server">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/ConfgureAWSNFS&amp;action=edit&amp;section=3" title="Edit section: Configure a standalone NFS server">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>To set up NFS shares for CDF and Operations Bridge, follow these steps:
+</p>
+<ol>
+<li>Log on to the NFS server host as root or a sudo user.</li>
+<li>Run the <code>rpm -qa|grep rpcbind</code> command to make sure that the rpcbind package is installed on the host.</li>
+<li>If the package is not already installed, run the following command to install it: <pre>yum install rpcbind</pre></li>
+<li>Run the following command to install the NFS server: <pre>yum install -y nfs-utils</pre></li>
+<li>Create directories to store the <span class="OpsB_Suite_installationSharedServices_Platform_short">CDF</span> and CDF database data, and adapt the directory permissions:<br>
+<pre>mkdir -p &lt;itom-vol-claim&gt;
+mkdir -p &lt;db_single_vol&gt;
+chown -R 1999:1999 &lt;itom-vol-claim&gt;
+chown -R 1999:1999 &lt;db_single_vol&gt;</pre></li>
+<li>Create directories to store the suite configuration data, the database data, and the log data, and adapt the directory permissions:
+<pre>mkdir -p &lt;conf-volume&gt;
+mkdir -p &lt;db-volume&gt;
+mkdir -p &lt;log-volume&gt;
+chown 1999:1999 &lt;conf-volume&gt;
+chown 1999:1999 &lt;db-volume&gt;
+chown 1999:1999 &lt;log-volume&gt;</pre></li>
+<li><i>Only if you want to install OBM</i>. Create directories for the OBM volume related files:<br>
+<pre>mkdir -p &lt;obm-volume-0&gt;
+mkdir -p &lt;obm-volume-1&gt;
+chown 1999:1999 &lt;obm-volume-0&gt;
+chown 1999:1999 &lt;obm-volume-1&gt;</pre></li>
+<li><i>Only if you want to configure PostgreSQL HA</i>. Create directories for the embedded PostgreSQL HA:<br>
+<pre>mkdir -p &lt;db-node1-vol&gt;
+mkdir -p &lt;db-node2-vol&gt;
+chown 1999:1999 &lt;db-node1-vol&gt;
+chown 1999:1999 &lt;db-node2-vol&gt;</pre></li>
+<li>Configure the NFS sharing of CDF, the suite, (optional) OBM, and (optional) PostgreSQL HA directories:<br>
+<pre>echo "&lt;itom-vol-claim&gt; *(rw,sync,anonuid=1999,anongid=1999,all_squash)" &gt;&gt; /etc/exports 
+echo "&lt;db_single_vol&gt; *(rw,sync,anonuid=1999,anongid=1999,all_squash)" &gt;&gt; /etc/exports
+echo "&lt;conf-volume&gt; *(rw,sync,anonuid=1999,anongid=1999,all_squash)" &gt;&gt; /etc/exports
+echo "&lt;db-volume&gt; *(rw,sync,anonuid=1999,anongid=1999,all_squash)" &gt;&gt; /etc/exports
+echo "&lt;log-volume&gt; *(rw,sync,anonuid=1999,anongid=1999,all_squash)" &gt;&gt; /etc/exports
+echo "&lt;obm-volume-0&gt; *(rw,sync,anonuid=1999,anongid=1999,all_squash)" &gt;&gt; /etc/exports
+echo "&lt;obm-volume-1&gt; *(rw,sync,anonuid=1999,anongid=1999,all_squash)" &gt;&gt; /etc/exports
+echo "&lt;db-node1-vol&gt; *(rw,sync,anonuid=1999,anongid=1999,all_squash)" &gt;&gt; /etc/exports
+echo "&lt;db-node2-vol&gt; *(rw,sync,anonuid=1999,anongid=1999,all_squash)" &gt;&gt; /etc/exports</pre><br>For example:<br>
+<pre>echo "/var/vols/itom/core *(rw,sync,anonuid=1999,anongid=1999,all_squash)" &gt;&gt; /etc/exports
+echo "/var/vols/itom/conf *(rw,sync,anonuid=1999,anongid=1999,all_squash)" &gt;&gt; /etc/exports
+echo "/var/vols/itom/data *(rw,sync,anonuid=1999,anongid=1999,all_squash)" &gt;&gt; /etc/exports
+echo "/var/vols/itom/log *(rw,sync,anonuid=1999,anongid=1999,all_squash)" &gt;&gt; /etc/exports
+echo "/var/vols/itom/omi0 *(rw,sync,anonuid=1999,anongid=1999,all_squash)" &gt;&gt; /etc/exports
+echo "/var/vols/itom/omi1 *(rw,sync,anonuid=1999,anongid=1999,all_squash)" &gt;&gt; /etc/exports
+echo "/var/vols/itom/db-node1-vol *(rw,sync,anonuid=1999,anongid=1999,all_squash)" &gt;&gt; /etc/exports
+echo "/var/vols/itom/db-node2-vol *(rw,sync,anonuid=1999,anongid=1999,all_squash)" &gt;&gt; /etc/exports</pre>
+</li><li>Restart the NFS service to activate the directory sharing:<br>
+<code>exportfs -ra</code><br>
+
+<b>TIP</b> <br>
+Do the following to check what has been exported:
+
+<ol>
+<li>Disable the firewall on the NFS server.
+</li><li>Restart the NFS service by running the following commands: 
+<pre>systemctl restart rpcbind 
+systemctl enable rpcbind 
+systemctl restart nfs-server 
+systemctl enable nfs-server
+</pre>
+</li><li>Run <code>exportfs</code>
+</li></ol></li></ol>
+<h2><span class="mw-headline" id="Configure_NFS_server_on_the_master_node">Configure NFS server on the master node</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/ConfgureAWSNFS&amp;veaction=edit&amp;section=4" class="mw-editsection-visualeditor" title="Edit section: Configure NFS server on the master node">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/ConfgureAWSNFS&amp;action=edit&amp;section=4" title="Edit section: Configure NFS server on the master node">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<ol>
+<li>On the master node, navigate to  <code>&lt;foundation_temp_dir&gt;/scripts</code> and run the following command to set up the core NFS share:
+<pre>./setupNFS.sh
+./setupNFS.sh &lt;itom-vol-claim&gt;</pre>
+</li>
+<li><p>Run the following commands to set up the Operations Bridge NFS share:</p>
+<p class="mw-empty-elt">
+</p><pre>./setupNFS.sh &lt;conf-volume&gt; 
+./setupNFS.sh &lt;db-volume&gt; 
+./setupNFS.sh &lt;log-volume&gt; 
+./setupNFS.sh &lt;obm-volume-0&gt; 
+./setupNFS.sh &lt;obm-volume-1&gt;
+./setupNFS.sh &lt;db-node1-vol&gt;
+./setupNFS.sh &lt;db-node2-vol&gt;
+./setupNFS.sh &lt;db-backup-vol&gt;
+</pre>
+<p class="mw-empty-elt"></p>
+<p>Replace <code>&lt;conf-volume&gt;</code>, <code>&lt;db-volume&gt;</code>, <code>&lt;log-volume&gt;</code>, <code>&lt;obm-volume-0&gt;</code> (optional), <code>&lt;<i>obm-volume-1</i>&gt;</code> (optional),  <code>&lt;db-node1-vol&gt;</code> (optional) and <code>&lt;db-backup-vol&gt;</code> with the directory names of your choice, located at <code>/var/vols/itom/</code>.  
+</p>
+</li><li>Restart the NFS service:
+<code>systemctl restart nfs </code>
+</li></ol><p>If you have missed adding any of the NFS shares, then you must restart the NFS service after adding the NFS shares.
+</p>
+<!-- 
+NewPP limit report
+Cached time: 20190714193546
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.028 seconds
+Real time usage: 0.047 seconds
+Preprocessor visited node count: 121/1000000
+Preprocessor generated node count: 282/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 2874/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:850386-0!canonical and timestamp 20190714193546 and revision id 1499528
+ -->
+</div>
