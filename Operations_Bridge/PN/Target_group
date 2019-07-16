@@ -1,0 +1,117 @@
+<h1 style="margin-bottom:0px;">Target group</h1><div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 26/06/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 2 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><p>Target Groups are used to group EC2 instance that are listening on the same port backend of the AWS load balancer. <br> <br>
+Target Groups should be created for the following ports
+</p>
+<a class="buttonfullscr" onclick="javascript:loadingTableButton(this);"><button class="flscrbtn"><i class="material-icons flscricn">open_in_new</i><div style="margin: auto 5px;">View Fullscreen</div></button></a><table>
+<tbody><tr>
+<th>Protocol
+</th>
+<th>Port
+</th>
+<th>Target Type
+</th>
+<th>Description
+</th></tr>
+<tr>
+<td>HTTPS
+</td>
+<td>443
+</td>
+<td>IP
+</td>
+<td>Access to OpsB portal by external clients (customizable)
+</td></tr>
+<tr>
+<td>HTTPS
+</td>
+<td>3000
+</td>
+<td>IP
+</td>
+<td>Access to the installation portal by external clients
+</td></tr>
+<tr>
+<td>HTTPS
+</td>
+<td>5443
+</td>
+<td>IP
+</td>
+<td>Access to the CDF management portal by external clients
+</td></tr>
+<tr>
+<td>TCP
+</td>
+<td>383
+</td>
+<td>IP
+</td>
+<td>secure communication between Operations Agent and OBM (BBC Channel)
+</td></tr>
+<tr>
+<td>TCP
+</td>
+<td>2380
+</td>
+<td>IP
+</td>
+<td>Etcd service port for etcd cluster communication
+</td></tr>
+<tr>
+<td>TCP
+</td>
+<td>4001
+</td>
+<td>IP
+</td>
+<td>Etcd service port for client connection
+</td></tr>
+<tr>
+<td>TCP
+</td>
+<td>8200
+</td>
+<td>IP
+</td>
+<td>Access to Vault port for client connection by all nodes
+</td></tr>
+<tr>
+<td>TCP
+</td>
+<td>8443
+</td>
+<td>IP
+</td>
+<td>Access to API server port for client connection by all nodes
+</td></tr></tbody></table>
+<ol><li>Create target group from the AWS console <br><a target="1" rel="nofollow" class="external free" href="https://console.aws.amazon.com/ec2/v2/home#TargetGroups">https://console.aws.amazon.com/ec2/v2/home#TargetGroups</a> <br><a onclick="javascript:loadingImage(this);" class="image"><img alt="OpsBridge 2019.02TG1.jpg" src="/mediawiki/images/e/ee/OpsBridge_2019.02TG1.jpg" width="368" height="111" data-file-width="368" data-file-height="111"></a></li>
+<li>Add a new target group with the following settings<br> <a onclick="javascript:loadingImage(this);" class="image"><img alt="OpsBridge 2019.02TG2.jpg" src="/mediawiki/images/8/89/OpsBridge_2019.02TG2.jpg" width="673" height="538" data-file-width="673" data-file-height="538"></a></li>
+<li>Create Target Groups for the ports in the table above. For the HTTPS Target Groups, set the Path to /healthz <br> <a onclick="javascript:loadingImage(this);" class="image"><img alt="OpsBridge 2019.02TG3.jpg" src="/mediawiki/images/e/e0/OpsBridge_2019.02TG3.jpg" width="664" height="600" data-file-width="664" data-file-height="600"></a></li>
+<li>From the AWS EC2 dashboard, locate the three instances that will host the Master nodes and get their IP addresses.</li>
+<li>Register the Master nodes to the Target Groups by selecting the Target Group and clicking Edit at the Targets tab.</li>
+<li>Register all three IP addresses for the Master nodes as follow <br> <a onclick="javascript:loadingImage(this);" class="image"><img alt="OpsBridge 2019.02TG4.jpg" src="/mediawiki/images/a/a1/OpsBridge_2019.02TG4.jpg" width="726" height="308" data-file-width="726" data-file-height="308"></a></li>
+<li>Repeat the registration for each of the Target Groups that were created.  <br> <b>Note: </b><br>If you need to monitor nodes in an external network (including a non-peered VPC) you need to add an additional target group for port 383 (e.g. itom-opsb-383-ext-tg) which need to be added to an additional internet-facing Network Load Balancer. You cannot add the same target group twice to a load </li></ol>
+
+<!-- 
+NewPP limit report
+Cached time: 20190714193754
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.028 seconds
+Real time usage: 0.056 seconds
+Preprocessor visited node count: 6/1000000
+Preprocessor generated node count: 20/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 0/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:850372-0!canonical and timestamp 20190714193754 and revision id 1507188
+ -->
+</div>
