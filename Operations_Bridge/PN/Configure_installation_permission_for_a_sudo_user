@@ -1,0 +1,65 @@
+<h1 style="margin-bottom:0px;">Configure installation permission for a sudo user</h1><div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 26/06/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 3 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><p><br>
+</p>
+<h2><span class="mw-headline" id="Configure_SUDO_access">Configure SUDO access</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/PrepareServer&amp;veaction=edit&amp;section=T-1" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=ITOM_Container_Deployment_Foundation:2019.02/PrepareServer&amp;action=edit&amp;section=T-1" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>You must use credentials with root user permissions to proceed with the installation. A root user can also grant installation permissions to the sudo user role.  
+</p>
+<p>To grant installation permissions to the sudo user role, perform the following steps on all master nodes and worker nodes:</p>
+<ol>
+<li>Log on to the node as the root user.
+</li>
+<li>Open the <code>/etc/sudoers</code> file with a supported editor, and then add the following lines to the end of the file.<br><br>
+<b>On the first master node:</b>
+<pre>Cmnd_Alias CDFINSTALL = &lt;CDF installation package folder&gt;/scripts/pre-check.sh,  &lt;CDF installation package folder&gt;/install, &lt;K8S_HOME&gt;/uninstall.sh, /usr/bin/kubectl, /usr/bin/docker, /usr/bin/mkdir, /bin/rm, /bin/su, /bin/chmod, /bin/tar, &lt;K8S_HOME&gt;/scripts/uploadimages.sh, /bin/chown, &lt;Path to downloadimages.sh_script&gt;/downloadimages.sh
+&lt;username&gt; ALL=NOPASSWD: CDFINSTALL
+Defaults:&lt;username&gt; !requiretty
+Defaults:root !requiretty  
+</pre><ul><li>Replace <code>&lt;<i>CDF installation package folder</i>&gt;</code> with the directory where you unzip the installation package. For example, <code>/tmp/ITOM_Suite_Foundation_2019.xx.0xxx</code>.</li>
+<li>Replace <code>&lt;<i>K8S_HOME</i>&gt;</code> with the path to the Kubernetes directory (typically, this is <code>/opt/kubernetes</code>). In a later installation step, you will add this value to the install.properties file.
+</li>
+<li>Replace <code>&lt;<i>Path to downloadimages.sh script</i>&gt;</code> with the path to the directory in which you will save the <code>downloadimages.sh</code> script.
+</li>
+<li>Replace <code>&lt;<i>username</i>&gt;</code> with the user name of the sudo user.
+</li></ul>
+<p><b>On all other master and worker nodes:</b>
+</p>
+<pre>Cmnd_Alias CDFINSTALL = &lt;temp_folder&gt;/pre-check.sh,  &lt;temp_folder&gt;/ITOM_Suite_Foundation_Node/install, &lt;K8S_home&gt;/uninstall.sh, /usr/bin/kubectl, /usr/bin/docker, /usr/bin/mkdir, /bin/rm, /bin/su, /bin/chmod, /bin/tar, &lt;K8S_home&gt;/scripts/uploadimages.sh, /bin/chown, &lt;Path to downloadimages.sh_script&gt;/downloadimages.sh
+&lt;username&gt; ALL=NOPASSWD: CDFINSTALL
+Defaults:&lt;username&gt; !requiretty
+Defaults:root !requiretty  </pre><ul><li>Replace <code>&lt;<i>temp_folder</i>&gt;</code> with the path to a temporary folder for the installation. In a later installation step, you will add this value to the install.properties file.</li>
+<li>Replace <code>&lt;<i>K8S_HOME</i>&gt;</code> with the path to the Kubernetes directory (typically, this is <code>/opt/kubernetes</code>). In a later installation step, you will add this value to the install.properties file.
+</li>
+<li>Replace <code>&lt;<i>Path to downloadimages.sh script</i>&gt;</code> with the path to the directory in which you will save the <code>downloadimages.sh</code> script.  
+</li>
+<li>Replace <code>&lt;<i>username</i>&gt;</code> with the user name of the sudo user.
+</li></ul></li>
+<li>If you need to add additional commands, append them to the <code>Cmnd_Alias CDFINSTALL</code> line.</li>
+<li>Locate the <code>secure_path</code> line and make sure that the <code>/sbin</code>, <code>/bin</code>, <code>/usr/sbin</code>, and <code>/usr/bin</code> paths are present, as shown below:
+<p><code>Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin</code></p>
+By doing this, the sudo user can run the: <code>showmount</code>, <code>curl</code>, <code>ifconfig</code>, and <code>unzip</code> commands when they install the product. If the sudo user receives a permission error when they run a command during the installation process, verify that the command has been added to the <code>sudoers</code> file. </li>
+The sudoers file might be overwritten by the configuration tools, such as puppet, chef, and ansible. Make sure the sudoers file contains all the configurations that grant the sudo user access.
+</ol>
+
+<!-- 
+NewPP limit report
+Cached time: 20190714193545
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.008 seconds
+Real time usage: 0.022 seconds
+Preprocessor visited node count: 108/1000000
+Preprocessor generated node count: 322/1000000
+Post‐expand include size: 2971/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 958/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:850388-0!canonical and timestamp 20190714193545 and revision id 1499533
+ -->
+</div>
