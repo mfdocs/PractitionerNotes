@@ -1,0 +1,35 @@
+<h1 style="margin-bottom:0px;">NAT gateway</h1><div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on 26/06/2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 1 minute to read</span>&nbsp;&nbsp;&nbsp;&nbsp;</div><br><div class="mw-parser-output"><p>Operations Bridge EC2 instances are running in private subnets and NAT gateway will enable these EC2 instances to perform operations that require Internet connection (for example, upgrading yum system, and accessing docker hub, external SMTP servers, and LDAP servers.) The NAT gateway requires an Elastic IP to associate and a public subnet to reside.&nbsp;
+</p>
+<h2><span class="mw-headline" id="Create_NAT_gateway">Create NAT gateway</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/NATGOpsB&amp;veaction=edit&amp;section=1" class="mw-editsection-visualeditor" title="Edit section: Create NAT gateway">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=Operations_Bridge:2019.05/NATGOpsB&amp;action=edit&amp;section=1" title="Edit section: Create NAT gateway">edit source</a><span class="mw-editsection-bracket">]</span></span></h2>
+<ol><li>Open the Amazon VPC console at&nbsp;<a target="1" rel="nofollow" class="external free" href="https://console.aws.amazon.com/vpc/home">https://console.aws.amazon.com/vpc/home</a>.</li>
+<li>From the VPC Dashboard, select NAT Gateways and click <b>Create NAT Gateway.</b><br> <a onclick="javascript:loadingImage(this);" class="image"><img alt="OpsBridge 2019..02NAT.jpg" src="/mediawiki/images/6/6b/OpsBridge_2019..02NAT.jpg" width="571" height="166" data-file-width="571" data-file-height="166"></a></li>
+<li>Select a Public Subnet and allocate an Elastic IP address <br>  <a onclick="javascript:loadingImage(this);" class="image"><img alt="OpsBridge 2019..02NAT1.jpg" src="/mediawiki/images/5/53/OpsBridge_2019..02NAT1.jpg" width="670" height="176" data-file-width="670" data-file-height="176"></a></li>
+<li>Click <b>Create a NAT Gateway</b>.</li>
+<li>Edit the Private Subnets Route Tables to provide a route to the Internet via the NAT Gateway. From the VPC Dashboard, select Route Tables and locate route table associated with the private subnets by checking the Subnet Associations tab. <br><a onclick="javascript:loadingImage(this);" class="image"><img alt="OpsBridge 2019..02NAT2.jpg" src="/mediawiki/images/9/99/OpsBridge_2019..02NAT2.jpg" width="768" height="763" data-file-width="768" data-file-height="763"></a> <br></li>
+<li>Select the <b>Routes</b> tab and add another route as shown in the example below:<br><a onclick="javascript:loadingImage(this);" class="image"><img alt="OpsBridge 2019..02NAT3.jpg" src="/mediawiki/images/7/7c/OpsBridge_2019..02NAT3.jpg" width="728" height="300" data-file-width="728" data-file-height="300"></a> <br></li>
+<li>Save the changes to the Route Table.</li></ol>
+
+<!-- 
+NewPP limit report
+Cached time: 20190714193624
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.016 seconds
+Real time usage: 0.050 seconds
+Preprocessor visited node count: 4/1000000
+Preprocessor generated node count: 16/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 0/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:850367-0!canonical and timestamp 20190714193624 and revision id 1507201
+ -->
+</div>
