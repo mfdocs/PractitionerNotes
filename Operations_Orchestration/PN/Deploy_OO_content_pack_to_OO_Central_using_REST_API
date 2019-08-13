@@ -1,1 +1,94 @@
-Usage of the script is described at the beginning of this script and functioning of this script is explained in comments throughout the script.
+&lt;p class="MsoNormal"&gt;Organizations are embracing DevOps practices that combine
+software development and information technology operations. DevOps practices
+shorten the systems development life cycle while delivering features, fixes and
+updates frequently in close alignment with business objectives. &amp;nbsp;Continuous integration and continuous
+deployment processes of DevOps includes the following activities:&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
+
+&lt;p class="MsoListParagraphCxSpFirst"&gt;&lt;ol&gt;&lt;li&gt;Development&lt;/li&gt;&lt;li&gt;Build&lt;/li&gt;&lt;li&gt;Deployment&lt;/li&gt;&lt;li&gt;Test&lt;/li&gt;&lt;/ol&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
+
+&lt;p class="MsoListParagraphCxSpMiddle"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
+
+&lt;p class="MsoListParagraphCxSpMiddle"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
+
+&lt;p class="MsoListParagraphCxSpLast"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
+
+&lt;p class="MsoNormal"&gt;&lt;b&gt;Development&lt;o:p&gt;&lt;/o:p&gt;&lt;/b&gt;&lt;/p&gt;
+
+&lt;p class="MsoNormal"&gt;Large enterprises running Micro Focus Operations Orchestration
+(OO) often have several OO developers and separate environments for
+development, test and production. OO developers develop OO content packs and
+commit their code changes to version control system. An OO content pack
+contains business intelligence to automate certain IT processes. OO content
+packs are developed using the OO studio application or the OO web designer
+application.&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
+
+&lt;p class="MsoNormal"&gt;&lt;b&gt;Build&lt;o:p&gt;&lt;/o:p&gt;&lt;/b&gt;&lt;/p&gt;
+
+&lt;p class="MsoNormal"&gt;After content pack code changes are committed to version
+control system, a new version of content pack is built using the OO Shell
+Authoring (OOSHA) utility. The OOSHA utility builds OO content pack using
+contents of a project folder downloaded from version control repository.&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
+
+&lt;p class="MsoNormal"&gt;&lt;b&gt;Deployment&lt;o:p&gt;&lt;/o:p&gt;&lt;/b&gt;&lt;/p&gt;
+
+&lt;p class="MsoNormal"&gt;After OO content pack is built, it needs to be deployed onto
+OO Central Application for testing and use in production environment. OO
+content pack is deployed onto OO Central Application in one of the following
+ways:&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
+
+&lt;p class="MsoListParagraphCxSpFirst"&gt;&lt;ol&gt;&lt;li&gt;Using OO Central UI’s deploy content pack
+feature. This method requires manual login to the OO Central server and cannot
+be used to deploy content packs in an automated fashion.&lt;/li&gt;&lt;li&gt;Using Operations Orchestration Shell (OOSH)
+utility. This method requires installation of additional piece of software.&lt;/li&gt;&lt;li&gt;Using OO REST API. A REST API is an
+application program interface (API) that uses HTTP requests to GET, PUT, POST
+and DELETE data in an application.&lt;/li&gt;&lt;/ol&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
+
+&lt;p class="MsoListParagraphCxSpMiddle"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
+
+&lt;p class="MsoListParagraphCxSpLast"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
+
+&lt;p class="MsoNormal"&gt;Either the OOSH utility or OO REST API can be used to deploy
+content packs in an automated fashion. Certain enterprises may prefer to use OO
+REST APIs to deploy content packs for the following reasons:&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
+
+&lt;p class="MsoListParagraphCxSpFirst"&gt;&lt;ol&gt;&lt;li&gt;Eliminate need to install an additional
+piece of software on their content build and deploy systems.&lt;/li&gt;&lt;li&gt;Integrate into existing deployment
+automation mechanisms. &lt;/li&gt;&lt;li&gt;Gain more control around automation of
+deployment of content packs to OO Central.&amp;nbsp;&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;
+
+&lt;p class="MsoNormal"&gt;&lt;b&gt;Test&lt;o:p&gt;&lt;/o:p&gt;&lt;/b&gt;&lt;/p&gt;
+
+&lt;p class="MsoNormal"&gt;After content pack has been deployed, testing of newly
+deployed content pack can be automated or done manually.&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
+
+&lt;p class="MsoNormal"&gt;This article shows a sample power shell script that can be
+used to automate deployment of OO content pack to OO Central Application.
+Intent of this script is to show how to invoke OO REST APIs to automate deployment
+of OO content packs to OO Central Application. This script can be further
+enhanced to perform additional checks required for your environment, to improve
+performance, to use as a reference to develop it in your preferred programming language,
+to use as a reference to make other OO REST API calls, etc. At a high level,
+this script performs the following:&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
+
+&lt;p class="MsoListParagraphCxSpFirst"&gt;&lt;ol&gt;&lt;li&gt;Validates the following input values: OO
+Central Application URL, OO Central username, OO Central user password, OO content
+pack name and OO content pack file&lt;/li&gt;&lt;li&gt;Retrieves cross reference token from OO
+Central Application URL&lt;/li&gt;&lt;li&gt;Uses cross reference token to deploy content
+pack to OO Central Application.&lt;/li&gt;&lt;/ol&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
+
+&lt;p class="MsoListParagraphCxSpMiddle"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
+
+&lt;p class="MsoListParagraphCxSpLast"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
+
+&lt;span style="font-size:11.0pt;line-height:107%;font-family:&amp;quot;Calibri&amp;quot;,sans-serif;
+mso-ascii-theme-font:minor-latin;mso-fareast-font-family:Calibri;mso-fareast-theme-font:
+minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:&amp;quot;Times New Roman&amp;quot;;
+mso-bidi-theme-font:minor-bidi;mso-ansi-language:EN-US;mso-fareast-language:
+EN-US;mso-bidi-language:AR-SA"&gt;Usage of the script is described at the
+beginning of this script and functioning of this script is explained in
+comments throughout the script.&lt;/span&gt;
+
+&lt;code&gt;
+Test &lt;br&gt;
+Hello &lt;br&gt;
+&lt;/code&gt;
