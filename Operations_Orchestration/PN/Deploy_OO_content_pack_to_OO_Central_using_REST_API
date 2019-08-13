@@ -1,101 +1,188 @@
-&lt;p class="MsoNormal"&gt;Organizations are embracing DevOps practices that combine
-software development and information technology operations. DevOps practices
-shorten the systems development life cycle while delivering features, fixes and
-updates frequently in close alignment with business objectives. &amp;nbsp;Continuous integration and continuous
-deployment processes of DevOps includes the following activities:&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
-
-&lt;p class="MsoListParagraphCxSpFirst"&gt;&lt;/p&gt;&lt;ol&gt;&lt;li&gt;Development&lt;/li&gt;&lt;li&gt;Build&lt;/li&gt;&lt;li&gt;Deployment&lt;/li&gt;&lt;li&gt;Test&lt;/li&gt;&lt;/ol&gt;&lt;div&gt;&lt;p class="MsoNormal"&gt;&lt;b&gt;Development&lt;o:p&gt;&lt;/o:p&gt;&lt;/b&gt;&lt;/p&gt;
-
-&lt;p class="MsoNormal"&gt;Large enterprises running Micro Focus Operations Orchestration
-(OO) often have several OO developers and separate environments for
-development, test and production. OO developers develop OO content packs and
-commit their code changes to version control system. An OO content pack
-contains business intelligence to automate certain IT processes. OO content
-packs are developed using the OO studio application or the OO web designer
-application.&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
-
-&lt;p class="MsoNormal"&gt;&lt;b&gt;Build&lt;o:p&gt;&lt;/o:p&gt;&lt;/b&gt;&lt;/p&gt;
-
-&lt;p class="MsoNormal"&gt;After content pack code changes are committed to version
-control system, a new version of content pack is built using the OO Shell
-Authoring (OOSHA) utility. The OOSHA utility builds OO content pack using
-contents of a project folder downloaded from version control repository.&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
-
-&lt;p class="MsoNormal"&gt;&lt;b&gt;Deployment&lt;o:p&gt;&lt;/o:p&gt;&lt;/b&gt;&lt;/p&gt;
-
-&lt;p class="MsoNormal"&gt;After OO content pack is built, it needs to be deployed onto
-OO Central Application for testing and use in production environment. OO
-content pack is deployed onto OO Central Application in one of the following
-ways:&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
-
-&lt;p class="MsoListParagraphCxSpFirst"&gt;&lt;/p&gt;&lt;ol&gt;&lt;li&gt;Using OO Central UI’s deploy content pack
-feature. This method requires manual login to the OO Central server and cannot
-be used to deploy content packs in an automated fashion.&lt;/li&gt;&lt;li&gt;Using Operations Orchestration Shell (OOSH)
-utility. This method requires installation of additional piece of software.&lt;/li&gt;&lt;li&gt;Using OO REST API. A REST API is an
-application program interface (API) that uses HTTP requests to GET, PUT, POST
-and DELETE data in an application.&lt;/li&gt;&lt;/ol&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;p&gt;&lt;/p&gt;
-
-&lt;p class="MsoListParagraphCxSpMiddle"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
-
-&lt;p class="MsoListParagraphCxSpLast"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
-
-&lt;p class="MsoNormal"&gt;Either the OOSH utility or OO REST API can be used to deploy
-content packs in an automated fashion. Certain enterprises may prefer to use OO
-REST APIs to deploy content packs for the following reasons:&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
-
-&lt;p class="MsoListParagraphCxSpFirst"&gt;&lt;/p&gt;&lt;ol&gt;&lt;li&gt;Eliminate need to install an additional
-piece of software on their content build and deploy systems.&lt;/li&gt;&lt;li&gt;Integrate into existing deployment
-automation mechanisms. &lt;/li&gt;&lt;li&gt;Gain more control around automation of
-deployment of content packs to OO Central.&lt;span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;"&gt;&amp;nbsp;&lt;/span&gt;&lt;/li&gt;&lt;/ol&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;p&gt;&lt;/p&gt;
-
-&lt;p class="MsoListParagraphCxSpMiddle"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
 
 
 
-&lt;p class="MsoNormal"&gt;&lt;b&gt;Test&lt;o:p&gt;&lt;/o:p&gt;&lt;/b&gt;&lt;/p&gt;
-
-&lt;p class="MsoNormal"&gt;After content pack has been deployed, testing of newly
-deployed content pack can be automated or done manually.&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
-
-&lt;p class="MsoNormal"&gt;This article shows a sample power shell script that can be
-used to automate deployment of OO content pack to OO Central Application.
-Intent of this script is to show how to invoke OO REST APIs to automate deployment
-of OO content packs to OO Central Application. This script can be further
-enhanced to perform additional checks required for your environment, to improve
-performance, to use as a reference to develop it in your preferred programming language,
-to use as a reference to make other OO REST API calls, etc. At a high level,
-this script performs the following:&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
-
-&lt;p class="MsoListParagraphCxSpFirst"&gt;&lt;/p&gt;&lt;ol&gt;&lt;li&gt;Validates the following input values: OO
-Central Application URL, OO Central username, OO Central user password, OO content
-pack name and OO content pack file&lt;/li&gt;&lt;li&gt;Retrieves cross reference token from OO
-Central Application URL&lt;/li&gt;&lt;li&gt;&lt;span style="font-size:11.0pt;line-height:107%;font-family:&amp;quot;Calibri&amp;quot;,sans-serif;
-mso-ascii-theme-font:minor-latin;mso-fareast-font-family:Calibri;mso-fareast-theme-font:
-minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:&amp;quot;Times New Roman&amp;quot;;
-mso-bidi-theme-font:minor-bidi;mso-ansi-language:EN-US;mso-fareast-language:
-EN-US;mso-bidi-language:AR-SA"&gt;Uses cross reference token to deploy content
-pack to OO Central Application.&lt;/span&gt;&lt;/li&gt;&lt;/ol&gt;&lt;div&gt;&lt;span style="font-size:11.0pt;line-height:107%;
-font-family:&amp;quot;Calibri&amp;quot;,sans-serif;mso-ascii-theme-font:minor-latin;mso-fareast-font-family:
-Calibri;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:minor-latin;
-mso-bidi-font-family:&amp;quot;Times New Roman&amp;quot;;mso-bidi-theme-font:minor-bidi;
-mso-ansi-language:EN-US;mso-fareast-language:EN-US;mso-bidi-language:AR-SA"&gt;Usage
-of the script is described at the beginning of this script and functioning of
-this script is explained in comments throughout the script.&lt;/span&gt;&lt;font face="Calibri, sans-serif"&gt;&lt;span style="font-size: 14.6667px;"&gt;&lt;br&gt;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;p&gt;&lt;/p&gt;
-
-&lt;p class="MsoListParagraphCxSpLast"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
-
-&lt;/div&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;p&gt;&lt;/p&gt;
-
-&lt;p class="MsoListParagraphCxSpMiddle"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
-
-&lt;p class="MsoListParagraphCxSpMiddle"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
-
-&lt;p class="MsoListParagraphCxSpLast"&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/p&gt;
-
-&lt;code&gt;
-Hello &lt;br&gt;
-ABC &lt;br&gt;
-
-&lt;/code&gt;
+<div><code><p class="MsoListParagraphCxSpFirst"></p><pre><font size="1"><br></font></pre><o:p></o:p><p></p><p class="MsoListParagraphCxSpMiddle"><o:p></o:p></p><p class="MsoListParagraphCxSpLast"><o:p></o:p></p><p class="MsoNormal"><br></p></code></div><code>
+# File name: OODeployCP.ps1 <br>
+# <br>
+# Purpose: 1. Deploys a content pack to OO Central application using OO  <br>
+#             Central REST APIs.   <br>
+#          2. This script is meant to be taken as an example. Enhance this <br>
+#             script to meet your organization's coding standards. <br>
+#          3. Even though script is in powershell, you can use similar  <br>
+#             concepts to write this program in other languages. <br>
+#          4. Use as-is. Not officially supported through Micro Focus. <br>
+# <br>
+# Limitations: 1. Does not use proxy. If your environment requires proxy to  <br>
+#                 connect to the OO Central Application, enhance this script <br>
+#                 to accomodate web requests through proxy.  <br>
+# <br>
+# Usage: 1. Runs on Windows OS and it requires Windows Powershell on the <br>
+#           operating system. Copy this script to a directory on the windows <br>
+#           server/workstation/laptop. <br>
+#        2. Open powershell window  <br>
+#        3. Run Get-Help .\OODeployCP.ps1 to get a list of parameters that <br>
+#           needs to be passed. <br>
+#        4. Sample usage: .\OODeployCP.ps1 -OOCentralURL  <br>
+#                         https://<oocentralhostname>:<port>/oo -UserName  <br>
+#                         admin -Passwd 123 -ContentPackName NAS – <br>
+#                         PathToContentPackJarFile C:\temp\NAS-1.0.0.jar <br>
+#        5. Parameter explanation: <br>
+#           OOCentralURL: URL to access OO Central UI. This URL can be either <br>
+#                         http or https depending on how OO is setup in your  <br>
+#                         environment. <br>
+#           UserName: OO central username that has privileges to deploy OO <br>
+#                     content pack. <br>
+#           Password: Password for the user to login to OO Central  <br>
+#                     Application. <br>
+#           ContentPackName: Any meaningful name for the content that you  <br>
+#                            are deploying to OO <br>
+#           PathToContentPackJarFile: Full path to the OO content pack jar <br>
+#                                     file.  <br>
+ <br>
+ <br>
+# Validate input parameters for NULL, empty and mandatory conditions. <br>
+param ( <br>
+    [Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$OOCentralURL, <br>
+    [Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$UserName, <br>
+    [Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$Passwd, <br>
+    [Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$ContentPackName, <br>
+    [Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$PathToContentPackJarFile     <br>
+) <br>
+ <br>
+ <br>
+# Returns true if supplied object and/or string is NULL or empty <br>
+function IsNull($object) { <br>
+    if ($object -eq $null) { <br>
+        return $true <br>
+    } <br>
+ <br>
+    if ($object -is [String] -and $object -eq [String]::Empty) { <br>
+        return $true <br>
+    } <br>
+    return $false <br>
+} <br>
+ <br>
+# Validate format of supplied OO Central URL <br>
+$uri = $OOCentralURL -as [System.URI] <br>
+if (-Not (($uri.AbsoluteURI -ne $null) -and ($uri.Scheme -eq 'http' -or $uri.Scheme -eq 'https') -and ($uri.AbsoluteURI.Substring($uri.AbsoluteURI.Length - 3) -eq '/oo') ) ){ <br>
+    throw 'The supplied OO central URL: ' + '"' + $OOCentralURL + '"' + ' is invalid. Format of OO Central URLs are https://<oocentralfqdnorip>:<port>/oo or http://<oocentralfqdnorip>:<port>/oo' <br>
+} <br>
+ <br>
+# Trusts all certificates including self-signed root certificates <br>
+# generated by OO <br>
+add-type @" <br>
+    using System.Net; <br>
+    using System.Security.Cryptography.X509Certificates; <br>
+    public class TrustAllCertsPolicy : ICertificatePolicy { <br>
+        public bool CheckValidationResult( <br>
+            ServicePoint srvPoint, X509Certificate certificate, <br>
+            WebRequest request, int certificateProblem) { <br>
+            return true; <br>
+        } <br>
+    } <br>
+"@ <br>
+[System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy <br>
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Ssl3, [Net.SecurityProtocolType]::Tls, [Net.SecurityProtocolType]::Tls11, [Net.SecurityProtocolType]::Tls12 <br>
+ <br>
+# Validates supplied OO content pack jar file  <br>
+if ( -not (Test-Path "$PathToContentPackJarFile")) { <br>
+    throw 'File ' + $PathToContentPackJarFile + ' Does not exist' <br>
+}   <br>
+elseif (-not (Test-Path "$PathToContentPackJarFile" -PathType Leaf)){ <br>
+    throw $PathToContentPackJarFile + ' is not a file' <br>
+} <br>
+elseif (($PathToContentPackJarFile.Substring($PathToContentPackJarFile.Length - 4)) -ne '.jar'){ <br>
+    throw $PathToContentPackJarFile + ' does not have .jar extension' <br>
+}  <br>
+ <br>
+# Create authorization header value using supplied OO Central user name  <br>
+# and password. This authorization header value would be used in REST API  <br>
+# calls to OO Central Application. <br>
+ <br>
+$AuthPlainText = $UserName + ':' + $Passwd <br>
+$AuthPlainTextBytes = [System.Text.Encoding]::UTF8.GetBytes($AuthPlainText) <br>
+$AuthEncodedText =[System.Convert]::ToBase64String($AuthPlainTextBytes) <br>
+$AuthHeaderValue = "Basic $AuthEncodedText" <br>
+ <br>
+# OO requires cross reference token to be able to perform  <br>
+# create, delete or update operations. <br>
+# Cross reference token from OO can be obtained by making a  <br>
+# GET REST API call to any one of the valid OO REST URIs. <br>
+# Make a GET REST API call to OO and store session information. <br>
+ <br>
+$GetRequestURL = $OOCentralURL + '/rest/v2/version' <br>
+try{ <br>
+    $GetReqWebResponse = Invoke-WebRequest -Method Get -Uri $GetRequestURL -Headers @{ 'Authorization' = $AuthHeaderValue  } -SessionVariable 'WebSession' <br>
+} <br>
+catch{ <br>
+    If (IsNull($GetReqWebResponse)) { <br>
+        throw $($PSItem.ToString())  <br>
+    } <br>
+    else { <br>
+        throw 'Response code is ' + $GetReqWebResponse.StatusCode + $($PSItem.ToString()) <br>
+    } <br>
+} <br>
+ <br>
+If (IsNull($WebSession)) { <br>
+    throw 'Cannot open web session to the OO Central Application' <br>
+} <br>
+ <br>
+# Retrieve cross reference token cookie value from the web session <br>
+# that was opened in GET call previously. <br>
+ <br>
+$Cookies = $WebSession.Cookies.GetCookies($GetRequestURL)  <br>
+ <br>
+If (IsNull($Cookies)) { <br>
+    throw 'Unable to retrieve cookies from GET request to OO Central Application' <br>
+} <br>
+ <br>
+foreach ($cookie in $Cookies) {  <br>
+      if ($($cookie.name) -eq "X-CSRF-TOKEN-OO") { <br>
+        $xcsrfToken = $($cookie.value) <br>
+        break;         <br>
+     }      <br>
+} <br>
+ <br>
+If (IsNull($xcsrfToken)) { <br>
+    throw 'X-CSRF-TOKEN-OO cookie is null or empty' <br>
+} <br>
+ <br>
+# Construct OO deployment URI using the supplied content pack name <br>
+$deployURL = $OOCentralURL + '/rest/v2/content-packs/' + $ContentPackName <br>
+ <br>
+# Form request headers to be used in a PUT call to deploy  <br>
+# content pack to OO Central Application. <br>
+$headers = @{ <br>
+    'Content-Type' = 'application/octet-stream' <br>
+    'accept' = 'application/json' <br>
+    'Authorization' = $AuthHeaderValue <br>
+    'X-CSRF-TOKEN' = $xcsrfToken <br>
+} <br>
+ <br>
+# OO deploy content pack API requires that entire request body <br>
+# consist of content of "OO content pack" jar file <br>
+$ooContentPackBytes = [System.IO.File]::ReadAllBytes($PathToContentPackJarFile) <br>
+ <br>
+# Deploy OO Content Pack to OO Central Server by making a  <br>
+# PUT REST API call to OO <br>
+try{ <br>
+    $PutReqWebResponse = Invoke-WebRequest -Method Put -Uri $deployURL -Headers $headers -Body $ooContentPackBytes -WebSession $WebSession   <br>
+} <br>
+catch{ <br>
+    # Something went wrong <br>
+	If (IsNull($PutReqWebResponse)) { <br>
+        throw $($PSItem.ToString())  <br>
+    } <br>
+    else { <br>
+        throw 'Response code is ' + $PutReqWebResponse.StatusCode + $($PSItem.ToString()) <br>
+    }     <br>
+} <br>
+ <br>
+# Display response message from deploy content pack request to OO <br>
+If (-Not (IsNull($PutReqWebResponse))){ <br>
+    $JSONResponse = ConvertFrom-Json -InputObject $PutReqWebResponse.Content <br>
+    Write-Host 'Response code: '$PutReqWebResponse.StatusCode ':'$JSONResponse.contentPackResponses."$ContentPackName.jar".responses.message <br>
+} <br>
+</port></oocentralfqdnorip></port></oocentralfqdnorip></port></oocentralhostname></code>
 
 
