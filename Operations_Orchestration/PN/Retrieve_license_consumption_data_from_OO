@@ -129,7 +129,7 @@ If (-Not (IsNull($GetReqWebResponse))){
     $OrchestratedNodes = ConvertFrom-Json -InputObject $GetReqWebResponse.Content
     Write-Host 'Total number of nodes orchestrated by OO: '$OrchestratedNodes.length
 	$OrchestratedNodes | Select-Object -Property target, count | Export-CSV $outCSVFile -NoTypeInformation
-	Write-Host 'Information about nodes orchestrated by OO has been made available at the following file' $outCSVFile
+	Write-Host 'Information about nodes orchestrated by OO has been made available in the following file' $outCSVFile
 }
 else
 {
