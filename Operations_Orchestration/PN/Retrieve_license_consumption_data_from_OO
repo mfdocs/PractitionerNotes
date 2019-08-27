@@ -100,14 +100,13 @@ $pageSize = 100000000
 
 $headers = @{
     'accept' = 'application/json'
-    'Authorization' = $AuthHeaderValue
-    'pageSize' = $pageSize
+    'Authorization' = $AuthHeaderValue    
 }
 
 
 # Make a REST API call to OO to retrieve orchestrated node information
 
-$GetRequestURL = $OOCentralURL + '/rest/v2/targets/all'
+$GetRequestURL = $OOCentralURL + "/rest/v2/targets/all?pageSize=$pageSize"
 try{
     $GetReqWebResponse = Invoke-WebRequest -Method Get -Uri $GetRequestURL -Headers $headers -SessionVariable 'WebSession'
 }
@@ -134,4 +133,4 @@ If (-Not (IsNull($GetReqWebResponse))){
 else
 {
 	Write-Host 'OO Central Application returned a NULL response'
-}<br></pre><p><br></p>
+}<br></pre>
