@@ -1,1 +1,1356 @@
- 
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 23pt; font-family: MicrosoftSansSerif;">Overview of Node Resolution<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: ArialMT;">A node can
+have a single or multiple network interfaces. IP address associated with<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: ArialMT;">each
+network interface may have a host name. HPE Operations Agent selects the host<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: ArialMT;">name using
+the operating system specific APIs based on system configuration<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: ArialMT;">(example,
+gethostname /getaddrinfo /getnameinfo). It automatically configures OPC_<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: ArialMT;">NODENAME
+parameter that provides the value of the local host name used by the HPE<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: ArialMT;">Operations
+Agent. OPC_NODENAME is an internal parameter and you cannot<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: ArialMT;">configure
+it. When a node has multiple IP addresses or host names, you can overwrite<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: ArialMT;">the
+default configuration by setting OPC_IP_ADDRESS to a specific IP address. The<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: ArialMT;">host name
+associated with the specified IP address is assigned to OPC_NODENAME.<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: ArialMT;">In case
+the IP address is not associated to a host name, you can configure OPC_<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: ArialMT;">NAMESRV_LOCAL_NAME
+to a specific host name. You can use the LOCAL_NODE_<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: ArialMT;">NAME
+variable available under the </span><span style="font-size:12.0pt;font-family:
+Consolas;color:#333333">xpl.net </span><span style="font-size: 12pt; font-family: ArialMT;">namespace to
+overwrite the local node<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: ArialMT;">name of
+the system. The defined values of OPC_NODENAME, OPC_IP_ADDRESS<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: ArialMT;">and
+LOCAL_NODE_NAME are used to determine several variables in policy. The<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: ArialMT;">message
+variables are as follows:<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 6pt; font-family: Wingdings-Regular;">l </span><span style="font-size: 12pt; font-family: ArialMT;">&lt;$MSG_GEN_NODE&gt;: Returns the IP
+address of the node that sends the message.<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 6pt; font-family: Wingdings-Regular;">l </span><span style="font-size: 12pt; font-family: ArialMT;">&lt;$MSG_GEN_NODE_NAME&gt;: Returns
+the host name of the node that sends the<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: ArialMT;">message.<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 6pt; font-family: Wingdings-Regular;">l </span><span style="font-size: 12pt; font-family: ArialMT;">&lt;$MSG_NODE&gt;: Returns the IP
+address of the node on which the original event took<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 12pt; font-family: ArialMT;">place.<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;mso-layout-grid-align:none;text-autospace:none"><span style="font-size: 6pt; font-family: Wingdings-Regular;">l </span><span style="font-size: 12pt; font-family: ArialMT;">&lt;$MSG_NODE_NAME&gt;: Returns the
+host name of the node on which the original<o:p></o:p></span></p>
+
+<p class="MsoNormal"><span style="font-size: 12pt; line-height: 107%; font-family: ArialMT;">event took place.</span><o:p></o:p></p>
+
+<p class="MsoNormal"><o:p>&nbsp;</o:p></p><p class="MsoNormal"><o:p></o:p></p><table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" align="left" width="0" style="border-left: none; margin-left: 0.1in; margin-right: 0.1in;">
+ <tbody><tr>
+  <td width="749" valign="top" style="width: 513pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; background: rgb(242, 242, 242); padding: 0in 5.4pt;">
+  <h2><a name="_Toc491176812">OPC_IP_ADDRESS</a><span class="LabelChar"><span style="font-size:10.0pt;mso-bidi-font-size:13.0pt;line-height:107%;
+  font-weight:normal"><o:p></o:p></span></span></h2>
+  </td>
+ </tr>
+ <tr>
+  <td width="749" valign="top" style="width: 513pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+   <tbody><tr>
+    <td width="230" valign="top" style="width: 172.25pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size:12.0pt">Type</span><span style="font-size:12.0pt;
+    color:black"><o:p></o:p></span></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: black; border-right-color: black; border-bottom-color: black; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; color: rgb(46, 116, 181);">Bool<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size:12.0pt">Default Value<o:p></o:p></span></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; color: rgb(46, 116, 181);">FALSE<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size:12.0pt">Class of the variable<o:p></o:p></span></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; color: rgb(46, 116, 181);">&nbsp;</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size:12.0pt">Namespace <o:p></o:p></span></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; color: rgb(46, 116, 181);">Eaagt<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;
+    line-height:normal;mso-element:frame;mso-element-frame-hspace:9.0pt;
+    mso-element-wrap:around;mso-element-anchor-horizontal:margin;mso-element-left:
+    9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><b><span style="font-size:12.0pt;
+    font-family:&quot;Calibri Light&quot;,sans-serif;mso-ascii-theme-font:major-latin;
+    mso-fareast-font-family:Calibri;mso-hansi-theme-font:major-latin;
+    mso-bidi-font-family:&quot;Times New Roman&quot;">Restart Required<o:p></o:p></span></b></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; color: rgb(46, 116, 181);">No<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;
+    line-height:normal;mso-element:frame;mso-element-frame-hspace:9.0pt;
+    mso-element-wrap:around;mso-element-anchor-horizontal:margin;mso-element-left:
+    9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><b><span style="font-size:12.0pt;
+    font-family:&quot;Calibri Light&quot;,sans-serif;mso-ascii-theme-font:major-latin;
+    mso-fareast-font-family:Calibri;mso-hansi-theme-font:major-latin;
+    mso-bidi-font-family:&quot;Times New Roman&quot;">I<span style="color:black">ntroduced
+    since</span>&nbsp; <o:p></o:p></span></b></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; color: rgb(46, 116, 181);">&nbsp;</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;
+    line-height:normal;mso-element:frame;mso-element-frame-hspace:9.0pt;
+    mso-element-wrap:around;mso-element-anchor-horizontal:margin;mso-element-left:
+    9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><b><span style="font-size:12.0pt;
+    font-family:&quot;Calibri Light&quot;,sans-serif;mso-ascii-theme-font:major-latin;
+    mso-fareast-font-family:Calibri;mso-hansi-theme-font:major-latin;
+    mso-bidi-font-family:&quot;Times New Roman&quot;">Applicable&nbsp; Platforms<o:p></o:p></span></b></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; color: rgb(46, 116, 181);">All<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;
+    line-height:normal;mso-element:frame;mso-element-frame-hspace:9.0pt;
+    mso-element-wrap:around;mso-element-anchor-horizontal:margin;mso-element-left:
+    9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><b><span style="font-size:12.0pt;
+    font-family:&quot;Calibri Light&quot;,sans-serif;mso-ascii-theme-font:major-latin;
+    mso-fareast-font-family:Calibri;mso-hansi-theme-font:major-latin;
+    mso-bidi-font-family:&quot;Times New Roman&quot;">Related variables<o:p></o:p></span></b></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;
+    line-height:normal"><span style="mso-bidi-font-size:10.0pt;font-family:
+    &quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:Calibri;color:#2E74B5;
+    mso-themecolor:accent1;mso-themeshade:191">OPC_NODENAME, LOCAL_NODE_NAME</span><span style="mso-bidi-font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+    &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+    color:#2E74B5;mso-themecolor:accent1;mso-themeshade:191"><o:p></o:p></span></p>
+    </td>
+   </tr>
+  </tbody></table>
+  </td>
+ </tr>
+ <tr>
+  <td width="749" valign="top" style="width: 513pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; background: rgb(242, 242, 242); padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt">Short description</span><span style="font-size:12.0pt;
+  mso-bidi-font-family:Arial"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:3;height:40.9pt">
+  <td width="749" valign="top" style="width: 513pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 40.9pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">The value of this variable specifies the IP addresses of the
+  managed node. If the agent is installed on a<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">node in a Network Address Translation (NAT) environment, make
+  sure the value of this variable on the<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">node is identical with the IP address used in the HPOM console
+  while adding the node.<o:p></o:p></span></p>
+  <pre><span style="font-family:
+  &quot;Calibri&quot;,sans-serif;mso-bidi-font-family:&quot;Times New Roman&quot;;color:#262626;
+  mso-ansi-language:EN-US;mso-fareast-language:EN-US"><o:p>&nbsp;</o:p></span></pre><pre><span style="font-family:
+  &quot;Calibri&quot;,sans-serif;mso-bidi-font-family:&quot;Times New Roman&quot;;color:#262626;
+  mso-ansi-language:EN-US;mso-fareast-language:EN-US"><o:p>&nbsp;</o:p></span></pre></td>
+ </tr>
+ <tr>
+  <td width="749" valign="top" style="width: 513pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; background: rgb(242, 242, 242); padding: 0in 5.4pt;">
+  <p class="Details"><b>Long description</b><span class="DetailsChar"><b><span style="font-size:12.0pt;font-family:&quot;Calibri Light&quot;,sans-serif;mso-ascii-theme-font:
+  major-latin;mso-hansi-theme-font:major-latin;mso-bidi-font-family:Arial"><o:p></o:p></span></b></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:5;mso-yfti-lastrow:yes;height:31.0pt">
+  <td width="749" valign="top" style="width: 513pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 31pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">A node can have a single or multiple network interfaces. IP
+  address associated with each network interface may have a host name. HPE
+  Operations Agent selects the host name using the operating system specific
+  APIs based on system configuration (example, gethostname /getaddrinfo
+  /getnameinfo). It automatically configures OPC_NODENAME parameter that
+  provides the value of the local host name used by the HPE Operations Agent. OPC_NODENAME
+  is an internal parameter and you cannot configure it. When a node has
+  multiple IP addresses or host names, you can overwrite the default
+  configuration by setting OPC_IP_ADDRESS to a specific IP address. The host
+  name associated with the specified IP address is assigned to OPC_NODENAME. <o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626"><o:p>&nbsp;</o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">In case the IP address is not associated to a host name, you
+  can configure OPC_NAMESRV_LOCAL_NAME to a specific host name. You can use the
+  LOCAL_NODE_NAME variable available under the xpl.net namespace to overwrite
+  the local nodename of the system. The defined values of OPC_NODENAME,
+  OPC_IP_ADDRESS and LOCAL_NODE_NAME are used to determine several variables in
+  policy. The message variables are as follows:<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626"><o:p>&nbsp;</o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">&lt;$MSG_GEN_NODE&gt;: Returns the IP address of the node that
+  sends the message.<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">&lt;$MSG_GEN_NODE_NAME&gt;: Returns the host name of the node
+  that sends the<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">message.<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">&lt;$MSG_NODE&gt;: Returns the IP address of the node on which
+  the original event took<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">place.<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">&lt;$MSG_NODE_NAME&gt;: Returns the host name of the node on
+  which the original<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-top:2.0pt;margin-right:0in;margin-bottom:
+  2.0pt;margin-left:0in;text-autospace:none;mso-element:frame;mso-element-frame-hspace:
+  9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:margin;
+  mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;line-height:107%;mso-ascii-font-family:Calibri;
+  mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+  mso-bidi-font-family:&quot;Times New Roman&quot;;color:#262626">event took place.<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-top:2.0pt;margin-right:0in;margin-bottom:
+  2.0pt;margin-left:0in;text-autospace:none;mso-element:frame;mso-element-frame-hspace:
+  9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:margin;
+  mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;line-height:107%;mso-ascii-font-family:Calibri;
+  mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+  mso-bidi-font-family:&quot;Times New Roman&quot;;color:#262626"><o:p>&nbsp;</o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">Following are the IP addresses and host names in a multiple
+  network interface<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">environment:<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">IP1 abc.test.com abc<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">IP2 xyz.test.com xyz<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">where IP1 and IP2 are the two different IP addresses.<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">abc.test.com and xyz.test.com are the Fully Qualified Domain
+  Names (FQDN).<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-top:2.0pt;margin-right:0in;margin-bottom:
+  2.0pt;margin-left:0in;text-autospace:none;mso-element:frame;mso-element-frame-hspace:
+  9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:margin;
+  mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;line-height:107%;mso-ascii-font-family:Calibri;
+  mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+  mso-bidi-font-family:&quot;Times New Roman&quot;;color:#262626">abc and xyz are the
+  host names.<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">xyz is the host name of the local system.<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626"><o:p>&nbsp;</o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">The two parameters OPC_NODENAME, &lt;$MSG_GEN_NODE_NAME&gt;
+  automatically<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">set the FQDN value to xyz.test.com and &lt;$MSG_GEN_NODE&gt;
+  parameter automatically<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">sets the IP address to IP2. These configurations happen by
+  default because xyz is the<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">host name of the local system.<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">Choose to configure a different IP address (such as IP1) using
+  the following command:<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">ovconfchg –ns eaagt –set OPC_IP_ADDRESS IP1<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">As a result of this configuration, the parameters OPC_NODENAME
+  and &lt;$MSG_GEN_NODE_NAME&gt; will set the FQDN value to abc.test.com.
+  &lt;$MSG_GEN_NODE&gt; will set the IP address to IP1<o:p></o:p></span></p>
+  <p class="HPBullet10pt" style="text-indent:0in;mso-list:none;tab-stops:9.35pt;
+  mso-element:frame;mso-element-frame-hspace:9.0pt;mso-element-wrap:around;
+  mso-element-anchor-horizontal:margin;mso-element-left:9.0pt;mso-element-top:
+  -38.25pt;mso-height-rule:exactly"><span style="font-family:&quot;Calibri&quot;,sans-serif;
+  color:#262626">For more information, refer to the section ‘Overview of Node
+  Resolution’ in Operations Agent User Guide<o:p></o:p></span></p>
+  <p class="HPBullet10pt" style="text-indent:0in;mso-list:none;tab-stops:9.35pt;
+  mso-element:frame;mso-element-frame-hspace:9.0pt;mso-element-wrap:around;
+  mso-element-anchor-horizontal:margin;mso-element-left:9.0pt;mso-element-top:
+  -38.25pt;mso-height-rule:exactly"><span style="font-family:&quot;Calibri&quot;,sans-serif;
+  color:#262626">&nbsp;</span></p>
+  <p class="MsoNormal" style="margin-top:2.0pt;margin-right:0in;margin-bottom:
+  2.0pt;margin-left:0in;text-autospace:none;mso-element:frame;mso-element-frame-hspace:
+  9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:margin;
+  mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span class="DetailsChar"><span style="font-size: 12pt; line-height: 107%; font-family: &quot;Calibri Light&quot;, sans-serif; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><o:p>&nbsp;</o:p></span></span></p>
+  <p class="MsoNormal" style="margin-top:2.0pt;margin-right:0in;margin-bottom:
+  2.0pt;margin-left:0in;text-autospace:none;mso-element:frame;mso-element-frame-hspace:
+  9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:margin;
+  mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span class="DetailsChar"><span style="font-size: 12pt; line-height: 107%; font-family: &quot;Calibri Light&quot;, sans-serif; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><o:p>&nbsp;</o:p></span></span></p>
+  <p class="MsoNormal" style="margin-top:2.0pt;margin-right:0in;margin-bottom:
+  2.0pt;margin-left:0in;text-autospace:none;mso-element:frame;mso-element-frame-hspace:
+  9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:margin;
+  mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span class="DetailsChar"><span style="font-size: 12pt; line-height: 107%; font-family: &quot;Calibri Light&quot;, sans-serif; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><o:p>&nbsp;</o:p></span></span></p><table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" align="left" width="0" style="border-left: none; margin-left: 0.1in; margin-right: 0.1in;">
+ <tbody><tr>
+  <td width="749" valign="top" style="width: 513pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; background: rgb(242, 242, 242); padding: 0in 5.4pt;">
+  <h2><a name="_Toc491176813">OPC_NODENAME</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="LabelChar"><span style="font-size:10.0pt;mso-bidi-font-size:13.0pt;
+  line-height:107%;font-weight:normal"><o:p></o:p></span></span></h2>
+  </td>
+ </tr>
+ <tr>
+  <td width="749" valign="top" style="width: 513pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+   <tbody><tr>
+    <td width="230" valign="top" style="width: 172.25pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size:12.0pt">Type</span><span style="font-size:12.0pt;
+    color:black"><o:p></o:p></span></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: black; border-right-color: black; border-bottom-color: black; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; color: rgb(46, 116, 181);">Bool<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size:12.0pt">Default Value<o:p></o:p></span></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; color: rgb(46, 116, 181);">FALSE<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size:12.0pt">Class of the variable<o:p></o:p></span></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; color: rgb(46, 116, 181);">&nbsp;</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size:12.0pt">Namespace <o:p></o:p></span></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; color: rgb(46, 116, 181);">Eaagt<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;
+    line-height:normal;mso-element:frame;mso-element-frame-hspace:9.0pt;
+    mso-element-wrap:around;mso-element-anchor-horizontal:margin;mso-element-left:
+    9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><b><span style="font-size:12.0pt;
+    font-family:&quot;Calibri Light&quot;,sans-serif;mso-ascii-theme-font:major-latin;
+    mso-fareast-font-family:Calibri;mso-hansi-theme-font:major-latin;
+    mso-bidi-font-family:&quot;Times New Roman&quot;">Restart Required<o:p></o:p></span></b></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; color: rgb(46, 116, 181);">No<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;
+    line-height:normal;mso-element:frame;mso-element-frame-hspace:9.0pt;
+    mso-element-wrap:around;mso-element-anchor-horizontal:margin;mso-element-left:
+    9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><b><span style="font-size:12.0pt;
+    font-family:&quot;Calibri Light&quot;,sans-serif;mso-ascii-theme-font:major-latin;
+    mso-fareast-font-family:Calibri;mso-hansi-theme-font:major-latin;
+    mso-bidi-font-family:&quot;Times New Roman&quot;">I<span style="color:black">ntroduced
+    since</span>&nbsp; <o:p></o:p></span></b></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; color: rgb(46, 116, 181);">&nbsp;</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;
+    line-height:normal;mso-element:frame;mso-element-frame-hspace:9.0pt;
+    mso-element-wrap:around;mso-element-anchor-horizontal:margin;mso-element-left:
+    9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><b><span style="font-size:12.0pt;
+    font-family:&quot;Calibri Light&quot;,sans-serif;mso-ascii-theme-font:major-latin;
+    mso-fareast-font-family:Calibri;mso-hansi-theme-font:major-latin;
+    mso-bidi-font-family:&quot;Times New Roman&quot;">Applicable&nbsp; Platforms<o:p></o:p></span></b></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; color: rgb(46, 116, 181);">All<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;
+    line-height:normal;mso-element:frame;mso-element-frame-hspace:9.0pt;
+    mso-element-wrap:around;mso-element-anchor-horizontal:margin;mso-element-left:
+    9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><b><span style="font-size:12.0pt;
+    font-family:&quot;Calibri Light&quot;,sans-serif;mso-ascii-theme-font:major-latin;
+    mso-fareast-font-family:Calibri;mso-hansi-theme-font:major-latin;
+    mso-bidi-font-family:&quot;Times New Roman&quot;">Related variables<o:p></o:p></span></b></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;
+    line-height:normal"><span style="mso-bidi-font-size:10.0pt;font-family:
+    &quot;Segoe UI&quot;,sans-serif;color:#2E74B5;mso-themecolor:accent1;mso-themeshade:
+    191">OPC_IP_ADDRESS, OPC_NAMESRV_LOCAL_NAME</span><span style="mso-bidi-font-size:
+    10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;
+    mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+    color:#2E74B5;mso-themecolor:accent1;mso-themeshade:191"><o:p></o:p></span></p>
+    </td>
+   </tr>
+  </tbody></table>
+  </td>
+ </tr>
+ <tr>
+  <td width="749" valign="top" style="width: 513pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; background: rgb(242, 242, 242); padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt">Short description</span><span style="font-size:12.0pt;
+  mso-bidi-font-family:Arial"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:3;height:40.9pt">
+  <td width="749" valign="top" style="width: 513pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 40.9pt;"><pre><span style="font-family:&quot;Calibri&quot;,sans-serif;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626;mso-ansi-language:EN-US;mso-fareast-language:EN-US"><o:p>&nbsp;</o:p></span></pre>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">This variable is assigned the value of local host name. It is
+  set by opcmsga (and also reset by opcmsga) whenever IP address of an agent
+  node is changed.<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626"><o:p>&nbsp;</o:p></span></p>
+  <pre><span style="font-family:
+  &quot;Calibri&quot;,sans-serif;mso-bidi-font-family:&quot;Times New Roman&quot;;color:#262626;
+  mso-ansi-language:EN-US;mso-fareast-language:EN-US">Note : OPC_NODENAME is an internal parameter and customers cannot configure it<o:p></o:p></span></pre></td>
+ </tr>
+ <tr>
+  <td width="749" valign="top" style="width: 513pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; background: rgb(242, 242, 242); padding: 0in 5.4pt;">
+  <p class="Details"><b>Long description</b><span class="DetailsChar"><b><span style="font-size:12.0pt;font-family:&quot;Calibri Light&quot;,sans-serif;mso-ascii-theme-font:
+  major-latin;mso-hansi-theme-font:major-latin;mso-bidi-font-family:Arial"><o:p></o:p></span></b></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:5;mso-yfti-lastrow:yes;height:31.0pt">
+  <td width="749" valign="top" style="width: 513pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 31pt;">
+  <p class="MsoNormal" style="margin-top:2.0pt;margin-right:0in;margin-bottom:
+  2.0pt;margin-left:0in;text-autospace:none;mso-element:frame;mso-element-frame-hspace:
+  9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:margin;
+  mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;line-height:107%;mso-ascii-font-family:Calibri;
+  mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+  mso-bidi-font-family:&quot;Times New Roman&quot;;color:#262626"><o:p>&nbsp;</o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">A node can have a single or multiple network interfaces. IP
+  address associated with each network interface may have a host name. HPE
+  Operations Agent selects the host name using the operating system specific
+  APIs based on system configuration (example, gethostname /getaddrinfo
+  /getnameinfo). It automatically configures OPC_NODENAME parameter that
+  provides the value of the local host name used by the HPE Operations Agent.
+  OPC_NODENAME is an internal parameter and you cannot configure it. When a
+  node has multiple IP addresses or host names, you can overwrite the default
+  configuration by setting OPC_IP_ADDRESS to a specific IP address. The host
+  name associated with the specified IP address is assigned to OPC_NODENAME. <o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626"><o:p>&nbsp;</o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">In case the IP address is not associated to a host name, you
+  can configure OPC_NAMESRV_LOCAL_NAME to a specific host name. You can use the
+  LOCAL_NODE_NAME variable available under the xpl.net namespace to overwrite
+  the local nodename of the system. The defined values of OPC_NODENAME,
+  OPC_IP_ADDRESS and LOCAL_NODE_NAME are used to determine several variables in
+  policy. The message variables are as follows:<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="mso-bidi-font-size:10.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+  color:#2E74B5;mso-themecolor:accent1;mso-themeshade:191"><o:p>&nbsp;</o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">&lt;$MSG_GEN_NODE&gt;: Returns the IP address of the node that
+  sends the message.<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">&lt;$MSG_GEN_NODE_NAME&gt;: Returns the host name of the node
+  that sends the<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">message.<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">&lt;$MSG_NODE&gt;: Returns the IP address of the node on which
+  the original event took<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">place.<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#262626">&lt;$MSG_NODE_NAME&gt;: Returns the host name of the node on
+  which the original<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-top:2.0pt;margin-right:0in;margin-bottom:
+  2.0pt;margin-left:0in;text-autospace:none;mso-element:frame;mso-element-frame-hspace:
+  9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:margin;
+  mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;line-height:107%;mso-ascii-font-family:Calibri;
+  mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+  mso-bidi-font-family:&quot;Times New Roman&quot;;color:#262626">event took place.<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none;mso-element:frame;
+  mso-element-frame-hspace:9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:
+  margin;mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;mso-ascii-font-family:Calibri;
+  mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+  mso-bidi-font-family:&quot;Times New Roman&quot;;color:#262626"><o:p>&nbsp;</o:p></span></p>
+  <p class="HPBullet10pt" style="text-indent:0in;mso-list:none;tab-stops:9.35pt;
+  mso-element:frame;mso-element-frame-hspace:9.0pt;mso-element-wrap:around;
+  mso-element-anchor-horizontal:margin;mso-element-left:9.0pt;mso-element-top:
+  -38.25pt;mso-height-rule:exactly"><span style="font-family:&quot;Calibri&quot;,sans-serif;
+  color:#262626">For more information, refer to the section ‘Overview of Node Resolution’
+  in Operations Agent User Guide<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-top:2.0pt;margin-right:0in;margin-bottom:
+  2.0pt;margin-left:0in;text-autospace:none;mso-element:frame;mso-element-frame-hspace:
+  9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:margin;
+  mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span class="DetailsChar"><span style="font-size: 12pt; line-height: 107%; font-family: &quot;Calibri Light&quot;, sans-serif; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><o:p>&nbsp;</o:p></span></span></p>
+  <p class="MsoNormal" style="margin-top:2.0pt;margin-right:0in;margin-bottom:
+  2.0pt;margin-left:0in;text-autospace:none;mso-element:frame;mso-element-frame-hspace:
+  9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:margin;
+  mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span class="DetailsChar"><span style="font-size: 12pt; line-height: 107%; font-family: &quot;Calibri Light&quot;, sans-serif; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><o:p>&nbsp;</o:p></span></span></p>
+  <p class="MsoNormal" style="margin-top:2.0pt;margin-right:0in;margin-bottom:
+  2.0pt;margin-left:0in;text-autospace:none;mso-element:frame;mso-element-frame-hspace:
+  9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:margin;
+  mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span class="DetailsChar"><span style="font-size: 12pt; line-height: 107%; font-family: &quot;Calibri Light&quot;, sans-serif; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><o:p>&nbsp;</o:p></span></span></p>
+  <p class="MsoNormal" style="margin-top:2.0pt;margin-right:0in;margin-bottom:
+  2.0pt;margin-left:0in;text-autospace:none;mso-element:frame;mso-element-frame-hspace:
+  9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:margin;
+  mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span class="DetailsChar"><span style="font-size: 12pt; line-height: 107%; font-family: &quot;Calibri Light&quot;, sans-serif; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><o:p>&nbsp;</o:p></span></span></p><table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="697" valign="top" style="width: 6.95in; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; background: rgb(242, 242, 242); padding: 0in 5.4pt;">
+  <h2><a name="_Toc491176814">OPC_TEMPL_STATUS</a><span class="LabelChar"><span style="font-size:12.0pt;line-height:107%;mso-bidi-font-family:
+  Arial;font-weight:normal"><o:p></o:p></span></span></h2>
+  </td>
+ </tr>
+ <tr>
+  <td width="697" valign="top" style="width: 6.95in; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+   <tbody><tr>
+    <td width="178" valign="top" style="width: 133.5pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Calibri&quot;,sans-serif">Type</span><span style="font-size:12.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:black"><o:p></o:p></span></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: black; border-right-color: black; border-bottom-color: black; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; font-family: Calibri, sans-serif;">Boolean<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Calibri&quot;,sans-serif">Default
+    Value<o:p></o:p></span></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; font-family: Calibri, sans-serif;">FALSE<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Calibri&quot;,sans-serif">Class
+    of the variable<o:p></o:p></span></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; font-family: Calibri, sans-serif;">&nbsp;</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Calibri&quot;,sans-serif">Namespace
+    <o:p></o:p></span></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; font-family: Calibri, sans-serif;">eaagt<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="MsoNormal"><b><span style="font-size:12.0pt;line-height:107%">Restart Required<o:p></o:p></span></b></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; font-family: Calibri, sans-serif;">Yes<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="MsoNormal"><b><span style="font-size:12.0pt;line-height:107%">I<span style="color:black">ntroduced
+    since</span>&nbsp; <o:p></o:p></span></b></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; font-family: Calibri, sans-serif;">OA A.08.10<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="MsoNormal"><b><span style="font-size:12.0pt;line-height:107%">Applicable Platforms<o:p></o:p></span></b></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; font-family: Calibri, sans-serif;">ALL<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="MsoNormal"><b><span style="font-size:12.0pt;line-height:107%">Related variables<o:p></o:p></span></b></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; font-family: Calibri, sans-serif; color: windowtext;">NA<o:p></o:p></span></p>
+    </td>
+   </tr>
+  </tbody></table>
+  <p class="Label"><span style="font-family: Arial, sans-serif;"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="697" valign="top" style="width: 6.95in; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; background: rgb(242, 242, 242); padding: 0in 5.4pt;">
+  <p class="MsoNormal"><b><span style="font-size:12.0pt;line-height:107%">Short description</span></b><span style="font-size:12.0pt;line-height:107%;mso-bidi-font-family:Arial"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:3;height:24.25pt">
+  <td width="697" valign="top" style="width: 6.95in; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 24.25pt;">
+  <p class="Default">If set to TRUE, the Logfile Encapsulator and Monitor agent
+  will maintain the “le.status” and “monitor.status” files in the agent's tmp
+  directory (<span style="font-size:11.0pt;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:windowtext">%OvDataDir%\tmp\opc</span>) &nbsp;containing the current (internal) status of
+  their sources.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="697" valign="top" style="width: 6.95in; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; background: rgb(242, 242, 242); padding: 0in 5.4pt;">
+  <p class="MsoNormal"><b><span style="font-size:12.0pt;line-height:107%">Long Description</span></b><span class="DetailsChar"><b><span style="font-size:12.0pt;line-height:107%;mso-bidi-font-family:Arial"><o:p></o:p></span></b></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:5;mso-yfti-lastrow:yes;height:142.15pt">
+  <td width="697" valign="top" style="width: 6.95in; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 142.15pt;">
+  <p class="MsoNoSpacing"><b><u><span lang="EN-GB" style="font-size:12.0pt;mso-ansi-language:EN-GB">Behaviour in case
+  of OPCLE<o:p></o:p></span></u></b></p>
+  <p class="MsoNoSpacing"><span lang="EN-GB" style="font-size:12.0pt;mso-ansi-language:
+  EN-GB">If set to TRUE, OPCLE will write the status of every Log file template
+  to the le.status file. Below is sample file :<o:p></o:p></span></p>
+  <p class="MsoNoSpacing"><span lang="EN-GB" style="font-size:12.0pt;mso-ansi-language:
+  EN-GB">&nbsp;</span></p>
+  <p class="MsoNoSpacing"><span lang="EN-GB" style="font-size:12.0pt;mso-ansi-language:
+  EN-GB">#cat le.status<o:p></o:p></span></p>
+  <p class="MsoNoSpacing"><i><span lang="EN-GB" style="font-size:12.0pt;mso-ansi-language:EN-GB"># Log file template status -
+  last update: Tue Aug&nbsp; 8 14:36:25 2017<o:p></o:p></span></i></p>
+  <p class="MsoNoSpacing"><i><span lang="EN-GB" style="font-size:12.0pt;mso-ansi-language:EN-GB">&nbsp;</span></i></p>
+  <p class="MsoNoSpacing"><i><span lang="EN-GB" style="font-size:12.0pt;mso-ansi-language:EN-GB"># Template&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Status<o:p></o:p></span></i></p>
+  <p class="MsoNoSpacing"><i><span lang="EN-GB" style="font-size:12.0pt;mso-ansi-language:EN-GB"># ============================================<o:p></o:p></span></i></p>
+  <p class="MsoNoSpacing"><i><span lang="EN-GB" style="font-size:12.0pt;mso-ansi-language:EN-GB">LOGFILE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; active&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "tam-log"<o:p></o:p></span></i></p>
+  <p class="MsoNoSpacing"><i><span lang="EN-GB" style="font-size:12.0pt;mso-ansi-language:EN-GB">&nbsp;SOURCE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  active&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  "/var/tmp/tam/tam.log"<o:p></o:p></span></i></p>
+  <p class="MsoNoSpacing"><i><span lang="EN-GB" style="font-size:12.0pt;mso-ansi-language:EN-GB">LOGFILE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; disabled&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "new_log_file_policy "
+  </span></i><span lang="EN-GB" style="font-size:12.0pt;mso-ansi-language:EN-GB"><o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal;mso-layout-grid-align:none;text-autospace:none"><span lang="EN-GB" style="font-size:9.5pt;font-family:Consolas;mso-ansi-language:EN-GB;
+  mso-fareast-language:EN-GB"><o:p>&nbsp;</o:p></span></p>
+  <p class="MsoNoSpacing"><span lang="EN-GB" style="font-size:12.0pt;mso-ansi-language:
+  EN-GB">&nbsp;</span></p>
+  <p class="MsoNoSpacing"><span lang="EN-GB" style="font-size:12.0pt;mso-ansi-language:
+  EN-GB">Here LOGFILE is Policy name and Source is the name of the log being
+  monitored. Status shows if policy template is enabled or disabled.<o:p></o:p></span></p>
+  <p class="MsoNoSpacing"><span lang="EN-GB" style="font-size:12.0pt;mso-ansi-language:
+  EN-GB">&nbsp;</span></p>
+  <p class="MsoNoSpacing"><span lang="EN-GB" style="font-size:12.0pt;mso-ansi-language:
+  EN-GB">File “le.status” is updated at every re-config signal.<o:p></o:p></span></p>
+  <p class="MsoNoSpacing"><span lang="EN-GB" style="font-size:12.0pt;mso-ansi-language:
+  EN-GB">&nbsp;</span></p>
+  <p class="MsoNoSpacing"><u><span lang="EN-GB" style="font-size:12.0pt;mso-ansi-language:
+  EN-GB">Use cas</span></u><u><span style="font-size:12.0pt">e in case of opcle:
+  <o:p></o:p></span></u></p>
+  <p class="MsoNoSpacing" style="margin-left:.5in;text-indent:-.25in;mso-list:
+  l1 level1 lfo1"><!--[if !supportLists]--><span style="font-size:12.0pt;
+  mso-bidi-font-family:Calibri">1.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp; </span></span><!--[endif]--><span style="font-size:12.0pt">Sometimes policy disable operation and its
+  respective re-config signal might get missed by agent process. In such cases
+  user can set “OPC_TEMPL_STATUS” to TRUE and verify in “le.status” file, if
+  opcle is processing particular policy or not.<o:p></o:p></span></p>
+  <p class="MsoNoSpacing"><span style="font-size:12.0pt">&nbsp;</span></p>
+  <p class="MsoNoSpacing"><b><u><span lang="EN-GB" style="font-size:12.0pt;mso-ansi-language:EN-GB">Behaviour in case
+  of OPCMONA</span></u></b><span style="font-size:12.0pt"><o:p></o:p></span></p>
+  <p class="MsoNoSpacing"><span style="font-size:12.0pt">Similar to opcle, if
+  OPC_TEMPL_STATUS is set TRUE opcmona will write the status of monitor and
+  schedule templates to “monitor.status” file.<o:p></o:p></span></p>
+  <p class="MsoNoSpacing"><span style="font-size:12.0pt">&nbsp;</span></p>
+  <p class="MsoNoSpacing"><span style="font-size:12.0pt">In addition to above,
+  opcmona also log the policy state change time. If some template misses the
+  policy interval the state will be changed to "missed interval" and
+  if missed interval state continues beyond two intervals, the policy thread
+  will be treated as hung and it will be terminated and restarted.<o:p></o:p></span></p>
+  <p class="MsoNoSpacing"><span style="font-size:12.0pt">&nbsp;</span></p>
+  <p class="MsoNoSpacing"><u><span style="font-size:12.0pt">Below is the sample
+  out for “monitor.status” file :<o:p></o:p></span></u></p>
+  <p class="MsoNoSpacing"><span style="font-size:12.0pt">#cat monitor.status<o:p></o:p></span></p>
+  <p class="MsoNoSpacing"><i># Monitor template status - last update: Tue
+  Aug&nbsp; 8 16:08:53 2017<o:p></o:p></i></p>
+  <p class="MsoNoSpacing"><i>&nbsp;</i></p>
+  <p class="MsoNoSpacing"><i>&nbsp;MONITOR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; active&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "test_pol"&nbsp;&nbsp; Tue Aug&nbsp;
+  8 15:38:50 2017<o:p></o:p></i></p>
+  <p class="MsoNoSpacing"><i>&nbsp;</i></p>
+  <p class="MsoNoSpacing"><i>&nbsp;&nbsp; SOURCE&nbsp;&nbsp;&nbsp; active&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "test_pol"<o:p></o:p></i></p>
+  <p class="MsoNoSpacing"><i>&nbsp;Tue Aug&nbsp; 8 16:08:00 201&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SCHEDULE POLICY&nbsp; active&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "ST_sample"<o:p></o:p></i></p>
+  <p class="MsoNoSpacing"><i>&nbsp;Tue Aug&nbsp; 8 16:08:00 201&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SCHEDULE POLICY&nbsp; active&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  "SI-LinuxLastLogonsCollector"<o:p></o:p></i></p>
+  <p class="MsoNoSpacing"><i>&nbsp;</i></p>
+  <p class="MsoNoSpacing"><i>&nbsp;</i></p>
+  <p class="MsoNoSpacing"><u><span lang="EN-GB" style="font-size:12.0pt;mso-ansi-language:
+  EN-GB">Use cas</span></u><u><span style="font-size:12.0pt">e in case of opcmona:
+  <o:p></o:p></span></u></p>
+  <p class="MsoNoSpacing" style="margin-left:.5in;text-indent:-.25in;mso-list:
+  l0 level1 lfo2"><!--[if !supportLists]--><span style="font-size:12.0pt;
+  mso-bidi-font-family:Calibri">1.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp; </span></span><!--[endif]--><span style="font-size:12.0pt">If policy thread inside opcmona is hung and not
+  working, then setting “OPC_TEMPL_STATUS” will terminate the
+  hung/non-responding policy thread after waiting for 2 consecutive policy
+  intervals and policy execution could be started as fresh in a new thread. <o:p></o:p></span></p>
+  <p class="MsoNoSpacing" style="margin-left:.5in"><span style="font-size:12.0pt">Also
+  user can see the current status (enabled or disabled) of policy irrespective
+  of status shown on OM GUI.</span></p><p class="MsoNoSpacing" style="margin-left:.5in"><span style="font-size:12.0pt"><br></span></p><table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" align="left" width="0" style="border-left: none; margin-left: 0.1in; margin-right: 0.1in;">
+ <tbody><tr>
+  <td width="749" valign="top" style="width: 513pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; background: rgb(242, 242, 242); padding: 0in 5.4pt;">
+  <h2><a name="_Toc491176815"></a><a name="_Toc479065769">OPCGENI_DISABLE_LOCAL_STORE</a><span class="LabelChar"><span style="font-size:10.0pt;mso-bidi-font-size:13.0pt;line-height:107%;
+  font-weight:normal"><o:p></o:p></span></span></h2>
+  </td>
+ </tr>
+ <tr>
+  <td width="749" valign="top" style="width: 513pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+   <tbody><tr>
+    <td width="230" valign="top" style="width: 172.25pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size:12.0pt">Type</span><span style="font-size:12.0pt;
+    color:black"><o:p></o:p></span></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: black; border-right-color: black; border-bottom-color: black; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; color: rgb(46, 116, 181);">Boolean<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size:12.0pt">Default Value<o:p></o:p></span></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; color: rgb(46, 116, 181);">FALSE<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size:12.0pt">Class of the variable<o:p></o:p></span></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; color: rgb(46, 116, 181);">opcgeni<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size:12.0pt">Namespace <o:p></o:p></span></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; color: rgb(46, 116, 181);">eaagt<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;
+    line-height:normal;mso-element:frame;mso-element-frame-hspace:9.0pt;
+    mso-element-wrap:around;mso-element-anchor-horizontal:margin;mso-element-left:
+    9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><b><span style="font-size:12.0pt;
+    font-family:&quot;Calibri Light&quot;,sans-serif;mso-ascii-theme-font:major-latin;
+    mso-fareast-font-family:Calibri;mso-hansi-theme-font:major-latin;
+    mso-bidi-font-family:&quot;Times New Roman&quot;">Restart Required<o:p></o:p></span></b></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; color: rgb(46, 116, 181);">no<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;
+    line-height:normal;mso-element:frame;mso-element-frame-hspace:9.0pt;
+    mso-element-wrap:around;mso-element-anchor-horizontal:margin;mso-element-left:
+    9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><b><span style="font-size:12.0pt;
+    font-family:&quot;Calibri Light&quot;,sans-serif;mso-ascii-theme-font:major-latin;
+    mso-fareast-font-family:Calibri;mso-hansi-theme-font:major-latin;
+    mso-bidi-font-family:&quot;Times New Roman&quot;">I<span style="color:black">ntroduced
+    since</span>&nbsp; <o:p></o:p></span></b></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; color: rgb(46, 116, 181);">OA 12.03<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;
+    line-height:normal;mso-element:frame;mso-element-frame-hspace:9.0pt;
+    mso-element-wrap:around;mso-element-anchor-horizontal:margin;mso-element-left:
+    9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><b><span style="font-size:12.0pt;
+    font-family:&quot;Calibri Light&quot;,sans-serif;mso-ascii-theme-font:major-latin;
+    mso-fareast-font-family:Calibri;mso-hansi-theme-font:major-latin;
+    mso-bidi-font-family:&quot;Times New Roman&quot;">Applicable&nbsp; Platforms<o:p></o:p></span></b></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; color: rgb(46, 116, 181);">All<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;
+    line-height:normal;mso-element:frame;mso-element-frame-hspace:9.0pt;
+    mso-element-wrap:around;mso-element-anchor-horizontal:margin;mso-element-left:
+    9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><b><span style="font-size:12.0pt;
+    font-family:&quot;Calibri Light&quot;,sans-serif;mso-ascii-theme-font:major-latin;
+    mso-fareast-font-family:Calibri;mso-hansi-theme-font:major-latin;
+    mso-bidi-font-family:&quot;Times New Roman&quot;">Related variables<o:p></o:p></span></b></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;
+    line-height:normal"><span style="mso-bidi-font-size:10.0pt;mso-ascii-font-family:
+    Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+    Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;color:#2E74B5;mso-themecolor:
+    accent1;mso-themeshade:191">None<o:p></o:p></span></p>
+    </td>
+   </tr>
+  </tbody></table>
+  </td>
+ </tr>
+ <tr>
+  <td width="749" valign="top" style="width: 513pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; background: rgb(242, 242, 242); padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt">Short description</span><span style="font-size:12.0pt;
+  mso-bidi-font-family:Arial"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:3;height:40.9pt">
+  <td width="749" valign="top" style="width: 513pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 40.9pt;">
+  <p class="HPBullet10pt"><!--[if !supportLists]--><span style="mso-bidi-font-size:12.0pt;font-family:Symbol;mso-fareast-font-family:
+  Symbol;mso-bidi-font-family:Symbol;color:#262626;mso-font-kerning:10.0pt">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;
+  </span></span><!--[endif]--><span style="font-size:12.0pt;font-family:
+  &quot;Calibri&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  Arial;color:#262626">If you set this variable to TRUE, opcgeni does not log
+  the metric data into local OA data store. <o:p></o:p></span></p>
+  <p class="HPBullet10pt"><!--[if !supportLists]--><span style="mso-bidi-font-size:12.0pt;font-family:Symbol;mso-fareast-font-family:
+  Symbol;mso-bidi-font-family:Symbol;color:#2E74B5;mso-themecolor:accent1;
+  mso-themeshade:191;mso-font-kerning:10.0pt">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp; </span></span><!--[endif]--><span style="font-size:12.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-fareast-font-family:
+  Calibri;mso-bidi-font-family:Arial;color:#262626">If you set this variable to
+  FALSE, opcgeni logs metric data into the local OA data store.</span><span style="font-size: 12pt; font-family: &quot;Calibri Light&quot;, sans-serif; color: rgb(46, 116, 181); background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"> <o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="749" valign="top" style="width: 513pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; background: rgb(242, 242, 242); padding: 0in 5.4pt;">
+  <p class="Details"><b>Long description</b><span class="DetailsChar"><b><span style="font-size:12.0pt;font-family:&quot;Calibri Light&quot;,sans-serif;mso-ascii-theme-font:
+  major-latin;mso-hansi-theme-font:major-latin;mso-bidi-font-family:Arial"><o:p></o:p></span></b></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:5;mso-yfti-lastrow:yes;height:31.0pt">
+  <td width="749" valign="top" style="width: 513pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 31pt;">
+  <p class="HPBullet10pt"><!--[if !supportLists]--><span style="font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+  Symbol;color:#262626;mso-font-kerning:10.0pt">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp; </span></span><!--[endif]--><span style="font-family:&quot;Calibri&quot;,sans-serif;color:#262626">This variable needs to
+  be used when the large scale data is getting collected by Connectors like
+  SCOM connector.<o:p></o:p></span></p>
+  <p class="HPBullet10pt"><!--[if !supportLists]--><span style="font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+  Symbol;color:#262626;mso-font-kerning:10.0pt">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp; </span></span><!--[endif]--><span style="font-family:&quot;Calibri&quot;,sans-serif;color:#262626">When the variable is
+  set to TRUE, please make sure that at least one data forwarding policy is
+  enabled to forward data to Performance Engine.<o:p></o:p></span></p>
+  <p class="HPBullet10pt"><!--[if !supportLists]--><span style="font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+  Symbol;color:#262626;mso-font-kerning:10.0pt">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp; </span></span><!--[endif]--><span style="font-family:&quot;Calibri&quot;,sans-serif;color:#262626">Restart of opcgeni is
+  not required for the configuration to be effective.<o:p></o:p></span></p>
+  <p class="HPBullet10pt"><!--[if !supportLists]--><span class="DetailsChar"><span style="font-family:Symbol;mso-fareast-font-family:
+  Symbol;mso-bidi-font-family:Symbol;mso-font-kerning:10.0pt">·<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;
+  </span></span></span><!--[endif]--><span class="DetailsChar">A warning message would be
+  logged in to System.txt in the following scenario:<o:p></o:p></span></p>
+  <p class="HPBullet10pt" style="text-indent:0in;mso-list:none;tab-stops:9.35pt;
+  mso-element:frame;mso-element-frame-hspace:9.0pt;mso-element-wrap:around;
+  mso-element-anchor-horizontal:margin;mso-element-left:9.0pt;mso-element-top:
+  -38.25pt;mso-height-rule:exactly"><span class="DetailsChar">"OPCGENI_DISABLE_LOCAL_STORE"
+  is set to TRUE<o:p></o:p></span></p>
+  <p class="HPBullet10pt" style="text-indent:0in;mso-list:none;tab-stops:9.35pt;
+  mso-element:frame;mso-element-frame-hspace:9.0pt;mso-element-wrap:around;
+  mso-element-anchor-horizontal:margin;mso-element-left:9.0pt;mso-element-top:
+  -38.25pt;mso-height-rule:exactly"><span class="DetailsChar">At least one metric
+  forwarding policy is enabled that tries to forward the data, and<o:p></o:p></span></p>
+  <p class="HPBullet10pt" style="text-indent:0in;mso-list:none;tab-stops:9.35pt;
+  mso-element:frame;mso-element-frame-hspace:9.0pt;mso-element-wrap:around;
+  mso-element-anchor-horizontal:margin;mso-element-left:9.0pt;mso-element-top:
+  -38.25pt;mso-height-rule:exactly"><span class="DetailsChar">No data forwarding policies
+  are enabled.<o:p></o:p></span></p>
+  <p class="HPBullet10pt" style="text-indent:0in;mso-list:none;tab-stops:9.35pt;
+  mso-element:frame;mso-element-frame-hspace:9.0pt;mso-element-wrap:around;
+  mso-element-anchor-horizontal:margin;mso-element-left:9.0pt;mso-element-top:
+  -38.25pt;mso-height-rule:exactly"><span class="DetailsChar">In addition, the message
+  would also get forwarded to OMi as an internal message.<o:p></o:p></span></p><p class="HPBullet10pt" style="text-indent:0in;mso-list:none;tab-stops:9.35pt;
+  mso-element:frame;mso-element-frame-hspace:9.0pt;mso-element-wrap:around;
+  mso-element-anchor-horizontal:margin;mso-element-left:9.0pt;mso-element-top:
+  -38.25pt;mso-height-rule:exactly"><span class="DetailsChar"><br></span></p><table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="697" valign="top" style="width: 6.95in; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; background: rgb(242, 242, 242); padding: 0in 5.4pt;">
+  <h2><a name="_Toc491176816">OPC_MON_MSGOBJ_COND_FIRST</a><span class="LabelChar"><span style="font-size:12.0pt;line-height:107%;mso-bidi-font-family:
+  Arial;font-weight:normal"><o:p></o:p></span></span></h2>
+  </td>
+ </tr>
+ <tr>
+  <td width="697" valign="top" style="width: 6.95in; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+   <tbody><tr>
+    <td width="178" valign="top" style="width: 133.5pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Calibri&quot;,sans-serif">Type</span><span style="font-size:12.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:black"><o:p></o:p></span></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: black; border-right-color: black; border-bottom-color: black; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; font-family: Calibri, sans-serif;">Boolean<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Calibri&quot;,sans-serif">Default
+    Value<o:p></o:p></span></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; font-family: Calibri, sans-serif;">FALSE<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Calibri&quot;,sans-serif">Class
+    of the variable<o:p></o:p></span></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; font-family: Calibri, sans-serif;">&nbsp;</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Calibri&quot;,sans-serif">Namespace
+    <o:p></o:p></span></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; font-family: Calibri, sans-serif;">Eaagt<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="MsoNormal"><b><span style="font-size:12.0pt;line-height:107%">Restart Required<o:p></o:p></span></b></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; font-family: Calibri, sans-serif;">Yes<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="MsoNormal"><b><span style="font-size:12.0pt;line-height:107%">I<span style="color:black">ntroduced
+    since</span>&nbsp; <o:p></o:p></span></b></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; font-family: Calibri, sans-serif;">OA A.08.10<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="MsoNormal"><b><span style="font-size:12.0pt;line-height:107%">Applicable Platforms<o:p></o:p></span></b></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; font-family: Calibri, sans-serif;">ALL<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="MsoNormal"><b><span style="font-size:12.0pt;line-height:107%">Related variables<o:p></o:p></span></b></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; font-family: Calibri, sans-serif; color: windowtext;">NA<o:p></o:p></span></p>
+    </td>
+   </tr>
+  </tbody></table>
+  <p class="Label"><span style="font-family: Arial, sans-serif;"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="697" valign="top" style="width: 6.95in; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; background: rgb(242, 242, 242); padding: 0in 5.4pt;">
+  <p class="MsoNormal"><b><span style="font-size:12.0pt;line-height:107%">Short description</span></b><span style="font-size:12.0pt;line-height:107%;mso-bidi-font-family:Arial"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:3;height:24.25pt">
+  <td width="697" valign="top" style="width: 6.95in; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 24.25pt;">
+  <p class="MsoNoSpacing"><span style="font-size:12.0pt">This config variable
+  describes the order in which policy variable &lt;$MSG_OBJECT&gt; is replaced
+  in outgoing alerts/message.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="697" valign="top" style="width: 6.95in; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; background: rgb(242, 242, 242); padding: 0in 5.4pt;">
+  <p class="MsoNormal"><b><span style="font-size:12.0pt;line-height:107%">Long Description</span></b><span class="DetailsChar"><b><span style="font-size:12.0pt;line-height:107%;mso-bidi-font-family:Arial"><o:p></o:p></span></b></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:5;mso-yfti-lastrow:yes;height:142.15pt">
+  <td width="697" valign="top" style="width: 6.95in; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 142.15pt;">
+  <p class="MsoNoSpacing"><span style="font-size:12.0pt">If set to TRUE, &lt;$MSG_OBJECT&gt;
+  variable of a policy is replaced with the object that was set in the policy
+  condition window and Policy variable $MSG_OBJECT will be replaced to actual
+  text in below priority order :<o:p></o:p></span></p>
+  <p class="MsoNoSpacing"><span style="font-size:12.0pt">&nbsp;</span></p>
+  <p class="MsoNoSpacing" style="margin-left:.5in;text-indent:-.25in;mso-list:
+  l0 level1 lfo1"><!--[if !supportLists]--><span style="font-size:12.0pt;
+  mso-bidi-font-family:Calibri">a)<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp; </span></span><!--[endif]--><span style="font-size:12.0pt">Object from SET attributes in Policy conditions<o:p></o:p></span></p>
+  <p class="MsoNoSpacing" style="margin-left:.5in;text-indent:-.25in;mso-list:
+  l0 level1 lfo1"><!--[if !supportLists]--><span style="font-size:12.0pt;
+  mso-bidi-font-family:Calibri">b)<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp; </span></span><!--[endif]--><span style="font-size:12.0pt">Object passed in opcmon CLI<o:p></o:p></span></p>
+  <p class="MsoNoSpacing" style="margin-left:.5in;text-indent:-.25in;mso-list:
+  l0 level1 lfo1"><!--[if !supportLists]--><span style="font-size:12.0pt;
+  mso-bidi-font-family:Calibri">c)<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><!--[endif]--><span style="font-size:12.0pt">Template Default<o:p></o:p></span></p>
+  <p class="MsoNoSpacing" style="margin-left:.5in;text-indent:-.25in;mso-list:
+  l0 level1 lfo1"><!--[if !supportLists]--><span style="font-size:12.0pt;
+  mso-bidi-font-family:Calibri">d)<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp; </span></span><!--[endif]--><span style="font-size:12.0pt">Empty String<o:p></o:p></span></p><p class="MsoNoSpacing" style="margin-left:.5in;text-indent:-.25in;mso-list:
+  l0 level1 lfo1"><span style="font-size:12.0pt"><br></span></p><p class="MsoNoSpacing" style="margin-left:.5in;text-indent:-.25in;mso-list:
+  l0 level1 lfo1"><span style="font-size:12.0pt"><br></span></p><table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="697" valign="top" style="width: 6.95in; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; background: rgb(242, 242, 242); padding: 0in 5.4pt;">
+  <h2><a name="_Toc491176817">OPC_AGT_PROCESS_PRIORITY</a><span class="LabelChar"><span style="font-size:12.0pt;line-height:107%;mso-bidi-font-family:
+  Arial;font-weight:normal"><o:p></o:p></span></span></h2>
+  </td>
+ </tr>
+ <tr>
+  <td width="697" valign="top" style="width: 6.95in; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+   <tbody><tr>
+    <td width="178" valign="top" style="width: 133.5pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Calibri&quot;,sans-serif">Type</span><span style="font-size:12.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:black"><o:p></o:p></span></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: black; border-right-color: black; border-bottom-color: black; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; font-family: Calibri, sans-serif;">String<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Calibri&quot;,sans-serif">Default
+    Value<o:p></o:p></span></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; font-family: Calibri, sans-serif;">BELOW<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Calibri&quot;,sans-serif">Class
+    of the variable<o:p></o:p></span></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; font-family: Calibri, sans-serif;">&nbsp;</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Calibri&quot;,sans-serif">Namespace
+    <o:p></o:p></span></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; font-family: Calibri, sans-serif;">eaagt<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="MsoNormal"><b><span style="font-size:12.0pt;line-height:107%">Restart Required<o:p></o:p></span></b></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; font-family: Calibri, sans-serif;">Yes<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="MsoNormal"><b><span style="font-size:12.0pt;line-height:107%">I<span style="color:black">ntroduced
+    since</span>&nbsp; <o:p></o:p></span></b></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; font-family: Calibri, sans-serif;">OA A.08.10<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="MsoNormal"><b><span style="font-size:12.0pt;line-height:107%">Applicable Platforms<o:p></o:p></span></b></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; font-family: Calibri, sans-serif;">Windows only<o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr>
+    <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+    <p class="MsoNormal"><b><span style="font-size:12.0pt;line-height:107%">Related variables<o:p></o:p></span></b></p>
+    </td>
+    <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+    <p class="Label"><span style="font-size: 12pt; font-family: Calibri, sans-serif; color: windowtext;">NA<o:p></o:p></span></p>
+    </td>
+   </tr>
+  </tbody></table>
+  <p class="Label"><span style="font-family: Arial, sans-serif;"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="697" valign="top" style="width: 6.95in; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; background: rgb(242, 242, 242); padding: 0in 5.4pt;">
+  <p class="MsoNormal"><b><span style="font-size:12.0pt;line-height:107%">Short description</span></b><span style="font-size:12.0pt;line-height:107%;mso-bidi-font-family:Arial"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:3;height:24.25pt">
+  <td width="697" valign="top" style="width: 6.95in; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 24.25pt;">
+  <p class="MsoNoSpacing">Config variable “<span lang="EN" style="font-size:12.0pt;
+  mso-bidi-font-family:Arial;mso-ansi-language:EN">OPC_AGT_PROCESS_PRIORITY</span>”
+  defines the <span lang="EN-GB">priority of the agent
+  processes in windows OS.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="697" valign="top" style="width: 6.95in; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; background: rgb(242, 242, 242); padding: 0in 5.4pt;">
+  <p class="MsoNormal"><b><span style="font-size:12.0pt;line-height:107%">Long Description</span></b><span class="DetailsChar"><b><span style="font-size:12.0pt;line-height:107%;mso-bidi-font-family:Arial"><o:p></o:p></span></b></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:5;mso-yfti-lastrow:yes;height:142.15pt">
+  <td width="697" valign="top" style="width: 6.95in; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 142.15pt;">
+  <p class="MsoNoSpacing"><span lang="EN-GB" style="font-size:12.0pt;mso-ansi-language:
+  EN-GB">This variable could be used to change the priority of the Agent Processes.
+  By default in windows OS Agent Processes runs with "Below Normal"
+  priority.<o:p></o:p></span></p>
+  <p class="MsoNoSpacing"><span lang="EN-GB" style="font-size:12.0pt;mso-ansi-language:
+  EN-GB">Below are Possible values:<o:p></o:p></span></p>
+  <p class="MsoNoSpacing" style="margin-left:.5in;text-indent:-.25in;mso-list:
+  l1 level1 lfo2"><!--[if !supportLists]--><span lang="EN-GB" style="font-size:12.0pt;
+  mso-bidi-font-family:Calibri;mso-ansi-language:EN-GB">a)<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;
+  </span></span><!--[endif]--><span lang="EN-GB" style="font-size:12.0pt;
+  mso-ansi-language:EN-GB">ABOVE<o:p></o:p></span></p>
+  <p class="MsoNoSpacing" style="margin-left:.5in;text-indent:-.25in;mso-list:
+  l1 level1 lfo2"><!--[if !supportLists]--><span lang="EN-GB" style="font-size:12.0pt;
+  mso-bidi-font-family:Calibri;mso-ansi-language:EN-GB">b)<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;
+  </span></span><!--[endif]--><span lang="EN-GB" style="font-size:12.0pt;
+  mso-ansi-language:EN-GB">NORMAL<o:p></o:p></span></p>
+  <p class="MsoNoSpacing" style="margin-left:.5in;text-indent:-.25in;mso-list:
+  l1 level1 lfo2"><!--[if !supportLists]--><span lang="EN-GB" style="font-size:12.0pt;
+  mso-bidi-font-family:Calibri;mso-ansi-language:EN-GB">c)<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span></span><!--[endif]--><span lang="EN-GB" style="font-size:12.0pt;
+  mso-ansi-language:EN-GB">BELOW<o:p></o:p></span></p>
+  <p class="MsoNoSpacing" style="margin-left:.5in;text-indent:-.25in;mso-list:
+  l1 level1 lfo2"><!--[if !supportLists]--><span lang="EN-GB" style="font-size:12.0pt;
+  mso-bidi-font-family:Calibri;mso-ansi-language:EN-GB">d)<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;
+  </span></span><!--[endif]--><span lang="EN-GB" style="font-size:12.0pt;
+  mso-ansi-language:EN-GB">IDLE <o:p></o:p></span></p>
+  <p class="MsoNoSpacing"><span lang="EN-GB" style="font-size:12.0pt;mso-ansi-language:
+  EN-GB">&nbsp;</span></p>
+  <p class="MsoNoSpacing"><b><u><span lang="EN-GB" style="font-size:12.0pt;mso-ansi-language:EN-GB">Use Cas</span></u></b><b><u><span style="font-size:12.0pt">e:</span></u></b><span style="font-size:12.0pt"> <o:p></o:p></span></p>
+  <p class="MsoNoSpacing" style="margin-left:.5in;text-indent:-.25in;mso-list:
+  l0 level1 lfo1"><!--[if !supportLists]--><span style="font-size:12.0pt;
+  mso-bidi-font-family:Calibri">1.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp; </span></span><!--[endif]--><span style="font-size:12.0pt">If some agent process is not able to handle/process
+  all incoming traffic due to performance issues on windows, try to increase
+  process priority using that variable.<o:p></o:p></span></p>
+  <p class="MsoNoSpacing"><u><span style="font-size:12.0pt">For more details on
+  that scenario refer below case :<o:p></o:p></span></u></p>
+  <p class="MsoNoSpacing"><span style="font-size:12.0pt">QCIM1A170974 ER: need
+  incoming SNMP trap buffering for opctrapi.<o:p></o:p></span></p>
+  </td>
+ </tr>
+</tbody></table>
+  </td>
+ </tr>
+</tbody></table>
+  </td>
+ </tr>
+</tbody></table>
+  </td>
+ </tr>
+</tbody></table>
+  </td>
+ </tr>
+</tbody></table>
+  <p class="MsoNormal" style="margin-top:2.0pt;margin-right:0in;margin-bottom:
+  2.0pt;margin-left:0in;text-autospace:none;mso-element:frame;mso-element-frame-hspace:
+  9.0pt;mso-element-wrap:around;mso-element-anchor-horizontal:margin;
+  mso-element-left:9.0pt;mso-element-top:-38.25pt;mso-height-rule:exactly"><span class="DetailsChar"><span style="font-size: 12pt; line-height: 107%; font-family: &quot;Calibri Light&quot;, sans-serif; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><o:p>&nbsp;</o:p></span></span></p>
+  </td>
+ </tr>
+</tbody></table>
