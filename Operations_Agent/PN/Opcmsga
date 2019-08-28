@@ -100,14 +100,14 @@
   <td width="697" valign="top" style="width: 474.65pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; background: white; padding: 0in 5.4pt;">
   <p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">The
   msgagtdf is a buffer file used to store the processed messages. If a manager
-  is not reachable only the messages for that manager are buffered in this file
-  and the messages can still be sent to other reachable target managers. So, messages
+  is not reachable only the messages</span></p><p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">&nbsp;for that manager are buffered in this file
+  and the messages can still be sent to other reachable target managers. So,&nbsp;</span></p><p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">messages
   are written into msgagtdf even when the agent is not buffering.<o:p></o:p></span></p>
   <p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">The
   file grows when more messages are written in to the file than the available
-  area that can be overwritten. For example, consider that 7 messages were
+  area that can be overwritten. For example,&nbsp;</span></p><p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">consider that 7 messages were
   written into the file and were sent to the server. If in the next interval 10
-  messages come, (assuming the size of each of the messages is similar to
+  messages come,&nbsp;</span></p><p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">(assuming the size of each of the messages is similar to
   earlier message), then 7 messages would be overwritten and 3 additional
   messages will be added.<o:p></o:p></span></p>
   <p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">The
@@ -116,11 +116,11 @@
   <p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">&nbsp;</span></p>
   <p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">The
   size of the buffer file is controlled with the variable OPC_BUFLIMIT_SIZE
-  which has a default value of 1000 i.e. 1000 kilobytes. When OPC_BUFLIMIT_ENABLE
+  which has a default value of 1000 i.e. 1000 kilobytes.&nbsp;</span></p><p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">When OPC_BUFLIMIT_ENABLE
   is set to TRUE, the buffer size is not allowed grow more than the defined
-  OPC_BUFLIMIT_SIZE. Once the size limit is defined and there is a situation
+  OPC_BUFLIMIT_SIZE. Once the size limit&nbsp;</span></p><p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">is defined and there is a situation
   when the file limit is reached, filled with valid unsent messages, then
-  OPC_BUFLIMIT_SEVERITY is used to overwrite the messages that are lower/equal
+  OPC_BUFLIMIT_SEVERITY is used to overwrite&nbsp;</span></p><p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">the messages that are lower/equal
   to the severity defined, and in the order of the severity (from low to high
   severity).<o:p></o:p></span></p>
   <p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">When
@@ -129,15 +129,14 @@
   <p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">&nbsp;</span></p>
   <p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">For
   example, after a message is found to match against the message rules and it
-  was found that the target receiver is not reachable, then the message is
+  was found that the target receiver is not reachable, then the message&nbsp;</span></p><p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">is
   stored in the msgagtdf file and used for retry mechanism. <o:p></o:p></span></p>
   <p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">Another
   scenario would be if the opcmsga crashed or the Agent Node was powered off
-  while transferring the message to server, then the message will be stored in
-  the msgagtdf file. <o:p></o:p></span></p>
-  <p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">In
+  while transferring the message to server, then the&nbsp;</span></p><p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">message will be stored in
+  the msgagtdf file.&nbsp;</span><span style="font-size: 12pt; letter-spacing: 0.2px;">In
   cases where, the buffer size keeps growing fast, OPC_BUFLIMIT_SIZE can be set
-  to a higher value.<o:p></o:p></span></p>
+  to a higher value.</span></p>
   <p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">&nbsp;</span></p>
   <p class="Details"><u><span style="font-size:12.0pt;mso-bidi-font-family:Arial">Below
   are the snippets from the file System.txt of a sample Agent Node when the
@@ -145,12 +144,12 @@
   <p class="Details"><u><span style="font-size:12.0pt;mso-bidi-font-family:Arial">&nbsp;</span></u></p>
   <p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">0:
   WRN: Tue May 08 02:33:29 2014: opcmsga (6304/4092): [genmsga.c:1655]: Buffer
-  files size limit of 1024000 bytes has been reached with file size of 1030428
+  files size limit of 1024000 bytes has been reached with&nbsp;</span></p><p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">file size of 1030428
   bytes. Removing messages with lower severity than the specified severity.
   (OpC20-183)<o:p></o:p></span></p>
   <p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">0:
   WRN: Tue May 08 02:33:29 2014: opcmsga (6304/4092): [genmsga.c:1661]: The
-  buffering is now limited to messages with the specified or a higher severity.
+  buffering is now limited to messages with the specified or a&nbsp;</span></p><p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">higher severity.
   (OpC20-185)<o:p></o:p></span></p>
   <p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">0:
   WRN: Tue May 08 02:33:29 2014: opcmsga (6304/4092): [genmsga.c:1687]:
@@ -158,7 +157,7 @@
   (OpC20-184)<o:p></o:p></span></p>
   <p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">0:
   WRN: Tue May 08 02:33:29 2014: opcmsga (6304/4092): [genmsga.c:1614]: The
-  message agent stopped buffering messages. All new messages will be discarded.
+  message agent stopped buffering messages. All new messages&nbsp;</span></p><p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial">will be discarded.
   (OpC20-182)<b><o:p></o:p></b></span></p><p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial"><br></span></p><p class="Details"><span style="font-size:12.0pt;mso-bidi-font-family:Arial"><br></span></p><table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" align="left" width="0" style="border-left: none; margin-left: 0.1in; margin-right: 0.1in;">
  <tbody><tr>
   <td width="749" valign="top" style="width: 513pt; border-top: none; border-right: none; border-left: none; border-image: initial; border-bottom-width: 1pt; border-bottom-color: black; padding: 0in 5.4pt;">
@@ -279,7 +278,7 @@
  <tr style="mso-yfti-irow:4;height:40.9pt">
   <td width="749" valign="top" style="width: 513pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 40.9pt;"><pre><span style="font-size:12.0pt;font-family:&quot;Calibri Light&quot;,sans-serif;mso-ascii-theme-font:
   major-latin;mso-hansi-theme-font:major-latin;mso-bidi-font-family:Arial;
-  color:#2E74B5;mso-themecolor:accent1;mso-themeshade:191;background:white">&nbsp;</span><span style="color:black">&nbsp;<span lang="EN-GB">Since OVO 8.16, the virtual addresses of HA packages is ignored when establishing whether the message node is local or not. This means:<o:p></o:p></span></span></pre>
+  color:#2E74B5;mso-themecolor:accent1;mso-themeshade:191;background:white">&nbsp;</span><span style="color:black">&nbsp;<span lang="EN-GB">Since OVO 8.16, the virtual addresses of HA packages is ignored when establishing whether the message</span></span></pre><pre><span style="color:black"><span lang="EN-GB"> node is local or not. This means:<o:p></o:p></span></span></pre>
   <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
   normal;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt;
   mso-element:frame;mso-element-frame-hspace:9.0pt;mso-element-wrap:around;
