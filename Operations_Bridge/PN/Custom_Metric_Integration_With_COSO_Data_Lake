@@ -3,14 +3,14 @@
 metrics to enable custom reporting using Business Value Dashboard or 
 your own BI reporting tools.</span></p><p>This section covers the following topics:</p><ul><li>Custom metric collection concepts</li><li>Metric life cycle</li><li>Steps to create your custom content</li><li>Fully functional end to end example</li></ul><h2> <span class="mw-headline" id="Custom">Custom metric collection concepts</span></h2><p>There are two approaches to ingesting Operations Agent custom metrics into the COSO Data Lake:<br></p><h3>Collection Services</h3><p>The
  Collection Service is a containerized micro service designed to 
-centrally collect large amounts of data from the remote Operations 
+centrally collect large amounts of data from multiple sources, including the remote Operations 
 Agents’ Performance Collection Component and store it in the COSO Data 
 Lake. It supports collecting data from all Operations Agent supported 
 platforms, and all supported versions. The Collection Service is 
 horizontally scalable. It spawns one or more Agent Metric Collector 
-containers, depending on the number of collections you configure, which 
+containers, depending on the number of collections you configure for the agent data source, which 
 in turn define the nodes from which to collect data.</p><p>This is the 
-recommended approach where the data is used for reporting purposes and 
+recommended data collection approach where the data is used for reporting purposes and 
 doesn’t require real time analytics or central thresholding.</p><p>You 
 use the Content Administration Service, a containerized micro service, 
 to configure the Collection Service to collect data from the Operations 
@@ -30,7 +30,7 @@ Configuration policies are supported on all Operations Agent platforms.&nbsp;
  All other metric collection policy types are supported on Windows and 
 Linux platforms only.</p><p>You use the Content Administration Service to configure the COSO Data Lake to store and manage the data.</p><p>The following diagram shows the components used in collecting custom metrics.</p><div><br></div><div><img src="https://docs.microfocus.com/mediawiki/images/PN/diag1.png"><br></div><h2> <span class="mw-headline" id="Metric">Metric life cycle</span></h2><p class="MsoNormal">You
  need to consider what metrics to collect, whether aggregation is 
-required and how long to retain the data in the COSO Data Lake.</p><p class="MsoNormal"><img src="https://docs.microfocus.com/mediawiki/images/PN/diag2.PNG"><br></p><h3>Define</h3><p class="MsoNormal">This involves defining how the COSO Data Lake is configured to process custom metrics:<br></p><ul><li>Database table(s) in Vertica</li><li>Kafka topic though which data is ingested (not applicable for the Agent Metric Collector of the Collection Service)</li><li>Connection
+required and how long to retain the data in the COSO Data Lake.</p><p class="MsoNormal"><img src="https://docs.microfocus.com/mediawiki/images/PN/diag2.PNG"><br></p><h3>Define</h3><p class="MsoNormal">This involves defining how the COSO Data Lake is configured to process custom metrics:<br></p><ul><li>Database table(s) in Vertica</li><li>Kafka topic though which data is ingested <br></li><li>Connection
  between the Kafka topic and the database table (not applicable for the 
 Agent Metric Collector of the Collection Service)</li></ul><p class="MsoNormal">This information is defined in a well-known JSON file format and configured using the Content Administration Service.<br></p><h3>Collect and ingest</h3><h4>Collection Service</h4><p class="MsoNormal">For
  the reporting use case, the recommended method of Operations Agent 
@@ -39,11 +39,11 @@ collect, the agents from which to collect and how frequently to collect
 are defined in a well-known JSON file format and configured using the 
 Content Administration Service.</p><h4>OBM policies</h4><p class="MsoNormal">If
  you use OBM policies to post the data to COSO, then you need to create,
- assign and deploy the policies.&nbsp; The policies contain which metrics to 
+ assign and deploy the policies.&nbsp; The policies can contain interfaces to integrate data from different sources, which metrics to 
 collect from the local agent and how frequently to send the data to the 
 COSO Data Lake. The Operations Agent, apart from acting as a source of 
 system performance metrics, also acts as a metric integration framework,
- and provides the following options to integrate metrics to the COSO 
+ and provides the below mentioned options to integrate metrics to the COSO 
 Data Lake.</p><p class="MsoNormal"><br></p><table class="MsoTableGrid" style="border-left: none;" cellspacing="0" cellpadding="0" border="1">
  <tbody><tr>
   <td style="width: 155.8pt; border-width: 1pt; border-left-style: solid; border-color: windowtext; border-image: initial; padding: 0in 5.4pt;" width="208" valign="top">
@@ -126,7 +126,8 @@ Data Lake.</p><p class="MsoNormal"><br></p><table class="MsoTableGrid" style="bo
   </td>
   <td style="width: 155.85pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;" width="208" valign="top">
   <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal">Generic Output from Agent Store</p>
+  normal">Generic Output from Agent Store <br></p><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">[There is not Policy UI for this policy type, and this may get deprecated in future. Hence it is not recommended to use this policy type at the moment]<br></p>
   </td>
   <td style="width: 155.85pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt;" width="208" valign="top">
   <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
@@ -134,10 +135,7 @@ Data Lake.</p><p class="MsoNormal"><br></p><table class="MsoTableGrid" style="bo
   integrated to the COSO Data Lake.&nbsp;
   Refer to the example policies in the Microsoft SQL Server Management
   Pack or the IBM WebSphere Management Pack for how the policy is configured
-  using the raw policy editor.&nbsp; Note: In
-  OBM 2018.11 and 2019.05, these example policies are using the Generic Output
-  from Structured Log File policy type, but their syntax applies to the Generic
-  Output from Agent Store policy type.</p>
+  using the raw policy editor.&nbsp; <br></p>
   </td>
  </tr>
 </tbody></table><p class="MsoNormal">Note: A <span class="MsoHyperlink"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.05/ConfigureDataForwardingPolicies">Data
@@ -160,8 +158,7 @@ overview</span></span></h2><p class="MsoNormal"><span lang="EN-AU">The reporting
 content for the COSO Data Lake is packaged as a ZIP file with a well-known
 folder structure where each folder contains a specific type of artifact.&nbsp; The supported artifacts are:</span></p><p class="MsoNormal"><span style="text-indent: -0.25in;" lang="EN-AU"></span></p><ul><li>Metric (schema) definition</li><li>Collection definition for the Operations Agent data source</li><li>Data enrichment definition</li><li>Custom roll up definition</li><li>Forecast definition</li><li>Bulk upload definition</li><li>Retention rules</li><li>BVD reports</li></ul><p class="MsoNormal"><span style="text-indent: -0.25in;" lang="EN-AU">Content configuration
 is performed by the user logging in to the Content Administration Service
-container and executing the </span><span style="text-indent: -0.25in; font-family: &quot;Courier New&quot;;">content-service.sh</span><span style="text-indent: -0.25in;"> </span><span style="text-indent: -0.25in;" lang="EN-AU">CLI.&nbsp;</span>The content
-configuration CLI provides the ability to configure a specific content package
+container and executing the </span><span style="text-indent: -0.25in; font-family: &quot;Courier New&quot;;">opsb-content-service.sh</span><span style="text-indent: -0.25in;"> </span><span style="text-indent: -0.25in;" lang="EN-AU">CLI.&nbsp;</span>The <span style="text-indent: -0.25in; font-family: &quot;Courier New&quot;;">opsb-content-service.sh</span> CLI provides the ability to configure a specific content package
 or all the content packages available on the system.</p><p class="MsoNormal"><span lang="EN-AU">Out-of-the-box
 content (e.g. System Infrastructure reporting, Event reporting) is shipped as
 part of the Content Administration Service.&nbsp;
