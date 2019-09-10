@@ -75,7 +75,7 @@
 
 <p class="MsoNormal"><o:p>&nbsp;</o:p></p>
 
-<h2>Short description</h2><p class="MsoNormal"><o:p></o:p></p>
+<h3><b>Short description</b></h3><p class="MsoNormal"><o:p></o:p></p>
 
 <p class="MsoNormal">OPC_PROC_ALWAYS_INTERACTIVE specifies how the Windows agent
 starts processes for all the agent subagent processes which can execute an
@@ -84,16 +84,16 @@ when they are started with access to the default desktop (Administrator).<o:p></
 
 <p class="MsoNormal"><o:p>&nbsp;</o:p></p>
 
-<h3>Long Description</h3><p class="MsoNormal"><o:p></o:p></p>
+<h3><b>Long Description</b></h3><p class="MsoNormal"><b><o:p></o:p></b></p>
 
 <p class="MsoNormal">This configuration variable specifies how the Windows agent
-starts processes which can execute action (auto-, operator-initiated-,
+starts processes which can execute an action (auto-, operator-initiated-,
 scheduled). <o:p></o:p></p>
 
 <p class="MsoNormal">Sub-agent processes that can be impacted with this variable
 are:<o:p></o:p></p>
 
-<p class="MsoNormal"><ul><li>Logfile Encapsulate (opcle)</li><li>Measurement Threshold (opcmona)</li><li>Open Message Interface (opcmsgi)</li><li>Schedule Task (opcacta)</li><li>SNMP Interceptor (opctrapi)</li><li>Windows Management Interface (WMI)&nbsp;</li></ul></p>
+<p class="MsoNormal"></p><ul><li>Logfile Encapsulate (opcle)</li><li>Measurement Threshold (opcmona)</li><li>Open Message Interface (opcmsgi)</li><li>Schedule Task (opcacta)</li><li>SNMP Interceptor (opctrapi)</li><li>Windows Management Interface (WMI)&nbsp;</li></ul><p></p>
 
 <p class="MsoNormal">When Agent is running in non-root mode, some processes may
 hang when they are started with access to the default desktop (Administrator),
@@ -110,43 +110,33 @@ are being executed by Domain User accounts.<o:p></o:p></p>
 
 <p class="MsoNormal"><b>Values: </b><o:p></o:p></p>
 
-<p class="MsoNormal"><ul><li>ALWAYS - Processes started by the OVO agent always set the
+<p class="MsoNormal"></p><ul><li>ALWAYS - Processes started by the OVO agent always set the
 WinSta0/Default desktop, no matter whether there is somebody logged in or not.</li><li>NEVER - Processes started by the OVO agent do not have
 access to the default desktop.</li><li>AUTO - Before starting sub-processes, the OVO Agent tries to
 determine whether somebody is logged on to the default desktop. If so, started
 sub-processes use the default desktop, otherwise not.</li><li>TRUE - For backward compatibility of ALWAYS flag (same as
 ALWAYS flag).</li><li>FALSE - For backward compatibility of AUTO flag (same as
-AUTO flag).</li></ul><o:p></o:p></p>
-
-<p class="MsoNormal"><o:p></o:p></p>
-
-<p class="MsoNormal"><o:p></o:p></p>
-
-<p class="MsoNormal"><o:p></o:p></p>
-
-<p class="MsoNormal"><o:p></o:p></p>
-
-<p class="MsoNormal"><o:p>&nbsp;</o:p></p>
+AUTO flag).&nbsp;</li></ul>
 
 <p class="MsoNormal"><b>NOTE:</b> It may be necessary to change the value of this flag
 under the following circumstances:<o:p></o:p></p>
 
-<p class="MsoNormal"><ul><li>The OVO Agent is not running as SYSTEM or a user who is
+<p class="MsoNormal"></p><ul><li>The OVO Agent is not running as SYSTEM or a user who is
 member of the Administrators group.</li><li>The Agent has administrative capabilities but starts
-processes under another identity (using the OVO switch-user feature).&nbsp;</li><li><br></li></ul></p>
+processes under another identity (using the OVO switch-user feature).&nbsp;</li></ul><p></p>
 
 <p class="MsoNormal">If this variable value is set to NEVER, you will not be able
 to start interactive applications (e.g. open a GUI such as Notepad). If
 starting interactive applications is desirable (e.g. if the Windows managed
 node is used at the same time for the OVO/Windows Console or the OVO/UX Java
 GUI) then set to ALWAYS or leave the variable unset to use the default value of
-ALWAYS.</p><p class="MsoNormal"><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">&nbsp;</span></p>
+ALWAYS.<span style="background-color: transparent; font-size: inherit; letter-spacing: 0.2px;">&nbsp;</span></p>
 
 <p class="MsoNormal">If experiencing one of the following problems, try to set
 the variable to NEVER:<o:p></o:p></p>
 
-<p class="MsoNormal"><ul><li>Started agent processes hang (which is specified above).</li><li>Started processes pop up an error dialog reporting error
-0xc0000142 "The application failed to initialize properly".</li><li>The process starts but does not produce any output.&nbsp;</li></ul><o:p></o:p></p>
+<p class="MsoNormal"></p><ul><li>Started agent processes hang (which is specified above).</li><li>Started processes pop up an error dialog reporting error
+0xc0000142 "The application failed to initialize properly".</li><li>The process starts but does not produce any output.&nbsp;</li></ul><o:p></o:p><p></p>
 
 <p class="MsoNormal"><o:p></o:p></p>
 
