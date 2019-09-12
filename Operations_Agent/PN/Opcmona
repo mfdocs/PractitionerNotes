@@ -278,8 +278,8 @@ feature for monitor policies in the monitor agent.<o:p></o:p></p>
 <p class="MsoNormal">Eg value for the above config variable is as follows:<br><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">ovconfchg -ns eaagt.thresholds -set threshold1
 Monitor1/threshold1/10:7</span></p><p class="MsoNormal"><o:p></o:p></p>
 
-<p class="MsoNormal"><ul><li>The value before the first “/” separator is policy name. In
-the above example “Monitor1” is the policy name.</li><li>The value 10 indicates the threshold value.</li><li>The value 7 indicates reset value.</li></ul><o:p></o:p></p>
+<p class="MsoNormal"></p><ul><li>The value before the first “/” separator is policy name. In
+the above example “Monitor1” is the policy name.</li><li>The value 10 indicates the threshold value.</li><li>The value 7 indicates reset value.</li></ul><o:p></o:p><p></p>
 
 <p class="MsoNormal"><o:p></o:p></p>
 
@@ -288,13 +288,122 @@ the above example “Monitor1” is the policy name.</li><li>The value 10 indica
 <p class="MsoNormal">Post obtaining the above values threshold overriding is done
 in the following manner:<o:p></o:p></p>
 
-<p class="MsoNormal"><ul><li>For each deployed monitor policies</li><li>For each threshold override configuration specified if
+<p class="MsoNormal"></p><ul><li>For each deployed monitor policies</li><li>For each threshold override configuration specified if
 policy name matches then below flow of actions happen</li><li>For each conditions in the policy if the description matches
 then </li><li>Threshold value in the policy is overwritten in memory</li><li>Reset value in the policy is overwritten in memory.</li><li>Also, the following value is also altered if the threshold
 value is not the same as reset value</li><li>If message generation is for BELOW_THRESHOLD it is altered
 as BELOW_RESET</li><li>Similar flow is also performed for the case with advanced
 monitor policies</li><li>The threshold value overriding is performed during fresh
-start of subagent process and during reconfig scenarios</li></ul><o:p></o:p></p>
+start of subagent process and during reconfig scenarios</li></ul><div><h2>OPC_OPCMON_NETSNMP_SESSION_TIMEOUT&nbsp;&nbsp;&nbsp; </h2><p class="MsoNormal"><o:p></o:p></p>
+
+<table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Type</b></span><span lang="EN-US" style=""><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: black; border-right-color: black; border-bottom-color: black; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">Integer<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Default Value</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">2
+  <o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Class of the
+  variable</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">opcmona<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Namespace </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">eaagt<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span lang="EN-US" style=""><b>Restart
+  Required</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">Yes<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span lang="EN-US" style=""><b>Introduced since&nbsp;
+  </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">11.12<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span lang="EN-US" style=""><b>Applicable
+  Platforms</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">All<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span lang="EN-US" style=""><b>Related
+  variables</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">OPC_OPCMON_NETSNMP_SESSION_RETRIES</span><span lang="EN-US" style="font-size: 12pt;"><o:p></o:p></span></p>
+  </td>
+ </tr>
+</tbody></table>
+
+<h3><b>Short Description</b></h3><p class="MsoNormal"><o:p></o:p></p>
+
+<p class="MsoNormal">OPC_OPCMON_NETSNMP_SESSION_TIMEOUT config variable is used
+to set maximum time opcmona process can wait to get SNMP MIB data.<o:p></o:p></p>
+
+<h3><b>Long Description</b></h3><p class="MsoNormal"><o:p></o:p></p>
+
+<p class="MsoNormal">When opcmona process monitors SNMP MIB Measurement threshold
+policy, it tries to fetch the MIB data every interval and check for the threshold
+and perform the necessary action.<o:p></o:p></p>
+
+<p class="MsoNormal">Opcmona process fetches the MIB data by opening snmp session
+and request snmp Query and get the data and close the snmp session.<o:p></o:p></p>
+
+<p class="MsoNormal">By default, opcmona wait for 2 second to get the MIB data and
+close the session.<o:p></o:p></p>
+
+<p class="MsoNormal"><b>Possible scenarios where&nbsp;OPC_OPCMON_NETSNMP_SESSION_TIMEOUT&nbsp;variable could be used</b></p><p class="MsoNormal"><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">Sometime opcmona need to get the MIB data from Remote node
+as well. During this scenario, there is a possibility of delay in receiving the
+MIB data from the remote node and opcmona policy fails with the below error in
+System.txt.</span></p><p class="MsoNormal"><ul><li>Initialization of MIB source SNMPsource failed. (OpC30-726)</li><li>Collect data from SNMP source SNMPsource failed. (OpC30-719)</li><li>Can't issue an SNMP GET request for monitor.</li></ul><o:p></o:p></p>
+
+<p class="MsoNormal"><o:p></o:p></p>
+
+<p class="MsoNormal"><o:p></o:p></p>
+
+<p class="MsoNormal"><o:p></o:p></p>
+
+<p class="MsoNormal">To overcome this situation we can use
+OPC_OPCMON_NETSNMP_SESSION_TIMEOUT config variable to increase the number of
+second the snmp session can be opened to get the MIB data from the remote node.</p></div><o:p></o:p><p></p>
 
 <p class="MsoNormal"><o:p></o:p></p>
 
