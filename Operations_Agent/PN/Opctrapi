@@ -427,7 +427,7 @@ fashion. Setting OPC_SEND_MAX_ONE_MSG_PER_TRAP to TRUE will stop the processing 
 that trap in other policies with the first successful match of a Send Message
 on match type condition. <o:p></o:p></p><h3><b>Long Description</b></h3><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">This configure variable used to increase the agent
 performance, when customer knows matching first trap condition is okay to
-process templates they will set this variable true.<o:p></o:p></p><p class="MsoNormal"><b>Impact</b><o:p></o:p></p><p class="MsoNormal"><b>Pros:-</b><o:p></o:p></p><p class="MsoNormal"><ul><li>The variable OPC_SEND_MAX_ONE_MSG_PER_TRAP if set to TRUE
+process templates they will set this variable true.<o:p></o:p></p><p class="MsoNormal"><b>Impact</b><o:p></o:p></p><p class="MsoNormal"><b>Pros:-</b><o:p></o:p></p><p class="MsoNormal"></p><ul><li>The variable OPC_SEND_MAX_ONE_MSG_PER_TRAP if set to TRUE
 makes opctrapi skips further processing of policies after one condition match
 in one of the policies. This saves some valuable time as the default behavior
 is that all policies will be traversed to check against all conditions even if
@@ -438,7 +438,7 @@ fashion. The first Send Message on Match condition type matched in each
 deployed policy will generate a message to be forwarded to the management
 server. By setting OPC_SEND_MAX_ONE_MSG_PER_TRAP to TRUE, processing of a trap
 will stop with the first successful match of a Send Message on match type
-condition. No other policies will be evaluated.</li></ul><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><b>Cons:-</b><o:p></o:p></p><p class="MsoNormal"><span style="line-height: 107%;">
+condition. No other policies will be evaluated.</li></ul><o:p></o:p><p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><b>Cons:-</b><o:p></o:p></p><p class="MsoNormal"><span style="line-height: 107%;">
 
 
 
@@ -464,7 +464,118 @@ condition. No other policies will be evaluated.</li></ul><o:p></o:p></p><p class
 
 
 
-</span></p><p class="MsoNormal"><ul><li>This speeds up processing but may prevent some templates
+</span></p><p class="MsoNormal"></p><ul><li>This speeds up processing but may prevent some templates
 from even 'looking' at the trap. As a result, fewer messages might be sent to
 the server and the behavior of duplicate suppression for 'Suppress Messages
-Matching Condition' may change.</li></ul><o:p></o:p></p>
+Matching Condition' may change.</li></ul><div><h2>SNMP_SESSION_MODE</h2><p class="MsoNormal"><o:p></o:p></p>
+
+<table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Type</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: black; border-right-color: black; border-bottom-color: black; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">string </span><span lang="EN-US" style=""><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Default Value</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">NETSNMP<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Details"><span lang="EN-US" style=""><b>Class of the variable</b></span><span lang="EN-US" style=""><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">opctrapi<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Namespace
+  </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">eaagt<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Restart Required</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">&nbsp; Yes only opctrapi need to be restart <o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Introduced since&nbsp; </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">OA 8.x<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Applicable Platforms</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">ALL<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Related variables</b></span><span style="line-height: 107%;"><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="font-size:12.0pt;line-height:107%;mso-bidi-font-family:ArialMT">NA</span><b><span style="font-size:12.0pt;line-height:
+  107%"><o:p></o:p></span></b></p>
+  </td>
+ </tr>
+</tbody></table>
+
+<h3><b>Short Description</b></h3><p class="MsoNormal"><o:p></o:p></p>
+
+<p class="MsoNormal">Mode in which the trap interceptor opens a session. Value
+NNM_LIBS can only be used with Windows to support SNMP V2 traps (NNM libraries
+are used in this case).<o:p></o:p></p>
+
+<p class="MsoNormal"><b>For IPV6</b><o:p></o:p></p>
+
+<p class="MsoNormal">SNMP_SESSION_MODE Specifies the mode in which the trap
+interceptor opens a session. The value NNM_LIBS can be used only with Windows
+to support SNMP V2 traps (NNM libraries are used in this case). The value
+NNM_PMD can be used only with UNIX agents to support trap Interceptor connecting
+to NNM pmd. The value TRY_BOTH, tries both NNM_PMD and NO_TRAPD.<o:p></o:p></p>
+
+<h3><b>Long Description</b></h3><p class="MsoNormal"><o:p></o:p></p>
+
+<p class="MsoNormal">The trap interceptor opens a session based on this setting.<o:p></o:p></p>
+
+<p class="MsoNormal"><b>Behavior on Windows:</b><o:p></o:p></p>
+
+<p class="MsoNormal"><ul><li>NETSNMP : The opctrapi process uses the Net-SNMP APIs to
+bind to the port 162</li><li>WIN_SNMP: opctrapi subscribes to the Microsoft Trap Service.</li><li>NNM_LIBS: The opctrapi process uses the OVSNMP API and binds
+to the port 162.</li></ul><o:p></o:p></p>
+
+<p class="MsoNormal"><o:p></o:p></p>
+
+<p class="MsoNormal"><o:p></o:p></p>
+
+<p class="MsoNormal"><b>Behavior on Unix Systems:</b><o:p></o:p></p>
+
+<p class="MsoNormal"><ul><li>NETSNMP: opctrapi uses the Net-SNMP APIs to bind to the port
+162.</li><li>NO_TRAPD/NNM_LIBS:The opctrapi process uses the OVSNMP API
+and binds to the port 162</li></ul><o:p></o:p></p>
+
+<p class="MsoNormal"><o:p></o:p></p>
+
+<p class="MsoNormal"><b>Note the following:</b><o:p></o:p></p>
+
+<p class="MsoNormal"><ul><li>On 12.0, we support on NETSNMP.</li><li>Historical modes of NNM_PMD and TRY_BOTH are not supported.</li></ul><o:p></o:p></p>
+
+<p class="MsoNormal"><o:p></o:p></p></div><o:p></o:p><p></p>
