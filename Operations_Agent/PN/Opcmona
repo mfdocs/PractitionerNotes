@@ -381,8 +381,8 @@ to set maximum time opcmona process can wait to get SNMP MIB data.<o:p></o:p></p
 <h3><b>Long Description</b></h3><p class="MsoNormal"><o:p></o:p></p>
 
 <p class="MsoNormal">When opcmona process monitors SNMP MIB Measurement threshold
-policy, it tries to fetch the MIB data every interval and check for the threshold
-and perform the necessary action.<o:p></o:p></p>
+policy, it tries to fetch the MIB data every interval and checks for the threshold
+and performs the necessary action.<o:p></o:p></p>
 
 <p class="MsoNormal">Opcmona process fetches the MIB data by opening snmp session
 and request snmp Query and get the data and close the snmp session.<o:p></o:p></p>
@@ -390,10 +390,10 @@ and request snmp Query and get the data and close the snmp session.<o:p></o:p></
 <p class="MsoNormal">By default, opcmona wait for 2 second to get the MIB data and
 close the session.<o:p></o:p></p>
 
-<p class="MsoNormal"><b>Possible scenarios where&nbsp;OPC_OPCMON_NETSNMP_SESSION_TIMEOUT&nbsp;variable could be used</b></p><p class="MsoNormal"><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">Sometime opcmona need to get the MIB data from Remote node
+<p class="MsoNormal"><b>Possible scenarios where&nbsp;OPC_OPCMON_NETSNMP_SESSION_TIMEOUT&nbsp;variable could be used:</b></p><p class="MsoNormal"><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">Sometime opcmona need to get the MIB data from Remote node
 as well. During this scenario, there is a possibility of delay in receiving the
 MIB data from the remote node and opcmona policy fails with the below error in
-System.txt.</span></p><p class="MsoNormal"><ul><li>Initialization of MIB source SNMPsource failed. (OpC30-726)</li><li>Collect data from SNMP source SNMPsource failed. (OpC30-719)</li><li>Can't issue an SNMP GET request for monitor.</li></ul><o:p></o:p></p>
+System.txt.</span></p><p class="MsoNormal"></p><ul><li>Initialization of MIB source SNMPsource failed. (OpC30-726)</li><li>Collect data from SNMP source SNMPsource failed. (OpC30-719)</li><li>Can't issue an SNMP GET request for monitor.</li></ul><o:p></o:p><p></p>
 
 <p class="MsoNormal"><o:p></o:p></p>
 
@@ -403,7 +403,116 @@ System.txt.</span></p><p class="MsoNormal"><ul><li>Initialization of MIB source 
 
 <p class="MsoNormal">To overcome this situation we can use
 OPC_OPCMON_NETSNMP_SESSION_TIMEOUT config variable to increase the number of
-second the snmp session can be opened to get the MIB data from the remote node.</p></div><o:p></o:p><p></p>
+second the snmp session can be opened to get the MIB data from the remote node.</p><h2>OPC_OPCMON_NETSNMP_SESSION_RETRIES</h2><p class="MsoNormal"><o:p></o:p></p><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Type</b></span><span lang="EN-US" style=""><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: black; border-right-color: black; border-bottom-color: black; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">Integer<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Default Value</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">0<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Class of the
+  variable</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">Opcmona<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Namespace </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">Eaagt<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span lang="EN-US" style=""><b>Restart
+  Required</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">Yes<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span lang="EN-US" style=""><b>Introduced since&nbsp;
+  </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">11.12<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span lang="EN-US" style=""><b>Applicable
+  Platforms</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">All<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span lang="EN-US" style=""><b>Related
+  variables</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">OPC_OPCMON_NETSNMP_SESSION_TIMEOUT</span><span lang="EN-US" style="font-size: 12pt;"><o:p></o:p></span></p>
+  </td>
+ </tr>
+</tbody></table><h3><b>Short Description</b></h3><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">OPC_OPCMON_NETSNMP_SESSION_RETRIES config variable is used
+to set Maximum number of retries to fetch SNMP MIB.<o:p></o:p></p><h3><b>Long Description</b></h3><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">When opcmona process monitors SNMP MIB Measurement threshold
+policy, it try to fetch the MIB data every interval and check for the threshold
+and perform necessary action.<o:p></o:p></p><p class="MsoNormal">Opcmona process fetch the MIB data by opening snmp session
+and request Snmp Query and get the data and close the snmp session.<o:p></o:p></p><p class="MsoNormal"><b>Possible Scenarios where OPC_OPCMON_NETSNMP_SESSION_RETRIES
+variable could be used:</b><o:p></o:p></p><p class="MsoNormal">Sometime opcmona need to get the MIB data from Remote node
+as well. During this scenario there is possibility of delay in receiving the
+MIB data from the remote node and opcmona policy fails with the below error in
+System.txt.<o:p></o:p></p><p class="MsoNormal"><ul><li>Initialization of MIB source SNMPsource failed. (OpC30-726)</li><li>Collect data from SNMP source SNMPsource failed. (OpC30-719)</li><li>Can't issue an SNMP GET request for monitor</li></ul><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</p><p class="MsoNormal">To overcome the situation we can use
+OPC_OPCMON_NETSNMP_SESSION_RETRIES config variable to increase the number of
+Retries to fetch the MIB data after every OPC_OPCMON_NETSNMP_SESSION_TIMEOUT
+seconds.<o:p></o:p></p></div><o:p></o:p><p></p>
 
 <p class="MsoNormal"><o:p></o:p></p>
 
