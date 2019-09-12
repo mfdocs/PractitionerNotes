@@ -175,7 +175,7 @@ policy with threshold 10.<o:p></o:p></p><h2>OPC_MON_KEEP_PERSISTENT_PERL_ENGINE<
 retained persistently in memory or should be loaded and unloaded for each
 instance of execution of embedded perl script in policies <o:p></o:p></p><h3><b>Long Description</b></h3><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">Default value in windows is “FALSE” and default value for
 unix is “TRUE”.&nbsp;<span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">OPC_MON_KEEP_PERSISTENT_PERL_ENGINE value decides if perl
-script embedded within policy is executed with eval_pv perl api.</span></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">Details of the above api found in the below link<br><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">http://perldoc.perl.org/perlembed.html</span></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">Snapshot from above link<o:p></o:p></p><p class="MsoNormal"><ul><li>Perl provides two API functions to evaluate pieces of Perl
+script embedded within policy is executed with eval_pv perl api.</span></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">Details of the above api found in the below link<br><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">http://perldoc.perl.org/perlembed.html&nbsp;</span></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">Snapshot from above link<o:p></o:p></p><p class="MsoNormal"></p><ul><li>Perl provides two API functions to evaluate pieces of Perl
 code. These are eval_sv in perlapi and eval_pv in perlapi.</li><li><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">Arguably, these are the only routines you'll ever need to
 execute snippets of Perl code from within your C program. Your code can be as
 long as you wish; it can contain multiple statements; it can employ use,
@@ -183,8 +183,8 @@ require, and do to include external Perl files.<br></span><br>eval_pv lets us ev
 extract variables for coercion into C types<br><br>The use of the config variable is to decide if perl
 interpreter needs to be maintained persistently or loaded for each execution of
 the embedded perl script<br><br>More details on the persistent interpreter can be found in
-the below link<br>http://perldoc.perl.org/perlembed.html#Maintaining-a-persistent-interpreter<br><br>Snapshot from the above link</li></ul><ul><ul><li><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">When developing interactive and/or potentially long-running
+the below link<br>http://perldoc.perl.org/perlembed.html#Maintaining-a-persistent-interpreter&nbsp;<br><br>Snapshot from the above link</li></ul><ul><ul><li><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">When developing interactive and/or potentially long-running
 applications, it's a good idea to maintain a persistent interpreter rather than
 allocating and constructing a new interpreter multiple times. The major reason
 is speed: since Perl will only be loaded into memory once.</span></li><li><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">If perl interpreter persistent option is not set
-to true eval api is executed each time the embedded perl script is executed.</span></li></ul></ul></p>
+to true eval api is executed each time the embedded perl script is executed.</span></li></ul></ul><p></p>
