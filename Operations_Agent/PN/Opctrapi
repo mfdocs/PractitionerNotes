@@ -292,14 +292,14 @@ the rate of inbound traps. This can cause inbound traps to be dropped.
 SNMP_RECV_BUF creates a buffer of the specified size (in bytes) where inbound
 traps can be stored until opctrapi has the resources to start processing them.<o:p></o:p></p><p class="MsoNormal">The value of SNMP_RECV_BUF must be incremented in multiples
 of 64 KB (65536, 131072 and so on) and then choose a value that suits better.
-Kernal udp buffer values have to be changed along with this config variable.<o:p></o:p></p><p class="MsoNormal">Network kernel parameters were set through below commands:<o:p></o:p></p><p class="MsoNormal"><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;"><b>For Linux:</b></span><br><ul><li><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">sysctl -w net.core.rmem_max=value</span></li><li><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">sysctl -w net.core.rmem_default=value</span></li><li><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">sysctl -w net.core.wmem_max=value</span></li></ul><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">To make the change permanent, add the following lines to the
+Kernal udp buffer values have to be changed along with this config variable.<o:p></o:p></p><p class="MsoNormal">Network kernel parameters were set through below commands:<o:p></o:p></p><p class="MsoNormal"><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;"><b>For Linux:</b></span><br></p><ul><li><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">sysctl -w net.core.rmem_max=value</span></li><li><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">sysctl -w net.core.rmem_default=value</span></li><li><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">sysctl -w net.core.wmem_max=value</span></li></ul><o:p></o:p><p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">To make the change permanent, add the following lines to the
 /etc/sysctl.conf file, which is used during the boot process<o:p></o:p></p><p class="MsoNormal">For example in one of the customer case, for opctrapi to
 handle 150 traps/per second without any issues/without any drops below values
-were set:<o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><ul><li>SNMP_RECV_BUF=524288 (512kb) and&nbsp;network kernel parameters were set through
-sysctl command (for LINUX PLATFORM) to 32MB:</li><li>sysctl -w net.core.rmem_max='33554432' (32MB)</li><li>sysctl -w net.core.rmem_default='33554432' (32MB)</li><li>sysctl -w net.core.wmem_max='33554432' (32MB)</li></ul><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><b>For Solaris:</b><o:p></o:p></p><p class="MsoNormal"><ul><li>ndd -set /dev/udp udp_max_buf value<br>where, the recommendation for value is 8088608.</li></ul></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><b>For AIX:</b><o:p></o:p></p><p class="MsoNormal"><ul><li>no -o sb_max=value (AIX will only allow 1 megabyte, 4
-megabytes or 8 megabytes).</li></ul><o:p></o:p></p><p class="MsoNormal"><b>For HP-UX:</b><o:p></o:p></p><p class="MsoNormal"><ul><li>ndd -set /dev/sockets socket_udp_rcvbuf_default value</li></ul><o:p></o:p></p><p class="MsoNormal">To make it permanent to survive a reboot you will need to
-record the change in /etc/rc.config.d/nddconf<o:p></o:p></p><p class="MsoNormal"><b>For Windows:</b><o:p></o:p></p><p class="MsoNormal"><ul><li>Value set in registry: HKEY_LOCAL_MACHINE \SYSTEM
-\CurrentControlSet\Services\Afd\Parameters \ DefaultReceiveWindow -&nbsp; value </li></ul><o:p></o:p></p><p class="MsoNormal">
+were set:<o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"></p><ul><li>SNMP_RECV_BUF=524288 (512kb) and&nbsp;network kernel parameters were set through
+sysctl command (for LINUX PLATFORM) to 32MB:</li><li>sysctl -w net.core.rmem_max='33554432' (32MB)</li><li>sysctl -w net.core.rmem_default='33554432' (32MB)</li><li>sysctl -w net.core.wmem_max='33554432' (32MB)</li></ul><o:p></o:p><p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><b>For Solaris:</b><o:p></o:p></p><p class="MsoNormal"></p><ul><li>ndd -set /dev/udp udp_max_buf value<br>where, the recommendation for value is 8088608.</li></ul><p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><b>For AIX:</b><o:p></o:p></p><p class="MsoNormal"></p><ul><li>no -o sb_max=value (AIX will only allow 1 megabyte, 4
+megabytes or 8 megabytes).</li></ul><o:p></o:p><p></p><p class="MsoNormal"><b>For HP-UX:</b><o:p></o:p></p><p class="MsoNormal"></p><ul><li>ndd -set /dev/sockets socket_udp_rcvbuf_default value</li></ul><o:p></o:p><p></p><p class="MsoNormal">To make it permanent to survive a reboot you will need to
+record the change in /etc/rc.config.d/nddconf<o:p></o:p></p><p class="MsoNormal"><b>For Windows:</b><o:p></o:p></p><p class="MsoNormal"></p><ul><li>Value set in registry: HKEY_LOCAL_MACHINE \SYSTEM
+\CurrentControlSet\Services\Afd\Parameters \ DefaultReceiveWindow -&nbsp; value </li></ul><o:p></o:p><p></p><p class="MsoNormal">
 
 
 
@@ -355,9 +355,5 @@ record the change in /etc/rc.config.d/nddconf<o:p></o:p></p><p class="MsoNormal"
 
 
 
-<span style="font-size:11.0pt;line-height:107%;font-family:&quot;Calibri&quot;,sans-serif;
-mso-ascii-theme-font:minor-latin;mso-fareast-font-family:Calibri;mso-fareast-theme-font:
-minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;
-mso-bidi-theme-font:minor-bidi;mso-ansi-language:EN-GB;mso-fareast-language:
-EN-US;mso-bidi-language:AR-SA"><b>NOTE:</b> Use of SNMP_RECV_BUF requires that SNMP_SESSION_MODE
+<span style="line-height: 107%;"><b>NOTE:</b> Use of SNMP_RECV_BUF requires that SNMP_SESSION_MODE
 be set to NETSNMP.</span><br></p>
