@@ -293,17 +293,17 @@ polling interval. If no change is detected, the log file is not processed.</span
 policy should process the entire log file or should only process new log file
 entries.<o:p></o:p></p>
 
-<p class="MsoNormal"><ul><li>OPC_LE_MAX_LINES_READ variable supports for Read from the
+<p class="MsoNormal"></p><ul><li>OPC_LE_MAX_LINES_READ variable supports for Read from the
 last position and Read from beginning (first time) but it not supports Read
 from beginning (always).</li><li>OPC_LE_MAX_LINES_READ variable supports only logfile policy
-only and not supports windows event log policy.</li></ul><o:p></o:p></p>
+only and not supports windows event log policy.</li></ul><o:p></o:p><p></p>
 
 <p class="MsoNormal"><o:p></o:p></p>
 
 <p class="MsoNormal"><b>Possible Scenarios where&nbsp;
 OPC_LE_MAX_LINES_READ variable could be used :</b><o:p></o:p></p>
 
-<p class="MsoNormal"><ul><li>Delayed arrival of opcle alerts while monitoring multiple logfiles
+<p class="MsoNormal"></p><ul><li>Delayed arrival of opcle alerts while monitoring multiple logfiles
 by single logfile policy:<br>Consider a scenario where user wants to monitor dynamic log
 files a,b,c,d. Log file a is getting appended very fast than the other 3 files.
 In that case if<span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">&nbsp; </span><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">OPC_LE_MAX_LINES_READ is
@@ -316,7 +316,7 @@ and some logfiles are huge or appended very fast. Ocple will process each line
 in such file till whole file is read. Such situation may cause opcle to consume
 high cpu till files are read/processed. Setting variable OPC_LE_MAX_LINES_READ
 we can reduce the number of lines to be read at each interval. It will reduce
-the CPU utilization for opcle process.</li></ul></p><h2>OPC_COND_EVT_LOG_SRC_PAT </h2><p class="MsoNormal"><o:p></o:p></p><div>
+the CPU utilization for opcle process.</li></ul><p></p><h2>OPC_COND_EVT_LOG_SRC_PAT </h2><p class="MsoNormal"><o:p></o:p></p><div>
 
 <table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
  <tbody><tr>
@@ -405,7 +405,7 @@ generated.<o:p></o:p></p>
 
 <p class="MsoNormal">Any windows event contains below properties:<o:p></o:p></p>
 
-<p class="MsoNormal"><ul><li>Computer: Name of the Server.</li><li>Source: Name of the process who created the event.</li><li>Category: Name of the task category of the event log.</li><li>Event ID: Value of the Event ID.</li><li>Type: Indicate the severity of the event log.</li></ul><o:p></o:p></p>
+<p class="MsoNormal"></p><ul><li>Computer: Name of the Server.</li><li>Source: Name of the process who created the event.</li><li>Category: Name of the task category of the event log.</li><li>Event ID: Value of the Event ID.</li><li>Type: Indicate the severity of the event log.</li></ul><o:p></o:p><p></p>
 
 <p class="MsoNormal"><o:p></o:p></p>
 
@@ -424,14 +424,14 @@ use pattern matching in Source condition of policy.<o:p></o:p></p>
 
 <p class="MsoNormal">Example:<o:p></o:p></p>
 
-<p class="MsoNormal"><ul><li>If value of OPC_COND_EVT_LOG_SRC_PAT is FALSE</li><ul><li>If one Windows Event log policy is having source field condition
+<p class="MsoNormal"></p><ul><li>If value of OPC_COND_EVT_LOG_SRC_PAT is FALSE</li><ul><li>If one Windows Event log policy is having source field condition
 with content as below: <br>“SQLAgent$&lt;*&gt;|MSSQL$&lt;*&gt;|MSSQLSERVER”</li><li>First incoming event:&nbsp;
 Created by the process SQLAGENT$121 </li><li>Second incoming event: Created by the process MSSQLSERVER.</li><li>Due to disabled pattern matching in source condition of
 policy, only second event will match the condition and alert will be generated
 for second event only.</li></ul><li>If value of OPC_COND_EVT_LOG_SRC_PAT is TRUE</li><ul><li>If one Windows Event log policy is having source field
 condition with content as below: “SQLAgent$&lt;*&gt;|MSSQL$&lt;*&gt;|MSSQLSERVER”</li><li>First incoming event: Created by the process SQLAGENT$121 </li><li>Second incoming event: Created by the process MSSQLSERVER.</li><li>As pattern matching is enabled in this case, both events
 will match against policy condition and alert will be generated for both the
-event.</li></ul></ul><o:p></o:p></p>
+event.</li></ul></ul><o:p></o:p><p></p>
 
 <p class="MsoNormal"><o:p></o:p></p>
 
@@ -463,7 +463,271 @@ different instances of same application.<o:p></o:p></p>
 <p class="MsoNormal">Example:</p><p class="MsoNormal">If SQLAGENT is having instance from SQLAGENT$1,
 SQLAGENT$2,….SQLAGENT$150. By creating a single windows event log policy with
 source field having “SQLAGENT$&lt;*&gt;”, opcle matches the condition for all
-the instance of SQLAGENT.<o:p></o:p></p></div><p class="MsoNormal"><o:p></o:p></p></div><o:p></o:p><p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">
+the instance of SQLAGENT.<o:p></o:p></p><h2>OPC_LE_CMD_RETRY_ENABLED</h2><p class="MsoNormal"><o:p></o:p></p><table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Type</b></span><span lang="EN-US" style=""><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: black; border-right-color: black; border-bottom-color: black; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">Bool<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Default Value</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">FALSE<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Class of the variable</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">opcle<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Namespace </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">eaagt<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Restart Required</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">YES<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Introduced
+  since&nbsp; </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">11.0X<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Applicable Platforms</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">All platforms<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Related variables</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">NA<font face="Calibri, sans-serif"><span style="font-size: 12pt;"><o:p></o:p></span></font></span></p>
+  </td>
+ </tr>
+</tbody></table><h3><b>Short Description</b></h3><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">When OPC_LE_CMD_RETRY_ENABLED is TRUE, if the script/command
+given in the LOG file path of the LE policy fails, opcle will retry the
+script/command 2 more times before sending the failure message<o:p></o:p></p><h3><b>Long Description</b></h3><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">The Logfile Encapsulator monitors the log files based on the
+conditions specified in the LE policy and sends the appropriate message to the
+OM browser.<o:p></o:p></p><p class="MsoNormal">In the LE policy, there i.e. a field "Log file
+Source" where the user should specify the log file that the policy should
+monitor.<o:p></o:p></p><p class="MsoNormal">This can be done in following ways:<o:p></o:p></p><p class="MsoNormal"><ul><li>Type the drive letter and the full path for the location of
+this log file on the appropriate managed node or the absolute path to the file.</li><li>This can be Windows environmental variables (for example
+winnt or clusterlog) to make the policies more flexible. The proper syntax for
+these variables is &lt;$variablename&gt;.</li><li>It can also be a script or command that returns the path and
+name of a log file or any number of logfiles to be monitored. For example, type
+&lt;`command`&gt; where command is the name of a script that returns the path
+and name of the log file/files you want to monitor.</li></ul><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">During each polling interval, the command specified in the
+policy will be executed to dynamically determine the list of log files that are
+to be monitored and there are possibilities that the files are overwritten,
+added or deleted.<o:p></o:p></p><p class="MsoNormal">Hence, during every polling interval, the internal data
+structures of ‘opcle’ are updated:<o:p></o:p></p><p class="MsoNormal"><ul><li>To add/delete the log file from the list of the files to be
+monitored based on the latest command output</li><li>Determine if the files are updated or overwritten and set
+the read offsets accordingly</li></ul><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">Now, if OPC_LE_CMD_RETRY_ENABLED is TRUE and this script or
+command in the LOG file path of the LE policy fails, OPCLE will try to run it 2
+more times. If these attempts also result in failure then, the failure message
+is sent.<o:p></o:p></p><p class="MsoNormal">For example, In the log file policy, the Log file Source
+path can have a command like “ &lt;`dir /b /s C:\temp\*.log`&gt; “ instead of
+providing a list of actual files. The files names will be determined
+dynamically during every polling interval<o:p></o:p></p><p class="MsoNormal">When there are no files that match the pattern, this command
+will fail. But there may be a possibility that some utility deletes and then
+recreates the files immediately. So if the same command is executed again,
+these files will get listed and the command will be successful instead waiting
+till the next polling interval.<o:p></o:p></p><p class="MsoNormal">In such case, if this variable is set to TRUE the command
+will be retried up to 2 more times and the listed files can be read by Opcle.
+If these attempts also fail, a failure message is sent.<o:p></o:p></p><p class="MsoNormal">Given below is the sample trace when this variable is
+enabled and the command execution fails in all the attempts:<o:p></o:p></p><p class="MsoNormal"><b>First retry: </b><o:p></o:p></p><p class="MsoNormal">01/11 14:21:08.442 opcle(2408:1492)[debug]: Previous
+execution of cmd : dir /b /s C:\temp\*.log exited with non-zero value. Retrying
+1 time <o:p></o:p></p><p class="MsoNormal"><b>Second retry:</b><o:p></o:p></p><p class="MsoNormal">01/11 14:21:08.442 opcle(2408:1492)[debug]: Previous
+execution of cmd : dir /b /s C:\temp\*.log exited with non-zero value. Retrying
+2 time<o:p></o:p></p><p class="MsoNormal"><b>The second retry also fails and the command is not attempted
+again:</b><o:p></o:p></p><p class="MsoNormal">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</p><p class="MsoNormal">01/11 14:32:21.895 opcle(2408:1492)[debug]: ERRLIST:
+[genproc.c:480]: The process 'dir /b /s C:\temp\*.log' terminated with a
+non-zero exit code. (OpC20-432) (Errorcode:1311152).<o:p></o:p></p><h2>OPC_LE_CMD_WAIT_TIME</h2><p class="MsoNormal"><o:p></o:p></p><table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
+  <p class="Label"><b><span lang="EN-US" style="font-size:12.0pt;font-family:&quot;Calibri&quot;,sans-serif;
+  mso-bidi-font-family:&quot;Times New Roman&quot;">T</span><span lang="EN-US" style="">ype</span></b><span lang="EN-US" style=""><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: black; border-right-color: black; border-bottom-color: black; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">Integer <o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Default Value</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">15<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Class of the variable</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">opcle<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Namespace </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">eaagt<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Restart Required</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">YES<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Introduced
+  since&nbsp; </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">&gt; OA 8.60<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Applicable Platforms</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">UNIX/Linux
+  environments only<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Related variables</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">OPC_KILL_LE_CMD_TIMEOUT<font face="Calibri, sans-serif"><span style="font-size: 12pt;"><o:p></o:p></span></font></span></p>
+  </td>
+ </tr>
+</tbody></table><h3><b>Short Description </b></h3><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">Maximum wait time for opcle to wait for the child processes
+to complete the task and get the status back. By default, opcle waits for 15
+seconds. If the child doesn't return by this time, opcle kills the child
+process. This variable is applicable only in the UNIX/Linux environments.<o:p></o:p></p><h3><b>Long Description </b></h3><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">In the log file policy source path of the policy, instead of
+specifying the actual logfile or logfiles names, the user can specify a command or
+script which returns a log file or any number of log file names. During each
+polling interval, the command specified in the policy will be executed to
+dynamically determine the list of log files that are to be monitored.<o:p></o:p></p><p class="MsoNormal">But there may be certain cases when this command/script may
+take a long time to run. In such cases, the variable 'OPC_LE_CMD_WAIT_TIME' can
+be set so that once the time out happens the long running processes is killed.
+This is the maximum time that a command started by Opcle can run to complete
+the task. <o:p></o:p></p><p class="MsoNormal">If it runs longer than the value specified for this
+variable, Opcle will kill it. <o:p></o:p></p><p class="MsoNormal">The default value is 15 seconds. Hence, if a script or
+command is known to take more than 15 seconds to run, then this variable can be
+set accordingly.<o:p></o:p></p><p class="MsoNormal">For example, consider a script which may take more than 30
+seconds to complete. Then, this variable can be to 30 so that Opcle waits for
+30 secs before killing the started process and going for further processing.<o:p></o:p></p><p class="MsoNormal">Below is the error message when a process that exceeds the
+default timeout of 15 seconds is killed:<o:p></o:p></p><p class="MsoNormal">" Command '/tmp/mydate.sh' configured in policy
+'mydatele' exceeds timeout OPC_LE_CMD_WAIT_TIME (15 sec).\n\<o:p></o:p></p><p class="MsoNormal">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</p><p class="MsoNormal">Terminating command and ignoring this logfile. "<o:p></o:p></p></div><p class="MsoNormal"><o:p></o:p></p></div><o:p></o:p><p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">
 
 
 
