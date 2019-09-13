@@ -102,7 +102,7 @@ sub-processes use the default desktop, otherwise not.</li><li>TRUE - For backwar
 ALWAYS flag).</li><li>FALSE - For backward compatibility of AUTO flag (same as
 AUTO flag).&nbsp;</li></ul>
 
-<p class="MsoNormal"><b><br></b></p><p class="MsoNormal"><b>NOTE:</b> It may be necessary to change the value of this flag
+<p class="MsoNormal"><b><br></b></p><p class="MsoNormal"><b>Note:</b> It may be necessary to change the value of this flag
 under the following circumstances:<o:p></o:p></p>
 
 <p class="MsoNormal"></p><ul><li>The OVO Agent is not running as SYSTEM or a user who is
@@ -608,7 +608,7 @@ incremented for every new action executed.<o:p></o:p></p><p class="MsoNormal">Fo
 gets decremented.<o:p></o:p></p><p class="MsoNormal">When a new action is to be executed this counter value is
 compared against MAX_NBR_PARALLEL_ACTIONS when the value exceeds the no slot
 error message is logged in System.txt and the opcacta waits for the slot before
-executing the action<o:p></o:p></p><h3><b>Long Description</b></h3><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">Flow is as follows:<o:p></o:p></p><p class="MsoNormal"><ol><li>For the scheduled actions send start message if configured
+executing the action<o:p></o:p></p><h3><b>Long Description</b></h3><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">Flow is as follows:<o:p></o:p></p><p class="MsoNormal"></p><ol><li>For the scheduled actions send start message if configured
 in policy before actual action being executed</li><li>Fetch the value of config variable
 OPC_AUTO_SEM_RETRY_CHK_SECS</li><li>/*parse the username and command to be executed from the
 action_call and scheduled action*/<br>/action_call is of form &lt;user&gt;/|&lt;encrypted
@@ -657,7 +657,309 @@ initialization.</li><li>Flags: CSM_C_PROC_NO_SHELL is set = start exec_str
 directly;(option is ignored if CSM_C_PROC_SU_WITH_ENV, cause profile is to
 execute);if flag is not set, program is executed via shell; CSM_C_PROC_SU is
 set = switch to user CSM_C_PROC_SU_WITH_ENV is set = switch to user and execute
-user's profile; user's shell is always called.</li><li>Executing without shell execvp.</li><li>Executing with shell execlp.</li></ol></ol></ol></p><div><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">
+user's profile; user's shell is always called.</li><li>Executing without shell execvp.</li><li>Executing with shell execlp.</li></ol></ol></ol><div><h2>OPC_KILL_AUTO_ACTION</h2><p class="MsoNormal"><o:p></o:p></p>
+
+<table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
+  <p class="Label"><b><span lang="EN-US" style="font-size:12.0pt;font-family:&quot;Calibri&quot;,sans-serif;
+  mso-bidi-font-family:&quot;Times New Roman&quot;">T</span><span lang="EN-US" style="">ype</span></b><span lang="EN-US" style=""><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: black; border-right-color: black; border-bottom-color: black; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">Boolean<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Default Value</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">TRUE<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Class of the variable</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">Opcacta<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Namespace </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">Eaagt<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Restart Required</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">No<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Introduced
+  since&nbsp; </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">OA 8.x<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Applicable Platforms</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">ALL<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Related variables</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">OPC_KILL_AUTO_ACTION_TIMEOUT</span><span lang="EN-US" style="font-size: 12pt; font-family: Calibri, sans-serif;"><o:p></o:p></span></p>
+  </td>
+ </tr>
+</tbody></table>
+
+<h3><b>Short Description</b></h3><p class="MsoNormal"><o:p></o:p></p>
+
+<p class="MsoNormal">When set to TRUE, the kill operation for automatic actions
+is enabled. If OPC_KILL_AUTO_ACTION is set to true, action agent will
+kill/terminate the process running the auto action if process execution is not
+completed within the time period defined by OPC_KILL_AUTO_ACTION_TIMEOUT.<o:p></o:p></p>
+
+<h3><b>Long Description</b></h3><p class="MsoNormal"><o:p></o:p></p>
+
+<p class="MsoNormal">If OPC_KILL_AUTO_ACTION is set to TRUE, then each time an
+action should be started the action agent checks if its action agent queue
+contains already some actions (10 auto actions for Windows and 2 auto actions
+for UNIX).<o:p></o:p></p>
+
+<p class="MsoNormal">If action agent queue contains respective number of actions
+for platform, then it checks if any action (only one) running for the longest
+time and has crossed the predefined time out value defined by
+OPC_KILL_AUTO_ACTION_TIMEOUT. If this is the case action agent will kill the
+process executing auto action.<br><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">For example: If any policy with auto action defined is
+deployed on node and policy interval is 20 minutes. Auto action defined in
+policy is having 30 minutes sleep time. And Timeout value defined by
+OPC_KILL_AUTO_ACTION_TIMEOUT is set to 3 minutes. Then the old process to
+execute the action will be killed and new process will be started at every
+policy interval.</span></p><h2>OPC_KILL_AUTO_ACTION_TIMEOUT</h2><p class="MsoNormal"><o:p></o:p></p><table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Type</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: black; border-right-color: black; border-bottom-color: black; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">Integer</span><span lang="EN-US" style=""><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Default Value</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">590 seconds<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Class of the variable</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">opcacta<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Namespace </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">eaagt<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Restart Required</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">No<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Introduced since&nbsp; </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">OA 8.x<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Applicable Platforms</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">ALL<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Related variables</b></span><span style="line-height: 107%;"><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">OPC_KILL_AUTO_ACTION<font face="Calibri, sans-serif"><span style="font-size: 12pt;"><o:p></o:p></span></font></span></p>
+  </td>
+ </tr>
+</tbody></table><h3><b>Short Description</b></h3><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">If OPC_KILL_AUTO_ACTION is set to TRUE, the action agent
+will kill any processes that have been running longer than the interval
+specified by OPC_KILL_AUTO_ACTION_TIMEOUT.&nbsp;&nbsp;
+<o:p></o:p></p><h3><b>Long Description</b></h3><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><b>Behavior on Windows:</b><o:p></o:p></p><p class="MsoNormal"><ol><li>Every time an action should be started the action agent
+checks if its action agent queue contains 10 auto actions. If queue does not
+contains 10 auto actions no process will be killed.</li><li>If action agent queue contains 10 actions, then it checks if
+the any action (only one) running for the longest time and has crossed the
+predefined time out value defined by OPC_KILL_AUTO_ACTION_TIMEOUT. If this is
+the case action agent will kill the process executing auto action.</li><li>Process is killed by TerminateProcess () windows api.</li><li>User should define that value based on time taken by longest
+running auto action mentioned in all deployed policies. For example if one
+policy is having auto action, in auto action user wants to execute a script. If
+explicit execution (from command line) of same script take 600 seconds, then
+OPC_KILL_AUTO_ACTION_TIMEOUT should have the value longer than 600 seconds.</li></ol><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><b>Behavior on Unix Systems:</b><o:p></o:p></p><p class="MsoNormal"><ol><li>Every time an action should be started the action agent
+checks if its action agent queue contains 2 auto actions. If queue does not
+contains 2 auto actions no process will be killed.</li><li>If action agent queue contains 2 actions, then it checks if
+the any action (only one) running for the longest time and has crossed the
+predefined time out value defined by OPC_KILL_AUTO_ACTION_TIMEOUT. If this is
+the case action agent will kill the process executing auto action.</li><li>Process is killed by SIGKILL signal.</li></ol></p><h2>OPC_KILL_SCHEDULE_TIMEOUT </h2><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><div>
+
+<table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Type</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: black; border-right-color: black; border-bottom-color: black; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">Integer</span><span lang="EN-US" style=""><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Default Value</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">55 seconds<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Class of the variable</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">opcacta<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Namespace </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">eaagt<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Restart Required</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">No<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Introduced since&nbsp; </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">OA 8.x<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Applicable Platforms</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">Windows<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Related variables</b></span><span style="line-height: 107%;"><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;">OPC_KILL_SCHEDULE</span><b><span style="font-size:12.0pt;line-height:
+  107%"><o:p></o:p></span></b></p>
+  </td>
+ </tr>
+</tbody></table>
+
+<h3><b>Short Description</b></h3><p class="MsoNormal"><o:p></o:p></p>
+
+<p class="MsoNormal">This variable defines the time-out period used to check
+whether an old scheduled action process is killed or a new one not
+started.&nbsp;&nbsp; This variable is only
+applicable for scheduled actions on Windows managed nodes.<o:p></o:p></p>
+
+<h3><b>Long Description</b></h3><p class="MsoNormal"><o:p></o:p></p>
+
+<p class="MsoNormal">If OPC_KILL_SCHEDULE is enabled and a new request to start a
+process for a scheduled action arrives at the action agent, then the agent
+first checks whether a scheduled action has already been started from the same
+policy.<o:p></o:p></p>
+
+<p class="MsoNormal"><ul><li>If previous instance of Scheduled action for same policy is
+still running and crossed Timeout value defined by OPC_KILL_SCHEDULE_TIMEOUT,
+then previous instance of action is killed and new action is started.</li><li>If previous instance of scheduled action is still running
+but time out value defined by OPC_KILL_SCHEDULE_TIMEOUT is not crossed yet,
+then new instance of scheduled action is discarded. In such cases opcacta will
+not executed new instance of Scheduled action for policy till previous SA for
+policy is finished or OPC_KILL_SCHEDULE_TIMEOUT is reached.</li></ul><o:p></o:p></p>
+
+<p class="MsoNormal"><o:p></o:p></p>
+
+<p class="MsoNormal"><b>Note the following:</b><o:p></o:p></p>
+
+<p class="MsoNormal"><ul><li>An Enhancement request (QCCR1A150785) is raised to implement
+the OPC_KILL_SCHEDULE_TIMEOUT for UNIX based systems also. The ER is in
+deferred state as of June 17, 2016.</li><li>Timeout Value should be greater than 0.</li></ul><o:p></o:p></p>
+
+<p class="MsoNormal"><o:p></o:p></p></div><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p></div><p></p><div><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">
 
 
 
