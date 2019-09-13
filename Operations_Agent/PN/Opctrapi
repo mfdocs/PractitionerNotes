@@ -281,20 +281,20 @@ mapped to individual CMAs).<o:p></o:p></p><h2>SNMP_TRAP_PORT</h2><p class="MsoNo
 port is busy (Used by some other application listening to the requests).<o:p></o:p></p><p class="MsoNormal">Specifies the port number to which opctrapi will bind to
 listen for incoming SNMP traps.<o:p></o:p></p><h3><b>Long Description </b></h3><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">SNMP_TRAP_PORT allows opctrapi to bind and listen for
 incoming traps other than the default standard port of 162.<o:p></o:p></p><p class="MsoNormal">Example:-<o:p></o:p></p><p class="MsoNormal">SNMP port are busy with some other application. Below error
-we are getting on system.txt<o:p></o:p></p><p class="MsoNormal"><ul><li>: WRN: Thu Jun 16 18:58:54 2016: ovbbccb (2632/2980): (bbc-90)
+we are getting on system.txt<o:p></o:p></p><p class="MsoNormal"></p><ul><li>: WRN: Thu Jun 16 18:58:54 2016: ovbbccb (2632/2980): (bbc-90)
 The incoming HTTPS client connection from host 16.109.203.35 failed due to the
 SSL error:</li><li>1: WRN: Thu Jun 16 18:58:54 2016: ovbbccb (2632/2980):
 (sec.core-114) SSL connection error (peer did not return a certificate).</li><li>0: WRN: Thu Jun 16 19:45:41 2016: opctrapi (6140/2796):
 [snmptrapd.c:542]: Can't open SNMP session: Could not open transport for
 [udp:162] errno [0]. (OpC30-201)</li><li>0: ERR: Thu Jun 16 19:47:34 2016: ovcd (2160/2296):
-(ctrl-41) Timeout while starting component 'opctrapi'.</li></ul><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">After change port No:-<o:p></o:p></p><p class="MsoNormal">I changed SNMP port from 162 to 163 below trace message from
-trace <o:p></o:p></p><p class="MsoNormal"><ul><li>06/17 15:22:41.246 opcevti(7956:7552)[debug]: MUX: Locking
+(ctrl-41) Timeout while starting component 'opctrapi'.</li></ul><o:p></o:p><p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">After change port No:-<o:p></o:p></p><p class="MsoNormal">I changed SNMP port from 162 to 163 below trace message from
+trace <o:p></o:p></p><p class="MsoNormal"></p><ul><li>06/17 15:22:41.246 opcevti(7956:7552)[debug]: MUX: Locking
 mutex 'Config table' (wait == 1) ...</li><li>06/17 15:22:41.246 opcevti(7956:7552)[debug]: MUX: Locked
 (1).</li><li>06/17 15:22:41.246 opcevti(7956:7552)[debug]: MUX: Unlocking
 mutex 'Config table' ...</li><li>06/17 15:22:41.246 opcevti(7956:7552)[debug]: CONF:
 Returning value '163' for key 'SNMP_TRAP_PORT'</li><li>06/17 15:22:41.246 opcevti(7956:7552)[debug]: MUX: Locking
 mutex 'Config table' (wait == 1) ...</li><li>06/17 15:22:41.246 opcevti(7956:7552)[debug]: MUX: Locked
-(1).</li></ul><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">
+(1).</li></ul><o:p></o:p><p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">
 
 
 
@@ -792,6 +792,469 @@ is in-line with the opctrapi behavior in OA 11.14 when NO_TRAPD session mode is
 used. <o:p></o:p></p>
 
 <p class="MsoNormal"><b>Note:</b> The configuration parameter SNMP_OVERRIDE_DISABLE_DNS
-is only applicable for resolving $A value.<o:p></o:p></p></div><o:p></o:p><p></p>
+is only applicable for resolving $A value.<o:p></o:p></p><h2>OPC_NODE_CHARSET</h2><p class="MsoNormal"><o:p></o:p></p><table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Type</b></span><span lang="EN-US" style=""><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: black; border-right-color: black; border-bottom-color: black; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">String<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Default Value</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">utf8<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Class of the variable</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">opctrapi<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Namespace </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">Eaagt<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Restart Required</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">Yes<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Introduced
+  since&nbsp; </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">OA A.08.10<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Applicable Platforms</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">ALL<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="178" valign="top" style="width: 133.5pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Related variables</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">OPC_TRAP_CHARSET<font color="rgba(0, 0, 0, 0)" face="Calibri, sans-serif"><span style="font-size: 12pt;"><o:p></o:p></span></font></span></p>
+  </td>
+ </tr>
+</tbody></table><h3><b>Short Description</b></h3><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">The character set of the managed node is obtained from OPC_NODE_CHARSET<o:p></o:p></p><h3><b>Long Description</b></h3><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">Introduction to charsets:<o:p></o:p></p><p class="MsoNormal">In computer world data storage and transmissions are
+internally presented as octets. An octet is a small unit of data which has
+values between 0 and 255. Octet is a 8 bit representation internally though different
+conventions are used as to how an octet or sequence of octets is used represent
+some data.&nbsp;For example there exist
+terminologies like “first bit”/”sign bit” set in octet. Hence such
+representation supports numerical value of max 127 both positive and negative.<o:p></o:p></p><p class="MsoNormal">In simplest term still one octet represents 1 character as
+per certain mapping table (encoding).<o:p></o:p></p><p class="MsoNormal">There are various encodings like ASCII, ISO Latin encoding<o:p></o:p></p><p class="MsoNormal"><b>Character repertoire:</b><o:p></o:p></p><p class="MsoNormal">This indicates a set of distinct characters with no details of
+internal representation.<o:p></o:p></p><p class="MsoNormal"><b>Character code:</b><o:p></o:p></p><p class="MsoNormal">A mapping usually in a tabular format which defines one to
+one correspondence between characters in character repertoire and a set of
+non-negative integers. That is it assigns a unique numerical code to character
+in repertoire. The following terminologies also can be used to denote this –
+code number, code value, code element, code point, code set value etc.<o:p></o:p></p><p class="MsoNormal"><b>Character encoding:<o:p></o:p></b></p><p class="MsoNormal">A method/algorithm of presenting characters in digital form
+by mapping sequence of code numbers of characters into sequences of octets. In
+the simplest case each character is mapped into integer of range 0-255
+according to a character code. There are many other encodings which support
+more letters than 256<o:p></o:p></p><p class="MsoNormal">http://www.iana.org/assignments/character-sets/character-sets.txt<o:p></o:p></p><p class="MsoNormal"><b>Details of the config variable:</b><o:p></o:p></p><p class="MsoNormal">Default value of OPC_NODE_CHARSET is utf8<o:p></o:p></p><p class="MsoNormal">For unix environments iconv() apis is used . For below set
+of input charsets instead of iconv own set of conversion table is used for
+conversion.<o:p></o:p></p><table class="MsoNormalTable" border="0" cellspacing="0" cellpadding="0" width="0">
+ <tbody><tr style="mso-yfti-irow:0;mso-yfti-firstrow:yes;height:.2in">
+  <td width="295" nowrap="" valign="bottom" style="width: 221pt; border-width: 1pt; border-left-style: solid; border-color: windowtext; border-image: initial; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">Source charset<o:p></o:p></span></b></p>
+  </td>
+  <td width="198" nowrap="" valign="bottom" style="width: 143.4pt; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-left: none; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">Target charset<o:p></o:p></span></b></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:1;height:.2in">
+  <td width="295" nowrap="" valign="bottom" style="width: 221pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">ISO88591<o:p></o:p></span></p>
+  </td>
+  <td width="198" nowrap="" valign="bottom" style="width: 143.4pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">ROMAN8<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:2;height:.2in">
+  <td width="295" nowrap="" valign="bottom" style="width: 221pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">ISO88592<o:p></o:p></span></p>
+  </td>
+  <td width="198" nowrap="" valign="bottom" style="width: 143.4pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">CP1250<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:3;height:.2in">
+  <td width="295" nowrap="" valign="bottom" style="width: 221pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">ISO88594<o:p></o:p></span></p>
+  </td>
+  <td width="198" nowrap="" valign="bottom" style="width: 143.4pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">CP1257<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:4;height:.2in">
+  <td width="295" nowrap="" valign="bottom" style="width: 221pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">ISO88595<o:p></o:p></span></p>
+  </td>
+  <td width="198" nowrap="" valign="bottom" style="width: 143.4pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">CP1251<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:5;height:.2in">
+  <td width="295" nowrap="" valign="bottom" style="width: 221pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">ISO88596<o:p></o:p></span></p>
+  </td>
+  <td width="198" nowrap="" valign="bottom" style="width: 143.4pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">CP1256<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:6;height:.2in">
+  <td width="295" nowrap="" valign="bottom" style="width: 221pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">ISO88597<o:p></o:p></span></p>
+  </td>
+  <td width="198" nowrap="" valign="bottom" style="width: 143.4pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">CP1253<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:7;height:.2in">
+  <td width="295" nowrap="" valign="bottom" style="width: 221pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">ISO885910<o:p></o:p></span></p>
+  </td>
+  <td width="198" nowrap="" valign="bottom" style="width: 143.4pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">CP1257<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:8;height:.2in">
+  <td width="295" nowrap="" valign="bottom" style="width: 221pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">ISO885913<o:p></o:p></span></p>
+  </td>
+  <td width="198" nowrap="" valign="bottom" style="width: 143.4pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">CP1257<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:9;height:.2in">
+  <td width="295" nowrap="" valign="bottom" style="width: 221pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">ISO885915<o:p></o:p></span></p>
+  </td>
+  <td width="198" nowrap="" valign="bottom" style="width: 143.4pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">CP1252<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:10;height:.2in">
+  <td width="295" nowrap="" valign="bottom" style="width: 221pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">ISO885915<o:p></o:p></span></p>
+  </td>
+  <td width="198" nowrap="" valign="bottom" style="width: 143.4pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">ROMAN8<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:11;height:.2in">
+  <td width="295" nowrap="" valign="bottom" style="width: 221pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">CP1250<o:p></o:p></span></p>
+  </td>
+  <td width="198" nowrap="" valign="bottom" style="width: 143.4pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">ISO88592<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:12;height:.2in">
+  <td width="295" nowrap="" valign="bottom" style="width: 221pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">CP1251<o:p></o:p></span></p>
+  </td>
+  <td width="198" nowrap="" valign="bottom" style="width: 143.4pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">ISO88595<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:13;height:.2in">
+  <td width="295" nowrap="" valign="bottom" style="width: 221pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">CP1252<o:p></o:p></span></p>
+  </td>
+  <td width="198" nowrap="" valign="bottom" style="width: 143.4pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">ISO885915<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:14;height:.2in">
+  <td width="295" nowrap="" valign="bottom" style="width: 221pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">CP1252<o:p></o:p></span></p>
+  </td>
+  <td width="198" nowrap="" valign="bottom" style="width: 143.4pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">ROMAN8<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:15;height:.2in">
+  <td width="295" nowrap="" valign="bottom" style="width: 221pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">CP1253<o:p></o:p></span></p>
+  </td>
+  <td width="198" nowrap="" valign="bottom" style="width: 143.4pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">ISO88597<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:16;height:.2in">
+  <td width="295" nowrap="" valign="bottom" style="width: 221pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">CP1256<o:p></o:p></span></p>
+  </td>
+  <td width="198" nowrap="" valign="bottom" style="width: 143.4pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">ISO88596<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:17;height:.2in">
+  <td width="295" nowrap="" valign="bottom" style="width: 221pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">CP1257<o:p></o:p></span></p>
+  </td>
+  <td width="198" nowrap="" valign="bottom" style="width: 143.4pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">ISO88594<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:18;height:.2in">
+  <td width="295" nowrap="" valign="bottom" style="width: 221pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">CP1257<o:p></o:p></span></p>
+  </td>
+  <td width="198" nowrap="" valign="bottom" style="width: 143.4pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">ISO885910<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:19;height:.2in">
+  <td width="295" nowrap="" valign="bottom" style="width: 221pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">CP1257<o:p></o:p></span></p>
+  </td>
+  <td width="198" nowrap="" valign="bottom" style="width: 143.4pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">ISO885913<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:20;mso-yfti-lastrow:yes;height:.2in">
+  <td width="295" nowrap="" valign="bottom" style="width: 221pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid windowtext; border-right-color: windowtext; border-bottom-color: windowtext; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">ROMAN8<o:p></o:p></span></p>
+  </td>
+  <td width="198" nowrap="" valign="bottom" style="width: 143.4pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; padding: 0in 5.4pt; height: 0.2in;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;color:black;
+  mso-fareast-language:EN-GB">ISO88591|ISO885915|ACP1252<o:p></o:p></span></p>
+  </td>
+ </tr>
+</tbody></table><p class="MsoNormal">Remaining combination of charsets gets converted via the
+following api:<o:p></o:p></p><p class="MsoNormal">http://www.ibm.com/support/knowledgecenter/en/ssw_i5_54/apis/iconv.htm?view=embed<o:p></o:p></p><p class="MsoNormal">For all multibyte codesets the conversion string length is
+maximally MB_LEN_MAX times length of source string where MB_LEN_MAX is a define
+on UNIX systems for others MB_LEN_MAX is set to 2<o:p></o:p></p><p class="MsoNormal">It impacts in the following portions of the operations agent
+component.<o:p></o:p></p><p class="MsoNormal"><ul><li>opcmsg command in conversion of these fields specified in
+the user input</li><ul><li>Application</li><li>Object</li><li>Message text</li><li>Node name</li><li>Option variables</li></ul><li>opcmon command line in conversion of these fields</li><ul><li>Monitor object</li><li>Option variables</li></ul><li>opcacta process in the conversion of following data</li><ul><li>Processing output generated by the actions executed</li><li>Processing error output generated by the actions executed</li><li>Convert action request</li><li>Used in preprocessing perl script</li><li>Processing messages from message catalog files</li></ul><li>opcmsgi uses the value in the following scenarios</li><ul><li>Reading the input messages from msgiq</li></ul><li>opcmona this variable is used in below scenarios</li><ul><li>Converting output generated by embedded script of the scheduled
+policies</li><li>Processing the input from the monagtq file</li><li>In opcmona perl policies in the following scenarios:
+Fetching source metric value from coda, oava</li></ul><li>opctrapi this variable value is used in the following
+scenarios</li><ul><li>Processing the trap values like : trap enterprise, trap community,
+trap oid, trap varbinds</li></ul></ul></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">Charset of the source string is obtained in the following
+way:<o:p></o:p></p><p class="MsoNormal"><b>Unix</b><o:p></o:p></p><p class="MsoNormal"><ul><li>Obtain the value of LANG environment variable ( eg
+en_US.UTF-8)</li><li>The charset value for the above LANG is the value post the
+character ‘.’. In this case “UTF-8”</li><li>If LANG is not set default charset of ASCII is used</li></ul><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><b>Windows</b><o:p></o:p></p><p class="MsoNormal"><ul><li>This msdn api is used for obtaining locale information of
+the system
+https://msdn.microsoft.com/en-us/library/windows/desktop/dd318121(v=vs.85).aspx&nbsp;</li><li>Then codeset is obtained via the following windows api
+https://msdn.microsoft.com/en-us/library/windows/desktop/dd318070(v=vs.85).aspx&nbsp;</li><li>These are the possible codepage values returned
+https://msdn.microsoft.com/en-us/library/windows/desktop/dd317756(v=vs.85).aspx&nbsp;</li></ul><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</p><p class="MsoNormal"><o:p></o:p></p></div><o:p></o:p><p></p>
 
 <p class="MsoNormal"><o:p></o:p></p></div><o:p></o:p><p></p>
