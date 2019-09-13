@@ -453,7 +453,7 @@ max number running a “no free slot in process-info-table” error is generated
 (20794/139666129909536): [uxproc.c:438]: no free slot in process-info-table
 (OpC20-401)<o:p></o:p></p><p class="MsoNormal">This would be an indicator that one may need to set
 MAX_NBR_PARALLEL_ACTIONS may need to be changed for the specific environment.<o:p></o:p></p><p class="MsoNormal">Other reasons this variable might need to be set are the
-following:<o:p></o:p></p><p class="MsoNormal"><ul><li>Other frequent chances where the issue occurs is SIGCHLD
+following:<o:p></o:p></p><p class="MsoNormal"></p><ul><li>Other frequent chances where the issue occurs is SIGCHLD
 miss by opcacta. SIGCHLD is sent by child process to parent when it completes
 execution.</li><li>As signals are missed by opcacta the status of running auto
 actions does not get updated as finished. This results in the proc-info table
@@ -462,12 +462,12 @@ less than the value mentioned in MAX_NBR_PARALLEL_ACTIONS.</li><li>Another commo
 returned at same time but opcacta receives just one SIGCHLD. This results in
 opcacta just updating the status of 1 child process as finished.</li></ul><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">On Windows nodes, due to OS limitations, the maximum allowed
 value is 30. If a value of greater is
-set (e.g. 35) then the value set to 30.</span><br><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">The max number of process to be spawned in linux is limited
+set (e.g. 35) then the value set to 30.</span><br><o:p></o:p><p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">The max number of process to be spawned in linux is limited
 to value set in kernel parameter kernel.pid_max.<o:p></o:p></p><p class="MsoNormal">The max number of process to be spawned in solaris is
 limited to value set in kernel parameter max_nprocs<o:p></o:p></p><p class="MsoNormal">The max number of process to be spawned in hp-ux is limited
 to value set in kernel parameter nproc<o:p></o:p></p><p class="MsoNormal">The max number of process to be spawned in aix is limited to
 value set in kernel maxuproc<o:p></o:p></p><p class="MsoNormal">The max number of action limit is applicable only auto
-actions alone not for operator initiated actions or scheduled actions<o:p></o:p></p><p class="MsoNormal">Process table can be broadly divided into two sections<o:p></o:p></p><p class="MsoNormal"><ul><li>Limited section </li><li>Expandable section</li></ul><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">Limited section has fixed number of slots. Automatic actions
+actions alone not for operator initiated actions or scheduled actions<o:p></o:p></p><p class="MsoNormal">Process table can be broadly divided into two sections<o:p></o:p></p><p class="MsoNormal"></p><ul><li>Limited section </li><li>Expandable section</li></ul><o:p></o:p><p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">Limited section has fixed number of slots. Automatic actions
 usually get index of these slots.<o:p></o:p></p><p class="MsoNormal">Expandable section has slots that can be increased upto to
 the Max limit of the OS.<o:p></o:p></p><p class="MsoNormal">Operator-initiated and schedule run as NO_LIMIT process and
 in this expandable section<o:p></o:p></p><p class="MsoNormal">The no free slot error is only seen in environments where
@@ -482,7 +482,7 @@ returned at same time but opcacta receives just one SIGCHLD. This results in
 opcacta just updating the status of 1 child process as finished<o:p></o:p></p><p class="MsoNormal">Proc-info table is an internal data structure maintained by
 opcacta akin to OS process table. It contains details of the process like pid,
 group, string to be executed, start time, end time, process status and so on.<o:p></o:p></p><p class="MsoNormal">Following are common status of slots in proc-info table of
-opcacta<o:p></o:p></p><p class="MsoNormal"><ul><li>CSM_C_PROC_FREE</li><li>CSM_C_PROC_RUNNING</li><li>CSM_C_PROC_FINISHED</li><li>CSM_C_PROC_RESERVED</li><li>CSM_C_PROC_KILLED</li></ul><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">Logic to determine the free slot entry in the proc-info
+opcacta<o:p></o:p></p><p class="MsoNormal"></p><ul><li>CSM_C_PROC_FREE</li><li>CSM_C_PROC_RUNNING</li><li>CSM_C_PROC_FINISHED</li><li>CSM_C_PROC_RESERVED</li><li>CSM_C_PROC_KILLED</li></ul><o:p></o:p><p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">Logic to determine the free slot entry in the proc-info
 table is as follows<o:p></o:p></p><p class="MsoNormal">If number of processes which are in the state
 CSM_C_PROC_RUNNING exceeds the value MAX_NBR_PARALLEL_ACTIONS then the
 following error gets logged in System.txt<o:p></o:p></p><p class="MsoNormal">0: WRN: Tue May 10 14:47:32 2016: opcacta
@@ -498,7 +498,7 @@ on reception of SIGCHLD in unix environment is as follows. This also covers the
 details of the scenarios on how we handle the processes in proc-info table when
 SIGCHLD is missed<o:p></o:p></p><p class="MsoNormal">When opcacta spawns a child process to execute the auto
 action these are the flow. This is after a free slot is obtained in proc-info
-table to execute the action<o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><ol><li>Mark the obtained slot as reserved (CSM_C_PROC_RESERVED),
+table to execute the action<o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"></p><ol><li>Mark the obtained slot as reserved (CSM_C_PROC_RESERVED),
 assign execute string, parent handler, child handler</li><ol><li>Initialize the semaphore</li><li>Increment and signal the semaphore</li><li>Fork()/spawn the child process</li><li>In parent process the following actions take place</li><ol><li>Mark the slot in proc-info table as CSM_C_PROC_RUNNING</li><li>Update the start time of process</li><li>And the pid</li><li>Release a semaphore; now, child knows that init is done</li><li>Waiting for child to terminate</li><li>On some systems it has been observed that SIGCHLD handler
 does not properly handle waitpid(). If a child process becomes a zombie /
 defunct, the following loop will loop forever. In order to prevent this, we
@@ -510,10 +510,10 @@ since we don't know the real one the same applies to exit_time (p-&gt;status =
 CSM_C_PROC_FINISHED;p-&gt;exit_code = 0;p-&gt;exit_time = time( (time_t *)NULL
 );)</li><li>The counter for the current number of running actions is
 decremented if there is a limit set for the max number of parallel action</li><li>If defined the parent handler is invoked</li></ol></ol></ol><li>When SIGCHLD is received from child process the following
-handling takes place in signal handler registered</li></ol><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><ul><li>Solaris or Aix<br>For each element in ptbl</li></ul></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><ol><ol><li>If the status of the process is CSM_C_PROC_RUNNING or
+handling takes place in signal handler registered</li></ol><o:p></o:p><p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"></p><ul><li>Solaris or Aix<br>For each element in ptbl</li></ul><p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"></p><ol><ol><li>If the status of the process is CSM_C_PROC_RUNNING or
 CSM_C_PROC_DISCARD</li><li>Waitpid invoked on each slot pid</li><li>If waitpid returned non zero</li><ol><li>If status is CSM_C_PROC_DISCARD (discard_child =
 CSM_C_PROC_DISCARD)</li><li>Else (Status updated to finished, end time updated, exit
-code update)</li><li>Reduce the current number of running actions</li><li>Invoke parent handler if defined</li></ol></ol></ol><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><ul><li>HPUX</li></ul><o:p></o:p></p><p class="MsoNormal"><ol><ol><li>If process was not stated via uxproc - there is no
+code update)</li><li>Reduce the current number of running actions</li><li>Invoke parent handler if defined</li></ol></ol></ol><o:p></o:p><p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"></p><ul><li>HPUX</li></ul><o:p></o:p><p></p><p class="MsoNormal"></p><ol><ol><li>If process was not stated via uxproc - there is no
 information about that process in ptbl. We can get pid of process sending
 SIGCHLD via siginfo_t structure (in sigaction sa_flags = SA_SIGINFO must be
 set.</li><li>Struct with stored information about processes, which are
@@ -521,13 +521,143 @@ not in ptbl, but their's signal was caught in our code.
 csm_st_pid_lst(csm_st_lst chld_pid,csm_st_lst signal_time)</li><li>Retrieve the current time</li><li>Allocate memory for csm_st_pid_lst</li><li>Siginfo structure contains the pid of the child which sent
 SIGCHLD</li><li>For each entry in the proc-info table</li><ol><li>If status is CSM_C_PROC_RUNNING|CSM_C_PROC_DISCARD</li><li>Do waitpid on pid</li><li>If process exited if status is discard child it is ignored</li><li>Then the status is updated as CSM_C_PROC_FINISHED, update
 exit code, end time in the proc-info table</li><li>If there is limit to number of parallel automatic actions
-the counter to decrement the current parallel running actions is reduced</li><li>Parent handler call back is invoked if defined</li></ol></ol></ol><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><ul><li>LINUX</li></ul><o:p></o:p></p><p class="MsoNormal"><ol><li>For 0 to 256 (LINUX_PIDTABLE_SIZE)</li><ol><li>If linux_waitpid[counter].pid is not -1, - F<span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">or each entry in ptbl, i</span><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">f pid matches with linux_waitpid</span></li><ol><li>For process to be discarded the flow is same as with other
+the counter to decrement the current parallel running actions is reduced</li><li>Parent handler call back is invoked if defined</li></ol></ol></ol><o:p></o:p><p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"></p><ul><li>LINUX</li></ul><o:p></o:p><p></p><p class="MsoNormal"></p><ol><li>For 0 to 256 (LINUX_PIDTABLE_SIZE)</li><ol><li>If linux_waitpid[counter].pid is not -1, - F<span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">or each entry in ptbl, i</span><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">f pid matches with linux_waitpid</span></li><ol><li>For process to be discarded the flow is same as with other
 OS</li><li>The exit code picked from linux_waitpid array, status
 updated to finished, exit time updated</li><li>Parent handler callback invoked if defined</li></ol></ol><li>For each element in p_pid_lst</li><ol><li>Check if ch_pid is already in the list and the time since
 the reception of SIGCHLD</li><li>If the SIGCHLD reception is more than 5 second old</li><li>Do waitpid on that pid and delete ch_pid from p_pid_lst</li></ol><li>If ch_pid is not found in ptbl and external ptbl, append element to p_pid_lst</li><li>Periodically cleanup proc-info table (??)</li><ol><li>Loop through the proc-info table</li><li>Call waitpid on the each process having status running</li><li>For process to be discarded the flow is same as with other
-OS</li><li>The exit code, exit time updated</li><li>Parent handler callback invoked if defined</li></ol></ol></p><p class="MsoNormal"><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">3. Periodic cleanup of proc-info table. Every 10 minutes the
+OS</li><li>The exit code, exit time updated</li><li>Parent handler callback invoked if defined</li></ol></ol><p></p><p class="MsoNormal"><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">3. Periodic cleanup of proc-info table. Every 10 minutes the
 following task happens on linux</span></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">This operation is done to ensure that proc-info table slots
-for the SIGCHLD miss scenarios is cleaned up.<o:p></o:p></p><p class="MsoNormal"><b>Windows specific information:</b><o:p></o:p></p><p class="MsoNormal">
+for the SIGCHLD miss scenarios is cleaned up.&nbsp;<span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">In windows, only max 30 actions will be executed in parallel
+by opcacta.</span></p><h2>LIMIT_NBR_PARALLEL_ACTION</h2><p class="MsoNormal"><o:p></o:p></p><table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Type</b></span><span lang="EN-US" style=""><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: black; border-right-color: black; border-bottom-color: black; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">Boolean</span><span lang="EN-US" style=""><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Default Value</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">FALSE<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Class of the
+  variable</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">Opcacta<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style=""><b>Namespace </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">Eaagt<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Restart
+  Required</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">No<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Introduced since&nbsp;
+  </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">Legacy<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Applicable
+  Platforms</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-US" style="">UNIX<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal"><span style="line-height: 107%;"><b>Related
+  variables</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span class="LabelChar"><span lang="EN-US" style="">MAX_NBR_PARALLEL_ACTIONS,
+  OPC_AUTO_SEM_RETRY_CHK_SECS,<o:p></o:p></span></span></p>
+  <p class="Label"><span class="LabelChar"><span lang="EN-US" style="">OPC_LE_CMD_WAIT_TIME</span></span><span lang="EN-US" style="font-size: 12pt;"><o:p></o:p></span></p>
+  </td>
+ </tr>
+</tbody></table><h3><b>Short Description</b></h3><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">LIMIT_NBR_PARALLEL_ACTION coupled with
+MAX_NBR_PARALLEL_ACTIONS limits the number of auto actions executed in parallel
+by opcacta. This is not used in windows platform.<o:p></o:p></p><p class="MsoNormal">In unix platform when this config variable is set to TRUE
+the counter maintaining the current number of actions executing in parallel is
+incremented for every new action executed.<o:p></o:p></p><p class="MsoNormal">For every action whose execution is finished the counter
+gets decremented.<o:p></o:p></p><p class="MsoNormal">When a new action is to be executed this counter value is
+compared against MAX_NBR_PARALLEL_ACTIONS when the value exceeds the no slot
+error message is logged in System.txt and the opcacta waits for the slot before
+executing the action<o:p></o:p></p><h3><b>Long Description</b></h3><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">Flow is as follows:<o:p></o:p></p><p class="MsoNormal"><ol><li>For the scheduled actions send start message if configured
+in policy before actual action being executed</li><li>Fetch the value of config variable
+OPC_AUTO_SEM_RETRY_CHK_SECS</li><li>/*parse the username and command to be executed from the
+action_call and scheduled action*/<br>/action_call is of form &lt;user&gt;/|&lt;encrypted
+passwd&gt; &lt;command&gt; i.e. root/|Q####iJ@w whoami*/</li><li>Fetch the value of config variable
+OPC_AUTO_SEM_RETRY_CHK_SECS</li><li>Then action is executed via the following flow</li><ol><li>Register signal handler for handling SIGCHLD signals when
+the child processes exit</li><li>Find a free slot in proc-info table via the following flow</li><ol><li>Ptble length in windows (MAXIMUM_WAIT_OBJECTS - 2)</li><li>Ptble length in unix(nbr_limited + CSM_C_PROC_NO_LIMIT_MAX)</li><li>For each element in ptble until the length do the allocation
+and mark the slot as CSM_C_PROC_FREE. This is when the ptble is created for the
+first time</li><li>On Unix, the entry for the processes with flag
+CSM_C_PROC_NO_LIMIT are created in the expandable part of the proc table, and
+the entry for the 'LIMITED' processes are created only in the first nbr_limited
+number of proc table entries.&nbsp; But on
+windows, the size of the proc table is restricted to MAXIMUM_WAIT_OBJECTS -
+2.&nbsp; So, if the value of nbr_limited is on
+the higher side, then it means that only MAXIMUM_WAIT_OBJECTS - 2 - nbr_limited
+proc table entries are available for the processes with flag
+CSM_C_PROC_NO_LIMIT, whereas there are nbr_limited entries kept reserved for
+the 'LIMITED' processes, thereby giving them a preferential reservation instead
+of the intended restriction.&nbsp; As part of
+fixing QCCR1A101726, on Windows, the 'NO LIMIT' processes uses first
+available&nbsp; free slot in the entire proc
+table, whereas the 'LIMITED' processes looks for a free slot&nbsp; only in the last nbr_limited entries of the
+proc table, thereby giving more priority to&nbsp;
+the 'NO LIMIT' processes and actually restricting the 'LIMITED'
+processes.</li><li>If the free slot is obtained the index is returned</li><li>If the action to be executed has this flag set
+CSM_C_PROC_NO_LIMIT then when non free slot obtained in proc-info table then
+realloc is done and the proc-info table size expanded</li><li>In Unix environments the ptble is from nbr_limited to
+proc-info table length</li><li>For the processes which are allowed only limited set of
+slots</li><ol><li>UNIX: index goes from 0 to nbr_limited (first nbr_limited
+slots), WINDOWS : index goes from len - nbr_limited to len (last nbr_limited
+slots)</li><li>If slot not obtained no slot error returned</li></ol></ol><li>Mark the obtained slot as reserved (CSM_C_PROC_RESERVED),
+assign execute string, parent handler, child handler</li><li>Initialize the semaphore</li><li>Increment and signal the semaphore</li><li>Fork()/spawn the child process</li><li>In parent process the following actions take place</li><ol><li><span style="background-color: transparent; font-size: inherit; letter-spacing: 0.2px;">Mark the slot in proc-info table as CSM_C_PROC_RUNNING</span></li><li><span style="background-color: transparent; font-size: inherit; letter-spacing: 0.2px;">Update the start time of process</span></li><li><span style="background-color: transparent; font-size: inherit; letter-spacing: 0.2px;">And the pid</span></li><li><span style="background-color: transparent; font-size: inherit; letter-spacing: 0.2px;">Release a semaphore; now, child knows that init is done</span></li><li><span style="background-color: transparent; font-size: inherit; letter-spacing: 0.2px;">Waiting for child to terminate</span></li><li><span style="background-color: transparent; font-size: inherit; letter-spacing: 0.2px;">On some systems it has been observed that SIGCHLD handler
+does not properly handle waitpid(). If a child process becomes a zombie /
+defunct, the following loop will loop forever. In order to prevent this, we
+implemented a timer for checking the status of a currently running child.</span></li><li><span style="background-color: transparent; font-size: inherit; letter-spacing: 0.2px;">Init defunct_counter to 0</span></li><li><span style="background-color: transparent; font-size: inherit; letter-spacing: 0.2px;">Fetch the value of the config variable OPC_LE_CMD_WAIT_TIME</span></li><li><span style="background-color: transparent; font-size: inherit; letter-spacing: 0.2px;">While the process status is running or discard</span></li><ol><li>Sleep 1 second</li><li>Increment the defunct_counter</li><li>If the defunct_counter value equals OPC_LE_CMD_WAIT_TIME
+kill the pid</li><li>process has either finished and we didn't catch SIGCHLD
+(kill_status = -1), or it has become a zombie and we have killed it using
+waitpid() above</li><li>Now we do the work of SIGCHLD handler (csm_pb_proc_sighdl())
+we set exit code to 0 since we don't know the real one the same applies to
+exit_time (p-&gt;status = CSM_C_PROC_FINISHED;p-&gt;exit_code =
+0;p-&gt;exit_time = time( (time_t *)NULL );)</li><li>The counter for the current number of running actions is
+decremented if there is a limit set for the max number of parallel action</li><li>If defined the parent handler is invoked</li></ol></ol><li>In child process the following actions take place</li><ol><li>Child process waits for semaphore release by the parent
+process as it cannot execute the command until parent adds the pid info of
+child process in proc-info table. If this is not done opcacta will lose track
+of the process details which was spawned and executed.</li><li>Invoke the child function handler to perform the basic
+initialization.</li><li>Flags: CSM_C_PROC_NO_SHELL is set = start exec_str
+directly;(option is ignored if CSM_C_PROC_SU_WITH_ENV, cause profile is to
+execute);if flag is not set, program is executed via shell; CSM_C_PROC_SU is
+set = switch to user CSM_C_PROC_SU_WITH_ENV is set = switch to user and execute
+user's profile; user's shell is always called.</li><li>Executing without shell execvp.</li><li>Executing with shell execlp.</li></ol></ol></ol></p><div><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">
 
 
 
@@ -633,141 +763,4 @@ for the SIGCHLD miss scenarios is cleaned up.<o:p></o:p></p><p class="MsoNormal"
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</p><p class="MsoNormal">In windows only max 30 actions will be executed in parallel
-by opcacta.<o:p></o:p></p>
+</p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p></div>
