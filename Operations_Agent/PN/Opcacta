@@ -63,7 +63,7 @@
   <p class="Label">OPC_WIN_UAC_ENABLE<font color="rgba(0, 0, 0, 0)" face="Calibri, sans-serif"><span style="font-size: 11pt;"><o:p></o:p></span></font></p>
   </td>
  </tr>
-</tbody></table></div><h3 style="color: rgb(0, 0, 0); font-family: MetricHPE; text-transform: none;"><span style="font-weight: 700;">Short Description</span></h3><p class="MsoNormal">OPC_PROC_ALWAYS_INTERACTIVE specifies how the Windows agent
+</tbody></table></div><h3 style=""><b>Short Description</b></h3><p class="MsoNormal">OPC_PROC_ALWAYS_INTERACTIVE specifies how the Windows agent
 starts processes for all the agent subagent processes which can execute an
 action (auto-, operator-initiated-, scheduled) since some processes may hang
 when they are started with access to the default desktop (Administrator).&nbsp;</p>
@@ -196,7 +196,7 @@ variable section for more details.<o:p></o:p></p><h2>OPC_WIN_UAC_ENABLE</h2><div
   <p class="Label"><span lang="EN-US" style="">OPC_PROC_ALWAYS_INTERACTIVE</span><span lang="EN-US" style="font-size: 12pt; font-family: Calibri, sans-serif;"><o:p></o:p></span></p>
   </td>
  </tr>
-</tbody></table></div><p class="MsoNormal"><o:p></o:p></p><h3 style="color: rgb(0, 0, 0); font-family: MetricHPE; text-transform: none;"><span style="font-weight: 700;">Short Description</span></h3><p class="MsoNormal">OPC_WIN_UAC_ENABLE configuration variable is used when UAC
+</tbody></table></div><p class="MsoNormal"><o:p></o:p></p><h3 style=""><b>Short Description</b></h3><p class="MsoNormal">OPC_WIN_UAC_ENABLE configuration variable is used when UAC
 (User Access Control) is enabled on the system and Agent User is running as
 non-Administrator and part of Administrator group. When this variable is set to
 TRUE, the agent will elevate the user and assign the administrative privilege
@@ -819,7 +819,7 @@ policy interval.</span></p><h2>OPC_KILL_AUTO_ACTION_TIMEOUT</h2><p class="MsoNor
 </tbody></table><h3><b>Short Description</b></h3><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">If OPC_KILL_AUTO_ACTION is set to TRUE, the action agent
 will kill any processes that have been running longer than the interval
 specified by OPC_KILL_AUTO_ACTION_TIMEOUT.&nbsp;&nbsp;
-<o:p></o:p></p><h3><b>Long Description</b></h3><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><b>Behavior on Windows:</b><o:p></o:p></p><p class="MsoNormal"><ol><li>Every time an action should be started the action agent
+<o:p></o:p></p><h3><b>Long Description</b></h3><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><b>Behavior on Windows:</b><o:p></o:p></p><p class="MsoNormal"></p><ol><li>Every time an action should be started the action agent
 checks if its action agent queue contains 10 auto actions. If queue does not
 contains 10 auto actions no process will be killed.</li><li>If action agent queue contains 10 actions, then it checks if
 the any action (only one) running for the longest time and has crossed the
@@ -828,12 +828,12 @@ the case action agent will kill the process executing auto action.</li><li>Proce
 running auto action mentioned in all deployed policies. For example if one
 policy is having auto action, in auto action user wants to execute a script. If
 explicit execution (from command line) of same script take 600 seconds, then
-OPC_KILL_AUTO_ACTION_TIMEOUT should have the value longer than 600 seconds.</li></ol><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><b>Behavior on Unix Systems:</b><o:p></o:p></p><p class="MsoNormal"><ol><li>Every time an action should be started the action agent
+OPC_KILL_AUTO_ACTION_TIMEOUT should have the value longer than 600 seconds.</li></ol><o:p></o:p><p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><b>Behavior on Unix Systems:</b><o:p></o:p></p><p class="MsoNormal"></p><ol><li>Every time an action should be started the action agent
 checks if its action agent queue contains 2 auto actions. If queue does not
 contains 2 auto actions no process will be killed.</li><li>If action agent queue contains 2 actions, then it checks if
 the any action (only one) running for the longest time and has crossed the
 predefined time out value defined by OPC_KILL_AUTO_ACTION_TIMEOUT. If this is
-the case action agent will kill the process executing auto action.</li><li>Process is killed by SIGKILL signal.</li></ol></p><h2>OPC_KILL_SCHEDULE_TIMEOUT </h2><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><div>
+the case action agent will kill the process executing auto action.</li><li>Process is killed by SIGKILL signal.</li></ol><p></p><h2>OPC_KILL_SCHEDULE_TIMEOUT </h2><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><div>
 
 <table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
  <tbody><tr>
@@ -917,21 +917,21 @@ process for a scheduled action arrives at the action agent, then the agent
 first checks whether a scheduled action has already been started from the same
 policy.<o:p></o:p></p>
 
-<p class="MsoNormal"><ul><li>If previous instance of Scheduled action for same policy is
+<p class="MsoNormal"></p><ul><li>If previous instance of Scheduled action for same policy is
 still running and crossed Timeout value defined by OPC_KILL_SCHEDULE_TIMEOUT,
 then previous instance of action is killed and new action is started.</li><li>If previous instance of scheduled action is still running
 but time out value defined by OPC_KILL_SCHEDULE_TIMEOUT is not crossed yet,
 then new instance of scheduled action is discarded. In such cases opcacta will
 not executed new instance of Scheduled action for policy till previous SA for
-policy is finished or OPC_KILL_SCHEDULE_TIMEOUT is reached.</li></ul><o:p></o:p></p>
+policy is finished or OPC_KILL_SCHEDULE_TIMEOUT is reached.</li></ul><o:p></o:p><p></p>
 
 <p class="MsoNormal"><o:p></o:p></p>
 
 <p class="MsoNormal"><b>Note the following:</b><o:p></o:p></p>
 
-<p class="MsoNormal"><ul><li>An Enhancement request (QCCR1A150785) is raised to implement
+<p class="MsoNormal"></p><ul><li>An Enhancement request (QCCR1A150785) is raised to implement
 the OPC_KILL_SCHEDULE_TIMEOUT for UNIX based systems also. The ER is in
-deferred state as of June 17, 2016.</li><li>Timeout Value should be greater than 0.</li></ul><o:p></o:p></p>
+deferred state as of June 17, 2016.</li><li>Timeout Value should be greater than 0.</li></ul><o:p></o:p><p></p>
 
 <p class="MsoNormal"><o:p></o:p></p></div><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">
 
