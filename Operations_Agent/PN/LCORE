@@ -1373,7 +1373,7 @@ of seconds, the cache entry will be deleted. The default<o:p></o:p></p><p class=
 minutes. Maximum is 1 year, minimum is 0. If set to zero the cache will be
 disabled.<span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">&nbsp;</span></p><p class="MsoNormal">The cache timeout can be increased via this variable eg: 24
 hours<o:p></o:p></p><p class="MsoNormal">[xpl.net]<o:p></o:p></p><p class="MsoNormal">HOSTNAME_CACHE_TIMEOUT=86400<o:p></o:p></p><p class="MsoNormal"><o:p>&nbsp;</o:p><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">HOSTNAME_CACHE_TIMEOUT is valid only when IPCACHE_DISABLED
-is false.</span></p><p class="MsoNormal"><a name="_Toc491176831"><span class="LabelChar"><span style="font-size: 13pt; line-height: 107%; color: rgb(46, 116, 181);">KEEP_CONNECTIONS_OPEN</span></span></a><span class="LabelChar"><span style="font-size: 13pt; line-height: 107%; color: rgb(46, 116, 181);"><o:p></o:p></span></span></p><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+is false.</span></p><h2><a name="_Toc491176831"><span class="LabelChar"><span style="font-size: 13pt; line-height: 107%; color: rgb(46, 116, 181);">KEEP_CONNECTIONS_OPEN</span></span></a></h2><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
  <tbody><tr>
   <td width="230" valign="top" style="width: 172.25pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
   <p class="Label"><span style="font-size:12.0pt"><b>Type</b></span><span style="font-size:12.0pt;color:black"><o:p></o:p></span></p>
@@ -1950,7 +1950,7 @@ is the communication broker that receives messages and it forwards the message
 to registered clients. Let us suppose the system has 3 IPs.&nbsp; In this case , if ovbbccb needs to explicitly
 set the bind address to a specific IP out of the 3 IPs of the system, SERVER_BIND_ADDRESS
 can be configured with this specific IP. This would make sure that all the
-incoming traffic to ovbbccb would use the specified IP.&nbsp; &nbsp;</font><span style="font-size: 13pt;"><o:p></o:p></span></span></span></p><h2 style="margin: 0.25in 0in 12pt; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><a name="_Toc491176836"><span class="LabelChar"><span style="line-height: 107%; color: rgb(46, 116, 181); font-weight: normal;">CLIENT_PORT</span></span></a><span class="LabelChar"><span style="mso-ansi-font-size:13.0pt;mso-bidi-font-size:11.0pt;
+incoming traffic to ovbbccb would use the specified IP.&nbsp; &nbsp;</font><span style="font-size: 13pt;"><o:p></o:p></span></span></span></p><h2 style="margin: 0.25in 0in 12pt; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><a name="_Toc491176836"><span class="LabelChar"><span style="line-height: 107%; color: rgb(46, 116, 181);">CLIENT_PORT</span></span></a><span class="LabelChar"><span style="mso-ansi-font-size:13.0pt;mso-bidi-font-size:11.0pt;
 line-height:107%;mso-ascii-font-family:&quot;Calibri Light&quot;;mso-ascii-theme-font:
 major-latin;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-fareast-theme-font:
 major-fareast;mso-hansi-font-family:&quot;Calibri Light&quot;;mso-hansi-theme-font:major-latin;
@@ -4063,7 +4063,389 @@ mso-fareast-theme-font:major-fareast;mso-hansi-font-family:&quot;Calibri Light&q
 mso-hansi-theme-font:major-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;
 mso-bidi-theme-font:major-bidi;color:windowtext">One the reverce channel is
 established, All the inbound communication will happen through RC_CHANNELS.
-Reverse proxy server could be running behind firewall or NATed environment.&nbsp;<o:p></o:p></span></span></p><p class="MsoNormal"><o:p></o:p></p></div><o:p></o:p><p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;">
+Reverse proxy server could be running behind firewall or NATed environment.&nbsp;<o:p></o:p></span></span></p><h2 style="margin: 0.25in 0in 12pt; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><a name="_Toc491176853"><span class="LabelChar"><span style="mso-ansi-font-size:13.0pt;mso-bidi-font-size:11.0pt;line-height:107%;
+mso-ascii-font-family:&quot;Calibri Light&quot;;mso-ascii-theme-font:major-latin;
+mso-fareast-font-family:&quot;Times New Roman&quot;;mso-fareast-theme-font:major-fareast;
+mso-hansi-font-family:&quot;Calibri Light&quot;;mso-hansi-theme-font:major-latin;
+mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:major-bidi;
+color:#2E74B5;mso-themecolor:accent1;mso-themeshade:191">MAX_RECONNECT_RETRIES</span></span></a><span class="LabelChar"><span style="mso-ansi-font-size:13.0pt;mso-bidi-font-size:11.0pt;
+line-height:107%;mso-ascii-font-family:&quot;Calibri Light&quot;;mso-ascii-theme-font:
+major-latin;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-fareast-theme-font:
+major-fareast;mso-hansi-font-family:&quot;Calibri Light&quot;;mso-hansi-theme-font:major-latin;
+mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:major-bidi;
+color:#2E74B5;mso-themecolor:accent1;mso-themeshade:191"><o:p></o:p></span></span></h2><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Type</b></span><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif;color:black"><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: black; border-right-color: black; border-bottom-color: black; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">Integer</span><span style="font-size: 12pt; font-family: Gadugi, sans-serif; color: black;"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Default
+  Value</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-GB" style="font-size: 12pt; font-family: Gadugi, sans-serif;">-1</span><span style="font-size: 12pt; font-family: Gadugi, sans-serif;"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Class
+  of the variable</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;"></td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Namespace
+  </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-GB" style="font-size: 12pt; font-family: Gadugi, sans-serif;">bbc.cb</span><span style="font-size: 12pt; font-family: Gadugi, sans-serif;"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">Restart Required<o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">Yes<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">I<span style="color:black">ntroduced since</span>&nbsp; <o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">LCore 6.X<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">Applicable Platforms<o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">All<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:7;mso-yfti-lastrow:yes;height:19.55pt">
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 19.55pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">Related variables<o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt; height: 19.55pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif;
+  mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#010101">RETRY_RC_FAILED_CONNECTION<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif;
+  mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#010101"><o:p>&nbsp;</o:p></span></p>
+  </td>
+ </tr>
+</tbody></table><p class="MsoNormal"><font size="3"><o:p>&nbsp;</o:p><span style="color: windowtext; letter-spacing: 0.2px; background-color: transparent;"><b>Short Description</b></span></font></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3">MAX_RECONNECT_RETRIES defines
+the maximum number of attempts that the system should make to reconnect to a
+failed reverse administration channel connection. By default, this is set to -1
+(infinite). <o:p></o:p></font></span></span></p><p class="MsoNormal"><font size="3"><b><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><o:p>&nbsp;</o:p></span></span><span style="color: windowtext; letter-spacing: 0.2px; background-color: transparent;">Long Description</span></b></font></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3">If a firewall blocks inbound
+HTTPS connections from an operations-agent to the OM server, the
+operations-agent cannot communicate with the server properly. To enable proper
+communication, it is possible to configure an Operations-agent to act as a
+reverse channel proxy (RCP). An RCP handles communication between OM servers
+and Operations-Agents, so that they do not need to communicate with each other
+directly. <o:p></o:p></font></span></span></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3">An RCP can run on the managed
+node that it serves, or on a separate system that serves multiple managed
+nodes.<o:p></o:p></font></span></span></p><p class="MsoNormal"><font size="3"><span class="LabelChar" style=""><span style="line-height: 107%; color: windowtext;"><o:p style="">&nbsp;</o:p></span></span><span style="color: windowtext; letter-spacing: 0.2px; background-color: transparent;">Admin Reverse Channel is an
+HTTPS connection initiated by ovbbccb process (hereafter referred as CB
+-Communication Broker) in a high trust zone through a firewall to a RCP which
+is in a low or medium trust zone. The connection remains open until it is
+closed by the Communication Broker or the RCP. The connection is used by the
+RCP to “tunnel” connections from systems in the low or medium trust zone to the
+CB in the high trust zone.</span></font></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3">MAX_RECONNECT_TRIES defines
+the number of times that a CB attempts to establish an admin channel to an RCP.
+When this number is reached, the CB stops attempting to establish the channels,
+and the failure is logged. The default value is -1, which means that CB would
+infinitely try to establish the admin reverse channel with the RCP.</font></span></span><span style="font-size: medium; color: windowtext; letter-spacing: 0.2px; background-color: transparent;"><br></span></p><h2><a name="_Toc491176854"><span class="LabelChar"><span style="font-size:13.0pt;mso-bidi-font-size:11.0pt;line-height:107%;mso-ascii-font-family:
+&quot;Calibri Light&quot;;mso-ascii-theme-font:major-latin;mso-fareast-font-family:&quot;Times New Roman&quot;;
+mso-fareast-theme-font:major-fareast;mso-hansi-font-family:&quot;Calibri Light&quot;;
+mso-hansi-theme-font:major-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;
+mso-bidi-theme-font:major-bidi;color:#2E74B5;mso-themecolor:accent1;mso-themeshade:
+191">RETRY_RC_FAILED_CONNECTION</span></span></a></h2><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Type</b></span><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif;color:black"><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: black; border-right-color: black; border-bottom-color: black; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">Boolean</span><span style="font-size: 12pt; font-family: Gadugi, sans-serif; color: black;"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Default
+  Value</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-GB" style="font-size: 12pt; font-family: Gadugi, sans-serif;">False</span><span style="font-size: 12pt; font-family: Gadugi, sans-serif;"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Class
+  of the variable</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;"></td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Namespace
+  </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-GB" style="font-size: 12pt; font-family: Gadugi, sans-serif;">bbc.cb</span><span style="font-size: 12pt; font-family: Gadugi, sans-serif;"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">Restart Required<o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">No<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">I<span style="color:black">ntroduced since</span>&nbsp; <o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">LCore 6.X<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">Applicable Platforms<o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">All<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:7;mso-yfti-lastrow:yes;height:19.55pt">
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 19.55pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">Related variables<o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt; height: 19.55pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif;
+  mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#010101">MAX_RECONNECT_TRIES</span><span style="color: rgb(1, 1, 1); font-family: Gadugi, sans-serif; font-size: 12pt; letter-spacing: 0.2px; background-color: transparent;">&nbsp;</span></p>
+  </td>
+ </tr>
+</tbody></table><p class="MsoNormal"><font size="3"><b><span class="LabelChar" style=""><span style="line-height: 107%; color: rgb(46, 116, 181);"><o:p style="">&nbsp;</o:p></span></span><span style="color: windowtext; letter-spacing: 0.2px; background-color: transparent;">Short Description</span></b></font></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3">RETRY_RC_FAILED_CONNECTION
+defines whether the Communication Broker (ovbbccb process) should automatically
+retry failed Reverse Administration Channel [RAC] connections.&nbsp;</font></span></span><span style="font-size: medium; color: windowtext; letter-spacing: 0.2px; background-color: transparent;">By default, the CB does not
+retry failed RAC connections.</span></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3"><b>Long Description</b><o:p></o:p></font></span></span></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3">If a firewall blocks inbound
+HTTPS connections from an operations-agent to the OM server, the
+operations-agent cannot communicate with the server properly. To enable proper
+communication, it is possible to configure an Operations-agent to act as a
+reverse channel proxy (RCP). An RCP handles communication between OM servers
+and Operations-Agents, so that they do not need to communicate with each other
+directly. <o:p></o:p></font></span></span></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3">An RCP can run on the managed
+node that it serves, or on a separate system that serves multiple managed
+nodes.&nbsp;</font></span></span><span style="font-size: medium; color: windowtext; letter-spacing: 0.2px; background-color: transparent;">Reverse Administration Channel
+[RAC] is an HTTPS connection initiated by ovbbccb process (hereafter referred
+as CB -Communication Broker) in a high trust zone through a firewall to a RCP
+which is in a low or medium trust zone. The connection remains open until it is
+closed by the Communication Broker or the RCP. The connection is used by the
+RCP to “tunnel” connections from systems in the low or medium trust zone to the
+CB in the high trust zone.</span><span style="font-size: medium; color: windowtext; letter-spacing: 0.2px; background-color: transparent;">&nbsp;</span></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</font></span></span></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3">By default CB does not try to
+reconnect if the connection to RAC fails. If the variable,
+RETRY_RC_FAILED_CONNECTION is set to true, then CB retries a failed connection.
+The number of times that CB retries a failed connection is governed by&nbsp; MAX_RECONNECT_TRIES.</font><span style="font-size: 13pt;"><o:p></o:p></span></span></span></p><h2><a name="_Toc491176855"><span class="LabelChar"><span style="font-size:13.0pt;mso-bidi-font-size:11.0pt;line-height:107%;mso-ascii-font-family:
+&quot;Calibri Light&quot;;mso-ascii-theme-font:major-latin;mso-fareast-font-family:&quot;Times New Roman&quot;;
+mso-fareast-theme-font:major-fareast;mso-hansi-font-family:&quot;Calibri Light&quot;;
+mso-hansi-theme-font:major-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;
+mso-bidi-theme-font:major-bidi;color:#2E74B5;mso-themecolor:accent1;mso-themeshade:
+191">RC_MAX_WORKER_THREADS</span></span></a></h2><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Type</b></span><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif;color:black"><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: black; border-right-color: black; border-bottom-color: black; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">Integer</span><span style="font-size: 12pt; font-family: Gadugi, sans-serif; color: black;"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Default
+  Value</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-GB" style="font-size: 12pt; font-family: Gadugi, sans-serif;">1</span><span style="font-size: 12pt; font-family: Gadugi, sans-serif;"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Class
+  of the variable</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;"></td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Namespace
+  </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-GB" style="font-size: 12pt; font-family: Gadugi, sans-serif;">bbc.cb</span><span style="font-size: 12pt; font-family: Gadugi, sans-serif;"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">Restart Required<o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">Yes<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">I<span style="color:black">ntroduced since</span>&nbsp; <o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">LCore 6.X<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">Applicable Platforms<o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">All<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:7;mso-yfti-lastrow:yes;height:19.55pt">
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 19.55pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">Related variables<o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt; height: 19.55pt;">
+  <p class="Label"><span lang="EN-GB" style="font-size: 12pt; font-family: Gadugi, sans-serif;">RC_MIN_WORKER_THREADS</span><span style="color: rgb(1, 1, 1); font-family: Gadugi, sans-serif; font-size: 12pt; letter-spacing: 0.2px; background-color: transparent;">&nbsp;</span></p>
+  </td>
+ </tr>
+</tbody></table><p class="MsoNormal"><b><span class="LabelChar"><span style="font-size:13.0pt;
+mso-bidi-font-size:11.0pt;line-height:107%;mso-ascii-font-family:&quot;Calibri Light&quot;;
+mso-ascii-theme-font:major-latin;mso-fareast-font-family:&quot;Times New Roman&quot;;
+mso-fareast-theme-font:major-fareast;mso-hansi-font-family:&quot;Calibri Light&quot;;
+mso-hansi-theme-font:major-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;
+mso-bidi-theme-font:major-bidi;color:#2E74B5;mso-themecolor:accent1;mso-themeshade:
+191"><o:p>&nbsp;</o:p></span></span><span style="color: windowtext; letter-spacing: 0.2px; background-color: transparent;"><font size="3">Short Description</font></span></b></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3">RC_MAX_WORKER_THREADS defines
+the maximum number of worker threads for connection to Reverse Channel Proxy
+(RCP).<o:p></o:p></font></span></span></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3"><b>Long Description</b><o:p></o:p></font></span></span></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3">If a firewall blocks inbound
+HTTPS connections from an operations-agent to the OM server, the
+operations-agent cannot communicate with the server properly. To enable proper
+communication, it is possible to configure an Operations-agent to act as a
+reverse channel proxy (RCP). An RCP handles communication between OM servers
+and Operations-Agents, so that they do not need to communicate with each other
+directly. <o:p></o:p></font></span></span></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3">An RCP can run on the managed
+node that it serves, or on a separate system that serves multiple managed
+nodes.<o:p></o:p></font></span></span></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3">Reverse Administration Channel
+[RAC] is an HTTPS connection initiated by ovbbccb process (hereafter referred
+as CB -Communication Broker) in a high trust zone through a firewall to a RCP
+which is in a low or medium trust zone. The connection remains open until it is
+closed by the Communication Broker or the RCP. The connection is used by the
+RCP to “tunnel” connections from systems in the low or medium trust zone to the
+CB in the high trust zone.<o:p></o:p></font></span></span></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3">RC_MIN_WORKER_THREADS and
+RC_MAX_WORKER_THREADS is used to configure the minimum and maximum number of
+worker threads for connections to RCPs from the communication broker. The
+communication broker [CB] can use multiple worker threads to enhance the
+performance of connections to RCPs.<o:p></o:p></font></span></span></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3">By default, the maximum number
+of worker threads is 1 and the minimum number of worker&nbsp;</font></span></span><span style="font-size: medium; color: windowtext; letter-spacing: 0.2px; background-color: transparent;">Threads is 0.</span></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</font></span></span></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3">If the system has sufficient
+resources, the number of worker threads can be increase for performance
+improvement based on the number of RCP’s.</font><span style="font-size: 13pt;"><o:p></o:p></span></span></span></p><p class="MsoNormal"><o:p></o:p></p></div><o:p></o:p><p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;">
 
 
 
