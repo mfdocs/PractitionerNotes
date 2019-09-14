@@ -1,28 +1,28 @@
-<h1><a name="_Toc460834962" style="font-weight: normal;">BBC Communication broker
-ConnectonPool Internals</a></h1><h1><a name="_Toc460834962" style="font-weight: normal;">bbc</a></h1><div><a name="_Toc460834962" style="font-weight: normal;"><p class="MsoNormal">BBC Communication broker is the single central point of
-entry to a node for all applications that uses the BBC API. All applications
-that wish to receive messages needs to register an address with the CB.<o:p></o:p></p>
+<h2><b>BBC Communication broker Connection Pool
+Internals<o:p></o:p></b></h2><h1>
 
-<p class="MsoNormal">The local or remote applications may either query the BBC CB
+<p class="MsoNormal"><o:p>&nbsp;</o:p><span style="letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;"><font size="4">BBC Communication broker is the single central point of
+entry to a node for all applications that uses the BBC API. All applications
+that wish to receive messages needs to register an address with the CB.</font></span><span style="font-size: large; letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">&nbsp;</span></p>
+
+<p class="MsoNormal"><font size="4">The local or remote applications may either query the BBC CB
 for the location of the application or use the BBC CB as an HTTP proxy to
 forward the request to the appropriate registered application.&nbsp; The process of establishing a connection from
 one host to another is quite complex and involves multiple packet exchanges
-between two endpoints, which can be quite time consuming. <o:p></o:p></p>
+between two endpoints, which can be quite time consuming.</font><span style="font-size: large; letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">&nbsp;</span></p>
 
-<p class="MsoNormal"><o:p>&nbsp;</o:p></p>
-
-<p class="MsoNormal">The BBC communication broker handles the HTTP requests
-through a combination of a thread pool and a connection pool . Since these HTTP
+<p class="MsoNormal"><font size="4">The BBC communication broker handles the HTTP requests
+through a combination of a thread pool and a connection pool. Since these HTTP
 connections are represented finally by sockets, a connection pool is nothing
 but pool of sockets. In BBC terms it is known as Socket Set. The pool of
 threads services the pool of sockets. The connections are either HTTP or HTTPS
 connection based on whether certificate is installed or not. The default ratio
 of the threads that handle the Http connections from the connection pool is
-1:10; this is based on an assumption that at any point in time , 10 % of the
+1:10; this is based on an assumption that at any point in time, 10 % of the
 connections would be active and sending the requests to the server. The default
-size of the Connection Pool and threads is 60 and 6 respectively. <o:p></o:p></p>
+size of the Connection Pool and threads is 60 and 6 respectively.<o:p></o:p></font></p>
 
-<p class="MsoNormal">This means that Connection pool that contains 60 connections
+<p class="MsoNormal"><font size="4">This means that Connection pool that contains 60 connections
 (to be more specific set of sockets) will be handled by 6 threads. Whenever a
 request arrives on BBC communication broker, one of the threads which is
 waiting on system calls select or poll,&nbsp;
@@ -36,8 +36,10 @@ would be released once all the sockets in the pool are closed.&nbsp; Please note
 linearly as the connections increase and there is no rebalancing to the socket
 set once the sockets are closed. Hence it is possible to have multiple Sockets
 sets which has multiple connections and in the worst case scenario where all
-sockets are closed except one&nbsp; it is
-possible to have a socket set which has a single socket and 6 threads catering
-to it. The socket set and associated resources including thread pool will be
-cleared once the socket set is empty. This is why in case of large number of
-connections tuning of SOCKETS_PER_SOCKETSET and MAX_SOCKETSET_THREADS&nbsp; is important.<o:p></o:p></p></a></div><div><a name="_Toc460834962" style="font-weight: normal;"><br></a></div><p class="MsoNormal"><o:p></o:p></p>
+sockets are closed except one it is possible to have a socket set which has a
+single socket and 6 threads catering to it. The socket set and associated
+resources including thread pool will be cleared once the socket set is empty.
+This is why in case of large number of connections tuning of SOCKETS_PER_SOCKETSET
+and MAX_SOCKETSET_THREADS is important.<o:p></o:p></font></p>
+
+<p class="MsoNormal"><o:p><font size="4">&nbsp;</font></o:p></p></h1><p class="MsoNormal"><o:p></o:p></p>
