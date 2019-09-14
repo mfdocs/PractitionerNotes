@@ -177,7 +177,7 @@ with nodes more than 1024, it is better to use the Poll system call which is a
 non-blocking call. For ex. ovbbccb is an Http Server implementation which by
 default uses a select call for new connections. If the variable SocketPoll is
 made to true, it no longer would use the Select but will start using Poll
-instead.</font></p><p class="MsoNormal"><font size="3"><br></font></p><h2><a name="_Toc491176821"><span class="LabelChar"><span style="font-size: 13pt; line-height: 107%; color: rgb(46, 116, 181); font-weight: normal;">SOCKETS_PER_SOCKETSET</span></span></a></h2><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+instead.</font></p><p class="MsoNormal"><font size="3"><br></font></p><h2><a name="_Toc491176821"><span class="LabelChar"><span style="font-size: 13pt; line-height: 107%; color: rgb(46, 116, 181); font-weight: normal;">SOCKETS_PER_SOCKETSET</span></span></a></h2><div><a name="_Toc491176821"><span class="LabelChar"><span style="font-size: 13pt; line-height: 107%; color: rgb(46, 116, 181); font-weight: normal;"><br></span></span></a></div><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
  <tbody><tr>
   <td width="230" valign="top" style="width: 172.25pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
   <p class="Label"><span style="font-size:12.0pt"><b>Type</b></span><span style="font-size:12.0pt;color:black"><o:p></o:p></span></p>
@@ -396,7 +396,7 @@ processed faster and a faster release of the socket set. Due to this very
 reason in large environments where the number of connections are very high
 keeping the value of&nbsp;
 SOCKETS_PER_SOCKETSET to 10 and&nbsp;
-MAX_SOCKETSET_THREADS to 3 makes is recommended.<o:p></o:p></p><p class="MsoNormal"><br></p><h2><a name="_Toc491176823"><span class="LabelChar"><span style="font-size: 13pt; line-height: 107%; color: rgb(46, 116, 181); font-weight: normal;">MAX_CONNECTIONS</span></span></a></h2><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+MAX_SOCKETSET_THREADS to 3 makes is recommended.<o:p></o:p></p><p class="MsoNormal"><br></p><h2><a name="_Toc491176823"><span class="LabelChar"><span style="font-size: 13pt; line-height: 107%; color: rgb(46, 116, 181); font-weight: normal;">MAX_CONNECTIONS</span></span></a></h2><div><a name="_Toc491176823"><span class="LabelChar"><span style="font-size: 13pt; line-height: 107%; color: rgb(46, 116, 181); font-weight: normal;"><br></span></span></a></div><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
  <tbody><tr>
   <td width="230" valign="top" style="width: 172.25pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
   <p class="Label"><span style="font-size:12.0pt"><b>Type</b></span><span style="font-size:12.0pt;color:black"><o:p></o:p></span></p>
@@ -627,7 +627,7 @@ affect applications using the HTTPS communication APIs.&nbsp; <o:p></o:p></p>
 Connections from the node to the BBC communication broker. If the connections
 from an Http Client like opcmsga is inactive for more than a minute closing the
 connection would improve the performance. Hence from OA version 11.02 and above
-AUTO_CONNECTION_CLOSE_INTERVAL=60, for opcmsga.<o:p></o:p></p><p class="MsoNormal"><br></p><h2><span style="font-weight: normal;"><span class="LabelChar"><span style="font-size: 13pt; line-height: 107%; color: rgb(46, 116, 181);">CHROOT_PATH</span></span><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">&nbsp;</span></span></h2><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+AUTO_CONNECTION_CLOSE_INTERVAL=60, for opcmsga.<o:p></o:p></p><p class="MsoNormal"><br></p><h2><span style="font-weight: normal;"><span class="LabelChar"><span style="font-size: 13pt; line-height: 107%; color: rgb(46, 116, 181);">CHROOT_PATH</span></span><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">&nbsp;</span></span></h2><div><span style="font-weight: normal;"><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;"><br></span></span></div><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
  <tbody><tr>
   <td width="230" valign="top" style="width: 172.25pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
   <p class="Label"><span style="font-size:12.0pt"><b>Type</b></span><span style="font-size:12.0pt;color:black"><o:p></o:p></span></p>
@@ -848,7 +848,7 @@ the web root folder. An attacker could use a certain parameter of the file path
 for instance to inject “../” sequences in order to navigate through the file system.
 In order to prevent any mishaps due to this , there is this new variable
 ‘DISABLE_REL_PATH’ introduced under namespaces bbc.fx and depl. Enabling this
-variable to true would prevent the application from accessing relative paths.<o:p></o:p></font></span></span></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3"><br></font></span></span></p><h2><a name="_Toc491176827"><span class="LabelChar"><span style="font-size: 13pt; line-height: 107%; color: rgb(46, 116, 181); font-weight: normal;">DISABLE_DNS</span></span></a></h2><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+variable to true would prevent the application from accessing relative paths.<o:p></o:p></font></span></span></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3"><br></font></span></span></p><h2><a name="_Toc491176827"><span class="LabelChar"><span style="font-size: 13pt; line-height: 107%; color: rgb(46, 116, 181); font-weight: normal;">DISABLE_DNS</span></span></a></h2><div><a name="_Toc491176827"><span class="LabelChar"><span style="font-size: 13pt; line-height: 107%; color: rgb(46, 116, 181); font-weight: normal;"><br></span></span></a></div><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
  <tbody><tr>
   <td width="230" valign="top" style="width: 172.25pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
   <p class="Label"><span style="font-size:12.0pt">Type</span><span style="font-size:12.0pt;color:black"><o:p></o:p></span></p>
@@ -1108,7 +1108,7 @@ systems ovc –start may fail in staring the process. In such environments kill
 the process and configure an increased PROCESS_TIMEOUT and retrigger the ovc
 –start.<o:p></o:p></font></span></span></p>
 
-<p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: rgb(46, 116, 181);"><o:p style=""><font size="3">&nbsp;</font></o:p></span></span></p><h2><a name="_Toc491176829"><span class="LabelChar"><span style="font-size: 13pt; line-height: 107%; color: rgb(46, 116, 181); font-weight: normal;">SSL_HANDSHAKE_TIMEOUT</span></span></a></h2><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+<p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: rgb(46, 116, 181);"><o:p style=""><font size="3">&nbsp;</font></o:p></span></span></p><h2><a name="_Toc491176829"><span class="LabelChar"><span style="font-size: 13pt; line-height: 107%; color: rgb(46, 116, 181); font-weight: normal;">SSL_HANDSHAKE_TIMEOUT</span></span></a></h2><div><a name="_Toc491176829"><span class="LabelChar"><span style="font-size: 13pt; line-height: 107%; color: rgb(46, 116, 181); font-weight: normal;"><br></span></span></a></div><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
  <tbody><tr>
   <td width="230" valign="top" style="width: 172.25pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
   <p class="Label"><span style="font-size:12.0pt"><b>Type</b></span><span style="font-size:12.0pt;color:black"><o:p></o:p></span></p>
@@ -1216,7 +1216,7 @@ needs to be initialized.</span></p><p class="MsoNormal"><font size="3"><b>Long D
 
 </font></o:p></span></span></p><p class="MsoNormal"><font size="3">Specifies the number of seconds the BBC HttpServer will
 block waiting for an SSL connection to initialize. If this timeout is exceeded
-the request will be aborted. ; Default is 10 seconds.</font><o:p></o:p></p><p class="MsoNormal"><br></p><h2><a name="_Toc491176830" style="font-weight: normal;">HOSTNAME_CACHE_TIMEOUT</a><o:p></o:p></h2><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+the request will be aborted. ; Default is 10 seconds.</font><o:p></o:p></p><p class="MsoNormal"><br></p><h2><a name="_Toc491176830" style="font-weight: normal;">HOSTNAME_CACHE_TIMEOUT</a><o:p></o:p></h2><div><a name="_Toc491176830" style="font-weight: normal;"><br></a></div><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
  <tbody><tr>
   <td width="230" valign="top" style="width: 172.25pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
   <p class="Label"><b><span style="font-size:12.0pt">Type</span><span style="font-size:12.0pt;color:black"><o:p></o:p></span></b></p>
