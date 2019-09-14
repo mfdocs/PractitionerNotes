@@ -2308,7 +2308,7 @@ fact any “example.com”) domain systems, as it chooses the 1st matching proxy
 the rule:<o:p></o:p></p><p class="MsoNormal">PROXY=web-proxy:8080+(*.example.com);test-proxy:8080+(*.test.example.com)<o:p></o:p></p><p class="MsoNormal">vii)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; You can
 use ‘,’ or ‘;’ separated system names, IPs or patterns in the PROXY rule:<o:p></o:p></p><p class="MsoNormal">PROXY=web-proxy:8080+(*.example.com,node2.test.com)-(*.test.example.com;node3.example.com)<o:p></o:p></p><p class="MsoNormal">viii)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; You can
 also specify IP addresses in the rule instead hostname. Like below:<o:p></o:p></p><p class="MsoNormal">PROXY=web-proxy:8080+(10.*.*.*)-(10.10.*.*);test-proxy:8080+(172.*.*.*)<o:p></o:p></p><p class="MsoNormal">ix)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Specifying
-IPV6 address is also allowed, as below:<o:p></o:p></p><p class="MsoNormal">PROXY=web-proxy:8080+(201A:*:*:*:*:*:*:*)<o:p></o:p></p><p class="MsoNormal"><ul><li>If the
+IPV6 address is also allowed, as below:<o:p></o:p></p><p class="MsoNormal">PROXY=web-proxy:8080+(201A:*:*:*:*:*:*:*)<o:p></o:p></p><p class="MsoNormal"></p><ul><li>If the
 variable set under ‘bbc.http’ namespace, all the clients who use BBC client API
 honour this rule for any communication. If this variable is set under
 ‘bbc.http.ext.&lt;appname&gt;’ then the specific app (as mentioned in
@@ -2322,7 +2322,249 @@ have RCP (Reverse Channel Proxy) set, the client side setting should be same as
 normal proxy.</li><li>Instead of
 specifying large expressions for the PROXY variable, you can use an external
 configuration file to specify all the proxy server-related details and set the
-PROXY_CFG_FILE variable to the location of the configuration file.</li></ul><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;">
+PROXY_CFG_FILE variable to the location of the configuration file.</li></ul><div><h2 style="margin: 0.25in 0in 12pt; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><a name="_Toc491176839"></a><a name="_Toc480808532"><span class="LabelChar"><span style="mso-ansi-font-size:13.0pt;mso-bidi-font-size:11.0pt;line-height:107%;
+mso-ascii-font-family:&quot;Calibri Light&quot;;mso-ascii-theme-font:major-latin;
+mso-fareast-font-family:&quot;Times New Roman&quot;;mso-fareast-theme-font:major-fareast;
+mso-hansi-font-family:&quot;Calibri Light&quot;;mso-hansi-theme-font:major-latin;
+mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:major-bidi;
+color:#2E74B5;mso-themecolor:accent1;mso-themeshade:191">MONITOR_CHECK_INTERVAL</span></span></a><span class="LabelChar"><span style="mso-ansi-font-size:13.0pt;mso-bidi-font-size:11.0pt;
+line-height:107%;mso-ascii-font-family:&quot;Calibri Light&quot;;mso-ascii-theme-font:
+major-latin;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-fareast-theme-font:
+major-fareast;mso-hansi-font-family:&quot;Calibri Light&quot;;mso-hansi-theme-font:major-latin;
+mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:major-bidi;
+color:#2E74B5;mso-themecolor:accent1;mso-themeshade:191"><o:p></o:p></span></span></h2>
+
+<table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Type</b></span><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif;color:black"><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: black; border-right-color: black; border-bottom-color: black; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-GB" style="font-size: 12pt; font-family: Gadugi, sans-serif;">Integer</span><span style="font-size: 12pt; font-family: Gadugi, sans-serif; color: black;"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Default
+  Value</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">2000<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Class
+  of the variable</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;"></td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Namespace
+  </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-GB" style="font-size: 12pt; font-family: Gadugi, sans-serif;">ctrl.ovcd</span><span style="font-size: 12pt; font-family: Gadugi, sans-serif;"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">Restart Required<o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">Yes<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">I<span style="color:black">ntroduced since</span>&nbsp; <o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">LCore 6.X<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">Applicable Platforms<o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">All<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:7;mso-yfti-lastrow:yes;height:19.55pt">
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 19.55pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">Related variables<o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt; height: 19.55pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif;
+  mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#010101">N/A<o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif;
+  mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#010101"><o:p>&nbsp;</o:p></span></p>
+  </td>
+ </tr>
+</tbody></table>
+
+<p class="MsoNormal"><o:p>&nbsp;</o:p><b style="letter-spacing: 0.2px; background-color: transparent;"><font size="3">Short Description</font></b></p>
+
+<p class="MsoNormal"><font size="3">The interval in milliseconds in which Ctrl will scan the OS
+to monitor an already monitored process.<o:p></o:p></font></p>
+
+<p class="MsoNormal"><b><font size="3">Long Description<o:p></o:p></font></b></p>
+
+<p class="MsoNormal"><font size="3">Control component has a Monitor thread to monitor the
+registered observer/components.&nbsp; When the
+monitor thread is first started it loads and processes the OS pid file and
+checks for the registered OV components.<o:p></o:p></font></p>
+
+<p class="MsoNormal"><font size="3">Apart from this at regular intervals monitor thread:<o:p></o:p></font></p>
+
+<p class="MsoNormal"><font size="3">&nbsp;1. checks how many
+subscribed processes are running and if there is a change in number of running
+processes it updates the registered Observer (Component)<o:p></o:p></font></p>
+
+<p class="MsoNormal"><font size="3">&nbsp;2. check for OV
+processes that have died since previous interval run</font><o:p></o:p></p><h2 style="margin: 0.25in 0in 12pt; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><a name="_Toc491176840"></a><a name="_Toc480808533"><span class="LabelChar"><span style="mso-ansi-font-size:13.0pt;mso-bidi-font-size:11.0pt;line-height:107%;
+mso-ascii-font-family:&quot;Calibri Light&quot;;mso-ascii-theme-font:major-latin;
+mso-fareast-font-family:&quot;Times New Roman&quot;;mso-fareast-theme-font:major-fareast;
+mso-hansi-font-family:&quot;Calibri Light&quot;;mso-hansi-theme-font:major-latin;
+mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:major-bidi;
+color:#2E74B5;mso-themecolor:accent1;mso-themeshade:191">ENFORCE_CLIENT_PROTOCOL</span></span></a><span class="LabelChar"><span style="mso-ansi-font-size:13.0pt;mso-bidi-font-size:11.0pt;
+line-height:107%;mso-ascii-font-family:&quot;Calibri Light&quot;;mso-ascii-theme-font:
+major-latin;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-fareast-theme-font:
+major-fareast;mso-hansi-font-family:&quot;Calibri Light&quot;;mso-hansi-theme-font:major-latin;
+mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:major-bidi;
+color:#2E74B5;mso-themecolor:accent1;mso-themeshade:191"><o:p></o:p></span></span></h2><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="204" valign="top" style="width: 152.75pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Type</b></span><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif;color:black"><o:p></o:p></span></p>
+  </td>
+  <td width="530" valign="top" style="width: 397.5pt; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: black; border-right-color: black; border-bottom-color: black; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-GB" style="font-size: 12pt; font-family: Gadugi, sans-serif;">Boolean</span><span style="font-size: 12pt; font-family: Gadugi, sans-serif; color: black;"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="204" valign="top" style="width: 152.75pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Default
+  Value</b><o:p></o:p></span></p>
+  </td>
+  <td width="530" valign="top" style="width: 397.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">HTTPS<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="204" valign="top" style="width: 152.75pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Class
+  of the variable</b><o:p></o:p></span></p>
+  </td>
+  <td width="530" valign="top" style="width: 397.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;"></td>
+ </tr>
+ <tr>
+  <td width="204" valign="top" style="width: 152.75pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Namespace
+  </b><o:p></o:p></span></p>
+  </td>
+  <td width="530" valign="top" style="width: 397.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-GB" style="font-size: 12pt; font-family: Gadugi, sans-serif;">bbc.http</span><span style="font-size: 12pt; font-family: Gadugi, sans-serif;"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="204" valign="top" style="width: 152.75pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">Restart Required<o:p></o:p></span></b></p>
+  </td>
+  <td width="530" valign="top" style="width: 397.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">Yes<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="204" valign="top" style="width: 152.75pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">I<span style="color:black">ntroduced since</span>&nbsp; <o:p></o:p></span></b></p>
+  </td>
+  <td width="530" valign="top" style="width: 397.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">LCore 6.X<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="204" valign="top" style="width: 152.75pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">Applicable Platforms<o:p></o:p></span></b></p>
+  </td>
+  <td width="530" valign="top" style="width: 397.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">All<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style="mso-yfti-irow:7;mso-yfti-lastrow:yes;height:19.55pt">
+  <td width="204" valign="top" style="width: 152.75pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt; height: 19.55pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">Related variables<o:p></o:p></span></b></p>
+  </td>
+  <td width="530" valign="top" style="width: 397.5pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt; height: 19.55pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span lang="EN-GB" style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif;
+  mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#010101;mso-ansi-language:EN-GB">SSL_REQUIRED, ENFORCE_SERVER_SSL</span><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Times New Roman&quot;;color:#010101"><o:p></o:p></span></p>
+  </td>
+ </tr>
+</tbody></table><p class="MsoNormal"><o:p>&nbsp;</o:p><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;"><b>Short Description</b></span></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">This parameter is used to set the communication protocols
+type for client requests.<o:p></o:p></p><p class="MsoNormal"><b>Long Description</b><o:p></o:p></p><p class="MsoNormal">All BBC communication ( used by client and server
+application ) are either HTTP or HTTPS protocol type.<o:p></o:p></p><p class="MsoNormal">This parameter may be set to one of the following values:<o:p></o:p></p><p class="MsoNormal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HTTP: All
+client requests will use the HTTP protocol.<o:p></o:p></p><p class="MsoNormal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HTTPS: All
+client requests will use the HTTPS protocol.<o:p></o:p></p><p class="MsoNormal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This
+parameter is ignored if set to any other value. The HTTP client will then
+usethe protocol specified by the application when creating HTTP<o:p></o:p></p><p class="MsoNormal">requests. The parameter is case insensitive.<o:p></o:p></p><p class="MsoNormal">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</p><p class="MsoNormal"><b>NOTE</b>: Use caution when setting this parameter as it will disable
+security features if set to 'HTTP' as all client request would use unsecure
+protocol<o:p></o:p></p></div><o:p></o:p><p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;">
 
 
 
