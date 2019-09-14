@@ -1490,7 +1490,12 @@ that OM Server offers. <o:p></o:p></font></span></span></p><p class="MsoNormal">
 </p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3">The
 variable KEEP_CONNECTIONS_OPEN Specifies, if the connection shall be closed
 after a queue got completely processed. If set to true it says open and has to
-be closed by the application by calling SnfClient::CloseUnusedConnections().</font></span></span><span style="font-size: medium; letter-spacing: 0.2px; background-color: transparent;">&nbsp;</span></p><h2><a name="_Toc491176832"><span class="LabelChar"><span style="font-size: 13pt; line-height: 107%; color: rgb(46, 116, 181);">REQUEST_TIMEOUT</span></span></a></h2><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+be closed by the application by calling SnfClient::CloseUnusedConnections().</font></span></span><span style="font-size: medium; letter-spacing: 0.2px; background-color: transparent;">&nbsp;</span></p><h2><p class="MsoNormal"><span class="LabelChar"><span style="font-size: 13pt; line-height: 107%; color: rgb(46, 116, 181);">REQUEST_TIMEOUT</span></span><span class="LabelChar"><span style="font-size:13.0pt;mso-bidi-font-size:11.0pt;line-height:107%;mso-ascii-font-family:
+&quot;Calibri Light&quot;;mso-ascii-theme-font:major-latin;mso-fareast-font-family:&quot;Times New Roman&quot;;
+mso-fareast-theme-font:major-fareast;mso-hansi-font-family:&quot;Calibri Light&quot;;
+mso-hansi-theme-font:major-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;
+mso-bidi-theme-font:major-bidi;color:#2E74B5;mso-themecolor:accent1;mso-themeshade:
+191"><o:p></o:p></span></span></p></h2><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
  <tbody><tr>
   <td width="230" valign="top" style="width: 172.25pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
   <p class="Label"><span style="font-size:12.0pt"><b>Type</b></span><span style="font-size:12.0pt;color:black"><o:p></o:p></span></p>
@@ -1702,4 +1707,246 @@ RESPONSE_TIMEOUT is</span><span style="font-size: inherit; letter-spacing: 0.2px
 </p><p class="MsoNormal">These settings are used to tune the Socket outgoing
 connections and it is very rarely changed.When the number of nodes to be
 monitored are high, we might reduce the RESPONSE_TIMEOUT to a lower value on
-the Http Server. When the nodes are sluggish to respond, the&nbsp; RESPONSE_TIMEOUT might have to be increased.<span style="color: rgb(46, 116, 181); font-size: 13pt; letter-spacing: 0.2px; background-color: transparent;">&nbsp;</span></p><p class="MsoNormal"><o:p></o:p></p>
+the Http Server. When the nodes are sluggish to respond, the&nbsp; RESPONSE_TIMEOUT might have to be increased.<span style="color: rgb(46, 116, 181); font-size: 13pt; letter-spacing: 0.2px; background-color: transparent;">&nbsp;</span></p><p class="MsoNormal"><span style="font-size:14.0pt;line-height:107%;font-family:
+&quot;Gadugi&quot;,sans-serif"><u><b>Background</b>:</u><o:p></o:p></span></p><p class="MsoNormal">
+
+</p><p class="MsoNormal"><span style="line-height: 107%; font-family: Gadugi, sans-serif;"><font size="3">A TCP/IP connection is identified by a four element tuple:
+{source IP, source port, destination IP, destination port}.</font><span style="font-size: 14pt;"><o:p></o:p></span></span></p><p class="MsoNormal"><span style="line-height: 107%; font-family: Gadugi, sans-serif;"><font size="3">To establish a TCP/IP connection only a destination IP and
+port number are needed, the operating system automatically selects source IP
+and port. But few customers would want an option configured source IP and port
+to some specific address and port of their choice. When a connection is made
+the operating system would to select an unused source port number and by
+default localhost would be selected as IP.<o:p></o:p></font></span></p><p class="MsoNormal"><span style="line-height: 107%; font-family: Gadugi, sans-serif;"><font size="3">Applications using BBC API for HTTP communication, have an
+option to configure the source IP and port through below configuration
+variables:<o:p></o:p></font></span></p><p class="MsoListParagraphCxSpFirst" style="margin-bottom:8.0pt;mso-add-space:
+auto;text-indent:-.25in;line-height:107%;mso-list:l0 level1 lfo1"><ul><li><span style="font-size: medium; letter-spacing: 0.2px; text-indent: -0.25in; background-color: transparent; line-height: 107%; font-family: Wingdings;">n<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp; </span></span><span style="font-size: medium; letter-spacing: 0.2px; text-indent: -0.25in; background-color: transparent; line-height: 107%; font-family: Gadugi, sans-serif;">SERVER_BIND_ADDR
+</span><span style="font-size: medium; letter-spacing: 0.2px; text-indent: -0.25in; background-color: transparent; font-family: Gadugi, sans-serif;">[ apply/specific to HTTP
+Server ]</span></li><li><span style="font-size: medium; letter-spacing: 0.2px; text-indent: -0.25in; background-color: transparent; line-height: 107%; font-family: Wingdings;">n<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp; </span></span><span style="font-size: medium; letter-spacing: 0.2px; text-indent: -0.25in; background-color: transparent; line-height: 107%; font-family: Gadugi, sans-serif;">SERVER_PORT
+</span><span style="font-size: medium; letter-spacing: 0.2px; text-indent: -0.25in; background-color: transparent; font-family: Gadugi, sans-serif;">[ apply/specific to HTTP
+Server ]</span></li><li><span style="font-size: medium; letter-spacing: 0.2px; text-indent: -0.25in; background-color: transparent; line-height: 107%; font-family: Wingdings;">n<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp; </span></span><span style="font-size: medium; letter-spacing: 0.2px; text-indent: -0.25in; background-color: transparent; line-height: 107%; font-family: Gadugi, sans-serif;">CLIENT_BIND_ADDR
+</span><span style="font-size: medium; letter-spacing: 0.2px; text-indent: -0.25in; background-color: transparent; font-family: Gadugi, sans-serif;">[ apply/specific to HTTP Client
+]</span></li><li><span style="font-size: medium; letter-spacing: 0.2px; text-indent: -0.25in; background-color: transparent; line-height: 107%; font-family: Wingdings;">n<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal; font-family: &quot;Times New Roman&quot;;">&nbsp; </span></span><span style="font-size: medium; letter-spacing: 0.2px; text-indent: -0.25in; background-color: transparent; line-height: 107%; font-family: Gadugi, sans-serif;">CLIENT_PORT
+</span><span style="font-size: medium; letter-spacing: 0.2px; text-indent: -0.25in; background-color: transparent; font-family: Gadugi, sans-serif;">[ apply/specific to HTTP Client
+]</span></li></ul></p><h2><a name="_Toc491176834"><span class="LabelChar"><span style="font-size: 13pt; line-height: 107%; color: rgb(46, 116, 181); font-weight: normal;">SERVER_PORT</span></span></a></h2><p class="MsoListParagraphCxSpFirst" style="margin-bottom:8.0pt;mso-add-space:
+auto;text-indent:-.25in;line-height:107%;mso-list:l0 level1 lfo1"><!--[if !supportLists]--></p><div>
+
+<table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Type</b></span><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif;color:black"><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: black; border-right-color: black; border-bottom-color: black; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">Integer</span><span style="font-size: 12pt; font-family: Gadugi, sans-serif; color: black;"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Default
+  Value</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-GB" style="font-size: 12pt; font-family: Gadugi, sans-serif;">0</span><span style="font-size: 12pt; font-family: Gadugi, sans-serif;"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Class
+  of the variable</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;"><o:p>&nbsp;</o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Namespace
+  </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">bbc.http<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">Restart Required<o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">Yes<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">I<span style="color:black">ntroduced since</span>&nbsp; <o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">LCore 6.X<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">Applicable Platforms<o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">All<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">Related variables<o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif;
+  mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#010101">SERVER_BIND_ADDR<o:p></o:p></span></p>
+  </td>
+ </tr>
+</tbody></table>
+
+<p class="MsoNormal"><span class="LabelChar"><span style="font-size: 12pt; line-height: 107%; color: rgb(46, 116, 181);"><o:p>&nbsp;</o:p></span></span><span style="color: windowtext; font-size: 12pt; letter-spacing: 0.2px; background-color: transparent;"><b>Short Description</b></span></p>
+
+<p class="MsoNormal"><span class="LabelChar"><span style="font-size: 12pt; line-height: 107%; color: windowtext;">This variable is used to define/configure
+server application port value for an HTTP communication done using BBC API<o:p></o:p></span></span></p>
+
+<p class="MsoNormal"><span class="LabelChar"><span style="font-size: 12pt; line-height: 107%; color: windowtext;"><b>Long Description</b><o:p></o:p></span></span></p>
+
+<p class="MsoNormal"><span class="LabelChar"><span style="font-size: 12pt; line-height: 107%; color: windowtext;">By default, this port is set to 0. If set
+to 0, the operating system will assign the first available/un-used port number.
+This is the port where the server application will wait for requests.<o:p></o:p></span></span></p>
+
+<p class="MsoNormal"><span class="LabelChar"><span style="font-size: 12pt; line-height: 107%; color: windowtext;"><o:p>&nbsp;</o:p></span></span><span style="color: windowtext; font-size: 12pt; letter-spacing: 0.2px; background-color: transparent;"><b>NOTE</b>: It is recommended to explicitly set
+this parameter for each/individual application/processes in the
+bbc.http.ext.&lt;appName&gt; namespace.</span><span style="color: windowtext; font-size: 12pt; letter-spacing: 0.2px; background-color: transparent;">&nbsp;</span></p>
+
+<p class="MsoNormal"><span class="LabelChar"><span style="font-size: 12pt; line-height: 107%; color: windowtext;">Eg:&nbsp;</span></span><span style="color: windowtext; font-size: 12pt; letter-spacing: 0.2px; background-color: transparent;">&nbsp;</span><span style="color: windowtext; font-size: 12pt; letter-spacing: 0.2px; background-color: transparent;">For
+opcmsga process, the namespace would look like:</span></p>
+
+<p class="MsoNormal"><span class="LabelChar"><span style="font-size: 12pt; line-height: 107%; color: windowtext;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[bbc.http.ext.opcmsga]<o:p></o:p></span></span></p><h2><a name="_Toc491176835"><span class="LabelChar"><span style="font-size: 13pt; line-height: 107%; color: rgb(46, 116, 181);">SERVER_BIND_ADDR</span></span></a></h2><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Type</b></span><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif;color:black"><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: black; border-right-color: black; border-bottom-color: black; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">String</span><span style="font-size: 12pt; font-family: Gadugi, sans-serif; color: black;"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Default
+  Value</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span lang="EN-GB" style="font-size: 12pt; font-family: Gadugi, sans-serif;">Localhost</span><span style="font-size: 12pt; font-family: Gadugi, sans-serif;"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Class&nbsp; of the variable</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;"><o:p>&nbsp;</o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif"><b>Namespace
+  </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">bbc.cb<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">Restart Required<o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">Yes<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">I<span style="color:black">ntroduced since</span>&nbsp; <o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">LCore 6.X<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">Applicable Platforms <o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt; font-family: Gadugi, sans-serif;">All<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Gadugi&quot;,sans-serif;mso-fareast-font-family:Calibri;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">Related variables<o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:12.0pt;font-family:&quot;Gadugi&quot;,sans-serif;
+  mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#010101">SERVER_PORT<o:p></o:p></span></p>
+  </td>
+ </tr>
+</tbody></table><p class="MsoNormal"><font size="3"><b><span class="LabelChar" style=""><span style="line-height: 107%; color: rgb(46, 116, 181);"><o:p style="">&nbsp;</o:p></span></span><span style="color: windowtext; letter-spacing: 0.2px; background-color: transparent;">Short Description</span></b></font></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3">This variable is used to define/configure
+server IP address value for an HTTP communication done using BBC API.<o:p></o:p></font></span></span></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3"><b>Long Description</b><o:p></o:p></font></span></span></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3">The Bind address for the server port to
+listen/wait for requests.<o:p></o:p></font></span></span></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3">
+
+
+
+
+
+
+
+
+
+
+
+
+
+</font></span></span></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;"><font size="3">The socket can bind to the hostname or IP
+address in either IPV6 or IPv4 network. For example, consider an OA setup which
+is multi-homed. This means the system can have multiple IP addresses. ovbbccb
+is the communication broker that receives messages and it forwards the message
+to registered clients. Let us suppose the system has 3 IPs.&nbsp; In this case , if ovbbccb needs to explicitly
+set the bind address to a specific IP out of the 3 IPs of the system, SERVER_BIND_ADDRESS
+can be configured with this specific IP. This would make sure that all the
+incoming traffic to ovbbccb would use the specified IP.&nbsp; &nbsp;</font><span style="font-size: 13pt;"><o:p></o:p></span></span></span></p></div><p class="MsoNormal">
+
+
+
+
+
+
+
+
+
+</p><p class="MsoNormal"><o:p></o:p></p>
