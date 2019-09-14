@@ -3374,14 +3374,117 @@ set USE_PROXY_CACHE to true to cache and improve the performance. <o:p></o:p></p
 ineffective without proxy.&nbsp;</span><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">Cache stores the resolved ip and hostname in a map, so it
 does not need to resolve IP every time.</span></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p>&nbsp;</o:p><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;"><b>Description</b></span></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">To cache proxy, first define proxy and port to use for a
 certain hostname.<o:p></o:p></p><p class="MsoNormal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Format:
-proxy:port +(a)-(b);proxy2:port2+(a)-(b); ...<o:p></o:p></p><p class="MsoNormal"><o:p>&nbsp;</o:p><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">If Proxy is not define then, do not set</span><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">&nbsp; </span><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">USE_PROXY_CACHE to true. Even if you set&nbsp;</span><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">the USE_PROXY_CACHE is not effective.</span></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><ul><li><o:p>&nbsp;</o:p><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">&nbsp; &nbsp;&nbsp;</span><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">&nbsp;comma or
+proxy:port +(a)-(b);proxy2:port2+(a)-(b); ...<o:p></o:p></p><p class="MsoNormal"><o:p>&nbsp;</o:p><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">If Proxy is not define then, do not set</span><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">&nbsp; </span><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">USE_PROXY_CACHE to true. Even if you set&nbsp;</span><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">the USE_PROXY_CACHE is not effective.</span></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"></p><ul><li><o:p>&nbsp;</o:p><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">&nbsp; &nbsp;&nbsp;</span><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">&nbsp;comma or
 semicolon divided list of hostnames for which this proxy shall&nbsp;</span><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">be used.</span></li><li>&nbsp; &nbsp; &nbsp; comma or
-semicolon divided list of hostnames for which the proxy shall<span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">&nbsp;</span><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">not be used.</span></li></ul></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p>&nbsp;</o:p><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">Example: PROXY=web-proxy:8088-(*.hp.com)+(*.bbn.hp.com;*)</span></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">Meaning: the proxy 'web-proxy' will be used with port 8088
+semicolon divided list of hostnames for which the proxy shall<span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">&nbsp;</span><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">not be used.</span></li></ul><p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p>&nbsp;</o:p><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">Example: PROXY=web-proxy:8088-(*.hp.com)+(*.bbn.hp.com;*)</span></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">Meaning: the proxy 'web-proxy' will be used with port 8088
 for every&nbsp;<span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">server (*) except hosts that match *.hp.com, e.g.
 www.hp.com. If the&nbsp;</span><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">hostname matches *.bbn.hp.com, e.g. merlin.bbn.hp.com the
 proxy server&nbsp;</span><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">will be used to. It is also possible to use IP addresses
 instead of&nbsp;</span><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">hostnames so 15.*.*.* or 15:*:*:*:*:*:*:* would be valid as
-well,&nbsp;</span><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">but the correct number of dots or colons MUST be specified.</span></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><font size="3"><br></font></p></div><o:p></o:p><p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;">
+well,&nbsp;</span><span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">but the correct number of dots or colons MUST be specified.</span></p><h2 style="margin: 0.25in 0in 12pt; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><a name="_Toc491176847"><span class="LabelChar"><span style="mso-ansi-font-size:13.0pt;mso-bidi-font-size:11.0pt;line-height:107%;
+mso-ascii-font-family:&quot;Calibri Light&quot;;mso-ascii-theme-font:major-latin;
+mso-fareast-font-family:&quot;Times New Roman&quot;;mso-fareast-theme-font:major-fareast;
+mso-hansi-font-family:&quot;Calibri Light&quot;;mso-hansi-theme-font:major-latin;
+mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:major-bidi;
+color:#2E74B5;mso-themecolor:accent1;mso-themeshade:191">RC_HEALTH_CHECK_INTERVAL</span></span></a><span class="LabelChar"><span style="font-size:10.0pt;mso-bidi-font-size:11.0pt;line-height:107%"><o:p></o:p></span></span></h2><table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="184" valign="top" style="width: 172.05pt; border-width: 1pt; border-left-style: solid; border-color: rgb(0, 0, 1); border-image: initial; background: white; padding: 0in 5.4pt 0in 4.15pt;">
+  <p class="Label" style="margin-bottom:0in;margin-bottom:.0001pt"><span style="font-size:12.0pt;font-family:&quot;Calibri&quot;,sans-serif">Type<o:p></o:p></span></p>
+  </td>
+  <td width="381" valign="top" style="width: 377.95pt; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: rgb(0, 0, 1); border-right-color: rgb(0, 0, 1); border-bottom-color: rgb(0, 0, 1); border-image: initial; border-left: none; background: white; padding: 0in 5.4pt 0in 4.15pt;">
+  <p class="Label" style="margin-bottom:0in;margin-bottom:.0001pt"><span style="font-size: 12pt; font-family: Calibri, sans-serif; color: rgb(46, 116, 181);">Integer<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="184" valign="top" style="width: 172.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid rgb(0, 0, 1); border-right-color: rgb(0, 0, 1); border-bottom-color: rgb(0, 0, 1); border-image: initial; border-top: none; background: white; padding: 0in 5.4pt 0in 4.15pt;">
+  <p class="Label" style="margin-bottom:0in;margin-bottom:.0001pt"><span style="font-size:12.0pt;font-family:&quot;Calibri&quot;,sans-serif">Default Value<o:p></o:p></span></p>
+  </td>
+  <td width="381" valign="top" style="width: 377.95pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: rgb(0, 0, 1); border-right-width: 1pt; border-right-color: rgb(0, 0, 1); background: white; padding: 0in 5.4pt 0in 4.15pt;">
+  <p class="MsoNormal" style="margin-top:2.0pt;margin-right:0in;margin-bottom:
+  2.0pt;margin-left:0in;line-height:normal"><span style="font-size: 12pt; font-family: &quot;Calibri Light&quot;, sans-serif; color: rgb(46, 116, 181); background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;">120 (sec)<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="184" valign="top" style="width: 172.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid rgb(0, 0, 1); border-right-color: rgb(0, 0, 1); border-bottom-color: rgb(0, 0, 1); border-image: initial; border-top: none; background: white; padding: 0in 5.4pt 0in 4.15pt;">
+  <p class="Label" style="margin-bottom:0in;margin-bottom:.0001pt"><span style="font-size:12.0pt;font-family:&quot;Calibri&quot;,sans-serif">Module&nbsp; of the variable<o:p></o:p></span></p>
+  </td>
+  <td width="381" valign="top" style="width: 377.95pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: rgb(0, 0, 1); border-right-width: 1pt; border-right-color: rgb(0, 0, 1); background: white; padding: 0in 5.4pt 0in 4.15pt;">
+  <p class="Label" style="margin-bottom:0in;margin-bottom:.0001pt"><span style="font-size: 12pt; font-family: Calibri, sans-serif; color: rgb(46, 116, 181);">OvBbc<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="184" valign="top" style="width: 172.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid rgb(0, 0, 1); border-right-color: rgb(0, 0, 1); border-bottom-color: rgb(0, 0, 1); border-image: initial; border-top: none; background: white; padding: 0in 5.4pt 0in 4.15pt;">
+  <p class="Label" style="margin-bottom:0in;margin-bottom:.0001pt"><span style="font-size:12.0pt;font-family:&quot;Calibri&quot;,sans-serif">Namespace <o:p></o:p></span></p>
+  </td>
+  <td width="381" valign="top" style="width: 377.95pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: rgb(0, 0, 1); border-right-width: 1pt; border-right-color: rgb(0, 0, 1); background: white; padding: 0in 5.4pt 0in 4.15pt;">
+  <p class="Label" style="margin-bottom:0in;margin-bottom:.0001pt">bbc.rcp<o:p></o:p></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="184" valign="top" style="width: 172.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid rgb(0, 0, 1); border-right-color: rgb(0, 0, 1); border-bottom-color: rgb(0, 0, 1); border-image: initial; border-top: none; background: white; padding: 0in 5.4pt 0in 4.15pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt"><b><span style="font-size:12.0pt;line-height:
+  107%;font-family:&quot;Calibri Light&quot;,sans-serif;mso-fareast-font-family:Calibri;
+  mso-bidi-font-family:&quot;Times New Roman&quot;">Restart Required<o:p></o:p></span></b></p>
+  </td>
+  <td width="381" valign="top" style="width: 377.95pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: rgb(0, 0, 1); border-right-width: 1pt; border-right-color: rgb(0, 0, 1); background: white; padding: 0in 5.4pt 0in 4.15pt;">
+  <p class="Label" style="margin-bottom:0in;margin-bottom:.0001pt"><span style="font-size: 12pt; font-family: Calibri, sans-serif; color: rgb(46, 116, 181);">Yes<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="184" valign="top" style="width: 172.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid rgb(0, 0, 1); border-right-color: rgb(0, 0, 1); border-bottom-color: rgb(0, 0, 1); border-image: initial; border-top: none; background: white; padding: 0in 5.4pt 0in 4.15pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt"><b><span style="font-size:12.0pt;line-height:
+  107%;font-family:&quot;Calibri Light&quot;,sans-serif;mso-fareast-font-family:Calibri;
+  mso-bidi-font-family:&quot;Times New Roman&quot;">I<span style="color:black">ntroduced
+  since</span>&nbsp; <o:p></o:p></span></b></p>
+  </td>
+  <td width="381" valign="top" style="width: 377.95pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: rgb(0, 0, 1); border-right-width: 1pt; border-right-color: rgb(0, 0, 1); background: white; padding: 0in 5.4pt 0in 4.15pt;">
+  <p class="Label" style="margin-bottom:0in;margin-bottom:.0001pt"><span style="font-size: 12pt; font-family: Calibri, sans-serif; color: rgb(46, 116, 181);">LCore 11.0x<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="184" valign="top" style="width: 172.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid rgb(0, 0, 1); border-right-color: rgb(0, 0, 1); border-bottom-color: rgb(0, 0, 1); border-image: initial; border-top: none; background: white; padding: 0in 5.4pt 0in 4.15pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt"><b><span style="font-size:12.0pt;line-height:
+  107%;font-family:&quot;Calibri Light&quot;,sans-serif;mso-fareast-font-family:Calibri;
+  mso-bidi-font-family:&quot;Times New Roman&quot;">Platforms Applicable to<o:p></o:p></span></b></p>
+  </td>
+  <td width="381" valign="top" style="width: 377.95pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: rgb(0, 0, 1); border-right-width: 1pt; border-right-color: rgb(0, 0, 1); background: white; padding: 0in 5.4pt 0in 4.15pt;">
+  <p class="Label" style="margin-bottom:0in;margin-bottom:.0001pt"><span style="font-size: 12pt; font-family: Calibri, sans-serif; color: rgb(46, 116, 181);">All<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="184" valign="top" style="width: 172.05pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid rgb(0, 0, 1); border-right-color: rgb(0, 0, 1); border-bottom-color: rgb(0, 0, 1); border-image: initial; border-top: none; background: white; padding: 0in 5.4pt 0in 4.15pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt"><b><span style="font-size:12.0pt;line-height:
+  107%;font-family:&quot;Calibri Light&quot;,sans-serif;mso-fareast-font-family:Calibri;
+  mso-bidi-font-family:&quot;Times New Roman&quot;">Related variables<o:p></o:p></span></b></p>
+  </td>
+  <td width="381" valign="top" style="width: 377.95pt; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: rgb(0, 0, 1); border-right-width: 1pt; border-right-color: rgb(0, 0, 1); background: white; padding: 0in 5.4pt 0in 4.15pt;">
+  <p class="TextBody" style="margin-bottom:0in;margin-bottom:.0001pt"><span style="mso-bidi-font-size:10.0pt;line-height:120%;mso-fareast-font-family:
+  &quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Times New Roman&quot;;color:#2E74B5">RC_IDLE_TIMEOUT<o:p></o:p></span></p>
+  </td>
+ </tr>
+</tbody></table><p class="MsoNormal"><b><o:p>&nbsp;</o:p><span style="letter-spacing: 0.2px; background-color: transparent;"><font size="3">Background:</font></span></b></p><p class="MsoNormal"><font size="3"><o:p></o:p></font></p><p class="MsoNormal"><font size="3">RC_HEALTH_CHECK_INTERVAL determines the interval in which
+keep alive packets need to be sent.&nbsp;&nbsp;</font><span style="font-size: medium; letter-spacing: 0.2px; background-color: transparent;">&nbsp;</span><span style="font-size: medium; letter-spacing: 0.2px; background-color: transparent;">HP Operations agent
+continuously performs checks to monitor the heart beat of the RAC.</span></p><p class="MsoNormal"><font size="3"><b>Description</b><o:p></o:p></font></p><p class="MsoNormal"><font size="3">#define DEFAULT_HBP_INTERVAL 120<o:p></o:p></font></p><p class="MsoNormal">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</p><p class="MsoNormal"><font size="3">After a Reverse Administration Channel (RAC) is established,
+the HP Operations agent continuously performs checks to monitor the health of
+the RAC. This variable defines the interval at which the agent performs this
+check. By default, it is set to 120 seconds. If you set this variable to -1, no
+health check is done.<o:p></o:p></font></p><p class="MsoNormal"><font size="3"><o:p></o:p></font></p><p class="MsoNormal"><font size="3"><br></font></p></div><o:p></o:p><p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal"><span class="LabelChar"><span style="line-height: 107%; color: windowtext;">
 
 
 
