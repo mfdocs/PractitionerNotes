@@ -42,7 +42,7 @@ resources including thread pool will be cleared once the socket set is empty.
 This is why in case of large number of connections tuning of SOCKETS_PER_SOCKETSET
 and MAX_SOCKETSET_THREADS is important.<o:p></o:p></font></p>
 
-<h1><o:p><font size="4">&nbsp;</font></o:p><span style="color: inherit; font-family: inherit; font-size: 18px; font-weight: 700; letter-spacing: 1.1px; text-transform: initial; background-color: transparent;">SocketPoll</span></h1></h1><h1><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" align="left" width="0" style="border-left: none; margin-left: 0.1in; margin-right: 0.1in;">
+</h1><h2><o:p><font size="4">&nbsp;</font></o:p><span style="color: inherit; font-family: inherit; font-size: 18px; font-weight: 700; letter-spacing: 1.1px; text-transform: initial; background-color: transparent;">SocketPoll</span></h2><h1><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" align="left" width="0" style="border-left: none; margin-left: 0.1in; margin-right: 0.1in;">
  <tbody><tr>
   <td width="230" valign="top" style="width: 172.25pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
   <p class="Label"><span style="font-size:12.0pt"><b>Type</b></span><span style="font-size:12.0pt;color:black"><o:p></o:p></span></p>
@@ -128,7 +128,7 @@ and MAX_SOCKETSET_THREADS is important.<o:p></o:p></font></p>
   <p class="Label"><span style="font-size: 12pt;">&nbsp;</span></p>
   </td>
  </tr>
-</tbody></table><p class="MsoNormal"><o:p>&nbsp;</o:p></p><p class="MsoNormal"><o:p>&nbsp;</o:p></p><p class="MsoNormal"><o:p>&nbsp;</o:p></p><p class="MsoNormal"><o:p>&nbsp;</o:p></p><p class="MsoNormal"><o:p>&nbsp;</o:p></p><h2><span style="font-size: large; letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">Short description</span></h2><p class="MsoNormal"><span style="font-size: large; letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">The poll and select are mechanisms used for I/O
+</tbody></table><p class="MsoNormal"><o:p>&nbsp;</o:p></p><p class="MsoNormal"><o:p>&nbsp;</o:p></p><p class="MsoNormal"><o:p>&nbsp;</o:p></p><p class="MsoNormal"><o:p>&nbsp;</o:p></p><p class="MsoNormal"><o:p>&nbsp;</o:p></p></h1><h3><span style="font-size: large; letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;"><b>Short description</b></span></h3><p class="MsoNormal"><span style="font-size: large; letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">The poll and select are mechanisms used for I/O
 multiplexing. The system call poll() is</span><span style="font-size: large; letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">&nbsp;
 </span><span style="font-size: large; letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">non-blocking while select() is blocking.</span><span style="font-size: large; letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">&nbsp;
 </span><span style="font-size: large; letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">This flag SocketPoll indicates whether to use poll() or select()</span><span style="font-size: large; letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">&nbsp; </span><span style="font-size: large; letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">system call while we are creating a server
@@ -168,4 +168,4 @@ with nodes more than 1024, it is better to use the Poll system call which is a
 non-blocking call. For ex. ovbbccb is an Http Server implementation which by
 default uses a select call for new connections. If the variable SocketPoll is
 made to true, it no longer would use the Select but will start using Poll
-instead.</font><o:p></o:p></p></h1><p class="MsoNormal"><o:p></o:p></p>
+instead.</font><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p>
