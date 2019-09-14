@@ -126,12 +126,12 @@ and MAX_SOCKETSET_THREADS is important.<o:p></o:p></font></p>
   <p class="Label"><span style="font-size: 12pt;">&nbsp;</span></p>
   </td>
  </tr>
-</tbody></table><p class="MsoNormal"><o:p>&nbsp;</o:p></p><p class="MsoNormal"><o:p>&nbsp;</o:p></p><p class="MsoNormal"><o:p>&nbsp;</o:p></p><p class="MsoNormal"><o:p>&nbsp;</o:p></p><p class="MsoNormal"><o:p>&nbsp;</o:p></p></h1><h3><span style="font-size: large; letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;"><b>Short description</b></span></h3><p class="MsoNormal"><span style="font-size: large; letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">The poll and select are mechanisms used for I/O
-multiplexing. The system call poll() is</span><span style="font-size: large; letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">&nbsp;
-</span><span style="font-size: large; letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">non-blocking while select() is blocking.</span><span style="font-size: large; letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">&nbsp;
-</span><span style="font-size: large; letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">This flag SocketPoll indicates whether to use poll() or select()</span><span style="font-size: large; letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">&nbsp; </span><span style="font-size: large; letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">system call while we are creating a server
-socket there by making the socket non-blocking or blocking.</span><span style="font-size: large; letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">While monitoring a large environment it is recommended to
-set this variable to true.</span></p><p class="MsoNormal"><font size="4"><b>Long Description</b><o:p></o:p></font></p><p class="MsoNormal"><o:p><font size="4">
+</tbody></table><p class="MsoNormal"><o:p>&nbsp;</o:p></p><p class="MsoNormal"><o:p>&nbsp;</o:p></p><p class="MsoNormal"><o:p>&nbsp;</o:p></p><p class="MsoNormal"><o:p>&nbsp;</o:p></p><p class="MsoNormal"><o:p>&nbsp;</o:p></p></h1><h3><span style="letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;"><b style=""><font size="3">Short description</font></b></span></h3><p class="MsoNormal"><font size="3"><span style="letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">The poll and select are mechanisms used for I/O
+multiplexing. The system call poll() is</span><span style="letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">&nbsp;
+</span><span style="letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">non-blocking while select() is blocking.</span><span style="letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">&nbsp;
+</span><span style="letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">This flag SocketPoll indicates whether to use poll() or select()</span><span style="letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">&nbsp; </span><span style="letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">system call while we are creating a server
+socket there by making the socket non-blocking or blocking.</span><span style="letter-spacing: 0.2px; color: inherit; font-family: inherit; text-transform: initial; background-color: transparent;">While monitoring a large environment it is recommended to
+set this variable to true.</span></font></p><p class="MsoNormal"><b style=""><font size="3">Long Description</font></b><font size="4"><o:p></o:p></font></p><p class="MsoNormal"><o:p><font size="4">
 
 
 
@@ -159,11 +159,157 @@ set this variable to true.</span></p><p class="MsoNormal"><font size="4"><b>Long
 
 
 
-</font></o:p></p><p class="MsoNormal"><font size="4">By default LCore module uses Select call while waiting for
+</font></o:p></p><p class="MsoNormal"><font size="3">By default LCore module uses Select call while waiting for
 input on sockets. This is much efficient in smaller environments where the
 sockets it has wait for would be less than 1024. As the environments gets larger
 with nodes more than 1024, it is better to use the Poll system call which is a
 non-blocking call. For ex. ovbbccb is an Http Server implementation which by
 default uses a select call for new connections. If the variable SocketPoll is
 made to true, it no longer would use the Select but will start using Poll
-instead.</font><o:p></o:p></p><p class="MsoNormal"><o:p></o:p></p>
+instead.<o:p></o:p></font></p><p class="MsoNormal"><font size="4"><br></font></p><p class="MsoNormal"><a name="_Toc491176821"><span class="LabelChar"><span style="font-size:13.0pt;mso-bidi-font-size:11.0pt;line-height:107%;mso-ascii-font-family:
+&quot;Calibri Light&quot;;mso-ascii-theme-font:major-latin;mso-fareast-font-family:&quot;Times New Roman&quot;;
+mso-fareast-theme-font:major-fareast;mso-hansi-font-family:&quot;Calibri Light&quot;;
+mso-hansi-theme-font:major-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;
+mso-bidi-theme-font:major-bidi;color:#2E74B5;mso-themecolor:accent1;mso-themeshade:
+191">SOCKETS_PER_SOCKETSET</span></span></a><span class="LabelChar"><span style="font-size:13.0pt;mso-bidi-font-size:11.0pt;line-height:107%;mso-ascii-font-family:
+&quot;Calibri Light&quot;;mso-ascii-theme-font:major-latin;mso-fareast-font-family:&quot;Times New Roman&quot;;
+mso-fareast-theme-font:major-fareast;mso-hansi-font-family:&quot;Calibri Light&quot;;
+mso-hansi-theme-font:major-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;
+mso-bidi-theme-font:major-bidi;color:#2E74B5;mso-themecolor:accent1;mso-themeshade:
+191"><o:p></o:p></span></span></p><table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" width="0" style="border-left: none;">
+ <tbody><tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-width: 1pt; border-left-style: solid; border-color: black; border-image: initial; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt"><b>Type</b></span><span style="font-size:12.0pt;color:black"><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top-width: 1pt; border-right-width: 1pt; border-bottom-width: 1pt; border-top-color: black; border-right-color: black; border-bottom-color: black; border-image: initial; border-left: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt;">Integer</span><span style="font-size: 12pt; color: black;"><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt"><b>Default Value</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt;">60<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt"><b>Class&nbsp; of the variable</b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;"></td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size:12.0pt"><b>Namespace </b><o:p></o:p></span></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt;">xpl.net<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Calibri Light&quot;,sans-serif;mso-ascii-theme-font:major-latin;
+  mso-fareast-font-family:Calibri;mso-hansi-theme-font:major-latin;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">Restart Required<o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt;">Yes<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Calibri Light&quot;,sans-serif;mso-ascii-theme-font:major-latin;
+  mso-fareast-font-family:Calibri;mso-hansi-theme-font:major-latin;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">I<span style="color:black">ntroduced since</span>&nbsp; <o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt;">LCore 6.X<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Calibri Light&quot;,sans-serif;mso-ascii-theme-font:major-latin;
+  mso-fareast-font-family:Calibri;mso-hansi-theme-font:major-latin;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">Applicable &nbsp;Platforms<o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="Label"><span style="font-size: 12pt;">All<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="230" valign="top" style="width: 172.25pt; border-right-width: 1pt; border-bottom-width: 1pt; border-left: 1pt solid black; border-right-color: black; border-bottom-color: black; border-image: initial; border-top: none; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b><span style="font-size:12.0pt;
+  font-family:&quot;Calibri Light&quot;,sans-serif;mso-ascii-theme-font:major-latin;
+  mso-fareast-font-family:Calibri;mso-hansi-theme-font:major-latin;mso-bidi-font-family:
+  &quot;Times New Roman&quot;">Related variables<o:p></o:p></span></b></p>
+  </td>
+  <td width="504" valign="top" style="width: 5.25in; border-top: none; border-left: none; border-bottom-width: 1pt; border-bottom-color: black; border-right-width: 1pt; border-right-color: black; padding: 0in 5.4pt;">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  Calibri;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#010101">MAX_SOCKETSET_THREADS, </span><span style="mso-bidi-font-size:
+  10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;
+  mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#010101"><o:p></o:p></span></p>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="mso-ascii-font-family:Calibri;mso-fareast-font-family:
+  Calibri;mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#010101">MAX_CONNECTIONS</span><span style="mso-bidi-font-size:10.0pt;
+  mso-ascii-font-family:Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;
+  mso-hansi-font-family:Calibri;mso-bidi-font-family:&quot;Times New Roman&quot;;
+  color:#010101"><o:p></o:p></span></p>
+  </td>
+ </tr>
+</tbody></table><p class="MsoNormal"><o:p>&nbsp;</o:p></p><p class="MsoNormal"><b>Short Description</b><o:p></o:p></p><p class="MsoNormal">In order to serve multiple connections, internally Xpl
+module creates a connection pool. Internally the connection pool is implemented
+using a socket set and this socket set is served by a set of thread. The
+variable SOCKETS_PER_SOCKETSET specifies the maximum number of sockets per
+socket set. <o:p></o:p></p><p class="MsoNormal"><b>Long Description</b><o:p></o:p></p><p class="MsoNormal">&nbsp;By default the socket
+sets contains 60 sockets and 6 threads serves them. In large environments with
+more connections, keeping the socket set smaller is more efficient. <o:p></o:p></p><p class="MsoNormal">For example in an environment with the default socket set ie
+60 and served by 6 threads(1:10), even if&nbsp;
+59 connections are closed whole socket set is active in the memory.&nbsp; In such scenarios if the number of threads is
+3 and the socket set is 10(1:3), the number of threads are thrice the number
+sockets; as result requests gets processed faster and a faster release of the
+socket set. Due to this very reason in large environments where the number of
+connections are very high keeping the value of SOCKETS_PER_SOCKETSET to 10
+and&nbsp; MAX_SOCKETSET_THREADS to 3 makes is
+recommended.<span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">&nbsp;</span></p><p class="MsoNormal"><o:p>&nbsp;</o:p></p><p class="MsoNormal">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</p><p class="MsoNormal"><o:p>&nbsp;</o:p></p><p class="MsoNormal"><o:p></o:p></p>
