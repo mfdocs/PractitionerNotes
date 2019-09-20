@@ -169,9 +169,198 @@ volume&gt;/content-administration/var/content-administration/content/custom
  directory.&nbsp; For example:&nbsp;</li></ul></div><blockquote style="margin-left: 40px; border: none; padding: 0px;"><blockquote style="margin-left: 40px; border: none; padding: 0px;"><p class="MsoNormal" style="margin-right: 0px; margin-bottom: 12px; margin-left: 0px;">/var/vols/itom/conf/content-administration/var/content-administration/content/custom/</p></blockquote></blockquote><div><ul><li>Ensure
  the file ownership is set to the same SYSTEM_USER_ID and 
 SYSTEM_GROUP_ID specified for the NFS directory owner, which is 1999 and
- 1999 by default.&nbsp; For example:</li></ul></div><blockquote style="margin-left: 40px; border: none; padding: 0px;"><blockquote style="margin-left: 40px; border: none; padding: 0px;"><p class="MsoNormal" style="margin-right: 0px; margin-bottom: 12px; margin-left: 0px;">chown 1999:1999 myContent.zip</p></blockquote></blockquote><div><ul><li>Log in to the Content Administration Service container as follows:</li></ul></div><blockquote style="margin-left: 40px; border: none; padding: 0px;"><blockquote style="margin-left: 40px; border: none; padding: 0px;"><p class="MsoNormal" style="margin-right: 0px; margin-bottom: 12px; margin-left: 0px;">Run the following command to get the opsbridge namespace and the content-administration pod names:</p></blockquote></blockquote><blockquote style="margin-left: 40px; border: none; padding: 0px;"><blockquote style="margin-left: 40px; border: none; padding: 0px;"><blockquote style="margin-left: 40px; border: none; padding: 0px;"><p class="MsoNormal" style="margin-right: 0px; margin-bottom: 12px; margin-left: 0px;">kubectl get pods --all-namespaces | grep content-administration</p></blockquote></blockquote></blockquote><blockquote style="margin-left: 40px; border: none; padding: 0px;"><blockquote style="margin-left: 40px; border: none; padding: 0px;"><p class="MsoNormal" style="margin-right: 0px; margin-bottom: 12px; margin-left: 0px;">Log in to the content-administration container:</p></blockquote></blockquote><blockquote style="margin-left: 40px; border: none; padding: 0px;"><blockquote style="margin-left: 40px; border: none; padding: 0px;"><blockquote style="margin-left: 40px; border: none; padding: 0px;"><p class="MsoNormal" style="margin-right: 0px; margin-bottom: 12px; margin-left: 0px;">kubectl exec -ti &lt;content-administration pod&gt; -c content-administration -n &lt;namespace&gt; bash</p></blockquote></blockquote></blockquote><div><ul><li>Execute the content configuration CLI ./opsb-content-service.sh as described below</li></ul><div><span style="font-weight: 700; text-indent: -0.25in;"><span style="font-size: 10.5pt; line-height: 14.98px; font-family: Arial, sans-serif; color: rgb(51, 51, 51);"><br></span></span></div><div><span style="font-weight: 700; text-indent: -0.25in;"><span style="font-size: 10.5pt; line-height: 14.98px; font-family: Arial, sans-serif; color: rgb(51, 51, 51);">Usage:</span></span><br></div><p class="MsoNormal" style="line-height: normal; margin: 7.5pt 0in 0.0001pt;"><span style="font-family: &quot;Courier New&quot;;">opsb-content-service.sh -conf &lt;conf_types&gt; -category &lt;categ_value&gt; [-stopOA]</span><span style="font-size: 10.5pt; font-family: Arial, sans-serif; color: rgb(51, 51, 51);"></span></p><p class="MsoNormal" style="line-height: normal; margin: 7.5pt 0in 0.0001pt;"><span style="font-size: 10.5pt; font-family: Arial, sans-serif; color: rgb(51, 51, 51);">Where</span></p><p class="MsoNormal" style="line-height: normal; margin: 7.5pt 0in 0.0001pt;"><span style="font-family: &quot;Courier New&quot;;">&lt;conf_types&gt;</span><span style="font-size: 10.5pt; font-family: Arial, sans-serif; color: rgb(51, 51, 51);">&nbsp;can be&nbsp;</span><span style="font-family: &quot;Courier New&quot;;">metadata, retention, enrichment,bvd,roll-up,oa</span><span style="font-size: 10.5pt; font-family: Arial, sans-serif; color: rgb(51, 51, 51);">&nbsp;(separated with,) or&nbsp;</span><span style="font-family: &quot;Courier New&quot;;">all</span><span style="font-size: 10.5pt; font-family: Arial, sans-serif; color: rgb(51, 51, 51);">&nbsp;which configures all supported configuration types.<br></span><span style="font-family: &quot;Courier New&quot;;">&lt;categ_value&gt;</span><span style="font-size: 10.5pt; font-family: Arial, sans-serif; color: rgb(51, 51, 51);">&nbsp;is
- the category to be configured.&nbsp; The category value is the folder name 
-of the configuration. One category at a time can be specified.&nbsp;</span><span style="font-family: &quot;Courier New&quot;;">all</span><span style="font-size: 10.5pt; font-family: Arial, sans-serif; color: rgb(51, 51, 51);">&nbsp;configures all categories.<br></span><span style="font-family: &quot;Courier New&quot;;">-stopOA</span><span style="font-size: 10.5pt; font-family: Arial, sans-serif; color: rgb(51, 51, 51);">:&nbsp; &nbsp; &nbsp;This option works with the&nbsp;</span><span style="font-family: &quot;Courier New&quot;;">oa</span><span style="font-size: 10.5pt; font-family: Arial, sans-serif; color: rgb(51, 51, 51);">&nbsp;conf type and stops all configured metric collections for given category.</span></p><p class="MsoNormal" style="line-height: normal; margin: 7.5pt 0in 0.0001pt;"><span style="font-weight: 700;"><span style="font-size: 10.5pt; font-family: Arial, sans-serif; color: rgb(51, 51, 51);">Examples:</span></span><span style="font-size: 10.5pt; font-family: Arial, sans-serif; color: rgb(51, 51, 51);"><br></span><span style="font-family: &quot;Courier New&quot;;">opsb-content-service.sh -conf all -category all<br>opsb-content-service.sh -conf metadata -category Infra<br>opsb-content-service.sh -conf all -category DEM<br>opsb-content-service.sh -conf retention, enrichment -category all<br>opsb-content-service.sh -conf metadata,enrichment,oa,bvd -category Infra<br>opsb-content-service.sh -conf oa -category Infra -stopOA // To stop OA collection for all Infra metrics</span></p><h2><span class="mw-headline" id="<span" lang="EN-AU">Modify custom content</span>&gt;<span lang="EN-AU">Modify custom content</span></h2><p class="MsoNormal" style="margin-right: 0px; margin-bottom: 12px; margin-left: 0px;"><span lang="EN-AU">The
+ 1999 by default.&nbsp; For example:</li></ul></div><blockquote style="margin-left: 40px; border: none; padding: 0px;"><blockquote style="margin-left: 40px; border: none; padding: 0px;"><p class="MsoNormal" style="margin-right: 0px; margin-bottom: 12px; margin-left: 0px;">chown 1999:1999 myContent.zip</p></blockquote></blockquote><div><ul><li>Log in to the Content Administration Service container as follows:</li></ul></div><blockquote style="margin-left: 40px; border: none; padding: 0px;"><blockquote style="margin-left: 40px; border: none; padding: 0px;"><p class="MsoNormal" style="margin-right: 0px; margin-bottom: 12px; margin-left: 0px;">Run the following command to get the opsbridge namespace and the content-administration pod names:</p></blockquote></blockquote><blockquote style="margin-left: 40px; border: none; padding: 0px;"><blockquote style="margin-left: 40px; border: none; padding: 0px;"><blockquote style="margin-left: 40px; border: none; padding: 0px;"><p class="MsoNormal" style="margin-right: 0px; margin-bottom: 12px; margin-left: 0px;">kubectl get pods --all-namespaces | grep content-administration</p></blockquote></blockquote></blockquote><blockquote style="margin-left: 40px; border: none; padding: 0px;"><blockquote style="margin-left: 40px; border: none; padding: 0px;"><p class="MsoNormal" style="margin-right: 0px; margin-bottom: 12px; margin-left: 0px;">Log in to the content-administration container:</p></blockquote></blockquote><blockquote style="margin-left: 40px; border: none; padding: 0px;"><blockquote style="margin-left: 40px; border: none; padding: 0px;"><blockquote style="margin-left: 40px; border: none; padding: 0px;"><p class="MsoNormal" style="margin-right: 0px; margin-bottom: 12px; margin-left: 0px;">kubectl exec -ti &lt;content-administration pod&gt; -c content-administration -n &lt;namespace&gt; bash</p></blockquote></blockquote></blockquote><div><ul><li>Execute the content configuration CLI ./opsb-content-service.sh as described below</li></ul><div><h3><span style="font-weight: 700; text-indent: -0.25in;"><span style="font-size: 10.5pt; line-height: 14.98px; font-family: Arial, sans-serif; color: rgb(51, 51, 51);">Usage:</span></span></h3></div></div><div><p><font size="6"><b><code>opsb-content-service.sh COMMAND [OPTIONS]</code></b></font>
+</p><p><code>&nbsp;[configure|reconfigure|unconfigure|easyconfigure] -configuration_types &lt;conf_types&gt; -category &lt;all | &lt;name&gt;&gt;</code>
+</p><p><code>&nbsp;[start|stop|restart|status] -collection_types oa [-all | -collection_name &lt;name&gt;]</code>
+</p><p><code>&nbsp;[configure|reconfigure|unconfigure|start|stop|restart|status] -endpoint &lt;ep&gt; -dataset &lt;file&gt;</code>
+</p>
+<h4><span class="mw-headline" id="Commands">Commands</span></h4>
+
+<tbody><tr>
+<td><b>Commands</b>
+</td>
+<td><b>Description</b>
+</td></tr>
+<tr>
+<td>configure
+</td>
+<td>Configure user provided type(s)
+<p>Supported types: metadata, retention, enrichment, bvd, roll-up,  blk-upload.
+</p>
+</td></tr>
+<tr>
+<td>reconfigure&nbsp;&nbsp;
+</td>
+<td>Update already existing configuration.
+<p>Supported types: metadata, retention, enrichment, bvd, roll-up,  blk-upload.
+</p>
+</td></tr>
+<tr>
+<td>unconfigure
+</td>
+<td>Delete the configuration if available.
+<p>Supported types: retention, roll-up, blk-upload.
+</p>
+</td></tr>
+<tr>
+<td>easyconfigure&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td>
+<td>Configure user passed type(s), update if already configured.
+<p>Supported types: metadata, retention, enrichment, bvd, roll-up, blk-upload.
+</p>
+</td></tr>
+<tr>
+<td>start
+</td>
+<td>Start Agent Metric collection for all available configurations. If <code>-collection_name</code> is passed, only the specified collection is started.
+</td></tr>
+<tr>
+<td>status&nbsp;
+</td>
+<td>Display the current status of all available configurations. If <code>-collection_name</code> is passed, the status of the specified collection is displayed.
+</td></tr>
+<tr>
+<td>stop
+</td>
+<td>Stop Agent Metric collection for all running collections. If <code>-collection_name</code> is passed, only the specified collection is stopped.
+</td></tr>
+<tr>
+<td>restart&nbsp;&nbsp;
+</td>
+<td>Restart Agent Metric collection for all configured collections. If <code>-collection_name</code> is passed, only the specified collection is restarted.
+</td></tr></tbody>
+<h2><span class="mw-headline" id="Options">Options</span></h2>
+
+<tbody><tr>
+<td><b>Options</b>
+</td>
+<td><b>Desctiption</b>
+</td></tr>
+<tr>
+<td>configuration_types
+</td>
+<td>Enables users to run the command on the given type(s)  (endpoint-COSO/BVD).
+<p>Supported types: metadata, retention, enrichment, bvd, roll-up, blk-upload, and all (separated with commas).
+</p><p>The 'all' option will configure all supported configuration types.
+</p>
+</td></tr>
+<tr>
+<td>category
+</td>
+<td>Folder name where category-specific configurations are  available (only with -configuration_types).
+<p>For example: ADD EXAMPLES 
+</p>
+</td></tr>
+<tr>
+<td>collection_types
+</td>
+<td>Enables users to run the command on the given type(s)  (endpoint-CO).
+<p>Supported types: oa and all.
+</p><p>The 'all' option will configure all supported configuration types.
+</p>
+</td></tr>
+<tr>
+<td>collection_name&nbsp;&nbsp;
+</td>
+<td>Specify collection on which the user wants to run the given command (only with -collection_types).
+</td></tr>
+<tr>
+<td>all&nbsp;&nbsp;&nbsp;&nbsp;
+</td>
+<td>Apply user passed command  (start|stop|restart|status) for all 'oa' configurations.
+</td></tr>
+<tr>
+<td>dataset&nbsp;&nbsp;
+</td>
+<td>Content file name (absolute path) which needs to be configured at the given endpoint (COSO/CO).
+</td></tr>
+<tr>
+<td>endpoint
+</td>
+<td>Target endpoint, which needs to be configured. For example:  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<p>https://itom-di-administration-svc:8443/urest/v1/itom-data-ingestion-administration/
+</p>
+</td></tr></tbody>
+<h2><span class="mw-headline" id="Examples">Examples</span></h2>
+
+<tr>
+<th>Command
+</th>
+<th>Description
+</th></tr>
+<tr>
+<td><code>./opsb-content-service.sh easyconfigure -configuration_types all -category all</code>
+</td>
+<td>Configures all supported configuration types for all available categories.
+<p>It checks if the tables are present:
+</p>
+<ul><li>If they are present, it updates the schema of the tables</li><li>If they are not present it creates the tables</li></ul>
+<p><b>This is the recommended option for configuring out of the box reports.</b>
+</p>
+</td></tr>
+<tr>
+<td><code>./opsb-content-service.sh configure -configuration_types all -category all</code>
+</td>
+<td>Configures all supported configuration types for all available categories.
+<p>It does not update tables that already exist and fails if the tables are present.
+</p>
+</td></tr>
+<tr>
+<td><code>./opsb-content-service.sh reconfigure -configuration_types all -category all</code>
+</td>
+<td>Reconfigures all supported configuration types for all available categories.
+<p>Fails if the tables are not present.
+</p>
+</td></tr>
+<tr>
+<td><code>./opsb-content-service.sh unconfigure -configuration_types all -category all</code>
+</td>
+<td>Unconfigures all supported configuration types for all available categories.
+<p>Fails when the configurations are not present. It does not remove the schema from the COSO Data Lake.
+</p>
+</td></tr>
+<tr>
+<td><code>./opsb-content-service.sh reconfigure -configuration_types bvd -category Infra</code>
+</td>
+<td>Updates BVD dashboards for the Infra category.
+</td></tr>
+<tr>
+<td><code>./opsb-content-service.sh unconfigure -configuration_types roll-up -category all</code>
+</td>
+<td>Deletes roll-up configuration for all categories.
+</td></tr>
+<tr>
+<td><code>./opsb-content-service.sh start -collection_types oa -all</code>
+</td>
+<td>Starts collecting metrics from all nodes that are provided by TQL 
+(on containerized OBM) or node list  (on containerized and 
+non-containerized OBM) as defined in the <code>OOTB_AgentMetricCollection.json</code>&nbsp;file.
+</td></tr>
+<tr>
+<td><code>./opsb-content-service.sh status -collection_types oa -all</code>
+</td>
+<td>Displays the status for all configured nodes.
+</td></tr>
+<tr>
+<td><code>./opsb-content-service.sh restart -collection_types oa -collection_name OOTB_AgentMetricCollection</code>
+</td>
+<td>Restarts collecting metrics from all nodes that are provided by TQL 
+(on containerized OBM) or node list  (on containerized and 
+non-containerized OBM) as defined in the <code>OOTB_AgentMetricCollection.json</code>&nbsp;file.
+</td></tr>
+<tr>
+<td><code>./opsb-content-service.sh stop -collection_types oa -collection_name xyz</code>
+</td>
+<td>Stops collecting metrics from all nodes.
+</td></tr>
+
+<td><code>./opsb-content-service.sh configure -endpoint 
+https://itom-di-administration-svc:8443/urest/v1/itom-data-ingestion-administration/dataSetConfiguration
+ -dataset 
+/var/content-administration/content/custom/metadata/custom.json</code>
+</td>
+<td>Configure custom dataset at given endpoint
+</td><h2><span class="mw-headline" id="<span" lang="EN-AU">Modify custom content</span>&gt;<span lang="EN-AU">Modify custom content</span></h2><p class="MsoNormal" style="margin-right: 0px; margin-bottom: 12px; margin-left: 0px;"><span lang="EN-AU">The
  core aspect to consider for content modification is whether a 
 particular configuration interface allows modification or not. Content 
 configuration primarily involves configuring:</span></p><ul><li><span lang="EN-AU">COSO Data Lake</span></li><li><span lang="EN-AU">Collection Service</span></li><li><span lang="EN-AU">BVD</span></li></ul><p class="MsoNormal" style="margin-right: 0px; margin-bottom: 12px; margin-left: 0px;"><span lang="EN-AU">The following changes to existing content are supported:</span></p><p class="MsoNormal" style="margin-right: 0px; margin-bottom: 12px; margin-left: 0px;"><span lang="EN-AU"><br></span></p><p class="MsoNormal" style="margin-right: 0px; margin-bottom: 12px; margin-left: 0px;"><span lang="EN-AU"></span></p><table class="MsoTableGrid" style="width: 655px; border-left: none;" cellspacing="0" cellpadding="0" border="1"><tbody><tr><td style="padding: 0in 5.4pt; border-width: 1pt; border-left-style: solid; border-color: windowtext; border-image: initial; width: 134.75pt;" width="180" valign="top"><p class="MsoNormal" style="line-height: normal; margin-right: 0px; margin-bottom: 0.0001pt; margin-left: 0px;"><span style="font-weight: 700;">Artifact</span></p><p class="MsoNormal" style="line-height: normal; margin-right: 0px; margin-bottom: 0.0001pt; margin-left: 0px;"><span style="font-weight: 700;">&nbsp;</span></p></td><td style="padding: 0in 5.4pt; border-top-width: 1pt; border-top-color: windowtext; border-right-width: 1pt; border-right-color: windowtext; border-bottom-width: 1pt; border-bottom-color: windowtext; width: 332.75pt; border-image: initial; border-left: none;" width="444" valign="top"><p class="MsoNormal" style="line-height: normal; margin-right: 0px; margin-bottom: 0.0001pt; margin-left: 0px;"><span style="font-weight: 700;">Modification Support</span></p></td></tr><tr><td style="padding: 0in 5.4pt; border-top: none; border-right-width: 1pt; border-right-color: windowtext; border-bottom-width: 1pt; border-bottom-color: windowtext; width: 134.75pt; border-left: 1pt solid windowtext; border-image: initial;" width="180" valign="top"><p class="MsoNormal" style="line-height: normal; margin-right: 0px; margin-bottom: 0.0001pt; margin-left: 0px;">Schema metadata</p></td><td style="padding: 0in 5.4pt; border-top: none; border-right-width: 1pt; border-right-color: windowtext; border-bottom-width: 1pt; border-bottom-color: windowtext; width: 332.75pt; border-left: none;" width="444" valign="top"><p class="MsoNormal" style="line-height: normal; margin-right: 0px; margin-bottom: 0.0001pt; margin-left: 0px;">Re-running the Metadata configuration attempts to update the current schema. Only addition of columns is supported.<span style="font-weight: 700;"></span></p></td></tr><tr><td style="padding: 0in 5.4pt; border-top: none; border-right-width: 1pt; border-right-color: windowtext; border-bottom-width: 1pt; border-bottom-color: windowtext; width: 134.75pt; border-left: 1pt solid windowtext; border-image: initial;" width="180" valign="top"><p class="MsoNormal" style="line-height: normal; margin-right: 0px; margin-bottom: 0.0001pt; margin-left: 0px;">Data enrichment rules</p></td><td style="padding: 0in 5.4pt; border-top: none; border-right-width: 1pt; border-right-color: windowtext; border-bottom-width: 1pt; border-bottom-color: windowtext; width: 332.75pt; border-left: none;" width="444" valign="top"><p class="MsoNormal" style="line-height: normal; margin-right: 0px; margin-bottom: 0.0001pt; margin-left: 0px;">Re-running the Data Enrichment configuration updates the existing enrichment rules which are applied from this point onwards.</p></td></tr><tr style="height: 31.9pt;"><td style="padding: 0in 5.4pt; border-top: none; border-right-width: 1pt; border-right-color: windowtext; border-bottom-width: 1pt; border-bottom-color: windowtext; width: 134.75pt; border-left: 1pt solid windowtext; border-image: initial; height: 31.9pt;" width="180" valign="top"><p class="MsoNormal" style="line-height: normal; margin-right: 0px; margin-bottom: 0.0001pt; margin-left: 0px;">Data retention rules</p></td><td style="padding: 0in 5.4pt; border-top: none; border-right-width: 1pt; border-right-color: windowtext; border-bottom-width: 1pt; border-bottom-color: windowtext; width: 332.75pt; border-left: none; height: 31.9pt;" width="444" valign="top"><p class="MsoNormal" style="line-height: normal; margin-right: 0px; margin-bottom: 0.0001pt; margin-left: 0px;">There
