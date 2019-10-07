@@ -1,1 +1,269 @@
-Micro Focus Operations Orchestration (OO) uses business intelligence available in a content pack to automate certain IT processes. Business intelligence inside a content pack is defined in the form of flows. A flow is the composition of steps and transitions forming a set of actions that are linked by decision-making logic in order to automate tasks. For example, health checks, troubleshooting, or any other repetitive IT support tasks. An OO flow has inputs and outputs. Flow takes inputs, performs tasks based on its inputs and generates output. Flows are designed and developed in Studio, Workflow Designer and then run in OO Central. A flow run is a single execution of a flow in OO Central.&nbsp; A flow is like a class definition in an object oriented programming language. A flow run or a flow execution is similar to instantiation of an object from a class definition.&nbsp;<div><br></div><div>A flow run or flow execution collects data and stores it in database. This flow run data is then visible in the OO Central UI.&nbsp; Every flow execution contributes to increase in database size as it stores data in the database. It is highly recommended to purge flow execution data periodically to maintain optimal performance of Operations Orchestration. Use the following ways to purge database on a recurring basis:<br></div><div><ol><li>Micro Focus supplied database maintenance scripts.<br></li><li>Micro Focus supplied purging flows which are available in the solutions content pack.&nbsp;<br></li></ol><div>This article shows a power shell script that can be used to purge flow execution data on-demand. Here are some of the script use cases and caveats:<br></div></div><div><br></div><div><b>Script use cases</b><br></div><div><div style=""><ul><li>Use this script to purge flow execution data as required.</li><li>Sometimes, developers may forget to hide sensitive information such as passwords in an OO flow. Use this script to immediately remove flow execution data containing sensitive information. This helps prevent others from seeing sensitive information in OO Central UI.</li><li>Use this script to selectively purge execution data for certain flows.</li></ul><div><br></div><div><b>Script caveats</b></div><div><div style=""><ul><li>Use caution when running this script. This script purges flow execution data and cannot be recovered unless you have a database backup.</li><li>Do not use this script to perform mass purge of flow execution data.</li><li>Do not schedule this script to purge flow execution data on a recurring basis. Instead, use Micro Focus supported database maintenance purge scripts and purging flows in the solution content pack. This script is not meant to replace Micro Focus supported database maintenance purge scripts and purging flows in the solutions content pack.</li></ul><div><br></div><div>This script can be further enhanced to meet your coding style, perform additional checks required for your environment, to improve performance, to use as a reference to develop it in your preferred programming language, to use as a reference to make other OO REST API calls, etc. At a high level, this script performs the following:<br></div><div><div><ul><li>Validates input values.&nbsp;</li><li>Purges flow execution data based on the filters supplied via command line parameters.</li></ul><div><br></div><div>To run this script, follow the steps below:<br></div></div></div><div><div><ol><li>Log on to a system running windows operating system.</li><li>Open a text editor.&nbsp;</li><li>Copy contents of this script to the text editor. Save the file as “OOPurgeFlowExecHistory.ps1”.</li><li>Open windows power shell. Navigate to the directory containing this power shell script.</li><li>Run the “OOPurgeFlowExecHistory.ps1” powershell script as follows: <br>.\OOPurgeFlowExecHistory.ps1 -OOCentralURL https://&lt;OOCentralHostName&gt;:&lt;Port&gt;/oo -UserName admin -Passwd &lt;AdminPassword&gt; -BeforeDateUTC "08-20-2019 02:01:09" -MaxExecPurge 200 -PurgeItemTypes "flowInputs,flowOutputs" -Statuses "COMPLETED_RESOLVED,COMPLETED_ERROR" -FlowUUIDs "434e6fa2-26bc-4e84-9e1f-0aa6946cf920,434e6fa2-26bc-4e84-9e1f-0aa6946cf921"</li><li>Use “OOCentralURL”, “UserName” and “Passwd” parameters to connect to the OO Central Application. The “OOCentralURL”, “UserName” and “Passwd” parameters are mandatory.</li><li>Use “BeforeDateUTC” parameter to purge flow execution data prior to certain date and time in UTC. The “BeforeDateUTC” parameter value must be in the following format: “MM-DD-YYYY HH24:MI:SS”. The “BeforeDateUTC” parameter is optional. If no value is specified, script uses current date and time as the default value for this parameter.</li><li>Use “MaxExecPurge” parameter to restrict amount of flow execution data that would be purged. The “MaxExecPurge” parameter is optional. If no value is specified, script uses default value of 100 for “MaxExecPurge” parameter.</li><li>Use “PurgeItemTypes” parameter to delete specific item types from flow execution data. Valid values for “PurgeItemTypes” parameter are as follows: flowInputs, flowOutputs, steps, runningExecutionPlans, and runningExecutionConfigurations. You can specify multiple purge item types separated by a comma character, enclosed in double quotes. PurgeItemTypes parameter is optional. If no value is specified, script purges all item types listed above for flow executions including execution summary.</li><li>Use “Statuses” parameter to purge flow executions that are in a specific status. Valid values for “Statuses” parameter are as follows: COMPLETED, COMPLETED_RESOLVED, COMPLETED_DIAGNOSED, COMPLETED_ERROR, COMPLETED_NO_ACTION_TAKEN, COMPLETED_CUSTOM, SYSTEM_FAILURE and CANCELED.&nbsp; You can specify multiple statuses separated by a comma character, enclosed in double quotes. Statuses parameter is optional. If no value is specified, script purges flow executions that are in any of the statuses listed above.</li><li>Use “FlowUUIDs” parameter to purge flow executions that are run from specific flows. You can specify multiple flow UUIDs separated by a comma character, enclosed in double quotes. By default, a maximum of 5 flow UUIDs can be specified at a time. To specify more than 5 flow UUIDs at a time, change value for the “MAX_FLOWUUIDS_DEFAULT” variable in the script. FlowUUIDs parameter is optional. If no value is specified, script purges flow executions for all flows.</li></ol><div><b>Examples</b></div></div></div><div><div><ol><li>To purge history for up to 100 flow executions that were run before current date and time, run the script as follows:&nbsp;<span style="background-color: transparent;"> <br>.\OOPurgeFlowExecHistory.ps1 -OOCentralURL https://&lt;OOCentralHostName&gt;:&lt;Port&gt;/oo -UserName admin -Passwd &lt;AdminPassword&gt;</span></li><li>To purge history for up to 200 flow executions that were run before August 20th 2019 2 AM UTC, run the script as follows:&nbsp;<span style="background-color: transparent;"> <br>.\OOPurgeFlowExecHistory.ps1 -OOCentralURL https://&lt;OOCentralHostName&gt;:&lt;Port&gt;/oo -UserName admin -Passwd &lt;AdminPassword&gt; -BeforeDateUTC "08-20-2019 02:00:00" -MaxExecPurge 200</span></li><li>To purge history for up to 100 flow executions from a particular flow and that were run before current date and time, run the script as follows:&nbsp;<span style="background-color: transparent;"><br>.\OOPurgeFlowExecHistory.ps1 -OOCentralURL https://&lt;OOCentralHostName&gt;:&lt;Port&gt;/oo -UserName admin -Passwd &lt;AdminPassword&gt; -FlowUUIDs 434e6fa2-26bc-4e84-9e1f-0aa6946cf920</span></li><li>To purge history for up to 100 flow executions from a particular flow, that were run before current date and time and that are in either CANCELED or COMPLETED_ERROR state, run the script as follows:&nbsp;<span style="background-color: transparent;"><br>.\OOPurgeFlowExecHistory.ps1 -OOCentralURL https://&lt;OOCentralHostName&gt;:&lt;Port&gt;/oo -UserName admin -Passwd &lt;AdminPassword&gt; -FlowUUIDs 434e6fa2-26bc-4e84-9e1f-0aa6946cf920 -Statuses "CANCELED,COMPLETED_ERROR"</span></li><li>To purge flow input and flow output history for up to 100 flow executions, that were run before current date and time, run the script as follows:&nbsp;<span style="background-color: transparent;"><br>.\OOPurgeFlowExecHistory.ps1 -OOCentralURL https://&lt;OOCentralHostName&gt;:&lt;Port&gt;/oo -UserName admin -Passwd &lt;AdminPassword&gt; -PurgeItemTypes "flowInputs,flowOutputs"</span></li></ol></div></div><div><br></div></div></div></div></div>
+Micro Focus Operations Orchestration (OO) uses business intelligence available in a content pack to automate certain IT processes. Business intelligence inside a content pack is defined in the form of flows. A flow is the composition of steps and transitions forming a set of actions that are linked by decision-making logic in order to automate tasks. For example, health checks, troubleshooting, or any other repetitive IT support tasks. An OO flow has inputs and outputs. Flow takes inputs, performs tasks based on its inputs and generates output. Flows are designed and developed in Studio, Workflow Designer and then run in OO Central. A flow run is a single execution of a flow in OO Central.&nbsp; A flow is like a class definition in an object oriented programming language. A flow run or a flow execution is similar to instantiation of an object from a class definition.&nbsp;<div><br></div><div>A flow run or flow execution collects data and stores it in database. This flow run data is then visible in the OO Central UI.&nbsp; Every flow execution contributes to increase in database size as it stores data in the database. It is highly recommended to purge flow execution data periodically to maintain optimal performance of Operations Orchestration. Use the following ways to purge database on a recurring basis:<br></div><div><ol><li>Micro Focus supplied database maintenance scripts.<br></li><li>Micro Focus supplied purging flows which are available in the solutions content pack.&nbsp;<br></li></ol><div>This article shows a power shell script that can be used to purge flow execution data on-demand. Here are some of the script use cases and caveats:<br></div></div><div><br></div><div><b>Script use cases</b><br></div><div><div style=""><ul><li>Use this script to purge flow execution data as required.</li><li>Sometimes, developers may forget to hide sensitive information such as passwords in an OO flow. Use this script to immediately remove flow execution data containing sensitive information. This helps prevent others from seeing sensitive information in OO Central UI.</li><li>Use this script to selectively purge execution data for certain flows.</li></ul><div><br></div><div><b>Script caveats</b></div><div><div style=""><ul><li>Use caution when running this script. This script purges flow execution data and cannot be recovered unless you have a database backup.</li><li>Do not use this script to perform mass purge of flow execution data.</li><li>Do not schedule this script to purge flow execution data on a recurring basis. Instead, use Micro Focus supported database maintenance purge scripts and purging flows in the solution content pack. This script is not meant to replace Micro Focus supported database maintenance purge scripts and purging flows in the solutions content pack.</li></ul><div><br></div><div>This script can be further enhanced to meet your coding style, perform additional checks required for your environment, to improve performance, to use as a reference to develop it in your preferred programming language, to use as a reference to make other OO REST API calls, etc. At a high level, this script performs the following:<br></div><div><div><ul><li>Validates input values.&nbsp;</li><li>Purges flow execution data based on the filters supplied via command line parameters.</li></ul><div><br></div><div>To run this script, follow the steps below:<br></div></div></div><div><div><ol><li>Log on to a system running windows operating system.</li><li>Open a text editor.&nbsp;</li><li>Copy contents of this script to the text editor. Save the file as “OOPurgeFlowExecHistory.ps1”.</li><li>Open windows power shell. Navigate to the directory containing this power shell script.</li><li>Run the “OOPurgeFlowExecHistory.ps1” powershell script as follows: <br>.\OOPurgeFlowExecHistory.ps1 -OOCentralURL https://&lt;OOCentralHostName&gt;:&lt;Port&gt;/oo -UserName admin -Passwd &lt;AdminPassword&gt; -BeforeDateUTC "08-20-2019 02:01:09" -MaxExecPurge 200 -PurgeItemTypes "flowInputs,flowOutputs" -Statuses "COMPLETED_RESOLVED,COMPLETED_ERROR" -FlowUUIDs "434e6fa2-26bc-4e84-9e1f-0aa6946cf920,434e6fa2-26bc-4e84-9e1f-0aa6946cf921"</li><li>Use “OOCentralURL”, “UserName” and “Passwd” parameters to connect to the OO Central Application. The “OOCentralURL”, “UserName” and “Passwd” parameters are mandatory.</li><li>Use “BeforeDateUTC” parameter to purge flow execution data prior to certain date and time in UTC. The “BeforeDateUTC” parameter value must be in the following format: “MM-DD-YYYY HH24:MI:SS”. The “BeforeDateUTC” parameter is optional. If no value is specified, script uses current date and time as the default value for this parameter.</li><li>Use “MaxExecPurge” parameter to restrict amount of flow execution data that would be purged. The “MaxExecPurge” parameter is optional. If no value is specified, script uses default value of 100 for “MaxExecPurge” parameter.</li><li>Use “PurgeItemTypes” parameter to delete specific item types from flow execution data. Valid values for “PurgeItemTypes” parameter are as follows: flowInputs, flowOutputs, steps, runningExecutionPlans, and runningExecutionConfigurations. You can specify multiple purge item types separated by a comma character, enclosed in double quotes. PurgeItemTypes parameter is optional. If no value is specified, script purges all item types listed above for flow executions including execution summary.</li><li>Use “Statuses” parameter to purge flow executions that are in a specific status. Valid values for “Statuses” parameter are as follows: COMPLETED, COMPLETED_RESOLVED, COMPLETED_DIAGNOSED, COMPLETED_ERROR, COMPLETED_NO_ACTION_TAKEN, COMPLETED_CUSTOM, SYSTEM_FAILURE and CANCELED.&nbsp; You can specify multiple statuses separated by a comma character, enclosed in double quotes. Statuses parameter is optional. If no value is specified, script purges flow executions that are in any of the statuses listed above.</li><li>Use “FlowUUIDs” parameter to purge flow executions that are run from specific flows. You can specify multiple flow UUIDs separated by a comma character, enclosed in double quotes. By default, a maximum of 5 flow UUIDs can be specified at a time. To specify more than 5 flow UUIDs at a time, change value for the “MAX_FLOWUUIDS_DEFAULT” variable in the script. FlowUUIDs parameter is optional. If no value is specified, script purges flow executions for all flows.</li></ol><div><b>Examples</b></div></div></div><div><div><ol><li>To purge history for up to 100 flow executions that were run before current date and time, run the script as follows:&nbsp;<span style="background-color: transparent;"> <br>.\OOPurgeFlowExecHistory.ps1 -OOCentralURL https://&lt;OOCentralHostName&gt;:&lt;Port&gt;/oo -UserName admin -Passwd &lt;AdminPassword&gt;</span></li><li>To purge history for up to 200 flow executions that were run before August 20th 2019 2 AM UTC, run the script as follows:&nbsp;<span style="background-color: transparent;"> <br>.\OOPurgeFlowExecHistory.ps1 -OOCentralURL https://&lt;OOCentralHostName&gt;:&lt;Port&gt;/oo -UserName admin -Passwd &lt;AdminPassword&gt; -BeforeDateUTC "08-20-2019 02:00:00" -MaxExecPurge 200</span></li><li>To purge history for up to 100 flow executions from a particular flow and that were run before current date and time, run the script as follows:&nbsp;<span style="background-color: transparent;"><br>.\OOPurgeFlowExecHistory.ps1 -OOCentralURL https://&lt;OOCentralHostName&gt;:&lt;Port&gt;/oo -UserName admin -Passwd &lt;AdminPassword&gt; -FlowUUIDs 434e6fa2-26bc-4e84-9e1f-0aa6946cf920</span></li><li>To purge history for up to 100 flow executions from a particular flow, that were run before current date and time and that are in either CANCELED or COMPLETED_ERROR state, run the script as follows:&nbsp;<span style="background-color: transparent;"><br>.\OOPurgeFlowExecHistory.ps1 -OOCentralURL https://&lt;OOCentralHostName&gt;:&lt;Port&gt;/oo -UserName admin -Passwd &lt;AdminPassword&gt; -FlowUUIDs 434e6fa2-26bc-4e84-9e1f-0aa6946cf920 -Statuses "CANCELED,COMPLETED_ERROR"</span></li><li>To purge flow input and flow output history for up to 100 flow executions, that were run before current date and time, run the script as follows:&nbsp;<span style="background-color: transparent;"><br>.\OOPurgeFlowExecHistory.ps1 -OOCentralURL https://&lt;OOCentralHostName&gt;:&lt;Port&gt;/oo -UserName admin -Passwd &lt;AdminPassword&gt; -PurgeItemTypes "flowInputs,flowOutputs"</span></li></ol></div></div><div><br></div><pre># File name: OOPurgeFlowExecHistory.ps1
+#
+# Purpose: 1. Purge OO flow execution history for supplied flow UUIDs.
+#          2. USE EXTREME CAUTION before running this script. Use it at your own risk. 
+#             You are solely responsible for any data loss that you may experience.
+#             Once execution history is deleted, there is no way to restore it unless you have a database backup.              
+#          3. Use as-is. Not officially supported through Micro Focus.
+#
+# Limitations: 1. Does not use proxy. If your environment requires proxy to 
+#                 connect to the OO Central Application, enhance this script
+#                 to accommodate web requests through proxy. 
+#
+# Usage: 1. Runs on Windows OS and it requires Windows Powershell on the
+#           operating system. Copy this script to a directory on the windows
+#           server/workstation/laptop.
+#        2. Open powershell window 
+#        3. Run Get-Help .\OOPurgeFlowExecHistory.ps1 to get a list of parameters that
+#           needs to be passed.
+#        4. Sample usage: .\OOPurgeFlowExecHistory.ps1 -OOCentralURL 
+#                         https://&lt;OOCentralHostName&gt;:&lt;Port&gt;/oo -UserName admin -Passwd &lt;AdminPassword&gt; 
+#                         -BeforeDateUTC "08-20-2019 02:01:09" -MaxExecPurge 200 -PurgeItemTypes "flowInputs,flowOutputs" 
+#                         -Statuses "COMPLETED_RESOLVED,COMPLETED_ERROR"
+#                         -FlowUUIDs "434e6fa2-26bc-4e84-9e1f-0aa6946cf920,434e6fa2-26bc-4e84-9e1f-0aa6946cf921"
+#        5. Parameter explanation:
+#           OOCentralURL:   URL to access OO Central UI. This URL can be either http or https depending 
+#                           on how OO is setup in your environment. OOCentralURL parameter is mandatory.
+#           UserName:       OO central username with administrator privileges.
+#                           UserName parameter is mandatory.
+#           Password:       Password for the user to login to OO Central 
+#                           Application. Password parameter is mandatory.
+#           BeforeDateUTC:  Date and time in UTC in the following format: MM-DD-YYYY HH24:MI:SS. 
+#                           Example 08-20-2019 02:01:09. BeforeDateUTC parameter is optional.
+#                           If value is not specified, defaults to current date and time.
+#           MaxExecPurge:   Maximum number of executions to purge. Supply a value between 1 and 1000. 
+#                           MaxExecPurge parameter is optional. If a value is not specified, defaults to 100.
+#           PurgeItemTypes: List of item types to be used as a filter to purge flow execution data. 
+#                           Valid values are flowInputs, flowOutputs, steps, runningExecutionPlans, 
+#                           and runningExecutionConfigurations. List multiple values separated by a comma character, 
+#                           enclosed in double quotes. PurgeItemTypes parameter is optional.
+#                           If a value is not specified, purges all data for executions including execution summary.    
+#           Statuses:       List of execution statuses to be used as a filter to purge flow execution data. Valid
+#                           values are  COMPLETED,COMPLETED_RESOLVED,COMPLETED_DIAGNOSED,COMPLETED_ERROR,COMPLETED_NO_ACTION_TAKEN,
+#                           COMPLETED_CUSTOM,SYSTEM_FAILURE and CANCELED. List multiple values separated by a comma character
+#                           enclosed in double quotes. Statuses parameter is optional.
+#                           If a value is not specified, purges data for all statuses listed above.    
+#           FlowUUIDs:      List of flow UUIDs to be used as a filter to purge flow execution data. 
+#                           List multiple values separated by a comma character
+#                           enclosed in double quotes. FlowUUIDs parameter is optional.
+#                           If a value is not specified, purges data for all flows.    
+
+# Validate input parameters for NULL, empty and mandatory conditions.
+param (
+    [Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$OOCentralURL,
+    [Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$UserName,
+    [Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$Passwd,
+    [Parameter(Mandatory=$false)][ValidateNotNullOrEmpty()][string]$BeforeDateUTC,
+    [Parameter(Mandatory=$false)][ValidateRange(1,1000)][Int]$MaxExecPurge,
+    [Parameter(Mandatory=$false)][ValidateNotNullOrEmpty()][string]$PurgeItemTypes,
+    [Parameter(Mandatory=$false)][ValidateNotNullOrEmpty()][string]$Statuses,
+    [Parameter(Mandatory=$false)][ValidateNotNullOrEmpty()][string]$FlowUUIDs           
+)
+
+# Change this to a desired value to allow fewer or more flow UUID purge at a time.
+$MAX_FLOWUUIDS_DEFAULT = 5
+
+# Change this to a desired value to allow fewer or more purge execution. 
+$MAX_EXEC_TO_PURGE_DEFAULT = 100
+
+# Do not change the below values.
+$EXECUTION_STATUS_ARRAY = @("COMPLETED","COMPLETED_RESOLVED","COMPLETED_DIAGNOSED","COMPLETED_ERROR","COMPLETED_NO_ACTION_TAKEN","COMPLETED_CUSTOM","SYSTEM_FAILURE","CANCELED")
+$MAX_STATUS_COUNT = $EXECUTION_STATUS_ARRAY.Length
+$PURGE_ITEM_TYPE_ARRAY = @("flowInputs","flowOutputs","steps","runningExecutionPlans","runningExecutionConfigurations")
+$MAX_PURGE_ITEM_TYPE_COUNT = $PURGE_ITEM_TYPE_ARRAY.Length 
+
+# Returns true if supplied object and/or string is NULL or empty
+function IsNull($object) {
+    if ($object -eq $null) {
+        return $true
+    }
+
+    if ($object -is [String] -and $object -eq [String]::Empty) {
+        return $true
+    }
+    return $false
+}
+
+# Validate format of supplied OO Central URL
+$uri = $OOCentralURL -as [System.URI]
+if (-Not (($uri.AbsoluteURI -ne $null) -and ($uri.Scheme -eq 'http' -or $uri.Scheme -eq 'https') -and ($uri.AbsoluteURI.Substring($uri.AbsoluteURI.Length - 3) -eq '/oo') ) ){
+    throw 'The supplied OO central URL: ' + '"' + $OOCentralURL + '"' + ' is invalid. Format of OO Central URLs are https://&lt;OOCentralFQDNorIP&gt;&lt;:OptionalPort&gt;/oo or http://&lt;OOCentralFQDNorIP&gt;&lt;:OptionalPort&gt;/oo'
+}
+
+# Validate BeforeDateUTC input and set endedBefore request parameter for purge request
+$inputDatePattern = 'MM\-dd\-yyyy HH:mm:ss'
+$currTime = Get-Date (Get-Date).ToUniversalTime()
+if ($PSBoundParameters.ContainsKey('BeforeDateUTC')) {
+	try{
+		$beforeDateObj = [DateTime]::ParseExact($BeforeDateUTC, $inputDatePattern, $null)
+        $beforeDateUTCStr = "$BeforeDateUTC" + 'z'
+        $beforeDateObj = Get-Date -Date $beforeDateUTCStr 
+        $endedBefore = [int64] (Get-Date $beforeDateObj.ToUniversalTime() -UFormat %s) * 1000
+        if ($currTime -lt $beforeDateObj.ToUniversalTime()){
+            throw 'Before date must be earlier or the same as current date'
+        }
+	}
+	catch {
+		throw 'BeforeDate argument has either a future date or date format is incorrect. Expected date format is MM(01-12)-DD(01-31)-YYYY(4 digit year) HH24(00-23):MI(00-59):SS(00-59). For example, 01-20-2018 04:02:09'
+	}	
+}
+else {
+    $endedBefore = [int64] (Get-Date (Get-Date).ToUniversalTime() -UFormat %s) * 1000
+}
+
+# Set maximum number of executions to be purged.
+if ($PSBoundParameters.ContainsKey('MaxExecPurge')) {
+	$maxAmount = $MaxExecPurge
+}
+else {
+    $maxAmount = $MAX_EXEC_TO_PURGE_DEFAULT
+}
+
+# Construct OO purge flow execution URI
+$purgeURL = $OOCentralURL + '/rest/v2/executions' + "?endedBefore=$endedBefore&amp;maxAmount=$maxAmount"
+
+# Validate purge item types
+if ($PSBoundParameters.ContainsKey('PurgeItemTypes')) {
+	$purgeItemTypesArr = $PurgeItemTypes -split ','
+    If ($purgeItemTypesArr.Length -gt $MAX_PURGE_ITEM_TYPE_COUNT){
+        throw "Supplied PurgeItemTypes argument value cannot contain more than $MAX_PURGE_ITEM_TYPE_COUNT purge item types"
+    }
+    $uniquePurgeItemTypesArr = $purgeItemTypesArr | select -Unique
+    if (Compare-Object –referenceobject $uniquePurgeItemTypesArr –differenceobject $purgeItemTypesArr) {
+        throw "Supplied PurgeItemTypes argument cannot contain duplicate purge item type values: $purgeItemTypesArr"
+    }
+    foreach ($purgeItemType in $purgeItemTypesArr) {
+	    If (-Not ($PURGE_ITEM_TYPE_ARRAY.Contains($purgeItemType))){
+            throw "Supplied PurgeItemTypes argument contains the following invalid purge item type value: $purgeItemType"
+        }
+    }
+    $purgeURL = $purgeURL + "&amp;purgeItems=$PurgeItemTypes"
+}
+
+# Validate status value
+if ($PSBoundParameters.ContainsKey('Statuses')) {
+	$statusArr = $Statuses -split ','
+    If ($statusArr.Length -gt $MAX_STATUS_COUNT){
+        throw "Supplied status argument value cannot contain more than $MAX_STATUS_COUNT status values"
+    }
+    $uniqueStatusArr = $statusArr | select -Unique
+    if (Compare-Object –referenceobject $uniqueStatusArr –differenceobject $statusArr) {
+        throw "Supplied status argument cannot contain duplicate status values: $statusArr"
+    }
+    foreach ($status in $statusArr) {
+	    If (-Not ($EXECUTION_STATUS_ARRAY.Contains($status))){
+            throw "Supplied status argument contains the following invalid status value: $status"
+        }
+    }
+    $purgeURL = $purgeURL + "&amp;statuses=$Statuses"
+}
+
+
+# Validate FlowUUIDs
+if ($PSBoundParameters.ContainsKey('FlowUUIDs')) {
+    $commaCount = ($FlowUUIDs.ToCharArray() | Where-Object {$_ -eq ','} | Measure-Object).Count
+    if ($commaCount -ge $MAX_FLOWUUIDS_DEFAULT) {
+        throw "You can specify a maximum number of $MAX_FLOWUUIDS_DEFAULT FlowUUIDs at a time."
+    }
+    $flowUUIDPattern = "^[a-zA-Z0-9,\-]+$"
+    if (-Not ($FlowUUIDs -match  $flowUUIDPattern)){
+        throw "FlowUUIDs argument cannot contain characters other than a-z, A-Z, 0-9, comma, and a hyphen"
+    }
+    $purgeURL = $purgeURL + "&amp;flowUuids=$FlowUUIDs"
+}
+
+
+# Trusts all certificates including self-signed root certificates
+# generated by OO
+add-type @"
+    using System.Net;
+    using System.Security.Cryptography.X509Certificates;
+    public class TrustAllCertsPolicy : ICertificatePolicy {
+        public bool CheckValidationResult(
+            ServicePoint srvPoint, X509Certificate certificate,
+            WebRequest request, int certificateProblem) {
+            return true;
+        }
+    }
+"@
+[System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Ssl3, [Net.SecurityProtocolType]::Tls, [Net.SecurityProtocolType]::Tls11, [Net.SecurityProtocolType]::Tls12
+
+# Create authorization header value using supplied OO Central user name 
+# and password. This authorization header value would be used in REST API 
+# calls to OO Central Application.
+$authPlainText = $UserName + ':' + $Passwd
+$authPlainTextBytes = [System.Text.Encoding]::UTF8.GetBytes($authPlainText)
+$authEncodedText =[System.Convert]::ToBase64String($authPlainTextBytes)
+$authHeaderValue = "Basic $authEncodedText"
+
+# OO requires cross reference token to be able to perform create, delete or update operations.
+# Cross reference token from OO can be obtained by making a GET REST API call to any one of 
+# the valid OO REST URIs. Make a GET REST API call to OO and store session information.
+$getRequestURL = $OOCentralURL + '/rest/v2/version'
+try{
+    $getReqWebResponse = Invoke-WebRequest -Method Get -Uri $getRequestURL -Headers @{ 'Authorization' = $authHeaderValue  } -SessionVariable 'webSession'
+}
+catch{
+    # Something went wrong
+    Write-Host 'OO Central Application returned the following exception while retrieving cross reference token'
+    throw $($PSItem.ToString())     
+}
+If (IsNull($webSession)) {
+    throw 'Cannot open web session to the OO Central Application'
+}
+
+# Retrieve cross reference token cookie value from the web session
+# that was opened in GET call previously.
+$cookies = $webSession.Cookies.GetCookies($getRequestURL) 
+If (IsNull($cookies)) {
+    throw 'Unable to retrieve cookies from GET request to OO Central Application'
+}
+foreach ($cookie in $cookies) { 
+      if ($($cookie.name) -eq "X-CSRF-TOKEN-OO") {
+        $xcsrfToken = $($cookie.value)
+        break;        
+     }     
+}
+If (IsNull($xcsrfToken)) {
+    throw 'OO Central Application Server returned X-CSRF-TOKEN-OO cookie that is either null or empty'
+}
+
+
+# Form request headers to be used in purge REST API call 
+$headers = @{
+    'Content-Type' = 'application/octet-stream'
+    'accept' = 'application/json'
+    'Authorization' = $authHeaderValue
+    'X-CSRF-TOKEN' = $xcsrfToken
+}
+
+# Submit Purge REST API call to OO Central Application Server.
+try{
+    $delReqWebResponse = Invoke-WebRequest -Method DELETE -Uri $purgeURL -Headers $headers -WebSession $webSession  
+}
+catch{
+    # Something went wrong
+    Write-Host 'OO Central Application returned the following exception while making a REST API call to purge flow execution history'
+	throw $($PSItem.ToString())         
+}
+
+# Display response message from purging of flow UUIDs
+If (-Not (IsNull($delReqWebResponse))){
+    try{
+        $delReqWebResponseInt = [int]::Parse($delReqWebResponse.toString())        
+    }
+    catch{
+        throw "Got an invalid response value from OO Central Application Server: $delReqWebResponse" 
+    }
+    If ($delReqWebResponseInt -eq 0) {
+        Write-Host "Number of flow execution history deleted was 0. Supply different values for parameters and try again." 
+    }
+    ElseIf ($delReqWebResponseInt -gt 0) {
+        Write-Host "Number of flow execution history deleted was $delReqWebResponse" 
+    }
+    else
+    {
+        Write-Host "Got an invalid response value from OO Central Application Server: $delReqWebResponse" 
+    }
+}<br></pre></div></div></div></div>
