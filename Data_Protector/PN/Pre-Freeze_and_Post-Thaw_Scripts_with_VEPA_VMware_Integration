@@ -1,1 +1,80 @@
- 
+<h1>Prerequisites</h1><div><ul><li><li>The VMware Tools (or open-vm-tools) must be installed and running on the Virtual Machine</li><li>Create the backupScripts.d directory where the scripts that need to be executed</li><ul><li>/etc/vmware-tools/backupScripts.d on Linux VMs</li><li>C:\Program Files\VMware\VMware Tools\backupScripts.d on Windows VMs</li></ul></li></ul></div><div><p class="MsoNormal">The <i>backupScripts.d</i>
+directory may contain one or multiple scripts that will be executed in
+sequence. The file names of the scripts affect the execution order (e.g.
+<i>10-application.sh</i>, then <i>20-database.sh</i>). Each script must be able to handle <i>freeze, freezeFail </i>and<i> thaw</i> arguments passed by the VMware
+Tools during the different phases. Make sure the scripts are executable
+(permissions, correct type for the VM operating system).<o:p></o:p></p><h1>Sample Script Linux</h1><pre>#!/bin/bash
+
+if [[ $1 == "freeze" ]]
+then
+
+    # This section is executed before the Snapshot is created
+
+elif [[ $1 == "freezeFail" ]]
+then
+
+    # This section is executed when a problem occurs during snapshot creation and we need to cleanup because thaw will not be executed
+
+elif [[ $1 == "thaw" ]]
+then
+
+    # This section is executed when the Snapshot is removed
+
+else
+
+    echo "Usage: `/bin/basename $0` [ freeze | freezeFail | thaw ]"
+    exit 1
+
+fi<br></pre><h1>Sample Script Windows</h1><pre>@echo off
+
+if "%~1" == ""        goto USAGE
+if %1   == freeze     goto FREEZE
+if %1   == freezeFail goto FREEZEFAIL
+if %1   == thaw       goto THAW
+
+:USAGE
+
+echo Usage: %~nx0 [ freeze ^| freezeFail ^| thaw ]
+
+goto END
+
+:FREEZE
+
+:: This section is executed before the Snapshot is created
+
+goto END
+
+:FREEZEFAIL
+
+:: This section is executed when a problem occurs during snapshot creation and we need to cleanup because thaw will not be executed
+
+goto END
+
+:THAW
+
+:: This section is executed when the Snapshot is removed
+
+goto END
+
+:END
+</pre><h1>Manually Testing the
+Scripts</h1><div>
+
+<p class="MsoNormal">While developing your pre-freeze/post-thaw script solution
+it might be handy to have a quick solution to test it without running a backup.
+In that case use the VMware vCenter client to create a VM snapshot with the <i>Quiesce guest file system</i> option
+defined.<o:p></o:p></p>
+
+<h1><b>Using the Scripts in
+a Data Protector VMware backup</b></h1>
+
+<p class="MsoNormal">To allow the VMware Tools to execute the scripts during the VMware
+Snapshot backup the option <i>Use quiescence
+snapshots</i> must be used. This can be enabled on the top of the VMware Datacenter,
+a folder or on an individual VM. To configure it use Configure Virtual Machine
+from the context menu on the VM, folder or Datacenter in the Source tree. You
+may need to un-tick the <i>Use common
+settings for selected VM</i> are selected. Adjust the <i>Level of Error</i> to your needs. If the backup of the VM should be
+performed even if the quiescence operation failed select <i>Warning</i>. Select <i>Fatal</i> only
+if the backup of the VM should not be performed unless prepared by VSS and the
+scripts.<o:p></o:p></p><p class="MsoNormal"><img src="./mediawiki/images/PN/2019-11-24_21h48_48.png"><br></p></div></div>
