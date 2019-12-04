@@ -1,1 +1,35 @@
- 
+<div><br></div>Resource Sprawl for a virtual machine occurs when the virtual machine does not use the resources (like CPU and memory),
+properly and makes it difficult for the administrator to manage the resources effectively. Resource Sprawl leads to having
+virtual machines severely overused, underused or not used at all. Cloud Optimizer enables us to view the number of undersized
+and oversized VMs in all Hypervisor based on CPU and memory utilization. We know undersized VM reduces the application
+performance and oversized cause wastage of resources. Micro Focus Cloud Optimizer gives the right VM recommendations so
+that we can make the VM right-sized.
+Micro Focus Cloud Optimizer performs the VM Sizing analysis as follows:
+Undersized VM Analysis
+1. VPV obtains the utilization threshold (capacity – headroom). The default headroom is provided by VPV. The user can
+change this.
+2. VPV compares the resource (CPU/memory) utilization against the utilization threshold for a specified analysis period.
+3. If 75 percent of the time, the resource usage exceeds the utilization threshold, that VM is considered as Undersized.
+The following figure illustrates the calculation of an undersized VM.<div><br></div><div>&lt;&lt; Image-1 &gt;&gt;</div><div><br></div><div>Oversized VM Analysis
+1. VPV will consider all VMs which are not currently undersized for the oversized calculation.
+2. Like the undersized calculation, VPV obtains the utilization threshold.
+3. Find the P95 of utilization and calculate the required CPU/memory for that utilization.
+4. If the current CPU/Memory is greater than the required CPU/Memory, the Virtual Machine is considered as oversized
+else right-sized.
+5. The reclaimable CPU/Memory for an oversized VM is equal to the Recommended CPU/Memory minus the allocated
+CPU/Memory in VPV.
+The following figure illustrates the example of an oversized VM:<br></div><div><br></div><div>&lt;&lt; Image-2 &gt;&gt;<br></div><div><br></div><div>Note: Cloud Optimizer will consider the VMs with high CPU Contention as oversized.
+Data Store Analysis
+To ensure optimal usage of the existing enterprise resources, the administrator must be able to monitor the VMs that are idle or
+powered-off for a long time. Cloud Optimizer identifies these VMs that have been idle or powered-off and recommends the
+resource that the administrator can reclaim from the same. This enables the user to identify and reduce VM sprawl.
+Idle VM Analysis
+Idle VMs are those that have very low utilization for a prolonged period of time. Cloud Optimizer identifies the idle VMs base
+on the ‘idle percentage’ of the VM. If the idle percentage is greater than 90 percent for most of the time in a specified analysis
+period, that VM is considered “idle”. The administrator can either delete the VM or reclaim the disk allocated for that VM.
+Powered-off VM analysis
+Virtualization Performance |Viewer monitors all the power consumed from the VMs and calculates the percentage ratio of the
+total powered off time and compares it against the total analysis time period. If the VM is powered off most of the time, VPV
+marks the VM as “powered off”. If the VM is deleted from inventory the admin can reclaim the disk allocated for powered off
+VMs.
+The following figure illustrates powered-off VM analysis:<br></div><div><br></div><div>&lt;&lt; Image-3 &gt;&gt;<br></div>
