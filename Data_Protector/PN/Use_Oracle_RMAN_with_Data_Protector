@@ -1,4 +1,8 @@
-<h1 style="font-family: MetricHPE; text-transform: none; color: rgb(0, 0, 0); margin-bottom: 0px;">Use Oracle RMAN with Data Protector</h1><div>While Data Protector is usually using Recovery Manager (RMAN) to perform efficient backups and restores of Oracle Databases the process can be reversed to match the needs of more advanced Oracle DBAs. This means RMAN can be used to control Data Protector to perform backups, restores or validate backups. Data Protector will act as the media manager software leveraging the Media Management Layer (MML).<br></div><div class="mw-parser-output" style=""><h2 style="font-size: 18px; font-family: MetricHPE; text-transform: none; color: rgb(0, 0, 0);"><span style="font-family: MetricHPE_Medium; letter-spacing: 1.1px; text-transform: inherit; background-color: transparent;">Prerequsites</span><br></h2><div>The Oracle integration needs to be configured for the database in Data Protector and at least one backup spec must be configured to use an available backup device. It is recommended to test the backup spec. Please see the available documentation for configuration details.<br></div><h2 style=""><span style="letter-spacing: 1.1px; text-transform: inherit; background-color: transparent;">Sample </span><span style="letter-spacing: 1.1px; text-transform: inherit; background-color: transparent;">RMAN </span><span style="letter-spacing: 1.1px; text-transform: inherit; background-color: transparent;">Scripts</span><br></h2><div>The following scripts use <b>sample values</b> that must be changed according to the customer environment.</div><div><br></div><div>Oracle Database Server: <b>ORASRV</b></div><div>Oracle SID: <b>SID</b></div><div>Oracle User: <b>sys</b></div><div>Oracle Password: <b>password</b></div><div>Oracle Backup Spec: <b>ORASRV_SID_Full</b></div><div style=""><p style="margin-right: 0px; margin-bottom: 12px; margin-left: 0px;"></p><h3>Backup the Oracle Controlfile</h3><pre>connect target sys/password@SID
+While Data Protector is usually using Recovery Manager (RMAN) to perform efficient backups and restores of Oracle Databases the process can be reversed to match the needs of more advanced Oracle DBAs. This means RMAN can be used to control Data Protector to perform backups, restores or validate backups. Data Protector will act as the media manager software leveraging the Media Management Layer (MML).
+<h1>Prerequsite</h1>
+The Oracle integration needs to be configured for the database in Data Protector and at least one backup spec must be configured to use an available backup device. It is recommended to test the backup spec. Please see the available documentation for configuration details.
+<h1>Sample RMAN Scripts</h1>
+The following scripts use <b>sample values</b> that must be changed according to the customer environment.<div><br></div><div>Oracle Database Server: <b>ORASRV</b></div><div>Oracle SID: <b>SID</b></div><div>Oracle User: <b>sys</b></div><div>Oracle Password: <b>password</b></div><div>Oracle Backup Spec: <b>ORASRV_SID_Full</b></div><div>Oracle SBT library:&nbsp;<span style="background-color: transparent;"><b>C:/PROGRA~1/OmniBack/bin/orasbt.dll</b></span></div><div><br></div><div><span style="background-color: transparent;">The path to the Oracle SBT library is different on Linux</span><span style="background-color: transparent;">&nbsp;</span><span style="background-color: transparent;">and UNIX. Oracle on a 64 bit Linux is using&nbsp;</span><span style="background-color: transparent;">/opt/omni/lib/libob2oracle8_64bit.so.&nbsp;</span><span style="background-color: transparent;">Please refer to the Data Protector session report after running a test backup.</span></div><div style=""><p style="margin-right: 0px; margin-bottom: 12px; margin-left: 0px;"></p><h2>Backup the Oracle Controlfile</h2><pre>connect target sys/password@SID
 run {
 allocate channel 'dev_0' type 'sbt_tape'
  parms 'SBT_LIBRARY=C:/PROGRA~1/OmniBack/bin/orasbt.dll
@@ -6,32 +10,32 @@ allocate channel 'dev_0' type 'sbt_tape'
 backup
  format 'ORASRV_SID_Full&lt;SID_%s:%t:%p&gt;.dbf'
  current controlfile;
-}<br></pre><h3 style="text-transform: none;">Restore the Oracle Controlfile</h3><pre>connect target sys/password@SID
+}<br></pre><h2 style="text-transform: none;">Restore the Oracle Controlfile</h2><pre>connect target sys/password@SID
 run {
 allocate channel 'dev_0' type 'sbt_tape'
  parms 'SBT_LIBRARY=C:/PROGRA~1/OmniBack/bin/orasbt.dll
  ENV=(OB2BARTYPE=Oracle8,OB2APPNAME=SID,OB2BARLIST=ORASRV_SID_Full)';
 restore controlfile validate;
-}<br></pre><h3 style="text-transform: none;">Validate the Backup of the Oracle Controlfile</h3><pre>connect target sys/password@SID
+}<br></pre><h2 style="text-transform: none;">Validate the Backup of the Oracle Controlfile</h2><pre>connect target sys/password@SID
 run {
 allocate channel 'dev_0' type 'sbt_tape'
  parms 'SBT_LIBRARY=C:/PROGRA~1/OmniBack/bin/orasbt.dll
  ENV=(OB2BARTYPE=Oracle8,OB2APPNAME=SID,OB2BARLIST=ORASRV_SID_Full)';
 restore controlfile to 'C:\Temp\control_file';
-}<br></pre><h3 style="text-transform: none;">Perform a Backup Crosscheck</h3><pre>connect target sys/password@SID
+}<br></pre><h2 style="text-transform: none;">Perform a Backup Crosscheck</h2><pre>connect target sys/password@SID
 run {
 allocate channel 'dev_0' type 'sbt_tape'
  parms 'SBT_LIBRARY=C:/PROGRA~1/OmniBack/bin/orasbt.dll
  ENV=(OB2BARTYPE=Oracle8,OB2APPNAME=SID,OB2BARLIST=ORASRV_SID_Full)';
 crosscheck backup;
 crosscheck archivelog all;
-}<br></pre><h3 style="text-transform: none;">Delete Expired Backups</h3><pre>connect target sys/password@SID
+}<br></pre><h2 style="text-transform: none;">Delete Expired Backups</h2><pre>connect target sys/password@SID
 run {
 allocate channel 'dev_0' type 'sbt_tape'
  parms 'SBT_LIBRARY=C:/PROGRA~1/OmniBack/bin/orasbt.dll
  ENV=(OB2BARTYPE=Oracle8,OB2APPNAME=SID,OB2BARLIST=ORASRV_SID_Full)';
 delete noprompt expired backup;
-}<br></pre><h2>Execute Scripts from RMAN</h2><div>There are several ways to execute RMAN scripts. While you could simply paste the script into a RMAN session you could also save the script (e.g. validate.txt) to a file and run it using <b>@validate.txt</b>.</div><pre>C:\&gt;rman
+}<br></pre><h1>Execute Scripts from RMAN</h1><div>There are several ways to execute RMAN scripts. While you could simply paste the script into a RMAN session you could also save the script (e.g. validate.txt) to a file and run it using <b>@validate.txt</b>.</div><pre>C:\&gt;rman
 
 Recovery Manager: Release 12.2.0.1.0 - Production on Mon Dec 16 18:08:31 2019
 
@@ -45,4 +49,4 @@ connected to target database: DCM (DBID=1582047051)
 RMAN&gt; run {
 2&gt; allocate channel 'dev_0' type 'sbt_tape'
 3&gt;  parms 'SBT_LIBRARY=C:/PROGRA~1/OmniBack/bin/orasbt.dll
-[...]</pre><p></p></div></div>
+[...]</pre><p></p></div>
