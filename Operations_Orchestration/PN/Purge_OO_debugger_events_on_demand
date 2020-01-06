@@ -1966,11 +1966,7 @@ debugger flow execution contributes to increase in database size as it stores
 data in the database. It is highly recommended to purge both debugger flow
 execution data and debugger events data periodically to maintain optimal
 performance of Operations Orchestration. Use the following ways to purge debugger
-flow execution data and debugger events data on a recurring basis:</span></div><div><span style="font-size:11.0pt;line-height:107%;
-font-family:&quot;Calibri&quot;,sans-serif;mso-ascii-theme-font:minor-latin;mso-fareast-font-family:
-Calibri;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:minor-latin;
-mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;
-mso-ansi-language:EN-US;mso-fareast-language:EN-US;mso-bidi-language:AR-SA"><br></span></div><ol><li>Micro Focus supplied database maintenance scripts.</li><li>Micro Focus supplied purging flows which are available in the solutions content pack.</li></ol><div>This article shows a power shell script that can be used to purge debugger events data on-demand. Here are some of the script use cases and caveats:</div><div><!--[if gte mso 9]><xml>
+flow execution data and debugger events data on a recurring basis:</span></div><ol><li>Micro Focus supplied database maintenance scripts.</li><li>Micro Focus supplied purging flows which are available in the solutions content pack.</li></ol><div>This article shows a power shell script that can be used to purge debugger events data on-demand. Here are some of the script use cases and caveats:</div><div><br></div><div><!--[if gte mso 9]><xml>
  <o:OfficeDocumentSettings>
   <o:RelyOnVML/>
   <o:AllowPNG/>
@@ -2609,15 +2605,15 @@ mso-ansi-language:EN-US;mso-fareast-language:EN-US;mso-bidi-language:AR-SA"><br>
 	mso-bidi-font-family:"Times New Roman";
 	mso-bidi-theme-font:minor-bidi;}
 </style>
-<![endif]--><span style="font-size:11.0pt;line-height:107%;
+<![endif]--><b><span style="font-size:11.0pt;line-height:107%;
 font-family:&quot;Calibri&quot;,sans-serif;mso-ascii-theme-font:minor-latin;mso-fareast-font-family:
 Calibri;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:minor-latin;
 mso-bidi-font-family:&quot;Times New Roman&quot;;mso-bidi-theme-font:minor-bidi;
 mso-ansi-language:EN-US;mso-fareast-language:EN-US;mso-bidi-language:AR-SA">Script
-use cases:</span></div><div><ul><li>Use this script to purge debugger events data as required. <br></li></ul><div>Script caveats:</div><div><ul><li>Use caution when running this script. This script purges debugger events data and cannot be recovered unless you have a database backup.</li><li>This script does not purge debugger flow run execution data. It purges 
+use cases:</span></b></div><div><ul><li>Use this script to purge debugger events data as required. <br></li></ul><div><b>Script caveats:</b></div><div><ul><li>Use caution when running this script. This script purges debugger events data and cannot be recovered unless you have a database backup.</li><li>This script does not purge debugger flow run execution data. It purges 
 debugger events data only. The debug flow run execution data continue to
  be visible in OO Central UI unless they are purged separately.</li><li>Do not use this script to perform mass purge of debugger events data.</li><li>Do not schedule this script to purge debugger events data on a recurring
  basis. Instead, use Micro Focus supported database maintenance purge 
 scripts and purging flows in the solution content pack. This script is 
 not meant to replace Micro Focus supported database maintenance purge 
-scripts and purging flows in the solutions content pack.<br><br><br></li></ul></div></div></div>
+scripts and purging flows in the solutions content pack.</li></ul><div>This script can be further enhanced to meet your coding style, perform additional checks required for your environment, to improve performance, to use as a reference to develop it in your preferred programming language, to use as a reference to make other OO REST API calls, etc. At a high level, this script performs the following:</div><div><ul><li>Validates input values.</li><li>Purges debugger flow execution data based on the filters supplied via command line parameters.</li></ul><div>To run this script, follow the steps below:</div><div><ol><li>Log on to a system running windows operating system.</li><li>Open a text editor.</li><li>Copy contents of this script to the text editor. Save the file as “OOPurgeDebugEvents.ps1”.</li><li>Open windows power shell. Navigate to the directory containing this power shell script.</li><li>Run the “OOPurgeDebugEvents.ps1” powershell script as follows: <br>.\OOPurgeDebugEvents.ps1 -OOCentralURL https://&lt;OOCentralHostName&gt;:&lt;Port&gt;/oo -UserName admin -Passwd &lt;AdminPassword&gt; -BeforeDateUTC "08-20-2019 02:01:09" -MaxExecPurge 200</li><li>Use “OOCentralURL”, “UserName” and “Passwd” parameters to connect to the OO Central Application. The “OOCentralURL”, “UserName” and “Passwd” parameters are mandatory.</li><li>Use “BeforeDateUTC” parameter to purge debugger flow events data prior to certain date and time in UTC. The “BeforeDateUTC” parameter value must be in the following format: “MM-DD-YYYY HH24:MI:SS”. The “BeforeDateUTC” parameter is optional. If no value is specified, script uses current date and time as the default value for this parameter.</li><li>Use “MaxExecPurge” parameter to restrict amount of debugger flow events data that would be purged. The “MaxExecPurge” parameter is optional. If no value is specified, script uses default value of 100 for “MaxExecPurge” parameter.</li></ol><div><b>Examples:</b></div><div><ol><li>To purge debugger events data for up to 100 flow executions that were run before current date and time, run the script as follows: <br>.\OOPurgeDebugEvents.ps1 -OOCentralURL https://&lt;OOCentralHostName&gt;:&lt;Port&gt;/oo -UserName admin -Passwd &lt;AdminPassword&gt;</li><li>To purge debugger events data for up to 200 flow executions that were run before August 20th 2019 2 AM UTC, run the script as follows: <br> .\OOPurgeDebugEvents.ps1 -OOCentralURL https://&lt;OOCentralHostName&gt;:&lt;Port&gt;/oo -UserName admin -Passwd &lt;AdminPassword&gt; -BeforeDateUTC "08-20-2019 02:00:00" -MaxExecPurge 200<br></li></ol></div><ol><br></ol></div></div></div></div></div>
