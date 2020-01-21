@@ -6,129 +6,172 @@
 
 <!--StartFragment-->
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt">After SMAX
-installed, it is possible to change DB host from one server to another one,
-current we only support change SMAX hostname of DB server, CDF is not included.</p>
-
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt"><span style="font-weight:bold">Note: After running this script, SMAX needs to restart
-and downtime occurs, planned maintenance window to do this.</span></p>
-
-<ul type="disc" style="margin-left:.375in;direction:ltr;unicode-bidi:embed;
+<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:black"><span style="background:white">After SMA is installed, it is possible to change the
+external database host of SMA. Note that currently we only support changing the
+SMA database host, not the CDF database host.<span style="mso-spacerun:yes">&nbsp;
+</span></span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:black">&nbsp;</p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:black"><span style="background:white">You can make this change by running a script provided
+below. This script will perform the following operations:</span></p><ul type="disc" style="margin-left:.375in;direction:ltr;unicode-bidi:embed;
  margin-top:0in;margin-bottom:0in">
- <li style="margin-top:0;margin-bottom:0;vertical-align:middle"><span style="font-family:Calibri;font-size:11.0pt">Run the scripts below and it
-     will do:</span></li>
- <ul type="circle" style="margin-left:.375in;direction:ltr;unicode-bidi:embed;
-  margin-top:0in;margin-bottom:0in">
-  <li style="margin-top:0;margin-bottom:0;vertical-align:middle"><span style="font-family:Calibri;font-size:11.0pt">Backup current DB configmap
-      for Kubernetes cluster under /tmp/</span><span style="font-style:italic;
-      font-family:Calibri;font-size:11.0pt">database/</span><span style="font-family:Calibri;font-size:11.0pt">/old folder</span></li>
-  <li style="margin-top:0;margin-bottom:0;vertical-align:middle"><span style="font-family:Calibri;font-size:11.0pt">Create new database yaml
-      file in the new folder /tmp/</span><span style="font-style:italic;
-      font-family:Calibri;font-size:11.0pt">database/</span><span style="font-family:Calibri;font-size:11.0pt">new</span></li>
-  <li style="margin-top:0;margin-bottom:0;vertical-align:middle"><span style="font-family:Calibri;font-size:11.0pt">Delete old configmap in
-      Cluster</span></li>
-  <li style="margin-top:0;margin-bottom:0;vertical-align:middle"><span style="font-family:Calibri;font-size:11.0pt">Create new configmap in
-      Cluster</span></li>
- </ul>
-</ul>
+ <li style="margin-top:0;margin-bottom:0;vertical-align:middle;color:black"><span style="font-family:Calibri;font-size:11.0pt;background:white" lang="en-US">Back
+     up the current DB configmap for the Kubernetes cluster in the /tmp/</span><span style="font-style:italic;font-family:Calibri;font-size:11.0pt;background:
+     white" lang="zh-CN">database/</span><span style="font-family:Calibri;
+     font-size:11.0pt;background:white" lang="zh-CN">/old folder</span></li>
+ <li style="margin-top:0;margin-bottom:0;vertical-align:middle;color:black"><span style="font-family:Calibri;font-size:11.0pt;background:white" lang="en-US">Create
+     a new database yaml file in the new folder /tmp/</span><span style="font-style:italic;font-family:Calibri;font-size:11.0pt;background:
+     white" lang="zh-CN">database/</span><span style="font-family:Calibri;
+     font-size:11.0pt;background:white" lang="zh-CN">new</span></li>
+ <li style="margin-top:0;margin-bottom:0;vertical-align:middle;color:black"><span style="font-family:Calibri;font-size:11.0pt;background:white">Delete the
+     old configmap in the cluster</span></li>
+ <li style="margin-top:0;margin-bottom:0;vertical-align:middle;color:black"><span style="font-family:Calibri;font-size:11.0pt;background:white">Create a new
+     configmap in the cluster</span></li></ul><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:black"><span style="font-weight:bold;background:white">Note: After the execution of this
+script, SMA needs a restart and downtime therefore occurs. For this reason,
+change the SMA DB host only in a planned maintenance window.</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:black"><span style="background:white">To change the SMA DB host, perform the following
+steps: </span></p><ol type="1" style="margin-left:.375in;direction:ltr;unicode-bidi:embed;
+ margin-top:0in;margin-bottom:0in;font-family:Calibri;font-size:11.0pt;
+ font-weight:normal;font-style:normal">
+ <li value="1" style="margin-top:0;margin-bottom:0;vertical-align:middle;
+     color:black"><span style="font-family:Calibri;font-size:11.0pt;font-weight:
+     normal;font-style:normal;font-family:Calibri;font-size:11.0pt;background:
+     white">Run the following script on a master node. </span></li>
+ <li style="margin-top:0;margin-bottom:0;vertical-align:middle;color:black"><span style="font-family:Calibri;font-size:11.0pt;background:white">Check if the
+     database is changed correctly:</span></li>
+</ol><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
+color:#78230C"><span style="font-style:italic;background:white">kubectl get
+configmap -n &lt;namespace&gt; database-configmap -o yaml |grep db_host</span></p><ol type="1" style="margin-left:.375in;direction:ltr;unicode-bidi:embed;
+ margin-top:0in;margin-bottom:0in;font-family:Calibri;font-size:11.0pt;
+ font-weight:normal;font-style:normal">
+ <li value="3" style="margin-top:0;margin-bottom:0;vertical-align:middle;
+     color:black"><span style="font-family:Calibri;font-size:11.0pt;font-weight:
+     normal;font-style:normal;font-family:Calibri;font-size:11.0pt;color:black;
+     background:white" lang="en-US">After checking that all database
+     configuration is set up correctly, </span><span style="font-family:Calibri;
+     font-size:11.0pt;font-weight:normal;font-style:normal;font-family:Calibri;
+     font-size:11.0pt;color:black;background:white" lang="zh-CN">restart the
+     Kubernetes Cluster as described in </span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/RestartSMASuite"><span style="font-family:Calibri;font-size:11.0pt;font-family:Calibri;
+     font-size:11.0pt;background:white" lang="zh-CN">https://docs.microfocus.com/itom/SMAX:2020.02/RestartSMASuite</span></a><span style="font-family:Calibri;font-size:11.0pt;font-weight:normal;font-style:
+     normal;font-family:Calibri;font-size:11.0pt;color:black;background:white" lang="zh-CN">.</span></li></ol><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white" lang="en-US">#</span><span style="font-style:italic;background:white" lang="zh-CN">################ Scripts
+Begin&nbsp;</span><span style="font-weight:bold;font-style:italic;background:
+white" lang="zh-CN">################</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">#!/bin/bash</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white" lang="en-US">#set -x</span><span style="background:white" lang="zh-CN">&nbsp;</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">if [ $# -lt 2 ]; then</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">&nbsp;&nbsp;&nbsp; echo "Usage:
+$0 &lt;old_DB_host&gt; &lt;new_DB_host&gt;"</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">&nbsp;&nbsp;&nbsp; exit 1</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">fi</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">olddb=$1</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">newdb=$2</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">file_date=`date
+"+%Y%m%d%H%M%S"`</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">ns=`kubectl get namespace |grep
+itsma | cut -f1 -d " "`</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">if [ -d /tmp/database/old ]; then</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">&nbsp; mv /tmp/database/old
+/tmp/database/old.bak.${file_date}</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">fi</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">if [ -d /tmp/database/new ]; then</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">&nbsp; mv /tmp/database/new
+/tmp/database/new.bak.${file_date}</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">fi</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">mkdir -p /tmp/database/old</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">mkdir -p /tmp/database/new</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">save_database() {</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">&nbsp;&nbsp;&nbsp; kubectl get cm
+database-configmap -n $ns -o yaml &gt;
+/tmp/database/old/database-configmap.yaml</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">}</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">change_database() {</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">&nbsp;&nbsp;&nbsp; kubectl get cm
+database-configmap -n $ns -o yaml | sed 's/'${olddb}'/'${newdb}'/g'&nbsp; &gt;
+/tmp/database/new/database-configmap.yaml</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">}</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">delete_database() {</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">&nbsp;&nbsp;&nbsp; kubectl delete -f
+/tmp/database/old/database-configmap.yaml</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">}</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">create_database() {</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">&nbsp;&nbsp;&nbsp; kubectl create -f
+/tmp/database/new/database-configmap.yaml</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">}</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">save_database</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">change_database</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">delete_database</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white">create_database</span></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt">
 
-<p style="margin: 0in;"><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;"># Scripts Begin&nbsp;</span><b style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;"><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span></b><br></p><p style="margin: 0in;"><span style="font-family: Calibri; font-size: 11pt; font-style: italic; color: rgb(120, 35, 12); letter-spacing: 0.2px; background-color: transparent;">#!/bin/bash</span><br></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">#set -x</span><span style="font-size: 11pt; letter-spacing: 0.2px; background-color: transparent;">&nbsp;</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">if [ $# -lt 2 ]; then</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">&nbsp;&nbsp;&nbsp; echo
-"Usage: $0 &lt;old_DB_host&gt; &lt;new_DB_host&gt;"</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">&nbsp;&nbsp;&nbsp; exit 1</span></p>
+<!--StartFragment-->
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">fi</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">olddb=$1</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">newdb=$2</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">file_date=`date "+%Y%m%d%H%M%S"`</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">ns=`kubectl get namespace |grep itsma | cut -f1 -d
-" "`</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">if [ -d /tmp/database/old ]; then</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">&nbsp; mv
-/tmp/database/old /tmp/database/old.bak.${file_date}</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">fi</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">if [ -d /tmp/database/new ]; then</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">&nbsp; mv
-/tmp/database/new /tmp/database/new.bak.${file_date}</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">fi</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">mkdir -p /tmp/database/old</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">mkdir -p /tmp/database/new</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">save_database() {</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">&nbsp;&nbsp;&nbsp; kubectl get
-cm database-configmap -n $ns -o yaml &gt;
-/tmp/database/old/database-configmap.yaml</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">}</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">change_database() {</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">&nbsp;&nbsp;&nbsp; kubectl get
-cm database-configmap -n $ns -o yaml | sed 's/'${olddb}'/'${newdb}'/g'&nbsp; &gt;
-/tmp/database/new/database-configmap.yaml</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">}</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">delete_database() {</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">&nbsp;&nbsp;&nbsp; kubectl
-delete -f /tmp/database/old/database-configmap.yaml</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">}</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">create_database() {</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">&nbsp;&nbsp;&nbsp; kubectl
-create -f /tmp/database/new/database-configmap.yaml</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">}</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">save_database</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">change_database</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">delete_database</span></p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic">create_database</span></p><p style="font-size: 16px; margin: 0in;"><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;">#</span><span style="letter-spacing: 0.2px; background-color: transparent; color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic;"># Scripts End&nbsp;</span><span style="font-weight: 700; font-size: inherit; letter-spacing: 0.2px; background-color: transparent;"><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span><span style="color: rgb(120, 35, 12); font-family: Calibri; font-size: 14.6667px; font-style: italic; letter-spacing: 0.2px; background-color: transparent;">#</span></span></p>
 
-<ul type="disc" style="margin-left:.375in;direction:ltr;unicode-bidi:embed;
- margin-top:0in;margin-bottom:0in">
- <li style="margin-top:0;margin-bottom:0;vertical-align:middle"><span style="font-family:Calibri;font-size:11.0pt">Check if database is changed
-     correctly.</span></li>
-</ul>
 
-<p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic">kubectl get configmap -n
-&lt;namespace&gt; database-configmap -o yaml |grep db_host</span></p>
 
-<ul type="disc" style="margin-left:.375in;direction:ltr;unicode-bidi:embed;
- margin-top:0in;margin-bottom:0in">
- <li style="margin-top:0;margin-bottom:0;vertical-align:middle"><span style="font-family:Calibri;font-size:11.0pt">After checking all database
-     configuration is set up correctly, Refer to document (</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/RestartSMASuite"><span style="font-family:Calibri;font-size:11.0pt">https://docs.microfocus.com/itom/SMAX:2020.02/RestartSMASuite</span></a><span style="font-family:Calibri;font-size:11.0pt">) to restart Kubernetes
-     Cluster.</span></li>
-</ul>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt">&nbsp;</p>
 
-<p style="margin:0in;font-family:Calibri;font-size:11.0pt">&nbsp;</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--EndFragment--></p><p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"><span style="font-style:italic;background:white" lang="en-US">#</span><span style="font-style:italic;background:white" lang="zh-CN">################ Scripts
+End&nbsp;</span><span style="font-weight:bold;font-style:italic;background:
+white" lang="zh-CN">################</span></p>
 
 <!--EndFragment-->
