@@ -195,12 +195,9 @@ try{
     $GetReqWebResponse = Invoke-WebRequest -Method Get -Uri $GetRequestURL -Headers @{ 'Authorization' = $AuthHeaderValue  } -SessionVariable 'WebSession'
 }
 catch{
-    If (IsNull($GetReqWebResponse)) {
-        throw $($PSItem.ToString()) 
-    }
-    else {
-        throw 'Response code is ' + $GetReqWebResponse.StatusCode + $($PSItem.ToString())
-    }
+     # Something went wrong
+    Write-Host 'OO Central Application returned the following exception while making a REST API call to retrieve token'
+	throw $($PSItem.Exception.Message)  
 }
 
 If (IsNull($WebSession)) {
@@ -249,18 +246,13 @@ try{
     $PutReqWebResponse = Invoke-WebRequest -Method Put -Uri $deployURL -Headers $headers -Body $ooContentPackBytes -WebSession $WebSession  
 }
 catch{
-    # Something went wrong
-	If (IsNull($PutReqWebResponse)) {
-        throw $($PSItem.ToString()) 
-    }
-    else {
-        throw 'Response code is ' + $PutReqWebResponse.StatusCode + $($PSItem.ToString())
-    }    
+     # Something went wrong
+    Write-Host 'OO Central Application returned the following exception while making a REST API call to deploy content pack'
+	throw $($PSItem.Exception.Message)    
 }
 
 # Display response message from deploy content pack request to OO
 If (-Not (IsNull($PutReqWebResponse))){
     $JSONResponse = ConvertFrom-Json -InputObject $PutReqWebResponse.Content
     Write-Host 'Response code: '$PutReqWebResponse.StatusCode ':'$JSONResponse.contentPackResponses."$ContentPackName.jar".responses.message
-}
-</pre><div><br></div>
+}<br></pre>
