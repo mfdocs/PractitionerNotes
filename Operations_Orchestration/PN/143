@@ -194,7 +194,7 @@ try{
 catch{
     # Something went wrong
     Write-Host 'OO Central Application returned the following exception while retrieving execution instances'
-    throw $($PSItem.ToString())     
+    throw $($PSItem.Exception.Message)     
 }
 If (IsNull($webSession)) {
     throw 'Cannot open web session to the OO Central Application'
@@ -218,19 +218,16 @@ If (-Not (IsNull($getFlowExecInstanceResponse))){
 			catch{
 				# Something went wrong
 				Write-Host 'OO Central Application returned the following exception while retrieving execution instances'
-				throw $($PSItem.ToString())     
-			}
-			If (IsNull($webSession)) {
-				throw 'Cannot open web session to the OO Central Application'
-			}
+				throw $($PSItem.Exception.Message)    
+			}			
 			If (-Not (IsNull($getFlowExecIOResponse))){
 				$instCount = $instCount + 1
 				$flowExecIO = ConvertFrom-Json -InputObject $getFlowExecIOResponse.Content
 				$flowVars = $flowExecIO.flowVars | ConvertTo-Json
 				$flowVars = @{label="Flow inputs and its values";expression={$flowExecIO.flowVars | ConvertTo-Json}}
 				$flowExecID = @{label="Flow execution ID";expression={$flowExecIO.executionSummary.executionId}}
-				$flowExecStartTime = @{label="Flow execution start time (MM-DD-YYYY HH:MM:SS UTC)";expression={if (("$flowExecIO.executionSummary.startTime").length -gt 10) {Get-Date $utcDate.AddMilliseconds($flowExecIO.executionSummary.startTime) -UFormat "%m-%d-%Y %T"} else {Get-Date $utcDate.AddSeconds($flowExecIO.executionSummary.startTime) -UFormat "%m-%d-%Y %T"}}}
-				$flowExecEndTime = @{label="Flow execution end time (MM-DD-YYYY HH:MM:SS UTC)";expression={if (("$flowExecIO.executionSummary.endTime").length -gt 10) {Get-Date $utcDate.AddMilliseconds($flowExecIO.executionSummary.endTime) -UFormat "%m-%d-%Y %T"} else {Get-Date $utcDate.AddSeconds($flowExecIO.executionSummary.endTime) -UFormat "%m-%d-%Y %T"}}}
+				$flowExecStartTime = @{label="Flow execution start time (MM-DD-YYYY HH:MM:SS UTC)";expression={if (IsNull($flowExecIO.executionSummary.startTime)){"Start time is not available"}else {if (($flowExecIO.executionSummary.startTime).ToString() -match "^[\d\.]+$"){if ((($flowExecIO.executionSummary.startTime).ToString()).length -gt 10) { Get-Date $utcDate.AddMilliseconds($flowExecIO.executionSummary.startTime) -UFormat "%m-%d-%Y %T" } else {Get-Date $utcDate.AddSeconds($flowExecIO.executionSummary.startTime) -UFormat "%m-%d-%Y %T"	}}else{	"Start time not available"}}}}
+				$flowExecEndTime = @{label="Flow execution end time (MM-DD-YYYY HH:MM:SS UTC)";expression={if (IsNull($flowExecIO.executionSummary.endTime)){"End time is not available"}else {if (($flowExecIO.executionSummary.endTime).ToString() -match "^[\d\.]+$"){if ((($flowExecIO.executionSummary.endTime).ToString()).length -gt 10) { Get-Date $utcDate.AddMilliseconds($flowExecIO.executionSummary.endTime) -UFormat "%m-%d-%Y %T" } else {Get-Date $utcDate.AddSeconds($flowExecIO.executionSummary.endTime) -UFormat "%m-%d-%Y %T"	}}else{	"End time not available"}}}}
 				$flowOutput = @{label="Flow outputs and its values";expression={$flowExecIO.flowOutput | ConvertTo-Json}}	
 				
 				try{
@@ -244,7 +241,7 @@ If (-Not (IsNull($getFlowExecInstanceResponse))){
 				catch{
 					# Something went wrong
 					Write-Host "Exception occured while writing to the file $OutCSVFile"
-					throw $($PSItem.ToString())     
+					throw $($PSItem.Exception.Message)    
 				}
 			}			
 		}
@@ -257,4 +254,5 @@ else
 {
 	Write-Host 'OO Central Application returned a NULL response'
 }
+
 </pre>
