@@ -207,12 +207,9 @@ try{
     $getReqWebResponse = Invoke-WebRequest -Method Get -Uri $getRequestURL -Headers $headers
 }
 catch{
-    If (IsNull($getReqWebResponse)) {
-        throw $($PSItem.ToString()) 
-    }
-    else {
-        throw 'Response code is ' + $getReqWebResponse.StatusCode + $($PSItem.ToString())
-    }
+    # Something went wrong
+    Write-Host 'OO Central Application returned the following exception while making a REST API call to retrieve audit records'
+	throw $($PSItem.Exception.Message)     
 }
 
 
@@ -222,7 +219,7 @@ If (-Not (IsNull($getReqWebResponse))){
     $auditRecords = ConvertFrom-Json -InputObject $getReqWebResponse.Content
     if ($auditRecords.length -gt 0)
     {
-        $auditTime = @{label="Date and time (MM-DD-YYYY HH:MM:SS UTC)";expression={if (("$_.time").length -gt 10) {Get-Date $utcDate.AddMilliseconds($_.time) -UFormat "%m-%d-%Y %T"} else {Get-Date $utcDate.AddSeconds($_.time) -UFormat "%m-%d-%Y %T"}}}
+     	$auditTime = @{label="Date and time (MM-DD-YYYY HH:MM:SS UTC)";expression={if (IsNull($_.time)){"Audit time not available"}else {if (($_.time).ToString() -match "^[\d\.]+$"){if ((($_.time).ToString()).length -gt 10) { Get-Date $utcDate.AddMilliseconds($_.time) -UFormat "%m-%d-%Y %T" } else {Get-Date $utcDate.AddSeconds($_.time) -UFormat "%m-%d-%Y %T"	}}else{	"Audit time not available"}}}}
         $auditRecords | Select-Object -Property $auditTime, type, group, subject, outcome, data |Export-CSV $OutCSVFile -NoTypeInformation
 	    Write-Host 'Audit records have been exported to the following CSV file: ' $OutCSVFile
     }
