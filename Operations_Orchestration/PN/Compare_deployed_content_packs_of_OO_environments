@@ -112,13 +112,9 @@ function GetContentPacks($OOCentralURL, $ooCentralHost, $headers, $outCSVFile) {
         $getReqWebResponse = Invoke-WebRequest -Method Get -Uri $getRequestURL -Headers $headers -WebSession $webSession
     }
     catch{
-        If (IsNull $getReqWebResponse) {
-            Write-Host "Exception while connecting to OO Central Server: $ooCentralHost"
-            throw $($PSItem.ToString()) 
-        }
-        else {
-            throw "Response code from $ooCentralHost is " + $getReqWebResponse.StatusCode + $($PSItem.ToString())
-        }
+         # Something went wrong
+		Write-Host 'OO Central Application returned the following exception while making a REST API call to retrieve list of deployed content packs'
+		throw $($PSItem.Exception.Message)  
     }    
     If (-Not (IsNull $getReqWebResponse)){
         $contentPacks = ConvertFrom-Json -InputObject $getReqWebResponse.Content    
