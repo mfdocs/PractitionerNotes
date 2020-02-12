@@ -207,7 +207,7 @@ try{
 catch{
     # Something went wrong
     Write-Host 'OO Central Application returned the following exception while retrieving cross reference token'
-    throw $($PSItem.ToString())     
+    throw $($PSItem.Exception.Message)     
 }
 If (IsNull($webSession)) {
     throw 'Cannot open web session to the OO Central Application'
@@ -245,7 +245,7 @@ try{
 catch{
     # Something went wrong
     Write-Host 'OO Central Application returned the following exception while making a REST API call to purge flow execution history'
-	throw $($PSItem.ToString())         
+	throw $($PSItem.Exception.Message)         
 }
 
 # Display response message from purging of flow UUIDs
