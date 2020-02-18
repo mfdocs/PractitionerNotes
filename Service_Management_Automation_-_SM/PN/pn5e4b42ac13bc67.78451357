@@ -1,1 +1,897 @@
- 
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">Using the internal PostgreSQL
+instance that is embedded in SMA is no longer supported for production
+environments.&nbsp; If your SMA is using the internal PostgreSQL, you can use
+the procedure below to migrate SMA to an external PostgreSQL database server.<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p>&nbsp;</o:p></span></p>
+
+<h1>Step 1: Install the psql and pg_dump commands on a master node<o:p></o:p></h1>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="mso-ascii-font-family:Calibri;mso-fareast-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;
+color:black"><br>
+<!--[if !supportLineBreakNewLine]--><br>
+<!--[endif]--></span><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="mso-ascii-font-family:Calibri;mso-fareast-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;
+color:black">On a master node, install the commands with the correct version
+(9.5 or 9.6).&nbsp;The command version should comply with the version of the
+SMA internal PostgreSQL instance.&nbsp;Use the following commands to check the
+SMA internal PostgreSQL version:</span><span style="font-size:12.0pt;
+font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="mso-ascii-font-family:Calibri;mso-fareast-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;
+color:black"><br>
+<!--[if !supportLineBreakNewLine]--><br>
+<!--[endif]--></span><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="mso-ascii-font-family:Calibri;mso-fareast-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;
+color:black">export pgnode_name=`kubectl get pods -n $(kubectl get namespace
+|grep itsma | cut -f1 -d " ") |grep pgnode | cut -f1 -d " "
+| tail -1`&nbsp;<o:p></o:p></span></b></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="mso-ascii-font-family:Calibri;mso-fareast-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;
+color:black">&nbsp;</span></b></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="mso-ascii-font-family:Calibri;mso-fareast-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;
+color:black">kubectl exec -it $pgnode_name -n&nbsp; $(kubectl get namespace
+|grep itsma | cut -f1 -d " ")&nbsp; -c suite-pgnode1 -- /usr/bin/psql
+--version<o:p></o:p></span></b></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="mso-ascii-font-family:Calibri;mso-fareast-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;
+color:black"><br>
+</span><span style="mso-ascii-font-family:Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;letter-spacing:.15pt"><br>
+<!--[if !supportLineBreakNewLine]--><br>
+<!--[endif]--></span><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><span style="mso-ascii-font-family:Calibri;
+mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;letter-spacing:.15pt">The output should resemble
+the following:&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;letter-spacing:.15pt"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt;
+vertical-align:baseline"><b><span style="mso-ascii-font-family:Calibri;
+mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;color:black">psql (PostgreSQL) 9.5.13</span></b><span style="font-size:10.0pt;font-family:&quot;Courier New&quot;;mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;letter-spacing:.15pt"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt;
+vertical-align:baseline"><span style="mso-ascii-font-family:Calibri;mso-fareast-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;
+color:black"><br>
+<!--[if !supportLineBreakNewLine]--><br>
+<!--[endif]--></span><span style="font-size:10.0pt;font-family:&quot;Courier New&quot;;
+mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<h1>Step 2: Dump data from the internal PostgreSQL<o:p></o:p></h1>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">Create a script&nbsp;</span><i><span style="mso-ascii-font-family:Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;color:#78230C">backupsaw.sh&nbsp;</span></i><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;">with the following content, and then run this script on the
+master node to dump data from the internal PostgreSQL.&nbsp;You will see lots
+of dump files created by the script.&nbsp;&nbsp;<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">Before running the script,
+replace&nbsp;<span style="letter-spacing:.15pt">&lt;old_DB_host&gt; with the
+external access host name of SMA, and replace&nbsp;</span></span><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;
+color:black">&lt;new_DB_host&gt;&nbsp;with</span><span style="font-size:12.0pt;
+font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
+letter-spacing:.15pt"> the FQDN or IP address of the new PostgreSQL database
+server.&nbsp;</span><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">################# Script Begin
+################&nbsp;</span></b><span style="font-size:12.0pt;font-family:
+&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">#!/bin/bash&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">#set -x&nbsp;&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">if [ $# -lt 2 ]; then&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">&nbsp; &nbsp;echo "Usage: $0
+&lt;old_DB_host&gt; &lt;new_DB_host&gt;"&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">&nbsp; &nbsp;exit 1&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">fi&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">olddb=$1&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">newdb=$2&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">file_date=`date
+"+%Y%m%d%H%M%S"`&nbsp;</span></b><span style="font-size:12.0pt;
+font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">ns=`kubectl get namespace |grep
+itsma | cut -f1 -d " "`&nbsp;</span></b><span style="font-size:12.0pt;
+font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">if [ -d /tmp/database/old ];
+then&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">&nbsp; mv /tmp/database/old
+/tmp/database/old.bak.${file_date}&nbsp;</span></b><span style="font-size:12.0pt;
+font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">fi&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">if [ -d /tmp/database/new ];
+then&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">&nbsp; mv /tmp/database/new
+/tmp/database/new.bak.${file_date}&nbsp;</span></b><span style="font-size:12.0pt;
+font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">fi&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">mkdir -p /tmp/database/old&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">mkdir -p /tmp/database/new&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">save_database() {&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">&nbsp; &nbsp;kubectl get cm
+database-configmap -n $ns -o yaml &gt;
+/tmp/database/old/database-configmap.yaml&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">}&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">change_database() {&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">&nbsp; &nbsp;kubectl get cm
+database-configmap -n $ns -o yaml | sed 's/'${olddb}'/'${newdb}'/g'&nbsp; &gt;
+/tmp/database/new/database-configmap.yaml&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">}&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">delete_database() {&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">&nbsp; &nbsp;kubectl delete -f
+/tmp/database/old/database-configmap.yaml&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">}&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">create_database() {&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">&nbsp; kubectl create -f /tmp/database/new/database-configmap.yaml&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">}&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">save_database&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">change_database&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">delete_database&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">create_database&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">################# Script
+End################&nbsp;</span></b><span style="font-size:12.0pt;font-family:
+&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;letter-spacing:.15pt"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><span style="mso-ascii-font-family:Calibri;
+mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;letter-spacing:.15pt"><br>
+<!--[if !supportLineBreakNewLine]--><br>
+<!--[endif]--></span><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;letter-spacing:.15pt"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><span style="mso-ascii-font-family:Calibri;
+mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;letter-spacing:.15pt">The output messages of the
+script should resemble the following:</span><span style="font-size:9.0pt;
+font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
+letter-spacing:.15pt"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><b><i><span style="font-size:10.0pt;mso-ascii-font-family:
+Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;letter-spacing:.15pt">---------------------------</span></i></b><b><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;
+letter-spacing:.15pt">&nbsp;</span></b><span style="font-size:9.0pt;font-family:
+&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;letter-spacing:
+.15pt"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><b><i><span style="font-size:10.0pt;mso-ascii-font-family:
+Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;letter-spacing:.15pt">idm_pwd=Admin_xxxx</span></i></b><b><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;
+letter-spacing:.15pt">&nbsp;</span></b><span style="font-size:9.0pt;font-family:
+&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;letter-spacing:
+.15pt"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><b><i><span style="font-size:10.0pt;mso-ascii-font-family:
+Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;letter-spacing:.15pt">bo_pwd=Admin_xxxx</span></i></b><b><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;
+letter-spacing:.15pt">&nbsp;</span></b><span style="font-size:9.0pt;font-family:
+&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;letter-spacing:
+.15pt"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><b><i><span style="font-size:10.0pt;mso-ascii-font-family:
+Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;letter-spacing:.15pt">postgres_pwd=Admin_xxxx</span></i></b><b><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;
+letter-spacing:.15pt">&nbsp;</span></b><span style="font-size:9.0pt;font-family:
+&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;letter-spacing:
+.15pt"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><b><i><span style="font-size:10.0pt;mso-ascii-font-family:
+Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;letter-spacing:.15pt">smarta_pwd=Admin_xxxx</span></i></b><b><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;
+letter-spacing:.15pt">&nbsp;</span></b><span style="font-size:9.0pt;font-family:
+&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;letter-spacing:
+.15pt"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><b><i><span style="font-size:10.0pt;mso-ascii-font-family:
+Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;letter-spacing:.15pt">xservices_pwd=Admin_xxxx</span></i></b><b><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;
+letter-spacing:.15pt">&nbsp;</span></b><span style="font-size:9.0pt;font-family:
+&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;letter-spacing:
+.15pt"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><b><i><span style="font-size:10.0pt;mso-ascii-font-family:
+Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;letter-spacing:.15pt">autopass_pwd=Admin_xxxx</span></i></b><b><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;
+letter-spacing:.15pt">&nbsp;</span></b><span style="font-size:9.0pt;font-family:
+&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;letter-spacing:
+.15pt"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><b><i><span style="font-size:10.0pt;mso-ascii-font-family:
+Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;letter-spacing:.15pt">---------------------------</span></i></b><b><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;
+letter-spacing:.15pt">&nbsp;</span></b><span style="font-size:9.0pt;font-family:
+&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;letter-spacing:
+.15pt"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><b><i><span style="font-size:10.0pt;mso-ascii-font-family:
+Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;letter-spacing:.15pt">pg_dump: [archiver (db)]
+connection to database "maas_template" failed: FATAL:&nbsp; too many
+connections for database "maas_template"</span></i></b><b><span style="font-size:10.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;
+letter-spacing:.15pt">&nbsp;</span></b><span style="font-size:9.0pt;font-family:
+&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;letter-spacing:
+.15pt"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><b><i><span style="font-size:10.0pt;mso-ascii-font-family:
+Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;letter-spacing:.15pt">pg_dump: [archiver (db)]
+connection to database "sxdb" failed: FATAL:&nbsp; database
+"sxdb" does not exist</span></i></b><b><span style="font-size:10.0pt;
+mso-ascii-font-family:Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;letter-spacing:.15pt">&nbsp;</span></b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;letter-spacing:.15pt"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><b><i><span style="font-size:10.0pt;mso-ascii-font-family:
+Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;letter-spacing:.15pt">pg_dump: [archiver (db)]
+connection to database "sxdb" failed: FATAL:&nbsp; database
+"sxdb" does not exist</span></i></b><b><span style="font-size:10.0pt;
+mso-ascii-font-family:Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;letter-spacing:.15pt">&nbsp;</span></b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;letter-spacing:.15pt"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><b><i><span style="font-size:10.0pt;mso-ascii-font-family:
+Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;letter-spacing:.15pt">ERROR:&nbsp; must be owner
+of extension plpgsql</span></i></b><b><span style="font-size:10.0pt;mso-ascii-font-family:
+Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;letter-spacing:.15pt">&nbsp;</span></b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;letter-spacing:.15pt"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><b><i><span style="font-size:10.0pt;mso-ascii-font-family:
+Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;letter-spacing:.15pt">ERROR:&nbsp; must be owner
+of extension plpgsql</span></i></b><b><span style="font-size:10.0pt;mso-ascii-font-family:
+Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;letter-spacing:.15pt">&nbsp;</span></b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;letter-spacing:.15pt"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><b><i><span style="font-size:10.0pt;mso-ascii-font-family:
+Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;letter-spacing:.15pt">ERROR:&nbsp; must be owner
+of extension plpgsql</span></i></b><b><span style="font-size:10.0pt;mso-ascii-font-family:
+Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;letter-spacing:.15pt">&nbsp;</span></b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;letter-spacing:.15pt"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><b><i><span style="font-size:10.0pt;mso-ascii-font-family:
+Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;letter-spacing:.15pt">ERROR:&nbsp; must be owner
+of extension plpgsql</span></i></b><b><span style="font-size:10.0pt;mso-ascii-font-family:
+Calibri;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;letter-spacing:.15pt">&nbsp;</span></b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;letter-spacing:.15pt"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p>&nbsp;</o:p></span></p>
+
+<h1>Step 3: Install external PostgreSQL<o:p></o:p></h1>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">Install PostgreSQL on the external
+database server and follow the SMA documentation to configure the PostgreSQL
+instance, by following the "Prepare external databases" help
+topic.&nbsp;<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p>&nbsp;</o:p></span></p>
+
+<h1>Step 4:&nbsp;Modify the restoresaw.sh script<o:p></o:p></h1>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">Change the following two
+parameters:&nbsp;<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;"><br>
+<!--[if !supportLineBreakNewLine]--><br>
+<!--[endif]--><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">db_server=127.0.0.1&nbsp;<o:p></o:p></span></b></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">postgres_pwd=xxxxx<o:p></o:p></span></b></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><span style="mso-ascii-font-family:Calibri;
+mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;letter-spacing:.15pt"><br>
+<!--[if !supportLineBreakNewLine]--><br>
+<!--[endif]--></span><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;letter-spacing:.15pt"><o:p></o:p></span></p>
+
+<h1>Step 5: Migrate data from internal PostgreSQL to external PostgreSQL<o:p></o:p></h1>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="font-size:12.0pt;font-family:&quot;MetricHPE&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Segoe UI&quot;;
+color:black">Run an import script that is in the same folder as the dump files:</span><span style="font-size:12.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;
+color:black">&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;">./restoresaw.sh restore creatuser</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;">&nbsp;<br>
+<!--[if !supportLineBreakNewLine]--><br>
+<!--[endif]--><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><i><span style="mso-ascii-font-family:Calibri;mso-fareast-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;
+color:#78230C;border:none windowtext 1.0pt;mso-border-alt:none windowtext 0in;
+padding:0in"><br>
+<!--[if !supportLineBreakNewLine]--><br>
+<!--[endif]--></span></i><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="font-size:12.0pt;font-family:&quot;MetricHPE&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Segoe UI&quot;;
+color:black">Then, copy the commands in the output and run the commands on the
+new PostgreSQL server. The following is an example:</span><span style="font-size:12.0pt;mso-ascii-font-family:Calibri;mso-fareast-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;
+color:black">&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">CREATE USER idm login
+PASSWORD 'Admin_5678';&nbsp;</span></b><span style="font-size:9.0pt;font-family:
+&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;color:black"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">ALTER USER idm
+CREATEDB;&nbsp;</span></b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">ALTER USER idm
+CREATEROLE;&nbsp;</span></b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">CREATE USER maas_admin
+login PASSWORD 'Admin_5678';&nbsp;</span></b><span style="font-size:9.0pt;
+font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
+color:black"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">ALTER USER maas_admin
+CREATEDB;&nbsp;</span></b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">CREATE USER bo_db_user
+login PASSWORD 'Admin_5678';&nbsp;</span></b><span style="font-size:9.0pt;
+font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
+color:black"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">CREATE USER autopass
+login PASSWORD 'Admin_5678';&nbsp;</span></b><span style="font-size:9.0pt;
+font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
+color:black"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">ALTER USER autopass
+CREATEDB;&nbsp;</span></b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">CREATE USER smarta login
+PASSWORD 'Admin_5678';&nbsp;</span></b><span style="font-size:9.0pt;font-family:
+&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;color:black"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">Then run the following
+command to restore data to the new database:&nbsp;</span><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">./restoresaw.sh restore
+all&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">The output should
+resemble the following:&nbsp;</span><span style="font-size:12.0pt;font-family:
+&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">db is 127.0.0.1&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">DROP DATABASE&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">CREATE DATABASE&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">GRANT&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">CREATE SCHEMA&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">end restore sxdb at
+2020-02-12 15:59:47&nbsp;</span></b><span style="font-size:12.0pt;font-family:
+&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">ERROR:&nbsp; database
+"smartadb" does not exist&nbsp;</span></b><span style="font-size:
+12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">CREATE DATABASE&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">ERROR:&nbsp; database
+"idm" does not exist&nbsp;</span></b><span style="font-size:12.0pt;
+font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">CREATE DATABASE&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">GRANT ROLE&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">ERROR:&nbsp; database
+"maas_admin" does not exist&nbsp;</span></b><span style="font-size:
+12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">ERROR:&nbsp; database
+"maas_template" does not exist&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">ERROR:&nbsp; database
+"xservices_ems" does not exist&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">ERROR:&nbsp; database
+"xservices_rms" does not exist&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">ERROR:&nbsp; database
+"xservices_mng" does not exist&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">CREATE DATABASE&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">CREATE DATABASE&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">CREATE DATABASE&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">CREATE DATABASE&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">CREATE DATABASE&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">ERROR:&nbsp; database
+"bo_ats" does not exist&nbsp;</span></b><span style="font-size:12.0pt;
+font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">ERROR:&nbsp; database
+"bo_config" does not exist&nbsp;</span></b><span style="font-size:
+12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">ERROR:&nbsp; database
+"bo_license" does not exist&nbsp;</span></b><span style="font-size:
+12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">ERROR:&nbsp; database
+"bo_user" does not exist&nbsp;</span></b><span style="font-size:12.0pt;
+font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">CREATE DATABASE&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">CREATE DATABASE&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">CREATE DATABASE&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">CREATE DATABASE&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">ERROR:&nbsp; database
+"autopassdb" does not exist&nbsp;</span></b><span style="font-size:
+12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><b><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">CREATE DATABASE&nbsp;</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal"><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">Now the data has
+migrated from the internal database to the external database. Continue with the
+next step to switch SMA from the internal PostgreSQL database to the external
+database.</span><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+13.5pt;vertical-align:baseline"><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;letter-spacing:.15pt;border:none windowtext 1.0pt;
+mso-border-alt:none windowtext 0in;padding:0in"><o:p>&nbsp;</o:p></span></p>
+
+<h1>Step 6: Switch SMA from internal PostgreSQL to external PostgreSQL<o:p></o:p></h1>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><span style="mso-ascii-font-family:Calibri;
+mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;letter-spacing:.15pt">Run the change_db.sh script
+on the master node:</span><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><b><span style="mso-ascii-font-family:Calibri;
+mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;color:black;letter-spacing:.15pt">./change_db.sh
+&lt;old_db_host&gt; &lt;new_db_host&gt;</span></b><span style="font-size:12.0pt;
+font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
+letter-spacing:.15pt"><br>
+<!--[if !supportLineBreakNewLine]--><br>
+<!--[endif]--><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><span style="mso-ascii-font-family:Calibri;
+mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;letter-spacing:.15pt">Check if the database has
+been changed correctly:</span><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><b><span style="mso-ascii-font-family:Calibri;
+mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;color:black;letter-spacing:.15pt">kubectl get
+configmap -n &lt;namespace&gt; database-configmap -o yaml |grep db_host</span></b><span style="font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;letter-spacing:.15pt"><br>
+<!--[if !supportLineBreakNewLine]--><br>
+<!--[endif]--><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><span style="font-size:9.0pt;font-family:&quot;Segoe UI&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;vertical-align:baseline"><span style="mso-ascii-font-family:Calibri;
+mso-fareast-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:Calibri;
+mso-bidi-font-family:Calibri;letter-spacing:.15pt">If all database
+configuration is set up correctly, restart the Kubernetes Cluster, as described
+in the "Restart the suite" topic.</span><span style="font-size:9.0pt;
+font-family:&quot;Segoe UI&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;"><o:p></o:p></span></p>
+
+<p class="MsoNormal"><o:p>&nbsp;</o:p></p>
