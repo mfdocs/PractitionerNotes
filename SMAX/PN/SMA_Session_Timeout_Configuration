@@ -1,0 +1,155 @@
+<div class="PNbanner"><div style="margin: auto 1% auto 0;"><i style="color:#0073e7;cursor:pointer;padding: 5%;" class="material-icons tooltip">info <span class="tooltiptext">The content has not been reviewed or tested by Micro Focus.</span></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><div>This page was added by an ITOM practitioner. Join the practitioner group, contribute, and build a stronger knowledge network.</div></div><h1 style="margin-bottom:0px;">SMA Session Timeout Configuration</h1><div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on Nov 8, 2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 10 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;<div>Rated 5&nbsp;<img src="/assets/images/star.png" style="height:12px;margin-top:auto;margin-bottom:auto;"></div> </div><br><div class="mw-parser-output"><p><br> 
+</p>
+<div id="toc" class="toc"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none"><div class="toctitle" lang="en" dir="ltr"><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout#Tokens"><span class="tocnumber">2</span> <span class="toctext">Tokens</span></a>
+<ul>
+<li class="toclevel-2"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout#LWSSO_token"><span class="tocnumber">2.1</span> <span class="toctext">LWSSO token</span></a></li>
+<li class="toclevel-2"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout#IDM_X-AUTH_token"><span class="tocnumber">2.2</span> <span class="toctext">IDM X-AUTH token</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout#Timeout_Parameters"><span class="tocnumber">3</span> <span class="toctext">Timeout Parameters</span></a>
+<ul>
+<li class="toclevel-2"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout#hpssoConfig.creation.tokenIdleTimeout.28in_minutes.29"><span class="tocnumber">3.1</span> <span class="toctext">hpssoConfig.creation.tokenIdleTimeout(in minutes)</span></a>
+<ul>
+<li class="toclevel-3"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout#Usage"><span class="tocnumber">3.1.1</span> <span class="toctext">Usage</span></a></li>
+<li class="toclevel-3"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout#How_to_change_it_in_UI"><span class="tocnumber">3.1.2</span> <span class="toctext">How to change it in UI</span></a></li>
+<li class="toclevel-3"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout#Data_in_ConfigMap"><span class="tocnumber">3.1.3</span> <span class="toctext">Data in ConfigMap</span></a></li>
+<li class="toclevel-3"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout#Data_in_IDM_database"><span class="tocnumber">3.1.4</span> <span class="toctext">Data in IDM database</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout#hpssoConfig.creation.tokenGlobalTimeout.28in_minutes.29"><span class="tocnumber">3.2</span> <span class="toctext">hpssoConfig.creation.tokenGlobalTimeout(in minutes)</span></a>
+<ul>
+<li class="toclevel-3"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout#Usage_2"><span class="tocnumber">3.2.1</span> <span class="toctext">Usage</span></a></li>
+<li class="toclevel-3"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout#How_to_change_it_in_UI_2"><span class="tocnumber">3.2.2</span> <span class="toctext">How to change it in UI</span></a></li>
+<li class="toclevel-3"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout#Data_in_ConfigMap_2"><span class="tocnumber">3.2.3</span> <span class="toctext">Data in ConfigMap</span></a></li>
+<li class="toclevel-3"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout#Data_in_IDM_database_2"><span class="tocnumber">3.2.4</span> <span class="toctext">Data in IDM database</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout#idm.token.lifetime.minutes_.28in_minutes.29"><span class="tocnumber">3.3</span> <span class="toctext">idm.token.lifetime.minutes (in minutes)</span></a>
+<ul>
+<li class="toclevel-3"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout#Usage_3"><span class="tocnumber">3.3.1</span> <span class="toctext">Usage</span></a></li>
+<li class="toclevel-3"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout#How_to_change_it_in_UI_3"><span class="tocnumber">3.3.2</span> <span class="toctext">How to change it in UI</span></a></li>
+<li class="toclevel-3"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout#Data_in_ConfigMap_3"><span class="tocnumber">3.3.3</span> <span class="toctext">Data in ConfigMap</span></a></li>
+<li class="toclevel-3"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout#Data_in_IDM_database_3"><span class="tocnumber">3.3.4</span> <span class="toctext">Data in IDM database</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout#Recommended_Configuration"><span class="tocnumber">3.4</span> <span class="toctext">Recommended Configuration</span></a></li>
+<li class="toclevel-2"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout#Example"><span class="tocnumber">3.5</span> <span class="toctext">Example</span></a></li>
+<li class="toclevel-2"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout#Tips_and_Tricks"><span class="tocnumber">3.6</span> <span class="toctext">Tips and Tricks</span></a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+<h1><span class="mw-headline" id="Introduction">Introduction</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.05/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout&amp;veaction=edit&amp;section=T-1" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.05/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout&amp;action=edit&amp;section=T-1" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h1>
+<p>When a user successfully logs into SMA user interfaces (such as the Suite Administration Portal, Service Portal or Agent interface) the backend services produce two tokens which are stored in the client browser's cookies. Any requests from the SMA user interfaces to backend services need to carry the two tokens and both tokens must be valid. 
+</p><p>After a certain amount of time, these tokens will expire and become invalid. Users must login to SMA user interfaces again for new tokens in order to continue operating on the system. The amount of time the two tokens are valid before they expire is controlled by specific timeout parameters. You can change the value of those parameters to extend or shorten the period that a session lives. 
+</p><p>This document contains information about the tokens, related parameters, and how to configure them. 
+</p>
+<h1><span class="mw-headline" id="Tokens">Tokens</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.05/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout&amp;veaction=edit&amp;section=T-2" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.05/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout&amp;action=edit&amp;section=T-2" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h1>
+<p>Below are two tokens required by SMA user sessions and the timeout parameters affect them.
+</p>
+<h2 class="mw-headline" id="LWSSO_token">LWSSO token</h2>
+<ul><li>Cookie name: LWSSO_COOKIE_KEY</li>
+<li>Timeout parameters: hpssoConfig.creation.tokenIdleTimeout and hpssoConfig.creation.tokenGlobalTimeout</li></ul>
+<h2 class="mw-headline" id="IDM_X-AUTH_token">IDM X-AUTH token</h2>
+<ul><li>Cookie name: _IDM_X_AUTH_TOKEN_</li>
+<li>Timeout parameters: idm.token.lifetime.minutes</li></ul>
+<h1><span class="mw-headline" id="Timeout_Parameters">Timeout Parameters</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.05/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout&amp;veaction=edit&amp;section=T-5" class="mw-editsection-visualeditor" title="Edit section: ">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.05/PractitionersNotes/SMAX_Config/cg_system_admin/cfg_timeout&amp;action=edit&amp;section=T-5" title="Edit section: ">edit source</a><span class="mw-editsection-bracket">]</span></span></h1>
+<p>In the SMA system, there are a number of timeout settings for various services. The three parameters described below have impact on session timeout for suite users. 
+</p>
+<h2 id="hpssoConfig.creation.tokenIdleTimeout(in_minutes)"><span class="mw-headline" id="hpssoConfig.creation.tokenIdleTimeout.28in_minutes.29">hpssoConfig.creation.tokenIdleTimeout(in minutes)</span></h2>
+<h3 class="mw-headline" id="Usage">Usage</h3>
+<p>This parameter controls the idle timeout for the LWSSO token. For end users, if they have not operated for the period of time specified by this parameter, their session is timed out and they have to re-login before they can continue operating on the system. 
+</p>
+<h3 class="mw-headline" id="How_to_change_it_in_UI">How to change it in UI</h3>
+<p>You can change the value of this parameter in <b>SMAX Suite &gt; Administration portal &gt; CONFIGURATIONS &gt; Security &gt; Lightweight SSO configuration &gt; Token expiration period (minutes)</b>. After saving the change, the backend IDM service is restarted automatically to make the new value take effect. 
+<a onclick="javascript:loadingImage(this);" class="image"><img alt="cfg timeout.png" src="/mediawiki/images/e/e7/cfg_timeout.png" width="949" height="233" data-file-width="949" data-file-height="233"></a> 
+</p>
+<h3 class="mw-headline" id="Data_in_ConfigMap">Data in ConfigMap</h3>
+<p>The value of the parameter is stored in the <b>lwsso_expirationperiod</b> key (the time unit is minute) of the ConfigMap 'lwsso-configmap'. If you want to change the value through ConfigMap, you need to restart the IDM pod (i.e. idm-&lt;pod id&gt;) to let IDM service update the value in the database with the new value from ConfigMap. 
+</p>
+<h3 class="mw-headline" id="Data_in_IDM_database">Data in IDM database</h3>
+<p>In the IDM database, the value of the parameter is stored in the <b>system_resource_config</b> table (the time unit is minute). You can query the table to get the default value and effective value by running the following SQL command. 
+</p>
+<pre>SELECT value FROM system_resource_config WHERE name = 'hpssoConfig.creation.tokenIdleTimeout' 
+
+</pre>
+<p><b>Note</b>: The out of box value is set to 60 (1 hour)
+</p>
+<h2 id="hpssoConfig.creation.tokenGlobalTimeout(in_minutes)"><span class="mw-headline" id="hpssoConfig.creation.tokenGlobalTimeout.28in_minutes.29">hpssoConfig.creation.tokenGlobalTimeout(in minutes)</span></h2>
+<h3 class="mw-headline" id="Usage_2">Usage</h3>
+<p>This parameter controls the validity period of a LWSSO token. It enforces a LWSSO token to expire after it is produced for a given amount of time. For an active user session, a re-login is still required after the session has lasted for the time defined by this parameter. 
+</p>
+<h3 class="mw-headline" id="How_to_change_it_in_UI_2">How to change it in UI</h3>
+<p>SMA does not provide user interface to change this parameter.
+</p>
+<h3 class="mw-headline" id="Data_in_ConfigMap_2">Data in ConfigMap</h3>
+<p>The value of the parameter is stored in the <b>TokenGlobalTimeout</b> key (the time unit is second) of the ConfigMap 'idm-config'. Similarly, you need to restart IDM pod if you change the value in ConfigMap.
+</p>
+<h3 class="mw-headline" id="Data_in_IDM_database_2">Data in IDM database</h3>
+<p>It is also stored in the <b>system_resource_config</b> table in the IDM database. You can query the values by name 'hpssoConfig.creation.tokenGlobalTimeout' (the time unit is minute)
+</p><p>Note: Out of the box value: 1440 (24 hours)
+</p>
+<h2 id="idm.token.lifetime.minutes_(in_minutes)"><span class="mw-headline" id="idm.token.lifetime.minutes_.28in_minutes.29">idm.token.lifetime.minutes (in minutes)</span></h2>
+<h3 class="mw-headline" id="Usage_3">Usage</h3>
+<p>Some Service Management services need to use IDM X-AUTH token to call IDM-authenticated APIs in other services. This parameter controls the idle timeout of the IDM X-AUTH token. If no requests with the token to services for a given amount of time, the IDM X-AUTH token times out so that users have to log in to the SMA systems again to get a new token for further operation. 
+</p>
+<h3 class="mw-headline" id="How_to_change_it_in_UI_3">How to change it in UI</h3>
+<p>SMA does not provide user interface to change this parameter.
+</p>
+<h3 class="mw-headline" id="Data_in_ConfigMap_3">Data in ConfigMap</h3>
+<p>The value of the parameter is stored in the <b>TokenExpirationPeriod</b> key (the time unit is second) of the ConfigMap 'idm-config'. Similarly, you need to restart IDM pod if you change the value in ConfigMap.
+</p>
+<h3 class="mw-headline" id="Data_in_IDM_database_3">Data in IDM database</h3>
+<p>It is also stored in the <b>system_resource_config</b> table in the IDM database. You can query the values by name 'idm.token.lifetime.minutes' (the time unit is minute)
+</p><p>Note: Out of the box value: 60 (1 hour)
+</p>
+<h2 class="mw-headline" id="Recommended_Configuration">Recommended Configuration</h2>
+<p>It is recommended to set the <b>hpssoConfig.creation.tokenIdleTimeout</b> and <b>idm.token.lifetime.minutes</b> parameters to the same value to avoid confusion. 
+</p>
+<h2 class="mw-headline" id="Example">Example</h2>
+<p>In this example, we will walk through the steps to extend the session timeout to 4 hours. Note that it is not required to change the value of tokenGlobalTimeout property because the OOTB value of 24 hours is longer enough than 4 hours. 
+Note: in the example, we assume the SMA suite namespace is itsma1. You need to replace it with the namespace in your environment. 
+</p>
+<ul><li>Run the following command in one of the cluster nodes to edit the idm-config ConfigMap.</li></ul>
+<pre>kubectl edit cm -n itsma1 idm-config
+</pre>
+<ul><li>Change the value of the TokenExpirationPeriod property to 14400. Save the change.</li>
+<li>Go to <b>SMAX Suite &gt; Administration portal &gt; CONFIGURATIONS &gt; Security &gt; Lightweight SSO configuration</b>. Change the value of <b>Token expiration period (minutes)</b> to 240.</li>
+<li>After IDM pods are up and running, the new settings take effective.</li></ul>
+<h2 class="mw-headline" id="Tips_and_Tricks">Tips and Tricks</h2>
+<p>The IDM X-AUTH token is renewed when half of the time defined by idm.token.lifetime.minutes has passed. Due to the less frequent renew mechanism, the actual session timeout is shorter than what is expected. In extreme cases, users may experience session timeout right after half of the desired time. 
+For example, assume the parameter is set to 1 hour. User A logs in to SMAX at 2:00. She operates on the UI till 2:29 and goes away. When she comes back to the system at 3:01, she will find the session times out. To her, it seems the system kicks out the session which is only idle for 30 minutes instead of 1 hour. 
+Let's walk through the story again to see what happens. When the user A logs in to the system, an IDM X-AUTH token is produced. In each request to backend services, it checks how long the token is to expire. Since the token will not expire in 30 minutes, it is not renewed. From 2:29 to 3:00, since there is no requests from the client, no chance to renew the token. At 3:01, when a request comes from the client, the token exceeds its expiration period (i.e. 1 hour) so that the session is timed out. 
+</p><p>Note: The following two parameters in the idm-config ConfigMap are useless for user session timeout.
+</p>
+<pre>   ConnectionTimeout: "180"
+   SessionTimeout: "1800"
+</pre>
+<!-- 
+NewPP limit report
+Cached time: 20200217094548
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.020 seconds
+Real time usage: 0.070 seconds
+Preprocessor visited node count: 27/1000000
+Preprocessor generated node count: 64/1000000
+Post‐expand include size: 7654/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 0/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:875826-0!canonical and timestamp 20200217094548 and revision id 1577598
+ -->
+</div>
