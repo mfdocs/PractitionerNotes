@@ -1,0 +1,94 @@
+<div class="mw-parser-output"><div id="toc" class="toc"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none"><div class="toctitle" lang="en" dir="ltr"><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/Studio/Studio_Tutorial_2#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a>
+<ul>
+<li class="toclevel-2"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/Studio/Studio_Tutorial_2#Adding_Classes_to_the_Service_Catalog"><span class="tocnumber">1.1</span> <span class="toctext">Adding Classes to the Service Catalog</span></a>
+<ul>
+<li class="toclevel-3"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/Studio/Studio_Tutorial_2#Setting_up_the_Service_Catalog_Category_and_Service"><span class="tocnumber">1.1.1</span> <span class="toctext">Setting up the Service Catalog Category and Service</span></a></li>
+<li class="toclevel-3"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/Studio/Studio_Tutorial_2#Create_a_new_field_in_the_Offering_record"><span class="tocnumber">1.1.2</span> <span class="toctext">Create a new field in the Offering record</span></a></li>
+<li class="toclevel-3"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/Studio/Studio_Tutorial_2#Creating_the_Fulfillment_Plan"><span class="tocnumber">1.1.3</span> <span class="toctext">Creating the Fulfillment Plan</span></a></li>
+<li class="toclevel-3"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/Studio/Studio_Tutorial_2#Creating_the_Service_Offering_with_a_Rule"><span class="tocnumber">1.1.4</span> <span class="toctext">Creating the Service Offering with a Rule</span></a></li>
+<li class="toclevel-3"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/Studio/Studio_Tutorial_2#Creating_the_Service_Offering"><span class="tocnumber">1.1.5</span> <span class="toctext">Creating the Service Offering</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+<p>The first section of this tutorial described how to build a simple Training application where an instructor could add courses, schedule classes, and add students to those classes.
+</p><p>In part two of the tutorial, you will create the functionality that will allow the students themselves to sign up for classes. This involves automatically creating a Service Offering for a class once it becomes available. 
+</p><p><br>
+</p>
+<h2 class="mw-headline" id="Adding_Classes_to_the_Service_Catalog">Adding Classes to the Service Catalog</h2>
+<p>The easiest way to make the classes available to the end users is to make them available in the Service Catalog. This will allow the end users to sign up for a class through the End User Portal. You will create the necessary functionality to automatically create an Offering which will add the end user to a class as a student.
+</p><p><br>
+</p>
+<h3 class="mw-headline" id="Setting_up_the_Service_Catalog_Category_and_Service">Setting up the Service Catalog Category and Service</h3>
+<p>Every Offering in the Service Catalog must be assigned to a Service in the Service Asset Configuration Management module (SACM). Additionally, the Service must be associated with a Category inside the Service Catalog. 
+</p><p>First, create a new “Training” category. From the Service Catalog Menu, select the “Add a Category” button at the top of the Category list. At a minimum, you need to give the new category a Display label (Training) and a Description. Finally, press the Save button.
+<a onclick="javascript:loadingImage(this);" class="image"><img alt="Studio tut2 1.png" src="/mediawiki/images/f/fe/Studio_tut2_1.png" width="974" height="787" data-file-width="974" data-file-height="787"></a>
+</p><p>Now you can create a new Service inside the Training category. Select the new category from the list of categories, then select the “Add a Service” option from the Service list (which will be empty). Select “Create New” and fill in the Display Label field with “Training Classes” or something similar.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="Studio tut2 2.png" src="/mediawiki/images/6/6e/Studio_tut2_2.png" width="974" height="491" data-file-width="974" data-file-height="491"></a>  
+</p><p>Set the Subtype as “Business service” and set the Catalog Description (this is how the Service will be displayed to end users in the Service Catalog) to “Training Classes”. Then select the "Save &amp; Edit" option. In the next screen, move the Service into the "Operation" phase.  
+</p><p>You should now have the “Training Classes” service listed in the Service Catalog screen.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="Studio tut2 3.png" src="/mediawiki/images/e/eb/Studio_tut2_3.png" width="974" height="362" data-file-width="974" data-file-height="362"></a>
+</p>
+<h3 class="mw-headline" id="Create_a_new_field_in_the_Offering_record">Create a new field in the Offering record</h3>
+<p>Go back the Studio and select the “Offering” record type. Add a new field with the following information:
+</p>
+<ul><li>Name:&nbsp; TrainingClass</li>
+<li>Multilingual label: Training Class</li>
+<li>Logical type:&nbsp;ENTITY_LINK</li>
+<li>Reference to:&nbsp; Class</li></ul>
+<p>You will use this field to link the automatically created offering with the training class.
+</p>
+<h3 class="mw-headline" id="Creating_the_Fulfillment_Plan">Creating the Fulfillment Plan</h3>
+<p>To correctly create the Service Offerings, you first need to create a Fulfillment Plan that will be used by every offering created. From the Service Catalog, select the “Fulfillment Plans” option from the top of the menu. Then select the “New service plan” option.
+</p><p>Fill in the Display label and Description fields with “Training Class” and select the “Save &amp; Edit” button. 
+<a onclick="javascript:loadingImage(this);" class="image"><img alt="Studio tut2 5.png" src="/mediawiki/images/8/80/Studio_tut2_5.png" width="909" height="360" data-file-width="909" data-file-height="360"></a>
+</p><p>In the resulting screen, select the “Task plan” tab on the left-hand side of the page. Select the “Fulfill” tab of the Task plans, click the “Start” node, and select “Automated task”.
+</p><p>In the “New automatic task” screen, set the Title and Description fields to “Create student record.” At the bottom of the screen, click the “Set rule” link. From the following screen, choose the “Create record” rule type.
+</p><p>Now set the “record type” parameter to “Student,” and set the following fields/values to the following:
+</p><p><b>Class_c:</b> ${entity.RequestsOffering.TrainingClass_c}
+</p><p><b>Student_c:</b> ${entity.RequestedForPerson}
+<a onclick="javascript:loadingImage(this);" class="image"><img alt="Studio tut2 6.png" src="/mediawiki/images/5/52/Studio_tut2_6.png" width="1296" height="876" data-file-width="1296" data-file-height="876"></a>
+</p>
+<h3 class="mw-headline" id="Creating_the_Service_Offering_with_a_Rule">Creating the Service Offering with a Rule</h3>
+<p>Return to the Class workflow (the Processes and Rules tab in the Studio) and click on the transition between the “New” and “Enrollment” phases. Add a new “Simple rule” of type “Create record.”
+</p><p>Select “Offering” as the record type, and fill in the fields/values section as the following:
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="Studio tut2 8.png" src="/mediawiki/images/c/cf/Studio_tut2_8.png" width="747" height="782" data-file-width="747" data-file-height="782"></a>
+</p><p>The full expression for the Description field is: <i>${concat(entity.DisplayLabel,' - ',entity.Location_c.DisplayLabel, ' - ', format(entity.ClassStartDate_c,'short'), ' - ', format(entity.ClassEndDate_c,'short'))}</i>
+</p><p>The full expression for the Display Label field is: <i>${concat(entity.DisplayLabel, ' - ' , format(entity.ClassStartDate_c,'short'))}</i>
+</p>
+<h3 class="mw-headline" id="Creating_the_Service_Offering">Creating the Service Offering</h3>
+<p>With the new rule you created, the system creates the Service Offering automatically when a class is moved into the Enrollment phase. Once you have created a class and moved it forward in the workflow, the class will appear in the Service Catalog under the Training category you set up earlier.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="Studio tut2 9.png" src="/mediawiki/images/7/7b/Studio_tut2_9.png" width="1735" height="636" data-file-width="1735" data-file-height="636"></a>
+After creating a request with this new offering and moving it to the Fulfillment phase, the Requested For person from the Request will automatically be added as a student in the class.
+</p><p><a onclick="javascript:loadingImage(this);" class="image"><img alt="Studio tut2 10.png" src="/mediawiki/images/d/d0/Studio_tut2_10.png" width="1728" height="898" data-file-width="1728" data-file-height="898"></a>
+</p>
+<!-- 
+NewPP limit report
+Cached time: 20200217095230
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.028 seconds
+Real time usage: 0.168 seconds
+Preprocessor visited node count: 11/1000000
+Preprocessor generated node count: 32/1000000
+Post‐expand include size: 5124/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 0/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:875796-0!canonical and timestamp 20200217095230 and revision id 1577559
+ -->
+</div>
