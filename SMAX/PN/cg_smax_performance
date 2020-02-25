@@ -1,0 +1,502 @@
+<div class="PNbanner"><div style="margin: auto 1% auto 0;"><i style="color:#0073e7;cursor:pointer;padding: 5%;" class="material-icons tooltip">info <span class="tooltiptext">The content has not been reviewed or tested by Micro Focus.</span></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><div>This page was added by an ITOM practitioner. Join the practitioner group, contribute, and build a stronger knowledge network.</div></div><div class="f14 metric" style="color:#656668;display:flex;"><img src="/assets/images/calendar.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="updateDate">&nbsp; Updated on Nov 8, 2019</span> &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; <img src="/assets/images/updated.png" style="height:12px;margin-top:auto;margin-bottom:auto;"><span class="readTime">&nbsp; 25 minutes to read</span>&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;<div>Rated 5&nbsp;<img src="/assets/images/star.png" style="height:12px;margin-top:auto;margin-bottom:auto;"></div> </div><br><div class="mw-parser-output"><p><br>
+In order to keep your SMA system running at peak potential, or to correct a slow or unstable system, there are many methods available to track and improve performance. Such methods include:
+</p>
+<ul><li>Monitoring the Operating System (OS)</li>
+<li>Monitoring the Postgres database</li>
+<li>Applying the latest SMA patch</li>
+<li>Using the thinpool</li>
+<li>Tuning the database (must be done for each tenant)</li>
+<li>Tuning the pods</li>
+<li>Rebalancing the pods regularly</li>
+<li>Adding more workers</li></ul>
+<p>This document examines each method and gives examples and suggestions for maintaining peak application performance.
+</p>
+<div id="toc" class="toc"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none"><div class="toctitle" lang="en" dir="ltr"><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#Monitoring_the_Operating_System"><span class="tocnumber">1</span> <span class="toctext">Monitoring the Operating System</span></a>
+<ul>
+<li class="toclevel-2 tocsection-2"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#Setting_a_baseline"><span class="tocnumber">1.1</span> <span class="toctext">Setting a baseline</span></a></li>
+<li class="toclevel-2 tocsection-3"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#Monitoring_Tools"><span class="tocnumber">1.2</span> <span class="toctext">Monitoring Tools</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-4"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#Monitoring_the_Kubernetes_cluster"><span class="tocnumber">2</span> <span class="toctext">Monitoring the Kubernetes cluster</span></a></li>
+<li class="toclevel-1 tocsection-5"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#Monitoring_Postgres"><span class="tocnumber">3</span> <span class="toctext">Monitoring  Postgres</span></a></li>
+<li class="toclevel-1 tocsection-6"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#Monitoring_the_application"><span class="tocnumber">4</span> <span class="toctext">Monitoring the application</span></a></li>
+<li class="toclevel-1 tocsection-7"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#Tuning_tips"><span class="tocnumber">5</span> <span class="toctext">Tuning tips</span></a>
+<ul>
+<li class="toclevel-2 tocsection-8"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#Applying_the_latest_SMA_Patch"><span class="tocnumber">5.1</span> <span class="toctext">Applying the latest SMA Patch</span></a></li>
+<li class="toclevel-2 tocsection-9"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#OS_tuning"><span class="tocnumber">5.2</span> <span class="toctext">OS tuning</span></a></li>
+<li class="toclevel-2 tocsection-10"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#Pod_tuning"><span class="tocnumber">5.3</span> <span class="toctext">Pod tuning</span></a>
+<ul>
+<li class="toclevel-3 tocsection-11"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#Gateway_pod"><span class="tocnumber">5.3.1</span> <span class="toctext">Gateway pod</span></a></li>
+<li class="toclevel-3 tocsection-12"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#Platform_pods"><span class="tocnumber">5.3.2</span> <span class="toctext">Platform pods</span></a></li>
+<li class="toclevel-3 tocsection-13"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#Idm.2Fbo-login_pods"><span class="tocnumber">5.3.3</span> <span class="toctext">Idm/bo-login pods</span></a></li>
+<li class="toclevel-3 tocsection-14"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#Rabbitmq_pod"><span class="tocnumber">5.3.4</span> <span class="toctext">Rabbitmq pod</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-15"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#Database_tuning"><span class="tocnumber">5.4</span> <span class="toctext">Database tuning</span></a>
+<ul>
+<li class="toclevel-3 tocsection-16"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#Disk_speed"><span class="tocnumber">5.4.1</span> <span class="toctext">Disk speed</span></a></li>
+<li class="toclevel-3 tocsection-17"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#Auto_vacuum"><span class="tocnumber">5.4.2</span> <span class="toctext">Auto vacuum</span></a></li>
+<li class="toclevel-3 tocsection-18"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#Indexing_the_OpbTaskDataJSON_table"><span class="tocnumber">5.4.3</span> <span class="toctext">Indexing the OpbTaskDataJSON table</span></a></li>
+<li class="toclevel-3 tocsection-19"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#Tuning_the_slt_targets_related_queries"><span class="tocnumber">5.4.4</span> <span class="toctext">Tuning the slt_targets related queries</span></a>
+<ul>
+<li class="toclevel-4 tocsection-20"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#1._Schedule_below_command_regularly_via_cron_job:"><span class="tocnumber">5.4.4.1</span> <span class="toctext">1. Schedule below command regularly via cron job:</span></a></li>
+<li class="toclevel-4 tocsection-21"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#2._Add_indexes:"><span class="tocnumber">5.4.4.2</span> <span class="toctext">2. Add indexes:</span></a></li>
+<li class="toclevel-4 tocsection-22"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#3._turn_off_auto_vacuum_on_slt_targets_table:"><span class="tocnumber">5.4.4.3</span> <span class="toctext">3. turn off auto vacuum on slt_targets table:</span></a></li>
+</ul>
+</li>
+<li class="toclevel-3 tocsection-23"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#Handling_other_top_queries"><span class="tocnumber">5.4.5</span> <span class="toctext">Handling other top queries</span></a></li>
+<li class="toclevel-3 tocsection-24"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#Tune_Audit_queries"><span class="tocnumber">5.4.6</span> <span class="toctext">Tune Audit queries</span></a></li>
+<li class="toclevel-3 tocsection-25"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#Tune_reports"><span class="tocnumber">5.4.7</span> <span class="toctext">Tune reports</span></a></li>
+<li class="toclevel-3 tocsection-26"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#Add_more_resources"><span class="tocnumber">5.4.8</span> <span class="toctext">Add more resources</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-27"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#Rebalancing_pods"><span class="tocnumber">5.5</span> <span class="toctext">Rebalancing pods</span></a></li>
+<li class="toclevel-2 tocsection-28"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#Tuning_search_performance"><span class="tocnumber">5.6</span> <span class="toctext">Tuning search performance</span></a></li>
+<li class="toclevel-2 tocsection-29"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#Turn_off_the_fluentd_and_logrotate_for_version_2018.08_.7E_2019.02"><span class="tocnumber">5.7</span> <span class="toctext">Turn off the fluentd and logrotate for version 2018.08 ~ 2019.02</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-30"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance#Other_known_issues"><span class="tocnumber">6</span> <span class="toctext">Other known issues</span></a></li>
+</ul>
+</div>
+
+<h2 class="mw-headline" id="Monitoring_the_Operating_System">Monitoring the Operating System</h2>
+<h3 class="mw-headline" id="Setting_a_baseline">Setting a baseline</h3>
+<p>Before making any changes, you need to set up a baseline in order to measure the effect of each change.
+</p><p>To set up the baseline, you must monitor the system for a few days and save the results. When you encounter any new issue or apply a change to the system, you can use this baseline to compare the before/after results and understand the impact to the system.
+</p><p>There are several layers to monitor: 
+</p>
+<ul><li>Operating System</li>
+<li>Kubernetes Cluster</li>
+<li>Postgres Database</li>
+<li>SMA Application</li></ul>
+<h3 class="mw-headline" id="Monitoring_Tools">Monitoring Tools</h3>
+<p>There are many monitoring tools that you may use to monitor your SMAX system, such as the Micro Focus OpsB suite. If you do not have a monitoring tool, there are open source Linux tools that you may use.
+</p><p>The tool will need to monitor the Operating Systems for the master nodes, worker nodes, nfs, and Postgres.
+</p><p>If necessary, Install the open source Linux monitoring tools on these systems:
+</p>
+<pre>yum install -y sysstat
+</pre>
+<p>Change the data collection time from 10 minutes to 1 minute. To do this, edit the <b>sysstat</b> configuration file:
+</p>
+<pre>vi /etc/cron.d/sysstat
+</pre>
+<p>Change the line that reads
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span>*/10 * * * * root /usr/lib64/sa/sa1 <span class="m">1</span> <span class="m">1</span>
+<span class="m">53</span> <span class="m">23</span> * * * root /usr/lib64/sa/sa2 -A
+</pre></div>
+<p>to
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span>*/1 * * * * root /usr/lib64/sa/sa1 <span class="m">1</span> <span class="m">1</span>
+<span class="m">53</span> <span class="m">23</span> * * * root <span class="nv">LANG</span><span class="o">=</span>en_US<span class="p">;</span> /usr/lib64/sa/sa2 -A -p
+</pre></div>
+<p>By default, the logs will be written to the <i>/var/log/sa</i> directory, and the tool will collect the last 31 days of system information.
+To save system disk space, change the compress parameter with the following command:
+</p>
+<pre>vi /etc/sysconfig/sysstat
+</pre>
+<p>Change the line that reads
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="nv">COMPRESSAFTER</span><span class="o">=</span><span class="m">31</span>
+<span class="nv">ZIP</span><span class="o">=</span><span class="s2">"bzip2"</span>
+</pre></div>
+<p>to
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="nv">COMPRESSAFTER</span><span class="o">=</span><span class="m">7</span>
+<span class="nv">ZIP</span><span class="o">=</span><span class="s2">"gzip"</span>
+</pre></div>
+<p>To help in the analysis of the monitoring result, you may wish to combine all the monitoring results into a single file with the following command:
+</p>
+<pre>cat /var/log/sa/sar?? &gt; /tmp/sar.all
+</pre>
+<p>You can send the sar.all file to Micro Focus support, who can help you in the analysis. You can also analyze the file yourself with the <b>ksar</b> application (an open source graphing tool). You can download <b>ksar</b> 5.2.4 or later from <a target="1" rel="nofollow" class="external free" href="https://github.com/vlsi/ksar/releases">https://github.com/vlsi/ksar/releases</a>:
+<a target="1" rel="nofollow" class="external free" href="https://github.com/vlsi/ksar/releases">https://github.com/vlsi/ksar/releases</a>
+To use ksar, run using java with the following command (please use 64bit Java):
+</p>
+<pre>java -jar ksar*.jar
+</pre>
+<p>and select sar.all from the GUI for analysis.
+</p><p>In the report, check for the following indicators:
+</p>
+<ul><li>CPU -&gt; all &lt; 95%, the lower the better, high CPU usage indicates not enough CPU resource or not balanced cluster;</li>
+<li>Devices -&gt; avgqu-sz &lt; 20, the lower the better, high disk queue size indicates disk IO may be the bottleneck;</li>
+<li>Devices -&gt; await &lt; 50 ms, the lower the better, high disk wait time indicates disk IO may be the bottleneck;</li>
+<li>Load -&gt; runq-sz &lt; No. cpu * 2, the lower the better, high run queue indicates not enough CPU resource;</li>
+<li>Swap -&gt; pswpout/s &lt; 100, the lower the better, high page out indicates not enough RAM;</li>
+<li>Swap -&gt; pswpin/s &lt; 100, the lower the better, high page in indicatss not enough RAM.</li></ul>
+<p>As the default sysstat cannot monitor the available memory, you need to monitor the available memory by adding the <b>free</b> command into the cron job as below. You may need to clean up the free.log every month or so.
+</p>
+<pre>*/1 * * * * date +"\%F \%X" &gt;&gt; /tmp/free.log&nbsp;; free -m -w &gt;&gt; /tmp/free.log
+</pre>
+<p>This will collect the available memory every minute. The "free" memory reported by free command may be lower than 100MB. This is normal. However, if the "available" memory is lower than 100 MB it may indicate the system does not have enough RAM. You can also double check the swap in (pswpin/s) and swap out (pswpout/s) collected by sysstat to make sure the RAM is the bottleneck.
+</p>
+<h2 class="mw-headline" id="Monitoring_the_Kubernetes_cluster">Monitoring the Kubernetes cluster</h2>
+<p>Micro Focus has a script for checking the resources within the Kubernetes cluster named check_resource.py. This script can highlight areas of low resources or failing pods, making it easier to determine if more resources are needed or if specific pods need to be moved to another node. This script can be run every 15 minutes. You can download the check_resource.py from <a target="1" rel="nofollow" class="external text" href="https://marketplace.microfocus.com/itom/content/service-management-automation-2019-02">Micro Focus ITOM Marketplace</a> Diagnostic Toolkit.
+</p><p>Before using the check_resource.py, it is recommended that you review the <a href="./itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cg_monitor_kube" title="SMAX:2019.11/PractitionersNotes/SMAX Config/cg system admin/cg monitor kube">Monitoring and tuning resource utilization in a Kubernetes cluster</a> document. This document contains a great deal of information regarding how to use the script to help check, tune, and monitor the resources in the Kubernetes cluster.
+</p>
+<h2 class="mw-headline" id="Monitoring_Postgres">Monitoring  Postgres</h2>
+<p>Postgres has built-in tools for performance monitoring. To enable this functionality, change the following parameters in the postgres configuration file postgresql.conf:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span>shared_preload_libraries <span class="o">=</span> <span class="s1">'pg_stat_statements'</span>
+pg_stat_statements.max <span class="o">=</span> <span class="mi">10000</span>
+pg_stat_statements.track <span class="o">=</span> all
+</pre></div>
+<p>After making these changes, it is necessary to reboot Postgres to activate the monitoring. In the psql command line interface, type the following command:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">CREATE</span> <span class="n">EXTENSION</span> <span class="k">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="n">pg_stat_statements</span><span class="p">;</span>
+<span class="err">\</span><span class="n">x</span> <span class="n">auto</span>
+<span class="err">\</span><span class="n">pset</span> <span class="n">format</span> <span class="n">wrapped</span>
+</pre></div>
+<p>In order to view the top queries related to CPU, execute the following:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">pg_stat_statements</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">total_time</span>  <span class="k">DESC</span> <span class="k">LIMIT</span> <span class="mi">20</span><span class="p">;</span>
+</pre></div>
+<p>To check the top queries related to disk:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">pg_stat_statements</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">shared_blks_dirtied</span>  <span class="k">DESC</span> <span class="k">LIMIT</span> <span class="mi">20</span><span class="p">;</span>
+</pre></div>
+<p>After the monitoring has been enabled, you can use the following psql commands to view the results.
+To check the current running queries:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">query_start</span> <span class="k">as</span> <span class="ss">"runtime"</span><span class="p">,</span> <span class="n">usename</span><span class="p">,</span> <span class="n">datname</span><span class="p">,</span> <span class="k">state</span><span class="p">,</span> <span class="n">query</span>
+  <span class="k">FROM</span>  <span class="n">pg_stat_activity</span>
+  <span class="k">WHERE</span> <span class="k">state</span><span class="o">=</span><span class="s1">'active'</span>
+ <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">runtime</span> <span class="k">DESC</span><span class="p">;</span>
+</pre></div>
+<p>To check the database connections:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">datname</span><span class="p">,</span> <span class="k">count</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">FROM</span>  <span class="n">pg_stat_activity</span> <span class="k">group</span> <span class="k">by</span> <span class="n">datname</span> <span class="k">order</span> <span class="k">by</span> <span class="mi">2</span> <span class="k">desc</span><span class="p">;</span>
+</pre></div>
+<p>To check the dead tuples, use the following command. You need to check for dead tuples in different databases including <b>xservices_ems</b> and <b>xservices_rms</b>.
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">select</span> <span class="n">relname</span><span class="p">,</span> <span class="n">n_dead_tup</span><span class="p">,</span> <span class="n">last_vacuum</span><span class="p">,</span> <span class="n">last_autovacuum</span> <span class="k">from</span>
+<span class="n">pg_catalog</span><span class="p">.</span><span class="n">pg_stat_all_tables</span>
+<span class="k">where</span> <span class="n">n_dead_tup</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">order</span> <span class="k">by</span> <span class="n">n_dead_tup</span> <span class="k">desc</span><span class="p">;</span>
+</pre></div>
+<p>If you found some tables have more than 1M dead tuples, you should run the full vacuum on it.  Having dead tuples in the database is similar to having a fragmented hard disk. The full vacuum is like a full disk defragment, it can release the disk usage and improve performance.
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">VACUUM</span> <span class="k">FULL</span> <span class="k">FREEZE</span> <span class="k">VERBOSE</span> <span class="o">&lt;</span><span class="n">yourTableName</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="k">ANALYZE</span> <span class="o">&lt;</span><span class="n">yourTableName</span><span class="o">&gt;</span><span class="p">;</span>
+</pre></div>
+<p>Then check the dead tuples again with previous query on pg_stat_all_tables.
+If you find slt_targets_&lt;yourtenantid&gt; table has lots of dead tuples, run the cluster command every night. You can find the commands in the Database tuning section.
+</p><p>To check the disk space usage (again check the different databases like <b>xservices_ems</b> and <b>xservices_rms</b>):
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="o">*</span><span class="p">,</span> <span class="n">pg_size_pretty</span><span class="p">(</span><span class="n">total_bytes</span><span class="p">)</span> <span class="k">AS</span> <span class="n">total</span>
+    <span class="p">,</span> <span class="n">pg_size_pretty</span><span class="p">(</span><span class="n">index_bytes</span><span class="p">)</span> <span class="k">AS</span> <span class="k">INDEX</span>
+    <span class="p">,</span> <span class="n">pg_size_pretty</span><span class="p">(</span><span class="n">toast_bytes</span><span class="p">)</span> <span class="k">AS</span> <span class="k">toast</span>
+    <span class="p">,</span> <span class="n">pg_size_pretty</span><span class="p">(</span><span class="n">table_bytes</span><span class="p">)</span> <span class="k">AS</span> <span class="k">TABLE</span>
+  <span class="k">FROM</span> <span class="p">(</span>
+  <span class="k">SELECT</span> <span class="o">*</span><span class="p">,</span> <span class="n">total_bytes</span><span class="o">-</span><span class="n">index_bytes</span><span class="o">-</span><span class="n">COALESCE</span><span class="p">(</span><span class="n">toast_bytes</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="k">AS</span> <span class="n">table_bytes</span> <span class="k">FROM</span> <span class="p">(</span>
+      <span class="k">SELECT</span> <span class="k">c</span><span class="p">.</span><span class="n">oid</span><span class="p">,</span><span class="n">nspname</span> <span class="k">AS</span> <span class="n">table_schema</span><span class="p">,</span> <span class="n">relname</span> <span class="k">AS</span> <span class="k">TABLE_NAME</span>
+              <span class="p">,</span> <span class="k">c</span><span class="p">.</span><span class="n">reltuples</span> <span class="k">AS</span> <span class="n">row_estimate</span>
+              <span class="p">,</span> <span class="n">pg_total_relation_size</span><span class="p">(</span><span class="k">c</span><span class="p">.</span><span class="n">oid</span><span class="p">)</span> <span class="k">AS</span> <span class="n">total_bytes</span>
+              <span class="p">,</span> <span class="n">pg_indexes_size</span><span class="p">(</span><span class="k">c</span><span class="p">.</span><span class="n">oid</span><span class="p">)</span> <span class="k">AS</span> <span class="n">index_bytes</span>
+              <span class="p">,</span> <span class="n">pg_total_relation_size</span><span class="p">(</span><span class="n">reltoastrelid</span><span class="p">)</span> <span class="k">AS</span> <span class="n">toast_bytes</span>
+          <span class="k">FROM</span> <span class="n">pg_class</span> <span class="k">c</span>
+          <span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">pg_namespace</span> <span class="n">n</span> <span class="k">ON</span> <span class="n">n</span><span class="p">.</span><span class="n">oid</span> <span class="o">=</span> <span class="k">c</span><span class="p">.</span><span class="n">relnamespace</span>
+          <span class="k">WHERE</span> <span class="n">relkind</span> <span class="o">=</span> <span class="s1">'r'</span> <span class="k">and</span> <span class="n">nspname</span> <span class="k">NOT</span> <span class="k">IN</span> <span class="p">(</span><span class="s1">'pg_catalog'</span><span class="p">,</span> <span class="s1">'information_schema'</span><span class="p">)</span>
+  <span class="p">)</span> <span class="n">a</span>
+<span class="p">)</span> <span class="n">a</span> <span class="k">order</span> <span class="k">by</span> <span class="n">row_estimate</span> <span class="k">desc</span><span class="p">;</span>
+</pre></div>
+<h2 class="mw-headline" id="Monitoring_the_application">Monitoring the application</h2>
+<p>Simulating common actions using a monitoring tool or a script will allow you to collect a baseline response time. Over time this baseline can be used to compare to the same actions, and warn you when the system is not performing well.
+</p>
+<h2 class="mw-headline" id="Tuning_tips">Tuning tips</h2>
+<p>To have a more stable and better performing system, please check the following.
+</p>
+<h3 class="mw-headline" id="Applying_the_latest_SMA_Patch">Applying the latest SMA Patch</h3>
+<p>It is highly recommended that customers keep their implementation running on the most current version available. Using the latest version will help to ensure reliability of the product and improve the support process when issues do arise. Most importantly, always apply the latest patch for your release. 
+</p>
+<h3 class="mw-headline" id="OS_tuning">OS tuning</h3>
+<p>Make sure to run the ostuning script documented here:
+</p><p><a target="1" rel="nofollow" class="external free" href="https://docs.microfocus.com/itom/SMAX:2019.11/AWSOSTuningScript">https://docs.microfocus.com/itom/SMAX:2019.11/AWSOSTuningScript</a>
+</p><p>And if the CPU usage is higher than 80% or runq-sz is higher than 2 * cpu count, you may need to increase the CPU.
+</p><p>If avgqu-sz or await is higher than we mentioned in the monitoring section, you may increase the IOPS of your disk. A SSD is highly recommended for the Postgres server.
+</p><p>If the available memory reported by "free -h" is too low like less than 100MB or pswpout/s, pswpin/s is  higher than we mentioned in the monitoring section, you may increase the RAM.
+</p>
+<h3 class="mw-headline" id="Pod_tuning">Pod tuning</h3>
+<p>Check the pod resource usage with the check_resource.py script mentioned earlier. If some pods have very high CPU or RAM usage (more than 85%), you may need to increase the pod resource limits. The following commands are commonly used in some customer environments to increase specific pod resource limits. Depending on the pod that is running high in CPU or RAM usage, you may need to change additional pods settings not listed here. Another indicator that pod settings may need to change is if users are experiencing http 504/502/500 errors when using the application.
+</p><p><b>Note:</b> For following commands, you need to change the namespace <b>itsma1</b> to your own namespace in your environment.
+</p>
+<h4 class="mw-headline" id="Gateway_pod">Gateway pod</h4>
+<p>Increase the resource limit of gateway pod: 2GB -&gt; 4GB, increase the replicas 50%:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span>kubectl patch deploy/itom-xruntime-gateway -n itsma1 -p <span class="s1">'{"spec": {"template": {"spec": {"containers": [{"name": "gateway","resources": {"limits": {"memory": "4096M"}}}]}}}}'</span>
+</pre></div>
+<p>For version before 2019.02.001, reduce the tomcat connection timeout for gateway from 180s to 20s,
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span>kubectl patch deploy/itom-xruntime-gateway -n itsma1 -p <span class="s1">'{"spec":{"template":{"spec":{"containers":[{"name":"gateway","env":[{"name":"TOMCAT_CONNECTOR_TIMEOUT","valueFrom":null,"value":"20000"}]}]}}}}'</span>
+</pre></div>
+<h4 class="mw-headline" id="Platform_pods">Platform pods</h4>
+<p>Increase the resource limit of platform pod: 4GB -&gt; 8GB:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span>kubectl patch deploy/itom-xruntime-platform -n itsma1 -p <span class="s1">'{"spec":{"template":{"spec":{"containers":[{"name":"itom-xruntime-platform","resources": {"limits": {"memory": "8192M"}}}]}}}}'</span>
+
+kubectl patch deploy/itom-xruntime-platform-offline -n itsma1 -p <span class="s1">'{"spec":{"template":{"spec":{"containers":[{"name":"itom-xruntime-platform","resources": {"limits": {"memory": "8192M"}}}]}}}}'</span>
+</pre></div>
+<h4 id="Idm/bo-login_pods"><span class="mw-headline" id="Idm.2Fbo-login_pods">Idm/bo-login pods</span></h4>
+<p>If you find idm and/or bo-login pods are not stable:
+Increase the resource limit of idm pod: 2CPU  -&gt;  4CPU, 2GB  -&gt;  6GB, JVM 1.5/2GB -&gt; 5GB"
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span>kubectl patch deploy/idm -n itsma1 -p <span class="s1">'{"spec":{"template":{"spec":{"containers":[{"name":"idm","resources": {"limits": {"cpu": "4","memory": "6144M"}}}]}}}}'</span>
+
+kubectl patch deploy/idm -n itsma1 -p <span class="s1">'{"spec":{"template":{"spec":{"containers":[{"name":"idm","env":[{"name":"JVM_MAX_SIZE","value":"5120M"},{"name":"JVM_MIN_SIZE","value":"5120M"}]}]}}}}'</span>
+</pre></div>
+<p>Increase the resource limit of bo-login pod: 1.5GB  -&gt;  4GB
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span>kubectl patch deploy/itom-bo-login-deployment -n itsma1 -p <span class="s1">'{"spec":{"template":{"spec":{"containers":[{"name":"itom-bo-login","resources": {"limits": {"memory": "4096M"}}}]}}}}'</span>
+</pre></div>
+<h4 class="mw-headline" id="Rabbitmq_pod">Rabbitmq pod</h4>
+<p>Increase the resource limit of rabbitmq pod: 1.5CPU -&gt; 2CPU, 30GB  -&gt;  4GB; and change the replicas to 1
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span>kubectl patch statefulsets/infra-rabbitmq -n itsma1 -p <span class="s1">'{"spec":{"template":{"spec":{"containers":[{"name":"itom-xruntime-rabbitmq","resources": {"limits": {"cpu": "2", "memory": "4096M"}}}]}}}}'</span>
+kubectl patch statefulsets/infra-rabbitmq -n itsma1 -p <span class="s1">'{"spec":{"replicas": 1}}'</span>
+</pre></div>
+<p><br>
+<b>Note:</b> The above "kubectl patch" commands are used as an easier way to change the settings, but you can always manually change the deployment settings by using the "kubectl edit ..." command. For example:
+</p>
+<pre>kubectl edit deploy/itom-xruntime-platform -n itsma1
+</pre>
+<p>And in the configuration, manually change the RAM from 4096M to 8192M.
+</p>
+<h3 class="mw-headline" id="Database_tuning">Database tuning</h3>
+<p>The following section contains information for tuning the Postgres database.
+<b>Important:</b> These steps should be performed for <b>each tenant</b>. As you add more tenants into the environment, you need to perform these steps again for the each new tenant.
+</p>
+<h4 class="mw-headline" id="Disk_speed">Disk speed</h4>
+<p>Make sure your Postgres server runs on a dedicate SSD with at least 1500 IOPS. For the best customer experience, 3000 IOPS is recommended.
+</p>
+<h4 class="mw-headline" id="Auto_vacuum">Auto vacuum</h4>
+<p>Make sure the auto vacuum is enabled for all the tables except slt_targetes_&lt;yourtenantid&gt;, following command should return setting = on:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">name</span><span class="p">,</span> <span class="n">setting</span> <span class="k">from</span> <span class="n">pg_settings</span> <span class="k">WHERE</span> <span class="n">name</span> <span class="k">like</span> <span class="s1">'autovacuum'</span><span class="p">;</span>
+</pre></div>
+<h4 class="mw-headline" id="Indexing_the_OpbTaskDataJSON_table">Indexing the OpbTaskDataJSON table</h4>
+<p>If in your top queries, you find queries like:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">body</span> <span class="k">FROM</span> <span class="ss">"OpbTaskDataJSON_&lt;yourtenantid&gt;"</span> <span class="k">WHERE</span> <span class="p">(((</span><span class="n">body</span><span class="o">-&gt;</span><span class="s1">'EndPoint'</span><span class="o">@&gt;</span><span class="s1">'{"AgentId":"2790231d052b3691c0cc05da"}'</span><span class="p">)</span> <span class="k">AND</span> <span class="p">(</span><span class="n">body</span><span class="o">-&gt;</span><span class="s1">'Task'</span><span class="o">@&gt;</span><span class="s1">'{"IsHandled":false}'</span><span class="p">))</span> <span class="k">AND</span> <span class="p">((</span><span class="n">body</span><span class="o">-&gt;</span><span class="s1">'Task'</span><span class="o">-&gt;</span><span class="s1">'EndPointTypeId'</span> <span class="o">!=</span> <span class="s1">'"platform"'</span><span class="p">)</span> <span class="k">OR</span> <span class="p">(</span><span class="n">body</span><span class="o">-&gt;</span><span class="s1">'Task'</span><span class="o">-&gt;</span><span class="s1">'EndPointTypeId'</span> <span class="k">IS</span> <span class="k">NULL</span><span class="p">)))</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">body</span><span class="o">-&gt;</span><span class="s1">'Task'</span><span class="o">-&gt;</span><span class="s1">'Configuration'</span><span class="o">-&gt;</span><span class="s1">'Priority'</span> <span class="k">ASC</span><span class="p">,</span><span class="n">body</span><span class="o">-&gt;</span><span class="s1">'Task'</span><span class="o">-&gt;</span><span class="s1">'SubmitTime'</span> <span class="k">ASC</span> <span class="k">LIMIT</span> <span class="mi">2000</span><span class="p">;</span>
+</pre></div>
+<p>Create a new index for the OpbTaskDataJSON with the following command:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="err">\</span><span class="k">c</span> <span class="n">xservices_rms</span>
+<span class="k">create</span> <span class="k">index</span>   <span class="ss">"mf_opbindex"</span> <span class="k">on</span> <span class="ss">"OpbTaskDataJSON_&lt;yourtenantid&gt;"</span> <span class="k">using</span> <span class="n">btree</span> <span class="p">(((</span><span class="n">body</span> <span class="o">-&gt;</span> <span class="s1">'Task'</span><span class="p">::</span><span class="nb">text</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">'AgentId'</span><span class="p">::</span><span class="nb">text</span><span class="p">))</span> <span class="k">WHERE</span> <span class="p">(</span><span class="n">body</span> <span class="o">-&gt;</span> <span class="s1">'Task'</span><span class="p">::</span><span class="nb">text</span><span class="p">)</span> <span class="o">@&gt;</span> <span class="s1">'{"IsHandled": false}'</span><span class="p">::</span><span class="n">jsonb</span><span class="p">;</span>
+</pre></div>
+<p>To ensure the new index works, run following command:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">explain</span> <span class="k">analyze</span> <span class="k">SELECT</span> <span class="n">body</span> <span class="k">FROM</span> <span class="ss">"OpbTaskDataJSON_&lt;yourtenantid&gt;"</span> <span class="k">WHERE</span> <span class="p">(((</span><span class="n">body</span><span class="o">-&gt;</span><span class="s1">'EndPoint'</span><span class="o">@&gt;</span><span class="s1">'{"AgentId":"2790231d052b3691c0cc05da"}'</span><span class="p">)</span> <span class="k">AND</span> <span class="p">(</span><span class="n">body</span><span class="o">-&gt;</span><span class="s1">'Task'</span><span class="o">@&gt;</span><span class="s1">'{"IsHandled":false}'</span><span class="p">))</span> <span class="k">AND</span> <span class="p">((</span><span class="n">body</span><span class="o">-&gt;</span><span class="s1">'Task'</span><span class="o">-&gt;</span><span class="s1">'EndPointTypeId'</span> <span class="o">!=</span> <span class="s1">'"platform"'</span><span class="p">)</span> <span class="k">OR</span> <span class="p">(</span><span class="n">body</span><span class="o">-&gt;</span><span class="s1">'Task'</span><span class="o">-&gt;</span><span class="s1">'EndPointTypeId'</span> <span class="k">IS</span> <span class="k">NULL</span><span class="p">)))</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">body</span><span class="o">-&gt;</span><span class="s1">'Task'</span><span class="o">-&gt;</span><span class="s1">'Configuration'</span><span class="o">-&gt;</span><span class="s1">'Priority'</span> <span class="k">ASC</span><span class="p">,</span><span class="n">body</span><span class="o">-&gt;</span><span class="s1">'Task'</span><span class="o">-&gt;</span><span class="s1">'SubmitTime'</span> <span class="k">ASC</span> <span class="k">LIMIT</span> <span class="mi">2000</span><span class="p">;</span>
+</pre></div>
+<p>it should return:
+</p>
+<pre>… Index Scan using mf_opbindex …
+</pre>
+<h4 class="mw-headline" id="Tuning_the_slt_targets_related_queries">Tuning the slt_targets related queries</h4>
+<p>If in your top queries, you found queries like below, 
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">UPDATE</span> <span class="n">slt_targets_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span> <span class="k">SET</span> <span class="n">elapsed_duration</span><span class="o">=</span><span class="p">....</span>
+</pre></div>
+<p>And your version is before 2019.05, you can do the following, 
+</p>
+<h5 class="mw-headline" id="1._Schedule_below_command_regularly_via_cron_job:">1. Schedule below command regularly via cron job:<span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance&amp;veaction=edit&amp;section=20" class="mw-editsection-visualeditor" title="Edit section: 1. Schedule below command regularly via cron job:">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance&amp;action=edit&amp;section=20" title="Edit section: 1. Schedule below command regularly via cron job:">edit source</a><span class="mw-editsection-bracket">]</span></span></h5>
+<p>It is recommended that you run it once for all your tenants and then schedule the commands to run every night. 
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="err">\</span><span class="k">c</span> <span class="n">xservices_ems</span>
+<span class="k">cluster</span> <span class="n">slt_targets_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span> <span class="k">using</span> <span class="n">slt_targets_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span><span class="n">_sltd_id_idx</span><span class="p">;</span>
+<span class="k">analyze</span> <span class="n">slt_targets_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span>
+</pre></div>
+<h5 class="mw-headline" id="2._Add_indexes:">2. Add indexes:<span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance&amp;veaction=edit&amp;section=21" class="mw-editsection-visualeditor" title="Edit section: 2. Add indexes:">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance&amp;action=edit&amp;section=21" title="Edit section: 2. Add indexes:">edit source</a><span class="mw-editsection-bracket">]</span></span></h5>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="err">\</span><span class="k">c</span> <span class="n">xservices_ems</span>
+<span class="k">create</span> <span class="k">index</span> <span class="n">mf_slt_targets_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span><span class="n">_slt_update2</span> <span class="k">on</span> <span class="k">public</span><span class="p">.</span><span class="n">slt_targets_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">should_update</span><span class="p">,</span> <span class="n">is_closed</span><span class="p">,</span><span class="n">is_deleted</span><span class="p">,</span> <span class="n">active</span><span class="p">);</span>
+<span class="k">create</span> <span class="k">index</span> <span class="n">mf_slt_targets_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span><span class="n">_slt_update</span> <span class="k">on</span> <span class="k">public</span><span class="p">.</span><span class="n">slt_targets_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">is_closed</span><span class="p">,</span><span class="n">is_deleted</span><span class="p">,</span> <span class="n">effective_target</span><span class="p">);</span>
+<span class="k">CREATE</span> <span class="k">INDEX</span> <span class="n">mf_slt_tud_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span> <span class="k">ON</span> <span class="n">slt_tud_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span> <span class="k">USING</span> <span class="n">gist</span> <span class="p">(</span><span class="n">tud_range</span><span class="p">);</span>
+<span class="k">CREATE</span> <span class="k">INDEX</span> <span class="n">mf_slt_tud_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span><span class="n">_start</span> <span class="k">ON</span> <span class="n">slt_tud_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span>  <span class="p">(</span><span class="n">start_range</span><span class="p">,</span> <span class="n">range_cost</span><span class="p">);</span>
+<span class="k">CREATE</span> <span class="k">INDEX</span> <span class="n">mf_slt_tud_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span><span class="n">_end</span> <span class="k">ON</span> <span class="n">slt_tud_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span>  <span class="p">(</span><span class="n">end_range</span><span class="p">,</span> <span class="n">range_cost</span><span class="p">);</span>
+<span class="k">analyze</span> <span class="n">slt_targets_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="k">analyze</span> <span class="n">slt_tud_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span>
+</pre></div>
+<h5 class="mw-headline" id="3._turn_off_auto_vacuum_on_slt_targets_table:">3. turn off auto vacuum on slt_targets table:<span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/mediawiki/index.php?title=SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance&amp;veaction=edit&amp;section=22" class="mw-editsection-visualeditor" title="Edit section: 3. turn off auto vacuum on slt targets table:">edit</a><span class="mw-editsection-divider"> | </span><a href="/mediawiki/index.php?title=SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_practices_troubleshooting/cg_smax_performance&amp;action=edit&amp;section=22" title="Edit section: 3. turn off auto vacuum on slt targets table:">edit source</a><span class="mw-editsection-bracket">]</span></span></h5>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="err">\</span><span class="k">c</span> <span class="n">xservices_ems</span>
+<span class="k">ALTER</span> <span class="k">TABLE</span> <span class="n">slt_targets_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span> <span class="k">SET</span> <span class="p">(</span><span class="n">autovacuum_enabled</span> <span class="o">=</span> <span class="k">false</span><span class="p">);</span>
+</pre></div>
+<h4 class="mw-headline" id="Handling_other_top_queries">Handling other top queries</h4>
+<p>If you found top queries like:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">body</span> <span class="k">FROM</span> <span class="ss">"FileInfoTenantEntity_&lt;yourtenantid&gt;"</span> <span class="p">...</span>
+
+<span class="k">SELECT</span> <span class="p">...</span> <span class="k">FROM</span> <span class="ss">"ReportConfig_&lt;yourtenantid&gt;"</span> <span class="p">...</span>
+
+<span class="p">...</span> <span class="n">entities_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span> <span class="n">Request</span> <span class="k">INNER</span> <span class="k">JOIN</span> <span class="n">slt_record_status_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span> <span class="n">SLT</span> <span class="p">...</span>
+</pre></div>
+<p>For 2018.05.x, you can run following tuning queries:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="err">\</span><span class="k">c</span> <span class="n">xservices_rms</span>
+<span class="k">CREATE</span> <span class="k">OR</span> <span class="k">REPLACE</span> <span class="k">FUNCTION</span> <span class="n">drop_gin_indexes_onbody</span><span class="p">()</span> <span class="k">RETURNS</span> <span class="nb">INTEGER</span> <span class="k">AS</span> <span class="err">$$</span>
+<span class="k">DECLARE</span>
+  <span class="n">i</span> <span class="n">RECORD</span><span class="p">;</span>
+  <span class="n">error</span> <span class="nb">varchar</span><span class="p">;</span>
+<span class="k">BEGIN</span>
+  <span class="k">FOR</span> <span class="n">i</span> <span class="k">IN</span>
+    <span class="p">(</span><span class="k">SELECT</span> <span class="n">relname</span> <span class="k">FROM</span> <span class="n">pg_class</span>
+       <span class="c1">-- exclude all pkey, exclude system catalog which starts with 'pg_' and end with 'gin'</span>
+      <span class="k">WHERE</span> <span class="n">relkind</span> <span class="o">=</span> <span class="s1">'i'</span> <span class="k">AND</span> <span class="n">relname</span> <span class="k">NOT</span> <span class="k">LIKE</span> <span class="s1">'%_pkey%'</span> <span class="k">AND</span> <span class="n">relname</span> <span class="k">NOT</span> <span class="k">LIKE</span> <span class="s1">'pg_%'</span> <span class="k">and</span> <span class="n">relname</span> <span class="k">like</span> <span class="s1">'%_gin'</span><span class="p">)</span>
+  <span class="n">LOOP</span>
+    <span class="k">BEGIN</span>
+        <span class="n">RAISE</span> <span class="n">INFO</span> <span class="s1">'DROP INDEX %;'</span><span class="p">,</span> <span class="n">i</span><span class="p">.</span><span class="n">relname</span><span class="p">;</span>
+        <span class="k">EXECUTE</span> <span class="s1">'DROP INDEX '</span> <span class="o">||</span> <span class="n">i</span><span class="p">.</span><span class="n">relname</span><span class="p">;</span>
+    <span class="k">EXCEPTION</span> <span class="k">WHEN</span> <span class="n">OTHERS</span> <span class="k">THEN</span>
+        <span class="k">GET</span> <span class="n">STACKED</span> <span class="k">DIAGNOSTICS</span> <span class="n">error</span> <span class="o">=</span> <span class="k">MESSAGE_TEXT</span><span class="p">;</span>  
+        <span class="n">RAISE</span> <span class="n">NOTICE</span> <span class="s1">'%'</span><span class="p">,</span> <span class="n">error</span><span class="p">;</span>
+    <span class="k">END</span><span class="p">;</span>
+  <span class="k">END</span> <span class="n">LOOP</span><span class="p">;</span>
+<span class="k">RETURN</span> <span class="mi">1</span><span class="p">;</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="err">$$</span> <span class="k">LANGUAGE</span> <span class="n">plpgsql</span><span class="p">;</span>
+
+
+<span class="k">CREATE</span> <span class="k">OR</span> <span class="k">REPLACE</span> <span class="k">FUNCTION</span> <span class="n">create_gin_index</span><span class="p">()</span> <span class="k">RETURNS</span> <span class="nb">INTEGER</span> <span class="k">AS</span> <span class="err">$$</span>
+<span class="k">DECLARE</span>
+  <span class="n">i</span> <span class="n">RECORD</span><span class="p">;</span>
+  <span class="k">statement</span> <span class="nb">varchar</span><span class="p">;</span>
+  <span class="n">error</span> <span class="nb">varchar</span><span class="p">;</span>
+<span class="k">BEGIN</span>
+  <span class="k">FOR</span> <span class="n">i</span> <span class="k">IN</span>
+    <span class="p">(</span><span class="k">select</span> <span class="n">indexdef</span> <span class="k">from</span> <span class="n">pg_indexes</span> <span class="k">where</span> <span class="n">schemaname</span> <span class="o">=</span> <span class="s1">'public'</span> <span class="k">and</span> <span class="n">indexdef</span> <span class="k">like</span> <span class="s1">'CREATE UNIQUE INDEX%btree%body%'</span><span class="p">)</span>
+  <span class="n">LOOP</span>
+  <span class="c1">--build the new index statement</span>
+    <span class="k">BEGIN</span>
+        <span class="k">statement</span><span class="o">=</span><span class="k">replace</span><span class="p">(</span><span class="n">i</span><span class="p">.</span><span class="n">indexdef</span><span class="p">,</span> <span class="s1">'CREATE UNIQUE INDEX '</span><span class="p">,</span> <span class="s1">'CREATE INDEX if not exists mf_'</span><span class="p">);</span>
+        <span class="k">statement</span><span class="o">=</span><span class="k">replace</span><span class="p">(</span><span class="k">statement</span><span class="p">,</span> <span class="s1">'btree'</span><span class="p">,</span> <span class="s1">'gin'</span><span class="p">);</span>
+        <span class="n">RAISE</span> <span class="n">INFO</span> <span class="s1">'%'</span><span class="p">,</span> <span class="k">statement</span><span class="p">;</span>
+        <span class="k">EXECUTE</span> <span class="k">statement</span><span class="p">;</span>
+    <span class="k">EXCEPTION</span> <span class="k">WHEN</span> <span class="n">OTHERS</span> <span class="k">THEN</span>
+        <span class="k">GET</span> <span class="n">STACKED</span> <span class="k">DIAGNOSTICS</span> <span class="n">error</span> <span class="o">=</span> <span class="k">MESSAGE_TEXT</span><span class="p">;</span>  
+        <span class="n">RAISE</span> <span class="n">NOTICE</span> <span class="s1">'%'</span><span class="p">,</span> <span class="n">error</span><span class="p">;</span>
+    <span class="k">END</span><span class="p">;</span>
+  <span class="k">END</span> <span class="n">LOOP</span><span class="p">;</span>
+<span class="k">RETURN</span> <span class="mi">1</span><span class="p">;</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="err">$$</span> <span class="k">LANGUAGE</span> <span class="n">plpgsql</span><span class="p">;</span>
+
+<span class="k">Select</span> <span class="n">drop_gin_indexes_onbody</span><span class="p">();</span>
+<span class="k">Select</span> <span class="n">create_gin_index</span><span class="p">();</span>
+
+<span class="err">\</span><span class="k">c</span> <span class="n">xservices_ems</span>
+
+<span class="k">create</span> <span class="k">index</span> <span class="n">mf_entities_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span><span class="n">_sbigint0</span> <span class="k">on</span> <span class="k">public</span><span class="p">.</span><span class="n">entities_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span><span class="p">(</span><span class="k">upper</span><span class="p">(</span><span class="n">schar8</span><span class="p">),</span> <span class="n">entity_type_id</span><span class="p">,</span> <span class="n">sbigint0</span><span class="p">,</span> <span class="n">is_deleted</span> <span class="p">);</span>
+
+<span class="k">create</span> <span class="k">index</span> <span class="n">mf_entities_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span><span class="n">_schar9_sbigint5</span> <span class="k">on</span> <span class="k">public</span><span class="p">.</span><span class="n">entities_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span><span class="p">(</span><span class="k">upper</span><span class="p">(</span><span class="n">schar9</span><span class="p">),</span> <span class="n">entity_type_id</span><span class="p">,</span> <span class="n">sbigint5</span><span class="p">,</span> <span class="n">is_deleted</span> <span class="p">);</span>
+
+<span class="k">create</span> <span class="k">unique</span> <span class="k">index</span> <span class="n">mf_slt_record_status_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span><span class="n">_slt</span> <span class="k">on</span> <span class="k">public</span><span class="p">.</span><span class="n">slt_record_status_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span><span class="p">(</span> <span class="n">status</span><span class="p">,</span><span class="n">is_deleted</span><span class="p">,</span> <span class="n">entity_id</span><span class="p">);</span>
+
+<span class="k">create</span> <span class="k">unique</span> <span class="k">index</span> <span class="n">mf_long_text_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span><span class="n">_entity_id_field_id_idx</span> <span class="k">on</span> <span class="n">long_text_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span>  <span class="p">(</span><span class="n">entity_id</span><span class="p">,</span> <span class="n">field_id</span><span class="p">);</span>
+
+<span class="k">analyze</span> <span class="n">long_text_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">analyze</span> <span class="n">entities_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">analyze</span> <span class="n">slt_record_status_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span><span class="p">;</span>
+</pre></div>
+<p>For 2018.08/11, you can run following tuning queries:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="err">\</span><span class="k">c</span> <span class="n">xservices_ems</span>
+
+<span class="k">create</span> <span class="k">index</span> <span class="n">mf_entities_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span><span class="n">_sbigint0</span> <span class="k">on</span> <span class="k">public</span><span class="p">.</span><span class="n">entities_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span><span class="p">(</span><span class="k">upper</span><span class="p">(</span><span class="n">schar8</span><span class="p">),</span> <span class="n">entity_type_id</span><span class="p">,</span> <span class="n">sbigint0</span><span class="p">,</span> <span class="n">is_deleted</span> <span class="p">);</span>
+
+<span class="k">create</span> <span class="k">index</span> <span class="n">mf_entities_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span><span class="n">_schar9_sbigint5</span> <span class="k">on</span> <span class="k">public</span><span class="p">.</span><span class="n">entities_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span><span class="p">(</span><span class="k">upper</span><span class="p">(</span><span class="n">schar9</span><span class="p">),</span> <span class="n">entity_type_id</span><span class="p">,</span> <span class="n">sbigint5</span><span class="p">,</span> <span class="n">is_deleted</span> <span class="p">);</span>
+
+<span class="k">analyze</span> <span class="n">long_text_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">analyze</span> <span class="n">entities_</span><span class="o">&lt;</span><span class="n">yourtenantid</span><span class="o">&gt;</span><span class="p">;</span>
+</pre></div>
+<h4 class="mw-headline" id="Tune_Audit_queries">Tune Audit queries</h4>
+<p>If you found top queries like:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">INSERT</span> <span class="k">INTO</span> <span class="ss">"Audit_&lt;yourtenantid&gt;"</span> <span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="n">body</span><span class="p">)</span> <span class="p">...</span>
+</pre></div>
+<p>Or if there are more than 100 active database connections are running above query.
+You can improve performance by truncating the Audit tables regularly (such as every week). The Audit tables record the detailed action histories, and you can safely remove all the records as the records in Audit table cannot be viewed in the GUI.
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="err">\</span><span class="k">c</span> <span class="n">xservices_rms</span>
+<span class="k">truncate</span> <span class="k">table</span> <span class="ss">"Audit_&lt;yourtenantid&gt;"</span><span class="p">;</span>
+</pre></div>
+<h4 class="mw-headline" id="Tune_reports">Tune reports</h4>
+<p>If you want to have complex report with <a href="https://docs.microfocus.com/" class="extiw" title="home:itom/SMAX:2019.11/ReportPostgresqlViews">Postgres Views</a>, make sure to run the reporting on a mirror database. This can help avoid overuse of the primary database server.
+</p><p>For analytics reports in the system, if you have more than 20 hourly or daily reports, you need to tune the queries for your reports. You can find the top queries and add the indexes accordingly.
+</p><p>Please also carefully review the reports to determine if you can reduce the frequency (from hourly to daily or from daily to monthly). You should also disable unused reports. For example, if you don't use the Idea module, disable the reports of that module.
+</p><p>You can change the running time of the report to a time where the system is not busy (such as late at night). First, you need to query of the current report execution time as shown below. The time will be returned in UTC time.
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">select</span> <span class="k">extract</span><span class="p">(</span><span class="n">hour</span> <span class="k">from</span> <span class="n">to_timestamp</span><span class="p">(</span><span class="n">to_number</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">body</span><span class="o">-&gt;&gt;</span> <span class="s1">'NextCalculationTime'</span><span class="p">,</span><span class="s1">'99999999999999'</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span><span class="p">))</span> <span class="ss">"runtimeInUTC"</span><span class="p">,</span> <span class="k">count</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">from</span> <span class="ss">"ReportRuntime_&lt;yourtenantid&gt;"</span> <span class="n">r</span><span class="p">,</span> <span class="ss">"ReportConfig_&lt;yourtenantid&gt;"</span> <span class="k">c</span> <span class="k">where</span> <span class="n">r</span><span class="p">.</span><span class="n">body</span><span class="o">-&gt;&gt;</span><span class="s1">'ConfigId'</span> <span class="o">=</span><span class="k">c</span><span class="p">.</span><span class="n">id</span> <span class="k">and</span> <span class="n">r</span><span class="p">.</span><span class="n">body</span><span class="o">-&gt;</span><span class="s1">'IsScheduled'</span> <span class="o">@&gt;</span> <span class="s1">'true'</span> <span class="k">and</span> <span class="n">r</span><span class="p">.</span><span class="n">body</span><span class="o">-&gt;</span><span class="s1">'Status'</span> <span class="o">@&gt;</span> <span class="s1">'"READY"'</span> <span class="k">group</span> <span class="k">by</span> <span class="k">extract</span><span class="p">(</span><span class="n">hour</span> <span class="k">from</span> <span class="n">to_timestamp</span><span class="p">(</span><span class="n">to_number</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">body</span><span class="o">-&gt;&gt;</span> <span class="s1">'NextCalculationTime'</span><span class="p">,</span><span class="s1">'99999999999999'</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span><span class="p">))</span> <span class="k">order</span> <span class="k">by</span> <span class="mi">1</span><span class="p">;</span>
+</pre></div>
+<p>Update the report next execution time to a time when the system is under light load. The following queries are an example for a UTC environment. For your timezone, you need to specify the correct execution time:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">update</span>  <span class="ss">"ReportRuntime_&lt;yourtenantid&gt;"</span> <span class="k">set</span> <span class="n">body</span> <span class="o">=</span> <span class="n">jsonb_set</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="s1">'{"NextCalculationTime"}'</span><span class="p">,</span> <span class="p">(</span><span class="n">to_number</span><span class="p">(</span><span class="n">body</span><span class="o">-&gt;&gt;</span> <span class="s1">'NextCalculationTime'</span><span class="p">,</span><span class="s1">'99999999999999'</span><span class="p">)</span><span class="o">+</span><span class="mi">54000000</span><span class="p">)::</span><span class="nb">text</span><span class="p">::</span><span class="n">jsonb</span><span class="p">)</span> <span class="k">where</span> <span class="n">body</span><span class="o">-&gt;</span><span class="s1">'IsScheduled'</span> <span class="o">@&gt;</span> <span class="s1">'true'</span> <span class="k">and</span> <span class="n">body</span><span class="o">-&gt;</span><span class="s1">'Status'</span> <span class="o">@&gt;</span> <span class="s1">'"READY"'</span> <span class="k">and</span> <span class="k">extract</span><span class="p">(</span><span class="n">hour</span> <span class="k">from</span> <span class="n">to_timestamp</span><span class="p">(</span><span class="n">to_number</span><span class="p">(</span><span class="n">body</span><span class="o">-&gt;&gt;</span> <span class="s1">'NextCalculationTime'</span><span class="p">,</span><span class="s1">'99999999999999'</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span><span class="p">))</span> <span class="k">in</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">);</span> 
+
+<span class="k">update</span>  <span class="ss">"ReportRuntime_&lt;yourtenantid&gt;"</span> <span class="k">set</span> <span class="n">body</span> <span class="o">=</span> <span class="n">jsonb_set</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="s1">'{"NextCalculationTime"}'</span><span class="p">,</span> <span class="p">(</span><span class="n">to_number</span><span class="p">(</span><span class="n">body</span><span class="o">-&gt;&gt;</span> <span class="s1">'NextCalculationTime'</span><span class="p">,</span><span class="s1">'99999999999999'</span><span class="p">)</span><span class="o">+</span><span class="mi">32400000</span><span class="p">)::</span><span class="nb">text</span><span class="p">::</span><span class="n">jsonb</span><span class="p">)</span> 
+<span class="k">where</span> <span class="n">body</span><span class="o">-&gt;</span><span class="s1">'IsScheduled'</span> <span class="o">@&gt;</span> <span class="s1">'true'</span> <span class="k">and</span> <span class="n">body</span><span class="o">-&gt;</span><span class="s1">'Status'</span> <span class="o">@&gt;</span> <span class="s1">'"READY"'</span> <span class="k">and</span> <span class="k">extract</span><span class="p">(</span><span class="n">hour</span> <span class="k">from</span> <span class="n">to_timestamp</span><span class="p">(</span><span class="n">to_number</span><span class="p">(</span><span class="n">body</span><span class="o">-&gt;&gt;</span> <span class="s1">'NextCalculationTime'</span><span class="p">,</span><span class="s1">'99999999999999'</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span><span class="p">))</span> <span class="k">in</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">13</span><span class="p">,</span><span class="mi">14</span><span class="p">);</span> 
+
+<span class="k">update</span>  <span class="ss">"ReportRuntime_&lt;yourtenantid&gt;"</span> <span class="k">set</span> <span class="n">body</span> <span class="o">=</span> <span class="n">jsonb_set</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="s1">'{"NextCalculationTime"}'</span><span class="p">,</span> <span class="p">(</span><span class="n">to_number</span><span class="p">(</span><span class="n">body</span><span class="o">-&gt;&gt;</span> <span class="s1">'NextCalculationTime'</span><span class="p">,</span><span class="s1">'99999999999999'</span><span class="p">)</span><span class="o">+</span><span class="mi">18000000</span><span class="p">)::</span><span class="nb">text</span><span class="p">::</span><span class="n">jsonb</span><span class="p">)</span> 
+<span class="k">where</span> <span class="n">body</span><span class="o">-&gt;</span><span class="s1">'IsScheduled'</span> <span class="o">@&gt;</span> <span class="s1">'true'</span> <span class="k">and</span> <span class="n">body</span><span class="o">-&gt;</span><span class="s1">'Status'</span> <span class="o">@&gt;</span> <span class="s1">'"READY"'</span> <span class="k">and</span> <span class="k">extract</span><span class="p">(</span><span class="n">hour</span> <span class="k">from</span> <span class="n">to_timestamp</span><span class="p">(</span><span class="n">to_number</span><span class="p">(</span><span class="n">body</span><span class="o">-&gt;&gt;</span> <span class="s1">'NextCalculationTime'</span><span class="p">,</span><span class="s1">'99999999999999'</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span><span class="p">))</span> <span class="k">in</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">16</span><span class="p">);</span>
+</pre></div>
+<h4 class="mw-headline" id="Add_more_resources">Add more resources</h4>
+<p>If, with all the tuning above, the system still runs out of CPU/memory, you may need to extend your CPU/RAM of your database.
+</p>
+<h3 class="mw-headline" id="Rebalancing_pods">Rebalancing pods</h3>
+<p>Run the check_resource.py script. If it finds that some workers are extremely busy while other workers are underutilized, you may rebalance the pods using the following commands:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span>kubectl patch deploy/itom-xruntime-platform -nitsma1 -p <span class="s1">'{"spec":{"template":{"spec":{"containers":[{"name":"itom-xruntime-platform","env":[{"name":"RESTART_","value":"'</span><span class="k">$(</span>date +%s<span class="k">)</span><span class="s1">'"}]}]}}}}'</span>
+
+kubectl patch deploy/itom-xruntime-gateway -nitsma1 -p <span class="s1">'{"spec":{"template":{"spec":{"containers":[{"name":"gateway","env":[{"name":"RESTART_","value":"'</span><span class="k">$(</span>date +%s<span class="k">)</span><span class="s1">'"}]}]}}}}'</span>
+</pre></div>
+<p><b>Important</b>: the above commands will perform a rolling restart the platform pods and the gateway pods. The system will be available with less system capacity.
+</p><p>You may wish to create a cron job to run above command at a regular interval (every weekend for example).
+</p>
+<h3 class="mw-headline" id="Tuning_search_performance">Tuning search performance</h3>
+<p>If system searches perform poorly, you may try one or more of the following:
+</p>
+<ul><li>Add more Smart Analytics content servers through the GUI in bo</li>
+<li>Add more DAH (1 to 4) (see <a target="1" rel="nofollow" class="external free" href="https://docs.microfocus.com/itom/SMAX:2018.08/Scale-out-DAH-server_21431430">https://docs.microfocus.com/itom/SMAX:2018.08/Scale-out-DAH-server_21431430</a>)</li>
+<li>Increase the cpu of content servers to 6</li>
+<li>Increase the RAM of content servers to 6GB</li>
+<li>Change the threads of content servers from 5 to 15 in Content.cfg</li>
+<li>Change the IndexCacheMaxSize of content servers to 1024000 in Content.cfg</li>
+<li>Change the TermCachePersistentKB of content servers to 1024000 in Content.cfgDatabase memory</li></ul>
+<h3 id="Turn_off_the_fluentd_and_logrotate_for_version_2018.08_~_2019.02"><span class="mw-headline" id="Turn_off_the_fluentd_and_logrotate_for_version_2018.08_.7E_2019.02">Turn off the fluentd and logrotate for version 2018.08 ~ 2019.02</span></h3>
+<p>Fluentd and Log Rotate combine the logs into a single location for future analysis. However, this requires extra disk space in /var/log folder. If you don't have enough disk space in /var/log, the system can be impacted. You can turn off this behavior using the following linux commands. You can still find the original logs in nfs.
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span>kubectl delete ds/fluentd -n core
+
+kubectl delete ds/itom-logrotate -n core
+</pre></div>
+<h2 class="mw-headline" id="Other_known_issues">Other known issues</h2>
+<p>There are memory leaks in Docker and Kubernetes. MicroFocus upgraded docker in 2019.02 to include fixes. However, there are still leaks in Kubernetes. Information about these issues can be found here:
+</p><p><a target="1" rel="nofollow" class="external free" href="https://support.mesosphere.com/s/article/Critical-Issue-KMEM-MSPH-2018-0006">https://support.mesosphere.com/s/article/Critical-Issue-KMEM-MSPH-2018-0006</a>
+</p><p><a target="1" rel="nofollow" class="external free" href="https://github.com/docker/runc/pull/5">https://github.com/docker/runc/pull/5</a>
+</p><p><a target="1" rel="nofollow" class="external free" href="https://github.com/kubernetes/kubernetes/pull/72998">https://github.com/kubernetes/kubernetes/pull/72998</a>
+</p><p>As a workaround, you can add more workers or restart the worker nodes regularly.
+</p>
+<!-- 
+NewPP limit report
+Cached time: 20200217094441
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.160 seconds
+Real time usage: 2.864 seconds
+Preprocessor visited node count: 445/1000000
+Preprocessor generated node count: 852/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 47999/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key docops_wiki:pcache:idhash:875813-0!canonical and timestamp 20200217094438 and revision id 1732704
+ -->
+</div>
