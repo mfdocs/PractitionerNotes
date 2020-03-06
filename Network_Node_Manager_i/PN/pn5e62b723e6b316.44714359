@@ -27,18 +27,18 @@ explained in the follow sections.</font><font size="5"><o:p></o:p></font></span>
 service. You can see this service by running the command "<span lang="EN-GB" style="letter-spacing: 0.2px; background-color: transparent; font-family: &quot;Courier New&quot;;">ps
 –ef | grep nnmtrapreceiver"</span></font><span lang="EN-GB" style="letter-spacing: 0.2px; background-color: transparent;"><font size="4">&nbsp;on a Linux NNMi server:</font><br></span><img src="./mediawiki/images/PN/Picture1.png"><br><font size="5"><span lang="EN-GB" style="letter-spacing: 0.2px; background-color: transparent;"><br></span></font></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
 8.6pt;margin-left:75.05pt"><span lang="EN-GB"><font size="4">There are a few things to be aware
-of about the nnmtrapreceiver process:<o:p></o:p></font></span></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
-.25pt;margin-left:90.95pt;mso-list:l0 level1 lfo1"><ul><li><font size="4"><span lang="EN-GB">The nnmtrapreceiver process
+of about the nnmtrapreceiver process:</font></span></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+8.6pt;margin-left:75.05pt"><ul><li><span style="background-color: transparent; letter-spacing: 0.2px;"><font size="4">The nnmtrapreceiver process
 listens to the SNMP trap port (port 162 by default) on the NNMi server and
 sends SNMP traps to the NNMi Trap Service which will be described in the next
-section. </span></font></li><li><font size="4"><span lang="EN-GB">The nnmtrapreceiver process is
-coupled with nnmtrapreceivermd which is integrated with ovspmd and responds to </span><span lang="EN-GB" style="font-family:&quot;Courier New&quot;;mso-fareast-font-family:&quot;Courier New&quot;">ovstart/ovstop</span><span lang="EN-GB"> messages.&nbsp; During ovstart,
+section.</font></span></li><li><font size="4">The nnmtrapreceiver process is
+coupled with nnmtrapreceivermd which is integrated with ovspmd and responds to <span lang="EN-GB" style="letter-spacing: 0.2px; background-color: transparent; font-family: &quot;Courier New&quot;;">ovstart/ovstop</span><span lang="EN-GB" style="letter-spacing: 0.2px; background-color: transparent;"> messages.&nbsp; During ovstart,
 the nnmtrapreceivermd starts the nnmtrapreceiver process, but leaves it running
-during ovstop. <o:p></o:p></span></font></li><li><span lang="EN-GB"><font size="4">The nnmtrapreceiver process
+during ovstop.</span></font></li><li><font size="4">The nnmtrapreceiver process
 will queue traps for a certain period of time if NNMi Trap Service is not
 started. This feature is especially useful in High Availability and Application
 Failover clusters. It runs on both nodes (active and standby) in the cluster.
-This means that during failover, no trap is lost.</font></span></li></ul></p><p style="margin-left:74.7pt">
+This means that during failover, no trap is lost.</font></li></ul></p><p></p><p style="margin-left:74.7pt">
 
 
 
