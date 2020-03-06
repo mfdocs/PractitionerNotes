@@ -26,7 +26,7 @@
    <ol>
       <li><b>OO Shell (OOSH) utility</b> <br><br>
    
-   <div>The OOSH utility is a Micro Focus supplied command line utility which is available for download as a standalone installation package. The OOSH utility allows you to perform various actions in OO such as launching OO flows, deploying content packs, etc from command line. The OOSH utility uses REST API to communicate with OO Central. The OOSH utility can be installed on the same remote server that hosts the application to be integrated with OO. Applications can then be configured to call OOSH command line utility to trigger OO flows based on certain events within the application.&nbsp;<br></div>
+   <div>The OOSH utility is a Micro Focus supplied command line utility which is available for download as a standalone installation package. The OOSH utility allows you to perform various actions in OO such as launching OO flows, deploying content packs, etc from a command line interface. The OOSH utility uses REST APIs to communicate with OO Central. The OOSH utility can be installed on the same remote server that hosts the application to be integrated with OO. Applications can then be configured to call OOSH command line utility to trigger OO flows based on certain events within the application.&nbsp;<br></div>
    <div><br></div>
    <div>Executing OO flows from OOSH involves the following steps:<br></div>
    <div>
@@ -88,7 +88,7 @@ to run the flow&gt; --password &lt;User password&gt; --url &lt;OO Central URL&gt
 <div><br></div>
 <div>
    <ol>
-      <li>Log on to a system running a MS Windows operating system featuring MS PowerShell</li>
+      <li>Log on to a system running a MS Windows operating system featuring MS PowerShell.</li>
       <li>Open a text editor.<br></li>
       <li>Copy contents of this script to the text editor. Save the file as "OOTriggerFlowExec.ps1".<br></li>
       <li>Open MS Windows PowerShell. Navigate to the directory containing this PowerShell script.<br></li>
@@ -101,10 +101,10 @@ to run the flow&gt; --password &lt;User password&gt; --url &lt;OO Central URL&gt
       </li>
       <li>Use "OOCentralURL", "UserName" and "Passwd" parameters to connect to the OO Central Application. The "OOCentralURL", "UserName" and "Passwd" parameters are mandatory.<br></li>
       <li>Use "FlowUUID" parameter to trigger a specific routine task (OO flow). The "FlowUUID" parameter is mandatory.<br></li>
-      <li>Use "FlowRunName" parameter to define a name for the flow execution. This name can then be used to identify the flow execution in OO Central run explorer UI. The "FlowRunName" parameter is optional. If no value is specified, script uses the flow name as defined in the deployed content pack on OO Central.<br></li>
+      <li>Use "FlowRunName" parameter to define a name for the flow execution. This name can then be used to identify the flow execution in OO Central run explorer UI. The "FlowRunName" parameter is optional. If no value is specified, the script uses the flow name as defined in the deployed content pack on OO Central.<br></li>
       <li>Use "FlowLogLevel" parameter to define logging level for the flow execution. Valid values for "FlowLogLevel" parameter are as follows: STANDARD and EXTENDED. Use caution while running flows with "EXTENDED" logging level. Flows run with "EXTENDED" log levels store detailed data about flow executions in the database and causes database size to grow quickly. The "FlowLogLevel" parameter is optional. If no value is specified, script uses default value of "STANDARD" for "FlowLogLevel" parameter.<br></li>
       <li>Use "FlowInputs" parameter to define inputs and their corresponding values for flow execution. Specify flow execution inputs in the following "input=value" format: "input1=value1,input2=value2,inputN=valueN". The "FlowInputs" parameter is optional. A flow may or may not have inputs. If a flow requires inputs and no value is specified for the "FlowInputs" parameter, then the script fails.<br></li>
-      <li>Use "FlowSensInputs" parameter to define comma separated sensitive input names for flow execution. Specify flow execution sensitive input names in the following format: "input1,input2,inputN". When an input is marked sensitive, its value would be masked in OO Central Run Explorer UI. The "FlowSensInputs" parameter is optional. A flow may or may not have sensitive inputs. Sensitive input names must have been specified as one of the "FlowInputs" input value pair.<br></li>
+      <li>Use "FlowSensInputs" parameter to define comma separated sensitive input names for flow execution. Specify flow execution sensitive input names in the following format: "input1,input2,inputN". When an input is marked sensitive, its value would be masked in OO Central Run Explorer UI. The "FlowSensInputs" parameter is optional. A flow may or may not have sensitive inputs. Sensitive input names must be one of the "FlowInputs" input value pair.<br></li>
    </ol>
    <div><br></div>
 </div>
