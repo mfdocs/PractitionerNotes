@@ -128,3 +128,335 @@ to run the flow&gt; --password &lt;User password&gt; --url &lt;OO Central URL&gt
       </li>
    </ol>
 </div>
+<div><b>OOTriggerFlowExec.ps1 PowerShell Script:</b></div> <br><br>
+<pre># File name: OOTriggerFlowExec.ps1
+#
+# Purpose: 1. Triggers flow execution for the supplied flow.
+#          2. Use as-is. Not officially supported through Micro Focus.
+#
+# Limitations: 1. Does not use proxy. If your environment requires proxy to 
+#                 connect to the OO Central Application, enhance this script
+#                 to accommodate web requests through proxy. 
+#
+# Usage: 1. Runs on Windows OS and it requires Windows Powershell on the
+#           operating system. Copy this script to a directory on the windows
+#           server/workstation/laptop.
+#        2. Open powershell window 
+#        3. Run Get-Help .\OOTriggerFlowExec.ps1 to get a list of parameters that
+#           needs to be passed.
+#        4. Sample usage: .\OOTriggerFlowExec.ps1 -OOCentralURL 
+#                         https://<oocentralhostname>:<port>/oo -UserName admin -Passwd <adminpassword> 
+#                         -FlowUUID 615726b0-66b4-47c9-bc5e-d07a84efe88a -FlowRunName RestClient-SSH 
+#                         -FlowlogLevel EXTENDED 
+#                         -FlowInputs "host=server1.xxx.net,username=root,password=root,command=/usr/bin/df" 
+#                         -FlowSensInputs password
+#        5. Parameter explanation:
+#           OOCentralURL:   URL to access OO Central UI. This URL can be either http or https depending 
+#                           on how OO is setup in your environment. OOCentralURL parameter is mandatory.
+#           UserName:       OO central username with administrator privileges.
+#                           UserName parameter is mandatory.
+#           Password:       Password for the user to login to OO Central 
+#                           Application. Password parameter is mandatory.
+#           FlowUUID:       OO flow UUID that needs to be triggered. 
+#                           FlowUUID parameter is mandatory.
+#           FlowRunName:    Specify a name for the flow run. This name can then be used to identify flow execution 
+#                           in OO Central Run Explorer UI. By default, FlowRunName uses flow name as defined 
+#                           in deployed Content Pack on OO Central. FlowRunName parameter is optional.
+#           FlowLogLevel:   Flows can be run with either STANDARD or EXTENDED log levels.
+#                           Flows run with EXTENDED log levels capture and store detailed data about 
+#                           flow executions. By default, script uses STANDARD log level for flows.
+#                           FlowlogLevel parameter is optional.
+#           FlowInputs:     Comma separated input=value map of the flow inputs. 
+#                           For example, "input1=value1,input2=value2,inputN=valueN"
+#                           FlowInputs parameter is optional.
+#           FlowSensInputs: Specify a comma separated list of input names whose values have to be encrypted. 
+#                           For example: appPassword,dbUserPassword. Sensitive input names must have been
+#                           specified as one of the FlowInputs input value pair. As a best practice, sensitive inputs
+#                           are not supplied through REST API call. Instead, sensitive inputs such as passwords are
+#                           derived from system accounts configured on OO Central.
+#                           FlowSensInputs parameter is optional.
+
+
+
+# Validate input parameters for NULL, empty and mandatory conditions.
+param (
+    [Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$OOCentralURL,
+    [Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$UserName,
+    [Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$Passwd,
+	[Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$FlowUUID,
+	[Parameter(Mandatory=$false)][ValidateNotNullOrEmpty()][string]$FlowRunName,
+	[Parameter(Mandatory=$false)][ValidateNotNullOrEmpty()][string]$FlowLogLevel,
+	[Parameter(Mandatory=$false)][ValidateNotNullOrEmpty()][string]$FlowInputs,
+	[Parameter(Mandatory=$false)][ValidateNotNullOrEmpty()][string]$FlowSensInputs		
+)
+
+# Increase or decrease FLOW_EXEC_CHECK_SECONDS value to increase or decrease interval between flow execution status checks
+Set-Variable FLOW_EXEC_CHECK_SECONDS -option Constant -value 10
+
+# Returns true if supplied object and/or string is NULL or empty
+function IsNull($object) {
+    if ($object -eq $null) {
+        return $true
+    }
+
+    if ($object -is [String] -and $object -eq [String]::Empty) {
+        return $true
+    }
+    return $false
+}
+
+
+# Validate format of supplied OO Central URL
+$uri = $OOCentralURL -as [System.URI]
+if (-Not (($uri.AbsoluteURI -ne $null) -and ($uri.Scheme -eq 'http' -or $uri.Scheme -eq 'https') -and ($uri.AbsoluteURI.Substring($uri.AbsoluteURI.Length - 3) -eq '/oo') ) ){
+    throw 'The supplied OO central URL: ' + '"' + $OOCentralURL + '"' + ' is invalid. Format of OO Central URLs are https://<oocentralfqdnorip>&lt;:OptionalPort&gt;/oo or http://<oocentralfqdnorip>&lt;:OptionalPort&gt;/oo'
+}
+
+# Validate FlowUUID
+if ($PSBoundParameters.ContainsKey('FlowUUID')) {
+    $flowUUIDPattern = "^[a-zA-Z0-9\-]+$"
+    if (-Not ($FlowUUID -match  $flowUUIDPattern)){
+        throw "FlowUUID argument cannot contain characters other than a-z, A-Z, 0-9, and a hyphen"
+    }    
+}
+
+# Validate FlowRunName
+if ($PSBoundParameters.ContainsKey('FlowRunName')) {
+    $flowRunNamePattern = "^[a-zA-Z0-9_ \-]+$"
+    if (-Not ($FlowRunName -match  $flowRunNamePattern)){
+        throw "FlowRunName argument cannot contain characters other than a-z, A-Z, 0-9, Underscore, Space and a Hyphen"
+    }    
+}
+
+
+# Validate FlowlogLevel
+if ($PSBoundParameters.ContainsKey('FlowLogLevel')) {
+    if ($FlowLogLevel -eq  "STANDARD"){
+        $FlowLogLevel = "STANDARD"
+    }
+	elseif ($FlowLogLevel -eq  "EXTENDED"){
+        $FlowLogLevel = "EXTENDED"
+    }
+	else {
+		throw "FlowLogLevel value must be either STANDARD or EXTENDED"
+	}
+}
+else {
+	$FlowLogLevel = "STANDARD"
+}
+
+# Validate FlowInputs value
+$flowInputHash = $null
+$flowInputHash = @{}
+if ($PSBoundParameters.ContainsKey('FlowInputs')) {
+    $numEqualsChar = ($FlowInputs.split("=")).count-1
+    $numCommaChar = ($FlowInputs.split(",")).count-1
+    If (($numEqualsChar -ne ($numCommaChar + 1)) -or ($numEqualsChar -eq 0))
+    {
+        throw "FlowInputs parameter is not in Input=Value format. Correct format is Input1=Value1,Input2=Value2,InputN=ValueN"
+    }
+	$FlowInputs = $FlowInputs.Replace(",","`r`n")
+	try {
+		$flowInputHash = ConvertFrom-StringData -StringData $FlowInputs
+	}
+	catch {
+		Write-Host "FlowInputs parameter is not in Input=Value format. Correct format is Input1=Value1,Input2=Value2,InputN=ValueN"
+		throw $($PSItem.Exception.Message)
+	}
+}
+
+# Validate FlowSensInputs value
+$flowSensInputHash = $null
+$flowSensInputHash = @{}
+if ($PSBoundParameters.ContainsKey('FlowSensInputs')) {
+	$FlowSensInputsArr = $FlowSensInputs -split ','
+	$FlowSensInputsArrLen = $FlowSensInputsArr.Length
+    $uniqueFlowSensInputsArr = $FlowSensInputsArr | select -Unique
+    if (Compare-Object –referenceobject $uniqueFlowSensInputsArr –differenceobject $FlowSensInputsArr) {
+        throw "Supplied sensitive input list cannot contain duplicate inputs: $FlowSensInputsArr"
+    }
+	
+    foreach ($flowSensInput in $FlowSensInputsArr) {
+	    If (-Not ($flowInputHash.ContainsKey($flowSensInput))){
+            throw "Supplied sensitive input $flowSensInput must be present in FlowInputs argument"
+        }
+		$flowSensInputHash.add($flowSensInput,$true)
+    }	
+}
+
+# Trusts all certificates including self-signed root certificates
+# generated by OO
+add-type @"
+    using System.Net;
+    using System.Security.Cryptography.X509Certificates;
+    public class TrustAllCertsPolicy : ICertificatePolicy {
+        public bool CheckValidationResult(
+            ServicePoint srvPoint, X509Certificate certificate,
+            WebRequest request, int certificateProblem) {
+            return true;
+        }
+    }
+"@
+[System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Ssl3, [Net.SecurityProtocolType]::Tls, [Net.SecurityProtocolType]::Tls11, [Net.SecurityProtocolType]::Tls12
+
+# Create authorization header value using supplied OO Central user name 
+# and password. This authorization header value would be used in REST API 
+# calls to OO Central Application.
+$authPlainText = $UserName + ':' + $Passwd
+$authPlainTextBytes = [System.Text.Encoding]::UTF8.GetBytes($authPlainText)
+$authEncodedText =[System.Convert]::ToBase64String($authPlainTextBytes)
+$authHeaderValue = "Basic $authEncodedText"
+
+# OO requires cross reference token to be able to perform create, delete or update operations.
+# Cross reference token from OO can be obtained by making a GET REST API call to any one of 
+# the valid OO REST URIs. Make a GET REST API call to OO and store session information.
+$getRequestURL = $OOCentralURL + '/rest/v2/version'
+try{
+    $getReqWebResponse = Invoke-WebRequest -Method Get -Uri $getRequestURL -Headers @{ 'Authorization' = $authHeaderValue  } -SessionVariable 'webSession'
+}
+catch{
+    # Something went wrong
+    Write-Host 'OO Central Application returned the following exception while retrieving cross reference token'
+    throw $($PSItem.Exception.Message)      
+}
+If (IsNull($webSession)) {
+    throw 'Cannot open web session to the OO Central Application'
+}
+
+# Retrieve cross reference token cookie value from the web session
+# that was opened in GET call previously.
+$cookies = $webSession.Cookies.GetCookies($getRequestURL) 
+If (IsNull($cookies)) {
+    throw 'Unable to retrieve cookies from GET request to OO Central Application'
+}
+foreach ($cookie in $cookies) { 
+      if ($($cookie.name) -eq "X-CSRF-TOKEN-OO") {
+        $xcsrfToken = $($cookie.value)
+        break;        
+     }     
+}
+If (IsNull($xcsrfToken)) {
+    throw 'OO Central Application Server returned X-CSRF-TOKEN-OO cookie that is either null or empty'
+}
+
+
+# Form request headers to be used in trigger flow REST API call 
+$headers = @{
+    'Content-Type' = 'application/json'
+    'accept' = 'application/json'
+    'Authorization' = $authHeaderValue
+    'X-CSRF-TOKEN' = $xcsrfToken
+}
+
+$trigFlowURL = $OOCentralURL + '/rest/v2/executions'
+$trigFlowReqBody = @{
+	'flowUuid' = $FlowUUID
+	'runName'  = $FlowRunName
+	'logLevel' = $FlowLogLevel
+	'inputs'   = $flowInputHash
+	'sensitiveInputs' = $flowSensInputHash
+}
+
+$trigFlowReqbodyJSON = ConvertTo-Json $trigFlowReqBody
+
+# Submit trigger flow REST API call to OO Central Application Server.
+try{
+    $trigFlowWebResponse = Invoke-WebRequest -Method POST -Uri $trigFlowURL -Headers $headers -Body $trigFlowReqbodyJSON -WebSession $webSession  
+}
+catch{
+    # Something went wrong
+    Write-Host 'OO Central Application returned the following exception while making a REST API call to trigger flow execution'
+	throw $($PSItem.Exception.Message)         
+}
+
+# Process trigger flow response from OO
+If (-Not (IsNull($trigFlowWebResponse))){
+    # Construct OO flow execution instance URI
+	$getFlowExecIOURL = $OOCentralURL + '/rest/v2/executions/' + $trigFlowWebResponse + '/execution-log'
+	$flowExecResponse = "RUNNING"
+	while ($flowExecResponse -eq "RUNNING") {
+		Start-Sleep -s $FLOW_EXEC_CHECK_SECONDS
+		try{
+			$getFlowExecIOResponse = Invoke-WebRequest -Method Get -Uri $getFlowExecIOURL -Headers @{ 'Authorization' = $authHeaderValue  } -WebSession $webSession
+		}
+		catch{
+			# Something went wrong
+			Write-Host 'OO Central Application returned the following exception while retrieving flow execution details'
+			throw $($PSItem.Exception.Message)     
+		}
+		$flowExecIO = ConvertFrom-Json -InputObject $getFlowExecIOResponse.Content
+		$flowExecStatus = $flowExecIO.executionSummary.status		
+		If (-Not (IsNull($flowExecStatus))){
+			$flowExecResponse = $flowExecStatus.trim()			 
+		}		
+	}
+	
+	$utcDate = (Get-Date -Date "1970-01-01 00:00:00Z").ToUniversalTime()
+	$flowExecResultStatusType = $flowExecIO.executionSummary.resultStatusType
+	If (-Not (IsNull($flowExecResultStatusType))){
+		$flowExecResultStatusType = $flowExecResultStatusType.trim()		
+	}
+
+	$flowExecResultStatusName = $flowExecIO.executionSummary.resultStatusName
+	If (-Not (IsNull($flowExecResultStatusName))){
+		$flowExecResultStatusName = $flowExecResultStatusName.trim()		
+	}
+	
+	$flowExecStartTimeInt = $flowExecIO.executionSummary.startTime
+    if (IsNull($flowExecStartTimeInt)){
+		$flowExecStartTime = "NA"
+	}
+	else {
+        $flowExecStartTimeStr = $flowExecStartTimeInt.ToString()
+		if ($flowExecStartTimeStr -match "^[\d\.]+$"){
+			if ($flowExecStartTimeStr.length -gt 10) {
+				$flowExecStartTime = Get-Date $utcDate.AddMilliseconds($flowExecIO.executionSummary.startTime) -UFormat "%m-%d-%Y %T"
+			} else {
+				$flowExecStartTime = Get-Date $utcDate.AddSeconds($flowExecIO.executionSummary.startTime) -UFormat "%m-%d-%Y %T"
+			}
+		}
+		else{
+			$flowExecStartTime = "NA"			
+		}
+	}
+
+    $flowExecEndTimeInt = $flowExecIO.executionSummary.endTime
+    if (IsNull($flowExecEndTimeInt)){
+		$flowExecEndTime = "NA"
+	}
+	else {
+        $flowExecEndTimeStr = $flowExecEndTimeInt.ToString()
+		if ($flowExecEndTimeStr -match "^[\d\.]+$"){
+			if ($flowExecEndTimeStr.length -gt 10) {
+				$flowExecEndTime = Get-Date $utcDate.AddMilliseconds($flowExecIO.executionSummary.endTime) -UFormat "%m-%d-%Y %T"
+			} else {
+				$flowExecEndTime = Get-Date $utcDate.AddSeconds($flowExecIO.executionSummary.endTime) -UFormat "%m-%d-%Y %T"
+			}			
+		}
+		else
+		{
+			$flowExecEndTime = "NA"
+		}
+	}
+	$flowOutput = $flowExecIO.flowOutput | ConvertTo-Json
+	Write-Host "********************************Flow execution summary********************************"
+	Write-Host "Flow execution status:             `r`n$flowExecResponse`r`n"
+	Write-Host "Flow execution result status:      `r`n$flowExecResultStatusType`r`n"
+	Write-Host "Flow execution result status name: `r`n$flowExecResultStatusName`r`n"
+    if ($flowExecStartTime -eq "NA") {
+    	    Write-Host "Flow execution start time:         `r`nStart time not available`r`n"
+    }
+    else{
+            Write-Host "Flow execution start time:         `r`n$flowExecStartTime UTC`r`n"
+    }
+    if ($flowExecEndTime -eq "NA") {
+    	    Write-Host "Flow execution end time:         `r`nEnd time not available`r`n"
+    }
+    else{
+            Write-Host "Flow execution end time:         `r`n$flowExecEndTime UTC`r`n"
+    }	
+	Write-Host "Flow execution output:             `r`n$flowOutput"
+	Write-Host "********************************Flow execution summary********************************"
+}
+</oocentralfqdnorip></oocentralfqdnorip></adminpassword></port></oocentralhostname></pre>
