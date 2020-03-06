@@ -1,8 +1,29 @@
 <p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
-8.5pt;margin-left:75.05pt"><span lang="EN-GB">The management of SNMP (Simple
-Network Management Protocol) traps in <u>NNMi</u>
+8.5pt;margin-left:75.05pt"><span lang="EN-GB"><font size="5">The management of SNMP (Simple
+Network Management Protocol) traps in <u style="">NNMi</u>
 (Network Node Manager i) has been evolved significantly since NNMi 9.2x.
 Although all the new features have been documented in NNMi online documenttation, customers have yet to see a clear picture about the
 process workflow in which they can control the behavior at various stages, such
 as filtering, blocking, forwarding and logging, etc. This article is intended to
-server for this purpose.<o:p></o:p></span></p>
+server for this purpose.<o:p></o:p></font></span></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+8.6pt;margin-left:75.05pt"><span lang="EN-GB"><font size="5">NNMi works with SNMP traps at the
+following three levels:<o:p></o:p></font></span></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+.25pt;margin-left:95.75pt;text-indent:-4.9pt;mso-list:l0 level1 lfo1"><!--[if !supportLists]--><font size="5"><span lang="EN-GB" style="mso-bidi-font-size:9.0pt;line-height:110%">•<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal; font-family: &quot;Times New Roman&quot;;"> </span></span><!--[endif]--><span lang="EN-GB">NNMi nnmtrapreceiver process (running as an operating system’s
+service) <o:p></o:p></span></font></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+.25pt;margin-left:95.75pt;text-indent:-4.9pt;mso-list:l0 level1 lfo1"><!--[if !supportLists]--><font size="5"><span lang="EN-GB" style="mso-bidi-font-size:9.0pt;line-height:110%">•<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal; font-family: &quot;Times New Roman&quot;;"> </span></span><!--[endif]--><span lang="EN-GB">NNMi Trap Service (controlled by ovjboss) <o:p></o:p></span></font></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+8.65pt;margin-left:95.75pt;text-indent:-4.9pt;mso-list:l0 level1 lfo1"><!--[if !supportLists]--><font size="5"><span lang="EN-GB" style="mso-bidi-font-size:9.0pt;line-height:110%">•<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal; font-family: &quot;Times New Roman&quot;;"> </span></span><!--[endif]--><span lang="EN-GB">NNMi Event Service (controlled by ovjboss)<o:p></o:p></span></font></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+8.5pt;margin-left:75.05pt"><span lang="EN-GB"><font size="5">
+
+
+
+
+
+
+
+</font></span></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+9.75pt;margin-left:75.05pt"><span lang="EN-GB"><font size="5">The details at each level are
+explained in the follow sections.<o:p></o:p></font></span></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+9.75pt;margin-left:75.05pt"><font size="5"><span lang="EN-GB"></span></font></p><h3 style="margin-left:74.7pt"><span lang="EN-GB"><b><font size="5">NNMi nnmtrapreceiver Process</font></b></span></h3><h3 style="margin-left:74.7pt"><font size="5">The NNMi nnmtrapreceiver process runs as an operating system
+service. You can see this service by running the command "<span lang="EN-GB" style="letter-spacing: 0.2px; background-color: transparent; font-family: &quot;Courier New&quot;;">ps
+–ef | grep nnmtrapreceiver"</span><span lang="EN-GB" style="letter-spacing: 0.2px; background-color: transparent;">&nbsp;on a Linux NNMi server:</span></font></h3><div><font size="5"><span lang="EN-GB" style="letter-spacing: 0.2px; background-color: transparent;"><br></span></font></div><div><span lang="EN-GB"><b><br></b></span></div><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+9.75pt;margin-left:75.05pt"><span lang="EN-GB"><br></span></p>
