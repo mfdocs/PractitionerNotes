@@ -140,5 +140,74 @@ destinations in the NNMi console:&nbsp;<br><br></span><img src="./mediawiki/imag
 can see this service by running the command “</span><span lang="EN-GB" style="letter-spacing: 0.2px; background-color: transparent; font-family: &quot;Courier New&quot;;">ovstatus
 –v”</span><span lang="EN-GB" style="letter-spacing: 0.2px; background-color: transparent;"> on the NNMi server, as shown below:<br></span></font><br><img src="./mediawiki/images/PN/Picture10.png"><br><br></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
 5.2pt;margin-left:75.05pt"><span lang="EN-GB"><font size="4">The diagram below illustrates the
-process workflow for SNMP traps in NNMi Event Service.</font><o:p></o:p></span></p><p style="margin-left:74.7pt"><font size="4"><span style="color: black; font-family: Calibri, sans-serif; letter-spacing: 0.2px; background-color: transparent;"><br></span></font></p><div><font size="5"><span style="letter-spacing: 0.2px;"><br></span></font></div><div><span lang="EN-GB"><b><br></b></span></div><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+process workflow for SNMP traps in NNMi Event Service.<br><br></font><br><img src="./mediawiki/images/PN/Picture12.png"><br><br></span></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+8.6pt;margin-left:75.05pt"><span lang="EN-GB"><font size="4">Each step in the workflow is
+explained as follows:<o:p></o:p></font></span></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+8.5pt;margin-left:98.2pt;text-indent:-7.35pt;mso-list:l0 level1 lfo1"><!--[if !supportLists]--><font size="4"><span lang="EN-GB" style="mso-bidi-font-size:9.0pt;line-height:110%">1.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal; font-family: &quot;Times New Roman&quot;;"> </span></span><!--[endif]--><span lang="EN-GB">SNMP Trap Receiver – The Event Service itself has an SNMP Trap
+receiver which receives SNMP traps forwarded from Trap Service described in the
+previous section.<o:p></o:p></span></font></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+8.5pt;margin-left:98.2pt;text-indent:-7.35pt;mso-list:l0 level1 lfo1"><!--[if !supportLists]--><font size="4"><span lang="EN-GB" style="mso-bidi-font-size:9.0pt;line-height:110%">2.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal; font-family: &quot;Times New Roman&quot;;"> </span></span><!--[endif]--><span lang="EN-GB">Global/Regional Incident Receiver – If the NNMi server is configured
+as a global NNMi server in a global-regional configuration, the Global/Regional
+Incident Receiver receives traps forwarded from regional NNMi servers.<o:p></o:p></span></font></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+8.5pt;margin-left:98.2pt;text-indent:-7.35pt;mso-list:l0 level1 lfo1"><!--[if !supportLists]--><font size="4"><span lang="EN-GB" style="mso-bidi-font-size:9.0pt;line-height:110%">3.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal; font-family: &quot;Times New Roman&quot;;"> </span></span><!--[endif]--><span lang="EN-GB">Check source node in topology – If the source node of the trap was
+not discovered by NNMi, the trap is unresolved. Check the configuration for
+unresolved traps (Step 4). If the source node was discovered, check its
+management mode (Step 5)<o:p></o:p></span></font></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+.25pt;margin-left:98.2pt;text-indent:-7.35pt;mso-list:l0 level1 lfo1"><!--[if !supportLists]--><font size="4"><span lang="EN-GB" style="mso-bidi-font-size:9.0pt;line-height:110%">4.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal; font-family: &quot;Times New Roman&quot;;"> </span></span><!--[endif]--><span lang="EN-GB">Check unresolved trap configuration – By default, NNMi discards the
+traps emitted from the devices that were not discovered by NNMi (unresolved
+traps). If you changed this configuration, unresolved traps will be sent to the
+“Trap Suppression Check” (Step 9) for further evaluation.<br></span></font></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+.25pt;margin-left:90.95pt"><span lang="EN-GB"><font size="3">Note: you can change the unresolved
+trap configuration on the NNMi UI console, “Configuration &gt; Incidents &gt;
+Incident Configuration”, and uncheck the box&nbsp; &nbsp; &nbsp; “Discard Unresolved SNMP Traps and
+Syslog Messages”:&nbsp;<o:p></o:p></font></span></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+.25pt;margin-left:90.95pt"><span lang="EN-GB"><font size="3"><br></font></span></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+.25pt;margin-left:90.95pt"><span lang="EN-GB"><img src="./mediawiki/images/PN/Picture13.png"><font size="3"><br></font></span></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+.25pt;margin-left:90.95pt"><span lang="EN-GB"><br></span></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+.25pt;margin-left:90.95pt"><span lang="EN-GB"><br></span></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+8.65pt;margin-left:98.2pt;text-indent:-7.35pt;mso-list:l0 level1 lfo1"><font size="4"><span lang="EN-GB" style="mso-bidi-font-size:9.0pt;line-height:110%">5.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal; font-family: &quot;Times New Roman&quot;;"> </span></span><!--[endif]--><span lang="EN-GB">Check source node management mode – If the source node is not
+managed, the trap is always discarded.</span></font></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+8.65pt;margin-left:98.2pt;text-indent:-7.35pt;mso-list:l0 level1 lfo1"><font size="4"><span lang="EN-GB" style="letter-spacing: 0.2px; text-indent: -7.35pt; background-color: transparent; line-height: 110%;">6.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal; font-family: &quot;Times New Roman&quot;;"> </span></span><span lang="EN-GB" style="letter-spacing: 0.2px; text-indent: -7.35pt; background-color: transparent;">Check trap definition – If the trap is defined, it is sent to the
+“Trap Suppression Check” (Step 9) for further evaluation.</span></font></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+8.6pt;margin-left:90.95pt"><span lang="EN-GB"><font size="4">Otherwise, check if undefined traps
+are accepted.<o:p></o:p></font></span></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+.25pt;margin-left:98.2pt;text-indent:-7.35pt;mso-list:l0 level1 lfo1"><font size="4"><span lang="EN-GB" style="mso-bidi-font-size:9.0pt;line-height:110%">7.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal; font-family: &quot;Times New Roman&quot;;"> </span></span><!--[endif]--><span lang="EN-GB">Undefined trap check – If the NNMi server is configured to accept
+undefined traps, the trap will be sent to “Trap Suppression Check” (Step 9) for
+further evaluation. Otherwise it is discarded. <o:p></o:p></span></font></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+8.5pt;margin-left:90.95pt"><span lang="EN-GB"><font size="4">Note: The property
+com.hp.nnm.events.allowUndefinedTraps in the $NNM_PROPS/nms-jboss.properties
+file determines whether NNMi accepts undefined traps. <o:p></o:p></font></span></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+8.2pt;margin-left:98.2pt;text-indent:-7.35pt;mso-list:l0 level1 lfo1"><font size="4"><span lang="EN-GB" style="mso-bidi-font-size:9.0pt;line-height:110%">8.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal; font-family: &quot;Times New Roman&quot;;"> </span></span><!--[endif]--><span lang="EN-GB">Log traps to the incident.csv file – In this step, traps are logged
+in the incident.csv file which is located in the &lt;NnmDataDir&gt;/log/nnm
+directory.<o:p></o:p></span></font></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+.25pt;margin-left:90.95pt"><span lang="EN-GB"><font size="4">
+
+
+
+
+
+
+
+
+
+
+
+</font></span></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+.25pt;margin-left:98.2pt;text-indent:-7.35pt;mso-list:l0 level1 lfo1"><font size="4"><span lang="EN-GB" style="mso-bidi-font-size:9.0pt;line-height:110%">9.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal; font-family: &quot;Times New Roman&quot;;"> </span></span><!--[endif]--><span lang="EN-GB">Check whether the trap is suppressed – Trap suppression is
+configured on each individual trap. You can configure the suppression from the
+NNMi UI console, “Configuration &gt; Incidents &gt; SNMP Trap Configuration”,
+then open the trap of the interest, and select the “Suppression” tab:</span></font></p><p style="margin-left:74.7pt">&nbsp; &nbsp; &nbsp; &nbsp; <img src="./mediawiki/images/PN/Picture14.png"><span style="letter-spacing: 0.2px; background-color: transparent;"><br></span></p><p style="margin-left:74.7pt"><br></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+8.5pt;margin-left:98.2pt;text-indent:-7.35pt;mso-list:l0 level1 lfo1"><font size="4"><span lang="EN-GB" style="line-height: 110%;">10.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal; font-family: &quot;Times New Roman&quot;;"> </span></span><!--[endif]--><span lang="EN-GB" style="">Trap customization – You can customize each individual trap in this
+step, such as Enrichment, Dampening, Deduplication, Action, etc. You can also
+apply various interface settings and node settings for the trap.<o:p></o:p></span></font></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+8.5pt;margin-left:98.2pt;text-indent:-7.35pt;mso-list:l0 level1 lfo1"><font size="4"><span lang="EN-GB" style="mso-bidi-font-size:9.0pt;line-height:110%">11.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal; font-family: &quot;Times New Roman&quot;;"> </span></span><!--[endif]--><span lang="EN-GB">Check whether the number of traps in storage exceeds the limit -
+NNMi allows 100,000 traps to be stored in the NNMidatabase. After this limit is
+reached, no additional traps are stored in the NNMi database.<o:p></o:p></span></font></p><p style="margin-left:74.7pt">
+
+
+
+</p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+9.6pt;margin-left:98.2pt;text-indent:-7.35pt;mso-list:l0 level1 lfo1"><font size="4"><span lang="EN-GB" style="mso-bidi-font-size:9.0pt;line-height:110%">12.<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal; font-family: &quot;Times New Roman&quot;;"> </span></span><!--[endif]--><span lang="EN-GB">Save the trap in NNMi database and forward it to NNMi Northbound
+Interface – Finally, traps are persisted in NNMi database, and forwarded to
+NNMi Northbound Interface, which is beyond the scope of this blog.</span></font><span style="background-color: transparent; font-size: x-large; font-weight: 700; letter-spacing: 0.2px; text-indent: 0px;"><br></span></p><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div><span style="font-size: x-large; font-weight: 700; letter-spacing: 0.2px;">Summary</span></div></blockquote></blockquote><div><span lang="EN-GB"><b><br></b></span></div><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
 9.75pt;margin-left:75.05pt"><span lang="EN-GB"><br></span></p>
