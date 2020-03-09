@@ -57,5 +57,76 @@ picture below:&nbsp;</span></p><p class="MsoNormal" style="text-indent: 0px; mar
 .25pt;margin-left:95.75pt;text-indent:-4.9pt;mso-list:l0 level1 lfo1"><!--[if !supportLists]--><font size="4"><span lang="EN-GB" style="line-height: 110%;">•<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal; font-family: &quot;Times New Roman&quot;;"> </span></span><!--[endif]--></font><span lang="EN-GB"><font size="4">Trap logging – If the trap logging is enabled, traps are logged to
 the trap.csv, trap.log files, or both in the &lt;NnmDataDir&gt;/log/nnm
 directory:&nbsp;</font><o:p></o:p></span></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
-.25pt;margin-left:95.75pt;text-indent:-4.9pt;mso-list:l0 level1 lfo1"><span lang="EN-GB"><font size="4"><br></font><img src="./mediawiki/images/PN/Picture6.png"><font size="4"><br></font></span></p><p style="margin-left:74.7pt"><br></p><p style="margin-left:74.7pt"><font size="4"><span style="color: black; font-family: Calibri, sans-serif; letter-spacing: 0.2px; background-color: transparent;"><br></span></font></p><p style="margin-left:74.7pt"><font size="4"><span style="color: black; font-family: Calibri, sans-serif; letter-spacing: 0.2px; background-color: transparent;"><br></span></font></p><div><font size="5"><span style="letter-spacing: 0.2px;"><br></span></font></div><div><span lang="EN-GB"><b><br></b></span></div><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+.25pt;margin-left:95.75pt;text-indent:-4.9pt;mso-list:l0 level1 lfo1"><span lang="EN-GB"><font size="4"><br></font><img src="./mediawiki/images/PN/Picture6.png"><br><br></span></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+.25pt;margin-left:90.95pt"><span lang="EN-GB"><font size="4">You can enable/disable trap logging
+and change the trap logging format using the nnmtrapconfig.ovpl command: <o:p></o:p></font></span></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+.25pt;margin-left:95.75pt;text-indent:-4.9pt;mso-list:l0 level1 lfo1"><span lang="EN-GB"><font size="4">
+
+</font></span></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+8.65pt;margin-left:90.95pt"><span lang="EN-GB"><font size="4">nnmtrapconfig.ovpl –setProp
+trapLoggingMode &lt; TXT, CSV, BOTH, OFF&gt;<o:p></o:p></font></span></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+.25pt;margin-left:95.75pt;text-indent:-4.9pt;mso-list:l0 level1 lfo1"><!--[if !supportLists]--><font size="4"><span lang="EN-GB" style="line-height: 110%;">•<span style="font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal; font-family: &quot;Times New Roman&quot;;"> </span></span><!--[endif]--><span lang="EN-GB" style="">“Hosted Object Trap Storm” detection – This step is also called
+“NarrowTrapAnalysis”. <o:p></o:p></span></font></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+.25pt;margin-left:90.95pt"><span lang="EN-GB"><font size="4">In this step, the NNMi Trap Service
+compare each trap with the trap storm filter specified in the hosted-object-trapstorm.conf
+file.<o:p></o:p></font></span></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+.25pt;margin-left:90.95pt"><span lang="EN-GB"><font size="4">If a trap meets a trap storm
+definition, the trap is dropped. <o:p></o:p></font></span></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+8.25pt;margin-left:90.95pt"><span lang="EN-GB"><font size="4">The hosted-object-trapstorm.conf
+file is located in the &lt;NnmDataDir&gt;/shared/nnm/conf directory.<o:p></o:p></font></span></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+8.25pt;margin-left:95.75pt;text-indent:-4.9pt;mso-list:l0 level1 lfo1"><!--[if !supportLists]--><font size="4"><span lang="EN-GB" style="mso-bidi-font-size:9.0pt;line-height:110%">•<font face="Times New Roman">&nbsp;</font></span><span lang="EN-GB">Trap storm detection – This step is also called “WideTrapAnalysis”
+in which if a trap storm based on the overall trap rate and threshold is
+detected, the traps are dropped. Note: run the command “</span><span lang="EN-GB" style="font-family:&quot;Courier New&quot;;mso-fareast-font-family:&quot;Courier New&quot;">nnmtrapconfig.ovpl
+–help</span><span lang="EN-GB">” to see how to configure a trap storm definition<o:p></o:p></span></font></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+8.65pt;margin-left:95.75pt;text-indent:-4.9pt;mso-list:l0 level1 lfo1"><!--[if !supportLists]--><font size="4"><span lang="EN-GB" style="mso-bidi-font-size:9.0pt;line-height:110%">•<font face="Times New Roman">&nbsp;</font></span><span lang="EN-GB">Check trap age - If the time stamp of the trap is older than 10
+minutes, the trap is dropped.<o:p></o:p></span></font></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+.25pt;margin-left:95.75pt;text-indent:-4.9pt;mso-list:l0 level1 lfo1"><!--[if !supportLists]--><font size="4"><span lang="EN-GB" style="mso-bidi-font-size:9.0pt;line-height:110%">•<font face="Times New Roman">&nbsp;</font></span><span lang="EN-GB">nnmtrapd.conf – If the trap’s source IP address, OID, or both are
+listed in the nnmtrapd.conf, the trap is dropped. <o:p></o:p></span></font></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+.25pt;margin-left:90.95pt"><span lang="EN-GB"><font size="4">Note the following: <o:p></o:p></font></span></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+.25pt;margin-left:95.65pt;text-indent:-4.8pt;mso-list:l2 level1 lfo2"><!--[if !supportLists]--><font size="4"><span lang="EN-GB" style="mso-bidi-font-size:9.0pt;line-height:110%">&nbsp; -<font face="Times New Roman">&nbsp;&nbsp;</font></span><span lang="EN-GB">nnmtrapd.conf file is located in the
+&lt;NnmDataDir&gt;/shared/nnm/conf directory. <o:p></o:p></span></font></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+8.5pt;margin-left:95.65pt;text-indent:-4.8pt;mso-list:l2 level1 lfo2"><!--[if !supportLists]--><font size="4"><span lang="EN-GB" style="mso-bidi-font-size:9.0pt;line-height:110%">&nbsp; -<font face="Times New Roman">&nbsp;&nbsp;</font></span><span lang="EN-GB">The difference between nnmtrapd.conf and trapFilter.conf is that
+nnmtrapd.conf only stops traps from being created or stored in the event
+database, but they are still stored in the trap binary store and logged in the
+trap log file if logging is enabled, and they are also used in the trap
+analysis, while trapFIlter.conf completely blocks traps from entering the NNMi
+server, as if these traps were never received.<o:p></o:p></span></font></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+.25pt;margin-left:90.95pt;mso-list:l1 level1 lfo3"><!--[if !supportLists]--><font size="4"><span lang="EN-GB" style="mso-bidi-font-size:9.0pt;line-height:110%">•<font face="Times New Roman">&nbsp;</font></span><span lang="EN-GB">Undefined trap check – If the
+NNMi server is configured to accept undefined traps, the traps will be sent to
+the “Trap Forwarding” stage, bypassing the check for whether the trap is
+enabled. <o:p></o:p></span></font></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+8.5pt;margin-left:90.95pt"><span lang="EN-GB"><font size="4">Note: The property
+com.hp.nnm.events.allowUndefinedTraps in the $NNM_PROPS/nms-jboss.properties
+file determines whether NNMi accepts undefined traps.<o:p></o:p></font></span></p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+8.65pt;margin-left:90.95pt">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</p><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
+11.35pt;margin-left:90.95pt;mso-list:l1 level1 lfo3"><!--[if !supportLists]--><font size="4"><span lang="EN-GB" style="mso-bidi-font-size:9.0pt;line-height:110%">•<font face="Times New Roman">&nbsp;</font></span><span lang="EN-GB">Trap enablement check – If NNMi
+is not configured to accept undefined traps, then we will check whether the
+trap is defined in NNMi SNMP Trap Configuration and whether itis enabled. You
+can enable/disable traps in NNMi UI Console: “Configuration &gt; Incidents &gt;
+SNMP Trap Configuration”, then open individual trap configuration,
+check/uncheck the “Enabled” checkbox:&nbsp;<o:p></o:p></span></font></p><p style="margin-left:74.7pt"><br></p><p style="margin-left:74.7pt"><font size="4"><span style="color: black; font-family: Calibri, sans-serif; letter-spacing: 0.2px; background-color: transparent;"><br></span></font></p><p style="margin-left:74.7pt"><font size="4"><span style="color: black; font-family: Calibri, sans-serif; letter-spacing: 0.2px; background-color: transparent;"><br></span></font></p><div><font size="5"><span style="letter-spacing: 0.2px;"><br></span></font></div><div><span lang="EN-GB"><b><br></b></span></div><p class="MsoNormal" style="margin-top:0in;margin-right:34.45pt;margin-bottom:
 9.75pt;margin-left:75.05pt"><span lang="EN-GB"><br></span></p>
