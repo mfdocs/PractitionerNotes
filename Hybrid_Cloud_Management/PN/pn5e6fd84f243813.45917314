@@ -1,136 +1,137 @@
-<p>Micro Focus Hybrid Cloud Management (HCM) allows end users to deploy service instances such as virtual machines, applications, etc. After a service instance has been deployed, HCM displays available user actions for the deployed service instance to end users. These user actions enable end users to run actions on deployed service instances. User actions that are available on a deployed service instance vary depending on type of deployed service instance. For example, some of the user actions that are available on a deployed virtual machine service instance are: Start Server, Stop Server, Restart Server, etc. Certain user actions may require an end user to input a value prior to running the action and those actions may also expect input value to be in a specific format. Some of the example user input format requirements are:</p>
-<ul>
-   <li>A “Reset Password” user action may expect an end user to type in a new password that contains 8 to 16 characters, at least one upper case letter,&nbsp; one lower case letter, one digit character and one special character.</li>
-   <li>A “Hostname Change” user action may expect an end user to type in a fully qualified domain name but not longer than 64 characters.</li>
-   <li>An “IP Address Change” user action may expect an end user to type in an IP address in IPv4 decimal notation format.</li>
-</ul>
-<p>&nbsp;</p>
-<p>HCM validates input format requirements, displays appropriate error message to the end user until user inputs a valid value. HCM runs a user action only after a user inputs a valid value. The input format requirement validation is defined in user action’s “input validation” JavaScript. The JavaScript is not pre-defined and has to be developed according to input validation requirements. HCM supports a subset of JavaScript functions and capabilities. Refer to the HCM documentation for a list of supported JavaScript functions and capabilities.</p>
-<p>Follow the steps below to validate user action input value and display appropriate error messages when input value is not in expected format. In the steps discussed below, “Reset Password” user action is modified to validate that the new password entered by an end user meets password complexity requirements.</p>
-<ol>
-   <li>
-      Navigate to the user action that requires validation of input value
-      <ul>
-         <li>Login to the HCM Service Management Console.</li>
-         <li>In HCM, user actions are configured on “resource offerings” or “service components”. User actions can be invoked by subscribers in the HCM Marketplace Portal (MPP) after a subscription has been provisioned. For example, a “Restart Server” user action can be configured on a server service component or on an associated resource offering. &nbsp;&nbsp;</li>
-         <li>Open the service design for the service that contains desired user action.</li>
-         <li>Select and view the component for which certain user action &nbsp;inputs have to be validated.</li>
-         <li>
-            Click “USER OPERATIONS” tab. User operations may not have been defined in the service component object. Most of the times, user operations are defined in the service component’s associated resource offering object. If the desired user action is seen, select the “SUN” icon and click “Edit” to edit user action. In the screenshot below, there are no OO flows that are defined as user operations in the service component object.
-            <p><img src="/mediawiki/images/pn_images/pn_image_5e6fd910dfc182.99826538.png" style="height:203.25pt; width:275.25pt"></p>
-         </li>
-         <li>
-            Click “RESOURCE OFFERINGS” tab. Select the “SUN” icon and click “Navigate to Resource Offering”
-            <p>&nbsp;<img src="/mediawiki/images/pn_images/pn_image_5e6fd9114bd742.60297184.png" style="height:171.75pt; width:303pt"></p>
-            <p>&nbsp;</p>
-         </li>
-         <li>
-            Click “USER OPERATIONS” tab. In the screenshot below, a list of user operation OO flows that are defined in “Resource Offering” object is shown. If the desired user action is seen, select the “SUN” icon next to it and click “Edit” to edit user action.
-            <p><img src="/mediawiki/images/pn_images/pn_image_5e6fd911a927e9.58450172.png" style="height:226.5pt; width:467.25pt"></p>
-            <p>&nbsp;</p>
-         </li>
-      </ul>
-   </li>
-   <li>
-      Modify user action to validate input format and display appropriate error message.
-      <p>&nbsp;</p>
-      <ul>
-   <li>
-      In the “Edit Action” window, “Configure Action” step, click Next.
-      <p><img src="/mediawiki/images/pn_images/pn_image_5e6fd911ee0711.37790632.png" style="height:329.25pt; width:468pt"> &nbsp;</p>
-   </li>
-   <li>
-      In the “Edit Action” window, “Configure Parameters” step, change mapping type of input parameters that requires end user input to “prompt user”. &nbsp;In the screenshot below, “vmUserName” and “vmUserPassword” input parameters require users to input values.
-      <p><img src="/mediawiki/images/pn_images/pn_image_5e6fd9122acf74.42879216.png" style="height:331.5pt; width:468pt"></p>
-      <p>&nbsp;</p>
-   </li>
-   <li>
-      Select the “SUN” icon next to the input parameter that requires input format validation and click “Edit Mapping”. In the screenshot below, mapping for the “vmUserPasswd” input parameter is edited.
-      <p><img src="/mediawiki/images/pn_images/pn_image_5e6fd91276b395.09510047.png" style="height:329.25pt; width:468pt"></p>
-   </li>
-   <ul>
-   <li>
-      In the “Edit Parameter Mapping” window, click “Manage Scripts”.
-      <p><img src="/mediawiki/images/pn_images/pn_image_5e6fd912a711b4.57811804.png" style="height:519.75pt; width:456.75pt"></p>
-   </li>
-   <li>
-      In the “Manage Scripts” window, click “Create Script”
-      <p><img src="/mediawiki/images/pn_images/pn_image_5e6fd912da2f12.47070707.png" style="height:300.75pt; width:448.5pt"></p>
-   </li>
-   <li>
-      In the “Create Script” window, enter a script name with .js extension. Type in script in the script editor. Click “Done”. Example JavaScript to validate password complexity requirement is shown below. Modify regular expression or use other ways of achieving your requirements in JavaScript, adjust error message in this script for the input format you would like to validate. For example, you may want to modify regular expression to validate IPV4 IP address format and display appropriate error message.
-      <p>&nbsp;</p>
-      <p>// input parameters</p>
-      <p>var value = request.value;</p>
-      <p>var current_value = request.current_value;</p>
-      <p>var lang = request.lang;</p>
-      <p>&nbsp;</p>
-      <p>var regExpn = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,16}$/;</p>
-      <p>var scriptStatus = 'ERROR';</p>
-      <p>var scriptMessage = 'Submit a password that contains 8 to 16 characters with atleast one lowercase letter, one uppercase letter, one numeric digit and one special character';</p>
-      <p>&nbsp;</p>
-      <p>if (value.match(regExpn))</p>
-      <p>{</p>
-      <p>&nbsp;&nbsp;&nbsp; scriptStatus = "OK";</p>
-      <p>&nbsp;&nbsp;&nbsp; scriptMessage = "";</p>
-      <p>}</p>
-      <p>&nbsp;</p>
-      <p>// validation response</p>
-      <p>validation = {</p>
-      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'status': scriptStatus,</p>
-      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'message': scriptMessage</p>
-      <p>};</p>
-      <p>&nbsp;</p>
-      <p>In the screenshot below, script name is “validatePwdInput.js” and the script content enforces input value to contain 8 to 16 characters with at least one lowercase letter, one uppercase letter, one numeric digit and one special character. &nbsp;</p>
-      <p><img src="/mediawiki/images/pn_images/pn_image_5e6fd913170190.58552888.png" style="height:515.25pt; width:454.5pt"></p>
-      <p>&nbsp;</p>
-   </li>
-   <li>
-      In the “Manage Scripts” window, select the newly created JavaScript and click “SELECT”.
-      <p><img src="/mediawiki/images/pn_images/pn_image_5e6fd913494f10.59286722.png" style="height:200.25pt; width:348.75pt"></p>
-   </li>
-   <li>
-      In the “Edit Parameter” mapping window, click “Configure Parameters”.
-      <p><img src="/mediawiki/images/pn_images/pn_image_5e6fd9137a6557.15197482.png" style="height:521.25pt; width:454.5pt"></p>
-   </li>
-   <li>
-      In the “Configure Parameters” window, type a value that is not in the expected format in the text box under “Input Validation” section. Click “Validate” button.
-      <p><img src="/mediawiki/images/pn_images/pn_image_5e6fd913ac8914.84677597.png" style="height:554.25pt; width:449.25pt"></p>
-   </li>
-   <li>
-      Results of validation may not be visible. In the “Configure Parameters” window, there are two vertical scrollbars. Slide the top right vertical scrollbar down to see the results. If there are any error messages in the JavaScript, those error messages are also seen under “Input validation” section. Hover over the “Error” and “Warning” icons in the script editor to see JavaScript error messages. In the screenshot below, the following JavaScript error message is displayed: “Expected ‘)’ to match ‘(‘ from line 10 and instead saw ‘{‘. Fix all JavaScript syntax and other error messages.
-      <p><img src="/mediawiki/images/pn_images/pn_image_5e6fd91404acd9.95146862.png" style="height:558.75pt; width:453pt"></p>
-   </li>
-   <li>
-      After fixing JavaScript, type a value that is not in the expected format and click “Validate” button again. Validate that appropriate error message is displayed by the JavaScript that the supplied value is not in the correct format. This is the error message that would be displayed to the end users in HCM MPP if they supply a value that is not in the expected format. In the screenshot below, input value of “Abcd” does not match password complexity format expected by the JavaScript and an appropriate error message is displayed instructing user to submit value in the proper format.
-      <p><img src="/mediawiki/images/pn_images/pn_image_5e6fd9144ebf87.45228153.png" style="height:557.25pt; width:454.5pt"></p>
-   </li>
-   <li>
-      Type a value that is in the expected format in the text box under “Input Validation section. Click “Validate” button. Observe that no error message is displayed. Click “DONE”. In the screenshot below, input value of “Abcd_1234” matches password complexity format expected by the JavaScript and no error message is displayed.
-      <p><img src="/mediawiki/images/pn_images/pn_image_5e6fd9147fab34.72487712.png" style="height:554.25pt; width:453pt"></p>
-   </li>
-   <li>
-      Click “FINISH” in the “Edit Action” window.
-      <p><img src="/mediawiki/images/pn_images/pn_image_5e6fd914b16452.23822990.png" style="height:331.5pt; width:468pt"></p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-   </li>
-   </ul>
-   
-   <li>
-      Test user action input validation in HCM MPP.
-      <ul>
-         <li>Login to the HCM MPP.</li>
-         <li>Deploy the service containing user action that requires input format validation.</li>
-         <li>
-            Navigate to the deployed service. Launch the user action.
-            <p><img src="/mediawiki/images/pn_images/pn_image_5e6fd9150b0702.94467865.png" style="height:201.75pt; width:339.75pt"></p>
-         </li>
-         <li>
-            Supply invalid values for user action input. Observe that user action is not executed and an appropriate error message is displayed until a valid value is supplied.
-            <p><img src="/mediawiki/images/pn_images/pn_image_5e6fd91552b8e1.67735127.png" style="height:532.5pt; width:452.25pt"></p>
-         </li>
-         <li>Launch the user action with valid values for user input. Observe that user action launches successfully without error messages.</li>
-      </ul>
-   </li>
-</ul></li></ol>
+<p>&lt;p&gt;Micro Focus Hybrid Cloud Management (HCM) allows end users to deploy service instances such as virtual machines, applications, etc. After a service instance has been deployed, HCM displays available user actions for the deployed service instance to end users. These user actions enable end users to run actions on deployed service instances. User actions that are available on a deployed service instance vary depending on type of deployed service instance. For example, some of the user actions that are available on a deployed virtual machine service instance are: Start Server, Stop Server, Restart Server, etc. Certain user actions may require an end user to input a value prior to running the action and those actions may also expect input value to be in a specific format. Some of the example user input format requirements are:&lt;/p&gt;<br>
+&lt;ul&gt;<br>
+&nbsp; &nbsp;&lt;li&gt;A &amp;ldquo;Reset Password&amp;rdquo; user action may expect an end user to type in a new password that contains 8 to 16 characters, at least one upper case letter,&amp;nbsp; one lower case letter, one digit character and one special character.&lt;/li&gt;<br>
+&nbsp; &nbsp;&lt;li&gt;A &amp;ldquo;Hostname Change&amp;rdquo; user action may expect an end user to type in a fully qualified domain name but not longer than 64 characters.&lt;/li&gt;<br>
+&nbsp; &nbsp;&lt;li&gt;An &amp;ldquo;IP Address Change&amp;rdquo; user action may expect an end user to type in an IP address in IPv4 decimal notation format.&lt;/li&gt;<br>
+&lt;/ul&gt;<br>
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;<br>
+&lt;p&gt;HCM validates input format requirements, displays appropriate error message to the end user until user inputs a valid value. HCM runs a user action only after a user inputs a valid value. The input format requirement validation is defined in user action&amp;rsquo;s &amp;ldquo;input validation&amp;rdquo; JavaScript. The JavaScript is not pre-defined and has to be developed according to input validation requirements. HCM supports a subset of JavaScript functions and capabilities. Refer to the HCM documentation for a list of supported JavaScript functions and capabilities.&lt;/p&gt;<br>
+&lt;p&gt;Follow the steps below to validate user action input value and display appropriate error messages when input value is not in expected format. In the steps discussed below, &amp;ldquo;Reset Password&amp;rdquo; user action is modified to validate that the new password entered by an end user meets password complexity requirements.&lt;/p&gt;<br>
+&lt;ol&gt;<br>
+&nbsp; &nbsp;&lt;li&gt;<br>
+&nbsp; &nbsp; &nbsp; Navigate to the user action that requires validation of input value<br>
+&nbsp; &nbsp; &nbsp; &lt;ul&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;li&gt;Login to the HCM Service Management Console.&lt;/li&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;li&gt;In HCM, user actions are configured on &amp;ldquo;resource offerings&amp;rdquo; or &amp;ldquo;service components&amp;rdquo;. User actions can be invoked by subscribers in the HCM Marketplace Portal (MPP) after a subscription has been provisioned. For example, a &amp;ldquo;Restart Server&amp;rdquo; user action can be configured on a server service component or on an associated resource offering. &amp;nbsp;&amp;nbsp;&lt;/li&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;li&gt;Open the service design for the service that contains desired user action.&lt;/li&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;li&gt;Select and view the component for which certain user action &amp;nbsp;inputs have to be validated.&lt;/li&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;li&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Click &amp;ldquo;USER OPERATIONS&amp;rdquo; tab. User operations may not have been defined in the service component object. Most of the times, user operations are defined in the service component&amp;rsquo;s associated resource offering object. If the desired user action is seen, select the &amp;ldquo;SUN&amp;rdquo; icon and click &amp;ldquo;Edit&amp;rdquo; to edit user action. In the screenshot below, there are no OO flows that are defined as user operations in the service component object.<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p&gt;&lt;img src="/mediawiki/images/pn_images/pn_image_5e6fd910dfc182.99826538.png" style="height:203.25pt; width:275.25pt" /&gt;&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;/li&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;li&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Click &amp;ldquo;RESOURCE OFFERINGS&amp;rdquo; tab. Select the &amp;ldquo;SUN&amp;rdquo; icon and click &amp;ldquo;Navigate to Resource Offering&amp;rdquo;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p&gt;&amp;nbsp;&lt;img src="/mediawiki/images/pn_images/pn_image_5e6fd9114bd742.60297184.png" style="height:171.75pt; width:303pt" /&gt;&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p&gt;&amp;nbsp;&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;/li&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;li&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Click &amp;ldquo;USER OPERATIONS&amp;rdquo; tab. In the screenshot below, a list of user operation OO flows that are defined in &amp;ldquo;Resource Offering&amp;rdquo; object is shown. If the desired user action is seen, select the &amp;ldquo;SUN&amp;rdquo; icon next to it and click &amp;ldquo;Edit&amp;rdquo; to edit user action.<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p&gt;&lt;img src="/mediawiki/images/pn_images/pn_image_5e6fd911a927e9.58450172.png" style="height:226.5pt; width:467.25pt" /&gt;&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p&gt;&amp;nbsp;&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;/li&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;/ul&gt;<br>
+&nbsp; &nbsp;&lt;/li&gt;<br>
+&nbsp; &nbsp;&lt;li&gt;<br>
+&nbsp; &nbsp; &nbsp; Modify user action to validate input format and display appropriate error message.<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&amp;nbsp;&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;ul&gt;<br>
+&nbsp; &nbsp;&lt;li&gt;<br>
+&nbsp; &nbsp; &nbsp; In the &amp;ldquo;Edit Action&amp;rdquo; window, &amp;ldquo;Configure Action&amp;rdquo; step, click Next.<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&lt;img src="/mediawiki/images/pn_images/pn_image_5e6fd911ee0711.37790632.png" style="height:329.25pt; width:468pt" /&gt; &amp;nbsp;&lt;/p&gt;<br>
+&nbsp; &nbsp;&lt;/li&gt;<br>
+&nbsp; &nbsp;&lt;li&gt;<br>
+&nbsp; &nbsp; &nbsp; In the &amp;ldquo;Edit Action&amp;rdquo; window, &amp;ldquo;Configure Parameters&amp;rdquo; step, change mapping type of input parameters that requires end user input to &amp;ldquo;prompt user&amp;rdquo;. &amp;nbsp;In the screenshot below, &amp;ldquo;vmUserName&amp;rdquo; and &amp;ldquo;vmUserPassword&amp;rdquo; input parameters require users to input values.<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&lt;img src="/mediawiki/images/pn_images/pn_image_5e6fd9122acf74.42879216.png" style="height:331.5pt; width:468pt" /&gt;&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&amp;nbsp;&lt;/p&gt;<br>
+&nbsp; &nbsp;&lt;/li&gt;<br>
+&nbsp; &nbsp;&lt;li&gt;<br>
+&nbsp; &nbsp; &nbsp; Select the &amp;ldquo;SUN&amp;rdquo; icon next to the input parameter that requires input format validation and click &amp;ldquo;Edit Mapping&amp;rdquo;. In the screenshot below, mapping for the &amp;ldquo;vmUserPasswd&amp;rdquo; input parameter is edited.<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&lt;img src="/mediawiki/images/pn_images/pn_image_5e6fd91276b395.09510047.png" style="height:329.25pt; width:468pt" /&gt;&lt;/p&gt;<br>
+&nbsp; &nbsp;&lt;/li&gt;<br>
+&nbsp; &nbsp;<br>
+&nbsp; &nbsp;&lt;li&gt;<br>
+&nbsp; &nbsp; &nbsp; In the &amp;ldquo;Edit Parameter Mapping&amp;rdquo; window, click &amp;ldquo;Manage Scripts&amp;rdquo;.<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&lt;img src="/mediawiki/images/pn_images/pn_image_5e6fd912a711b4.57811804.png" style="height:519.75pt; width:456.75pt" /&gt;&lt;/p&gt;<br>
+&nbsp; &nbsp;&lt;/li&gt;<br>
+&nbsp; &nbsp;&lt;li&gt;<br>
+&nbsp; &nbsp; &nbsp; In the &amp;ldquo;Manage Scripts&amp;rdquo; window, click &amp;ldquo;Create Script&amp;rdquo;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&lt;img src="/mediawiki/images/pn_images/pn_image_5e6fd912da2f12.47070707.png" style="height:300.75pt; width:448.5pt" /&gt;&lt;/p&gt;<br>
+&nbsp; &nbsp;&lt;/li&gt;<br>
+&nbsp; &nbsp;&lt;li&gt;<br>
+&nbsp; &nbsp; &nbsp; In the &amp;ldquo;Create Script&amp;rdquo; window, enter a script name with .js extension. Type in script in the script editor. Click &amp;ldquo;Done&amp;rdquo;. Example JavaScript to validate password complexity requirement is shown below. Modify regular expression or use other ways of achieving your requirements in JavaScript, adjust error message in this script for the input format you would like to validate. For example, you may want to modify regular expression to validate IPV4 IP address format and display appropriate error message.<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&amp;nbsp;&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;// input parameters&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;var value = request.value;&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;var current_value = request.current_value;&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;var lang = request.lang;&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&amp;nbsp;&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;var regExpn = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,16}$/;&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;var scriptStatus = &amp;#39;ERROR&amp;#39;;&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;var scriptMessage = &amp;#39;Submit a password that contains 8 to 16 characters with atleast one lowercase letter, one uppercase letter, one numeric digit and one special character&amp;#39;;&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&amp;nbsp;&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;if (value.match(regExpn))&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;{&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; scriptStatus = &amp;quot;OK&amp;quot;;&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; scriptMessage = &amp;quot;&amp;quot;;&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;}&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&amp;nbsp;&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;// validation response&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;validation = {&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;#39;status&amp;#39;: scriptStatus,&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;#39;message&amp;#39;: scriptMessage&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;};&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&amp;nbsp;&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;In the screenshot below, script name is &amp;ldquo;validatePwdInput.js&amp;rdquo; and the script content enforces input value to contain 8 to 16 characters with at least one lowercase letter, one uppercase letter, one numeric digit and one special character. &amp;nbsp;&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&lt;img src="/mediawiki/images/pn_images/pn_image_5e6fd913170190.58552888.png" style="height:515.25pt; width:454.5pt" /&gt;&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&amp;nbsp;&lt;/p&gt;<br>
+&nbsp; &nbsp;&lt;/li&gt;<br>
+&nbsp; &nbsp;&lt;li&gt;<br>
+&nbsp; &nbsp; &nbsp; In the &amp;ldquo;Manage Scripts&amp;rdquo; window, select the newly created JavaScript and click &amp;ldquo;SELECT&amp;rdquo;.<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&lt;img src="/mediawiki/images/pn_images/pn_image_5e6fd913494f10.59286722.png" style="height:200.25pt; width:348.75pt" /&gt;&lt;/p&gt;<br>
+&nbsp; &nbsp;&lt;/li&gt;<br>
+&nbsp; &nbsp;&lt;li&gt;<br>
+&nbsp; &nbsp; &nbsp; In the &amp;ldquo;Edit Parameter&amp;rdquo; mapping window, click &amp;ldquo;Configure Parameters&amp;rdquo;.<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&lt;img src="/mediawiki/images/pn_images/pn_image_5e6fd9137a6557.15197482.png" style="height:521.25pt; width:454.5pt" /&gt;&lt;/p&gt;<br>
+&nbsp; &nbsp;&lt;/li&gt;<br>
+&nbsp; &nbsp;&lt;li&gt;<br>
+&nbsp; &nbsp; &nbsp; In the &amp;ldquo;Configure Parameters&amp;rdquo; window, type a value that is not in the expected format in the text box under &amp;ldquo;Input Validation&amp;rdquo; section. Click &amp;ldquo;Validate&amp;rdquo; button.<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&lt;img src="/mediawiki/images/pn_images/pn_image_5e6fd913ac8914.84677597.png" style="height:554.25pt; width:449.25pt" /&gt;&lt;/p&gt;<br>
+&nbsp; &nbsp;&lt;/li&gt;<br>
+&nbsp; &nbsp;&lt;li&gt;<br>
+&nbsp; &nbsp; &nbsp; Results of validation may not be visible. In the &amp;ldquo;Configure Parameters&amp;rdquo; window, there are two vertical scrollbars. Slide the top right vertical scrollbar down to see the results. If there are any error messages in the JavaScript, those error messages are also seen under &amp;ldquo;Input validation&amp;rdquo; section. Hover over the &amp;ldquo;Error&amp;rdquo; and &amp;ldquo;Warning&amp;rdquo; icons in the script editor to see JavaScript error messages. In the screenshot below, the following JavaScript error message is displayed: &amp;ldquo;Expected &amp;lsquo;)&amp;rsquo; to match &amp;lsquo;(&amp;lsquo; from line 10 and instead saw &amp;lsquo;{&amp;lsquo;. Fix all JavaScript syntax and other error messages.<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&lt;img src="/mediawiki/images/pn_images/pn_image_5e6fd91404acd9.95146862.png" style="height:558.75pt; width:453pt" /&gt;&lt;/p&gt;<br>
+&nbsp; &nbsp;&lt;/li&gt;<br>
+&nbsp; &nbsp;&lt;li&gt;<br>
+&nbsp; &nbsp; &nbsp; After fixing JavaScript, type a value that is not in the expected format and click &amp;ldquo;Validate&amp;rdquo; button again. Validate that appropriate error message is displayed by the JavaScript that the supplied value is not in the correct format. This is the error message that would be displayed to the end users in HCM MPP if they supply a value that is not in the expected format. In the screenshot below, input value of &amp;ldquo;Abcd&amp;rdquo; does not match password complexity format expected by the JavaScript and an appropriate error message is displayed instructing user to submit value in the proper format.<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&lt;img src="/mediawiki/images/pn_images/pn_image_5e6fd9144ebf87.45228153.png" style="height:557.25pt; width:454.5pt" /&gt;&lt;/p&gt;<br>
+&nbsp; &nbsp;&lt;/li&gt;<br>
+&nbsp; &nbsp;&lt;li&gt;<br>
+&nbsp; &nbsp; &nbsp; Type a value that is in the expected format in the text box under &amp;ldquo;Input Validation section. Click &amp;ldquo;Validate&amp;rdquo; button. Observe that no error message is displayed. Click &amp;ldquo;DONE&amp;rdquo;. In the screenshot below, input value of &amp;ldquo;Abcd_1234&amp;rdquo; matches password complexity format expected by the JavaScript and no error message is displayed.<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&lt;img src="/mediawiki/images/pn_images/pn_image_5e6fd9147fab34.72487712.png" style="height:554.25pt; width:453pt" /&gt;&lt;/p&gt;<br>
+&nbsp; &nbsp;&lt;/li&gt;<br>
+&nbsp; &nbsp;&lt;li&gt;<br>
+&nbsp; &nbsp; &nbsp; Click &amp;ldquo;FINISH&amp;rdquo; in the &amp;ldquo;Edit Action&amp;rdquo; window.<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&lt;img src="/mediawiki/images/pn_images/pn_image_5e6fd914b16452.23822990.png" style="height:331.5pt; width:468pt" /&gt;&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&amp;nbsp;&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;p&gt;&amp;nbsp;&lt;/p&gt;<br>
+&nbsp; &nbsp;&lt;/li&gt;<br>
+&nbsp; &nbsp;&lt;/ul&gt;<br>
+&nbsp; &nbsp;&lt;/li&gt;<br>
+&nbsp; &nbsp;&lt;li&gt;<br>
+&nbsp; &nbsp; &nbsp; Test user action input validation in HCM MPP.<br>
+&nbsp; &nbsp; &nbsp; &lt;ul&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;li&gt;Login to the HCM MPP.&lt;/li&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;li&gt;Deploy the service containing user action that requires input format validation.&lt;/li&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;li&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Navigate to the deployed service. Launch the user action.<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p&gt;&lt;img src="/mediawiki/images/pn_images/pn_image_5e6fd9150b0702.94467865.png" style="height:201.75pt; width:339.75pt" /&gt;&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;/li&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;li&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Supply invalid values for user action input. Observe that user action is not executed and an appropriate error message is displayed until a valid value is supplied.<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p&gt;&lt;img src="/mediawiki/images/pn_images/pn_image_5e6fd91552b8e1.67735127.png" style="height:532.5pt; width:452.25pt" /&gt;&lt;/p&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;/li&gt;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;li&gt;Launch the user action with valid values for user input. Observe that user action launches successfully without error messages.&lt;/li&gt;<br>
+&nbsp; &nbsp; &nbsp; &lt;/ul&gt;<br>
+&nbsp; &nbsp;&lt;/li&gt;<br>
+&lt;/ol&gt;<br>
+&nbsp;</p>
