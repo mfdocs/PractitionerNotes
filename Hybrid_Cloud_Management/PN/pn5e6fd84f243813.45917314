@@ -51,29 +51,30 @@
 		<li>In the “Manage Scripts” window, click “Create Script”
 		<p><img src="/mediawiki/images/pn_images/pn_image_5e6fd912da2f12.47070707.png" style="height:300.75pt; width:448.5pt"></p>
 		</li>
-		<li>In the “Create Script” window, enter a script name with .js extension. Type in script in the script editor. Click “Done”. Example JavaScript to validate password complexity requirement is shown below. Modify regular expression or use other ways of achieving your requirements in JavaScript and&nbsp;adjust error message in this script for the input format you would like to validate. For example, you may want to modify regular expression to validate IPV4 IP address format and display appropriate error message.<br>
-		&nbsp;
-		<p><code>// input parameters<br>
+		<li>In the “Create Script” window, enter a script name with .js extension. Type in script in the script editor. Click “Done”. Example JavaScript to validate password complexity requirement is shown below. Modify regular expression or use other ways of achieving your requirements in JavaScript and&nbsp;adjust error message in this script for the input format you would like to validate. For example, you may want to modify regular expression to validate IPV4 IP address format and display appropriate error message.
+		<div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">
+		<p>// input parameters<br>
 		var value = request.value;<br>
 		var current_value = request.current_value;<br>
-		var lang = request.lang;</code></p>
+		var lang = request.lang;</p>
 
 		<p><br>
-		<code>var regExpn = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,16}$/;<br>
+		var regExpn = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,16}$/;<br>
 		var scriptStatus = 'ERROR';<br>
-		var scriptMessage = 'Submit a password that contains 8 to 16 characters with atleast one lowercase letter, one uppercase letter, one numeric digit and one special character';</code></p>
+		var scriptMessage = 'Submit a password that contains 8 to 16 characters with atleast one lowercase letter, one uppercase letter, one numeric digit and one special character';</p>
 
-		<p><code>if (value.match(regExpn))<br>
+		<p>if (value.match(regExpn))<br>
 		{<br>
 		&nbsp;&nbsp;&nbsp;&nbsp;scriptStatus = "OK";<br>
 		&nbsp;&nbsp;&nbsp;&nbsp;scriptMessage = "";<br>
-		}</code></p>
+		}</p>
 
-		<p><code>// validation response<br>
+		<p>// validation response<br>
 		validation = {<br>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'status': scriptStatus,<br>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'message': scriptMessage<br>
-		};</code></p>
+		};</p>
+		</div>
 
 		<p>&nbsp;</p>
 
