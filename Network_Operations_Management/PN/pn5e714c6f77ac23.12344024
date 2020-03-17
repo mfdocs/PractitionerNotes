@@ -45,7 +45,8 @@ To limit the impact of polling for CPU and Interface utilizations on all devices
 <br>
 <img alt="" src="/mediawiki/images/pn_images/pn_image_5e7155531df910.36331397.png" style="height:342px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:450px"><br>
 <br>
-<strong>Step 3 - Create a script to retrieve the collected metrics from NNMi NPS and stream them to BVD</strong>As the title indicated, this article is mainly about streaming performance metrics from NNMi to BVD.&nbsp; Therefore this is the most important step.&nbsp; In this step, we wrote a script which essentially performs three tasks:</p>
+<strong>Step 3 - Create a script to retrieve the collected metrics from NNMi NPS and stream them to BVD</strong><br>
+As the title indicated, this article is mainly about streaming performance metrics from NNMi to BVD.&nbsp; Therefore this is the most important step.&nbsp; In this step, we wrote a script which essentially performs three tasks:</p>
 
 <ol>
 	<li>Execute SQL queries to retrieve CPU utilization, interface utilization and number of concurrent user sessions from NPS Sybase DB (using dbisql CLI)</li>
@@ -85,7 +86,51 @@ This article described the implementation of a solution to a user story which al
 The main script for this solution is included in this section in its entirety, along with the auxiliary SQL scripts.&nbsp;<br>
 Note: &nbsp;the BVD host, BVD API Key, the node group “COVID-19”, and the custom poller data tables in the scripts are user and environment specific. Replace these variables with your own values.</p>
 
-<p><strong>main script</strong>:</p>
+<p><strong>main script</strong>:<br>
+&nbsp;</p>
+
+<pre><code class="language-bash">#!/usr/bin/bash
+BVDURL="https://&lt;My BVD FQDN&gt;/bvd-receiver/api/submit/"
+BVDAPIKEY="&lt;My BVD API KEY&gt;"
+
+while [ 1 ] 
+do    
+	# Retrieve Interface Utilization % from NPS and send to BVD
+	BVDCURLURL="$BVDURL$BVDAPIKEY/dims/NodeName,InterfaceName"
+	dbisql -nogui -c "DSN=PerfSPIDSN" ifutil.sql | sed -e '/^\s*$/d' -e '/^-/d' -e '/^Node Name/d' -e '/^(/d' -e '/^Execution/d' | while read line    
+	do    
+		NODENAME=`echo $line | cut -d ' ' -f 1 | cut -d '.' -f 1`    
+		IFNAME=`echo $line | cut -d ' ' -f 2`    
+		IFUTIL=`echo $line | cut -d ' ' -f 3`    
+		IFUTILINT=${IFUTIL%.*}    
+		if [ $IFUTILINT -gt 10 ]; then 
+			JSONMSG='{"NodeName":"'$NODENAME'","InterfaceName":"'$IFNAME'","InterfaceUtil%":'$IFUTIL'}'        
+			curl -k -X POST -H "Content-Type: application/json" -d $JSONMSG $BVDCURLURL    
+		fi    
+	done    
+	# Retrieve CPU Utilization % from NPS and send to BVD
+	BVDCURLURL="$BVDURL$BVDAPIKEY/dims/NodeName,MetricGroup"
+	dbisql -nogui -c "DSN=PerfSPIDSN" cpuutil.sql | sed -e '/^\s*$/d' -e '/^-/d' -e '/^Node Name/d' -e '/^(/d' -e '/^Execution/d' | while read line
+	do   
+		NODENAME=`echo $line | cut -d ' ' -f 1 | cut -d '.' -f 1`   
+		CPUUTIL=`echo $line | cut -d ' ' -f 2`   
+		CPUUTILINT=${CPUUTIL%.*}     
+		JSONMSG='{"NodeName":"'$NODENAME'","MetricGroup":"CPUUtilization","CPUUtil%":'$CPUUTIL'}'   
+		curl -k -X POST -H '"Content-Type:application/json"' -d "'"$JSONMSG"'" '"'$BVDCURLURL'"'
+	done
+		
+	# Retrieve ConcurrentSession from NPS and send to BVD
+	BVDCURLURL="$BVDURL$BVDAPIKEY/dims/NodeName,ConcurrentSession"
+	dbisql -nogui -c "DSN=PerfSPIDSN" cpuutil.sql | sed -e '/^\s*$/d' -e '/^-/d' -e '/^Node Name/d' -e '/^(/d' -e '/^Execution/d' | while read line    
+	do       
+		NODENAME=`echo $line | cut -d ' ' -f 1 | cut -d '.' -f 1`        
+		CONCURRENTSESSION=`echo $line | cut -d ' ' -f 2`        
+		JSONMSG='{"NodeName":"'$NODENAME'","ConcurrentSession” :”’$CONCURRENTSESSION'”}'        
+		curl -k -X POST -H '"Content-Type:application/json"' -d "'"$JSONMSG"'" '"'$BVDCURLURL'"'    
+	done    
+	#sleep 5 minutes and repeat        
+	sleep 300
+done</code></pre>
 
 <p><strong>cpuutil.sql: </strong></p>
 
