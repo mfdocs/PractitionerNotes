@@ -11,9 +11,8 @@
 </ol>
 
 <p>Details for each steps are described below:<br>
-&nbsp;</p>
-
-<p><strong>Step 1 - Determine the metrics to be collected&nbsp; </strong><br>
+<br>
+<strong>Step 1 - Determine the metrics to be collected&nbsp; </strong><br>
 After some investigation of the devices, it was determined that the following metrics need to be collected to understand the devices’ current “stress level”:</p>
 
 <ol>
@@ -29,6 +28,11 @@ CPU and Interface utilizations are part of NNMi standard performance polling and
 <strong>Step 2 - Configure NNMi to collect the metrics</strong><br>
 The MIB variable identified in Step 1, cfwConnectionStatValue, is not part of NNMi’s standard SNMP polling.&nbsp; NNMi provides a feature called “Custom Poller” which allows users to collect non-standard MIB variables.&nbsp;<br>
 Create a custom poller “ConcurrentSessionPoller” as shown below:<br>
-&nbsp;</p>
+<br>
+<img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e7041259a60c0.12181320.png" style="border:0px solid black; height:286px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:400px" vspace="0"></p>
+
+<p>(The details of creating a custom poller is not covered in this article.&nbsp; Instructions can be found <a href="https://docs.microfocus.com/NNMi/10.30/Content/Administer/nmAdminHelp/nmAdmConfCP0200CreateCPCol.htm">here</a>)<br>
+This custom poller will be polling the number of concurrent session from the firewall server every 5 minutes and store data in the NPS server.<br>
+To limit the impact of polling for CPU and Interface utilizations on all devices, create a node group “COVID-19” containing only those devices of interest for this use case: the firewall server and the router:</p>
 
 <p>&nbsp;</p>
