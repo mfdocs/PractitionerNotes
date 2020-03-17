@@ -2,7 +2,7 @@
 
 <p><strong>Use Case Description</strong>:&nbsp; Due to the COVID-19 outbreak, Company A is requesting all its employees to work from home.&nbsp; The company is responding to an urgent request from top management and needs to conduct a network stress test.&nbsp; This is done to make sure its network infrastructure is capable of providing sufficient bandwidth and to identify bottlenecks rapidly. Also top managers request insight into network status and performance.&nbsp; They want to use NOM to capture the required metrics to validate the test and stream the results to business executuve dashboard (BVD), such as the one shown below:</p>
 
-<p>&nbsp; &nbsp; &nbsp; &nbsp; <img style="border:0px solid black; height:220px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:450px" alt="" src="/mediawiki/images/pn_images/pn_image_5e71211e576c49.21261410.png" border="0" vspace="0" hspace="0"></p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; <img style="height:220px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:450px" alt="" src="/mediawiki/images/pn_images/pn_image_5e71211e576c49.21261410.png"></p>
 
 <p><strong>Use Case Implementation:</strong> The use story was implemented in the following three steps</p>
 
@@ -82,58 +82,81 @@ Note: &nbsp;the BVD host, BVD API Key, the node group “COVID-19”, and the cu
 
 <p><strong>main script</strong>:</p>
 
-<p>BVDURL="https://<span class="marker">&lt;My BVD FQDN&gt;</span>/bvd-receiver/api/submit/"<br>
-BVDAPIKEY="<span class="marker">&lt;My BVD API KEY&gt;</span>"<br>
-BVDCURLURL="$BVDURL$BVDAPIKEY/dims/NodeName,InterfaceName"<br>
-while [ 1 ]<br>
-Do<br>
-&nbsp;&nbsp;&nbsp; # Retrieve Interface Utilization % from NPS and send to BVD<br>
-&nbsp;&nbsp;&nbsp; dbisql -nogui -c "DSN=PerfSPIDSN" ifutil.sql | sed -e '/^\s*$/d' -e '/^-/d' -e '/^Node Name/d' -e '/^(/d' -e '/^Execution/d' | while read line<br>
-&nbsp;&nbsp;&nbsp; do<br>
-&nbsp;&nbsp;&nbsp; NODENAME=`echo $line | cut -d ' ' -f 1 | cut -d '.' -f 1`<br>
-&nbsp;&nbsp;&nbsp; IFNAME=`echo $line | cut -d ' ' -f 2`<br>
-&nbsp;&nbsp;&nbsp; IFUTIL=`echo $line | cut -d ' ' -f 3`<br>
-&nbsp;&nbsp;&nbsp; IFUTILINT=${IFUTIL%.*}<br>
-&nbsp;&nbsp; &nbsp;if [ $IFUTILINT -gt 10 ]; then JSONMSG='{"NodeName":"'$NODENAME'","InterfaceName":"'$IFNAME'","InterfaceUtil%":'$IFUTIL'}'<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; curl -k -X POST -H "Content-Type: application/json" -d $JSONMSG $BVDCURLURL<br>
-&nbsp;&nbsp;&nbsp; fi<br>
-&nbsp;&nbsp;&nbsp; done<br>
-<br>
-&nbsp;&nbsp;&nbsp; # Retrieve CPU Utilization % from NPS and send to BVD</p>
+<pre><code class="language-bash">#!/usr/bin/bash 
+BVDURL="https://&lt;My BVD FQDN&gt;/bvd-receiver/api/submit/"
+BVDAPIKEY="&lt;My BVD API KEY&gt;"
 
-<p>BVDCURLURL="$BVDURL$BVDAPIKEY/dims/NodeName,MetricGroup"<br>
-dbisql -nogui -c "DSN=PerfSPIDSN" cpuutil.sql | sed -e '/^\s*$/d' -e '/^-/d' -e '/^Node Name/d' -e '/^(/d' -e '/^Execution/d' | while read line</p>
+while [ 1 ] 
+do    
+	# Retrieve Interface Utilization % from NPS and send to BVD
+	BVDCURLURL="$BVDURL$BVDAPIKEY/dims/NodeName,InterfaceName"
+	dbisql -nogui -c "DSN=PerfSPIDSN" ifutil.sql | sed -e '/^\s*$/d' -e '/^-/d' -e '/^Node Name/d' -e '/^(/d' -e '/^Execution/d' | while read line    
+	do    
+		NODENAME=`echo $line | cut -d ' ' -f 1 | cut -d '.' -f 1`    
+		IFNAME=`echo $line | cut -d ' ' -f 2`    
+		IFUTIL=`echo $line | cut -d ' ' -f 3`    
+		IFUTILINT=${IFUTIL%.*}    
+		if [ $IFUTILINT -gt 10 ]; then 
+			JSONMSG='{"NodeName":"'$NODENAME'","InterfaceName":"'$IFNAME'","InterfaceUtil%":'$IFUTIL'}'        
+			curl -k -X POST -H "Content-Type: application/json" -d $JSONMSG $BVDCURLURL    
+		fi    
+	done    
+	# Retrieve CPU Utilization % from NPS and send to BVD
+	BVDCURLURL="$BVDURL$BVDAPIKEY/dims/NodeName,MetricGroup"
+	dbisql -nogui -c "DSN=PerfSPIDSN" cpuutil.sql | sed -e '/^\s*$/d' -e '/^-/d' -e '/^Node Name/d' -e '/^(/d' -e '/^Execution/d' | while read line
+	do   
+		NODENAME=`echo $line | cut -d ' ' -f 1 | cut -d '.' -f 1`   
+		CPUUTIL=`echo $line | cut -d ' ' -f 2`   
+		CPUUTILINT=${CPUUTIL%.*}     
+		JSONMSG='{"NodeName":"'$NODENAME'","MetricGroup":"CPUUtilization","CPUUtil%":'$CPUUTIL'}'   
+		curl -k -X POST -H '"Content-Type:application/json"' -d "'"$JSONMSG"'" '"'$BVDCURLURL'"'
+	done
+		
+	# Retrieve ConcurrentSession from NPS and send to BVD
+	BVDCURLURL="$BVDURL$BVDAPIKEY/dims/NodeName,ConcurrentSession"
+	dbisql -nogui -c "DSN=PerfSPIDSN" cpuutil.sql | sed -e '/^\s*$/d' -e '/^-/d' -e '/^Node Name/d' -e '/^(/d' -e '/^Execution/d' | while read line    
+	do       
+		NODENAME=`echo $line | cut -d ' ' -f 1 | cut -d '.' -f 1`        
+		CONCURRENTSESSION=`echo $line | cut -d ' ' -f 2`        
+		JSONMSG='{"NodeName":"'$NODENAME'","ConcurrentSession” :”’$CONCURRENTSESSION'”}'        
+		curl -k -X POST -H '"Content-Type:application/json"' -d "'"$JSONMSG"'" '"'$BVDCURLURL'"'    
+	done    
+	#sleep 5 minutes and repeat        
+	sleep 300
+done</code></pre>
 
-<p>do<br>
-&nbsp; &nbsp;NODENAME=`echo $line | cut -d ' ' -f 1 | cut -d '.' -f 1`<br>
-&nbsp; &nbsp;CPUUTIL=`echo $line | cut -d ' ' -f 2`<br>
-&nbsp; &nbsp;CPUUTILINT=${CPUUTIL%.*}&nbsp; &nbsp; &nbsp;JSONMSG='{"NodeName":"'$NODENAME'","MetricGroup":"CPUUtilization","CPUUtil%":'$CPUUTIL'}'<br>
-&nbsp; &nbsp;curl -k -X POST -H '"Content-Type:application/json"' -d "'"$JSONMSG"'" '"'$BVDCURLURL'"'<br>
-done</p>
+<p><strong>cpuutil.sql: </strong></p>
 
-<p># Retrieve ConcurrentSession from NPS and send to BVD<br>
-BVDCURLURL="$BVDURL$BVDAPIKEY/dims/NodeName,ConcurrentSession"<br>
-dbisql -nogui -c "DSN=PerfSPIDSN" cpuutil.sql | sed -e '/^\s*$/d' -e '/^-/d' -e '/^Node Name/d' -e '/^(/d' -e '/^Execution/d' | while read line<br>
-&nbsp; &nbsp;&nbsp;do<br>
-&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;NODENAME=`echo $line | cut -d ' ' -f 1 | cut -d '.' -f 1`<br>
-&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;CONCURRENTSESSION=`echo $line | cut -d ' ' -f 2`</p>
+<pre><code class="language-bash">select rawTable."Node Name",  rawTable."CPU 5min Utilization" * 100 as "5 Minute CPU Utilization"
+from f_Raw_ComponentMetrics rawTable, [g_NodeGroup Type1_ComponentTopology] groupTable
+where "CPU 5min Utilization" is not NULL
+and "5 Minute"  &gt; (select dateadd(SECOND, -300, max("5 Minute")) from f_Raw_ComponentMetrics)
+and groupTable.[NodeGroup Type1 Name] in ('COVID-19')
+and groupTable."mbrRef" = rawTable."Node UUID"
+ORDER by "Node Name", "5 Minute"
+</code></pre>
 
-<p>&nbsp; &nbsp; &nbsp; &nbsp; JSONMSG='{"NodeName":"'$NODENAME'","ConcurrentSession” :”’$CONCURRENTSESSION'”}'<br>
-&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; curl -k -X POST -H '"Content-Type:application/json"' -d "'"$JSONMSG"'" '"'$BVDCURLURL'"'<br>
-&nbsp; &nbsp; done</p>
+<p><br>
+<strong>ifutil.sql:</strong></p>
 
-<p>&nbsp;&nbsp;&nbsp; #sleep 5 minutes and repeat&nbsp;&nbsp;&nbsp;&nbsp;<br>
-&nbsp;&nbsp;&nbsp; sleep 300<br>
-done</p>
+<pre><code class="language-bash">select rawTable."Node Name", rawTable."Interface Name", rawTable."Utilization" * 100  as "Utilization"
+from f_Raw_InterfaceMetrics rawTable, [g_NodeGroup Type1_ComponentTopology] groupTable
+WHERE rawTable."5 Minute"  &gt; (select dateadd(SECOND, -300, max("5 Minute")) from f_Raw_InterfaceMetrics)
+and rawTable.Utilization is NOT NULL
+and groupTable.[NodeGroup Type1 Name] in ('COVID-19')
+and groupTable."mbrRef" = rawTable."Node UUID"
+ORDER by rawTable."Node Name", rawTable."Interface Name"
+</code></pre>
 
-<p><strong>cpuutil.sql: </strong><br>
-select rawTable."Node Name",&nbsp; rawTable."CPU 5min Utilization" * 100 as "5 Minute CPU Utilization" from f_Raw_ComponentMetrics rawTable, [g_NodeGroup Type1_ComponentTopology] groupTable where "CPU 5min Utilization" is not NULL and "5 Minute"&nbsp; &gt; (select dateadd(SECOND, -300, max("5 Minute")) from f_Raw_ComponentMetrics) and groupTable.[NodeGroup Type1 Name] in ('<span class="marker">COVID-19</span>') and groupTable."mbrRef" = rawTable."Node UUID"<br>
-ORDER by "Node Name", "5 Minute"</p>
+<p><strong>concurrentsession.sql:</strong></p>
 
-<p><strong>ifutil.sql:</strong><br>
-select rawTable."Node Name", rawTable."Interface Name", rawTable."Utilization" * 100&nbsp; as "Utilization" from f_Raw_InterfaceMetrics rawTable, [g_NodeGroup Type1_ComponentTopology] groupTable WHERE rawTable."5 Minute"&nbsp; &gt; (select dateadd(SECOND, -300, max("5 Minute")) from f_Raw_InterfaceMetrics) and rawTable.Utilization is NOT NULLand groupTable.[NodeGroup Type1 Name] in ('<span class="marker">COVID-19</span>') and groupTable."mbrRef" = rawTable."Node UUID" ORDER by rawTable."Node Name", rawTable."Interface Name"</p>
+<pre><code class="language-bash">select rawTable."Node Short Name",  rawTable."CurrentConnect_FW_connects", rawTable."CurrentConnect_FW_connects" * 0.0252 as "UserSessions", rawTable."5 Minute"
+from [f_Raw_Concurrent_FW_nps-CustomPollMetrics] rawTable
+where "5 Minute"  &gt; (select dateadd(SECOND, -300, max("5 Minute")) from [f_Raw_Concurrent_FW_nps-CustomPollMetrics])
+and rawTable."Node Short Name" LIKE '&lt;fw1&gt;'
+ORDER BY "Node Short Name", "5 Minute"
+</code></pre>
 
-<p><strong>concurrentsession.sql:</strong><br>
-select rawTable."Node Short Name",&nbsp; rawTable."<span class="marker">CurrentConnect_FW_connects</span>", rawTable."<span class="marker">CurrentConnect_FW_connects</span>" * 0.0252 as "UserSessions", rawTable."5 Minute from [<span class="marker">f_Raw_Concurrent_FW_nps-CustomPollMetrics</span>] rawTable where "5 Minute"&nbsp; &gt; (select dateadd(SECOND, -300, max("5 Minute")) from [<span class="marker">f_Raw_Concurrent_FW_nps-CustomPollMetrics</span>]) and rawTable."Node Short Name" LIKE '&lt;fw1&gt;' ORDER BY "Node Short Name", "5 Minute"</p>
+<p>&nbsp;</p>
 
 <p>&nbsp;</p>
