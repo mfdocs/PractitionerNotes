@@ -29,10 +29,33 @@ CPU and Interface utilizations are part of NNMi standard performance polling and
 The MIB variable identified in Step 1, cfwConnectionStatValue, is not part of NNMi’s standard SNMP polling.&nbsp; NNMi provides a feature called “Custom Poller” which allows users to collect non-standard MIB variables.&nbsp;<br>
 Create a custom poller “ConcurrentSessionPoller” as shown below:<br>
 <br>
-<img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e7041259a60c0.12181320.png" style="border:0px solid black; height:286px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:400px" vspace="0"></p>
+<img alt="" src="/mediawiki/images/pn_images/pn_image_5e7041259a60c0.12181320.png" style="height:286px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:400px"></p>
 
 <p>(The details of creating a custom poller is not covered in this article.&nbsp; Instructions can be found <a href="https://docs.microfocus.com/NNMi/10.30/Content/Administer/nmAdminHelp/nmAdmConfCP0200CreateCPCol.htm">here</a>)<br>
 This custom poller will be polling the number of concurrent session from the firewall server every 5 minutes and store data in the NPS server.<br>
-To limit the impact of polling for CPU and Interface utilizations on all devices, create a node group “COVID-19” containing only those devices of interest for this use case: the firewall server and the router:</p>
+To limit the impact of polling for CPU and Interface utilizations on all devices, create a node group “COVID-19” containing only those devices of interest for this use case: the firewall server and the router:<br>
+<br>
+<img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e704e696e2a71.50936361.png" style="border:0px solid black; height:332px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:400px" vspace="0"><br>
+Then enable the performance polling on the node group:<br>
+<br>
+<img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e704e69bf2631.41329245.png" style="border:0px solid black; height:304px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:400px" vspace="0"></p>
 
-<p>&nbsp;</p>
+<p><strong>Step 3 - Create a script to retrieve the collected metrics from NNMi NPS and stream them to BVD</strong><br>
+As the title indicated, this article is mainly about streaming performance metrics from NNMi to BVD.&nbsp; Therefore this is the most important step.&nbsp; In this step, we wrote a script which essentially performs three tasks:</p>
+
+<ol>
+	<li>Execute SQL queries to retrieve CPU utilization, interface utilization and number of concurrent user&nbsp;sessions from NPS Sybase DB (using dbisql CLI)</li>
+	<li>Format the query results in JSON format</li>
+	<li>Post the JSON-formatted messages to the BVD server (using curl CLI)</li>
+</ol>
+
+<p>These tasks are repeated every 5 minutes.<br>
+Once the script established a stream data channel with the BVD server for each metric, these performance metrics will be available to choose in BVD Dashboard Configuration page:<br>
+&nbsp;</p>
+
+<p><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e704e6a1638a1.14192800.png" style="border:0px solid black; height:372px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:400px" vspace="0"></p>
+
+<p>Now, each metric (data channel) can easily be associated with a particular widget in your dashboard.<br>
+Streamed metrics will immediately be visible in BVD as shown in the following example.<br>
+<br>
+<strong>Example - </strong></p>
