@@ -85,6 +85,38 @@ This article described the implementation of a solution to a user story which al
 The main script for this solution is included in this section in its entirety, along with the auxiliary SQL scripts.&nbsp;<br>
 Note: &nbsp;the BVD host, BVD API Key, the node group “COVID-19”, and the custom poller data tables in the scripts are user and environment specific. Replace these variables with your own values.</p>
 
-<p>&nbsp;</p>
+<p><strong>main script</strong>:</p>
+
+<p><strong>cpuutil.sql: </strong></p>
+
+<pre><code class="language-bash">select rawTable."Node Name",  rawTable."CPU 5min Utilization" * 100 as "5 Minute CPU Utilization"
+from f_Raw_ComponentMetrics rawTable, [g_NodeGroup Type1_ComponentTopology] groupTable
+where "CPU 5min Utilization" is not NULL
+and "5 Minute"  &gt; (select dateadd(SECOND, -300, max("5 Minute")) from f_Raw_ComponentMetrics)
+and groupTable.[NodeGroup Type1 Name] in ('COVID-19')
+and groupTable."mbrRef" = rawTable."Node UUID"
+ORDER by "Node Name", "5 Minute"</code></pre>
+
+<p><br>
+<strong>ifutil.sql:</strong></p>
+
+<pre><code class="language-bash">select rawTable."Node Name", rawTable."Interface Name", rawTable."Utilization" * 100  as "Utilization"
+from f_Raw_InterfaceMetrics rawTable, [g_NodeGroup Type1_ComponentTopology] groupTable
+WHERE rawTable."5 Minute"  &gt; (select dateadd(SECOND, -300, max("5 Minute")) from f_Raw_InterfaceMetrics)
+and rawTable.Utilization is NOT NULL
+and groupTable.[NodeGroup Type1 Name] in ('COVID-19')
+and groupTable."mbrRef" = rawTable."Node UUID"
+ORDER by rawTable."Node Name", rawTable."Interface Name"
+</code></pre>
+
+<p><br>
+<strong>concurrentsession.sql:</strong></p>
+
+<pre><code class="language-bash">select rawTable."Node Short Name",  rawTable."CurrentConnect_FW_connects", rawTable."CurrentConnect_FW_connects" * 0.0252 as "UserSessions", rawTable."5 Minute"
+from [f_Raw_Concurrent_FW_nps-CustomPollMetrics] rawTable
+where "5 Minute"  &gt; (select dateadd(SECOND, -300, max("5 Minute")) from [f_Raw_Concurrent_FW_nps-CustomPollMetrics])
+and rawTable."Node Short Name" LIKE '&lt;fw1&gt;'
+ORDER BY "Node Short Name", "5 Minute"
+</code></pre>
 
 <p>&nbsp;</p>
