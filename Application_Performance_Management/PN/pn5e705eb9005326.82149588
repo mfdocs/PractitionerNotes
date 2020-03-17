@@ -1,1 +1,72 @@
- 
+<p>Common ucmdb errors we get when we try to open the RTSM pages –&nbsp;</p>
+
+<p>1.&nbsp;&nbsp; &nbsp;Internal error has occurred&nbsp;<br>
+2.&nbsp;&nbsp; &nbsp;Failed to create parallel user<br>
+3.&nbsp;&nbsp; &nbsp;Login is restricted&nbsp;<br>
+4.&nbsp;&nbsp; &nbsp;Master key not set</p>
+
+<p>Below are some troubleshooting steps (follow them in correct order )&nbsp;</p>
+
+<p>1.&nbsp;&nbsp; &nbsp;Go to Platform -&gt; Admin -&gt; Infra settings -&gt; Security . change the below setting to false and restart the server ( GW , DPS )&nbsp;</p>
+
+<p>&nbsp;<img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e706152372913.62813485.png" style="border:0px solid black; height:465px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:742px" vspace="0"><br>
+2.&nbsp;&nbsp; &nbsp;Go to Admin – platform – Server deployment  &nbsp;check for all the GW , DPS server alignment . there should be no warnings messages at the bottom of the screen. E.g. below&nbsp;<br>
+<img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e706152d552e7.58828723.png" style="border:0px solid black; height:490px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:893px" vspace="0"></p>
+
+<p><br>
+3.&nbsp;&nbsp; &nbsp;Go to ucmdb jmx on the DPS and check for &nbsp;http://localhost:21212/status/ &nbsp; -- all the services should be up&nbsp;</p>
+
+<p>4.&nbsp;&nbsp; &nbsp;Get the LWSSO of APM and compare it with UCMDB LWSSO , both should be same . if not then follow the below steps &nbsp;<br>
+•&nbsp;&nbsp; &nbsp;Go to jmx console on GW using the URL: http://localhost:29000.<br>
+•&nbsp;&nbsp; &nbsp;Click on Foundations:service=infrastructure settings manager.<br>
+•&nbsp;&nbsp; &nbsp;Search for getGlobalSettingsValue.<br>
+•&nbsp;&nbsp; &nbsp;Enter the value for the contextName parameter as SingleSignOn<br>
+•&nbsp;&nbsp; &nbsp;Click Invoke.<br>
+•&nbsp;&nbsp; &nbsp;You can now view the results.<br>
+•&nbsp;&nbsp; &nbsp;Under Setting’s Value, copy the settings value specified in the lw.sso.configuration.xml<br>
+•&nbsp;&nbsp; &nbsp;Ensure the setting’s value is copied in a single line.<br>
+•&nbsp;&nbsp; &nbsp;Go to jmx console on GW using the URL: http://localhost:29000.<br>
+•&nbsp;&nbsp; &nbsp;Click on Foundations:service=infrastructure settings manager<br>
+•&nbsp;&nbsp; &nbsp;Search for setGlobalSettingValue<br>
+•&nbsp;&nbsp; &nbsp;Enter the value for the contextName parameter as SingleSignOn<br>
+•&nbsp;&nbsp; &nbsp;Enter the value for the settingName parameter lw.sso.configuration.xml<br>
+•&nbsp;&nbsp; &nbsp;Enter the value for the newValue parameter as the value copied in Step 8.<br>
+•&nbsp;&nbsp; &nbsp;Click Invoke.</p>
+
+<p><br>
+5.&nbsp;&nbsp; &nbsp;check if user created properly or not from &nbsp;Ucmdb jmx - 21212&nbsp;<br>
+&nbsp;<br>
+URM resources link &nbsp; UCMDB:service=URM Services<br>
+&nbsp;<br>
+Customer id - 1<br>
+Resource type -- &nbsp;Auth_USER<br>
+&nbsp;<br>
+<img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e706153bc56f4.44130550.png" style="border:0px solid black; height:240px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:1013px" vspace="0"></p>
+
+<p>&nbsp;<br>
+&nbsp;<br>
+6.&nbsp;&nbsp; &nbsp;Check if you are able to open the user management with http://fqdnGW:21212&nbsp;<br>
+You should get the below output</p>
+
+<p><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e7061546641c9.46128668.png" style="border:0px solid black; height:305px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:599px" vspace="0"></p>
+
+<p><br>
+7.&nbsp;&nbsp; &nbsp;Still if the RTSM screens are not accessible then try to access the ucmdb from external ucmdb local client &nbsp;, select option as APM and port 80 for http and 443 for https</p>
+
+<p><br>
+8.&nbsp;&nbsp; &nbsp;Master Key is Not Set for RTSM<br>
+Description: Since the UCMDB was upgraded, the APM upgrade can fail because the master key for RTSM<br>
+is not set. This error appears as follows:<br>
+l During the APM upgrade, the log file contains an error for the *** Executing step: set_rtsm_master_key<br>
+step. The log file is located here: &lt;HPE APM root directory&gt;\log\upgrade\upgrade.all.log.<br>
+l The master key is not set message appears when you open any RTSM page.<br>
+Workaround:<br>
+•&nbsp;&nbsp; &nbsp;Start APM.<br>
+•&nbsp;&nbsp; &nbsp;Open the RTSM JMX (DPS in case Distributed APM configuration) (https://localhost:8443/jmxconsole/).<br>
+•&nbsp;&nbsp; &nbsp;Locate and open the UCMDB:service=Security Services group.<br>
+•&nbsp;&nbsp; &nbsp;Locate the changeMasterKey method.<br>
+•&nbsp;&nbsp; &nbsp;Set the Master Key. It must be a string containing 32 characters including a number, special character,<br>
+•&nbsp;&nbsp; &nbsp;and an upper case character.<br>
+•&nbsp;&nbsp; &nbsp;Invoke this method.<br>
+•&nbsp;&nbsp; &nbsp;Restart the hpbsm_RTSM process.<br>
+&nbsp;</p>
