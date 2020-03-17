@@ -2,7 +2,7 @@
 
 <p><strong>Use Case Description</strong>:&nbsp; Due to the COVID-19 outbreak, Company A is requesting all its employees to work from home.&nbsp; The company is responding to an urgent request from top management and needs to conduct a network stress test.&nbsp; This is done to make sure its network infrastructure is capable of providing sufficient bandwidth and to identify bottlenecks rapidly.&nbsp; Also top managers request insight into network status and performance. They want to use NOM to capture the required metrics to validate the test and stream the results to an executive business dashboard such as the one shown below:<br>
 <br>
-<img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e714dfd440523.36246833.jpeg" style="border:0px solid black; height:281px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px" vspace="0"></p>
+<img alt="" src="/mediawiki/images/pn_images/pn_image_5e714dfd440523.36246833.jpeg" style="height:281px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px"></p>
 
 <p><strong>Use Case Implementation:</strong> The use story was implemented in the following three steps</p>
 
@@ -12,6 +12,33 @@
 	<li>Create a script to retrieve the collected metrics from NNMi NPS and stream them to a BVD dashboard.</li>
 </ol>
 
-<p><br>
+<p>Note:&nbsp; NNM iSPI Performance for Metrics and Network Performance Server (NPS) is required for this solution as all the metrics&nbsp;to be collected are performance data.&nbsp;</p>
+
+<p>Details for each steps are described below:</p>
+
+<p><strong>Step 1 - Determine the metrics to be collected </strong><br>
+After some investigation of the devices, it was determined that the following metrics need to be collected to understand the devices’ current “stress level”:</p>
+
+<ol>
+	<li>The number of concurrent session on a company’s firewall server. This number indicates how many employees are concurrently connected to the company’s VPN.</li>
+	<li>CPU utilization of the router behind the firewall server</li>
+	<li>Interface utilization of the router behind the firewall server.</li>
+</ol>
+
+<p>The number of concurrent session is not part of NNMi’s standard polling metrics.&nbsp; After reviewing the SNMP MIB on the firewall server (Cisco Adaptive Security Appliance Version 9.12(2)5), the MIB variable cfwConnectionStatValue.40.6 (OID:1.3.6.1.4.1.9.9.147.1.2.2.2.1.3.40.6) was found to contain the number of concurrent session needed.<br>
+For devices other than this particular Cisco Security Appliance, proceed in a similar way: examine the device’s MIB, identify the MIB variable(s) that describe current device load or capacity, and take note of the corresponding OID(s).<br>
+CPU and Interface utilizations are part of NNMi standard performance polling collection and don’t need to be configured through custom polling.<br>
 <br>
-&nbsp;</p>
+<strong>Step 2 - Configure NNMi to collect the metrics</strong>&nbsp;<br>
+The MIB variable identified in Step 1, cfwConnectionStatValue, is not part of NNMi’s standard (out-of-the-box) SNMP polling. &nbsp;NNMi provides a feature called “Custom Poller” which allows users to collect non-standard MIB variables.<br>
+Create a custom poller “ConcurrentSessionPoller” as shown below:<br>
+<br>
+<img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e7153f0193995.92249861.png" style="border:0px solid black; height:322px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:450px" vspace="0"><br>
+<br>
+(The details of creating a custom poller are not covered in this article.&nbsp; Instructions can be found <a href="https://docs.microfocus.com/NNMi/10.30/Content/Administer/nmAdminHelp/nmAdmConfCP0200CreateCPCol.htm">here</a>)<br>
+This custom poller will be polling the number of concurrent session from the firewall server every 5 minutes and store the data in the NPS server.<br>
+To limit the impact of polling for CPU and Interface utilizations on all devices, create a node group “COVID-19” containing only those devices of interest for this use case: the firewall server and the routers:<br>
+<br>
+<img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e7153f042cf90.56002371.png" style="border:0px solid black; height:373px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:450px" vspace="0"></p>
+
+<p>&nbsp;</p>
