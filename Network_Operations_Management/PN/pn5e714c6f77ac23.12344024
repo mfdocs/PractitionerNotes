@@ -43,7 +43,7 @@ To limit the impact of polling for CPU and Interface utilizations on all devices
 
 <p>Then enable the performance polling on the node group:<br>
 <br>
-<img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e7155531df910.36331397.png" style="border:0px solid black; height:342px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:450px" vspace="0"><br>
+<img alt="" src="/mediawiki/images/pn_images/pn_image_5e7155531df910.36331397.png" style="height:342px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:450px"><br>
 <br>
 <strong>Step 3 - Create a script to retrieve the collected metrics from NNMi NPS and stream them to BVD</strong>As the title indicated, this article is mainly about streaming performance metrics from NNMi to BVD.&nbsp; Therefore this is the most important step.&nbsp; In this step, we wrote a script which essentially performs three tasks:</p>
 
@@ -56,7 +56,31 @@ To limit the impact of polling for CPU and Interface utilizations on all devices
 <p>These tasks are repeated every 5 minutes.<br>
 Once the script established a stream data channel with the BVD server for each metric, these performance metrics will be available to choose in BVD Dashboard Configuration page:<br>
 <br>
-<img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e7155535a1d81.47387266.png" style="border:0px solid black; height:419px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:450px" vspace="0"></p>
+<img alt="" src="/mediawiki/images/pn_images/pn_image_5e7155535a1d81.47387266.png" style="height:419px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:450px"></p>
 
-<p>Now, each metric (data channel) can easily be associated with a particular widget in your dashboard. Streamed metrics will immediately be visible in BVD as shown in the below.<br>
-&nbsp;</p>
+<p>Now, each metric (data channel) can easily be associated with a particular widget in your dashboard. Streamed metrics will immediately be visible in BVD as shown in the following example.</p>
+
+<p><strong>Example – </strong>this example consisted of two BVD dashboards, a top-level executive dashboard and a drill-down dashboard showing more network performance data. &nbsp;The content of each dashboard is described as the following:</p>
+
+<ol>
+	<li>The top-level executive dashboard displays the company’s VPN architecture on the right panel.&nbsp;&nbsp;<br>
+	The VPN is protected by firewall servers and a number of routers were deployed behind the firewall servers.&nbsp; The left panel displays the time-series of the number of concurrent session on 2 firewall servers.&nbsp;<br>
+	The firewall widgets or router widgets on the right panel can be configured to link to a drill-down dashboard.<br>
+	<br>
+	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;Top-level Executive Business Dashboard<br>
+	<img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e7158c42b7187.63461447.jpeg" style="border:0px solid black; height:281px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px" vspace="0"></li>
+	<li>The drill-down dashboard displays network metric data, such as interface and CPU utilization on firewall servers and routers.&nbsp; This dashboard is of more interest to network engineers.&nbsp;<br>
+	<br>
+	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Drill-down dashboard showing more network performance data<br>
+	<img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e7158c4bfe3d0.42136887.png" style="border:0px solid black; height:303px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px" vspace="0"><br>
+	Notes:<br>
+	a)&nbsp;As a prerequisite, NNMi and NA integration with BVD has to be configured.&nbsp; Instructions can be found <a href="https://docs.microfocus.com/itom/Network_Node_Manager_i:2019.11/NetworkDataBVD">here</a><br>
+	b)&nbsp;The script needs to run on the NPS server as it executes SQL queries to the NPS database.</li>
+</ol>
+
+<p><strong>Summary</strong><br>
+This article described the implementation of a solution to a user story which allow NOM customers to collect special MIB variables and stream the collected metrics to a BVD dashboard. &nbsp;</p>
+
+<p><strong>Appendix </strong></p>
+
+<p>&nbsp;</p>
