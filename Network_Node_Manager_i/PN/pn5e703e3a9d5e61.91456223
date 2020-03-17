@@ -74,6 +74,38 @@ Streamed metrics will immediately be visible in BVD as shown in the following ex
 <p><strong>Summary - </strong>this article described the implementation of a solution to a use case which allows NOM customers to collect special MIB variables and stream the collected metrics to a BVD dashboard. &nbsp;</p>
 
 <p><strong>Appendix </strong><br>
-The main script for this solution is included in this section in its entirety, along with the auxiliary SQL scripts</p>
+The main script for this solution is included in this section in its entirety, along with the auxiliary SQL scripts.&nbsp;<br>
+Note: All the yellow colored text in the scripts are user/environment specific. Replace these strings with your own values. &nbsp;&nbsp;</p>
+
+<p><strong>main script</strong>:</p>
+
+<p>BVDURL="https://&lt;My BVD FQDN&gt;/bvd-receiver/api/submit/"<br>
+BVDAPIKEY="&lt;My BVD API KEY&gt;"<br>
+BVDCURLURL="$BVDURL$BVDAPIKEY/dims/NodeName,InterfaceName"<br>
+while [ 1 ]<br>
+Do<br>
+&nbsp;&nbsp;&nbsp; # Retrieve Interface Utilization % from NPS and send to BVD<br>
+&nbsp;&nbsp;&nbsp; dbisql -nogui -c "DSN=PerfSPIDSN" ifutil.sql | sed -e '/^\s*$/d' -e '/^-/d' -e '/^Node Name/d' -e '/^(/d' -e '/^Execution/d' | while read line<br>
+&nbsp;&nbsp;&nbsp; do<br>
+&nbsp;&nbsp;&nbsp; NODENAME=`echo $line | cut -d ' ' -f 1 | cut -d '.' -f 1`<br>
+&nbsp;&nbsp;&nbsp; IFNAME=`echo $line | cut -d ' ' -f 2`<br>
+&nbsp;&nbsp;&nbsp; IFUTIL=`echo $line | cut -d ' ' -f 3`<br>
+&nbsp;&nbsp;&nbsp; IFUTILINT=${IFUTIL%.*}<br>
+&nbsp;&nbsp; &nbsp;if [ $IFUTILINT -gt 10 ]; then JSONMSG='{"NodeName":"'$NODENAME'","InterfaceName":"'$IFNAME'","InterfaceUtil%":'$IFUTIL'}'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; curl -k -X POST -H "Content-Type: application/json" -d $JSONMSG $BVDCURLURL<br>
+&nbsp;&nbsp;&nbsp; fi<br>
+&nbsp;&nbsp;&nbsp; done<br>
+<br>
+&nbsp;&nbsp;&nbsp; # Retrieve CPU Utilization % from NPS and send to BVD</p>
+
+<p>BVDCURLURL="$BVDURL$BVDAPIKEY/dims/NodeName,MetricGroup"<br>
+dbisql -nogui -c "DSN=PerfSPIDSN" cpuutil.sql | sed -e '/^\s*$/d' -e '/^-/d' -e '/^Node Name/d' -e '/^(/d' -e '/^Execution/d' | while read line</p>
+
+<p>do<br>
+&nbsp; &nbsp;NODENAME=`echo $line | cut -d ' ' -f 1 | cut -d '.' -f 1`<br>
+&nbsp; &nbsp;CPUUTIL=`echo $line | cut -d ' ' -f 2`<br>
+&nbsp; &nbsp;CPUUTILINT=${CPUUTIL%.*}&nbsp; &nbsp; &nbsp;JSONMSG='{"NodeName":"'$NODENAME'","MetricGroup":"CPUUtilization","CPUUtil%":'$CPUUTIL'}'<br>
+&nbsp; &nbsp;curl -k -X POST -H '"Content-Type:application/json"' -d "'"$JSONMSG"'" '"'$BVDCURLURL'"'<br>
+done</p>
 
 <p>&nbsp;</p>
