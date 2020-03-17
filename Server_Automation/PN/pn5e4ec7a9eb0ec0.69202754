@@ -1,16 +1,263 @@
-<h1 id="Core_recert_best_practices" style="color: rgb(0, 0, 0); font-family: sans-serif; letter-spacing: normal; text-transform: none;">Core recert best practices</h1><p class="line867" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;"></p><h2 id="Configuration_settings" style="color: rgb(0, 0, 0); font-family: sans-serif; letter-spacing: normal; text-transform: none;">Configuration settings</h2><p class="line862" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">Settings in the file&nbsp;<tt class="backtick"></tt><tt class="backtick">/opt/opsware/oi_utils/OpswareCertTool/recert_utils/corerecert.conf</tt><tt class="backtick"></tt><span class="anchor" id="line-6"></span><span class="anchor" id="line-7"></span></p><p class="line867" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;"><strong>debug</strong>&nbsp;mode by default is set to 0 you should always set this to 1. If a problem happens debug logs will make the investigation much easier. There is no good reason to have debug disabled.<span class="anchor" id="line-8"></span><span class="anchor" id="line-9"></span><span class="anchor" id="line-10"></span></p><pre style="border-width: 1pt; border-style: solid; border-color: rgb(174, 189, 204); background-color: rgb(243, 245, 247); padding: 5pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word; color: rgb(0, 0, 0); font-size: 16px;"><span class="anchor" id="line-1"></span>debug=1</pre><p class="line867" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;"><strong>using_cdr</strong>. This must be set to 1 failing to do this means phase 4 will not run. Not running phase 4 will cause agents to become unreachable later on due to an interaction between the "Automated Communications Test" and the Word.<span class="anchor" id="line-13"></span></p><ul style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px;"><li>QCCR1D219593 - Core recert skipping phase 4 will lead to SWR comms tests failures causing phase8 not to recert the agent<span class="anchor" id="line-14"></span></li></ul><p class="line867" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;"><span class="anchor" id="line-15"></span><span class="anchor" id="line-16"></span></p><pre style="border-width: 1pt; border-style: solid; border-color: rgb(174, 189, 204); background-color: rgb(243, 245, 247); padding: 5pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word; color: rgb(0, 0, 0); font-size: 16px;"><span class="anchor" id="line-1-1"></span>agent_recert.using_cdr=1</pre><p class="line867" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;"><strong>success_rate</strong>. Having this set to any value less than 100 means that the recert phase that is manipulating agents will&nbsp;<strong>stop</strong>&nbsp;when it reached the value configured. For example if you have 1000 reachable servers and you set this to 75 only 750 will be processed even thou the entire estate was reachable. This setting is often mistaken for&nbsp;<strong>X or more</strong>&nbsp;it does not mean this. It means&nbsp;<strong>stop when X is reached</strong>.<span class="anchor" id="line-19"></span><span class="anchor" id="line-20"></span><span class="anchor" id="line-21"></span></p><pre style="border-width: 1pt; border-style: solid; border-color: rgb(174, 189, 204); background-color: rgb(243, 245, 247); padding: 5pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word; color: rgb(0, 0, 0); font-size: 16px;"><span class="anchor" id="line-1-2"></span>agent_recert.all.facilities.success_rate=100</pre><p class="line867" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;"><strong>duration</strong>&nbsp;Phase 4,8,12 periodicity. These phases pushes CAs, recert and remove old crypto respectively on all agents. This requires that the jobs that perform these run periodically until the desired success rate has been obtained. Due a defect<span class="anchor" id="line-23"></span></p><ul style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px;"><li>QCCR1D252070 - Core Recert Phases 4, 8 and 12 will DoS the Spin/Way when only unreachable servers remain<span class="anchor" id="line-24"></span></li></ul><p class="line862" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">values &gt; 1 will cause a DoS attack against the Way/Spin for the duration of the configured setting driving the CPU used by the component high and writing their logs very quickly.<span class="anchor" id="line-25"></span><span class="anchor" id="line-26"></span><span class="anchor" id="line-27"></span></p><pre style="border-width: 1pt; border-style: solid; border-color: rgb(174, 189, 204); background-color: rgb(243, 245, 247); padding: 5pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word; color: rgb(0, 0, 0); font-size: 16px;"><span class="anchor" id="line-1-3"></span>agent_recert.all.facilities.duration=1</pre><p class="line862" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">The other reason to set this duration low is that the&nbsp;<strong>recertCora</strong>&nbsp;tool graphs a phases' throughput based on the job results. These are only saved when a job completes. If you are running 24hr you get no results until the&nbsp;<strong>success_rate</strong>&nbsp;has been reached and the job naturally terminates.<span class="anchor" id="line-30"></span><span class="anchor" id="line-31"></span></p><p class="line867" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;"></p><h2 id="Mesh_Topology_changes" style="color: rgb(0, 0, 0); font-family: sans-serif; letter-spacing: normal; text-transform: none;">Mesh Topology changes</h2><p class="line874" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">Its not called out in big letters but it should be.<span class="anchor" id="line-34"></span><span class="anchor" id="line-35"></span><span class="anchor" id="line-36"></span></p><div class="caution" style="border: 1pt solid rgb(229, 229, 229); background-color: rgb(249, 249, 255); color: rgb(0, 0, 0); margin: 10pt 30pt; background-repeat: no-repeat; background-position: 8px 8px; min-height: 64px; padding-left: 64px; background-image: url(&quot;../img/admon-caution.png&quot;); font-family: sans-serif; font-size: 16px;"><span class="anchor" id="line-1-1"></span><p class="line874" style="margin-top: 8px;">Do not change the mesh topology while a recertification is underway</p></div><p class="line874" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">The reason being is that phase 1 performs a discover mesh and caches how the environment looked when then process began. If you change the topology the recertification won't know about it and anything you add will be skipped.<span class="anchor" id="line-38"></span><span class="anchor" id="line-39"></span></p><p class="line867" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;"></p><h2 id="Phase_8_:_Agent_certificate_cache_exhaustion" style="color: rgb(0, 0, 0); font-family: sans-serif; letter-spacing: normal; text-transform: none;">Phase 8 : Agent certificate cache exhaustion</h2><p class="line874" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">As a large number of agents are going to be issued new crypto material in a short space of time it's possible to run the certificate cache dry. If this happens agents will no longer be issued certificates and the process will start failing (silently). The default cache size is 100 certificates. Generating new crypto happens at a rate of 1 PEM file approx. every 4 seconds. To generate 400 certificates takes about 23min.<span class="anchor" id="line-42"></span><span class="anchor" id="line-43"></span></p><p class="line874" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">You can see how many are in the cache like this<span class="anchor" id="line-44"></span><span class="anchor" id="line-45"></span><span class="anchor" id="line-46"></span><span class="anchor" id="line-47"></span></p><pre style="border-width: 1pt; border-style: solid; border-color: rgb(174, 189, 204); background-color: rgb(243, 245, 247); padding: 5pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word; color: rgb(0, 0, 0); font-size: 16px;"><span class="anchor" id="line-1-4"></span># ls /var/opt/opsware/spin/cadb/realm/opsware/certs | wc -l
-<span class="anchor" id="line-2"></span>100</pre><p class="line862" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">Recommend increasing the size of this cache and restarting the Spin on the infrastructure slice of each core so it takes effect. There is no upper limit to the number except filesystem limitation for files in a directory. The parameter may be examined and adjusted use&nbsp;<tt class="backtick"></tt><tt class="backtick">/opt/opsware/support/bin/sa_config_checkfix</tt><tt class="backtick"></tt><span class="anchor" id="line-49"></span><span class="anchor" id="line-50"></span><span class="anchor" id="line-51"></span></p><pre style="border-width: 1pt; border-style: solid; border-color: rgb(174, 189, 204); background-color: rgb(243, 245, 247); padding: 5pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word; color: rgb(0, 0, 0); font-size: 16px;"><span class="anchor" id="line-1-5"></span># sa_config_checkfix -k spin.cogbot.crypto_highwater -v 5000 --set</pre><p class="line874" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">This increase will take about 4hr before the cache is full.<span class="anchor" id="line-53"></span><span class="anchor" id="line-54"></span></p><p class="line874" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">Once the recertification (Phase 8) is complete the parameter may be reduced back to 100 with Spin restarts appropriately.&nbsp;<span class="anchor" id="line-55"></span>The cached PEM files may be deleted and the Spin will simply repopulate it to the current highwater setting.<span class="anchor" id="line-56"></span><span class="anchor" id="line-57"></span></p><p class="line867" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;"></p><h2 id="Phase_9_:_Recert_user_permission_omission" style="color: rgb(0, 0, 0); font-family: sans-serif; letter-spacing: normal; text-transform: none;">Phase 9 : Recert user permission omission</h2><p class="line874" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">The permissions "Package Management / Manage Package" must be set to Read/Write for the recert user otherwise Phase 9 will not be able to find the package nor replace it we also need to allow recert user access to this folder.<span class="anchor" id="line-60"></span><span class="anchor" id="line-61"></span></p><p class="line874" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">This omission is corrected in the 2018.08 documentation.<span class="anchor" id="line-62"></span></p><ul style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px;"><li><p class="line891" style="margin: 0.25em 0px;"><a class="https" href="https://docs.microfocus.com/itom/Server_Automation:2018.08/admin_guide/sa_security/CoreRecertificationUsers" style="color: rgb(0, 68, 170); border: 0px;">https://docs.microfocus.com/itom/Server_Automation:2018.08/admin_guide/sa_security/CoreRecertificationUsers</a><span class="anchor" id="line-63"></span><span class="anchor" id="line-64"></span></p></li></ul><p class="line867" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;"></p><h2 id="Phase_11_:_Truth_resigning_issues" style="color: rgb(0, 0, 0); font-family: sans-serif; letter-spacing: normal; text-transform: none;">Phase 11 : Truth resigning issues</h2><p class="line862" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">Make sure your system is clear of conflicts&nbsp;<span class="u" style="text-decoration-line: underline;">and</span>&nbsp;hidden conflicts before starting the re-certification process and again before starting phase 11. There are two types of conflicts<span class="anchor" id="line-67"></span></p><ul style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px;"><li>hidden - a hidden conflict is a row in a table that has no corresponding conflict being shown in the mesh state diagram.<span class="anchor" id="line-68"></span></li><li>visible - these show up in the mesh state diagram,<span class="anchor" id="line-69"></span><span class="anchor" id="line-70"></span></li></ul><p class="line874" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">Phase 11 resigns various tables with the new cryptographic material. A conflict on a row will prevent it from being signed<span class="anchor" id="line-71"></span><span class="anchor" id="line-72"></span><span class="anchor" id="line-73"></span><span class="anchor" id="line-74"></span></p><pre style="border-width: 1pt; border-style: solid; border-color: rgb(174, 189, 204); background-color: rgb(243, 245, 247); padding: 5pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word; color: rgb(0, 0, 0); font-size: 16px;"><span class="anchor" id="line-1-6"></span>28-Aug-19 08:00:39 DBWriter DEBUG DBError: ORA-06512: at "TRUTH.AUDIT_EVENTS_RTRG", line 16
-<span class="anchor" id="line-2-1"></span>ORA-04088: error during execution of trigger 'TRUTH.AUDIT_EVENTS_RTRG'' during 'update truth.audit_events set signature=:1 where event_id=:2' with args '[('Tk6o7a0e2jueCMR0mppVhQrUI+Y=', 87471410002L)]'&gt;</pre><p class="line862" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">The above error is caused because a row of the table AUDIT_EVENTS has the field CONFLICTING set to 'Y'. The&nbsp;<strong>force_resolve</strong>&nbsp;program cannot find and clear them as there is no transaction in the system in the conflicting state. They are hidden and they&nbsp;<span class="u" style="text-decoration-line: underline;">will</span>&nbsp;cause failures in&nbsp;<strong>phase 11</strong>&nbsp;if not dealt with.<span class="anchor" id="line-77"></span><span class="anchor" id="line-78"></span></p><p class="line862" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">These conflicts can be found and fixed using the high speed conflict checker available from OPSWtool-1.0.37 and above. This is&nbsp;<em>much</em>&nbsp;faster than using&nbsp;<strong>table_checker</strong>. Whereas table_checker will compare every row in the database with the same row in the other databases, conflicting_checker only examines rows in the conflicted state.<span class="anchor" id="line-79"></span><span class="anchor" id="line-80"></span><span class="anchor" id="line-81"></span><span class="anchor" id="line-82"></span><span class="anchor" id="line-83"></span><span class="anchor" id="line-84"></span><span class="anchor" id="line-85"></span></p><pre style="border-width: 1pt; border-style: solid; border-color: rgb(174, 189, 204); background-color: rgb(243, 245, 247); padding: 5pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word; color: rgb(0, 0, 0); font-size: 16px;"><span class="anchor" id="line-1-7"></span># man /opt/opsware/support/man/man1/conflicting_checker.1
-<span class="anchor" id="line-2-2"></span>
-<span class="anchor" id="line-3"></span># cd /opt/opsware/support/bin/I_T
-<span class="anchor" id="line-4"></span># ./conflicting_checker &gt; obj.txt
-<span class="anchor" id="line-5"></span># ./sync_objects obj.txt</pre><p class="line862" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">To be clear the steps above should only be ran once the mesh state diagram shows no conflicts. If you have visible conflicts you should use the&nbsp;<strong>force_resolve</strong>&nbsp;tool and the GUI to clear them&nbsp;<span class="u" style="text-decoration-line: underline;">before</span>&nbsp;checking for hidden conflicts.<span class="anchor" id="line-87"></span><span class="anchor" id="line-88"></span></p><p class="line862" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">Whilst we are talking about Phase 11 this issue is worth noting. Fixed in;&nbsp;<a class="https" href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00287" style="color: rgb(0, 68, 170); border: 0px;">10.60.015</a>,&nbsp;<a class="https" href="https://softwaresupport.softwaregrp.com/doc/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00286" style="color: rgb(0, 68, 170); border: 0px;">2018.08.005</a>, pre 10.60 the fix is not backported as of Feb-2020<span class="anchor" id="line-89"></span></p><ul style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px;"><li>QCCR1D253339 Phase 11 overwrites the same log file use for resigning the Truth with that used for the Word<span class="anchor" id="line-90"></span><span class="anchor" id="line-91"></span></li></ul><p class="line867" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;"></p><h2 id="Phase_4_:_Duplicate_names" style="color: rgb(0, 0, 0); font-family: sans-serif; letter-spacing: normal; text-transform: none;">Phase 4 : Duplicate names</h2><p class="line874" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">The names of servers in SA should be unique there should be no output from these SQL commands. If there are duplicates they must be resolved before starting the re-certification process.<span class="anchor" id="line-94"></span><span class="anchor" id="line-95"></span><span class="anchor" id="line-96"></span></p><pre style="border-width: 1pt; border-style: solid; border-color: rgb(174, 189, 204); background-color: rgb(243, 245, 247); padding: 5pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word; color: rgb(0, 0, 0); font-size: 16px;"><span class="anchor" id="line-1-8"></span># sql "select dvc_desc from devices group by dvc_desc having count(*) &gt; 1"</pre><p class="line862" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">The problem being when we are inside the OGFS and look up /opsw/Server/@/&lt;name&gt; we are using the dvc_desc to do this and if it matches more than one server we fail.<span class="anchor" id="line-98"></span><span class="anchor" id="line-99"></span></p><p class="line862" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">This is a design bug the code should be using the MID and /opsw/.Server.ID/&lt;ID&gt; and we should cope with duplicate server names but we don't.<span class="anchor" id="line-100"></span><span class="anchor" id="line-101"></span></p><p class="line874" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">Why two fields for the name of the server?<span class="anchor" id="line-102"></span></p><ul style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px;"><li>dvc_desc is mutable and may be changed in the GUI by the user.<span class="anchor" id="line-103"></span></li><li><p class="line862" style="margin: 0.25em 0px;">system_name is immutable and always represents the FQDN of the server aka&nbsp;<tt class="backtick"></tt><tt class="backtick">hostname&nbsp;--fqdn</tt><tt class="backtick"></tt>&nbsp;for UNIX.<span class="anchor" id="line-104"></span><span class="anchor" id="line-105"></span></p></li></ul><p class="line867" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;"></p><h2 id="Phase_4.2F8.2F12_:_File_system_space" style="color: rgb(0, 0, 0); font-family: sans-serif; letter-spacing: normal; text-transform: none;">Phase 4/8/12 : File system space</h2><p class="line862" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">The agent recertification phases generate a&nbsp;<span class="u" style="text-decoration-line: underline;">lot</span>&nbsp;of debug log output from the&nbsp;<strong>Way</strong>.<span class="anchor" id="line-108"></span><span class="anchor" id="line-109"></span></p><p class="line862" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">Due to a defect even if you have Way debug disabled logs are still created until patched; 10.20.017,&nbsp;<a class="https" href="https://softwaresupport.softwaregrp.com/doc/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00284" style="color: rgb(0, 68, 170); border: 0px;">10.23.016</a>, 10.50.013,&nbsp;<a class="https" href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00283" style="color: rgb(0, 68, 170); border: 0px;">10.51.012</a>,&nbsp;<a class="https" href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00287" style="color: rgb(0, 68, 170); border: 0px;">10.60.015</a>,&nbsp;<a class="https" href="https://softwaresupport.softwaregrp.com/doc/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00286" style="color: rgb(0, 68, 170); border: 0px;">2018.08.005</a><span class="anchor" id="line-110"></span></p><ul style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px;"><li>QCCR1D253419 - way.debug_size is not being honored by all wayscripts<span class="anchor" id="line-111"></span><span class="anchor" id="line-112"></span></li></ul><p class="line874" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">Disable Way debug log output from being generated into /var/log/opsware/waybot/debug, a 0 value is disabled.<span class="anchor" id="line-113"></span><span class="anchor" id="line-114"></span><span class="anchor" id="line-115"></span><span class="anchor" id="line-116"></span></p><pre style="border-width: 1pt; border-style: solid; border-color: rgb(174, 189, 204); background-color: rgb(243, 245, 247); padding: 5pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word; color: rgb(0, 0, 0); font-size: 16px;"><span class="anchor" id="line-1-9"></span># sa_config_checkfix -k way.debug_size
-<span class="anchor" id="line-2-3"></span>way.debug_size set to "0" on node "ServiceLevel/Opsware/way"</pre><p class="line874" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">If you want some debug log but you don't want debugging to go crazy you can set an upper threshold file size as a compromise. Here its been set to 1Mb (1024*1024) no restart of the Way's are required when this value is changed.<span class="anchor" id="line-118"></span><span class="anchor" id="line-119"></span><span class="anchor" id="line-120"></span></p><pre style="border-width: 1pt; border-style: solid; border-color: rgb(174, 189, 204); background-color: rgb(243, 245, 247); padding: 5pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word; color: rgb(0, 0, 0); font-size: 16px;"><span class="anchor" id="line-1-10"></span># sa_config_checkfix -k way.debug_size -v 1048576 --set</pre><p class="line874" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">If you have debug fully enabled with no file size limit, a value of -1, or you don't have this patch ensure you have a lot of disk space for logging. No guidance is given as it depends on how many agents are in the mesh.<span class="anchor" id="line-123"></span><span class="anchor" id="line-124"></span></p><p class="line867" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;"></p><h2 id="Agent_versions" style="color: rgb(0, 0, 0); font-family: sans-serif; letter-spacing: normal; text-transform: none;">Agent versions</h2><p class="line874" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">Check that deployed agent versions are current. The version reported on an agent follows an internal versioning convention<span class="anchor" id="line-127"></span><span class="anchor" id="line-128"></span><span class="anchor" id="line-129"></span><span class="anchor" id="line-130"></span><span class="anchor" id="line-131"></span><span class="anchor" id="line-132"></span><span class="anchor" id="line-133"></span><span class="anchor" id="line-134"></span><span class="anchor" id="line-135"></span><span class="anchor" id="line-136"></span></p><form action="http://wiki.local/BrettEngland/2020-02-14" method="GET" name="dbw.form" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px;"><table id="dbw.table" style="margin: 0.5em 0px 0px 0.5em; border-collapse: collapse;"><tbody><tr><td class="hcolumn0" style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);"><strong>Agent Version</strong></td><td class="hcolumn1" style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);"><strong>SA Release</strong></td></tr><tr><td abbr="45.x" class="column0" style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);">45.x</td><td abbr="9.1x" class="column1" style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);">9.1x</td></tr><tr><td abbr="50.x" class="column0" style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);">50.x</td><td abbr="10.0x" class="column1" style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);">10.0x</td></tr><tr><td abbr="55.x" class="column0" style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);">55.x</td><td abbr="10.1x" class="column1" style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);">10.1x</td></tr><tr><td abbr="60.x" class="column0" style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);">60.x</td><td abbr="10.2x" class="column1" style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);">10.2x</td></tr><tr><td abbr="65.x" class="column0" style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);">65.x</td><td abbr="10.5x" class="column1" style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);">10.5x</td></tr><tr><td abbr="70.x" class="column0" style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);">70.x</td><td abbr="10.6x" class="column1" style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);">10.6x</td></tr><tr><td abbr="75.x" class="column0" style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);">75.x</td><td abbr="2018.08" class="column1" style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);">2018.08</td></tr></tbody></table></form><p class="line862" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">If you have any 45.x agents you need this patch installed on your mesh before agents will upgrade; 10.20.017,&nbsp;<a class="https" href="https://softwaresupport.softwaregrp.com/doc/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00274" style="color: rgb(0, 68, 170); border: 0px;">10.23.015</a>, 10.50.013, 10.51.013,&nbsp;<a class="https" href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00256" style="color: rgb(0, 68, 170); border: 0px;">10.60.009</a><span class="anchor" id="line-139"></span></p><ul style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px;"><li>QCCR1D248367 Agent Upgrade fails for older 45.x agents using python 1.5<span class="anchor" id="line-140"></span><span class="anchor" id="line-141"></span></li></ul><p class="line867" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;"></p><h2 id="Monitoring_the_recertification" style="color: rgb(0, 0, 0); font-family: sans-serif; letter-spacing: normal; text-transform: none;">Monitoring the recertification</h2><p class="line874" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">The recert process may be monitored using the supplied corerecert tool like this<span class="anchor" id="line-144"></span><span class="anchor" id="line-145"></span><span class="anchor" id="line-146"></span></p><pre style="border-width: 1pt; border-style: solid; border-color: rgb(174, 189, 204); background-color: rgb(243, 245, 247); padding: 5pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word; color: rgb(0, 0, 0); font-size: 16px;"><span class="anchor" id="line-1-11"></span>corerecert --status</pre><p class="line862" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">However a much better way to monitor progress is with the&nbsp;<strong>recertCora</strong>&nbsp;tool<span class="anchor" id="line-148"></span><span class="anchor" id="line-149"></span><span class="anchor" id="line-150"></span></p><pre style="border-width: 1pt; border-style: solid; border-color: rgb(174, 189, 204); background-color: rgb(243, 245, 247); padding: 5pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word; color: rgb(0, 0, 0); font-size: 16px;"><span class="anchor" id="line-1-12"></span># less /opt/opsware/support/man/man1/recertCora.1</pre><p class="line874" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">Typically its best to run it as a web server. You can refresh pages periodically to see what is going on using a button at the bottom of each page. Note a change of phase requires you to restart the web server.<span class="anchor" id="line-152"></span><span class="anchor" id="line-153"></span><span class="anchor" id="line-154"></span></p><pre style="border-width: 1pt; border-style: solid; border-color: rgb(174, 189, 204); background-color: rgb(243, 245, 247); padding: 5pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word; color: rgb(0, 0, 0); font-size: 16px;"><span class="anchor" id="line-1-13"></span># /opt/opsware/support/bin/recertCora -v server -i</pre><p class="line867" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;"></p><h2 id="Starting_jobs_manually" style="color: rgb(0, 0, 0); font-family: sans-serif; letter-spacing: normal; text-transform: none;">Starting jobs manually</h2><p class="line862" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">Due to the duration rate being set at 1hr jobs once they have ran for this period of time will halt and start again in 24hrs time. To manually run the jobs again ahead of that 24hr start time you can use the tool&nbsp;<strong>/opt/opsware/support/bin/startJobNow</strong>&nbsp;which is available in OPSWtools-1.0.39 and above.<span class="anchor" id="line-159"></span><span class="anchor" id="line-160"></span><span class="anchor" id="line-161"></span><span class="anchor" id="line-162"></span><span class="anchor" id="line-163"></span><span class="anchor" id="line-164"></span><span class="anchor" id="line-165"></span><span class="anchor" id="line-166"></span><span class="anchor" id="line-167"></span><span class="anchor" id="line-168"></span></p><pre style="border-width: 1pt; border-style: solid; border-color: rgb(174, 189, 204); background-color: rgb(243, 245, 247); padding: 5pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word; color: rgb(0, 0, 0); font-size: 16px;"><span class="anchor" id="line-1-14"></span># startJobNow 145130001
-<span class="anchor" id="line-2-4"></span>Opsware Username: recertuser
-<span class="anchor" id="line-3-1"></span>Opsware Password:
-<span class="anchor" id="line-4-1"></span>The RECURRING job id was supplied locating 1st PENDING child
-<span class="anchor" id="line-5-1"></span>Found child job 145140001
-<span class="anchor" id="line-6"></span>Scheduled to run at Sun Mar  1 12:46:00 2020
-<span class="anchor" id="line-7"></span>Rescheduled to run at Fri Feb 14 12:48:24 2020
-<span class="anchor" id="line-8"></span>#</pre><p class="line874" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">This is called stepping the phase semi-manually. Semi because in 24hr it will run again unless the success rate is reached.<span class="anchor" id="line-170"></span><span class="anchor" id="line-171"></span></p><p class="line874" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">The credentials supplied to this tool, when asked, will be the same as those supplied in the corerecert.conf file as its this user that owns the recertification jobs.<span class="anchor" id="line-172"></span><span class="anchor" id="line-173"></span></p><p class="line874" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">This will allow you to reschedule a PENDING job to start immediately. Where immediate is in 1 min time due to a little wart that stops you doing 0 min.&nbsp;<span class="anchor" id="line-174"></span>The sessionID is the JOB number, it may either be the RECURRING parent or the CHILD id, the tool will do the right thing.<span class="anchor" id="line-175"></span><span class="anchor" id="line-176"></span></p><p class="line862" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">The jobs for the phases can be discover by using the&nbsp;<strong>recertCora</strong>&nbsp;tool or by using the corerecert tool.<span class="anchor" id="line-177"></span><span class="anchor" id="line-178"></span></p><p class="line867" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;"></p><h2 id="Manually_moving_phases" style="color: rgb(0, 0, 0); font-family: sans-serif; letter-spacing: normal; text-transform: none;">Manually moving phases</h2><p class="line862" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">It's unlikely that every facility is going to have 100% success. This means for example you will need to move from phase 4-&gt;6, 8-&gt;9 and 12-&gt;13 manually. What is not documented is that you must terminate all the pending jobs before you move to the next phase.<span class="anchor" id="line-181"></span><span class="anchor" id="line-182"></span><span class="anchor" id="line-183"></span><span class="anchor" id="line-184"></span></p><pre style="border-width: 1pt; border-style: solid; border-color: rgb(174, 189, 204); background-color: rgb(243, 245, 247); padding: 5pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word; color: rgb(0, 0, 0); font-size: 16px;"><span class="anchor" id="line-1-15"></span># cd /opt/opsware/oi_util/OpswareCertTool/recert_utils/
-<span class="anchor" id="line-2-5"></span># ./corerecert --cancel_all_agent_recert_jobs</pre><p style="color: rgb(0, 0, 0); font-family: sans-serif; letter-spacing: normal;"><span class="anchor" id="line-2" style="font-size: 16px;"></span><span class="anchor" id="line-3" style="font-size: 16px;"></span><span class="anchor" id="line-4" style="font-size: 16px;"></span><span class="anchor" id="line-5" style="font-size: 16px;"></span><span class="anchor" id="line-11" style="font-size: 16px;"></span><span class="anchor" id="line-12" style="font-size: 16px;"></span><span class="anchor" id="line-17" style="font-size: 16px;"></span><span class="anchor" id="line-18" style="font-size: 16px;"></span><span class="anchor" id="line-22" style="font-size: 16px;"></span><span class="anchor" id="line-28" style="font-size: 16px;"></span><span class="anchor" id="line-29" style="font-size: 16px;"></span><span class="anchor" id="line-32" style="font-size: 16px;"></span><span class="anchor" id="line-33" style="font-size: 16px;"></span><span class="anchor" id="line-37" style="font-size: 16px;"></span><span class="anchor" id="line-40" style="font-size: 16px;"></span><span class="anchor" id="line-41" style="font-size: 16px;"></span><span class="anchor" id="line-48" style="font-size: 16px;"></span><span class="anchor" id="line-52" style="font-size: 16px;"></span><span class="anchor" id="line-58" style="font-size: 16px;"></span><span class="anchor" id="line-59" style="font-size: 16px;"></span><span class="anchor" id="line-65" style="font-size: 16px;"></span><span class="anchor" id="line-66" style="font-size: 16px;"></span><span class="anchor" id="line-75" style="font-size: 16px;"></span><span class="anchor" id="line-76" style="font-size: 16px;"></span><span class="anchor" id="line-86" style="font-size: 16px;"></span><span class="anchor" id="line-92" style="font-size: 16px;"></span><span class="anchor" id="line-93" style="font-size: 16px;"></span><span class="anchor" id="line-97" style="font-size: 16px;"></span><span class="anchor" id="line-106" style="font-size: 16px;"></span><span class="anchor" id="line-107" style="font-size: 16px;"></span><span class="anchor" id="line-117" style="font-size: 16px;"></span><span class="anchor" id="line-121" style="font-size: 16px;"></span><span class="anchor" id="line-122" style="font-size: 16px;"></span><span class="anchor" id="line-125" style="font-size: 16px;"></span><span class="anchor" id="line-126" style="font-size: 16px;"></span><span class="anchor" id="line-137" style="font-size: 16px;"></span><span class="anchor" id="line-138" style="font-size: 16px;"></span><span class="anchor" id="line-142" style="font-size: 16px;"></span><span class="anchor" id="line-143" style="font-size: 16px;"></span><span class="anchor" id="line-147" style="font-size: 16px;"></span><span class="anchor" id="line-151" style="font-size: 16px;"></span><span class="anchor" id="line-155" style="font-size: 16px;"></span><span class="anchor" id="line-156" style="font-size: 16px;"></span><span class="anchor" id="line-157" style="font-size: 16px;"></span><span class="anchor" id="line-158" style="font-size: 16px;"></span><span class="anchor" id="line-169" style="font-size: 16px;"></span><span class="anchor" id="line-179" style="font-size: 16px;"></span><span class="anchor" id="line-180" style="font-size: 16px;"></span><span class="anchor" id="line-185" style="font-size: 16px;"></span></p><p class="line874" style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 16px; letter-spacing: normal;">Failure to do this may mean that for example are you in Phase 8 (recert agent) whilst jobs for Phase 4 (Push CA to agent) are still running.</p>
+<h1>Core recert best practices</h1>
+
+<p>&nbsp;</p>
+
+<h2>Configuration settings</h2>
+
+<p>Settings in the file&nbsp;<tt>/opt/opsware/oi_utils/OpswareCertTool/recert_utils/corerecert.conf</tt></p>
+
+<p><strong>debug</strong>&nbsp;mode by default is set to 0 you should always set this to 1. If a problem happens debug logs will make the investigation much easier. There is no good reason to have debug disabled.</p>
+
+<pre>debug=1</pre>
+
+<p><strong>using_cdr</strong>. This must be set to 1 failing to do this means phase 4 will not run. Not running phase 4 will cause agents to become unreachable later on due to an interaction between the "Automated Communications Test" and the Word.</p>
+
+<ul>
+	<li>QCCR1D219593 - Core recert skipping phase 4 will lead to SWR comms tests failures causing phase8 not to recert the agent</li>
+</ul>
+
+<p>&nbsp;</p>
+
+<pre>agent_recert.using_cdr=1</pre>
+
+<p><strong>success_rate</strong>. Having this set to any value less than 100 means that the recert phase that is manipulating agents will&nbsp;<strong>stop</strong>&nbsp;when it reached the value configured. For example if you have 1000 reachable servers and you set this to 75 only 750 will be processed even thou the entire estate was reachable. This setting is often mistaken for&nbsp;<strong>X or more</strong>&nbsp;it does not mean this. It means&nbsp;<strong>stop when X is reached</strong>.</p>
+
+<pre>agent_recert.all.facilities.success_rate=100</pre>
+
+<p><strong>duration</strong>&nbsp;Phase 4,8,12 periodicity. These phases pushes CAs, recert and remove old crypto respectively on all agents. This requires that the jobs that perform these run periodically until the desired success rate has been obtained. Due a defect</p>
+
+<ul>
+	<li>QCCR1D252070 - Core Recert Phases 4, 8 and 12 will DoS the Spin/Way when only unreachable servers remain</li>
+</ul>
+
+<p>values &gt; 1 will cause a DoS attack against the Way/Spin for the duration of the configured setting driving the CPU used by the component high and writing their logs very quickly.</p>
+
+<pre>agent_recert.all.facilities.duration=1</pre>
+
+<p>The other reason to set this duration low is that the&nbsp;<strong>recertCora</strong>&nbsp;tool graphs a phases' throughput based on the job results. These are only saved when a job completes. If you are running 24hr you get no results until the&nbsp;<strong>success_rate</strong>&nbsp;has been reached and the job naturally terminates.</p>
+
+<p>&nbsp;</p>
+
+<h2>Mesh Topology changes</h2>
+
+<p>Its not called out in big letters but it should be.</p>
+
+<p>Do not change the mesh topology while a recertification is underway</p>
+
+<p>The reason being is that phase 1 performs a discover mesh and caches how the environment looked when then process began. If you change the topology the recertification won't know about it and anything you add will be skipped.</p>
+
+<p>&nbsp;</p>
+
+<h2>Phase 8 : Agent certificate cache exhaustion</h2>
+
+<p>As a large number of agents are going to be issued new crypto material in a short space of time it's possible to run the certificate cache dry. If this happens agents will no longer be issued certificates and the process will start failing (silently). The default cache size is 100 certificates. Generating new crypto happens at a rate of 1 PEM file approx. every 4 seconds. To generate 400 certificates takes about 23min.</p>
+
+<p>You can see how many are in the cache like this</p>
+
+<pre># ls /var/opt/opsware/spin/cadb/realm/opsware/certs | wc -l
+100</pre>
+
+<p>Recommend increasing the size of this cache and restarting the Spin on the infrastructure slice of each core so it takes effect. There is no upper limit to the number except filesystem limitation for files in a directory. The parameter may be examined and adjusted use&nbsp;<tt>/opt/opsware/support/bin/sa_config_checkfix</tt></p>
+
+<pre># sa_config_checkfix -k spin.cogbot.crypto_highwater -v 5000 --set</pre>
+
+<p>This increase will take about 4hr before the cache is full.</p>
+
+<p>Once the recertification (Phase 8) is complete the parameter may be reduced back to 100 with Spin restarts appropriately.&nbsp;The cached PEM files may be deleted and the Spin will simply repopulate it to the current highwater setting.</p>
+
+<p>&nbsp;</p>
+
+<h2>Phase 9 : Recert user permission omission</h2>
+
+<p>The permissions "Package Management / Manage Package" must be set to Read/Write for the recert user otherwise Phase 9 will not be able to find the package nor replace it we also need to allow recert user access to this folder.</p>
+
+<p>This omission is corrected in the 2018.08 documentation.</p>
+
+<ul>
+	<li>
+	<p><a href="https://docs.microfocus.com/itom/Server_Automation:2018.08/admin_guide/sa_security/CoreRecertificationUsers">https://docs.microfocus.com/itom/Server_Automation:2018.08/admin_guide/sa_security/CoreRecertificationUsers</a></p>
+	</li>
+</ul>
+
+<p>&nbsp;</p>
+
+<h2>Phase 11 : Truth resigning issues</h2>
+
+<p>Make sure your system is clear of conflicts&nbsp;and&nbsp;hidden conflicts before starting the re-certification process and again before starting phase 11. There are two types of conflicts</p>
+
+<ul>
+	<li>hidden - a hidden conflict is a row in a table that has no corresponding conflict being shown in the mesh state diagram.</li>
+	<li>visible - these show up in the mesh state diagram,</li>
+</ul>
+
+<p>Phase 11 resigns various tables with the new cryptographic material. A conflict on a row will prevent it from being signed</p>
+
+<pre>28-Aug-19 08:00:39 DBWriter DEBUG DBError: ORA-06512: at "TRUTH.AUDIT_EVENTS_RTRG", line 16
+ORA-04088: error during execution of trigger 'TRUTH.AUDIT_EVENTS_RTRG'' during 'update truth.audit_events set signature=:1 where event_id=:2' with args '[('Tk6o7a0e2jueCMR0mppVhQrUI+Y=', 87471410002L)]'&gt;</pre>
+
+<p>The above error is caused because a row of the table AUDIT_EVENTS has the field CONFLICTING set to 'Y'. The&nbsp;<strong>force_resolve</strong>&nbsp;program cannot find and clear them as there is no transaction in the system in the conflicting state. They are hidden and they&nbsp;will&nbsp;cause failures in&nbsp;<strong>phase 11</strong>&nbsp;if not dealt with.</p>
+
+<p>These conflicts can be found and fixed using the high speed conflict checker available from OPSWtool-1.0.37 and above. This is&nbsp;<em>much</em>&nbsp;faster than using&nbsp;<strong>table_checker</strong>. Whereas table_checker will compare every row in the database with the same row in the other databases, conflicting_checker only examines rows in the conflicted state.</p>
+
+<pre># man /opt/opsware/support/man/man1/conflicting_checker.1
+
+# cd /opt/opsware/support/bin/I_T
+# ./conflicting_checker &gt; obj.txt
+# ./sync_objects obj.txt</pre>
+
+<p>To be clear the steps above should only be ran once the mesh state diagram shows no conflicts. If you have visible conflicts you should use the&nbsp;<strong>force_resolve</strong>&nbsp;tool and the GUI to clear them&nbsp;before&nbsp;checking for hidden conflicts.</p>
+
+<p>Whilst we are talking about Phase 11 this issue is worth noting. Fixed in;&nbsp;<a href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00287">10.60.015</a>,&nbsp;<a href="https://softwaresupport.softwaregrp.com/doc/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00286">2018.08.005</a>, pre 10.60 the fix is not backported as of Feb-2020</p>
+
+<ul>
+	<li>QCCR1D253339 Phase 11 overwrites the same log file use for resigning the Truth with that used for the Word</li>
+</ul>
+
+<p>The following defect will cause Phase 11 to fail if not patched.&nbsp; Fixed in 10.50.013, 10.51.004,&nbsp;</p>
+
+<ul>
+	<li>QCCR1D242270 - Recert fails during job token resigns at phase 11</li>
+</ul>
+
+<h2>Phase 4 : Duplicate names</h2>
+
+<p>The names of servers in SA should be unique there should be no output from these SQL commands. If there are duplicates they must be resolved before starting the re-certification process.</p>
+
+<pre># sql "select dvc_desc from devices group by dvc_desc having count(*) &gt; 1"</pre>
+
+<p>The problem being when we are inside the OGFS and look up /opsw/Server/@/&lt;name&gt; we are using the dvc_desc to do this and if it matches more than one server we fail.</p>
+
+<p>This is a design bug the code should be using the MID and /opsw/.Server.ID/&lt;ID&gt; and we should cope with duplicate server names but we don't.</p>
+
+<p>Why two fields for the name of the server?</p>
+
+<ul>
+	<li>dvc_desc is mutable and may be changed in the GUI by the user.</li>
+	<li>
+	<p>system_name is immutable and always represents the FQDN of the server aka&nbsp;<tt>hostname&nbsp;--fqdn</tt>&nbsp;for UNIX.</p>
+	</li>
+</ul>
+
+<p>&nbsp;</p>
+
+<h2>Phase 4/8/12 : File system space</h2>
+
+<p>The agent recertification phases generate a&nbsp;lot&nbsp;of debug log output from the&nbsp;<strong>Way</strong>.</p>
+
+<p>Due to a defect even if you have Way debug disabled logs are still created until patched; 10.20.017,&nbsp;<a href="https://softwaresupport.softwaregrp.com/doc/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00284">10.23.016</a>, 10.50.013,&nbsp;<a href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00283">10.51.012</a>,&nbsp;<a href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00287">10.60.015</a>,&nbsp;<a href="https://softwaresupport.softwaregrp.com/doc/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00286">2018.08.005</a></p>
+
+<ul>
+	<li>QCCR1D253419 - way.debug_size is not being honored by all wayscripts</li>
+</ul>
+
+<p>Disable Way debug log output from being generated into /var/log/opsware/waybot/debug, a 0 value is disabled.</p>
+
+<pre># sa_config_checkfix -k way.debug_size
+way.debug_size set to "0" on node "ServiceLevel/Opsware/way"</pre>
+
+<p>If you want some debug log but you don't want debugging to go crazy you can set an upper threshold file size as a compromise. Here its been set to 1Mb (1024*1024) no restart of the Way's are required when this value is changed.</p>
+
+<pre># sa_config_checkfix -k way.debug_size -v 1048576 --set</pre>
+
+<p>If you have debug fully enabled with no file size limit, a value of -1, or you don't have this patch ensure you have a lot of disk space for logging. No guidance is given as it depends on how many agents are in the mesh.</p>
+
+<p>&nbsp;</p>
+
+<h2>Agent versions</h2>
+
+<p>Check that deployed agent versions are current. The version reported on an agent follows an internal versioning convention</p>
+
+<table cellspacing="0" style="border-collapse:collapse">
+	<tbody>
+		<tr>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt"><strong>Agent Version</strong></td>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt"><strong>SA Release</strong></td>
+		</tr>
+		<tr>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">45.x</td>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">9.1x</td>
+		</tr>
+		<tr>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">50.x</td>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">10.0x</td>
+		</tr>
+		<tr>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">55.x</td>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">10.1x</td>
+		</tr>
+		<tr>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">60.x</td>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">10.2x</td>
+		</tr>
+		<tr>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">65.x</td>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">10.5x</td>
+		</tr>
+		<tr>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">70.x</td>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">10.6x</td>
+		</tr>
+		<tr>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">75.x</td>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">2018.08</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>If you have any 45.x agents you need this patch installed on your mesh before agents will upgrade; 10.20.017,&nbsp;<a href="https://softwaresupport.softwaregrp.com/doc/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00274">10.23.015</a>, 10.50.013, 10.51.013,&nbsp;<a href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00256">10.60.009</a></p>
+
+<ul>
+	<li>QCCR1D248367 Agent Upgrade fails for older 45.x agents using python 1.5</li>
+</ul>
+
+<p>&nbsp;</p>
+
+<h2>Monitoring the recertification</h2>
+
+<p>The recert process may be monitored using the supplied corerecert tool like this</p>
+
+<pre>corerecert --status</pre>
+
+<p>However a much better way to monitor progress is with the&nbsp;<strong>recertCora</strong>&nbsp;tool</p>
+
+<pre># less /opt/opsware/support/man/man1/recertCora.1</pre>
+
+<p>Typically its best to run it as a web server. You can refresh pages periodically to see what is going on using a button at the bottom of each page. Note a change of phase requires you to restart the web server.</p>
+
+<pre># /opt/opsware/support/bin/recertCora -v server -i</pre>
+
+<p>&nbsp;</p>
+
+<h2>Starting jobs manually</h2>
+
+<p>Due to the duration rate being set at 1hr jobs once they have ran for this period of time will halt and start again in 24hrs time. To manually run the jobs again ahead of that 24hr start time you can use the tool&nbsp;<strong>/opt/opsware/support/bin/startJobNow</strong>&nbsp;which is available in OPSWtools-1.0.39 and above.</p>
+
+<pre># startJobNow 145130001
+Opsware Username: recertuser
+Opsware Password:
+The RECURRING job id was supplied locating 1st PENDING child
+Found child job 145140001
+Scheduled to run at Sun Mar  1 12:46:00 2020
+Rescheduled to run at Fri Feb 14 12:48:24 2020
+#</pre>
+
+<p>This is called stepping the phase semi-manually. Semi because in 24hr it will run again unless the success rate is reached.</p>
+
+<p>The credentials supplied to this tool, when asked, will be the same as those supplied in the corerecert.conf file as its this user that owns the recertification jobs.</p>
+
+<p>This will allow you to reschedule a PENDING job to start immediately. Where immediate is in 1 min time due to a little wart that stops you doing 0 min.&nbsp;The sessionID is the JOB number, it may either be the RECURRING parent or the CHILD id, the tool will do the right thing.</p>
+
+<p>The jobs for the phases can be discover by using the&nbsp;<strong>recertCora</strong>&nbsp;tool or by using the corerecert tool.</p>
+
+<p>&nbsp;</p>
+
+<h2>Manually moving phases</h2>
+
+<p>It's unlikely that every facility is going to have 100% success. This means for example you will need to move from phase 4-&gt;6, 8-&gt;9 and 12-&gt;13 manually. What is not documented is that you must terminate all the pending jobs before you move to the next phase.</p>
+
+<pre># cd /opt/opsware/oi_util/OpswareCertTool/recert_utils/
+# ./corerecert --cancel_all_agent_recert_jobs</pre>
+
+<p>&nbsp;</p>
+
+<p>Failure to do this may mean that for example are you in Phase 8 (recert agent) whilst jobs for Phase 4 (Push CA to agent) are still running.</p>
