@@ -79,8 +79,8 @@ Note: All the yellow colored text in the scripts are user/environment specific. 
 
 <p><strong>main script</strong>:</p>
 
-<p>BVDURL="https://&lt;My BVD FQDN&gt;/bvd-receiver/api/submit/"<br>
-BVDAPIKEY="&lt;My BVD API KEY&gt;"<br>
+<p>BVDURL="https://<span class="marker">&lt;My BVD FQDN&gt;</span>/bvd-receiver/api/submit/"<br>
+BVDAPIKEY="<span class="marker">&lt;My BVD API KEY&gt;</span>"<br>
 BVDCURLURL="$BVDURL$BVDAPIKEY/dims/NodeName,InterfaceName"<br>
 while [ 1 ]<br>
 Do<br>
@@ -124,13 +124,13 @@ dbisql -nogui -c "DSN=PerfSPIDSN" cpuutil.sql | sed -e '/^\s*$/d' -e '/^-/d' -e 
 done</p>
 
 <p><strong>cpuutil.sql: </strong><br>
-select rawTable."Node Name",&nbsp; rawTable."CPU 5min Utilization" * 100 as "5 Minute CPU Utilization" from f_Raw_ComponentMetrics rawTable, [g_NodeGroup Type1_ComponentTopology] groupTable where "CPU 5min Utilization" is not NULL and "5 Minute"&nbsp; &gt; (select dateadd(SECOND, -300, max("5 Minute")) from f_Raw_ComponentMetrics) and groupTable.[NodeGroup Type1 Name] in ('COVID-19') and groupTable."mbrRef" = rawTable."Node UUID"<br>
+select rawTable."Node Name",&nbsp; rawTable."CPU 5min Utilization" * 100 as "5 Minute CPU Utilization" from f_Raw_ComponentMetrics rawTable, [g_NodeGroup Type1_ComponentTopology] groupTable where "CPU 5min Utilization" is not NULL and "5 Minute"&nbsp; &gt; (select dateadd(SECOND, -300, max("5 Minute")) from f_Raw_ComponentMetrics) and groupTable.[NodeGroup Type1 Name] in ('<span class="marker">COVID-19</span>') and groupTable."mbrRef" = rawTable."Node UUID"<br>
 ORDER by "Node Name", "5 Minute"</p>
 
 <p><strong>ifutil.sql:</strong><br>
-select rawTable."Node Name", rawTable."Interface Name", rawTable."Utilization" * 100&nbsp; as "Utilization" from f_Raw_InterfaceMetrics rawTable, [g_NodeGroup Type1_ComponentTopology] groupTable WHERE rawTable."5 Minute"&nbsp; &gt; (select dateadd(SECOND, -300, max("5 Minute")) from f_Raw_InterfaceMetrics) and rawTable.Utilization is NOT NULLand groupTable.[NodeGroup Type1 Name] in ('COVID-19') and groupTable."mbrRef" = rawTable."Node UUID" ORDER by rawTable."Node Name", rawTable."Interface Name"</p>
+select rawTable."Node Name", rawTable."Interface Name", rawTable."Utilization" * 100&nbsp; as "Utilization" from f_Raw_InterfaceMetrics rawTable, [g_NodeGroup Type1_ComponentTopology] groupTable WHERE rawTable."5 Minute"&nbsp; &gt; (select dateadd(SECOND, -300, max("5 Minute")) from f_Raw_InterfaceMetrics) and rawTable.Utilization is NOT NULLand groupTable.[NodeGroup Type1 Name] in ('<span class="marker">COVID-19</span>') and groupTable."mbrRef" = rawTable."Node UUID" ORDER by rawTable."Node Name", rawTable."Interface Name"</p>
 
 <p><strong>concurrentsession.sql:</strong><br>
-select rawTable."Node Short Name",&nbsp; rawTable."CurrentConnect_FW_connects", rawTable."CurrentConnect_FW_connects" * 0.0252 as "UserSessions", rawTable."5 Minute from [f_Raw_Concurrent_FW_nps-CustomPollMetrics] rawTable where "5 Minute"&nbsp; &gt; (select dateadd(SECOND, -300, max("5 Minute")) from [f_Raw_Concurrent_FW_nps-CustomPollMetrics]) and rawTable."Node Short Name" LIKE '&lt;fw1&gt;' ORDER BY "Node Short Name", "5 Minute"</p>
+select rawTable."Node Short Name",&nbsp; rawTable."<span class="marker">CurrentConnect_FW_connects</span>", rawTable."<span class="marker">CurrentConnect_FW_connects</span>" * 0.0252 as "UserSessions", rawTable."5 Minute from [<span class="marker">f_Raw_Concurrent_FW_nps-CustomPollMetrics</span>] rawTable where "5 Minute"&nbsp; &gt; (select dateadd(SECOND, -300, max("5 Minute")) from [<span class="marker">f_Raw_Concurrent_FW_nps-CustomPollMetrics</span>]) and rawTable."Node Short Name" LIKE '&lt;fw1&gt;' ORDER BY "Node Short Name", "5 Minute"</p>
 
 <p>&nbsp;</p>
