@@ -1,1 +1,692 @@
- 
+<p>Server Automation has many tuning parameters this document is best practice minimum recommended baseline as a delta from what is shipped.&nbsp;&nbsp;</p>
+
+<p>Tuning parameters can be examined and set using the&nbsp;<strong>sa_config_checkfix</strong>&nbsp;tool. A manual page is available for this and you should familiarize yourself with its operation as an alternative to locating and adjusting mesh wide parameter via the GUI.</p>
+
+<p><strong>Basic Operation</strong></p>
+
+<p>Examine a parameter value&nbsp;</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>/opt/opsware/support/bin/sa_config_checkfix -k way.agent_reach.check_reachability.concurrency</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Set a value&nbsp;&nbsp;&nbsp;</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>/opt/opsware/support/bin/sa_config_checkfix -k way.agent_reach.check_reachability.concurrency -v&nbsp;</code><code>50</code>&nbsp;<code>--set</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>The tuning falls into two categories. Functional based and Component based. As tuning should be applied holistically cherry picking items from this guide is&nbsp;<strong>discouraged</strong>. If additional tuning it required an understanding of the components affects and its impact should be made before putting it in place.&nbsp;&nbsp;</p>
+
+<p>The tuning of timeout values with some exceptions that are not performance related have been omitted.</p>
+
+<h2>Disable importing Windows Superseded patches</h2>
+
+<p><br>
+To prevent superseded patches from being imported.</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>/opt/opsware/support/bin/sa_config_checkfix -k patchman.ms_mbsa20_skip_import_superseded -v&nbsp;</code><code>1</code>&nbsp;<code>--set&nbsp;&nbsp;&nbsp;&nbsp; (</code><code>default</code>&nbsp;<code>0</code><code>)</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Purging existing unused patches will shrink the amount of data that needs to be compared improving performance:&nbsp;&nbsp;</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code># /opt/opsware/bin/python /opt/opsware/mm_wordbot/util/win_purge_unused_superseded_patches.pyc</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>The utility above replaces that documented in our user manuals.</p>
+
+<ul>
+	<li>QCCR1D244356 - win_remove_patches deleteSP option takes too long&nbsp;</li>
+</ul>
+
+<p>This utility&nbsp;was shipped in various rollups <a href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00246">10.60.006,</a> 10.50.008, <a href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00248">10.51.006</a>, <a href="https://softwaresupport.softwaregrp.com/doc/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00274">10.23.015</a> for releases &lt; 2018.08</p>
+
+<h2>Agent upgrade concurrency</h2>
+
+<p>This is tune-able from &gt;<a href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00247">10.23.012&nbsp;&nbsp;</a></p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>sa_config_checkfix -k way.agent_upgrade.concurrency -v&nbsp;</code><code>50</code>&nbsp;<code>--set&nbsp;&nbsp;&nbsp;&nbsp; (</code><code>default</code>&nbsp;<code>30</code><code>)</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>This tuning parameter was added as part of this performance change.&nbsp;</p>
+
+<ul>
+	<li>QCCR1D224403 - Agent upgrade does not use Tsunami&nbsp;&nbsp;</li>
+</ul>
+
+<h2>Communications test</h2>
+
+<p>&nbsp;This is tune-able from &gt; 10.22.011, &gt;<a href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00247">10.23.012</a>, &gt;<a href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00271">10.51.011</a>, &gt;<a href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00249">10.60.007&nbsp;</a>&nbsp;</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>sa_config_checkfix -k way.agent_reach.check_reachability.concurrency -v&nbsp;</code><code>50</code>&nbsp;<code>--set&nbsp;&nbsp;&nbsp;&nbsp; (</code><code>default</code>&nbsp;<code>20</code><code>)</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>The tuning parameter was added as part of this enhancement.&nbsp;</p>
+
+<ul>
+	<li>QCCR1D245662 - Restrict automated communications test from executing in certain realms&nbsp;&nbsp;</li>
+</ul>
+
+<p>When a server can't be contacted we will retry every 10s until the default timeout of 120s is reached.&nbsp; Reducing the timeout allows the concurrency slot to be returned sooner.&nbsp; &nbsp;Tunable from &gt;<a href="https://softwaresupport.softwaregrp.com/doc/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00285">10.23.015</a>, &gt;<a href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00271">10.51.011</a>, &gt;<a href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00264">10.60.013</a>, &gt;<a href="https://softwaresupport.softwaregrp.com/doc/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00277">2018.03.003</a></p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>sa_config_checkfix -k way.agent_reach.check_reachability.launch_timeout -v&nbsp;</code><code>30</code>&nbsp;<code>--set&nbsp;&nbsp;&nbsp; (</code><code>default</code>&nbsp;<code>120</code><code>)</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>The tuning parameter was added as part of this enhancement</p>
+
+<ul>
+	<li>QCCR1D252426 - Communication Test execution makes too many Spin calls</li>
+</ul>
+
+<h2>Compliance Scan</h2>
+
+<p>This is tune-able from &gt;10.50.008, &gt;<a href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00248">10.51.006</a>, &gt;<a href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00246">10.60.006&nbsp;&nbsp;</a></p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>sa_config_checkfix -k way.compliance.concurrency -v&nbsp;</code><code>50</code>&nbsp;<code>--set&nbsp;&nbsp;&nbsp;&nbsp; (</code><code>default</code>&nbsp;<code>20</code><code>)</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>The tuning parameter was added as part of this enhancement.</p>
+
+<ul>
+	<li>QCCR1D241724 - Configuration parameter required for patch_compliance to increase concurrency&nbsp;&nbsp;</li>
+</ul>
+
+<p>This tuning parameter is used for tables related to Audit/Compliance.&nbsp; It reduces the number of round trips to the database.</p>
+
+<p><strong>/etc/opt/opsware/twist/twist_custom.conf</strong></p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>twist.maxBatchCount=</code><code>100</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>(</code><code>default</code>&nbsp;<code>40</code><code>)</code></p>
+
+			<p><code>twist.statement.fetchSize=</code><code>100</code>&nbsp;&nbsp;&nbsp;&nbsp;<code>(</code><code>default</code>&nbsp;<code>30</code><code>)</code></p>
+
+			<p><code>&nbsp;</code></p>
+
+			<p><code>Not audit related but&nbsp;</code><code>while</code>&nbsp;<code>we are tuning the batch fetch capability:</code></p>
+
+			<p><code>&nbsp;</code></p>
+
+			<p><code>twist.recalc.maxBatchCount=</code><code>100</code>&nbsp;&nbsp;&nbsp;<code>(</code><code>default</code>&nbsp;<code>40</code><code>)</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>Server Script execution</h2>
+
+<p>The timeout is reduced to increase throughput for agents that are unreachable. Reduce the time we wait for a response.</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>sa_config_checkfix -k way.max_serverscript_waiter -v&nbsp;</code><code>50</code>&nbsp;<code>--set&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (</code><code>default</code>&nbsp;<code>20</code><code>)</code></p>
+
+			<p><code>sa_config_checkfix -k way.script_launch_timeout -v&nbsp;</code><code>60</code>&nbsp;<code>--set&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (</code><code>default</code>&nbsp;<code>120</code><code>)</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>Audits / Server Modules</h2>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>sa_config_checkfix -k way.max_ssct_waiter -v&nbsp;</code><code>50</code>&nbsp;<code>--set&nbsp;&nbsp;&nbsp;&nbsp; (</code><code>default</code>&nbsp;<code>20</code><code>)</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>The spoke pools where increased from their defaults of 10/11 to 50/51 in the following releases; 10.10.006, 10.20.006, 10.21.004. However for high audit load this increase may still not be sufficient.&nbsp;&nbsp;</p>
+
+<ul>
+	<li>
+	<p>QCCR1D212189 - Increase default size for spoke's Server Module ThreadPools, expose pool size parameters in spoke.conf&nbsp;&nbsp;</p>
+	</li>
+</ul>
+
+<p><strong>/etc/opt/opsware/spoke/spoke_custom.conf</strong></p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>spoke.poolsize=</code><code>100</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>(</code><code>default</code>&nbsp;<code>50</code><code>)</code></p>
+
+			<p><code>sm.num.threads=</code><code>101</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>(</code><code>default</code>&nbsp;<code>51</code><code>)</code></p>
+
+			<p><code>sm.num.err.threads=</code><code>100</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>(</code><code>default</code>&nbsp;<code>50</code><code>)</code></p>
+
+			<p><code>spoke.auditObjectCacheSize=</code><code>100000</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>(</code><code>default</code>&nbsp;<code>15000</code><code>)</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>100k objects in testing used about 200Mb of memory, no additional JVM memory increase should be necessary. If Out of memory errors are noticed increase the spoke JVM&nbsp;&nbsp;</p>
+
+<p><strong>/etc/opt/opsware/spoke/spoke_custom.conf</strong></p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>spoke.mxMem=2560m&nbsp;&nbsp;&nbsp;&nbsp; (</code><code>default</code><code>: 1280m)</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<h3>Timeout Failures</h3>
+
+<p>An audit compliance scan will run on a server for a maximum of&nbsp;<strong>way.ssct_snapshotcompliance_timeout</strong>&nbsp;1800s (30min) before it reaches its MAXIMUM limit where the Way stops waiting for the results. The SPOKE will continue waiting a little longer&nbsp;<strong>spoke.handler.cmdoutput.timeout_atcore</strong>&nbsp;&nbsp;</p>
+
+<p>If audits take longer than 30 min to complete this tuning parameters will need to be adjusted. This should be tuned in concert with the _atcore parameter. The rule&nbsp;&nbsp;</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>way.ssct_snapshotcompliance_timeout &lt;= spoke.handler.cmdoutput.timeout_atcore</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Increase from the 30min default to 90m to avoid a timeout&nbsp;&nbsp;</p>
+
+<p><strong>/etc/opt/opsware/spoke/spoke_custom.conf</strong></p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>spoke.handler.cmdoutput.timeout_atcore=</code><code>5400</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>(</code><code>default</code>&nbsp;<code>1800</code><code>)</code></p>
+
+			<p><code>spoke.handler.cmdoutput.timeout=</code><code>5400</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>(</code><code>default</code>&nbsp;<code>1800</code><code>)</code></p>
+
+			<p><code>sm.method.overall.timeout=</code><code>3600</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>(</code><code>default</code>&nbsp;<code>1800</code><code>)</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>SSCT WayScript has hardcoded limit of 3600 no point pushing the&nbsp;<strong>sm.method.overall.timeout</strong>&nbsp;timeout higher.</p>
+
+<ul>
+	<li>QCIM1D133182 -&nbsp;Discovered Software snapshot creation failure</li>
+</ul>
+
+<h2>Twist</h2>
+
+<p>The amount of memory for production loads varies greatly, know this, it will have to be increased above the default setting.</p>
+
+<p><strong>/etc/opt/opsware/twist/twist_custom.conf</strong></p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>twist.mxMem=8192m&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (</code><code>default</code>&nbsp;<code>2560</code><code>)</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Exclude login event sync for automated service accounts.&nbsp; This parameter should be adjusted inline with the user(s) used for OO integration and CSA automation. It minimizes mesh conflicts in exchange for a loss of an update to the last user login timestamp for these accounts.</p>
+
+<p><strong>/etc/opt/opsware/twist/twist_custom.conf</strong></p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>twist.ignoreRecentLoginEventUsers=detuser,ooadmin,csaadmin</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<ul>
+	<li>QCCR1D238526 - Ignore OO users aaa_user.most_recent_login updates to avoid conflicts from automation's&nbsp;&nbsp;</li>
+</ul>
+
+<p>Increase the database connection pool&nbsp;&nbsp;</p>
+
+<p>For Wildfly &gt;= 10.50 the default values:&nbsp;</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>&lt;</code><code>min-pool-size</code><code>&gt;20&lt;/</code><code>min-pool-size</code><code>&gt;</code></p>
+
+			<p><code>&lt;</code><code>min-pool-size</code><code>&gt;100&lt;/</code><code>min-pool-size</code><code>&gt;</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Recommended tuning:&nbsp;</p>
+
+<p><strong>/opt/opsware/twist/wildfly/standalone/configuration/standalone-full.xml</strong></p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>&lt;</code><code>min-pool-size</code><code>&gt;100&lt;/</code><code>min-pool-size</code><code>&gt;</code></p>
+
+			<p><code>&lt;</code><code>max-pool-size</code><code>&gt;200&lt;/</code><code>max-pool-size</code><code>&gt;</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>For WebLogic &lt;= 10.23 the default values:&nbsp;</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>&lt;</code><code>initial-capacity</code><code>&gt;20&lt;/</code><code>initial-capacity</code><code>&gt;</code></p>
+
+			<p><code>&lt;</code><code>max-capacity</code><code>&gt;100&lt;/</code><code>max-capacity</code><code>&gt;</code></p>
+
+			<p><code>&lt;</code><code>capacity-increment</code><code>&gt;2&lt;/</code><code>capacity-increment</code><code>&gt;</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Recommended tuning:&nbsp;</p>
+
+<p><strong>/var/opt/opsware/twist/config/jdbc/CP-TruthPool-jdbc.xml</strong></p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>&lt;</code><code>initial-capacity</code><code>&gt;100&lt;/</code><code>initial-capacity</code><code>&gt;</code></p>
+
+			<p><code>&lt;</code><code>max-capacity</code><code>&gt;200&lt;/</code><code>max-capacity</code><code>&gt;</code></p>
+
+			<p><code>&lt;</code><code>capacity-increment</code><code>&gt;10&lt;/</code><code>capacity-increment</code><code>&gt;</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>Hub</h2>
+
+<p>APX / OGFS Script concurrency</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>sa_config_checkfix -k way.max_ogfsscript_waiter -v&nbsp;</code><code>100</code>&nbsp;<code>--set&nbsp;&nbsp;&nbsp;&nbsp; (</code><code>default</code>&nbsp;<code>50</code><code>)</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>This tuning parameter has dependencies elsewhere:&nbsp;</p>
+
+<p><strong>/etc/opt/opsware/hub/hub_custom.conf</strong></p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>hub.task.concurrency=</code><code>300</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>(</code><code>default</code>&nbsp;<code>150</code><code>)</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>This is tune-able in 10.50.011, <a href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00283">10.51.009</a>, <a href="https://softwaresupport.softwaregrp.com/doc/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00261">10.60.012</a>, <a href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00265">2018.08.002</a>&nbsp;&nbsp;</p>
+
+<p><strong>/etc/opt/opsware/hub/hub_custom.conf</strong></p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>hub.cache.server_name=</code><code>200</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>(</code><code>default</code>&nbsp;<code>10</code><code>)</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<ul>
+	<li>QCCR1D205112 - rosh "-n servername" performance is lower than "-i dvcid" with non-super administrator user&nbsp;&nbsp;</li>
+</ul>
+
+<h2>Twist/Way command execution</h2>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>sa_config_checkfix -k twist.way.cmdpoolsize -v&nbsp;</code><code>200</code>&nbsp;<code>--set&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (</code><code>default</code>&nbsp;<code>50</code><code>)</code></p>
+
+			<p><code>sa_config_checkfix -k way.max_asynctwist_waiter -v&nbsp;</code><code>50</code>&nbsp;<code>--set&nbsp;&nbsp; (</code><code>default</code>&nbsp;<code>25</code><code>)</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Increasing the Twist command pool increases the number of threads that it can execute this also requires an OS change.&nbsp;&nbsp;</p>
+
+<p><strong>/etc/security/limits.conf</strong></p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>twist soft nproc&nbsp;</code><code>4096</code></p>
+
+			<p><code>twist hard nproc&nbsp;</code><code>4096</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>Way</h2>
+
+<p>This tuning param was introduced to work around an edge case with the ADM product.</p>
+
+<ul>
+	<li>QCCR1D135496: Job status via ADM slow; Fixed in SA 9.10</li>
+</ul>
+
+<p><strong>/etc/opt/opsware/waybot/waybot_custom.args</strong></p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>twist.session.cache.update: off</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>The consequence of this defect fix is that it ends up causing Twist to excessively flush its cache inducing a performance issue and sometime crashing out Way Jobs.&nbsp; Turning it off will be of benefit if the ADM sub-system is not being used.&nbsp; If you don't know what ADM is, you're not using it.</p>
+
+<h3>Split-Brain</h3>
+
+<p>Due to the new way session job execution enhancement, introduced in 10.23 and 10.51, designed to prevent jobs&nbsp;from completing until all commands started by that job have completed, many&nbsp;customers have experienced jobs that stay ACTIVE (aka in-progress) for a long period of time.</p>
+
+<p>A tuning parameter was introduced in <a href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00242">10.60.004</a>, <a href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00254">10.51.008</a> and <a href="https://softwaresupport.softwaregrp.com/doc/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00285">10.23.008</a> to disable this change in functionality.</p>
+
+<ul>
+	<li>QCCR1D240570 -&nbsp;Add option to deactivate the split-brain functionality and allow jobs to time out</li>
+	<li><a href="https://softwaresupport.softwaregrp.com/doc/KM02895479">KM2895479</a></li>
+</ul>
+
+<p>&nbsp;</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code># sa_config_checkfix -k way.command_shutdown_grace_period -v &lt;value&gt; --set</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>There are 2 possible timeout values that can affect a job. These are given by the following parameters:</p>
+
+<ul>
+	<li><code>way.twist_launch_timeout_default</code>: the launch (job start) timeout. This is used as is for the command startup (i.e. if it says 3600 seconds, then the actual timeout is 3600 seconds)</li>
+	<li><code>way.command_shutdown_grace_period</code>: this affect the max timeout. The max duration of the job is calculated as follows:<br>
+	&lt;timeout set on job&gt; + &lt;way.command_shutdown_grace_period&gt; + &lt;150 seconds&gt;<br>
+	&nbsp;</li>
+</ul>
+
+<p>The above is true as long as the parameter value is not -1; if it is -1 then, according to the parameter description, we will wait forever until we get the results.</p>
+
+<p>Patching / Software Remediation</p>
+
+<p>Tuning parameters relating to remediation</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>sa_config_checkfix -k way.remediate.chunk_size -v&nbsp;</code><code>25</code>&nbsp;<code>--set&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (</code><code>default</code>&nbsp;<code>20</code><code>)</code></p>
+
+			<p><code>sa_config_checkfix -k way.remediate.max_concurrency -v&nbsp;</code><code>40</code>&nbsp;<code>--set&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (</code><code>default</code>&nbsp;<code>10</code><code>)</code></p>
+
+			<p><code>sa_config_checkfix -k way.max_remediations -v&nbsp;</code><code>200</code>&nbsp;<code>--set&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (</code><code>default</code>&nbsp;<code>50</code><code>)</code></p>
+
+			<p><code>sa_config_checkfix -k way.max_remediations.action -v&nbsp;</code><code>400</code>&nbsp;<code>--set&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (</code><code>default</code>&nbsp;<code>100</code><code>)</code></p>
+
+			<p><code>sa_config_checkfix -k way.remediate.max_app_compliance_calls -v&nbsp;</code><code>50</code>&nbsp;<code>--set&nbsp; (</code><code>default</code>&nbsp;<code>25</code><code>)</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>We should have a smaller&nbsp;<code>chunk_size</code>&nbsp;and a higher&nbsp;<code>max_concurrency</code>. More&nbsp;doers&nbsp;will reduce the wait time before remediation commences as less servers in a&nbsp;doer&nbsp;need to transition though each phase. The&nbsp;chunker&nbsp;will increase the&nbsp;<code>chunk_size</code>&nbsp;itself once the&nbsp;<code>max_concurrency</code>&nbsp;limit has been reached so this is less important to tune.&nbsp;&nbsp;</p>
+
+<p>Increasing&nbsp;<code>chunk_size</code>&nbsp;too large will have a throughput performance penalty as all the servers in the&nbsp;chunk&nbsp;must complete each phase&nbsp;<em>(analyze/stage/action)</em>&nbsp;in the&nbsp;doer&nbsp;before they can all progress.&nbsp;</p>
+
+<p>The tuning parameter&nbsp;<code>way.max_remediations</code>&nbsp;should really be called&nbsp;<code>way.max_remediates.stage_analyse</code>&nbsp;because it pertains to how much concurrency is allowed in those two phases.&nbsp; &nbsp;The three phases being; stage, analyse and action.&nbsp; &nbsp;The action phase has it own tuning parameter and in the annals of SA one parameter use to be used for all three.</p>
+
+<p>This is how long we wait for the agent to respond to our pokes and callback to get the Command we just queued up for it.&nbsp; The default value is excessive.</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>sa_config_checkfix -k way.remediate.command_launch_timeout -v&nbsp;</code><code>60</code>&nbsp;<code>--set&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (</code><code>default</code>&nbsp;<code>240</code><code>)</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>This is used when doing remediation's and it appears when asking a server to execute a script, get its installed units (for patching computations), performing a reconcile post patching, checking available disk space before staging, and other activities during the remediation phases.</p>
+
+<p>Windows patches can take longer to installer than allowed by SA.&nbsp; &nbsp;Old server hardware and Microsoft's&nbsp;every increasing patch payloads are putting a strain on customer infrastructure and SA just needs to wait longer.&nbsp; Its recommended that you increase this timeout:</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>sa_config_checkfix -k way.remediate.package_alarm_timeout -v&nbsp;</code><code>5400</code>&nbsp;<code>--set&nbsp; (</code><code>default</code>&nbsp;<code>3600</code><code>)</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Increasing the alarm timeout will give servers more time to complete.&nbsp; The downside is that if there&nbsp;is even ONE system that's taking a long time for some activity, the entire job will not complete until that server breaches the alarm timeout.&nbsp; Meaning your SA jobs could potentially take a lot longer to complete.</p>
+
+<h2>Vault</h2>
+
+<p>These values only need a minor adjustment increasing them excessively will yield little benefit and can be detrimental.&nbsp;&nbsp;Slice 0 change only.</p>
+
+<p><strong>/etc/opt/opsware/vault/vault_custom.conf</strong></p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>com.opsware.omb.dbpool.poolSize=</code><code>15</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>(</code><code>default</code>&nbsp;<code>5</code><code>)</code></p>
+
+			<p><code>com.opsware.omb.dbpool.cacheSize=</code><code>20</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>(</code><code>default</code>&nbsp;<code>10</code><code>)</code></p>
+
+			<p><code>com.opsware.omb.payloadcache.size=</code><code>40</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>(</code><code>default</code>&nbsp;<code>20</code><code>)</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Additional memory may need to be assigned to the vault to handle large transactions. Unless out of memory error are being experience don't increase the JVM. There is no tuning parameter to accomplish this task requiring a direct edit of a script. On upgrade this may be reverted which is why its recommended not to adjust it unless OOM's are occurring.&nbsp;&nbsp;</p>
+
+<p>For SA &lt;= 10.60 an increase in the vault memory requires the editing of the vault startup script</p>
+
+<p><strong>/opt/opsware/vault/bin/vault</strong></p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>JAVAARGS=</code><code>"-ms120m -mx1024m ${OPTION_COMPRESSEDOOPS} -Dcom.opsware.vault.config.file=${CONF_FILE} -Djava.util.logging.config.file=${LOG_PROPS}"</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Increase the mx value from 1024</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>-mx2048m</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>In SA 2018.08 and above a tuning option is available that will be preserved across upgrade boundaries.</p>
+
+<p><strong>/etc/opt/opsware/vault/vault_custom.conf</strong></p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>vault.mxMem=2048m</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Spin</p>
+
+<p><strong>/etc/opt/opsware/spin/spin_custom.args</strong></p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>spin.db.initial_concurrency:&nbsp;</code><code>10</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>(</code><code>default</code>&nbsp;<code>5</code><code>)</code></p>
+
+			<p><code>spin.db.max_concurrency:&nbsp;</code><code>160</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>(</code><code>default</code>&nbsp;<code>80</code><code>)</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Minimizes risk of 'spin.databaseConnection - No available connections' error during agent install surges.</p>
+
+<p>AIX apars software registration can put a load of load on the spin.&nbsp; You may consider disabling this feature if its not required</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>sa_config_checkfix -k spin.cogbot.swreg.ignore_apars -v&nbsp;</code><code>1</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>opswsshd</h2>
+
+<p>Allows more simultaneous Global Shell session startups.&nbsp; Especially for SA/OO integrations.</p>
+
+<p><strong>/etc/opt/opsware/sshd/sshd_config</strong></p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>MaxStartups&nbsp;</code><code>256</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<ul>
+	<li>QCCR1D168985 MaxStartups param to be added to our sshd config file with a higher default value</li>
+</ul>
+
+<h2>NGUI</h2>
+
+<p>Increase NGUI heap from the default of 512Mb</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>sa_config_checkfix -k ngui.max.heap_size -v&nbsp;</code><code>1024</code>&nbsp;<code>--set</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
