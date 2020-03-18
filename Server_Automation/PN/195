@@ -1,19 +1,23 @@
-<h2 id="Schedule_a_recurring_scan_for_patch_compliance" style="color: rgb(0, 0, 0); letter-spacing: normal; text-transform: none; font-family: sans-serif;">Schedule a recurring scan for patch compliance</h2><span class="anchor" id="line-1683" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><span class="anchor" id="line-1684" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">A patch compliance scan will run every week on a Sunday for the next one hundred days.<span class="anchor" id="line-1685"></span><span class="anchor" id="line-1686"></span><span class="anchor" id="line-1687"></span><span class="anchor" id="line-1688"></span><span class="anchor" id="line-1689"></span><span class="anchor" id="line-1690"></span><span class="anchor" id="line-1691"></span><span class="anchor" id="line-1692"></span><span class="anchor" id="line-1693"></span><span class="anchor" id="line-1694"></span><span class="anchor" id="line-1695"></span><span class="anchor" id="line-1696"></span><span class="anchor" id="line-1697"></span><span class="anchor" id="line-1698"></span><span class="anchor" id="line-1699"></span><span class="anchor" id="line-1700"></span><span class="anchor" id="line-1701"></span><span class="anchor" id="line-1702"></span><span class="anchor" id="line-1703"></span><span class="anchor" id="line-1704"></span><span class="anchor" id="line-1705"></span><span class="anchor" id="line-1-194"></span></p><div class="highlight python" style="color: rgb(0, 0, 0); font-family: sans-serif;"><div class="codearea" dir="ltr" lang="en" style="margin: 0.5em 0px; padding: 0px; border: 1pt solid rgb(174, 189, 204); background-color: rgb(243, 245, 247);"><pre dir="ltr" id="CA-757cb23df0e2fde1cd96c512fb7f537c9f0d5f9d" lang="en" style="border-width: initial; border-style: none; background-color: rgb(243, 245, 247); padding: 10pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word;"><span class="line"><span class="Comment" style="color: rgb(0, 128, 0);">#!/opt/opsware/bin/python</span></span>
-<span class="line"><span class="LineAnchor" id="CA-757cb23df0e2fde1cd96c512fb7f537c9f0d5f9d_2"></span><span class="anchor" id="line-2-100"></span><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">pytwist</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">twistserver</span></span>
-<span class="line"><span class="LineAnchor" id="CA-757cb23df0e2fde1cd96c512fb7f537c9f0d5f9d_3"></span><span class="anchor" id="line-3-84"></span><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">pytwist.com.opsware.job</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">RecurringJobSchedule</span></span>
-<span class="line"><span class="LineAnchor" id="CA-757cb23df0e2fde1cd96c512fb7f537c9f0d5f9d_4"></span><span class="anchor" id="line-4-70"></span><span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">time</span></span>
-<span class="line"><span class="LineAnchor" id="CA-757cb23df0e2fde1cd96c512fb7f537c9f0d5f9d_5"></span><span class="anchor" id="line-5-66"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-757cb23df0e2fde1cd96c512fb7f537c9f0d5f9d_6"></span><span class="anchor" id="line-6-58"></span><span class="ID">ts</span> = <span class="ID">twistserver</span>.<span class="ID">TwistServer</span>()</span>
-<span class="line"><span class="LineAnchor" id="CA-757cb23df0e2fde1cd96c512fb7f537c9f0d5f9d_7"></span><span class="anchor" id="line-7-48"></span><span class="ID">ts</span>.<span class="ID">authenticate</span>(<span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">user</span><span class="String" style="color: rgb(0, 64, 128);">"</span>,<span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">password</span><span class="String" style="color: rgb(0, 64, 128);">"</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-757cb23df0e2fde1cd96c512fb7f537c9f0d5f9d_8"></span><span class="anchor" id="line-8-45"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-757cb23df0e2fde1cd96c512fb7f537c9f0d5f9d_9"></span><span class="anchor" id="line-9-40"></span><span class="ID">schedule</span> = <span class="ID">RecurringJobSchedule</span>()</span>
-<span class="line"><span class="LineAnchor" id="CA-757cb23df0e2fde1cd96c512fb7f537c9f0d5f9d_10"></span><span class="anchor" id="line-10-35"></span><span class="ID">now</span> = <span class="ResWord" style="color: rgb(160, 0, 0);">long</span>(<span class="ID">time</span>.<span class="ID">time</span>())</span>
-<span class="line"><span class="LineAnchor" id="CA-757cb23df0e2fde1cd96c512fb7f537c9f0d5f9d_11"></span><span class="anchor" id="line-11-32"></span><span class="ID">schedule</span>.<span class="ID">startDate</span> = <span class="ID">now</span></span>
-<span class="line"><span class="LineAnchor" id="CA-757cb23df0e2fde1cd96c512fb7f537c9f0d5f9d_12"></span><span class="anchor" id="line-12-31"></span><span class="ID">hundredDaysTime</span> = <span class="ID">now</span> + <span class="Number" style="color: rgb(0, 128, 192);">86400</span> * <span class="Number" style="color: rgb(0, 128, 192);">100</span></span>
-<span class="line"><span class="LineAnchor" id="CA-757cb23df0e2fde1cd96c512fb7f537c9f0d5f9d_13"></span><span class="anchor" id="line-13-27"></span><span class="ID">schedule</span>.<span class="ID">endDate</span> = <span class="ID">hundredDaysTime</span></span>
-<span class="line"><span class="LineAnchor" id="CA-757cb23df0e2fde1cd96c512fb7f537c9f0d5f9d_14"></span><span class="anchor" id="line-14-25"></span><span class="Comment" style="color: rgb(0, 128, 0);"># man 5 crontab</span></span>
-<span class="line"><span class="LineAnchor" id="CA-757cb23df0e2fde1cd96c512fb7f537c9f0d5f9d_15"></span><span class="anchor" id="line-15-23"></span><span class="Comment" style="color: rgb(0, 128, 0);"># 8:35am every Sunday.</span></span>
-<span class="line"><span class="LineAnchor" id="CA-757cb23df0e2fde1cd96c512fb7f537c9f0d5f9d_16"></span><span class="anchor" id="line-16-21"></span><span class="ID">schedule</span>.<span class="ID">cronSpec</span> = <span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">35 8 * * 0</span><span class="String" style="color: rgb(0, 64, 128);">'</span></span>
-<span class="line"><span class="LineAnchor" id="CA-757cb23df0e2fde1cd96c512fb7f537c9f0d5f9d_17"></span><span class="anchor" id="line-17-20"></span><span class="ID">schedule</span>.<span class="ID">timezone</span> = <span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">America/New_York</span><span class="String" style="color: rgb(0, 64, 128);">'</span></span>
-<span class="line"><span class="LineAnchor" id="CA-757cb23df0e2fde1cd96c512fb7f537c9f0d5f9d_18"></span><span class="anchor" id="line-18-20"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-757cb23df0e2fde1cd96c512fb7f537c9f0d5f9d_19"></span><span class="anchor" id="line-19-18"></span><span class="ResWord" style="color: rgb(160, 0, 0);">print</span> <span class="ID">ts</span>.<span class="ID">swmgmt</span>.<span class="ID">PatchPolicyService</span>.<span class="ID">scheduleScanCompliance</span>(<span class="ID">schedule</span>)</span></pre></div></div>
+<h2>Schedule a recurring scan for patch compliance</h2>
+
+<p>A patch compliance scan will run every week on a Sunday for the next one hundred days.</p>
+
+<pre>#!/opt/opsware/bin/python
+from pytwist import twistserver
+from pytwist.com.opsware.job import RecurringJobSchedule
+import time
+
+ts = twistserver.TwistServer()
+ts.authenticate("user","password")
+
+schedule = RecurringJobSchedule()
+now = long(time.time())
+schedule.startDate = now
+hundredDaysTime = now + 86400 * 100
+schedule.endDate = hundredDaysTime
+# man 5 crontab
+# 8:35am every Sunday.
+schedule.cronSpec = '35 8 * * 0'
+schedule.timezone = 'America/New_York'
+
+print ts.swmgmt.PatchPolicyService.scheduleScanCompliance(schedule)</pre>
