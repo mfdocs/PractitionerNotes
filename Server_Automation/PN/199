@@ -1,68 +1,199 @@
-<p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">Jobs represent actions in SA that run in the background and have progress and results.<span class="anchor" id="line-1983"></span><span class="anchor" id="line-1984"></span></p><p class="line862" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">You cannot access job information using core authentication. That is you must make an&nbsp;<tt class="backtick"></tt><tt class="backtick">authenticate(user,pass)</tt><tt class="backtick"></tt>&nbsp;call.<span class="anchor" id="line-1985"></span><span class="anchor" id="line-1986"></span></p><p class="line867" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;"></p><h2 id="Canceling_a_scheduled_job" style="color: rgb(0, 0, 0); letter-spacing: normal; text-transform: none; font-family: sans-serif;">Canceling a scheduled job</h2><span class="anchor" id="line-1987" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><span class="anchor" id="line-1988" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">The call is a single line but there is a lot of error handling that has to happen. You must authenticate as a user to perform any job manipulation using Core Authentication will not give you access.<span class="anchor" id="line-1989"></span><span class="anchor" id="line-1990"></span><span class="anchor" id="line-1991"></span><span class="anchor" id="line-1992"></span><span class="anchor" id="line-1993"></span><span class="anchor" id="line-1994"></span><span class="anchor" id="line-1995"></span><span class="anchor" id="line-1996"></span><span class="anchor" id="line-1997"></span><span class="anchor" id="line-1998"></span><span class="anchor" id="line-1999"></span><span class="anchor" id="line-2000"></span><span class="anchor" id="line-2001"></span><span class="anchor" id="line-2002"></span><span class="anchor" id="line-2003"></span><span class="anchor" id="line-2004"></span><span class="anchor" id="line-2005"></span><span class="anchor" id="line-2006"></span><span class="anchor" id="line-2007"></span><span class="anchor" id="line-2008"></span><span class="anchor" id="line-2009"></span><span class="anchor" id="line-2010"></span><span class="anchor" id="line-2011"></span><span class="anchor" id="line-2012"></span><span class="anchor" id="line-2013"></span><span class="anchor" id="line-2014"></span><span class="anchor" id="line-1-210"></span></p><div class="highlight python" style="color: rgb(0, 0, 0); font-family: sans-serif;"><div class="codearea" dir="ltr" lang="en" style="margin: 0.5em 0px; padding: 0px; border: 1pt solid rgb(174, 189, 204); background-color: rgb(243, 245, 247);"><pre dir="ltr" id="CA-8c0d8595026035b3420e27349d94527bb275dbdc" lang="en" style="border-width: initial; border-style: none; background-color: rgb(243, 245, 247); padding: 10pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word;"><span class="line"><span class="Comment" style="color: rgb(0, 128, 0);">#!/opt/opsware/bin/python</span></span>
-<span class="line"><span class="LineAnchor" id="CA-8c0d8595026035b3420e27349d94527bb275dbdc_2"></span><span class="anchor" id="line-2-108"></span><span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">sys</span></span>
-<span class="line"><span class="LineAnchor" id="CA-8c0d8595026035b3420e27349d94527bb275dbdc_3"></span><span class="anchor" id="line-3-92"></span><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">pytwist</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">twistserver</span></span>
-<span class="line"><span class="LineAnchor" id="CA-8c0d8595026035b3420e27349d94527bb275dbdc_4"></span><span class="anchor" id="line-4-78"></span><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">pytwist.com.opsware.job</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">ScheduledJobRef</span>, <span class="ID">JobNotScheduledException</span></span>
-<span class="line"><span class="LineAnchor" id="CA-8c0d8595026035b3420e27349d94527bb275dbdc_5"></span><span class="anchor" id="line-5-74"></span><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">pytwist.com.opsware.common</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">NotFoundException</span></span>
-<span class="line"><span class="LineAnchor" id="CA-8c0d8595026035b3420e27349d94527bb275dbdc_6"></span><span class="anchor" id="line-6-66"></span><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">pytwist.com.opsware.fido</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">AuthorizationDeniedException</span></span>
-<span class="line"><span class="LineAnchor" id="CA-8c0d8595026035b3420e27349d94527bb275dbdc_7"></span><span class="anchor" id="line-7-56"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-8c0d8595026035b3420e27349d94527bb275dbdc_8"></span><span class="anchor" id="line-8-53"></span><span class="ResWord" style="color: rgb(160, 0, 0);">if</span> <span class="ResWord" style="color: rgb(160, 0, 0);">len</span>(<span class="ID">sys</span>.<span class="ID">argv</span>) &lt; <span class="Number" style="color: rgb(0, 128, 192);">2</span>:</span>
-<span class="line"><span class="LineAnchor" id="CA-8c0d8595026035b3420e27349d94527bb275dbdc_9"></span><span class="anchor" id="line-9-47"></span>    <span class="ResWord" style="color: rgb(160, 0, 0);">print</span> <span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">cancelScheduleJob &lt;id&gt; [reason]</span><span class="String" style="color: rgb(0, 64, 128);">"</span></span>
-<span class="line"><span class="LineAnchor" id="CA-8c0d8595026035b3420e27349d94527bb275dbdc_10"></span><span class="anchor" id="line-10-42"></span>    <span class="ID">sys</span>.<span class="ID">exit</span>(<span class="Number" style="color: rgb(0, 128, 192);">1</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-8c0d8595026035b3420e27349d94527bb275dbdc_11"></span><span class="anchor" id="line-11-38"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-8c0d8595026035b3420e27349d94527bb275dbdc_12"></span><span class="anchor" id="line-12-36"></span><span class="ID">ts</span> = <span class="ID">twistserver</span>.<span class="ID">TwistServer</span>()</span>
-<span class="line"><span class="LineAnchor" id="CA-8c0d8595026035b3420e27349d94527bb275dbdc_13"></span><span class="anchor" id="line-13-32"></span><span class="ID">ts</span>.<span class="ID">authenticate</span>(<span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">user</span><span class="String" style="color: rgb(0, 64, 128);">"</span>,<span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">password</span><span class="String" style="color: rgb(0, 64, 128);">"</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-8c0d8595026035b3420e27349d94527bb275dbdc_14"></span><span class="anchor" id="line-14-29"></span><span class="ID">jobRef</span> = <span class="ID">ScheduledJobRef</span>(<span class="ResWord" style="color: rgb(160, 0, 0);">long</span>(<span class="ID">sys</span>.<span class="ID">argv</span>[<span class="Number" style="color: rgb(0, 128, 192);">1</span>]))</span>
-<span class="line"><span class="LineAnchor" id="CA-8c0d8595026035b3420e27349d94527bb275dbdc_15"></span><span class="anchor" id="line-15-27"></span><span class="ID">reason</span> = <span class="ResWord" style="color: rgb(160, 0, 0);">None</span> <span class="ResWord" style="color: rgb(160, 0, 0);">if</span> <span class="ResWord" style="color: rgb(160, 0, 0);">len</span>(<span class="ID">sys</span>.<span class="ID">argv</span>) == <span class="Number" style="color: rgb(0, 128, 192);">2</span> <span class="ResWord" style="color: rgb(160, 0, 0);">else</span> <span class="ID">sys</span>.<span class="ID">argv</span>[<span class="Number" style="color: rgb(0, 128, 192);">2</span>]</span>
-<span class="line"><span class="LineAnchor" id="CA-8c0d8595026035b3420e27349d94527bb275dbdc_16"></span><span class="anchor" id="line-16-25"></span><span class="ResWord" style="color: rgb(160, 0, 0);">try</span>:</span>
-<span class="line"><span class="LineAnchor" id="CA-8c0d8595026035b3420e27349d94527bb275dbdc_17"></span><span class="anchor" id="line-17-24"></span>    <span class="ID">ts</span>.<span class="ID">job</span>.<span class="ID">JobService</span>.<span class="ID">cancelScheduledJob</span>(<span class="ID">jobRef</span>, <span class="ID">reason</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-8c0d8595026035b3420e27349d94527bb275dbdc_18"></span><span class="anchor" id="line-18-24"></span>    <span class="ResWord" style="color: rgb(160, 0, 0);">print</span> <span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">Job schedule canceled</span><span class="String" style="color: rgb(0, 64, 128);">"</span></span>
-<span class="line"><span class="LineAnchor" id="CA-8c0d8595026035b3420e27349d94527bb275dbdc_19"></span><span class="anchor" id="line-19-22"></span><span class="ResWord" style="color: rgb(160, 0, 0);">except</span> <span class="ID">NotFoundException</span>:</span>
-<span class="line"><span class="LineAnchor" id="CA-8c0d8595026035b3420e27349d94527bb275dbdc_20"></span><span class="anchor" id="line-20-20"></span>    <span class="ResWord" style="color: rgb(160, 0, 0);">print</span> <span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">Job not found</span><span class="String" style="color: rgb(0, 64, 128);">"</span></span>
-<span class="line"><span class="LineAnchor" id="CA-8c0d8595026035b3420e27349d94527bb275dbdc_21"></span><span class="anchor" id="line-21-17"></span><span class="ResWord" style="color: rgb(160, 0, 0);">except</span> <span class="ID">AuthorizationDeniedException</span>:</span>
-<span class="line"><span class="LineAnchor" id="CA-8c0d8595026035b3420e27349d94527bb275dbdc_22"></span><span class="anchor" id="line-22-14"></span>    <span class="ResWord" style="color: rgb(160, 0, 0);">print</span> <span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">Unauthorized</span><span class="String" style="color: rgb(0, 64, 128);">"</span></span>
-<span class="line"><span class="LineAnchor" id="CA-8c0d8595026035b3420e27349d94527bb275dbdc_23"></span><span class="anchor" id="line-23-12"></span><span class="ResWord" style="color: rgb(160, 0, 0);">except</span> <span class="ID">JobNotScheduledException</span>:</span>
-<span class="line"><span class="LineAnchor" id="CA-8c0d8595026035b3420e27349d94527bb275dbdc_24"></span><span class="anchor" id="line-24-10"></span>    <span class="ResWord" style="color: rgb(160, 0, 0);">print</span> <span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">Job not scheduled</span><span class="String" style="color: rgb(0, 64, 128);">"</span></span>
-</pre></div></div><span class="anchor" id="line-2015" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><span class="anchor" id="line-2016" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line867" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;"></p><h2 id="Start_a_scheduled_job_now" style="color: rgb(0, 0, 0); letter-spacing: normal; text-transform: none; font-family: sans-serif;">Start a scheduled job now</h2><span class="anchor" id="line-2017" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><span class="anchor" id="line-2018" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">There is a recurring job that is scheduled to run on Sunday but we want to run an instance of that job now and then let the recurring job continue to run on its normal schedule.<span class="anchor" id="line-2019"></span><span class="anchor" id="line-2020"></span></p><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">We run aground trying to implement this feature as the Twist search filters provides no mechanism to locate the children of a parent job. This filter won't work and its what we want to do.<span class="anchor" id="line-2021"></span><span class="anchor" id="line-2022"></span><span class="anchor" id="line-2023"></span><span class="anchor" id="line-1-212"></span></p><div class="highlight python" style="color: rgb(0, 0, 0); font-family: sans-serif;"><div class="codearea" dir="ltr" lang="en" style="margin: 0.5em 0px; padding: 0px; border: 1pt solid rgb(174, 189, 204); background-color: rgb(243, 245, 247);"><pre dir="ltr" id="CA-ad813e459332643c4fe7ff383933c6cfa286675f" lang="en" style="border-width: initial; border-style: none; background-color: rgb(243, 245, 247); padding: 10pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word;"><span class="line"><span class="ID">childJob</span> = <span class="ID">ts</span>.<span class="ID">search</span>.<span class="ID">SearchService</span>.<span class="ID">findObjRefs</span>(<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">(job_parent_id = xxxx) &amp; (job_status = PENDING)</span><span class="String" style="color: rgb(0, 64, 128);">'</span>,<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">job</span><span class="String" style="color: rgb(0, 64, 128);">'</span>)</span>
-</pre></div></div><span class="anchor" id="line-2024" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><span class="anchor" id="line-2025" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">A small sojourn into the SA job scheduling system is required to understand the problem. When you create a recurring job SA actually creates two jobs.<span class="anchor" id="line-2026"></span><span class="anchor" id="line-2027"></span></p><div style="color: rgb(0, 0, 0); font-family: sans-serif;"><table style="margin: 0.5em 0px 0px 0.5em; border-collapse: collapse;"><tbody><tr style="background-color: rgb(221, 221, 221);"><td style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);"><p class="line862" style="margin-top: 0px; margin-right: 0px; margin-left: 0px; padding: 0px;"><strong>Job Id</strong></p></td><td style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);"><p class="line862" style="margin-top: 0px; margin-right: 0px; margin-left: 0px; padding: 0px;"><strong>Status</strong></p></td><td style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);"><p class="line862" style="margin-top: 0px; margin-right: 0px; margin-left: 0px; padding: 0px;"><strong>Visibility</strong></p></td></tr><tr><td style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);"><span class="anchor" id="line-2028"></span><p class="line862" style="margin-top: 0px; margin-right: 0px; margin-left: 0px; padding: 0px;">114680001</p></td><td style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);"><p class="line862" style="margin-top: 0px; margin-right: 0px; margin-left: 0px; padding: 0px;">RECURRING</p></td><td style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);"><p class="line862" style="margin-top: 0px; margin-right: 0px; margin-left: 0px; padding: 0px;">Visible</p></td></tr><tr><td style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);"><span class="anchor" id="line-2029"></span><p class="line862" style="margin-top: 0px; margin-right: 0px; margin-left: 0px; padding: 0px;">114690001</p></td><td style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);"><p class="line862" style="margin-top: 0px; margin-right: 0px; margin-left: 0px; padding: 0px;">PENDING</p></td><td style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);"><p class="line862" style="margin-top: 0px; margin-right: 0px; margin-left: 0px; padding: 0px;">Hidden</p></td></tr></tbody></table></div><span class="anchor" id="line-2030" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><span class="anchor" id="line-2031" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line862" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">These jobs are associated with each other by use of the&nbsp;<tt class="backtick"></tt><tt class="backtick">parent_session_id</tt><tt class="backtick"></tt>&nbsp;column in the&nbsp;<tt class="backtick"></tt><tt class="backtick">sessions</tt><tt class="backtick"></tt>&nbsp;database table. The PENDING child is what will be executed by the&nbsp;<strong>Way</strong>&nbsp;when its scheduled execution time becomes current. Upon completion of that child it will be marked as SUCCESS (or FAILURE) and a new PENDING child will be scheduled according to the scheduling rules held on the parent (RECURRING) job.<span class="anchor" id="line-2032"></span><span class="anchor" id="line-2033"></span></p><div style="color: rgb(0, 0, 0); font-family: sans-serif;"><table style="margin: 0.5em 0px 0px 0.5em; border-collapse: collapse;"><tbody><tr style="background-color: rgb(221, 221, 221);"><td style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);"><p class="line862" style="margin-top: 0px; margin-right: 0px; margin-left: 0px; padding: 0px;"><strong>Job Id</strong></p></td><td style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);"><p class="line862" style="margin-top: 0px; margin-right: 0px; margin-left: 0px; padding: 0px;"><strong>Status</strong></p></td><td style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);"><p class="line862" style="margin-top: 0px; margin-right: 0px; margin-left: 0px; padding: 0px;"><strong>Visibility</strong></p></td></tr><tr><td style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);"><span class="anchor" id="line-2034"></span><p class="line862" style="margin-top: 0px; margin-right: 0px; margin-left: 0px; padding: 0px;">114680001</p></td><td style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);"><p class="line862" style="margin-top: 0px; margin-right: 0px; margin-left: 0px; padding: 0px;">RECURRING</p></td><td style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);"><p class="line862" style="margin-top: 0px; margin-right: 0px; margin-left: 0px; padding: 0px;">Visible</p></td></tr><tr><td style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);"><span class="anchor" id="line-2035"></span><p class="line862" style="margin-top: 0px; margin-right: 0px; margin-left: 0px; padding: 0px;">114690001</p></td><td style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);"><p class="line862" style="margin-top: 0px; margin-right: 0px; margin-left: 0px; padding: 0px;">SUCCESS</p></td><td style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);"><p class="line862" style="margin-top: 0px; margin-right: 0px; margin-left: 0px; padding: 0px;">Visible</p></td></tr><tr><td style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);"><span class="anchor" id="line-2036"></span><p class="line862" style="margin-top: 0px; margin-right: 0px; margin-left: 0px; padding: 0px;">114700001</p></td><td style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);"><p class="line862" style="margin-top: 0px; margin-right: 0px; margin-left: 0px; padding: 0px;">PENDING</p></td><td style="padding: 0.25em 0.5em; border: 1pt solid rgb(173, 185, 204);"><p class="line862" style="margin-top: 0px; margin-right: 0px; margin-left: 0px; padding: 0px;">Hidden</p></td></tr></tbody></table></div><span class="anchor" id="line-2037" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><span class="anchor" id="line-2038" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line862" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">If we want the PENDING child to run now we need to first find it and that is the crux of the issue. There is no Twist API call to do that. We workaround that problem by obtaining this information using the&nbsp;<strong>Spin</strong>&nbsp;in a read-only context.<span class="anchor" id="line-2039"></span><span class="anchor" id="line-2040"></span><span class="anchor" id="line-2041"></span><span class="anchor" id="line-2042"></span><span class="anchor" id="line-2043"></span><span class="anchor" id="line-2044"></span><span class="anchor" id="line-2045"></span><span class="anchor" id="line-2046"></span><span class="anchor" id="line-2047"></span><span class="anchor" id="line-2048"></span><span class="anchor" id="line-2049"></span><span class="anchor" id="line-2050"></span><span class="anchor" id="line-2051"></span><span class="anchor" id="line-2052"></span><span class="anchor" id="line-2053"></span><span class="anchor" id="line-2054"></span><span class="anchor" id="line-2055"></span><span class="anchor" id="line-2056"></span><span class="anchor" id="line-2057"></span><span class="anchor" id="line-2058"></span><span class="anchor" id="line-2059"></span><span class="anchor" id="line-2060"></span><span class="anchor" id="line-2061"></span><span class="anchor" id="line-2062"></span><span class="anchor" id="line-2063"></span><span class="anchor" id="line-2064"></span><span class="anchor" id="line-2065"></span><span class="anchor" id="line-2066"></span><span class="anchor" id="line-2067"></span><span class="anchor" id="line-2068"></span><span class="anchor" id="line-2069"></span><span class="anchor" id="line-2070"></span><span class="anchor" id="line-2071"></span><span class="anchor" id="line-2072"></span><span class="anchor" id="line-2073"></span><span class="anchor" id="line-2074"></span><span class="anchor" id="line-2075"></span><span class="anchor" id="line-2076"></span><span class="anchor" id="line-2077"></span><span class="anchor" id="line-2078"></span><span class="anchor" id="line-2079"></span><span class="anchor" id="line-1-214"></span></p><div class="highlight python" style="color: rgb(0, 0, 0); font-family: sans-serif;"><div class="codearea" dir="ltr" lang="en" style="margin: 0.5em 0px; padding: 0px; border: 1pt solid rgb(174, 189, 204); background-color: rgb(243, 245, 247);"><pre dir="ltr" id="CA-afb2cfd743c27c7102f917ed885455658928c038" lang="en" style="border-width: initial; border-style: none; background-color: rgb(243, 245, 247); padding: 10pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word;"><span class="line"><span class="Comment" style="color: rgb(0, 128, 0);">#!/opt/opsware/bin/python2</span></span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_2"></span><span class="anchor" id="line-2-109"></span><span class="Comment" style="color: rgb(0, 128, 0);"># Start a recurring job now</span></span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_3"></span><span class="anchor" id="line-3-93"></span><span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">sys</span>, <span class="ID">time</span></span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_4"></span><span class="anchor" id="line-4-79"></span><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">pytwist</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">twistserver</span></span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_5"></span><span class="anchor" id="line-5-75"></span><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">pytwist.com.opsware.job</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">ScheduledJobRef</span>, <span class="ID">JobInfoVO</span>, <span class="ID">JobSchedule</span>, <span class="ID">JobRef</span></span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_6"></span><span class="anchor" id="line-6-67"></span><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">pytwist.com.opsware.common</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">NotFoundException</span></span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_7"></span><span class="anchor" id="line-7-57"></span><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">coglib</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">spinwrapper</span></span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_8"></span><span class="anchor" id="line-8-54"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_9"></span><span class="anchor" id="line-9-48"></span><span class="ResWord" style="color: rgb(160, 0, 0);">def</span> <span class="ID">start_pending</span>(<span class="ID">jobId</span>):</span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_10"></span><span class="anchor" id="line-10-43"></span>    <span class="ID">vo</span> = <span class="ID">ts</span>.<span class="ID">job</span>.<span class="ID">JobService</span>.<span class="ID">getJobInfoVO</span>( <span class="ID">JobRef</span>( <span class="ID">jobId</span> ) )</span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_11"></span><span class="anchor" id="line-11-39"></span>    <span class="ResWord" style="color: rgb(160, 0, 0);">if</span> <span class="ID">vo</span>.<span class="ID">status</span> != <span class="ID">JobInfoVO</span>.<span class="ID">STATUS_RECURRING</span>:</span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_12"></span><span class="anchor" id="line-12-37"></span>        <span class="ResWord" style="color: rgb(160, 0, 0);">print</span> <span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">This is not a scheduled job</span><span class="String" style="color: rgb(0, 64, 128);">"</span></span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_13"></span><span class="anchor" id="line-13-33"></span>        <span class="ID">sys</span>.<span class="ID">exit</span>(<span class="Number" style="color: rgb(0, 128, 192);">1</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_14"></span><span class="anchor" id="line-14-30"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_15"></span><span class="anchor" id="line-15-28"></span>    <span class="Comment" style="color: rgb(0, 128, 0);"># There is no TWIST filter to find a pending child of a recurring job !?</span></span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_16"></span><span class="anchor" id="line-16-26"></span>    <span class="ID">spin</span> = <span class="ID">spinwrapper</span>.<span class="ID">SpinWrapper</span>()</span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_17"></span><span class="anchor" id="line-17-25"></span>    <span class="ID">childJob</span> = <span class="ID">spin</span>.<span class="ID">Session</span>.<span class="ID">getAll</span>(<span class="ID">restrict</span>={<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">parent_session_id</span><span class="String" style="color: rgb(0, 64, 128);">'</span>: <span class="ID">jobId</span>,</span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_18"></span><span class="anchor" id="line-18-25"></span>                                             <span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">status</span><span class="String" style="color: rgb(0, 64, 128);">'</span>:<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">PENDING</span><span class="String" style="color: rgb(0, 64, 128);">'</span>})[<span class="Number" style="color: rgb(0, 128, 192);">0</span>]</span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_19"></span><span class="anchor" id="line-19-23"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_20"></span><span class="anchor" id="line-20-21"></span>    <span class="ID">jobRef</span> = <span class="ID">ScheduledJobRef</span>(<span class="ID">childJob</span>[<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">id</span><span class="String" style="color: rgb(0, 64, 128);">'</span>])</span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_21"></span><span class="anchor" id="line-21-18"></span>    <span class="ResWord" style="color: rgb(160, 0, 0);">print</span> <span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">Found child job </span><span class="String" style="color: rgb(0, 64, 128);">%s</span><span class="String" style="color: rgb(0, 64, 128);">"</span> % <span class="ID">jobRef</span></span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_22"></span><span class="anchor" id="line-22-15"></span>    <span class="ID">vo</span> = <span class="ID">ts</span>.<span class="ID">job</span>.<span class="ID">JobService</span>.<span class="ID">getJobInfoVO</span>( <span class="ID">jobRef</span> )</span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_23"></span><span class="anchor" id="line-23-13"></span>    <span class="ResWord" style="color: rgb(160, 0, 0);">print</span> <span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">Scheduled to run at </span><span class="String" style="color: rgb(0, 64, 128);">%s</span><span class="String" style="color: rgb(0, 64, 128);">"</span> % <span class="ID">time</span>.<span class="ID">ctime</span>(<span class="ID">vo</span>.<span class="ID">schedule</span>.<span class="ID">startDate</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_24"></span><span class="anchor" id="line-24-11"></span>    <span class="ID">sched</span> = <span class="ID">JobSchedule</span>()</span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_25"></span><span class="anchor" id="line-25-10"></span>    <span class="ID">sched</span>.<span class="ID">startDate</span> = <span class="ResWord" style="color: rgb(160, 0, 0);">long</span>(<span class="ID">time</span>.<span class="ID">time</span>() + <span class="Number" style="color: rgb(0, 128, 192);">60</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_26"></span><span class="anchor" id="line-26-8"></span>    <span class="ResWord" style="color: rgb(160, 0, 0);">print</span> <span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">Rescheduled to run at </span><span class="String" style="color: rgb(0, 64, 128);">%s</span><span class="String" style="color: rgb(0, 64, 128);">"</span> % <span class="ID">time</span>.<span class="ID">ctime</span>(<span class="ID">sched</span>.<span class="ID">startDate</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_27"></span><span class="anchor" id="line-27-7"></span>    <span class="ID">ts</span>.<span class="ID">job</span>.<span class="ID">JobService</span>.<span class="ID">updateScheduledJob</span>( <span class="ID">jobRef</span>, <span class="ID">vo</span>.<span class="ID">userTag</span>, <span class="ID">vo</span>.<span class="ID">notification</span>, <span class="ID">sched</span> )</span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_28"></span><span class="anchor" id="line-28-6"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_29"></span><span class="anchor" id="line-29-6"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_30"></span><span class="anchor" id="line-30-6"></span><span class="ResWord" style="color: rgb(160, 0, 0);">if</span> <span class="ResWord" style="color: rgb(160, 0, 0);">len</span>(<span class="ID">sys</span>.<span class="ID">argv</span>) != <span class="Number" style="color: rgb(0, 128, 192);">2</span>:</span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_31"></span><span class="anchor" id="line-31-6"></span>   <span class="ResWord" style="color: rgb(160, 0, 0);">print</span> <span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">startJobNow &lt;id&gt;</span><span class="String" style="color: rgb(0, 64, 128);">"</span></span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_32"></span><span class="anchor" id="line-32-6"></span>   <span class="ID">sys</span>.<span class="ID">exit</span>(<span class="Number" style="color: rgb(0, 128, 192);">1</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_33"></span><span class="anchor" id="line-33-6"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_34"></span><span class="anchor" id="line-34-4"></span><span class="ID">ts</span> = <span class="ID">twistserver</span>.<span class="ID">TwistServer</span>()</span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_35"></span><span class="anchor" id="line-35-4"></span><span class="ID">ts</span>.<span class="ID">authenticate</span>(<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">user</span><span class="String" style="color: rgb(0, 64, 128);">'</span>,<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">password</span><span class="String" style="color: rgb(0, 64, 128);">'</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_36"></span><span class="anchor" id="line-36-4"></span><span class="ResWord" style="color: rgb(160, 0, 0);">try</span>:</span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_37"></span><span class="anchor" id="line-37-4"></span>    <span class="ID">start_pending</span>(<span class="ID">sys</span>.<span class="ID">argv</span>[<span class="Number" style="color: rgb(0, 128, 192);">1</span>])</span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_38"></span><span class="anchor" id="line-38-4"></span><span class="ResWord" style="color: rgb(160, 0, 0);">except</span> <span class="ID">NotFoundException</span>:</span>
-<span class="line"><span class="LineAnchor" id="CA-afb2cfd743c27c7102f917ed885455658928c038_39"></span><span class="anchor" id="line-39-4"></span>    <span class="ResWord" style="color: rgb(160, 0, 0);">print</span> <span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">Job not found</span><span class="String" style="color: rgb(0, 64, 128);">"</span></span>
-</pre></div></div><span class="anchor" id="line-2080" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">Execution<span class="anchor" id="line-2081"></span><span class="anchor" id="line-2082"></span></p><img src="./mediawiki/images/PN/Recurring-jobs.png"><br><p class="line867" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;"><span class="anchor" id="line-2085"></span><span class="anchor" id="line-2086"></span><span class="anchor" id="line-2087"></span><span class="anchor" id="line-2088"></span><span class="anchor" id="line-2089"></span></p><pre style="color: rgb(0, 0, 0); border-width: 1pt; border-style: solid; border-color: rgb(174, 189, 204); background-color: rgb(243, 245, 247); padding: 5pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word;"><span class="anchor" id="line-1-39"></span>[root@dc1 JobService]# ./startJobNow.py 114680001
-<span class="anchor" id="line-2-33"></span>Found child job (ScheduledJobRef:114740001)
-<span class="anchor" id="line-3-24"></span>Scheduled to run at Sun Oct 13 18:01:00 2019
-<span class="anchor" id="line-4-19"></span>Rescheduled to run at Tue Oct  8 19:33:19 2019</pre><span class="anchor" id="line-2090" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><span class="anchor" id="line-2091" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">The PENDING child was rescheduled and it has executed becoming visible in the Job Logs<span class="anchor" id="line-2092"></span><span class="anchor" id="line-2093"></span></p><p class="line867" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;"><img src="./mediawiki/images/PN/Recurring-job-child.png"><br></p>
+<p>Jobs represent actions in SA that run in the background and have progress and results.</p>
+
+<p>You cannot access job information using core authentication. That is you must make an&nbsp;<tt>authenticate(user,pass)</tt>&nbsp;call.</p>
+
+<p>&nbsp;</p>
+
+<h2>Canceling a scheduled job</h2>
+
+<p>The call is a single line but there is a lot of error handling that has to happen. You must authenticate as a user to perform any job manipulation using Core Authentication will not give you access.</p>
+
+<pre>#!/opt/opsware/bin/python
+import sys
+from pytwist import twistserver
+from pytwist.com.opsware.job import ScheduledJobRef, JobNotScheduledException
+from pytwist.com.opsware.common import NotFoundException
+from pytwist.com.opsware.fido import AuthorizationDeniedException
+
+if len(sys.argv) &lt; 2:
+    print "cancelScheduleJob &lt;id&gt; [reason]"
+    sys.exit(1)
+
+ts = twistserver.TwistServer()
+ts.authenticate("user","password")
+jobRef = ScheduledJobRef(long(sys.argv[1]))
+reason = None if len(sys.argv) == 2 else sys.argv[2]
+try:
+    ts.job.JobService.cancelScheduledJob(jobRef, reason)
+    print "Job schedule canceled"
+except NotFoundException:
+    print "Job not found"
+except AuthorizationDeniedException:
+    print "Unauthorized"
+except JobNotScheduledException:
+    print "Job not scheduled"
+</pre>
+
+<p>&nbsp;</p>
+
+<h2>Start a scheduled job now</h2>
+
+<p>There is a recurring job that is scheduled to run on Sunday but we want to run an instance of that job now and then let the recurring job continue to run on its normal schedule.</p>
+
+<p>We run aground trying to implement this feature as the Twist search filters provides no mechanism to locate the children of a parent job. This filter won't work and its what we want to do.</p>
+
+<pre>childJob = ts.search.SearchService.findObjRefs('(job_parent_id = xxxx) &amp; (job_status = PENDING)','job')
+</pre>
+
+<p>A small sojourn into the SA job scheduling system is required to understand the problem. When you create a recurring job SA actually creates two jobs.</p>
+
+<table cellspacing="0" style="border-collapse:collapse">
+	<tbody>
+		<tr>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">
+			<p><strong>Job Id</strong></p>
+			</td>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">
+			<p><strong>Status</strong></p>
+			</td>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">
+			<p><strong>Visibility</strong></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">
+			<p>114680001</p>
+			</td>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">
+			<p>RECURRING</p>
+			</td>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">
+			<p>Visible</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">
+			<p>114690001</p>
+			</td>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">
+			<p>PENDING</p>
+			</td>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">
+			<p>Hidden</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>These jobs are associated with each other by use of the&nbsp;<tt>parent_session_id</tt>&nbsp;column in the&nbsp;<tt>sessions</tt>&nbsp;database table. The PENDING child is what will be executed by the&nbsp;<strong>Way</strong>&nbsp;when its scheduled execution time becomes current. Upon completion of that child it will be marked as SUCCESS (or FAILURE) and a new PENDING child will be scheduled according to the scheduling rules held on the parent (RECURRING) job.</p>
+
+<table cellspacing="0" style="border-collapse:collapse">
+	<tbody>
+		<tr>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">
+			<p><strong>Job Id</strong></p>
+			</td>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">
+			<p><strong>Status</strong></p>
+			</td>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">
+			<p><strong>Visibility</strong></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">
+			<p>114680001</p>
+			</td>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">
+			<p>RECURRING</p>
+			</td>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">
+			<p>Visible</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">
+			<p>114690001</p>
+			</td>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">
+			<p>SUCCESS</p>
+			</td>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">
+			<p>Visible</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">
+			<p>114700001</p>
+			</td>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">
+			<p>PENDING</p>
+			</td>
+			<td style="border-color:#adb9cc; border-style:solid; border-width:1pt">
+			<p>Hidden</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>If we want the PENDING child to run now we need to first find it and that is the crux of the issue. There is no Twist API call to do that. We workaround that problem by obtaining this information using the&nbsp;<strong>Spin</strong>&nbsp;in a read-only context.</p>
+
+<pre>#!/opt/opsware/bin/python2
+# Start a recurring job now
+import sys, time
+from pytwist import twistserver
+from pytwist.com.opsware.job import ScheduledJobRef, JobInfoVO, JobSchedule, JobRef
+from pytwist.com.opsware.common import NotFoundException
+from coglib import spinwrapper
+
+def start_pending(jobId):
+    vo = ts.job.JobService.getJobInfoVO( JobRef( jobId ) )
+    if vo.status != JobInfoVO.STATUS_RECURRING:
+        print "This is not a scheduled job"
+        sys.exit(1)
+
+    # There is no TWIST filter to find a pending child of a recurring job !?
+    spin = spinwrapper.SpinWrapper()
+    childJob = spin.Session.getAll(restrict={'parent_session_id': jobId,
+                                             'status':'PENDING'})[0]
+
+    jobRef = ScheduledJobRef(childJob['id'])
+    print "Found child job %s" % jobRef
+    vo = ts.job.JobService.getJobInfoVO( jobRef )
+    print "Scheduled to run at %s" % time.ctime(vo.schedule.startDate)
+    sched = JobSchedule()
+    sched.startDate = long(time.time() + 60)
+    print "Rescheduled to run at %s" % time.ctime(sched.startDate)
+    ts.job.JobService.updateScheduledJob( jobRef, vo.userTag, vo.notification, sched )
+
+
+if len(sys.argv) != 2:
+   print "startJobNow &lt;id&gt;"
+   sys.exit(1)
+
+ts = twistserver.TwistServer()
+ts.authenticate('user','password')
+try:
+    start_pending(sys.argv[1])
+except NotFoundException:
+    print "Job not found"
+</pre>
+
+<p>Execution</p>
+
+<p><img src="./mediawiki/images/PN/Recurring-jobs.png"></p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<pre>[root@dc1 JobService]# ./startJobNow.py 114680001
+Found child job (ScheduledJobRef:114740001)
+Scheduled to run at Sun Oct 13 18:01:00 2019
+Rescheduled to run at Tue Oct  8 19:33:19 2019</pre>
+
+<p>The PENDING child was rescheduled and it has executed becoming visible in the Job Logs</p>
+
+<p><img src="./mediawiki/images/PN/Recurring-job-child.png"></p>
