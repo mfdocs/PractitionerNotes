@@ -1,92 +1,227 @@
-<p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">A common question asked by SA users is what the differences between custom attributes and custom fields and when should each be used?<span class="anchor" id="line-2098"></span><span class="anchor" id="line-2099"></span></p><p class="line867" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;"><strong>Custom Attribute</strong><span class="anchor" id="line-2100"></span></p><ol type="1" style="color: rgb(0, 0, 0); font-family: sans-serif;"><li>Values are always strings<span class="anchor" id="line-2101"></span></li><li>Can be used in a number of other features: Agent Tools, app config, audit + compliance, dynamic MRL, parameterized provisioning, and more<span class="anchor" id="line-2102"></span></li><li>Visible in the SA Client and OGSH (R/W access)<span class="anchor" id="line-2103"></span></li><li>Settable on a variety of objects: servers, server groups, customers, facilities, OS Installation Profiles, and SW Policies.<span class="anchor" id="line-2104"></span></li><li>These are inherited from more general objects to more specific objects.<span class="anchor" id="line-2105"></span></li><li>To create these, a user just needs write access to the server and can create, update, and delete custom attributes through any of the UIs.<span class="anchor" id="line-2106"></span><span class="anchor" id="line-2107"></span></li></ol><p class="line867" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;"><strong>Virtual Columns</strong><span class="anchor" id="line-2108"></span></p><ol type="1" style="color: rgb(0, 0, 0); font-family: sans-serif;"><li>The fields are common across all servers - if a "bios_version" virtual column is created, it will be seen on all servers<span class="anchor" id="line-2109"></span></li><li>Values are typed, each custom field is either a SHORT_STRING, LONG_STRING, DATE, FILE, URI, or NUMBER. This allows custom fields to be used in more specific ways.<span class="anchor" id="line-2110"></span></li><li>Can't be used by all features mostly used for tracking info about servers.<span class="anchor" id="line-2111"></span></li><li>These are not inherited from one object to another.<span class="anchor" id="line-2112"></span></li><li><p class="line862" style="margin: 0.25em 0px;">To create these, a user with the "Manage Virtual Columns" permission must use the&nbsp;<strong>Manage Custom Field</strong>&nbsp;Web APX or PyTwist.<span class="anchor" id="line-2113"></span></p></li><li>You can search and create device groups based on custom field values, including different matching criteria for different data types.<span class="anchor" id="line-2114"></span><span class="anchor" id="line-2115"></span></li></ol><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">So when should I use which?<span class="anchor" id="line-2116"></span><span class="anchor" id="line-2117"></span></p><p class="line867" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;"><strong>Custom Attributes are good:</strong><span class="anchor" id="line-2118"></span></p><ul style="color: rgb(0, 0, 0); font-family: sans-serif;"><li>If the information you're storing doesn't apply to all (or most) servers. If I want to track the eeprom version on Sparc systems, creating a virtual column for this would be a bad idea because all servers would show a field called "eeprom version" in the UI and that doesn't make sense for non-Sparc machines.<span class="anchor" id="line-2119"></span></li><li>If you want to use them with certain other features.<span class="anchor" id="line-2120"></span></li><li>If you want to select from values at different levels of precedence in the inheritance hierarchy.<span class="anchor" id="line-2121"></span><span class="anchor" id="line-2122"></span></li></ul><p class="line867" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;"><strong>Virtual Columns are good:</strong><span class="anchor" id="line-2123"></span></p><ul style="color: rgb(0, 0, 0); font-family: sans-serif;"><li>If you want typed data<span class="anchor" id="line-2124"></span></li><li>If you want to search or group based on the values<span class="anchor" id="line-2125"></span></li><li>If you want them to show up almost like regular fields in the properties section of the UI.<span class="anchor" id="line-2126"></span><span class="anchor" id="line-2127"></span></li></ul><p class="line867" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;"></p><h2 id="Create_a_virtual_column" style="color: rgb(0, 0, 0); letter-spacing: normal; text-transform: none; font-family: sans-serif;">Create a virtual column</h2><span class="anchor" id="line-2128" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><span class="anchor" id="line-2129" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">Create a new virtual column called patch_exception to track servers that should not be patched.<span class="anchor" id="line-2130"></span><span class="anchor" id="line-2131"></span><span class="anchor" id="line-2132"></span><span class="anchor" id="line-2133"></span><span class="anchor" id="line-2134"></span><span class="anchor" id="line-2135"></span><span class="anchor" id="line-2136"></span><span class="anchor" id="line-2137"></span><span class="anchor" id="line-2138"></span><span class="anchor" id="line-2139"></span><span class="anchor" id="line-2140"></span><span class="anchor" id="line-2141"></span><span class="anchor" id="line-2142"></span><span class="anchor" id="line-2143"></span><span class="anchor" id="line-2144"></span><span class="anchor" id="line-2145"></span><span class="anchor" id="line-2146"></span><span class="anchor" id="line-2147"></span><span class="anchor" id="line-1-216"></span></p><div class="highlight python" style="color: rgb(0, 0, 0); font-family: sans-serif;"><div class="codearea" dir="ltr" lang="en" style="margin: 0.5em 0px; padding: 0px; border: 1pt solid rgb(174, 189, 204); background-color: rgb(243, 245, 247);"><pre dir="ltr" id="CA-1f18f23d82f978f0601aa1d903ae2a6eacb26487" lang="en" style="border-width: initial; border-style: none; background-color: rgb(243, 245, 247); padding: 10pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word;"><span class="line"><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">pytwist</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">twistserver</span></span>
-<span class="line"><span class="LineAnchor" id="CA-1f18f23d82f978f0601aa1d903ae2a6eacb26487_2"></span><span class="anchor" id="line-2-110"></span><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">pytwist.com.opsware.custattr</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">VirtualColumnVO</span></span>
-<span class="line"><span class="LineAnchor" id="CA-1f18f23d82f978f0601aa1d903ae2a6eacb26487_3"></span><span class="anchor" id="line-3-94"></span><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">pytwist.com.opsware.common</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">NotFoundException</span></span>
-<span class="line"><span class="LineAnchor" id="CA-1f18f23d82f978f0601aa1d903ae2a6eacb26487_4"></span><span class="anchor" id="line-4-80"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-1f18f23d82f978f0601aa1d903ae2a6eacb26487_5"></span><span class="anchor" id="line-5-76"></span><span class="ID">ts</span> = <span class="ID">twistserver</span>.<span class="ID">TwistServer</span>()</span>
-<span class="line"><span class="LineAnchor" id="CA-1f18f23d82f978f0601aa1d903ae2a6eacb26487_6"></span><span class="anchor" id="line-6-68"></span><span class="ID">VCS</span> = <span class="ID">ts</span>.<span class="ID">custattr</span>.<span class="ID">VirtualColumnService</span></span>
-<span class="line"><span class="LineAnchor" id="CA-1f18f23d82f978f0601aa1d903ae2a6eacb26487_7"></span><span class="anchor" id="line-7-58"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-1f18f23d82f978f0601aa1d903ae2a6eacb26487_8"></span><span class="anchor" id="line-8-55"></span><span class="ID">vcName</span> = <span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">patch_exception</span><span class="String" style="color: rgb(0, 64, 128);">'</span></span>
-<span class="line"><span class="LineAnchor" id="CA-1f18f23d82f978f0601aa1d903ae2a6eacb26487_9"></span><span class="anchor" id="line-9-49"></span><span class="ResWord" style="color: rgb(160, 0, 0);">try</span>:</span>
-<span class="line"><span class="LineAnchor" id="CA-1f18f23d82f978f0601aa1d903ae2a6eacb26487_10"></span><span class="anchor" id="line-10-44"></span>    <span class="ID">vcRef</span> = <span class="ID">VCS</span>.<span class="ID">findVirtualColumnRef</span>(<span class="ID">vcName</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-1f18f23d82f978f0601aa1d903ae2a6eacb26487_11"></span><span class="anchor" id="line-11-40"></span><span class="ResWord" style="color: rgb(160, 0, 0);">except</span> <span class="ID">NotFoundException</span>:</span>
-<span class="line"><span class="LineAnchor" id="CA-1f18f23d82f978f0601aa1d903ae2a6eacb26487_12"></span><span class="anchor" id="line-12-38"></span>    <span class="ID">vo</span> = <span class="ID">VirtualColumnVO</span>()</span>
-<span class="line"><span class="LineAnchor" id="CA-1f18f23d82f978f0601aa1d903ae2a6eacb26487_13"></span><span class="anchor" id="line-13-34"></span>    <span class="ID">vo</span>.<span class="ID">displayName</span>=<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">Patch Exception</span><span class="String" style="color: rgb(0, 64, 128);">'</span></span>
-<span class="line"><span class="LineAnchor" id="CA-1f18f23d82f978f0601aa1d903ae2a6eacb26487_14"></span><span class="anchor" id="line-14-31"></span>    <span class="ID">vo</span>.<span class="ID">name</span>=<span class="ID">vcName</span></span>
-<span class="line"><span class="LineAnchor" id="CA-1f18f23d82f978f0601aa1d903ae2a6eacb26487_15"></span><span class="anchor" id="line-15-29"></span>    <span class="ID">vo</span>.<span class="ID">type</span>=<span class="ID">VirtualColumnVO</span>.<span class="ID">TEXT</span></span>
-<span class="line"><span class="LineAnchor" id="CA-1f18f23d82f978f0601aa1d903ae2a6eacb26487_16"></span><span class="anchor" id="line-16-27"></span>    <span class="ID">vcRef</span> = <span class="ID">VCS</span>.<span class="ID">create</span>(<span class="ID">vo</span>)</span>
-</pre></div></div><span class="anchor" id="line-2148" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><span class="anchor" id="line-2149" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line867" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;"></p><h2 id="Attaching_virtual_columns" style="color: rgb(0, 0, 0); letter-spacing: normal; text-transform: none; font-family: sans-serif;">Attaching virtual columns</h2><span class="anchor" id="line-2150" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><span class="anchor" id="line-2151" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">Continuing on from the code above that created or found our virtual column. Virtual columns can be attached to Servers or Device Groups. Attaching the virtual column to an object type will make it appear in the UI properties page as a Custom Field.<span class="anchor" id="line-2152"></span><span class="anchor" id="line-2153"></span><span class="anchor" id="line-2154"></span></p><pre style="color: rgb(0, 0, 0); border-width: 1pt; border-style: solid; border-color: rgb(174, 189, 204); background-color: rgb(243, 245, 247); padding: 5pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word;"><span class="anchor" id="line-1-40"></span>ts.server.ServerService.attachVirtualColumn(vcRef)</pre><span class="anchor" id="line-2155" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><span class="anchor" id="line-2156" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">After this call the property panel of a server will display a new custom field.<span class="anchor" id="line-2157"></span><span class="anchor" id="line-2158"></span></p><img src="./mediawiki/images/PN/patch_exception-custom-field.png"><br><p class="line867" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;"></p><h2 id="Using_a_DATE_virtual_column_type" style="color: rgb(0, 0, 0); font-family: sans-serif; letter-spacing: normal; text-transform: none;">Using a DATE virtual column type</h2><p class="line874" style="font-size: 16px; letter-spacing: normal;"><span style="font-size: 16px;">The DATE type is not handled well in the API and you need to jump through some hoops to make use of it.&nbsp; One of those hoops is that you need to use a native python class that can be serialized to a java.util.Date object.</span><br></p><div class="highlight python" style="font-size: 16px; font-weight: 400;"><div class="codearea" dir="ltr" lang="en" style="margin: 0.5em 0px; padding: 0px; border: 1pt solid rgb(174, 189, 204); background-color: rgb(243, 245, 247);"><pre dir="ltr" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066" lang="en" style="border-width: initial; border-style: none; background-color: rgb(243, 245, 247); padding: 10pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word;"><span class="line"><span class="Comment" style="color: rgb(0, 128, 0);">#!/opt/opsware/bin/python</span></span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_2"></span><span class="anchor" id="line-2-112"></span><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">pytwist</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">twistserver</span></span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_3"></span><span class="anchor" id="line-3-96"></span><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">pytwist.com.opsware.custattr</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">VirtualColumnVO</span></span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_4"></span><span class="anchor" id="line-4-82"></span><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">pytwist.com.opsware.common</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">NotFoundException</span></span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_5"></span><span class="anchor" id="line-5-78"></span><span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">time</span></span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_6"></span><span class="anchor" id="line-6-70"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_7"></span><span class="anchor" id="line-7-60"></span><span class="ID">ts</span> = <span class="ID">twistserver</span>.<span class="ID">TwistServer</span>()</span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_8"></span><span class="anchor" id="line-8-57"></span><span class="ID">VCS</span> = <span class="ID">ts</span>.<span class="ID">custattr</span>.<span class="ID">VirtualColumnService</span></span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_9"></span><span class="anchor" id="line-9-50"></span><span class="ID">Date</span> = <span class="ID">twistserver</span>.<span class="ID">makeLegacyObject</span>(<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">java.util</span><span class="String" style="color: rgb(0, 64, 128);">'</span>, <span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">Date</span><span class="String" style="color: rgb(0, 64, 128);">'</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_10"></span><span class="anchor" id="line-10-45"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_11"></span><span class="anchor" id="line-11-41"></span><span class="Comment" style="color: rgb(0, 128, 0);">#### Create a virtual column ####</span></span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_12"></span><span class="anchor" id="line-12-39"></span><span class="ID">vcName</span> = <span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">last_boot</span><span class="String" style="color: rgb(0, 64, 128);">'</span></span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_13"></span><span class="anchor" id="line-13-35"></span><span class="ResWord" style="color: rgb(160, 0, 0);">try</span>:</span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_14"></span><span class="anchor" id="line-14-32"></span>    <span class="ID">VCS</span>.<span class="ID">findVirtualColumnRef</span>(<span class="ID">vcName</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_15"></span><span class="anchor" id="line-15-30"></span><span class="ResWord" style="color: rgb(160, 0, 0);">except</span> <span class="ID">NotFoundException</span>:</span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_16"></span><span class="anchor" id="line-16-28"></span>    <span class="ID">vo</span> = <span class="ID">VirtualColumnVO</span>()</span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_17"></span><span class="anchor" id="line-17-26"></span>    <span class="ID">vo</span>.<span class="ID">displayName</span>=<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">Last Boot</span><span class="String" style="color: rgb(0, 64, 128);">'</span></span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_18"></span><span class="anchor" id="line-18-26"></span>    <span class="ID">vo</span>.<span class="ID">name</span>=<span class="ID">vcName</span></span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_19"></span><span class="anchor" id="line-19-24"></span>    <span class="ID">vo</span>.<span class="ID">type</span>=<span class="ID">VirtualColumnVO</span>.<span class="ID">DATE</span></span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_20"></span><span class="anchor" id="line-20-22"></span>    <span class="ID">vcRef</span> = <span class="ID">VCS</span>.<span class="ID">create</span>(<span class="ID">vo</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_21"></span><span class="anchor" id="line-21-19"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_22"></span><span class="anchor" id="line-22-16"></span><span class="Comment" style="color: rgb(0, 128, 0);">    #### Attaching virtual columns ####</span></span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_23"></span><span class="anchor" id="line-23-14"></span><span class="ID">    ts</span>.<span class="ID">server</span>.<span class="ID">ServerService</span>.<span class="ID">attachVirtualColumn</span>(<span class="ID">vcRef</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_24"></span><span class="anchor" id="line-24-12"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_25"></span><span class="anchor" id="line-25-11"></span><span class="Comment" style="color: rgb(0, 128, 0);">#### Updating a virtual column value ####</span></span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_26"></span><span class="anchor" id="line-26-9"></span><span class="ID">serverRefs</span> = <span class="ID">ts</span>.<span class="ID">search</span>.<span class="ID">SearchService</span>.<span class="ID">findObjRefs</span>(<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">ServerVO.name = dc1.blue.local</span><span class="String" style="color: rgb(0, 64, 128);">'</span>,</span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_27"></span><span class="anchor" id="line-27-8"></span>                                                <span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">device</span><span class="String" style="color: rgb(0, 64, 128);">'</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_28"></span><span class="anchor" id="line-28-7"></span><span class="ResWord" style="color: rgb(160, 0, 0);">if</span> <span class="ID">serverRefs</span>:</span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_29"></span><span class="anchor" id="line-29-7"></span>   <span class="ID">now</span> = <span class="ID">Date</span>()</span>
-<span class="line"><span class="LineAnchor" id="CA-db97518d431af3ee35e2f0bbcdb284d3c3065066_30"></span><span class="anchor" id="line-30-7"></span>   <span class="ID">now</span>.<span class="ID">time</span> = <span class="ResWord" style="color: rgb(160, 0, 0);">long</span>(<span class="ID">time</span>.<span class="ID">time</span>() * <span class="Number" style="color: rgb(0, 128, 192);">1000</span></span>) <span class="Comment" style=""><font color="#008000"># expects milliseconds
-</font></span>   <span class="ID">ts</span>.<span class="ID">server</span>.<span class="ID">ServerService</span>.<span class="ID">setCustomField</span>(<span class="ID">serverRefs</span>[<span class="Number" style="color: rgb(0, 128, 192);">0</span>], <span class="ID">vcName</span>, <span class="ID">now</span>)</pre></div></div><h2 id="Updating_a_virtual_column_value" style="color: rgb(0, 0, 0); letter-spacing: normal; text-transform: none; font-family: sans-serif;">Updating a virtual column value</h2><span class="anchor" id="line-2161" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><span class="anchor" id="line-2162" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">ServerVO.name vs ServerVO.hostName whats the difference when building a filter?<span class="anchor" id="line-2163"></span></p><ul style="color: rgb(0, 0, 0); font-family: sans-serif;"><li><p class="line862" style="margin: 0.25em 0px;">The hostName is the FQDN of the server, its what reported by the&nbsp;<tt class="backtick"></tt><tt class="backtick">hostname&nbsp;--fqdn</tt><tt class="backtick"></tt>&nbsp;command on Linux. This value is immutable in the GUI and it's the prefer query field.<span class="anchor" id="line-2164"></span></p></li><li>The name is a mutable field and by default this is set to the hostName when the server is assimilated with an agent as users are free to change this value its not ideal for searches.<span class="anchor" id="line-2165"></span><span class="anchor" id="line-2166"></span></li></ul><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">Neither of these fields are guaranteed to be unique within SA and you should code with this in mind.<span class="anchor" id="line-2167"></span><span class="anchor" id="line-2168"></span></p><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;"><br></p><img src="./mediawiki/images/PN/hostname-name.png"><br><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">Assigning a value to our Custom Field.<span class="anchor" id="line-2171"></span><span class="anchor" id="line-2172"></span><span class="anchor" id="line-2173"></span><span class="anchor" id="line-2174"></span><span class="anchor" id="line-2175"></span><span class="anchor" id="line-2176"></span><span class="anchor" id="line-2177"></span><span class="anchor" id="line-2178"></span><span class="anchor" id="line-2179"></span><span class="anchor" id="line-1-218"></span></p><div class="highlight python" style="color: rgb(0, 0, 0); font-family: sans-serif;"><div class="codearea" dir="ltr" lang="en" style="margin: 0.5em 0px; padding: 0px; border: 1pt solid rgb(174, 189, 204); background-color: rgb(243, 245, 247);"><pre dir="ltr" id="CA-6a462df61a846793f473770be81bb7758a073d39" lang="en" style="border-width: initial; border-style: none; background-color: rgb(243, 245, 247); padding: 10pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word;"><span class="line"><span class="ID">serverRefs</span> = <span class="ID">ts</span>.<span class="ID">search</span>.<span class="ID">SearchService</span>.<span class="ID">findObjRefs</span>(<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">ServerVO.hostName = dc1.blue.local</span><span class="String" style="color: rgb(0, 64, 128);">'</span>,<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">device</span><span class="String" style="color: rgb(0, 64, 128);">'</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-6a462df61a846793f473770be81bb7758a073d39_2"></span><span class="anchor" id="line-2-111"></span><span class="ResWord" style="color: rgb(160, 0, 0);">if</span> <span class="ResWord" style="color: rgb(160, 0, 0);">len</span>(<span class="ID">serverRefs</span>) == <span class="Number" style="color: rgb(0, 128, 192);">0</span>:</span>
-<span class="line"><span class="LineAnchor" id="CA-6a462df61a846793f473770be81bb7758a073d39_3"></span><span class="anchor" id="line-3-95"></span>   <span class="ResWord" style="color: rgb(160, 0, 0);">print</span> <span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">Server not found</span><span class="String" style="color: rgb(0, 64, 128);">"</span></span>
-<span class="line"><span class="LineAnchor" id="CA-6a462df61a846793f473770be81bb7758a073d39_4"></span><span class="anchor" id="line-4-81"></span><span class="ResWord" style="color: rgb(160, 0, 0);">elif</span> <span class="ResWord" style="color: rgb(160, 0, 0);">len</span>(<span class="ID">serverRefs</span>) &gt; <span class="Number" style="color: rgb(0, 128, 192);">1</span>:</span>
-<span class="line"><span class="LineAnchor" id="CA-6a462df61a846793f473770be81bb7758a073d39_5"></span><span class="anchor" id="line-5-77"></span>   <span class="ResWord" style="color: rgb(160, 0, 0);">print</span> <span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">Duplicate server found</span><span class="String" style="color: rgb(0, 64, 128);">"</span></span>
-<span class="line"><span class="LineAnchor" id="CA-6a462df61a846793f473770be81bb7758a073d39_6"></span><span class="anchor" id="line-6-69"></span><span class="ResWord" style="color: rgb(160, 0, 0);">else</span>:</span>
-<span class="line"><span class="LineAnchor" id="CA-6a462df61a846793f473770be81bb7758a073d39_7"></span><span class="anchor" id="line-7-59"></span>   <span class="ID">ts</span>.<span class="ID">server</span>.<span class="ID">ServerService</span>.<span class="ID">setCustomField</span>(<span class="ID">serverRefs</span>[<span class="Number" style="color: rgb(0, 128, 192);">0</span>], <span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">patch_exception</span><span class="String" style="color: rgb(0, 64, 128);">'</span>,<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">Y</span><span class="String" style="color: rgb(0, 64, 128);">'</span>)</span>
-</pre></div></div><span class="anchor" id="line-2180" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line862" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">After execution:&nbsp;<span class="anchor" id="line-2182"></span><img src="./mediawiki/images/PN/patch_exception-Y.png" style="background-color: transparent; font-family: MetricHPE; color: rgba(0, 0, 0, 0.87);"></p><p class="line867" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;"></p><h2 id="Query_a_server_based_on_a_virtual_column_.28custom_field.29" style="color: rgb(0, 0, 0); letter-spacing: normal; text-transform: none; font-family: sans-serif;">Query a server based on a virtual column (custom field)</h2><span class="anchor" id="line-2183" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><span class="anchor" id="line-2184" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">Demonstration of how to query a server based on a virtual column value.<span class="anchor" id="line-2185"></span><span class="anchor" id="line-2186"></span></p><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">Why is this so complicated ? Consider this filter below. The problem is it will search across ALL virtual columns defined for the device matching any where its value is Y and that's not what we want.<span class="anchor" id="line-2187"></span><span class="anchor" id="line-2188"></span><span class="anchor" id="line-2189"></span><span class="anchor" id="line-1-220"></span></p><div class="highlight python" style="color: rgb(0, 0, 0); font-family: sans-serif;"><div class="codearea" dir="ltr" lang="en" style="margin: 0.5em 0px; padding: 0px; border: 1pt solid rgb(174, 189, 204); background-color: rgb(243, 245, 247);"><pre dir="ltr" id="CA-aa2754db15191bf280b8de293c60cdcee15739c0" lang="en" style="border-width: initial; border-style: none; background-color: rgb(243, 245, 247); padding: 10pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word;"><span class="line">&gt;&gt;&gt; <span class="ID">ts</span>.<span class="ID">search</span>.<span class="ID">SearchService</span>.<span class="ID">findObjRefs</span>(<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">vc_string_value = Y</span><span class="String" style="color: rgb(0, 64, 128);">'</span>,<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">device</span><span class="String" style="color: rgb(0, 64, 128);">'</span>)</span>
-</pre></div></div><span class="anchor" id="line-2190" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">You need to search on the Virtual Column ID as part of the expression.<span class="anchor" id="line-2191"></span><span class="anchor" id="line-2192"></span><span class="anchor" id="line-2193"></span><span class="anchor" id="line-2194"></span><span class="anchor" id="line-2195"></span><span class="anchor" id="line-1-222"></span></p><div class="highlight python" style="color: rgb(0, 0, 0); font-family: sans-serif;"><div class="codearea" dir="ltr" lang="en" style="margin: 0.5em 0px; padding: 0px; border: 1pt solid rgb(174, 189, 204); background-color: rgb(243, 245, 247);"><pre dir="ltr" id="CA-5c1bcf995b23100f120f2a0de0fd5d4f0e814768" lang="en" style="border-width: initial; border-style: none; background-color: rgb(243, 245, 247); padding: 10pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word;"><span class="line">&gt;&gt;&gt; <span class="ID">ts</span>.<span class="ID">custattr</span>.<span class="ID">VirtualColumnService</span>.<span class="ID">findVirtualColumnRef</span>(<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">patch_exception</span><span class="String" style="color: rgb(0, 64, 128);">'</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-5c1bcf995b23100f120f2a0de0fd5d4f0e814768_2"></span><span class="anchor" id="line-2-112"></span>&lt;<span class="ID">Patch</span> <span class="ID">Exception</span> (<span class="ID">VirtualColumnRef</span>:<span class="Number" style="color: rgb(0, 128, 192);">2020001</span>) <span class="ID">instance</span> <span class="ID">at</span> <span class="Number" style="color: rgb(0, 128, 192);">0x7f98e9a9c3b0</span>&gt;</span>
-<span class="line"><span class="LineAnchor" id="CA-5c1bcf995b23100f120f2a0de0fd5d4f0e814768_3"></span><span class="anchor" id="line-3-96"></span>&gt;&gt;&gt; <span class="ID">f</span>.<span class="ID">expression</span>=<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">((vc_string_value = Y) &amp; (vc_string_id = 2020001))</span><span class="String" style="color: rgb(0, 64, 128);">'</span></span>
-</pre></div></div><span class="anchor" id="line-2196" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">You can query based on a Virtual Column like this too which is not documented.<span class="anchor" id="line-2197"></span><span class="anchor" id="line-2198"></span><span class="anchor" id="line-2199"></span><span class="anchor" id="line-2200"></span><span class="anchor" id="line-2201"></span><span class="anchor" id="line-1-224"></span></p><div class="highlight python" style="color: rgb(0, 0, 0); font-family: sans-serif;"><div class="codearea" dir="ltr" lang="en" style="margin: 0.5em 0px; padding: 0px; border: 1pt solid rgb(174, 189, 204); background-color: rgb(243, 245, 247);"><pre dir="ltr" id="CA-f6536e3009345e2ca646e0bf19193a483f267675" lang="en" style="border-width: initial; border-style: none; background-color: rgb(243, 245, 247); padding: 10pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word;"><span class="line">&gt;&gt;&gt; <span class="ID">ts</span>.<span class="ID">search</span>.<span class="ID">SearchService</span>.<span class="ID">findObjRefs</span>(<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">vc_string_value = </span><span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">vc_string_id=2020001</span><span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);"> </span><span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">Y</span><span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">'</span>,<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">device</span><span class="String" style="color: rgb(0, 64, 128);">'</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-f6536e3009345e2ca646e0bf19193a483f267675_2"></span><span class="anchor" id="line-2-113"></span>(&lt;<span class="ID">dc1</span>.<span class="ID">blue</span>.<span class="ID">local</span> (<span class="ID">ServerRef</span>:<span class="Number" style="color: rgb(0, 128, 192);">10001</span>) <span class="ID">instance</span> <span class="ID">at</span> <span class="Number" style="color: rgb(0, 128, 192);">0x7f98e9a9c050</span>&gt;,)</span>
-<span class="line"><span class="LineAnchor" id="CA-f6536e3009345e2ca646e0bf19193a483f267675_3"></span><span class="anchor" id="line-3-97"></span>&gt;&gt;&gt;</span>
-</pre></div></div><span class="anchor" id="line-2202" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">If we build the dynamic device group in the GUI and then dump it this is what we will see. Examine the rule.<span class="anchor" id="line-2203"></span><span class="anchor" id="line-2204"></span><span class="anchor" id="line-2205"></span><span class="anchor" id="line-2206"></span><span class="anchor" id="line-2207"></span><span class="anchor" id="line-2208"></span><span class="anchor" id="line-2209"></span><span class="anchor" id="line-2210"></span><span class="anchor" id="line-2211"></span><span class="anchor" id="line-2212"></span><span class="anchor" id="line-2213"></span><span class="anchor" id="line-2214"></span><span class="anchor" id="line-2215"></span><span class="anchor" id="line-2216"></span></p><pre style="color: rgb(0, 0, 0); border-width: 1pt; border-style: solid; border-color: rgb(174, 189, 204); background-color: rgb(243, 245, 247); padding: 5pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word;"><span class="anchor" id="line-1-41"></span>[root@dc1 VirtualColumns]# /opt/opsware/support/bin/dgDump 13730001
-<span class="anchor" id="line-2-34"></span>role_class_id: 13730001
-<span class="anchor" id="line-3-25"></span>role_class_full_name: Device Groups Public VC query
-<span class="anchor" id="line-4-20"></span>role_class_short_name: VC query
-<span class="anchor" id="line-5-17"></span>created_by: brett
-<span class="anchor" id="line-6-13"></span>created_dt: 20191015T20:55:56
-<span class="anchor" id="line-7-10"></span>modified_by: : brett
-<span class="anchor" id="line-8-9"></span>modified_dt: : 20191015T20:56:40
-<span class="anchor" id="line-9-7"></span>parent_role_class_id: 5030001
-<span class="anchor" id="line-10-5"></span>rule: ((vc_string_value IN ('vc_string_id=2020001', 'Y')))
-<span class="anchor" id="line-11-5"></span>rule (raw):(eJyllN9PwjAQx/8V3vrCQ8cQxMSHBYfBEEZAMMaQpnZFR2q7tINICP+717GNye/o632/d/fZ9W5rxJSciYglkfxAdxVcraAwMrGgKyLpF4dQX0kOUcMFZ4nSJAohWHfcJsbY6YFifSamzJrRgz/ptn3yOAzGAzLye377ORgicLHPSISaSzCtEfE8z/+ONTcmUvJpIaG/stLb+gjQfKejcb8b9G09XqSTXN+iNZqNVo52ZdMpWH+rp1DU+5wwQY2xLHsp10KVTEsqFpwkqzidXWdydFCdiItwYp1XU5VSQF5muWjJiEk05AHUfQ3XLNEedkp703RxTjuzpTLQVHSx6+biQSDRNKvhQKRVc25TZVOt/If79S+Q9X3I+iXI6eZCGxVzTeEGLFM33UKwqoVmnGwJtm/d+D2fcoWzrc8sV7GtedHyQp0tWtxtds4ILtfNH/6g4yhzp9+mxO6ug8HoxRv6Rf/yD+BU/x9cI1G6)
-<span class="anchor" id="line-12-5"></span>sql: SELECT DISTINCT dvc_id from  (select /* ResourceTypeView.01 */ devices.* from truth.devices where devices.DVC_ID in (((((select /* RA.device_base_view */ distinct devices.dvc_id from   (select /* RA.device_virtual_column_string */ d.dvc_id as dvc_id, vc.virtual_column_id as vc_string_id, vcv.text_value as vc_string_value from truth.devices d left join truth.device_virtual_column_values dvcv on d.dvc_id = dvcv.dvc_id left join truth.virtual_column_values vcv on dvcv.virtual_column_value_id = vcv.virtual_column_value_id left join (select * from truth.virtual_columns where data_type = 'SHORT_STRING') vc on vcv.virtual_column_id = vc.virtual_column_id) device_virtual_column_string,  truth.devices where devices.opsw_lifecycle != 'DELETED' and devices.dvc_id = device_virtual_column_string.dvc_id  and upper(device_virtual_column_string.vc_string_value) in ('Y') and device_virtual_column_string.VC_STRING_ID = 2020001)))))) devices</pre><span class="anchor" id="line-2217" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><span class="anchor" id="line-2218" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line867" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;"></p><h2 id="Create_a_dynamic_device_group_based_on_virtual_column_filter" style="color: rgb(0, 0, 0); letter-spacing: normal; text-transform: none; font-family: sans-serif;">Create a dynamic device group based on virtual column filter</h2><span class="anchor" id="line-2219" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><span class="anchor" id="line-2220" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">To finish this rolling example a dynamic device group is created that will show all the servers with patch exceptions.<span class="anchor" id="line-2221"></span><span class="anchor" id="line-2222"></span><span class="anchor" id="line-2223"></span><span class="anchor" id="line-2224"></span><span class="anchor" id="line-2225"></span><span class="anchor" id="line-2226"></span><span class="anchor" id="line-2227"></span><span class="anchor" id="line-2228"></span><span class="anchor" id="line-2229"></span><span class="anchor" id="line-2230"></span><span class="anchor" id="line-2231"></span><span class="anchor" id="line-2232"></span><span class="anchor" id="line-2233"></span><span class="anchor" id="line-2234"></span><span class="anchor" id="line-2235"></span><span class="anchor" id="line-2236"></span><span class="anchor" id="line-2237"></span><span class="anchor" id="line-2238"></span><span class="anchor" id="line-2239"></span><span class="anchor" id="line-2240"></span><span class="anchor" id="line-2241"></span><span class="anchor" id="line-2242"></span><span class="anchor" id="line-1-226"></span></p><div class="highlight python" style="color: rgb(0, 0, 0); font-family: sans-serif;"><div class="codearea" dir="ltr" lang="en" style="margin: 0.5em 0px; padding: 0px; border: 1pt solid rgb(174, 189, 204); background-color: rgb(243, 245, 247);"><pre dir="ltr" id="CA-ada38b99b943ebc65a51ffa4d2e421f6bfd8e9b6" lang="en" style="border-width: initial; border-style: none; background-color: rgb(243, 245, 247); padding: 10pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word;"><span class="line"><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">pytwist.com.opsware.search</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">Filter</span></span>
-<span class="line"><span class="LineAnchor" id="CA-ada38b99b943ebc65a51ffa4d2e421f6bfd8e9b6_2"></span><span class="anchor" id="line-2-114"></span><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">ptwwist.com.opsware.device</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">DeviceGroupVO</span></span>
-<span class="line"><span class="LineAnchor" id="CA-ada38b99b943ebc65a51ffa4d2e421f6bfd8e9b6_3"></span><span class="anchor" id="line-3-98"></span><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">pytwist.com.opsware.common</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">UniqueNameException</span></span>
-<span class="line"><span class="LineAnchor" id="CA-ada38b99b943ebc65a51ffa4d2e421f6bfd8e9b6_4"></span><span class="anchor" id="line-4-82"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-ada38b99b943ebc65a51ffa4d2e421f6bfd8e9b6_5"></span><span class="anchor" id="line-5-78"></span><span class="ID">ref</span> = <span class="ID">ts</span>.<span class="ID">custattr</span>.<span class="ID">VirtualColumnService</span>.<span class="ID">findVirtualColumnRef</span>(<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">patch_exception</span><span class="String" style="color: rgb(0, 64, 128);">'</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-ada38b99b943ebc65a51ffa4d2e421f6bfd8e9b6_6"></span><span class="anchor" id="line-6-70"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-ada38b99b943ebc65a51ffa4d2e421f6bfd8e9b6_7"></span><span class="anchor" id="line-7-60"></span><span class="Comment" style="color: rgb(0, 128, 0);">#### Create a dynamic device group based on virtual column filter ###</span></span>
-<span class="line"><span class="LineAnchor" id="CA-ada38b99b943ebc65a51ffa4d2e421f6bfd8e9b6_8"></span><span class="anchor" id="line-8-56"></span><span class="ID">ruleFilter</span> = <span class="ID">Filter</span>()</span>
-<span class="line"><span class="LineAnchor" id="CA-ada38b99b943ebc65a51ffa4d2e421f6bfd8e9b6_9"></span><span class="anchor" id="line-9-50"></span><span class="ID">ruleFilter</span>.<span class="ID">expression</span> = <span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">vc_string_value IN (</span><span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">vc_string_id=</span><span class="String" style="color: rgb(0, 64, 128);">%s</span><span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">, </span><span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">Y</span><span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">)</span><span class="String" style="color: rgb(0, 64, 128);">'</span> % <span class="ID">ref</span>.<span class="ID">id</span></span>
-<span class="line"><span class="LineAnchor" id="CA-ada38b99b943ebc65a51ffa4d2e421f6bfd8e9b6_10"></span><span class="anchor" id="line-10-45"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-ada38b99b943ebc65a51ffa4d2e421f6bfd8e9b6_11"></span><span class="anchor" id="line-11-41"></span><span class="ID">vo</span> = <span class="ID">DeviceGroupVO</span>()</span>
-<span class="line"><span class="LineAnchor" id="CA-ada38b99b943ebc65a51ffa4d2e421f6bfd8e9b6_12"></span><span class="anchor" id="line-12-39"></span><span class="ID">vo</span>.<span class="ID">parent</span> = <span class="ID">ts</span>.<span class="ID">device</span>.<span class="ID">DeviceGroupService</span>.<span class="ID">getPublicRoot</span>()</span>
-<span class="line"><span class="LineAnchor" id="CA-ada38b99b943ebc65a51ffa4d2e421f6bfd8e9b6_13"></span><span class="anchor" id="line-13-35"></span><span class="ID">vo</span>.<span class="ID">dynamic</span> = <span class="ResWord" style="color: rgb(160, 0, 0);">True</span></span>
-<span class="line"><span class="LineAnchor" id="CA-ada38b99b943ebc65a51ffa4d2e421f6bfd8e9b6_14"></span><span class="anchor" id="line-14-32"></span><span class="ID">vo</span>.<span class="ID">dynamicRule</span> = <span class="ID">ruleFilter</span></span>
-<span class="line"><span class="LineAnchor" id="CA-ada38b99b943ebc65a51ffa4d2e421f6bfd8e9b6_15"></span><span class="anchor" id="line-15-30"></span><span class="ID">vo</span>.<span class="ID">shortName</span> = <span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">Patch Exempt Servers</span><span class="String" style="color: rgb(0, 64, 128);">'</span></span>
-<span class="line"><span class="LineAnchor" id="CA-ada38b99b943ebc65a51ffa4d2e421f6bfd8e9b6_16"></span><span class="anchor" id="line-16-28"></span><span class="ID">vo</span>.<span class="ID">status</span> = <span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">ACTIVE</span><span class="String" style="color: rgb(0, 64, 128);">'</span></span>
-<span class="line"><span class="LineAnchor" id="CA-ada38b99b943ebc65a51ffa4d2e421f6bfd8e9b6_17"></span><span class="anchor" id="line-17-26"></span><span class="ResWord" style="color: rgb(160, 0, 0);">try</span>:</span>
-<span class="line"><span class="LineAnchor" id="CA-ada38b99b943ebc65a51ffa4d2e421f6bfd8e9b6_18"></span><span class="anchor" id="line-18-26"></span>    <span class="ID">ts</span>.<span class="ID">device</span>.<span class="ID">DeviceGroupService</span>.<span class="ID">create</span>(<span class="ID">vo</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-ada38b99b943ebc65a51ffa4d2e421f6bfd8e9b6_19"></span><span class="anchor" id="line-19-24"></span><span class="ResWord" style="color: rgb(160, 0, 0);">except</span> <span class="ID">UniqueNameException</span>:</span>
-<span class="line"><span class="LineAnchor" id="CA-ada38b99b943ebc65a51ffa4d2e421f6bfd8e9b6_20"></span><span class="anchor" id="line-20-22"></span>    <span class="ResWord" style="color: rgb(160, 0, 0);">print</span> <span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">Device group </span><span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">%s</span><span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);"> already exists</span><span class="String" style="color: rgb(0, 64, 128);">"</span> % <span class="ID">vo</span>.<span class="ID">shortName</span></span>
-</pre></div></div><span class="anchor" id="line-2243" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">Execution will create the dynamic device group and we will see our single server with the Patch Exemption.<span class="anchor" id="line-2244"></span><span class="anchor" id="line-2245"></span></p><p class="line867" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;"><img src="./mediawiki/images/PN/patch_exception-dg.png"><br></p>
+<p>A common question asked by SA users is what the differences between custom attributes and custom fields and when should each be used?</p>
+
+<p><strong>Custom Attribute</strong></p>
+
+<ol>
+	<li>Values are always strings</li>
+	<li>Can be used in a number of other features: Agent Tools, app config, audit + compliance, dynamic MRL, parameterized provisioning, and more</li>
+	<li>Visible in the SA Client and OGSH (R/W access)</li>
+	<li>Settable on a variety of objects: servers, server groups, customers, facilities, OS Installation Profiles, and SW Policies.</li>
+	<li>These are inherited from more general objects to more specific objects.</li>
+	<li>To create these, a user just needs write access to the server and can create, update, and delete custom attributes through any of the UIs.</li>
+</ol>
+
+<p><strong>Virtual Columns</strong></p>
+
+<ol>
+	<li>The fields are common across all servers - if a "bios_version" virtual column is created, it will be seen on all servers</li>
+	<li>Values are typed, each custom field is either a SHORT_STRING, LONG_STRING, DATE, FILE, URI, or NUMBER. This allows custom fields to be used in more specific ways.</li>
+	<li>Can't be used by all features mostly used for tracking info about servers.</li>
+	<li>These are not inherited from one object to another.</li>
+	<li>
+	<p>To create these, a user with the "Manage Virtual Columns" permission must use the&nbsp;<strong>Manage Custom Field</strong>&nbsp;Web APX or PyTwist.</p>
+	</li>
+	<li>You can search and create device groups based on custom field values, including different matching criteria for different data types.</li>
+</ol>
+
+<p>So when should I use which?</p>
+
+<p><strong>Custom Attributes are good:</strong></p>
+
+<ul>
+	<li>If the information you're storing doesn't apply to all (or most) servers. If I want to track the eeprom version on Sparc systems, creating a virtual column for this would be a bad idea because all servers would show a field called "eeprom version" in the UI and that doesn't make sense for non-Sparc machines.</li>
+	<li>If you want to use them with certain other features.</li>
+	<li>If you want to select from values at different levels of precedence in the inheritance hierarchy.</li>
+</ul>
+
+<p><strong>Virtual Columns are good:</strong></p>
+
+<ul>
+	<li>If you want typed data</li>
+	<li>If you want to search or group based on the values</li>
+	<li>If you want them to show up almost like regular fields in the properties section of the UI.</li>
+</ul>
+
+<p>&nbsp;</p>
+
+<h2>Create a virtual column</h2>
+
+<p>Create a new virtual column called patch_exception to track servers that should not be patched.</p>
+
+<pre>from pytwist import twistserver
+from pytwist.com.opsware.custattr import VirtualColumnVO
+from pytwist.com.opsware.common import NotFoundException
+
+ts = twistserver.TwistServer()
+VCS = ts.custattr.VirtualColumnService
+
+vcName = 'patch_exception'
+try:
+    vcRef = VCS.findVirtualColumnRef(vcName)
+except NotFoundException:
+    vo = VirtualColumnVO()
+    vo.displayName='Patch Exception'
+    vo.name=vcName
+    vo.type=VirtualColumnVO.TEXT
+    vcRef = VCS.create(vo)
+</pre>
+
+<p>&nbsp;</p>
+
+<h2>Attaching virtual columns</h2>
+
+<p>Continuing on from the code above that created or found our virtual column. Virtual columns can be attached to Servers or Device Groups. Attaching the virtual column to an object type will make it appear in the UI properties page as a Custom Field.</p>
+
+<pre>ts.server.ServerService.attachVirtualColumn(vcRef)</pre>
+
+<p>After this call the property panel of a server will display a new custom field.</p>
+
+<p><img src="./mediawiki/images/PN/patch_exception-custom-field.png"></p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<h2>Using a DATE virtual column type</h2>
+
+<p>The DATE type is not handled well in the API and you need to jump through some hoops to make use of it.&nbsp; One of those hoops is that you need to use a native python class that can be serialized to a java.util.Date object.</p>
+
+<pre>#!/opt/opsware/bin/python
+from pytwist import twistserver
+from pytwist.com.opsware.custattr import VirtualColumnVO
+from pytwist.com.opsware.common import NotFoundException
+import time
+
+ts = twistserver.TwistServer()
+VCS = ts.custattr.VirtualColumnService
+Date = twistserver.makeLegacyObject('java.util', 'Date')
+
+#### Create a virtual column ####
+vcName = 'last_boot'
+try:
+    VCS.findVirtualColumnRef(vcName)
+except NotFoundException:
+    vo = VirtualColumnVO()
+    vo.displayName='Last Boot'
+    vo.name=vcName
+    vo.type=VirtualColumnVO.DATE
+    vcRef = VCS.create(vo)
+
+    #### Attaching virtual columns ####
+    ts.server.ServerService.attachVirtualColumn(vcRef)
+
+#### Updating a virtual column value ####
+serverRefs = ts.search.SearchService.findObjRefs('ServerVO.name = dc1.blue.local',
+                                                'device')
+if serverRefs:
+   now = Date()
+   now.time = long(time.time() * 1000) # expects milliseconds
+   ts.server.ServerService.setCustomField(serverRefs[0], vcName, now)</pre>
+
+<h2>Updating a virtual column value</h2>
+
+<p>ServerVO.name vs ServerVO.hostName whats the difference when building a filter?</p>
+
+<ul>
+	<li>
+	<p>The hostName is the FQDN of the server, its what reported by the&nbsp;<tt>hostname&nbsp;--fqdn</tt>&nbsp;command on Linux. This value is immutable in the GUI and it's the prefer query field.</p>
+	</li>
+	<li>The name is a mutable field and by default this is set to the hostName when the server is assimilated with an agent as users are free to change this value its not ideal for searches.</li>
+</ul>
+
+<p>Neither of these fields are guaranteed to be unique within SA and you should code with this in mind.</p>
+
+<p>&nbsp;</p>
+
+<p><img src="./mediawiki/images/PN/hostname-name.png"></p>
+
+<p>&nbsp;</p>
+
+<p>Assigning a value to our Custom Field.</p>
+
+<p>&nbsp;</p>
+
+<pre>serverRefs = ts.search.SearchService.findObjRefs('ServerVO.hostName = dc1.blue.local','device')
+if len(serverRefs) == 0:
+   print "Server not found"
+elif len(serverRefs) &gt; 1:
+   print "Duplicate server found"
+else:
+   ts.server.ServerService.setCustomField(serverRefs[0], 'patch_exception','Y')
+</pre>
+
+<p>After execution:&nbsp;<img src="./mediawiki/images/PN/patch_exception-Y.png"></p>
+
+<p>&nbsp;</p>
+
+<h2>Query a server based on a virtual column (custom field)</h2>
+
+<p>Demonstration of how to query a server based on a virtual column value.</p>
+
+<p>Why is this so complicated ? Consider this filter below. The problem is it will search across ALL virtual columns defined for the device matching any where its value is Y and that's not what we want.</p>
+
+<pre>&gt;&gt;&gt; ts.search.SearchService.findObjRefs('vc_string_value = Y','device')
+</pre>
+
+<p>You need to search on the Virtual Column ID as part of the expression.</p>
+
+<pre>&gt;&gt;&gt; ts.custattr.VirtualColumnService.findVirtualColumnRef('patch_exception')
+&lt;Patch Exception (VirtualColumnRef:2020001) instance at 0x7f98e9a9c3b0&gt;
+&gt;&gt;&gt; f.expression='((vc_string_value = Y) &amp; (vc_string_id = 2020001))'
+</pre>
+
+<p>You can query based on a Virtual Column like this too which is not documented.</p>
+
+<pre>&gt;&gt;&gt; ts.search.SearchService.findObjRefs('vc_string_value = "vc_string_id=2020001" "Y"','device')
+(&lt;dc1.blue.local (ServerRef:10001) instance at 0x7f98e9a9c050&gt;,)
+&gt;&gt;&gt;
+</pre>
+
+<p>If we build the dynamic device group in the GUI and then dump it this is what we will see. Examine the rule.</p>
+
+<pre>[root@dc1 VirtualColumns]# /opt/opsware/support/bin/dgDump 13730001
+role_class_id: 13730001
+role_class_full_name: Device Groups Public VC query
+role_class_short_name: VC query
+created_by: brett
+created_dt: 20191015T20:55:56
+modified_by: : brett
+modified_dt: : 20191015T20:56:40
+parent_role_class_id: 5030001
+rule: ((vc_string_value IN ('vc_string_id=2020001', 'Y')))
+rule (raw):(eJyllN9PwjAQx/8V3vrCQ8cQxMSHBYfBEEZAMMaQpnZFR2q7tINICP+717GNye/o632/d/fZ9W5rxJSciYglkfxAdxVcraAwMrGgKyLpF4dQX0kOUcMFZ4nSJAohWHfcJsbY6YFifSamzJrRgz/ptn3yOAzGAzLye377ORgicLHPSISaSzCtEfE8z/+ONTcmUvJpIaG/stLb+gjQfKejcb8b9G09XqSTXN+iNZqNVo52ZdMpWH+rp1DU+5wwQY2xLHsp10KVTEsqFpwkqzidXWdydFCdiItwYp1XU5VSQF5muWjJiEk05AHUfQ3XLNEedkp703RxTjuzpTLQVHSx6+biQSDRNKvhQKRVc25TZVOt/If79S+Q9X3I+iXI6eZCGxVzTeEGLFM33UKwqoVmnGwJtm/d+D2fcoWzrc8sV7GtedHyQp0tWtxtds4ILtfNH/6g4yhzp9+mxO6ug8HoxRv6Rf/yD+BU/x9cI1G6)
+sql: SELECT DISTINCT dvc_id from  (select /* ResourceTypeView.01 */ devices.* from truth.devices where devices.DVC_ID in (((((select /* RA.device_base_view */ distinct devices.dvc_id from   (select /* RA.device_virtual_column_string */ d.dvc_id as dvc_id, vc.virtual_column_id as vc_string_id, vcv.text_value as vc_string_value from truth.devices d left join truth.device_virtual_column_values dvcv on d.dvc_id = dvcv.dvc_id left join truth.virtual_column_values vcv on dvcv.virtual_column_value_id = vcv.virtual_column_value_id left join (select * from truth.virtual_columns where data_type = 'SHORT_STRING') vc on vcv.virtual_column_id = vc.virtual_column_id) device_virtual_column_string,  truth.devices where devices.opsw_lifecycle != 'DELETED' and devices.dvc_id = device_virtual_column_string.dvc_id  and upper(device_virtual_column_string.vc_string_value) in ('Y') and device_virtual_column_string.VC_STRING_ID = 2020001)))))) devices</pre>
+
+<p>&nbsp;</p>
+
+<h2>Create a dynamic device group based on virtual column filter</h2>
+
+<p>To finish this rolling example a dynamic device group is created that will show all the servers with patch exceptions.</p>
+
+<pre>from pytwist.com.opsware.search import Filter
+from ptwwist.com.opsware.device import DeviceGroupVO
+from pytwist.com.opsware.common import UniqueNameException
+
+ref = ts.custattr.VirtualColumnService.findVirtualColumnRef('patch_exception')
+
+#### Create a dynamic device group based on virtual column filter ###
+ruleFilter = Filter()
+ruleFilter.expression = 'vc_string_value IN ("vc_string_id=%s", "Y")' % ref.id
+
+vo = DeviceGroupVO()
+vo.parent = ts.device.DeviceGroupService.getPublicRoot()
+vo.dynamic = True
+vo.dynamicRule = ruleFilter
+vo.shortName = 'Patch Exempt Servers'
+vo.status = 'ACTIVE'
+try:
+    ts.device.DeviceGroupService.create(vo)
+except UniqueNameException:
+    print "Device group '%s' already exists" % vo.shortName
+</pre>
+
+<p>Execution will create the dynamic device group and we will see our single server with the Patch Exemption.</p>
+
+<p><img src="./mediawiki/images/PN/patch_exception-dg.png"></p>
