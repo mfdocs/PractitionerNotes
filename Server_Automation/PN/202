@@ -1,92 +1,118 @@
-<h2 id="Display_user_groups" style="color: rgb(0, 0, 0); letter-spacing: normal; text-transform: none; font-family: sans-serif;">Display user groups</h2><span class="anchor" id="line-2341" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><span class="anchor" id="line-2342" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">User Groups are placed into one of two namespaces ACCESS_CONTROL or PRIVATE_ACCESS_CONTROL. The ACCESS_CONTROL user groups are those that appear in the "Administration / User and Groups / User Groups" panel in the GUI. The private namespace contains a user group for each user and its used for internal permission modelling of user created objects such as device groups and their home folder.<span class="anchor" id="line-2343"></span><span class="anchor" id="line-2344"></span></p><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">Display user groups and their description.</p><div class="highlight python" style="color: rgb(0, 0, 0); font-family: sans-serif;"><div class="codearea" dir="ltr" lang="en" style="margin: 0.5em 0px; padding: 0px; border: 1pt solid rgb(174, 189, 204); background-color: rgb(243, 245, 247);"><pre dir="ltr" id="CA-e2e0eb2960be4510e75548f90ae900007ea4b8e3" lang="en" style="border-width: initial; border-style: none; background-color: rgb(243, 245, 247); padding: 10pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word;"><span class="line"><span class="LineAnchor" id="CA-e2e0eb2960be4510e75548f90ae900007ea4b8e3_1"></span><span class="anchor" id="line-1-233"></span><span class="Comment" style="color: rgb(0, 128, 0);">#!/opt/opsware/bin/python</span></span>
-<span class="line"><span class="LineAnchor" id="CA-e2e0eb2960be4510e75548f90ae900007ea4b8e3_2"></span><span class="anchor" id="line-2-117"></span><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">textwrap</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">wrap</span></span>
-<span class="line"><span class="LineAnchor" id="CA-e2e0eb2960be4510e75548f90ae900007ea4b8e3_3"></span><span class="anchor" id="line-3-101"></span><span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">itertools</span></span>
-<span class="line"><span class="LineAnchor" id="CA-e2e0eb2960be4510e75548f90ae900007ea4b8e3_4"></span><span class="anchor" id="line-4-85"></span><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">pytwist.twistserver</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">TwistServer</span></span>
-<span class="line"><span class="LineAnchor" id="CA-e2e0eb2960be4510e75548f90ae900007ea4b8e3_5"></span><span class="anchor" id="line-5-81"></span><span class="ID">ts</span> = <span class="ID">TwistServer</span>()</span>
-<span class="line"><span class="LineAnchor" id="CA-e2e0eb2960be4510e75548f90ae900007ea4b8e3_6"></span><span class="anchor" id="line-6-73"></span><span class="ID">refs</span> = <span class="ID">ts</span>.<span class="ID">search</span>.<span class="ID">SearchService</span>.<span class="ID">findObjRefs</span>(<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">'</span>,<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">user_role</span><span class="String" style="color: rgb(0, 64, 128);">'</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-e2e0eb2960be4510e75548f90ae900007ea4b8e3_7"></span><span class="anchor" id="line-7-63"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-e2e0eb2960be4510e75548f90ae900007ea4b8e3_8"></span><span class="anchor" id="line-8-59"></span><span class="ID">rows</span>= [(<span class="ID">x</span>.<span class="ID">roleName</span>,<span class="ID">x</span>.<span class="ID">description</span> <span class="ResWord" style="color: rgb(160, 0, 0);">if</span> <span class="ID">x</span>.<span class="ID">description</span> <span class="ResWord" style="color: rgb(160, 0, 0);">else</span> <span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">-</span><span class="String" style="color: rgb(0, 64, 128);">"</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-e2e0eb2960be4510e75548f90ae900007ea4b8e3_9"></span><span class="anchor" id="line-9-53"></span>       <span class="ResWord" style="color: rgb(160, 0, 0);">for</span> <span class="ID">x</span> <span class="ResWord" style="color: rgb(160, 0, 0);">in</span> <span class="ID">ts</span>.<span class="ID">fido</span>.<span class="ID">UserRoleService</span>.<span class="ID">getUserRoleVOs</span>(<span class="ID">refs</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-e2e0eb2960be4510e75548f90ae900007ea4b8e3_10"></span><span class="anchor" id="line-10-48"></span>       <span class="ResWord" style="color: rgb(160, 0, 0);">if</span> <span class="ID">x</span>.<span class="ID">namespace</span> == <span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">ACCESS_CONTROL</span><span class="String" style="color: rgb(0, 64, 128);">'</span>]</span>
-<span class="line"><span class="LineAnchor" id="CA-e2e0eb2960be4510e75548f90ae900007ea4b8e3_11"></span><span class="anchor" id="line-11-44"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-e2e0eb2960be4510e75548f90ae900007ea4b8e3_12"></span><span class="anchor" id="line-12-42"></span><span class="ResWord" style="color: rgb(160, 0, 0);">for</span> <span class="ID">role</span>,<span class="ID">description</span> <span class="ResWord" style="color: rgb(160, 0, 0);">in</span> <span class="ID">rows</span>:</span>
-<span class="line"><span class="LineAnchor" id="CA-e2e0eb2960be4510e75548f90ae900007ea4b8e3_13"></span><span class="anchor" id="line-13-38"></span>    <span class="ResWord" style="color: rgb(160, 0, 0);">for</span> <span class="ID">t</span> <span class="ResWord" style="color: rgb(160, 0, 0);">in</span> <span class="ID">itertools</span>.<span class="ID">izip_longest</span>( <span class="ID">wrap</span>(<span class="ID">role</span>,<span class="Number" style="color: rgb(0, 128, 192);">25</span>),</span>
-<span class="line"><span class="LineAnchor" id="CA-e2e0eb2960be4510e75548f90ae900007ea4b8e3_14"></span><span class="anchor" id="line-14-35"></span>                                     <span class="ID">wrap</span>(<span class="ID">description</span>,<span class="Number" style="color: rgb(0, 128, 192);">40</span>),</span>
-<span class="line"><span class="LineAnchor" id="CA-e2e0eb2960be4510e75548f90ae900007ea4b8e3_15"></span><span class="anchor" id="line-15-33"></span>                                     <span class="ID">fillvalue</span>=<span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">"</span>):</span>
-<span class="line"><span class="LineAnchor" id="CA-e2e0eb2960be4510e75548f90ae900007ea4b8e3_16"></span><span class="anchor" id="line-16-31"></span>        <span class="ResWord" style="color: rgb(160, 0, 0);">print</span> <span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">%25s</span><span class="String" style="color: rgb(0, 64, 128);"> | </span><span class="String" style="color: rgb(0, 64, 128);">%-40s</span><span class="String" style="color: rgb(0, 64, 128);">"</span> % <span class="ID">t</span></span>
-</pre></div></div><span class="anchor" id="line-2363" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">Execution (truncated)<span class="anchor" id="line-2364"></span><span class="anchor" id="line-2365"></span><span class="anchor" id="line-2366"></span><span class="anchor" id="line-2367"></span><span class="anchor" id="line-2368"></span><span class="anchor" id="line-2369"></span><span class="anchor" id="line-2370"></span><span class="anchor" id="line-2371"></span><span class="anchor" id="line-2372"></span><span class="anchor" id="line-2373"></span><span class="anchor" id="line-2374"></span><span class="anchor" id="line-2375"></span><span class="anchor" id="line-2376"></span><span class="anchor" id="line-2377"></span><span class="anchor" id="line-2378"></span><span class="anchor" id="line-2379"></span><span class="anchor" id="line-2380"></span><span class="anchor" id="line-2381"></span><span class="anchor" id="line-2382"></span><span class="anchor" id="line-2383"></span><span class="anchor" id="line-2384"></span><span class="anchor" id="line-2385"></span></p><pre style="color: rgb(0, 0, 0); border-width: 1pt; border-style: solid; border-color: rgb(174, 189, 204); background-color: rgb(243, 245, 247); padding: 5pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word;"><span class="anchor" id="line-1-45"></span># ./userGroups.py
-<span class="anchor" id="line-2-38"></span>               Chef Group | A group having execute, read, write,
-<span class="anchor" id="line-3-27"></span>                          | list access to Chef objects and
-<span class="anchor" id="line-4-22"></span>                          | operations
-<span class="anchor" id="line-5-19"></span>             Command Line | Shell access to servers.
-<span class="anchor" id="line-6-14"></span>           Administrators |
-<span class="anchor" id="line-7-11"></span>       Command-line Group | Giving execute,read,write,list access to
-<span class="anchor" id="line-8-10"></span>                          | /Administration Extensions Folder
-<span class="anchor" id="line-9-8"></span>     Command-logger Group | Giving execute,read,write,list access to
-<span class="anchor" id="line-10-6"></span>                          | /Extensible Discovery Folder
-<span class="anchor" id="line-11-6"></span>      Compliance Auditors | Access to execute compliance scans.
-<span class="anchor" id="line-12-6"></span>     Compliance Enforcers | Access to remediate compliance failures.
-<span class="anchor" id="line-13-4"></span>Compliance Policy Setters | Access to define compliance policies.
-<span class="anchor" id="line-14-4"></span>             Manage Audit | -
-<span class="anchor" id="line-15-3"></span>             OS Deployers | Access to provision servers.
-<span class="anchor" id="line-16-3"></span>        OS Policy Setters | Access to import and define OS build
-<span class="anchor" id="line-17-3"></span>                          | plans.
-<span class="anchor" id="line-18-3"></span>           Opsware System | Opsware System Adminstration privileges
-<span class="anchor" id="line-19-3"></span>           Administrators |
-<span class="anchor" id="line-20-3"></span>          Patch Deployers | Access to install patches.</pre><span class="anchor" id="line-2386" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">The user groups assigned to an individual user can be obtained with a filter expression</p><div class="highlight python" style="color: rgb(0, 0, 0); font-family: sans-serif;"><div class="codearea" dir="ltr" lang="en" style="margin: 0.5em 0px; padding: 0px; border: 1pt solid rgb(174, 189, 204); background-color: rgb(243, 245, 247);"><pre dir="ltr" id="CA-7fde7791eba2fa4c64f2e52780a473d807167a9a" lang="en" style="border-width: initial; border-style: none; background-color: rgb(243, 245, 247); padding: 10pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word;"><span class="line"><span class="LineAnchor" id="CA-7fde7791eba2fa4c64f2e52780a473d807167a9a_1"></span><span class="anchor" id="line-1-235"></span><span class="ID">refs</span> = <span class="ID">ts</span>.<span class="ID">search</span>.<span class="ID">SearchService</span>.<span class="ID">findObjRefs</span>(<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">user_role_username = jyaya</span><span class="String" style="color: rgb(0, 64, 128);">'</span>,<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">user_role</span><span class="String" style="color: rgb(0, 64, 128);">'</span>)</span>
-</pre></div></div><span class="anchor" id="line-2390" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><span class="anchor" id="line-2391" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line867" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;"></p><h2 id="User_group_and_user_report" style="color: rgb(0, 0, 0); letter-spacing: normal; text-transform: none; font-family: sans-serif;">User group and user report</h2><span class="anchor" id="line-2392" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><span class="anchor" id="line-2393" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">This example will display a mapping of users to user groups. It will then invert the data structure and show for a user group what users are members. The user groups shown are filtered to only show those that are used for ACCESS CONTROL.</p><div class="highlight python" style="color: rgb(0, 0, 0); font-family: sans-serif;"><div class="codearea" dir="ltr" lang="en" style="margin: 0.5em 0px; padding: 0px; border: 1pt solid rgb(174, 189, 204); background-color: rgb(243, 245, 247);"><pre dir="ltr" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c" lang="en" style="border-width: initial; border-style: none; background-color: rgb(243, 245, 247); padding: 10pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word;"><span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_1"></span><span class="anchor" id="line-1-237"></span><span class="Comment" style="color: rgb(0, 128, 0);">#!/opt/opsware/bin/python</span></span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_2"></span><span class="anchor" id="line-2-118"></span><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">textwrap</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">wrap</span></span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_3"></span><span class="anchor" id="line-3-102"></span><span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">itertools</span></span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_4"></span><span class="anchor" id="line-4-86"></span><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">pytwist.twistserver</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">TwistServer</span></span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_5"></span><span class="anchor" id="line-5-82"></span><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">collections</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">defaultdict</span></span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_6"></span><span class="anchor" id="line-6-74"></span><span class="ID">ts</span> = <span class="ID">TwistServer</span>()</span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_7"></span><span class="anchor" id="line-7-64"></span><span class="ID">SS</span> = <span class="ID">ts</span>.<span class="ID">search</span>.<span class="ID">SearchService</span></span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_8"></span><span class="anchor" id="line-8-60"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_9"></span><span class="anchor" id="line-9-54"></span><span class="ResWord" style="color: rgb(160, 0, 0);">def</span> <span class="ID">invert</span>(<span class="ID">d</span>):</span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_10"></span><span class="anchor" id="line-10-49"></span>    <span class="ID">r</span> = <span class="ID">defaultdict</span>(<span class="ResWord" style="color: rgb(160, 0, 0);">list</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_11"></span><span class="anchor" id="line-11-45"></span>    <span class="ResWord" style="color: rgb(160, 0, 0);">for</span> <span class="ID">k</span> <span class="ResWord" style="color: rgb(160, 0, 0);">in</span> <span class="ID">d</span>:</span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_12"></span><span class="anchor" id="line-12-43"></span>        <span class="ResWord" style="color: rgb(160, 0, 0);">for</span> <span class="ID">v</span> <span class="ResWord" style="color: rgb(160, 0, 0);">in</span> <span class="ID">d</span>[<span class="ID">k</span>]:</span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_13"></span><span class="anchor" id="line-13-39"></span>            <span class="ID">r</span>[<span class="ID">v</span>].<span class="ID">append</span>(<span class="ID">k</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_14"></span><span class="anchor" id="line-14-36"></span>    <span class="ResWord" style="color: rgb(160, 0, 0);">return</span> <span class="ID">r</span></span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_15"></span><span class="anchor" id="line-15-34"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_16"></span><span class="anchor" id="line-16-32"></span><span class="ResWord" style="color: rgb(160, 0, 0);">def</span> <span class="ID">report</span>(<span class="ID">d</span>):</span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_17"></span><span class="anchor" id="line-17-29"></span>    <span class="ResWord" style="color: rgb(160, 0, 0);">for</span> <span class="ID">k</span>,<span class="ID">v</span> <span class="ResWord" style="color: rgb(160, 0, 0);">in</span> <span class="ID">d</span>.<span class="ID">items</span>():</span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_18"></span><span class="anchor" id="line-18-29"></span>        <span class="ResWord" style="color: rgb(160, 0, 0);">if</span> <span class="ResWord" style="color: rgb(160, 0, 0);">not</span> <span class="ID">v</span>: <span class="ResWord" style="color: rgb(160, 0, 0);">continue</span></span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_19"></span><span class="anchor" id="line-19-27"></span>        <span class="ResWord" style="color: rgb(160, 0, 0);">for</span> <span class="ID">t</span> <span class="ResWord" style="color: rgb(160, 0, 0);">in</span> <span class="ID">itertools</span>.<span class="ID">izip_longest</span>( <span class="ID">wrap</span>(<span class="ID">k</span>,<span class="Number" style="color: rgb(0, 128, 192);">25</span>),</span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_20"></span><span class="anchor" id="line-20-25"></span>                                         <span class="ID">wrap</span>(<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">, </span><span class="String" style="color: rgb(0, 64, 128);">'</span>.<span class="ID">join</span>(<span class="ID">v</span>),<span class="Number" style="color: rgb(0, 128, 192);">40</span>),</span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_21"></span><span class="anchor" id="line-21-21"></span>                                         <span class="ID">fillvalue</span>=<span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">"</span>):</span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_22"></span><span class="anchor" id="line-22-18"></span>            <span class="ResWord" style="color: rgb(160, 0, 0);">print</span> <span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">%25s</span><span class="String" style="color: rgb(0, 64, 128);"> | </span><span class="String" style="color: rgb(0, 64, 128);">%-40s</span><span class="String" style="color: rgb(0, 64, 128);">"</span> % <span class="ID">t</span></span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_23"></span><span class="anchor" id="line-23-16"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_24"></span><span class="anchor" id="line-24-14"></span><span class="ID">allUserGroups</span> = <span class="ID">SS</span>.<span class="ID">findObjRefs</span>(<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">'</span>,<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">user_role</span><span class="String" style="color: rgb(0, 64, 128);">'</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_25"></span><span class="anchor" id="line-25-13"></span><span class="ID">accessUG</span> = [<span class="ID">x</span>.<span class="ID">roleName</span></span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_26"></span><span class="anchor" id="line-26-11"></span>            <span class="ResWord" style="color: rgb(160, 0, 0);">for</span> <span class="ID">x</span> <span class="ResWord" style="color: rgb(160, 0, 0);">in</span> <span class="ID">ts</span>.<span class="ID">fido</span>.<span class="ID">UserRoleService</span>.<span class="ID">getUserRoleVOs</span>(<span class="ID">allUserGroups</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_27"></span><span class="anchor" id="line-27-9"></span>            <span class="ResWord" style="color: rgb(160, 0, 0);">if</span> <span class="ID">x</span>.<span class="ID">namespace</span> == <span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">ACCESS_CONTROL</span><span class="String" style="color: rgb(0, 64, 128);">'</span>]</span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_28"></span><span class="anchor" id="line-28-8"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_29"></span><span class="anchor" id="line-29-8"></span><span class="ID">uug</span>={}</span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_30"></span><span class="anchor" id="line-30-8"></span><span class="ResWord" style="color: rgb(160, 0, 0);">for</span> <span class="ID">userRef</span> <span class="ResWord" style="color: rgb(160, 0, 0);">in</span> <span class="ID">SS</span>.<span class="ID">findObjRefs</span>(<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">'</span>,<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">user</span><span class="String" style="color: rgb(0, 64, 128);">'</span>):</span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_31"></span><span class="anchor" id="line-31-7"></span>    <span class="ID">username</span> = <span class="ID">userRef</span>.<span class="ID">name</span></span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_32"></span><span class="anchor" id="line-32-7"></span>    <span class="ID">uug</span>[<span class="ID">username</span>] = [<span class="ID">x</span>.<span class="ID">name</span></span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_33"></span><span class="anchor" id="line-33-7"></span>                     <span class="ResWord" style="color: rgb(160, 0, 0);">for</span> <span class="ID">x</span> <span class="ResWord" style="color: rgb(160, 0, 0);">in</span> <span class="ID">SS</span>.<span class="ID">findObjRefs</span>(<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">user_role_username = </span><span class="String" style="color: rgb(0, 64, 128);">'</span>+<span class="ID">username</span>,<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">user_role</span><span class="String" style="color: rgb(0, 64, 128);">'</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_34"></span><span class="anchor" id="line-34-5"></span>                     <span class="ResWord" style="color: rgb(160, 0, 0);">if</span> <span class="ID">x</span>.<span class="ID">name</span> <span class="ResWord" style="color: rgb(160, 0, 0);">in</span> <span class="ID">accessUG</span>]</span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_35"></span><span class="anchor" id="line-35-5"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_36"></span><span class="anchor" id="line-36-5"></span><span class="ResWord" style="color: rgb(160, 0, 0);">print</span> <span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">Users -&gt; User Groups</span><span class="String" style="color: rgb(0, 64, 128);">"</span></span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_37"></span><span class="anchor" id="line-37-5"></span><span class="ID">report</span>(<span class="ID">uug</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_38"></span><span class="anchor" id="line-38-5"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_39"></span><span class="anchor" id="line-39-5"></span><span class="ResWord" style="color: rgb(160, 0, 0);">print</span> <span class="String" style="color: rgb(0, 64, 128);">"</span><span class="SPChar" style="color: rgb(0, 0, 192);">\n</span><span class="String" style="color: rgb(0, 64, 128);">User Groups -&gt; Users</span><span class="String" style="color: rgb(0, 64, 128);">"</span></span>
-<span class="line"><span class="LineAnchor" id="CA-2a2100c4524fd2f409853e7c3d8a6b508233645c_40"></span><span class="anchor" id="line-40-4"></span><span class="ID">report</span>(<span class="ID">invert</span>(<span class="ID">uug</span>))</span>
-</pre></div></div><span class="anchor" id="line-2437" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">Execution<span class="anchor" id="line-2438"></span><span class="anchor" id="line-2439"></span><span class="anchor" id="line-2440"></span><span class="anchor" id="line-2441"></span><span class="anchor" id="line-2442"></span><span class="anchor" id="line-2443"></span><span class="anchor" id="line-2444"></span><span class="anchor" id="line-2445"></span><span class="anchor" id="line-2446"></span><span class="anchor" id="line-2447"></span><span class="anchor" id="line-2448"></span><span class="anchor" id="line-2449"></span><span class="anchor" id="line-2450"></span><span class="anchor" id="line-2451"></span><span class="anchor" id="line-2452"></span><span class="anchor" id="line-2453"></span><span class="anchor" id="line-2454"></span><span class="anchor" id="line-2455"></span></p><pre style="color: rgb(0, 0, 0); border-width: 1pt; border-style: solid; border-color: rgb(174, 189, 204); background-color: rgb(243, 245, 247); padding: 5pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word;"><span class="anchor" id="line-1-46"></span># ./userGroupUsers.py
-<span class="anchor" id="line-2-39"></span>Users -&gt; User Groups
-<span class="anchor" id="line-3-28"></span>                 dcaadmin | Superusers
-<span class="anchor" id="line-4-23"></span>               recertuser | Opsware System Administrators,
-<span class="anchor" id="line-5-20"></span>                          | Recertification
-<span class="anchor" id="line-6-15"></span>                    brett | Superusers, Opsware System
-<span class="anchor" id="line-7-12"></span>                          | Administrators
-<span class="anchor" id="line-8-11"></span>                    jyaya | Viewers
-<span class="anchor" id="line-9-9"></span>                jbigboote | Viewers
-<span class="anchor" id="line-10-7"></span>
-<span class="anchor" id="line-11-7"></span>User Groups -&gt; Users
-<span class="anchor" id="line-12-7"></span>               Superusers | dcaadmin, brett
-<span class="anchor" id="line-13-5"></span>          Recertification | recertuser
-<span class="anchor" id="line-14-5"></span>           Opsware System | recertuser, brett
-<span class="anchor" id="line-15-4"></span>           Administrators |
-<span class="anchor" id="line-16-4"></span>                  Viewers | jyaya, jbigboote</pre>
+<h2>Display user groups</h2>
+
+<p>User Groups are placed into one of two namespaces ACCESS_CONTROL or PRIVATE_ACCESS_CONTROL. The ACCESS_CONTROL user groups are those that appear in the "Administration / User and Groups / User Groups" panel in the GUI. The private namespace contains a user group for each user and its used for internal permission modelling of user created objects such as device groups and their home folder.</p>
+
+<p>Display user groups and their description.</p>
+
+<pre>#!/opt/opsware/bin/python
+from textwrap import wrap
+import itertools
+from pytwist.twistserver import TwistServer
+ts = TwistServer()
+refs = ts.search.SearchService.findObjRefs('','user_role')
+
+rows= [(x.roleName,x.description if x.description else "-")
+       for x in ts.fido.UserRoleService.getUserRoleVOs(refs)
+       if x.namespace == 'ACCESS_CONTROL']
+
+for role,description in rows:
+    for t in itertools.izip_longest( wrap(role,25),
+                                     wrap(description,40),
+                                     fillvalue=""):
+        print "%25s | %-40s" % t
+</pre>
+
+<p>Execution (truncated)</p>
+
+<pre># ./userGroups.py
+               Chef Group | A group having execute, read, write,
+                          | list access to Chef objects and
+                          | operations
+             Command Line | Shell access to servers.
+           Administrators |
+       Command-line Group | Giving execute,read,write,list access to
+                          | /Administration Extensions Folder
+     Command-logger Group | Giving execute,read,write,list access to
+                          | /Extensible Discovery Folder
+      Compliance Auditors | Access to execute compliance scans.
+     Compliance Enforcers | Access to remediate compliance failures.
+Compliance Policy Setters | Access to define compliance policies.
+             Manage Audit | -
+             OS Deployers | Access to provision servers.
+        OS Policy Setters | Access to import and define OS build
+                          | plans.
+           Opsware System | Opsware System Adminstration privileges
+           Administrators |
+          Patch Deployers | Access to install patches.</pre>
+
+<p>The user groups assigned to an individual user can be obtained with a filter expression</p>
+
+<pre>refs = ts.search.SearchService.findObjRefs('user_role_username = jyaya','user_role')
+</pre>
+
+<p>&nbsp;</p>
+
+<h2>User group and user report</h2>
+
+<p>This example will display a mapping of users to user groups. It will then invert the data structure and show for a user group what users are members. The user groups shown are filtered to only show those that are used for ACCESS CONTROL.</p>
+
+<pre>#!/opt/opsware/bin/python
+from textwrap import wrap
+import itertools
+from pytwist.twistserver import TwistServer
+from collections import defaultdict
+ts = TwistServer()
+SS = ts.search.SearchService
+
+def invert(d):
+    r = defaultdict(list)
+    for k in d:
+        for v in d[k]:
+            r[v].append(k)
+    return r
+
+def report(d):
+    for k,v in d.items():
+        if not v: continue
+        for t in itertools.izip_longest( wrap(k,25),
+                                         wrap(', '.join(v),40),
+                                         fillvalue=""):
+            print "%25s | %-40s" % t
+
+allUserGroups = SS.findObjRefs('','user_role')
+accessUG = [x.roleName
+            for x in ts.fido.UserRoleService.getUserRoleVOs(allUserGroups)
+            if x.namespace == 'ACCESS_CONTROL']
+
+uug={}
+for userRef in SS.findObjRefs('','user'):
+    username = userRef.name
+    uug[username] = [x.name
+                     for x in SS.findObjRefs('user_role_username = '+username,'user_role')
+                     if x.name in accessUG]
+
+print "Users -&gt; User Groups"
+report(uug)
+
+print "\nUser Groups -&gt; Users"
+report(invert(uug))
+</pre>
+
+<p>Execution</p>
+
+<pre># ./userGroupUsers.py
+Users -&gt; User Groups
+                 dcaadmin | Superusers
+               recertuser | Opsware System Administrators,
+                          | Recertification
+                    brett | Superusers, Opsware System
+                          | Administrators
+                    jyaya | Viewers
+                jbigboote | Viewers
+
+User Groups -&gt; Users
+               Superusers | dcaadmin, brett
+          Recertification | recertuser
+           Opsware System | recertuser, brett
+           Administrators |
+                  Viewers | jyaya, jbigboote</pre>
