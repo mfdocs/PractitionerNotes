@@ -1,1 +1,167 @@
- 
+<p>Business Value Dashboards present your data in real time in a very flexible layout for visualizing on any browser capable device.&nbsp; Within Micro Focus Network Operations Management (NOM) suite, there are several out-of-the-box data sources, such as incidents from Network Node Manager (NNMi) and device configuration and vulnerability from Network Automation (NA).&nbsp; These data sources can be streamed to BVD when integration is enabled.&nbsp;&nbsp; However, the current NOM Suite by default does not include an out-of-the-box performance metrics data source for BVD.&nbsp; This article will demonstrate how to build a new data channel solution to achieve this requirement with a concrete use case.</p>
+
+<p><strong>Use Case Description</strong>:&nbsp; Due to the COVID-19 outbreak, Company A is requesting all its employees to work from home.&nbsp; The company is responding to an urgent request from top management and needs to conduct a network stress test.&nbsp; This is done to make sure its network infrastructure is capable of providing sufficient bandwidth and to identify bottlenecks rapidly.&nbsp; Also top managers request insight into network status and performance. They want to use NOM to capture the required metrics to validate the test and stream the results to an executive business dashboard such as the one shown below:<br>
+<br>
+<img style="height:281px; margin:0px; width:500px" alt="" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e714dfd440523.36246833.jpeg"></p>
+
+<p><strong>Use Case Implementation:</strong> The use case&nbsp;was implemented in the following three steps:</p>
+
+<ol>
+	<li>Determine the metrics to be collected for the test,</li>
+	<li>Configure NNMi to collect these new metrics,</li>
+	<li>Create a script to retrieve the collected metrics from NNMi NPS Server and stream them to a BVD dashboard.</li>
+</ol>
+
+<p>Note:&nbsp; NNM iSPI Performance for Metrics and Network Performance Server (NPS) is required for this solution as all the metrics&nbsp;to be collected are performance data.&nbsp;</p>
+
+<p>Details for each steps are described below:</p>
+
+<p><strong>Step 1 - Determine the metrics to be collected </strong><br>
+After some investigation of the devices, it was determined that the following metrics need to be collected to understand the devices’ current “stress level”:</p>
+
+<ol>
+	<li>The number of concurrent session on a company’s firewall server. This number indicates how many employees are concurrently connected to the company’s VPN.</li>
+	<li>CPU utilization of the router behind the firewall server</li>
+	<li>Interface utilization of the router behind the firewall server.</li>
+</ol>
+
+<p>The number of concurrent session is not part of NNMi’s standard polling metrics.&nbsp; After reviewing the SNMP MIB on the firewall server (Cisco Adaptive Security Appliance Version 9.12(2)5), the MIB variable cfwConnectionStatValue.40.6 (OID:1.3.6.1.4.1.9.9.147.1.2.2.2.1.3.40.6) was found to contain the number of concurrent session needed.<br>
+For devices other than this particular Cisco Security Appliance, proceed in a similar way: examine the device’s MIB, identify the MIB variable(s) that describe current device load or capacity, and take note of the corresponding OID(s).<br>
+CPU and Interface utilizations are part of NNMi standard performance polling collection and don’t need to be configured through custom polling.<br>
+<br>
+<strong>Step 2 - Configure NNMi to collect the metrics</strong>&nbsp;<br>
+The MIB variable identified in Step 1, cfwConnectionStatValue, is not part of NNMi’s standard (out-of-the-box) SNMP polling. &nbsp;NNMi provides a feature called “Custom Poller” which allows users to collect non-standard MIB variables.<br>
+Create a custom poller “ConcurrentSessionPoller” as shown below:<br>
+<br>
+<img style="height:322px; margin:0px; width:450px" alt="" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7153f0193995.92249861.png"><br>
+<br>
+(The details of creating a custom poller are not covered in this article.&nbsp; Instructions can be found <a href="https://docs.microfocus.com/NNMi/10.30/Content/Administer/nmAdminHelp/nmAdmConfCP0200CreateCPCol.htm">here</a>)<br>
+This custom poller will be polling the number of concurrent session from the firewall server every 5 minutes and store the data in the NPS server.<br>
+To limit the impact of polling for CPU and Interface utilizations on all devices, create a node group “COVID-19” containing only those devices of interest for this use case: the firewall server and the routers:<br>
+<br>
+<img style="height:373px; margin:0px; width:450px" alt="" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7153f042cf90.56002371.png"></p>
+
+<p>Then enable the performance polling on the node group:<br>
+<br>
+<img style="height:342px; margin:0px; width:450px" alt="" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7155531df910.36331397.png"><br>
+<br>
+<strong>Step 3 - Create a script to retrieve the collected metrics from NNMi NPS and stream them to BVD</strong><br>
+As the title indicated, this article is mainly about streaming performance metrics from NNMi to BVD.&nbsp; Therefore this is the most important step.&nbsp; In this step, we wrote a script which essentially performs three tasks:</p>
+
+<ol>
+	<li>Execute SQL queries to retrieve CPU utilization, interface utilization and number of concurrent user sessions from NPS Sybase DB (using dbisql CLI)</li>
+	<li>Format the query results in JSON format</li>
+	<li>Post the JSON-formatted messages to the BVD server (using curl CLI)</li>
+</ol>
+
+<p>These tasks are repeated every 5 minutes.<br>
+Once the script established a stream data channel with the BVD server for each metric, these performance metrics will be available to choose in BVD Dashboard Configuration page:<br>
+<br>
+<img style="height:419px; margin:0px; width:450px" alt="" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7155535a1d81.47387266.png"></p>
+
+<p>Now, each metric (data channel) can easily be associated with a particular widget in your dashboard. Streamed metrics will immediately be visible in BVD as shown in the following example.</p>
+
+<p><strong>Example – </strong>this example consisted of two BVD dashboards, a top-level executive dashboard and a drill-down dashboard showing more network performance data. &nbsp;The content of each dashboard is described as the following:</p>
+
+<ol>
+	<li>The top-level executive dashboard displays the company’s VPN architecture on the right panel.&nbsp;&nbsp;<br>
+	The VPN is protected by firewall servers and a number of routers were deployed behind the firewall servers.&nbsp; The left panel displays the time-series of the number of concurrent session on 2 firewall servers.&nbsp;<br>
+	The firewall widgets or router widgets on the right panel can be configured to link to a drill-down dashboard.<br>
+	<br>
+	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;Top-level Executive Business Dashboard<br>
+	<img style="height:281px; margin:0px; width:500px" alt="" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7158c42b7187.63461447.jpeg"></li>
+	<li>The drill-down dashboard displays network metric data, such as interface and CPU utilization on firewall servers and routers.&nbsp; This dashboard is of more interest to network engineers.&nbsp;<br>
+	<br>
+	&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; Drill-down dashboard showing more network performance data<br>
+	<img style="height:303px; margin:0px; width:500px" alt="" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7158c4bfe3d0.42136887.png"><br>
+	Notes:<br>
+	a)&nbsp;As a prerequisite, NNMi and NA integration with BVD has to be configured.&nbsp; Instructions can be found <a href="https://docs.microfocus.com/itom/Network_Node_Manager_i:2019.11/NetworkDataBVD">here</a><br>
+	b)&nbsp;The script needs to run on the NPS server as it executes SQL queries to the NPS database.</li>
+</ol>
+
+<p><strong>Summary</strong><br>
+This article described the implementation of a solution to a user story which allow NOM customers to collect special MIB variables and stream the collected metrics to a BVD dashboard. &nbsp;</p>
+
+<p><strong>Appendix</strong><br>
+The main script for this solution is included in this section in its entirety, along with the auxiliary SQL scripts.&nbsp;<br>
+Note: &nbsp;the BVD host, BVD API Key, the node group “COVID-19”, and the custom poller data tables in the scripts are user and environment specific. Replace these variables with your own values.</p>
+
+<p><strong>main script</strong>:</p>
+
+<pre><code class="language-bash">#!/usr/bin/bash
+BVDURL="https://&lt;My BVD FQDN&gt;/bvd-receiver/api/submit/"
+BVDAPIKEY="&lt;My BVD API KEY&gt;"
+
+while [ 1 ] 
+do    
+	# Retrieve Interface Utilization % from NPS and send to BVD
+	BVDCURLURL="$BVDURL$BVDAPIKEY/dims/NodeName,InterfaceName"
+	dbisql -nogui -c "DSN=PerfSPIDSN" ifutil.sql | sed -e '/^\s*$/d' -e '/^-/d' -e '/^Node Name/d' -e '/^(/d' -e '/^Execution/d' | while read line    
+	do    
+		NODENAME=`echo $line | cut -d ' ' -f 1 | cut -d '.' -f 1`    
+		IFNAME=`echo $line | cut -d ' ' -f 2`    
+		IFUTIL=`echo $line | cut -d ' ' -f 3`    
+		IFUTILINT=${IFUTIL%.*}    
+		if [ $IFUTILINT -gt 10 ]; then 
+			JSONMSG='{"NodeName":"'$NODENAME'","InterfaceName":"'$IFNAME'","InterfaceUtil%":'$IFUTIL'}'        
+			curl -k -X POST -H "Content-Type: application/json" -d $JSONMSG $BVDCURLURL    
+		fi    
+	done    
+	# Retrieve CPU Utilization % from NPS and send to BVD
+	BVDCURLURL="$BVDURL$BVDAPIKEY/dims/NodeName,MetricGroup"
+	dbisql -nogui -c "DSN=PerfSPIDSN" cpuutil.sql | sed -e '/^\s*$/d' -e '/^-/d' -e '/^Node Name/d' -e '/^(/d' -e '/^Execution/d' | while read line
+	do   
+		NODENAME=`echo $line | cut -d ' ' -f 1 | cut -d '.' -f 1`   
+		CPUUTIL=`echo $line | cut -d ' ' -f 2`   
+		CPUUTILINT=${CPUUTIL%.*}     
+		JSONMSG='{"NodeName":"'$NODENAME'","MetricGroup":"CPUUtilization","CPUUtil%":'$CPUUTIL'}'   
+		curl -k -X POST -H '"Content-Type:application/json"' -d "'"$JSONMSG"'" '"'$BVDCURLURL'"'
+	done
+		
+	# Retrieve ConcurrentSession from NPS and send to BVD
+	BVDCURLURL="$BVDURL$BVDAPIKEY/dims/NodeName,ConcurrentSession"
+	dbisql -nogui -c "DSN=PerfSPIDSN" cpuutil.sql | sed -e '/^\s*$/d' -e '/^-/d' -e '/^Node Name/d' -e '/^(/d' -e '/^Execution/d' | while read line    
+	do       
+		NODENAME=`echo $line | cut -d ' ' -f 1 | cut -d '.' -f 1`        
+		CONCURRENTSESSION=`echo $line | cut -d ' ' -f 2`        
+		JSONMSG='{"NodeName":"'$NODENAME'","ConcurrentSession” :”’$CONCURRENTSESSION'”}'        
+		curl -k -X POST -H '"Content-Type:application/json"' -d "'"$JSONMSG"'" '"'$BVDCURLURL'"'    
+	done    
+	#sleep 5 minutes and repeat        
+	sleep 300
+done</code></pre>
+
+<p><br>
+<strong>cpuutil.sql: </strong></p>
+
+<pre><code class="language-bash">select rawTable."Node Name",  rawTable."CPU 5min Utilization" * 100 as "5 Minute CPU Utilization"
+from f_Raw_ComponentMetrics rawTable, [g_NodeGroup Type1_ComponentTopology] groupTable
+where "CPU 5min Utilization" is not NULL
+and "5 Minute"  &gt; (select dateadd(SECOND, -300, max("5 Minute")) from f_Raw_ComponentMetrics)
+and groupTable.[NodeGroup Type1 Name] in ('COVID-19')
+and groupTable."mbrRef" = rawTable."Node UUID"
+ORDER by "Node Name", "5 Minute"</code></pre>
+
+<p><br>
+<strong>ifutil.sql:</strong></p>
+
+<pre><code class="language-bash">select rawTable."Node Name", rawTable."Interface Name", rawTable."Utilization" * 100  as "Utilization"
+from f_Raw_InterfaceMetrics rawTable, [g_NodeGroup Type1_ComponentTopology] groupTable
+WHERE rawTable."5 Minute"  &gt; (select dateadd(SECOND, -300, max("5 Minute")) from f_Raw_InterfaceMetrics)
+and rawTable.Utilization is NOT NULL
+and groupTable.[NodeGroup Type1 Name] in ('COVID-19')
+and groupTable."mbrRef" = rawTable."Node UUID"
+ORDER by rawTable."Node Name", rawTable."Interface Name"
+</code></pre>
+
+<p><br>
+<strong>concurrentsession.sql:</strong></p>
+
+<pre><code class="language-bash">select rawTable."Node Short Name",  rawTable."CurrentConnect_FW_connects", rawTable."CurrentConnect_FW_connects" * 0.0252 as "UserSessions", rawTable."5 Minute"
+from [f_Raw_Concurrent_FW_nps-CustomPollMetrics] rawTable
+where "5 Minute"  &gt; (select dateadd(SECOND, -300, max("5 Minute")) from [f_Raw_Concurrent_FW_nps-CustomPollMetrics])
+and rawTable."Node Short Name" LIKE '&lt;fw1&gt;'
+ORDER BY "Node Short Name", "5 Minute"
+</code></pre>
+
+<p>&nbsp;</p>
