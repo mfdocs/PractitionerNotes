@@ -1,68 +1,142 @@
-<p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">This service provide the ability audits more important it allows you to schedule an audit to execute against a server.<span class="anchor" id="line-1470"></span><span class="anchor" id="line-1471"></span></p><p class="line867" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;"></p><h2 id="Start_an_Audit_job" style="color: rgb(0, 0, 0); letter-spacing: normal; text-transform: none; font-family: sans-serif;">Start an Audit job</h2><span class="anchor" id="line-1472" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><span class="anchor" id="line-1473" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">To start an Audit immediately we run the following. The setup of the TS has been omitted for brevity.<span class="anchor" id="line-1474"></span><span class="anchor" id="line-1475"></span></p><p class="line867" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;"><span class="anchor" id="line-1476"></span><span class="anchor" id="line-1477"></span><span class="anchor" id="line-1478"></span><span class="anchor" id="line-1479"></span><span class="anchor" id="line-1480"></span><span class="anchor" id="line-1481"></span><span class="anchor" id="line-1482"></span><span class="anchor" id="line-1-183"></span></p><div class="highlight python" style="color: rgb(0, 0, 0); font-family: sans-serif;"><div class="codearea" dir="ltr" lang="en" style="margin: 0.5em 0px; padding: 0px; border: 1pt solid rgb(174, 189, 204); background-color: rgb(243, 245, 247);"><pre dir="ltr" id="CA-247270bb3ef15f8e9d3c99199ac4b9206fa00459" lang="en" style="border-width: initial; border-style: none; background-color: rgb(243, 245, 247); padding: 10pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word;"><span class="line"><span class="ID">AuditTaskService</span> = <span class="ID">ts</span>.<span class="ID">compliance</span>.<span class="ID">sco</span>.<span class="ID">AuditTaskService</span></span>
-<span class="line"><span class="LineAnchor" id="CA-247270bb3ef15f8e9d3c99199ac4b9206fa00459_2"></span><span class="anchor" id="line-2-95"></span><span class="ID">auditRef</span> = <span class="ID">ts</span>.<span class="ID">search</span>.<span class="ID">SearchService</span>.<span class="ID">findObjRefs</span>(</span>
-<span class="line"><span class="LineAnchor" id="CA-247270bb3ef15f8e9d3c99199ac4b9206fa00459_3"></span><span class="anchor" id="line-3-79"></span>    <span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">AuditTaskVO.name = </span><span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">RedHat 5 audit</span><span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">'</span>,<span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">audit_task</span><span class="String" style="color: rgb(0, 64, 128);">'</span>)[<span class="Number" style="color: rgb(0, 128, 192);">0</span>]</span>
-<span class="line"><span class="LineAnchor" id="CA-247270bb3ef15f8e9d3c99199ac4b9206fa00459_4"></span><span class="anchor" id="line-4-65"></span><span class="ID">userTag</span> = <span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">My Audit</span><span class="String" style="color: rgb(0, 64, 128);">"</span></span>
-<span class="line"><span class="LineAnchor" id="CA-247270bb3ef15f8e9d3c99199ac4b9206fa00459_5"></span><span class="anchor" id="line-5-61"></span><span class="ID">jobRef</span> = <span class="ID">AuditTaskService</span>.<span class="ID">startAudit</span>(<span class="ID">auditRef</span>, <span class="ID">userTag</span>, <span class="ResWord" style="color: rgb(160, 0, 0);">None</span>, <span class="ResWord" style="color: rgb(160, 0, 0);">None</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-247270bb3ef15f8e9d3c99199ac4b9206fa00459_6"></span><span class="anchor" id="line-6-53"></span><span class="ResWord" style="color: rgb(160, 0, 0);">print</span> <span class="String" style="color: rgb(0, 64, 128);">"</span><span class="String" style="color: rgb(0, 64, 128);">Submitted job: </span><span class="String" style="color: rgb(0, 64, 128);">%s</span><span class="String" style="color: rgb(0, 64, 128);">"</span> % <span class="ID">jobRef</span></span>
-</pre></div></div><span class="anchor" id="line-1483" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">You will note that a list of servers to the run against was not provided as the Audit Task is defined with this information.<span class="anchor" id="line-1484"></span><span class="anchor" id="line-1485"></span></p><img src="./mediawiki/images/PN/AuditTasks-location.png"><img src="./mediawiki/images/PN/AuditTasks.png"><br><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">Execution:<span class="anchor" id="line-1488"></span><span class="anchor" id="line-1489"></span><span class="anchor" id="line-1490"></span><span class="anchor" id="line-1491"></span></p><pre style="color: rgb(0, 0, 0); border-width: 1pt; border-style: solid; border-color: rgb(174, 189, 204); background-color: rgb(243, 245, 247); padding: 5pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word;"><span class="anchor" id="line-1-26"></span>[root@dc1 AuditTaskService]# ./startAudit.py
-<span class="anchor" id="line-2-24"></span>Submitted job: Audit Servers with audit task "RedHat 5 audit" (JobRef:114310001)</pre><span class="anchor" id="line-1492" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><span class="anchor" id="line-1493" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><div><br></div><img src="./mediawiki/images/PN/AuditTasks-job.png"><br><p class="line867" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;"></p><h2 id="Script_to_Audit" style="color: rgb(0, 0, 0); letter-spacing: normal; text-transform: none; font-family: sans-serif;">Script to Audit</h2><span class="anchor" id="line-1496" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><span class="anchor" id="line-1497" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">Create a simple audit from a shell script using the scripts exit code for success/failure of the custom check. It maybe helpful to use this relationship diagram to understand how the classes related to each other when reading the code. The relationship diagram uses Crow's foot notation (also Martin notation).<span class="anchor" id="line-1498"></span><span class="anchor" id="line-1499"></span></p><p class="line867" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;"><span class="anchor" id="line-1500"></span><span class="anchor" id="line-1501"></span><span class="anchor" id="line-1502"></span><span class="anchor" id="line-1503"></span><span class="anchor" id="line-1504"></span><span class="anchor" id="line-1505"></span><span class="anchor" id="line-1506"></span><span class="anchor" id="line-1507"></span><span class="anchor" id="line-1508"></span><span class="anchor" id="line-1509"></span><span class="anchor" id="line-1510"></span><span class="anchor" id="line-1-185"></span></p><img src="./mediawiki/images/PN/graphviz1397582284742532212.png"><br><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">You may notice in the diagram that a task can have many policies however the assignment would indicate this is a 1:1 relationship.<span class="anchor" id="line-1512"></span><span class="anchor" id="line-1513"></span><span class="anchor" id="line-1514"></span></p><pre style="color: rgb(0, 0, 0); border-width: 1pt; border-style: solid; border-color: rgb(174, 189, 204); background-color: rgb(243, 245, 247); padding: 5pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word;"><span class="anchor" id="line-1-27"></span>at_vo.policy = ap</pre><span class="anchor" id="line-1515" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line862" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">This form is used as the AuditPolicyVO has not been created and and there is no Ref available. The API designer realized this problem and to avoid having to save half the object before saving the rest a&nbsp;<tt class="backtick"></tt><tt class="backtick">setPolicy()</tt><tt class="backtick"></tt>&nbsp;method was introduced. Indeed there is a 1:M method call but the AuditPolicy instance has no Ref(erence) until its saved.<span class="anchor" id="line-1516"></span><span class="anchor" id="line-1517"></span><span class="anchor" id="line-1518"></span></p><pre style="color: rgb(0, 0, 0); border-width: 1pt; border-style: solid; border-color: rgb(174, 189, 204); background-color: rgb(243, 245, 247); padding: 5pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word;"><span class="anchor" id="line-1-28"></span>at_vo.policyRefs = [ap.ref]</pre><span class="anchor" id="line-1519" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><span class="anchor" id="line-1520" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">This example will explore several classes and their relationships to an Audit.<span class="anchor" id="line-1521"></span><span class="anchor" id="line-1522"></span><span class="anchor" id="line-1523"></span><span class="anchor" id="line-1524"></span><span class="anchor" id="line-1525"></span><span class="anchor" id="line-1526"></span><span class="anchor" id="line-1527"></span><span class="anchor" id="line-1528"></span><span class="anchor" id="line-1529"></span><span class="anchor" id="line-1530"></span><span class="anchor" id="line-1531"></span><span class="anchor" id="line-1532"></span><span class="anchor" id="line-1533"></span><span class="anchor" id="line-1534"></span><span class="anchor" id="line-1535"></span><span class="anchor" id="line-1536"></span><span class="anchor" id="line-1537"></span><span class="anchor" id="line-1538"></span><span class="anchor" id="line-1539"></span><span class="anchor" id="line-1540"></span><span class="anchor" id="line-1541"></span><span class="anchor" id="line-1542"></span><span class="anchor" id="line-1543"></span><span class="anchor" id="line-1544"></span><span class="anchor" id="line-1545"></span><span class="anchor" id="line-1546"></span><span class="anchor" id="line-1547"></span><span class="anchor" id="line-1548"></span><span class="anchor" id="line-1549"></span><span class="anchor" id="line-1550"></span><span class="anchor" id="line-1551"></span><span class="anchor" id="line-1552"></span><span class="anchor" id="line-1553"></span><span class="anchor" id="line-1554"></span><span class="anchor" id="line-1555"></span><span class="anchor" id="line-1556"></span><span class="anchor" id="line-1557"></span><span class="anchor" id="line-1558"></span><span class="anchor" id="line-1559"></span><span class="anchor" id="line-1560"></span><span class="anchor" id="line-1561"></span><span class="anchor" id="line-1562"></span><span class="anchor" id="line-1563"></span><span class="anchor" id="line-1564"></span><span class="anchor" id="line-1565"></span><span class="anchor" id="line-1566"></span><span class="anchor" id="line-1567"></span><span class="anchor" id="line-1568"></span><span class="anchor" id="line-1569"></span><span class="anchor" id="line-1570"></span><span class="anchor" id="line-1571"></span><span class="anchor" id="line-1572"></span><span class="anchor" id="line-1573"></span><span class="anchor" id="line-1574"></span><span class="anchor" id="line-1575"></span><span class="anchor" id="line-1576"></span><span class="anchor" id="line-1577"></span><span class="anchor" id="line-1578"></span><span class="anchor" id="line-1579"></span><span class="anchor" id="line-1-186"></span></p><div class="highlight python" style="color: rgb(0, 0, 0); font-family: sans-serif;"><div class="codearea" dir="ltr" lang="en" style="margin: 0.5em 0px; padding: 0px; border: 1pt solid rgb(174, 189, 204); background-color: rgb(243, 245, 247);"><pre dir="ltr" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52" lang="en" style="border-width: initial; border-style: none; background-color: rgb(243, 245, 247); padding: 10pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word;"><span class="line"><span class="Comment" style="color: rgb(0, 128, 0);">#!/opt/opsware/bin/python</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_2"></span><span class="anchor" id="line-2-96"></span><span class="Comment" style="color: rgb(0, 128, 0);"># create a simple audit from a shell script</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_3"></span><span class="anchor" id="line-3-80"></span><span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">sys</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_4"></span><span class="anchor" id="line-4-66"></span><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">pytwist</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">twistserver</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_5"></span><span class="anchor" id="line-5-62"></span><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">pytwist.com.opsware.server</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">ServerRef</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_6"></span><span class="anchor" id="line-6-54"></span><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">pytwist.com.opsware.compliance.sco</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> <span class="ID">AuditTaskVO</span>, <span class="ID">AuditPolicy</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_7"></span><span class="anchor" id="line-7-44"></span><span class="ResWord" style="color: rgb(160, 0, 0);">from</span> <span class="ID">pytwist.com.opsware.compliance.sco.policy</span> <span class="ResWord" style="color: rgb(160, 0, 0);">import</span> *</span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_8"></span><span class="anchor" id="line-8-41"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_9"></span><span class="anchor" id="line-9-36"></span><span class="ResWord" style="color: rgb(160, 0, 0);">if</span> <span class="ResWord" style="color: rgb(160, 0, 0);">len</span>(<span class="ID">sys</span>.<span class="ID">argv</span>) &lt; <span class="Number" style="color: rgb(0, 128, 192);">3</span>:</span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_10"></span><span class="anchor" id="line-10-31"></span>    <span class="ResWord" style="color: rgb(160, 0, 0);">print</span> <span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">usage: </span><span class="String" style="color: rgb(0, 64, 128);">%s</span><span class="String" style="color: rgb(0, 64, 128);"> &lt;policy name&gt; &lt;server id&gt; &lt;script name&gt;</span><span class="String" style="color: rgb(0, 64, 128);">'</span> % <span class="ID">sys</span>.<span class="ID">argv</span>[<span class="Number" style="color: rgb(0, 128, 192);">0</span>]</span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_11"></span><span class="anchor" id="line-11-28"></span>    <span class="ID">sys</span>.<span class="ID">exit</span>(<span class="Number" style="color: rgb(0, 128, 192);">1</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_12"></span><span class="anchor" id="line-12-27"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_13"></span><span class="anchor" id="line-13-23"></span><span class="ID">name</span> = <span class="ID">sys</span>.<span class="ID">argv</span>[<span class="Number" style="color: rgb(0, 128, 192);">1</span>]</span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_14"></span><span class="anchor" id="line-14-22"></span><span class="ID">server_id</span> = <span class="ID">sys</span>.<span class="ID">argv</span>[<span class="Number" style="color: rgb(0, 128, 192);">2</span>]</span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_15"></span><span class="anchor" id="line-15-20"></span><span class="ID">script</span> = <span class="ResWord" style="color: rgb(160, 0, 0);">open</span>(<span class="ID">sys</span>.<span class="ID">argv</span>[<span class="Number" style="color: rgb(0, 128, 192);">3</span>]).<span class="ID">read</span>()</span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_16"></span><span class="anchor" id="line-16-19"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_17"></span><span class="anchor" id="line-17-18"></span><span class="ID">ts</span> = <span class="ID">twistserver</span>.<span class="ID">TwistServer</span>()</span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_18"></span><span class="anchor" id="line-18-18"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_19"></span><span class="anchor" id="line-19-16"></span><span class="ID">at_vo</span> = <span class="ID">AuditTaskVO</span>()</span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_20"></span><span class="anchor" id="line-20-15"></span><span class="ID">ap</span>    = <span class="ID">AuditPolicy</span>()</span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_21"></span><span class="anchor" id="line-21-13"></span><span class="ID">sop</span>   = <span class="ID">ScriptOutputPolicy</span>()</span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_22"></span><span class="anchor" id="line-22-11"></span><span class="ID">sor</span>   = <span class="ID">ScriptOutputRule</span>()</span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_23"></span><span class="anchor" id="line-23-11"></span><span class="ID">pcd</span>   = <span class="ID">PolicyComparisonDefinition</span>()</span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_24"></span><span class="anchor" id="line-24-9"></span><span class="ID">rsv</span>   = <span class="ID">RuleSourceValue</span>()</span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_25"></span><span class="anchor" id="line-25-9"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_26"></span><span class="anchor" id="line-26-7"></span><span class="ID">rsv</span>.<span class="ID">resolvedValue</span> = <span class="ResWord" style="color: rgb(160, 0, 0);">None</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_27"></span><span class="anchor" id="line-27-6"></span><span class="ID">rsv</span>.<span class="ID">source</span> = <span class="Number" style="color: rgb(0, 128, 192);">0</span> <span class="Comment" style="color: rgb(0, 128, 0);">## LITERAL_SOURCE</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_28"></span><span class="anchor" id="line-28-5"></span><span class="ID">rsv</span>.<span class="ID">value</span> = <span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">0</span><span class="String" style="color: rgb(0, 64, 128);">'</span> <span class="Comment" style="color: rgb(0, 128, 0);">## exit code 0</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_29"></span><span class="anchor" id="line-29-5"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_30"></span><span class="anchor" id="line-30-5"></span><span class="ID">pcd</span>.<span class="ID">caseIgnore</span> = <span class="Number" style="color: rgb(0, 128, 192);">0</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_31"></span><span class="anchor" id="line-31-5"></span><span class="ID">pcd</span>.<span class="ID">notModifier</span> = <span class="Number" style="color: rgb(0, 128, 192);">0</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_32"></span><span class="anchor" id="line-32-5"></span><span class="ID">pcd</span>.<span class="ID">argsType</span> = <span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">EXITCODE</span><span class="String" style="color: rgb(0, 64, 128);">'</span> <span class="Comment" style="color: rgb(0, 128, 0);">## EXIT_CODE_ARGS_TYPE</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_33"></span><span class="anchor" id="line-33-5"></span><span class="ID">pcd</span>.<span class="ID">operator</span> = <span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">EQ</span><span class="String" style="color: rgb(0, 64, 128);">'</span>       <span class="Comment" style="color: rgb(0, 128, 0);">## equal to</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_34"></span><span class="anchor" id="line-34-3"></span><span class="ID">pcd</span>.<span class="ID">values</span> = [ <span class="ID">rsv</span> ]</span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_35"></span><span class="anchor" id="line-35-3"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_36"></span><span class="anchor" id="line-36-3"></span><span class="ID">sor</span>.<span class="ID">argumentsForCmd</span> = <span class="ResWord" style="color: rgb(160, 0, 0);">None</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_37"></span><span class="anchor" id="line-37-3"></span><span class="ID">sor</span>.<span class="ID">disabled</span> = <span class="Number" style="color: rgb(0, 128, 192);">0</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_38"></span><span class="anchor" id="line-38-3"></span><span class="ID">sor</span>.<span class="ID">displayName</span> = <span class="ID">name</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_39"></span><span class="anchor" id="line-39-3"></span><span class="ID">sor</span>.<span class="ID">ignoreNonZeroExitCode</span> = <span class="Number" style="color: rgb(0, 128, 192);">0</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_40"></span><span class="anchor" id="line-40-3"></span><span class="ID">sor</span>.<span class="ID">policyComparisonDefinition</span> = <span class="ID">pcd</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_41"></span><span class="anchor" id="line-41-3"></span><span class="ID">sor</span>.<span class="ID">policyType</span> = <span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">POLICY</span><span class="String" style="color: rgb(0, 64, 128);">'</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_42"></span><span class="anchor" id="line-42-3"></span><span class="ID">sor</span>.<span class="ID">script</span> = <span class="ID">script</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_43"></span><span class="anchor" id="line-43-3"></span><span class="ID">sor</span>.<span class="ID">scriptType</span> = <span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">SH</span><span class="String" style="color: rgb(0, 64, 128);">'</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_44"></span><span class="anchor" id="line-44-3"></span><span class="ID">sor</span>.<span class="ID">remediateArgs</span> = <span class="ResWord" style="color: rgb(160, 0, 0);">None</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_45"></span><span class="anchor" id="line-45-3"></span><span class="ID">sor</span>.<span class="ID">remediateScript</span> = <span class="ResWord" style="color: rgb(160, 0, 0);">None</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_46"></span><span class="anchor" id="line-46-3"></span><span class="ID">sor</span>.<span class="ID">remediateScriptType</span> = <span class="ResWord" style="color: rgb(160, 0, 0);">None</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_47"></span><span class="anchor" id="line-47-3"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_48"></span><span class="anchor" id="line-48-3"></span><span class="ID">sop</span>.<span class="ID">rules</span> = [ <span class="ID">sor</span> ]</span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_49"></span><span class="anchor" id="line-49-3"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_50"></span><span class="anchor" id="line-50-3"></span><span class="ID">ap</span>.<span class="ID">SCOPolicy</span> = [ <span class="ID">sop</span> ]</span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_51"></span><span class="anchor" id="line-51-3"></span><span class="ID">ap</span>.<span class="ID">policyPlatformType</span> = <span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">UNIX</span><span class="String" style="color: rgb(0, 64, 128);">'</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_52"></span><span class="anchor" id="line-52-3"></span><span class="ID">at_vo</span>.<span class="ID">policy</span> = <span class="ID">ap</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_53"></span><span class="anchor" id="line-53-3"></span><span class="ID">at_vo</span>.<span class="ID">name</span> = <span class="ID">name</span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_54"></span><span class="anchor" id="line-54-3"></span><span class="ID">at_vo</span>.<span class="ID">targets</span> = [ <span class="ID">ServerRef</span>(<span class="ID">server_id</span>) ]</span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_55"></span><span class="anchor" id="line-55-2"></span></span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_56"></span><span class="anchor" id="line-56-2"></span><span class="ID">v</span> = <span class="ID">ts</span>.<span class="ID">compliance</span>.<span class="ID">sco</span>.<span class="ID">AuditTaskService</span>.<span class="ID">create</span>(<span class="ID">at_vo</span>)</span>
-<span class="line"><span class="LineAnchor" id="CA-34e8ecca742188e33ca85775ba447246b26d7a52_57"></span><span class="anchor" id="line-57-2"></span><span class="ResWord" style="color: rgb(160, 0, 0);">print</span> <span class="String" style="color: rgb(0, 64, 128);">'</span><span class="String" style="color: rgb(0, 64, 128);">created new audit, ID = </span><span class="String" style="color: rgb(0, 64, 128);">%s</span><span class="String" style="color: rgb(0, 64, 128);">'</span> % <span class="ID">v</span>.<span class="ID">ref</span>.<span class="ID">id</span></span>
-</pre></div></div><span class="anchor" id="line-1580" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">The script audit check<span class="anchor" id="line-1581"></span><span class="anchor" id="line-1582"></span><span class="anchor" id="line-1583"></span><span class="anchor" id="line-1584"></span><span class="anchor" id="line-1585"></span></p><pre style="color: rgb(0, 0, 0); border-width: 1pt; border-style: solid; border-color: rgb(174, 189, 204); background-color: rgb(243, 245, 247); padding: 5pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word;"><span class="anchor" id="line-1-29"></span>[root@dc1 AuditTaskService]# cat hasTmpHello.sh
-<span class="anchor" id="line-2-25"></span>#!/bin/sh
-<span class="anchor" id="line-3-17"></span>test -f /tmp/hello.txt</pre><span class="anchor" id="line-1586" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><p class="line874" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;">Execution<span class="anchor" id="line-1587"></span><span class="anchor" id="line-1588"></span><span class="anchor" id="line-1589"></span><span class="anchor" id="line-1590"></span></p><pre style="color: rgb(0, 0, 0); border-width: 1pt; border-style: solid; border-color: rgb(174, 189, 204); background-color: rgb(243, 245, 247); padding: 5pt; font-family: courier, monospace; white-space: pre-wrap; overflow-wrap: break-word;"><span class="anchor" id="line-1-30"></span>[root@dc1 AuditTaskService]# ./script2audit.py hasTmpHello 91190001 hasTmpHello.sh
-<span class="anchor" id="line-2-26"></span>created new audit, ID = 1220001</pre><span class="anchor" id="line-1591" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><span class="anchor" id="line-1592" style="color: rgb(0, 0, 0); font-family: sans-serif;"></span><div><br></div><img src="./mediawiki/images/PN/hasTmpHelloAudit.png"><br><p class="line867" style="color: rgb(0, 0, 0); letter-spacing: normal; font-family: sans-serif; font-size: 16px;"><img src="./mediawiki/images/PN/hasTmpHelloAudit-target.png"><br></p>
+<p>This service provide the ability audits more important it allows you to schedule an audit to execute against a server.</p>
+
+<p>&nbsp;</p>
+
+<h2>Start an Audit job</h2>
+
+<p>To start an Audit immediately we run the following. The setup of the TS has been omitted for brevity.</p>
+
+<p>&nbsp;</p>
+
+<pre>AuditTaskService = ts.compliance.sco.AuditTaskService
+auditRef = ts.search.SearchService.findObjRefs(
+    'AuditTaskVO.name = "RedHat 5 audit"','audit_task')[0]
+userTag = "My Audit"
+jobRef = AuditTaskService.startAudit(auditRef, userTag, None, None)
+print "Submitted job: %s" % jobRef
+</pre>
+
+<p>You will note that a list of servers to the run against was not provided as the Audit Task is defined with this information.</p>
+
+<p><img src="./mediawiki/images/PN/AuditTasks-location.png"><img src="./mediawiki/images/PN/AuditTasks.png"></p>
+
+<p>&nbsp;</p>
+
+<p>Execution:</p>
+
+<p>&nbsp;</p>
+
+<pre>[root@dc1 AuditTaskService]# ./startAudit.py
+Submitted job: Audit Servers with audit task "RedHat 5 audit" (JobRef:114310001)</pre>
+
+<p>&nbsp;</p>
+
+<p><img src="./mediawiki/images/PN/AuditTasks-job.png"></p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<h2>Script to Audit</h2>
+
+<p>Create a simple audit from a shell script using the scripts exit code for success/failure of the custom check. It maybe helpful to use this relationship diagram to understand how the classes related to each other when reading the code. The relationship diagram uses Crow's foot notation (also Martin notation).</p>
+
+<p>&nbsp;</p>
+
+<p><img src="./mediawiki/images/PN/graphviz1397582284742532212.png"></p>
+
+<p>&nbsp;</p>
+
+<p>You may notice in the diagram that a task can have many policies however the assignment would indicate this is a 1:1 relationship.</p>
+
+<p>&nbsp;</p>
+
+<pre>at_vo.policy = ap</pre>
+
+<p>This form is used as the AuditPolicyVO has not been created and and there is no Ref available. The API designer realized this problem and to avoid having to save half the object before saving the rest a&nbsp;<tt>setPolicy()</tt>&nbsp;method was introduced. Indeed there is a 1:M method call but the AuditPolicy instance has no Ref(erence) until its saved.</p>
+
+<pre>at_vo.policyRefs = [ap.ref]</pre>
+
+<p>This example will explore several classes and their relationships to an Audit.</p>
+
+<pre>#!/opt/opsware/bin/python
+# create a simple audit from a shell script
+import sys
+from pytwist import twistserver
+from pytwist.com.opsware.server import ServerRef
+from pytwist.com.opsware.compliance.sco import AuditTaskVO, AuditPolicy
+from pytwist.com.opsware.compliance.sco.policy import *
+
+if len(sys.argv) &lt; 3:
+    print 'usage: %s &lt;policy name&gt; &lt;server id&gt; &lt;script name&gt;' % sys.argv[0]
+    sys.exit(1)
+
+name = sys.argv[1]
+server_id = sys.argv[2]
+script = open(sys.argv[3]).read()
+
+ts = twistserver.TwistServer()
+
+at_vo = AuditTaskVO()
+ap    = AuditPolicy()
+sop   = ScriptOutputPolicy()
+sor   = ScriptOutputRule()
+pcd   = PolicyComparisonDefinition()
+rsv   = RuleSourceValue()
+
+rsv.resolvedValue = None
+rsv.source = 0 ## LITERAL_SOURCE
+rsv.value = '0' ## exit code 0
+
+pcd.caseIgnore = 0
+pcd.notModifier = 0
+pcd.argsType = 'EXITCODE' ## EXIT_CODE_ARGS_TYPE
+pcd.operator = 'EQ'       ## equal to
+pcd.values = [ rsv ]
+
+sor.argumentsForCmd = None
+sor.disabled = 0
+sor.displayName = name
+sor.ignoreNonZeroExitCode = 0
+sor.policyComparisonDefinition = pcd
+sor.policyType = 'POLICY'
+sor.script = script
+sor.scriptType = 'SH'
+sor.remediateArgs = None
+sor.remediateScript = None
+sor.remediateScriptType = None
+
+sop.rules = [ sor ]
+
+ap.SCOPolicy = [ sop ]
+ap.policyPlatformType = 'UNIX'
+at_vo.policy = ap
+at_vo.name = name
+at_vo.targets = [ ServerRef(server_id) ]
+
+v = ts.compliance.sco.AuditTaskService.create(at_vo)
+print 'created new audit, ID = %s' % v.ref.id
+</pre>
+
+<p>The script audit check</p>
+
+<pre>[root@dc1 AuditTaskService]# cat hasTmpHello.sh
+#!/bin/sh
+test -f /tmp/hello.txt</pre>
+
+<p>Execution</p>
+
+<pre>[root@dc1 AuditTaskService]# ./script2audit.py hasTmpHello 91190001 hasTmpHello.sh
+created new audit, ID = 1220001</pre>
+
+<p>&nbsp;</p>
+
+<p><img src="./mediawiki/images/PN/hasTmpHelloAudit.png"></p>
+
+<p>&nbsp;</p>
+
+<p><img src="./mediawiki/images/PN/hasTmpHelloAudit-target.png"></p>
+
+<p>&nbsp;</p>
