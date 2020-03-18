@@ -1,1 +1,120 @@
- 
+<p>UCMDB Local Client</p>
+
+<ul style="list-style-type:square">
+	<li>Supports RTSM 10.3x and newer, that corresponds to OBM 10.6x and newer.</li>
+	<li>Backward compatible, new UCMDB Local Client can access older versions of RTSM. <em>(As long as it’s RTSM 10.3x or newer).</em></li>
+	<li>It applies to OBM classic and containerized.</li>
+	<li>It can connect to other RTSMs shipped with other ITOM products, i.e.: CMS, SMA, APM, etc.</li>
+	<li>Can be downloaded from OBM menu:
+	<ul style="list-style-type:square">
+		<li>Administration – RTSM Administration – Local Client</li>
+	</ul>
+	</li>
+</ul>
+
+<p>&nbsp;</p>
+
+<p><img src="/mediawiki/images/pn_images/pn_image_5e7273006962d4.85675455.png" style="height:107px; width:457px"></p>
+
+<p>Who needs access to RTSM?</p>
+
+<ul style="list-style-type:square">
+	<li>Not everyone requires access to RTSM, in fact most OBM operations and functionalities are available to OBM users just by providing the correct permissions in OBM roles.</li>
+	<li>You will need access to RTSM if you need to:
+	<ul style="list-style-type:square">
+		<li>Create/update views/queries in Modeling Studio, create enrichments, etc.</li>
+		<li>Create Data Flow Probe (DFP), create RTSM integrations, etc.</li>
+		<li>Create/import/export RTSM packages in the package manager, job scheduler, etc.</li>
+	</ul>
+	</li>
+</ul>
+
+<p>&nbsp;</p>
+
+<p>Access the Client through the GW or LB</p>
+
+<ul>
+	<li>Use OBM HTTP/HTTPS and port.</li>
+	<li>Use Opsb as Target Env.</li>
+</ul>
+
+<p><img src="/mediawiki/images/pn_images/pn_image_5e7273009beec7.99432829.png" style="height:386px; width:486px"></p>
+
+<p>&nbsp;</p>
+
+<p>1st use case (simple): RTSM access is limited to small number of admin users with full permission to OBM and RTSM.</p>
+
+<ul style="list-style-type:square">
+	<li>Create your OBM users (local or LDAP) as you usually do.</li>
+	<li>Login to OBM as admin, select the user(s) that require full access to OBM and RTSM and provide them “Super-Admin” permissions.</li>
+	<li>Those users will have Server Administrator Privileges to RTSM as well as Full admin privileges to OBM.</li>
+	<li>Be careful!</li>
+</ul>
+
+<p>OBM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RTSM</p>
+
+<p><img src="/mediawiki/images/pn_images/pn_image_5e727300cc1e00.75859521.png" style="height:113px; width:369px"><img src="/mediawiki/images/pn_images/pn_image_5e7273010a4ce0.39290033.png" style="height:105px; width:321px"></p>
+
+<p>&nbsp;</p>
+
+<p>2nd use case (granular): Many users and groups with different roles require access to RTSM with different permissions</p>
+
+<ul style="list-style-type:square">
+	<li>In OBM: Create a Role with RTSM permissions <em>(in my case FDadminRole)</em></li>
+</ul>
+
+<p><img src="/mediawiki/images/pn_images/pn_image_5e72730156dee8.72676413.png" style="height:305px; width:1058px"></p>
+
+<ul style="list-style-type:square">
+	<li>You can give access to “All” views or “Partial” as needed.</li>
+	<li>Create a group and assign it to the role.</li>
+	<li>Create a user(s) (Local or LDAP) and assign it to the group.</li>
+</ul>
+
+<p>&nbsp;</p>
+
+<p><strong>Adding necessary permissions to the role in RTSM to allow the user(s) to login via UCMDB Local Client.</strong></p>
+
+<ul style="list-style-type:square">
+	<li>Login to UCMDB Local Client using “admin” or “sysadmin” user.</li>
+	<li>Go to Security – Roles Manager.</li>
+	<li>Select the role, select “UI Modules” in the Resource Types, and provide access to the UI Modules.</li>
+	<li>You cannot login if you do not select at least one UI Module</li>
+</ul>
+
+<p><img src="/mediawiki/images/pn_images/pn_image_5e727301ab4901.53528057.png" style="height:555px; width:1258px"></p>
+
+<ul style="list-style-type:square">
+	<li>Go to the “General Actions” tab and provide access to “System Access Actions” so the user can login.</li>
+	<li>You cannot login if you don’t select at least “Access to UI”.</li>
+	<li>You cannot view any CI in your views if you don’t select “View CIs”</li>
+</ul>
+
+<p><img src="/mediawiki/images/pn_images/pn_image_5e727302580303.25144960.png" style="height:570px; width:1281px"></p>
+
+<p>&nbsp;</p>
+
+<p><strong>Completion</strong></p>
+
+<ul style="list-style-type:square">
+	<li>With this configuration, any OBM user assigned to the configured OBM role will be able to login via UCMDB Local Client and navigate through the different UI Modules permitted.</li>
+</ul>
+
+<p>&nbsp;</p>
+
+<p><strong>Scaling Behavior Improvement</strong></p>
+
+<ul style="list-style-type:square">
+	<li>If you use a high resolution monitor, chances are that your UCMDB Local Client is hard to read. Here are the steps to resolve this issue:
+	<ul style="list-style-type:square">
+		<li>Navigate to &lt;UCMDB Local Client dir&gt;/x64/jre/bin</li>
+		<li>Right Click the javaw.exe file to access the file Properties</li>
+		<li>Select the Compatibility tab in the Properties window.</li>
+		<li>Select the check box to “Override high DPI scaling behavior.</li>
+		<li>Choose “System” from the pull-down for “Scaling performed by”.</li>
+		<li>Select OK and relaunch the UCMDB Local Client to see the scaling improvement.</li>
+	</ul>
+	</li>
+</ul>
+
+<p>&nbsp;</p>
