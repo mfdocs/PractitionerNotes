@@ -1,6 +1,6 @@
 <p>Network Automation(NA) offers software upgrade of standalone network devices out of the box. But some of the newer devices like Cisco ASA firewalls can be deployed in a cluster. To upgrade the software on these, NA needs to be cluster aware.&nbsp;</p>
 
-<p>NA offers tools to upgrade device software of clusters. This article shows how the Multi-Task Project, Change Plans and Update Device Software Task capabilities of NA can be used to upgrade Cisco ASA firewalls in a cluster.</p>
+<p>NA offers tools to upgrade device software of clusters. This article shows how the Multi-Task Project, Change Plans and Update Device Software Task capabilities of NA can be used to upgrade Cisco ASA firewalls in a cluster. Also this approach allows you to upgrade multiple ASA clusters in parallel.</p>
 
 <p>&nbsp;</p>
 
@@ -63,7 +63,20 @@
 	<li>Save the task.</li>
 </ol>
 
-<p>&nbsp;</p>
+<p>&nbsp; &nbsp;</p>
+
+<h3 style="color:#aaaaaa; font-style:italic">&nbsp; &nbsp;Task 3</h3>
+
+<ol>
+	<li>Create a sub-task - Update Device Software.</li>
+	<li>Select "UpgradeStdByGrp" and any one ASA firewall device for the target "device/group"</li>
+	<li>Select the ASDM image and the OS image that needs to be transferred to the device and upgraded to.</li>
+	<li>Check the "Reboot device after deploying software" checkbox.</li>
+	<li>Remove only the ASA firewall device selected in step 2 of this task.</li>
+	<li>Save the task.</li>
+</ol>
+
+<p>Refer <a href="https://docs.microfocus.com/itom/Network_Automation:2019.05/UpdateDeviceSoftware">documentation </a>for more information on "Update Device Software" task.</p>
 
 <h3 style="color:#aaaaaa; font-style:italic">&nbsp; &nbsp;Task 4</h3>
 
@@ -84,6 +97,19 @@
 	<li>Select "UpgradeStdByGrp" for the target "device/group"</li>
 	<li>Select the change plan - "Upgrade ASA firewall cluster"</li>
 	<li>For "Upgrade stage" variable, select "POST Failover"</li>
+	<li>Save the task.</li>
+</ol>
+
+<h3 style="color:#aaaaaa; font-style:italic">&nbsp;</h3>
+
+<h3 style="color:#aaaaaa; font-style:italic">Task 6</h3>
+
+<ol>
+	<li>Create a sub-task - Update Device Software.&nbsp;</li>
+	<li>Select "UpgradeStdByGrp" and any one ASA firewall device for the target "device/group"</li>
+	<li>Select the ASDM image and the OS image that needs to be transferred to the device and upgraded to.</li>
+	<li>Check the "Reboot device after deploying software" checkbox.</li>
+	<li>Remove only the ASA firewall device selected in step 2 of this task.</li>
 	<li>Save the task.</li>
 </ol>
 
@@ -117,10 +143,11 @@
 <ol>
 	<li>Create a sub-task - Deploy Change Plan.&nbsp;</li>
 	<li>Select "ASAUpgradeGrp" for the target "device/group"</li>
-	<li>Select the change plan - "Upgrade ASA firewall cluster"</li>
-	<li>For "Upgrade stage" variable, select "POST Failover"</li>
+	<li>Select the change plan - "Upgrade ASA - Group Cleanup"</li>
 	<li>Save the task.</li>
 </ol>
+
+<p>&nbsp;</p>
 
 <p>A sample of how the Multi-Task Project looks like is pasted below -&nbsp;</p>
 
