@@ -2,7 +2,14 @@
 
 <p>NA offers tools to upgrade device software of clusters. This article shows how the Multi-Task Project, Change Plans and Update Device Software Task capabilities of NA can be used to upgrade Cisco ASA firewalls in a cluster. Also this approach allows you to upgrade multiple ASA clusters in parallel.</p>
 
-<p>&nbsp;</p>
+<p>There are a few validations in place to before and after upgrading the cluster.&nbsp;</p>
+
+<ol>
+	<li>Verify if the current running&nbsp;OS image and ASDM image are present on the device. This will ensure that if the upgrade fails, there is a valid image to use on the device to revert back. The revert is not automated in this script.</li>
+	<li>Only if the device is in StanbyActive state, it will be upgraded.</li>
+	<li>First the Standby device is upgraded and verified if it comes back up with as StandbyActive.</li>
+	<li>Then the script performs a failover and does the first validations for the new standby device.</li>
+</ol>
 
 <h2>Preparing the template</h2>
 
