@@ -259,11 +259,11 @@ Rescheduled to run at Fri Feb 14 12:48:24 2020
 
 <h2>Manually moving phases</h2>
 
-<p>It's unlikely that every facility is going to have 100% success. This means for example you will need to move from phase 4-&gt;6, 8-&gt;9 and 12-&gt;13 manually. What is not documented is that you must terminate all the pending jobs before you move to the next phase.</p>
+<p>It's unlikely that every facility is going to have 100% success. This means for example you will need to move from phase 4-&gt;6, 8-&gt;9 and 12-&gt;13 manually. What is not documented is that you must terminate all the pending jobs before you move to the next phase.&nbsp;&nbsp;As you are leaving phase manually and entering a new one you will need to provide the <strong>doit </strong>flag to force the move.</p>
 
 <pre># cd /opt/opsware/oi_util/OpswareCertTool/recert_utils/
-# ./corerecert --cancel_all_agent_recert_jobs</pre>
-
-<p>&nbsp;</p>
+# ./corerecert --cancel_all_agent_recert_jobs
+# ./corerecert --phase &lt;x&gt; --doit
+</pre>
 
 <p>Failure to do this may mean that for example are you in Phase 8 (recert agent) whilst jobs for Phase 4 (Push CA to agent) are still running.</p>
