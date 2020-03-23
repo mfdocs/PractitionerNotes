@@ -1,33 +1,35 @@
-<p>Network Automation(NA) offers software upgrade of standalone network devices out of the box. But some of the newer devices like Cisco ASA firewalls can be deployed in a cluster. To upgrade the software on these, NA needs to be cluster aware.&nbsp;</p>
+<p>Network Automation(NA) offers software upgrade of standalone network devices out of the box. But some of the devices like Cisco ASA firewalls can be deployed in a cluster. While NA does not support upgrading the software on these clustered devices out of the box, NA offers some powerful capabilities to upgrade device software of the clusters&nbsp;</p>
 
-<p>NA offers tools to upgrade device software of clusters. This article shows how the Multi-Task Project, Change Plans and Update Device Software Task capabilities of NA can be used to upgrade Cisco ASA firewalls in a cluster. Also this approach allows you to upgrade multiple ASA clusters in parallel.</p>
+<p>This article describes how the Multi-Task Project, Change Plans and Update Device Software Task capabilities of NA can be used to upgrade devices in a cluster. This&nbsp;approach also allows you to upgrade multiple&nbsp;clusters in parallel.</p>
+
+<p>In this article, Cisco ASA firewall clusters&nbsp;are used as an example to demonstrate the use case.&nbsp;</p>
+
+<p><strong>Note:</strong>&nbsp;The procedure and scripts mentioned below are specific to ASA firewalls, but can be tweaked accordingly for different families of device clusters.</p>
 
 <p>There are a few validations in place&nbsp;before and after upgrading the cluster.&nbsp;</p>
 
 <ol>
-	<li>Verify if the current running&nbsp;OS image and ASDM image are present on the device. This will ensure that if the upgrade fails, there is a valid image to use on the device to revert back. The revert is not automated in this script.</li>
-	<li>Only if the device is in StanbyActive state, it will be upgraded.</li>
+	<li>Verify if the current running&nbsp;software image and ASDM image are present on the device. This will ensure that if the upgrade fails, there is a valid image to use on the device to revert back. The revert is not automated in this script.</li>
+	<li>Only if the device is in "StandbyActive" state, it will be upgraded.</li>
 	<li>First the Standby device is upgraded and verified if it comes back up with&nbsp;StandbyActive state.</li>
 	<li>Then the script performs a failover and does the first three validations for the new standby device.</li>
 </ol>
 
-<h2>Preparing the template</h2>
+<h2>Preparing the task template</h2>
 
-<p>This procedure is done only once and the template is saved. Later on, the saved template can be repeatedly executed as a task.&nbsp; Below are the three steps involved to create the task template</p>
+<p>Task template is a capability in NA where we all the details of the task can be filled and saved. The&nbsp;template can then be run multiple times as a task with/without editing the&nbsp;values in it.</p>
+
+<p>Below are the three steps involved to create the task template to perform software upgrade of a device cluster -&nbsp;</p>
 
 <ol>
-	<li>Import the change plans into NA</li>
 	<li>Create device groups&nbsp;</li>
+	<li>Import the change plans into NA</li>
 	<li>Create a <strong>Multi-Task Project</strong> template</li>
 </ol>
 
 <p>&nbsp;</p>
 
-<h3>&nbsp; &nbsp;Import Change Plans into NA</h3>
-
-<p>&nbsp; &nbsp;There are three Change Plans created to solve the use case. They can be found as a single file in the appendix below. Save the contents in a file and import them from the Change Plans page in UI. Refer <a href="https://docs.microfocus.com/itom/Network_Automation:2019.05/ManageChangePlans#Import/export_change_plans">documentation</a> on how to import change plans.</p>
-
-<h3>&nbsp; &nbsp;Create device groups</h3>
+<h3>&nbsp;Create device groups</h3>
 
 <p>&nbsp; &nbsp; &nbsp;A couple of pre-defined empty device groups are needed for this approach. The change plans use these device groups to perform the tasks. Device groups that need to be created -&nbsp;</p>
 
@@ -37,6 +39,20 @@
 </ul>
 
 <p>&nbsp;</p>
+
+<h3>&nbsp; &nbsp;Import Change Plans into NA</h3>
+
+<p>&nbsp; &nbsp;There are three Change Plans created to solve the use case. They can be found as a single file in the appendix below. Save the contents in a file and import them from the Change Plans page in UI. Refer <a href="https://docs.microfocus.com/itom/Network_Automation:2019.05/ManageChangePlans#Import/export_change_plans">documentation</a> on how to import change plans.</p>
+
+<p>The change plans perform the below tasks -&nbsp;</p>
+
+<ul>
+	<li>Check image exists - it checks if the devices have the software and ASDM images. If it exists, the script renames the images on the device. The script also segregates the devices into the appropriate device groups created in the previous step.</li>
+	<li>Upgrade ASA firewall cluster - the main script of the template. It performs the validations before and after software upgrade. It&nbsp;is also responsible for toggling the active/standby devices.</li>
+	<li>Group Cleanup - as the name suggests, it cleans up the device groups after the upgrade.</li>
+</ul>
+
+<h3>&nbsp;</h3>
 
 <h3>&nbsp; &nbsp;Create Multi-Task Project template</h3>
 
