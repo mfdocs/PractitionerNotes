@@ -1,1 +1,32 @@
- 
+<p>An APX is an&nbsp;<strong>AP</strong>plication e<strong>X</strong>tension provided either with the product or externally as a custom developed extension. The list of APX's installed on the system can be found either though the UI or via the command line execute on the core.</p>
+
+<pre>#/opt/opsware/bin/apxtool query
+ 210001 (webapp): com.hp.sa.ad_credential   Active Directory Credential Store
+ 180001 (script): com.hp.appconfig.push     AppConfig Push Permission
+ 260001 (script): com.hp.recert.apx         Recertify Agent on Managed Servers</pre>
+
+<p>Each APX has unique ID and a unique NAME. Only APX's of type&nbsp;<tt>script</tt>&nbsp;maybe pro-grammatically invoked.</p>
+
+<h2>Recertify an agent</h2>
+
+<p>When locating an APX you should use the uniqueName to look it up.</p>
+
+<pre>from pytwist import twistserver
+from pytwist.com.opsware.job import JobNotification
+from pytwist.com.opsware.apx import ProgramAPXJobArgs
+from pytwist.com.opsware.server import ServerRef
+
+ts = twistserver.TwistServer()
+ts.authenticate('user','passwd')
+SS = ts.search.SearchService
+PAS = ts.apx.ProgramAPXService
+args = ProgramAPXJobArgs()
+args.scriptTargets = [ServerRef(61260001), ServerRef(60001)]
+args.jobDescription = "Recert Aged Agents"
+args.recalculateServersAtRuntime = False
+recertApx = SS.findObjRefs('APXVO.uniqueName = com.hp.recert.apx','apx')[0]
+jobRef = PAS.startProgramAPX(recertApx, args,
+                             'Recert Aged Agents',
+                             JobNotification(),
+                             None)
+print jobRef</pre>
