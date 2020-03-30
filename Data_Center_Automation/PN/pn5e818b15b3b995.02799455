@@ -119,7 +119,7 @@ useradd -r haproxy<br>
 haproxy -v</tt></p>
 
 <p><br>
-<strong>7.</strong> Backup any existing haproxy.cfg file and compose a new haproxy.cfg file for your ITOM Suite.<br>
+<strong>7.</strong> Backup any existing haproxy.cfg file and compose a new haproxy.cfg file for your ITOM Suite. The following configuration file has been&nbsp;tested.<br>
 <tt>mv /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg__original</tt></p>
 
 <p><tt>cat &lt;&lt;ENDFILE &gt;/etc/haproxy/haproxy.cfg<br>
@@ -275,4 +275,4 @@ systemctl status haproxy -l</tt></p>
 <p><br>
 <strong>11.</strong> Make sure that both the HAProxy VMs are running exact same configuration file. You may HAProxy configuration file from one VM to another &amp; start the service. This is a good practice.</p>
 
-<p><strong>12. </strong>HAProxy Peers (aka, HAProxy in High-Availability mode) is up &amp; running now. Uncomment <tt>#LOAD_BALANCER_HOST=""</tt> parameter and set <code>"haproxy1.domain1.com"&nbsp;to LOAD_BALANCER_HOST</code> parameter in CDF's install.properties file and go ahead with CDF and ITOM Suite Installation. If there is any mis-configuration in HAProxy Configuration file, an error may show up during CDF installation. CDF Installation log will have&nbsp;clue to troubleshootmistake. Fix it and proceed with CDF &amp; Suite installation.</p>
+<p><strong>12. </strong>HAProxy Peers (aka, HAProxy in High-Availability mode) is up &amp; running now. Uncomment <tt>#LOAD_BALANCER_HOST=""</tt> parameter and set <code>"haproxy1.domain1.com"&nbsp;to LOAD_BALANCER_HOST</code> parameter in CDF's install.properties file and go ahead with CDF and ITOM Suite Installation. If there is any mis-configuration in HAProxy Configuration file, an error may show up during CDF installation. CDF Installation log will have&nbsp;clue to troubleshoot. Fix it and proceed with CDF &amp; Suite installation.</p>
