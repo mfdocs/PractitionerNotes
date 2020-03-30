@@ -31,7 +31,7 @@ Disclaimer</h2>
 
 <p>External Load Balancer with HAProxy (Or another other similar software) needs to be up and running before ITOM suite is installed. It is essential that configuration file is tested and HAProxy service is running at least on one node before ITOM suite installation starts. HAProxy can be configured on single server in standalone mode, or with two or more servers for HAProxy in High-Availability mode.</p>
 
-<p><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e8198087392f8.87685814.jpeg" style="border:0px solid black; height:344px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:774px" vspace="0"></p>
+<p><img alt="" src="/mediawiki/images/pn_images/pn_image_5e8198087392f8.87685814.jpeg" style="height:344px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:774px"></p>
 
 <h2>Prepare the environments</h2>
 
@@ -71,7 +71,7 @@ Configure the VMs and setup steps</h2>
 
 <p>Do these steps on both the VMs that are part of HAProxy Peer setup.</p>
 
-<p><strong>1.</strong> Install "Minimal OS" with Static IP Address. Though HAProxy works with Firewall and SELinux enabled, it will be easier to troubleshoot any issue if both of them are disabled specially if you are doing this for the first time. You may enable both service later.</p>
+<p><strong>1.</strong> Install "Minimal OS" with Static IP Address. Though HAProxy works with Firewall and SELinux enabled, it will be easier to troubleshoot any issue if both of them are disabled specially if you are doing this for the first time. You may enable both service later. Relevant firewall ports are - 22, 1024, 443, 544</p>
 
 <p><br>
 <strong>2.</strong> Edit /etc/hosts file and ensure that you have only following entries -<br>
@@ -199,9 +199,9 @@ listen stats<br>
 ## -- HAProxy Statistics block ends here ----------------------------------</tt></p>
 
 <p><tt>## DCA backend block starts -----------------------------------------------<br>
-## #Replace aa.bb.cc.dd with IP Address of DCA Master #1 Node in this block<br>
-## #Replace aa.bb.cc.ee with IP Address of DCA Master #2 Node in this block<br>
-## #Replace aa.bb.cc.ff with IP Address of DCA Master #3 Node in this block<br>
+## Replace aa.bb.cc.dd with IP Address of DCA Master #1 Node in this block<br>
+## Replace aa.bb.cc.ee with IP Address of DCA Master #2 Node in this block<br>
+## Replace aa.bb.cc.ff with IP Address of DCA Master #3 Node in this block<br>
 ## 'DCAm1', 'DCAm2' &amp; 'DCAm3' in this block can be left as it is.<br>
 backend DCA_https_back<br>
 &nbsp; &nbsp;mode tcp<br>
