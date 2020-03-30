@@ -31,7 +31,7 @@ Disclaimer</h2>
 
 <p>External Load Balancer with HAProxy (Or another other similar software) needs to be up and running before ITOM suite is installed. It is essential that configuration file is tested and HAProxy service is running at least on one node before ITOM suite installation starts. HAProxy can be configured on single server in standalone mode, or with two or more servers for HAProxy in High-Availability mode.</p>
 
-<p><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e818f8f178a57.41830824.jpeg" style="border:0px solid black; height:559px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:1199px" vspace="0"></p>
+<p><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e8198087392f8.87685814.jpeg" style="border:0px solid black; height:344px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:774px" vspace="0"></p>
 
 <h2>Prepare the environments</h2>
 
@@ -91,7 +91,8 @@ cat &lt;&lt;ENDFILE &gt;/etc/chrony.conf<br>
 server NTP_SERVER_IP_ADDRESS iburst<br>
 driftfile /var/lib/chrony/driftfile<br>
 ENDFILE<br>
-systemctl enable chronyd; chronyd -q; systemctl start chronyd; chronyc -a makestep; systemctl restart chronyd; timedatectl</tt></p>
+systemctl enable chronyd; chronyd -q; systemctl start chronyd<br>
+chronyc -a makestep; systemctl restart chronyd; timedatectl</tt></p>
 
 <p>## Note - Run date/time commands to ensure that system date/time is in sync with that of NTP server.</p>
 
@@ -145,7 +146,7 @@ global<br>
 &nbsp; &nbsp;timeout client 50000<br>
 &nbsp; &nbsp;timeout server 50000</tt></p>
 
-<p><tt>## DCA frontend block starts --------------------------------------------------------<br>
+<p><tt>## DCA frontend block starts ----------------------------------------------<br>
 frontend DCA_https_front<br>
 &nbsp; &nbsp;bind *:443<br>
 &nbsp; &nbsp;option tcplog<br>
@@ -175,9 +176,9 @@ frontend DCA_https_front<br>
 &nbsp; &nbsp;option tcplog<br>
 &nbsp; &nbsp;mode tcp<br>
 &nbsp; &nbsp;default_backend DCA_https_back_4001<br>
-## DCA frontend block ends ----------------------------------------------------------</tt></p>
+## DCA frontend block ends ------------------------------------------------</tt></p>
 
-<p><tt>## -- HAProxy Statistics block starts here ------------------------------------------<br>
+<p><tt>## -- HAProxy Statistics block starts here --------------------------------<br>
 ## This is block is for HAProxy statistics. This block is not mandatory.<br>
 listen stats<br>
 &nbsp; &nbsp;bind *:8080<br>
@@ -195,55 +196,58 @@ listen stats<br>
 &nbsp; &nbsp;stats uri /haproxy?stats<br>
 &nbsp; &nbsp;stats realm Haproxy\ Statistics<br>
 &nbsp; &nbsp;stats auth admin:Password123XYZ &nbsp;## Type in your own username/password<br>
-## -- HAProxy Statistics block ends here --------------------------------------------</tt></p>
+## -- HAProxy Statistics block ends here ----------------------------------</tt></p>
 
-<p><br>
-<tt>## DCA backend block starts ---------------------------------------------------------<br>
+<p><tt>## DCA backend block starts -----------------------------------------------<br>
+## #Replace aa.bb.cc.dd with IP Address of DCA Master #1 Node in this block<br>
+## #Replace aa.bb.cc.ee with IP Address of DCA Master #2 Node in this block<br>
+## #Replace aa.bb.cc.ff with IP Address of DCA Master #3 Node in this block<br>
+## 'DCAm1', 'DCAm2' &amp; 'DCAm3' in this block can be left as it is.<br>
 backend DCA_https_back<br>
 &nbsp; &nbsp;mode tcp<br>
 &nbsp; &nbsp;balance roundrobin<br>
 &nbsp; &nbsp;option ssl-hello-chk<br>
 &nbsp; &nbsp;stick-table type ip size 20k peers MyHAproxyPeers<br>
-&nbsp; &nbsp;server DCAm1 aa.bb.cc.dd:443 check &nbsp; &nbsp;#Replace aa.bb.cc.dd with DCA_Master1 IP Address, 'DCAm1' in this line can be same as it is.<br>
-&nbsp; &nbsp;server DCAm2 aa.bb.cc.ee:443 check &nbsp; &nbsp;#Replace aa.bb.cc.ee with DCA_Master2 IP Address, 'DCAm2' in this line can be same as it is.<br>
-&nbsp; &nbsp;server DCAm3 aa.bb.cc.ff:443 check &nbsp; &nbsp;#Replace aa.bb.cc.ff with DCA_Master3 IP Address, 'DCAm3' in this line can be same as it is.</tt></p>
+&nbsp; &nbsp;server DCAm1 aa.bb.cc.dd:443 check<br>
+&nbsp; &nbsp;server DCAm2 aa.bb.cc.ee:443 check<br>
+&nbsp; &nbsp;server DCAm3 aa.bb.cc.ff:443 check</tt></p>
 
 <p><tt>backend CDF_https_back<br>
 &nbsp; &nbsp;mode tcp<br>
 &nbsp; &nbsp;balance roundrobin<br>
 &nbsp; &nbsp;option ssl-hello-chk<br>
 &nbsp; &nbsp;stick-table type ip size 20k peers MyHAproxyPeers<br>
-&nbsp; &nbsp;server DCAm1 aa.bb.cc.dd:5443 check &nbsp; #Replace aa.bb.cc.dd with DCA_Master1 IP Address, 'DCAm1' in this line can be same as it is.<br>
-&nbsp; &nbsp;server DCAm2 aa.bb.cc.ee:5443 check &nbsp; #Replace aa.bb.cc.ee with DCA_Master2 IP Address, 'DCAm2' in this line can be same as it is.<br>
-&nbsp; &nbsp;server DCAm3 aa.bb.cc.ff:5443 check &nbsp; #Replace aa.bb.cc.ff with DCA_Master3 IP Address, 'DCAm3' in this line can be same as it is.</tt></p>
+&nbsp; &nbsp;server DCAm1 aa.bb.cc.dd:5443 check<br>
+&nbsp; &nbsp;server DCAm2 aa.bb.cc.ee:5443 check<br>
+&nbsp; &nbsp;server DCAm3 aa.bb.cc.ff:5443 check</tt></p>
 
 <p><tt>backend DCA_https_back_8443<br>
 &nbsp; &nbsp;mode tcp<br>
 &nbsp; &nbsp;balance roundrobin<br>
 &nbsp; &nbsp;option ssl-hello-chk<br>
 &nbsp; &nbsp;stick-table type ip size 20k peers MyHAproxyPeers<br>
-&nbsp; &nbsp;server DCAm1 aa.bb.cc.dd:8443 check &nbsp; #Replace aa.bb.cc.dd with DCA_Master1 IP Address, 'DCAm1' in this line can be same as it is.<br>
-&nbsp; &nbsp;server DCAm2 aa.bb.cc.ee:8443 check &nbsp; #Replace aa.bb.cc.ee with DCA_Master2 IP Address, 'DCAm2' in this line can be same as it is.<br>
-&nbsp; &nbsp;server DCAm3 aa.bb.cc.ff:8443 check &nbsp; #Replace aa.bb.cc.ff with DCA_Master3 IP Address, 'DCAm3' in this line can be same as it is.</tt></p>
+&nbsp; &nbsp;server DCAm1 aa.bb.cc.dd:8443 check<br>
+&nbsp; &nbsp;server DCAm2 aa.bb.cc.ee:8443 check<br>
+&nbsp; &nbsp;server DCAm3 aa.bb.cc.ff:8443 check</tt></p>
 
 <p><tt>backend DCA_https_back_3000<br>
 &nbsp; &nbsp;mode tcp<br>
 &nbsp; &nbsp;balance roundrobin<br>
 &nbsp; &nbsp;option ssl-hello-chk<br>
 &nbsp; &nbsp;stick-table type ip size 20k peers MyHAproxyPeers<br>
-&nbsp; &nbsp;server DCAm1 aa.bb.cc.dd:3000 check &nbsp; #Replace aa.bb.cc.dd with DCA_Master1 IP Address, 'DCAm1' in this line can be same as it is.<br>
-&nbsp; &nbsp;server DCAm2 aa.bb.cc.ee:3000 check &nbsp; #Replace aa.bb.cc.ee with DCA_Master2 IP Address, 'DCAm2' in this line can be same as it is.<br>
-&nbsp; &nbsp;server DCAm3 aa.bb.cc.ff:3000 check &nbsp; #Replace aa.bb.cc.ff with DCA_Master3 IP Address, 'DCAm3' in this line can be same as it is.</tt></p>
+&nbsp; &nbsp;server DCAm1 aa.bb.cc.dd:3000 check<br>
+&nbsp; &nbsp;server DCAm2 aa.bb.cc.ee:3000 check<br>
+&nbsp; &nbsp;server DCAm3 aa.bb.cc.ff:3000 check</tt></p>
 
 <p><tt>backend DCA_https_back_4001<br>
 &nbsp; &nbsp;mode tcp<br>
 &nbsp; &nbsp;balance roundrobin<br>
 &nbsp; &nbsp;option ssl-hello-chk<br>
 &nbsp; &nbsp;stick-table type ip size 20k peers MyHAproxyPeers<br>
-&nbsp; &nbsp;server DCAm1 aa.bb.cc.dd:4001 check &nbsp; #Replace aa.bb.cc.dd with DCA_Master1 IP Address, 'DCAm1' in this line can be same as it is.<br>
-&nbsp; &nbsp;server DCAm2 aa.bb.cc.ee:4001 check &nbsp; #Replace aa.bb.cc.ee with DCA_Master2 IP Address, 'DCAm2' in this line can be same as it is.<br>
-&nbsp; &nbsp;server DCAm3 aa.bb.cc.ff:4001 check &nbsp; #Replace aa.bb.cc.ff with DCA_Master3 IP Address, 'DCAm3' in this line can be same as it is.<br>
-## DCA-3 backend block ends ---------------------------------------------------------</tt></p>
+&nbsp; &nbsp;server DCAm1 aa.bb.cc.dd:4001 check<br>
+&nbsp; &nbsp;server DCAm2 aa.bb.cc.ee:4001 check<br>
+&nbsp; &nbsp;server DCAm3 aa.bb.cc.ff:4001 check<br>
+## DCA-3 backend block ends -----------------------------------------------</tt></p>
 
 <p><tt>peers MyHAproxyPeers<br>
 &nbsp; &nbsp; peer dca1haproxyn1 12.12.12.12:1024<br>
