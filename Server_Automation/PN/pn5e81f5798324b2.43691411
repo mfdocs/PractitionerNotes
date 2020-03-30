@@ -1,1 +1,208 @@
- 
+<p>Welcome to the world of remediation tuning parameters.</p>
+
+<p>When performing a remediation SA breaks the work into bundles. This is called chunking and the process that handles those chunks of work is called a doer.</p>
+
+<p><img alt="graphviz-G-26b17ca2649a65d8848e03be88b954060bdb5216.png" src="http://wiki.local/BrettEngland/2018-06-18?action=AttachFile&amp;do=get&amp;target=graphviz-G-26b17ca2649a65d8848e03be88b954060bdb5216.png"></p>
+
+<p>Let's examine these settings:</p>
+
+<pre>way.remediate.chunk_size: 40
+way.remediate.max_concurrency: 20</pre>
+
+<p>The remediation Wayscript has a chunker and its job is to split the job up into chunks.<br>
+It is governed by chunk_size (40) and max_concurrency (20)</p>
+
+<ul>
+	<li>
+	<p><strong>chunk_size</strong>&nbsp;is a&nbsp;guide&nbsp;to how large each chunk of work should be.</p>
+	</li>
+	<li>
+	<p><strong>max_concurrency</strong>&nbsp;indicates the maximum number of DOERS that can be created.</p>
+	</li>
+</ul>
+
+<p>Doers are units of work that execute on a slice.&nbsp;The way we determine when to make another doer is by the&nbsp;<strong>chunk_size</strong></p>
+
+<p><strong>How the chunking algorithm works</strong></p>
+
+<ul>
+	<li>
+	<p>For a batch of servers split them into groups trying to keep the server count in each group below the&nbsp;<strong>chunk_size</strong>&nbsp;until we have a maximum of&nbsp;<strong>max_concurrency</strong>&nbsp;doers, once we reach that limit increase the&nbsp;<strong>chunk_size</strong>&nbsp;as concurrency is now the governing factor.</p>
+	</li>
+</ul>
+
+<p>Given these two parameters and the above algorithm we can build a table to show how the number of servers in a doer, and the number of doers, will be computed.</p>
+
+<p>The code below is based on the logic inside the&nbsp;<tt>chunker</tt>&nbsp;Wayscript.</p>
+
+<pre>def getChunkSize(chunk_size, concurrency, size):
+    num_chunks = size / chunk_size
+    if size % chunk_size:
+        num_chunks = num_chunks + 1
+
+    if num_chunks &gt; concurrency:
+        num_chunks = concurrency
+
+    if num_chunks == 0:
+        num_chunks = 1
+
+    chunk_size = size / num_chunks
+    if size % num_chunks:
+        chunk_size = chunk_size + 1
+    return chunk_size
+
+chunk_size = 40
+concurrency = 20
+print "chunk_size %s concurrency %s" % (chunk_size, concurrency)
+for i in range(0,1000,10):
+    print "%s,%s " % (i,getChunkSize(chunk_size, concurrency, i))
+</pre>
+
+<p>A plot using the two parameters from our example configuration.</p>
+
+<p><img alt="doerchunk.PNG" src="http://wiki.local/BrettEngland/2018-06-18?action=AttachFile&amp;do=get&amp;target=doerchunk.PNG"></p>
+
+<p>The system tries to keep the number of servers in a doer chunk balanced and below the&nbsp;<strong>chunk_size: 40</strong>&nbsp;boundary.</p>
+
+<ul>
+	<li>The blue line represents the number of servers in each of the available DOERS.</li>
+	<li>The orange line is the number of DOER that have been created.</li>
+</ul>
+
+<p>For example 70 servers are 2 doers of 35 servers, even thou the chunk size is 40. The&nbsp;<strong>chunk_size</strong>&nbsp;is only used as a guide. SA does not create 2 doers with 40 servers in one and 30 in the other. It tries to evenly balance servers across the doers it creates. This creates a saw tooth pattern as the chunk sizes increase before a new DOER is created. Once created the servers in each doer are decreased.</p>
+
+<p>Notice something strange once we hit 800 servers? The&nbsp;<strong>chunk_size</strong>&nbsp;is being increased automatically. This is due to the&nbsp;<strong>max_concurrency: 20</strong>&nbsp;setting kicking in preventing us from creating the&nbsp;<strong>chunk_size: 40</strong>&nbsp;count of servers in a doer. SA is now increasing the&nbsp;<strong>chunk_size</strong>&nbsp;itself so concurrency is not increased.</p>
+
+<p>The computation does&nbsp;not&nbsp;take into account multiple slices at this point.<br>
+All we are doing is computing the optimal number of servers in a doer chunk of work to be farmed out with 40 being preferred.<br>
+Devices may exist on a REMOTE system and work allocated there will be delivered in "computed chunk size" blocks of work.</p>
+
+<p>If you want more work to executed in parallel (more doers on a slice) you need to increase&nbsp;<strong>max_concurrency</strong>.<br>
+If you want each slice to be given more work you increase&nbsp;<strong>chunk_size</strong>.</p>
+
+<p>Work is distributed to slices based on a DOER</p>
+
+<p><img alt="graphviz-G-10d23b27f12d7b0f9171191148315c2b1db7eab0.png" src="http://wiki.local/BrettEngland/2018-06-18?action=AttachFile&amp;do=get&amp;target=graphviz-G-10d23b27f12d7b0f9171191148315c2b1db7eab0.png"></p>
+
+<p>&nbsp;</p>
+
+<hr>
+<p><strong>What does a doer do ?</strong></p>
+
+<p>For a chunk of servers it runs through these phases; analyze, stage, action and compliance. Which corresponds to, what do I need to do on this server, download the work, perform the work and check the work was done. There are a few more phases but these are the main ones we are concerned about.</p>
+
+<p>&nbsp;</p>
+
+<p><img alt="graphviz-G-686389ad16a1b906fd71bf7f91dbcd623f4609f2.png" src="http://wiki.local/BrettEngland/2018-06-18?action=AttachFile&amp;do=get&amp;target=graphviz-G-686389ad16a1b906fd71bf7f91dbcd623f4609f2.png"></p>
+
+<p>All the servers in a chunk progress through each phase together. For a patching job this means the actual patching (action phase) of the server won't happen until all the servers have had their RPM's or MSI patch software delivered aka staged.</p>
+
+<p>This implies we should have a smaller&nbsp;<strong>chunk_size</strong>&nbsp;and a higher&nbsp;<strong>max_concurrency</strong>&nbsp;as waiting to complete the analysis and staging on a large group of servers means servers that are ready to start patching are waiting on their fellow chunk servers before they can all move onto the next phase together.</p>
+
+<p>More doers and smaller chunks will reduce the wait time before the work commences as less servers in a doer need to be analyzed and staged before the action phase.</p>
+
+<p><img alt="con-40-chunk-20.PNG" src="http://wiki.local/BrettEngland/2018-06-18?action=AttachFile&amp;do=get&amp;target=con-40-chunk-20.PNG"></p>
+
+<p>A smaller&nbsp;<strong>chunk_size</strong>&nbsp;is not a concern as the chunker algorithm will automatically increase the number of servers in a doer once it hits the&nbsp;<strong>max_concurrency</strong>&nbsp;limit.</p>
+
+<p>In any case the above configuration parameters just control how the work is carved up and distributed to slices.&nbsp;The parallel execution of that work is controlled by these settings:</p>
+
+<pre>way.max_remediations: 200
+way.max_remediations.action: 1200
+way.remediate.max_app_compliance_calls: 50</pre>
+
+<p>These three are slice global semaphore limitations that affect all remediation jobs running on the slice.</p>
+
+<ul>
+	<li>
+	<p>The&nbsp;<strong>max_remediations</strong>&nbsp;of 200 says, you can only do 200 non-action phases at a time within a SLICE for ALL jobs.<br>
+	If you hit this 200 amount, then we block the others. Non action phases are stage and reconcile.version.</p>
+	</li>
+	<li>
+	<p>The&nbsp;<strong>max_remediations_action</strong>&nbsp;says you can do at most 500 action phases.<br>
+	Action phases are when the pre/post scripts are run and the RPM/MSI or whatever install-able units you have are installed.</p>
+	</li>
+	<li>
+	<p><strong>way.remediate.max_app_compliance_calls</strong>&nbsp;Controls how much concurrency occurs during the compliance phase.</p>
+	</li>
+</ul>
+
+<p>This high level of concurrency in the Stage phase (200) is fine when files are being pulled from Tsunami, the high speed package delivery sub-system, but it takes a toll if the satellite does not have the file. A cache miss always uses the slower Word package delivery sub-system. If we have 200 concurrent file downloads from the Core to the Satellite pending they have all been deferred to the slower Word until such time as the Satellite replicates the required package to its own cache. In this situation Satellite network bandwidth is going to be the limitation for how much concurrency can be obtained not the Wayscripts ability to farm out the work.</p>
+
+<p>Sometimes higher throughput is obtained by reducing contention which means reducing concurrency. Reducing&nbsp;<strong>max_remediations</strong>&nbsp;(file staging) but leaving the action tuning parameter high can be a good approach to combating low patching throughput due to network congestion. Be careful not to confuse Throughput with Concurrency.</p>
+
+<p>&nbsp;</p>
+
+<hr>
+<p>The defaults settings:</p>
+
+<table>
+	<tbody>
+		<tr>
+			<td>
+			<p><strong>Parameter Name</strong></p>
+			</td>
+			<td>
+			<p><strong>Description</strong></p>
+			</td>
+			<td>
+			<p><strong>Default Value</strong></p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>way.remediate.chunk_size</p>
+			</td>
+			<td>
+			<p>Max chunk size before we start multiple doers. Note we will only run way.remediate.max_concurrency doers total</p>
+			</td>
+			<td>
+			<p>20</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>way.remediate.max_concurrency</p>
+			</td>
+			<td>
+			<p>The max number of doers we allow per chunker session</p>
+			</td>
+			<td>
+			<p>10</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>way.max_remediations</p>
+			</td>
+			<td>
+			<p>Max remediations that are allowed to happen at any given time on a particular&nbsp;<tt>Way</tt></p>
+			</td>
+			<td>
+			<p>50</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>way.max_remediations.action</p>
+			</td>
+			<td>
+			<p>Max devices allowed to be in the action phase in any particular datacenter, at any given time</p>
+			</td>
+			<td>
+			<p>100</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>way.remediate.max_app_compliance_calls</p>
+			</td>
+			<td>
+			<p>The # of app compliance calls a particular way instance can run simultaneously</p>
+			</td>
+			<td>
+			<p>25</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
