@@ -45,7 +45,7 @@ Hardware configuration is not scoped. Testing was done with two servers, each wi
 
 <p><strong>Software -</strong><br>
 LINUX OS: CentOS 7.7 64-bit (Tested); Any other RHEL/CentOS 6.x / 7.x should work as well.<br>
-HAProxy version - 2.3.1 (tested). Any 2.x should work as well. HAProxy configuration have sufficient backward and forward compatibility.&nbsp;</p>
+HAProxy version - 2.3.1 (tested). Any 2.x should work as well. HAProxy configuration have enough backward and forward compatibility.&nbsp;</p>
 
 <p><strong>Network -</strong><br>
 Two static IP Addresses, both IP Addresses should resolve to same Fully Qualified Domain Name.&nbsp;</p>
@@ -71,7 +71,7 @@ Configure the VMs and setup steps</h2>
 
 <p>Do these steps on both the VMs that are part of HAProxy Peer setup.</p>
 
-<p><strong>1.</strong> Install "Minimal OS" with Static IP Address. Though HAProxy works with Firewall and SELinux enabled, it will be easier to troubleshoot any issue if both of them are disabled specially if you are doing this for the first time. You may enable both service later. Relevant firewall ports are - 22, 1024, 443, 544</p>
+<p><strong>1.</strong> Install "Minimal OS" with Static IP Address. Though HAProxy works with Firewall and SELinux enabled, it will be easier to troubleshoot any issue if both are disabled while you set it up specially if you are doing this for the first time. You may enable both services later. Relevant firewall ports are - 22, 1024, 443, 5443, 8443, 3000, 4001 &amp; 8080.</p>
 
 <p><br>
 <strong>2.</strong> Edit /etc/hosts file and ensure that you have only following entries -<br>
@@ -195,7 +195,11 @@ listen stats<br>
 &nbsp; &nbsp;timeout queue &nbsp; 100<br>
 &nbsp; &nbsp;stats uri /haproxy?stats<br>
 &nbsp; &nbsp;stats realm Haproxy\ Statistics<br>
-&nbsp; &nbsp;stats auth admin:Password123XYZ &nbsp;## Type in your own username/password<br>
+&nbsp; &nbsp;stats auth admin:Password123XYZ &nbsp;## Type in your own username/password</tt></p>
+
+<p><tt>## You can access HAProxy Stats page from http://haproxy1.domain1.com:8080/haproxy?stats</tt></p>
+
+<p><tt>## and loging with admin /&nbsp;Password123XYZ<br>
 ## -- HAProxy Statistics block ends here ----------------------------------</tt></p>
 
 <p><tt>## DCA backend block starts -----------------------------------------------<br>
