@@ -1,1 +1,270 @@
- 
+<h1>External Load Balancer with HAProxy in High-Availability mode</h1>
+
+<p>&nbsp;</p>
+
+<p>HAProxy is free, open source software that provides a high availability load balancer and proxy server for TCP and HTTP-based applications that spreads requests across multiple servers (as per Wikipedia).<br>
+ITOM Data Center Automation (DCA) suite and other ITOM suite may use an external Load Balancer, typically on a Multi-Master deployment. This document describes how to setup an External Load Balancer using HAProxy in a High-Availability mode. With minor modifications in steps, same can be setup in standalone mode as well.</p>
+
+<h2><br>
+Intended audience</h2>
+
+<p>The information in this document is for basic users of HAProxy. It is not intended to replace the HAProxy documentation or best practices. For more information, see HAProxy documentation.</p>
+
+<h2><br>
+Disclaimer</h2>
+
+<p>Do not use this document when:</p>
+
+<ul>
+	<li>You intend to use "HA_VIRTUAL_IP" parameter in install.properties.</li>
+	<li>You may need to implement an External LB when you are doing a PoC.</li>
+	<li>You do not have additional server(s) to for External Load Balancer.</li>
+</ul>
+
+<h2>Limitations</h2>
+
+<p>Configuration mentioned in this document has been tested with DCA &amp; OBM suites. It is likely work with other suites with minor or no modifications.</p>
+
+<p>&nbsp;</p>
+
+<h2>Set up an External Load Balancer for ITOM suites</h2>
+
+<p>External Load Balancer with HAProxy (Or another other similar software) needs to be up and running before ITOM suite is installed. It is essential that configuration file is tested and HAProxy service is running at least on one node before ITOM suite installation starts. HAProxy can be configured on single server in standalone mode, or with two or more servers for HAProxy in High-Availability mode.</p>
+
+<p><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e818f8f178a57.41830824.jpeg" style="border:0px solid black; height:559px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:1199px" vspace="0"></p>
+
+<h2>Prepare the environments</h2>
+
+<p><br>
+Following hardware and software are required for setting up an external load balancer using HAProxy for ITOM suites.&nbsp;</p>
+
+<p><strong>Hardware -</strong><br>
+One Server for standalone mode; at least two servers for High-Availability mode.<br>
+Virtual machine or physical server.<br>
+Hardware configuration is not scoped. Testing was done with two servers, each with 4 vCPUs, 12GB RAM, 22 GB HDD (two partitions, one partition for swap = RAM size, Rest in "/" partition).</p>
+
+<p><strong>Software -</strong><br>
+LINUX OS: CentOS 7.7 64-bit (Tested); Any other RHEL/CentOS 6.x / 7.x should work as well.<br>
+HAProxy version - 2.3.1 (tested). Any 2.x should work as well. HAProxy configuration have sufficient backward and forward compatibility.&nbsp;</p>
+
+<p><strong>Network -</strong><br>
+Two static IP Addresses, both IP Addresses should resolve to same Fully Qualified Domain Name.&nbsp;</p>
+
+<p>Let's say two IP Addresses are 12.12.12.12 &amp; 12.12.12.13, then -</p>
+
+<p><tt><code>c:\&gt;nslookup 12.12.12.12<br>
+Server: &nbsp; FQDN_of_DNS_server<br>
+Address: &nbsp;xx.yy.zz.ww &nbsp; &nbsp; &nbsp;&lt;- IP Address of DNS Server</code></tt></p>
+
+<p><tt><code>Name: &nbsp; &nbsp; haproxy1.domain1.com<br>
+Address: &nbsp;12.12.12.12</code></tt></p>
+
+<p><tt><code>c:\&gt;nslookup 12.12.12.13<br>
+Server: &nbsp; FQDN_of_DNS_server<br>
+Address: &nbsp;xx.yy.zz.ww &nbsp; &nbsp; &nbsp;&lt;- IP Address of DNS Server</code></tt></p>
+
+<p><tt><code>Name: &nbsp; &nbsp; haproxy1.domain1.com<br>
+Address: &nbsp;12.12.12.13</code></tt></p>
+
+<h2><br>
+Configure the VMs and setup steps</h2>
+
+<p>Do these steps on both the VMs that are part of HAProxy Peer setup.</p>
+
+<p><strong>1.</strong> Install "Minimal OS" with Static IP Address. Though HAProxy works with Firewall and SELinux enabled, it will be easier to troubleshoot any issue if both of them are disabled specially if you are doing this for the first time. You may enable both service later.</p>
+
+<p><br>
+<strong>2.</strong> Edit /etc/hosts file and ensure that you have only following entries -<br>
+<tt>127.0.0.1 &nbsp; &nbsp; &nbsp; localhost &nbsp; &nbsp; &nbsp; localhost<br>
+12.12.12.12 &nbsp; &nbsp; haproxy1n1 &nbsp; &nbsp; &nbsp;## There is no DNS entry required for this.<br>
+12.12.12.13 &nbsp; &nbsp; haproxy1n2 &nbsp; &nbsp; &nbsp;## There is no DNS entry required for this.<br>
+12.12.12.12 &nbsp; &nbsp; haproxy1.domain1.com &nbsp; &nbsp; &nbsp; haproxy1<br>
+12.12.12.13 &nbsp; &nbsp; haproxy1.domain1.com &nbsp; &nbsp; &nbsp; haproxy1</tt></p>
+
+<p><br>
+<strong>3.</strong> Configure the VM to be in time sync with your NTP Server. Replace <strong>NTP_SERVER_IP_ADDRESS</strong> with your NTP server's IP Address and then run the following commands.</p>
+
+<p><tt>yum install -y chrony<br>
+mkdir -p /var/lib/chrony<br>
+echo &gt; /var/lib/chrony/driftfile<br>
+cat &lt;&lt;ENDFILE &gt;/etc/chrony.conf<br>
+server NTP_SERVER_IP_ADDRESS iburst<br>
+driftfile /var/lib/chrony/driftfile<br>
+ENDFILE<br>
+systemctl enable chronyd; chronyd -q; systemctl start chronyd; chronyc -a makestep; systemctl restart chronyd; timedatectl</tt></p>
+
+<p>## Note - Run date/time commands to ensure that system date/time is in sync with that of NTP server.</p>
+
+<p><br>
+<strong>4.</strong> Install pre-requisites for HAProxy<br>
+<tt>yum install -y socat halog tcpdump strace gcc pcre-devel tar make</tt></p>
+
+<p><br>
+<strong>5.</strong> Download HAProxy package from <tt>http://www.haproxy.org/</tt>. For testing, v2.1.3 was used and it's available in <tt>http://www.haproxy.org/download/2.1/src/haproxy-2.1.3.tar.gz</tt></p>
+
+<p><strong>6.</strong> Untar the HAProxy tar file, followed by installing and deploying the service. Run the following commands sequentially.<br>
+<tt>tar xzvf ~/haproxy-2.1.3.tar.gz -C ~/<br>
+cd ~/haproxy-2.1.3/<br>
+make TARGET=linux-glibc<br>
+make install<br>
+mkdir -p /etc/haproxy /var/lib/haproxy<br>
+touch /var/lib/haproxy/stats<br>
+ln -s /usr/local/sbin/haproxy /usr/sbin/haproxy<br>
+cp examples/haproxy.init /etc/init.d/haproxy<br>
+chmod 755 /etc/init.d/haproxy<br>
+systemctl daemon-reload<br>
+chkconfig haproxy on<br>
+useradd -r haproxy<br>
+haproxy -v</tt></p>
+
+<p><br>
+<strong>7.</strong> Backup any existing haproxy.cfg file and compose a new haproxy.cfg file for your ITOM Suite.<br>
+<tt>mv /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg__original</tt></p>
+
+<p><tt>cat &lt;&lt;ENDFILE &gt;/etc/haproxy/haproxy.cfg<br>
+## Start of HAProxy Configuration file<br>
+global<br>
+&nbsp; &nbsp;log /dev/log local0<br>
+&nbsp; &nbsp;log /dev/log local1 notice<br>
+&nbsp; &nbsp;chroot /var/lib/haproxy<br>
+&nbsp; &nbsp;pidfile /var/run/haproxy.pid<br>
+&nbsp; &nbsp;stats timeout 30s<br>
+&nbsp; &nbsp;user haproxy<br>
+&nbsp; &nbsp;group haproxy<br>
+&nbsp; &nbsp;daemon</tt></p>
+
+<p><tt>&nbsp; &nbsp;# turn on stats unix socket<br>
+&nbsp; &nbsp;stats socket /var/lib/haproxy/stats</tt></p>
+
+<p><tt>defaults<br>
+&nbsp; &nbsp;log global<br>
+&nbsp; &nbsp;mode http<br>
+&nbsp; &nbsp;option httplog<br>
+&nbsp; &nbsp;option dontlognull<br>
+&nbsp; &nbsp;timeout connect 5000<br>
+&nbsp; &nbsp;timeout client 50000<br>
+&nbsp; &nbsp;timeout server 50000</tt></p>
+
+<p><tt>## DCA frontend block starts --------------------------------------------------------<br>
+frontend DCA_https_front<br>
+&nbsp; &nbsp;bind *:443<br>
+&nbsp; &nbsp;option tcplog<br>
+&nbsp; &nbsp;mode tcp<br>
+&nbsp; &nbsp;default_backend DCA_https_back</tt></p>
+
+<p><tt>frontend CDF_https_front<br>
+&nbsp; &nbsp;bind *:5443<br>
+&nbsp; &nbsp;option tcplog<br>
+&nbsp; &nbsp;mode tcp<br>
+&nbsp; &nbsp;default_backend CDF_https_back</tt></p>
+
+<p><tt>frontend DCA_https_front_8443<br>
+&nbsp; &nbsp;bind *:8443<br>
+&nbsp; &nbsp;option tcplog<br>
+&nbsp; &nbsp;mode tcp<br>
+&nbsp; &nbsp;default_backend DCA_https_back_8443</tt></p>
+
+<p><tt>frontend DCA_https_front_3000<br>
+&nbsp; &nbsp;bind *:3000<br>
+&nbsp; &nbsp;option tcplog<br>
+&nbsp; &nbsp;mode tcp<br>
+&nbsp; &nbsp;default_backend DCA_https_back_3000</tt></p>
+
+<p><tt>frontend DCA_https_front_4001<br>
+&nbsp; &nbsp;bind *:4001<br>
+&nbsp; &nbsp;option tcplog<br>
+&nbsp; &nbsp;mode tcp<br>
+&nbsp; &nbsp;default_backend DCA_https_back_4001<br>
+## DCA frontend block ends ----------------------------------------------------------</tt></p>
+
+<p><tt>## -- HAProxy Statistics block starts here ------------------------------------------<br>
+## This is block is for HAProxy statistics. This block is not mandatory.<br>
+listen stats<br>
+&nbsp; &nbsp;bind *:8080<br>
+&nbsp; &nbsp;stats enable<br>
+&nbsp; &nbsp;stats hide-version<br>
+&nbsp; &nbsp;stats refresh 30s<br>
+&nbsp; &nbsp;stats show-node<br>
+&nbsp; &nbsp;mode &nbsp;http<br>
+&nbsp; &nbsp;log &nbsp; global<br>
+&nbsp; &nbsp;maxconn 10<br>
+&nbsp; &nbsp;timeout connect 100<br>
+&nbsp; &nbsp;timeout client &nbsp;100<br>
+&nbsp; &nbsp;timeout server &nbsp;100<br>
+&nbsp; &nbsp;timeout queue &nbsp; 100<br>
+&nbsp; &nbsp;stats uri /haproxy?stats<br>
+&nbsp; &nbsp;stats realm Haproxy\ Statistics<br>
+&nbsp; &nbsp;stats auth admin:Password123XYZ &nbsp;## Type in your own username/password<br>
+## -- HAProxy Statistics block ends here --------------------------------------------</tt></p>
+
+<p><br>
+<tt>## DCA backend block starts ---------------------------------------------------------<br>
+backend DCA_https_back<br>
+&nbsp; &nbsp;mode tcp<br>
+&nbsp; &nbsp;balance roundrobin<br>
+&nbsp; &nbsp;option ssl-hello-chk<br>
+&nbsp; &nbsp;stick-table type ip size 20k peers MyHAproxyPeers<br>
+&nbsp; &nbsp;server DCAm1 aa.bb.cc.dd:443 check &nbsp; &nbsp;#Replace aa.bb.cc.dd with DCA_Master1 IP Address, 'DCAm1' in this line can be same as it is.<br>
+&nbsp; &nbsp;server DCAm2 aa.bb.cc.ee:443 check &nbsp; &nbsp;#Replace aa.bb.cc.ee with DCA_Master2 IP Address, 'DCAm2' in this line can be same as it is.<br>
+&nbsp; &nbsp;server DCAm3 aa.bb.cc.ff:443 check &nbsp; &nbsp;#Replace aa.bb.cc.ff with DCA_Master3 IP Address, 'DCAm3' in this line can be same as it is.</tt></p>
+
+<p><tt>backend CDF_https_back<br>
+&nbsp; &nbsp;mode tcp<br>
+&nbsp; &nbsp;balance roundrobin<br>
+&nbsp; &nbsp;option ssl-hello-chk<br>
+&nbsp; &nbsp;stick-table type ip size 20k peers MyHAproxyPeers<br>
+&nbsp; &nbsp;server DCAm1 aa.bb.cc.dd:5443 check &nbsp; #Replace aa.bb.cc.dd with DCA_Master1 IP Address, 'DCAm1' in this line can be same as it is.<br>
+&nbsp; &nbsp;server DCAm2 aa.bb.cc.ee:5443 check &nbsp; #Replace aa.bb.cc.ee with DCA_Master2 IP Address, 'DCAm2' in this line can be same as it is.<br>
+&nbsp; &nbsp;server DCAm3 aa.bb.cc.ff:5443 check &nbsp; #Replace aa.bb.cc.ff with DCA_Master3 IP Address, 'DCAm3' in this line can be same as it is.</tt></p>
+
+<p><tt>backend DCA_https_back_8443<br>
+&nbsp; &nbsp;mode tcp<br>
+&nbsp; &nbsp;balance roundrobin<br>
+&nbsp; &nbsp;option ssl-hello-chk<br>
+&nbsp; &nbsp;stick-table type ip size 20k peers MyHAproxyPeers<br>
+&nbsp; &nbsp;server DCAm1 aa.bb.cc.dd:8443 check &nbsp; #Replace aa.bb.cc.dd with DCA_Master1 IP Address, 'DCAm1' in this line can be same as it is.<br>
+&nbsp; &nbsp;server DCAm2 aa.bb.cc.ee:8443 check &nbsp; #Replace aa.bb.cc.ee with DCA_Master2 IP Address, 'DCAm2' in this line can be same as it is.<br>
+&nbsp; &nbsp;server DCAm3 aa.bb.cc.ff:8443 check &nbsp; #Replace aa.bb.cc.ff with DCA_Master3 IP Address, 'DCAm3' in this line can be same as it is.</tt></p>
+
+<p><tt>backend DCA_https_back_3000<br>
+&nbsp; &nbsp;mode tcp<br>
+&nbsp; &nbsp;balance roundrobin<br>
+&nbsp; &nbsp;option ssl-hello-chk<br>
+&nbsp; &nbsp;stick-table type ip size 20k peers MyHAproxyPeers<br>
+&nbsp; &nbsp;server DCAm1 aa.bb.cc.dd:3000 check &nbsp; #Replace aa.bb.cc.dd with DCA_Master1 IP Address, 'DCAm1' in this line can be same as it is.<br>
+&nbsp; &nbsp;server DCAm2 aa.bb.cc.ee:3000 check &nbsp; #Replace aa.bb.cc.ee with DCA_Master2 IP Address, 'DCAm2' in this line can be same as it is.<br>
+&nbsp; &nbsp;server DCAm3 aa.bb.cc.ff:3000 check &nbsp; #Replace aa.bb.cc.ff with DCA_Master3 IP Address, 'DCAm3' in this line can be same as it is.</tt></p>
+
+<p><tt>backend DCA_https_back_4001<br>
+&nbsp; &nbsp;mode tcp<br>
+&nbsp; &nbsp;balance roundrobin<br>
+&nbsp; &nbsp;option ssl-hello-chk<br>
+&nbsp; &nbsp;stick-table type ip size 20k peers MyHAproxyPeers<br>
+&nbsp; &nbsp;server DCAm1 aa.bb.cc.dd:4001 check &nbsp; #Replace aa.bb.cc.dd with DCA_Master1 IP Address, 'DCAm1' in this line can be same as it is.<br>
+&nbsp; &nbsp;server DCAm2 aa.bb.cc.ee:4001 check &nbsp; #Replace aa.bb.cc.ee with DCA_Master2 IP Address, 'DCAm2' in this line can be same as it is.<br>
+&nbsp; &nbsp;server DCAm3 aa.bb.cc.ff:4001 check &nbsp; #Replace aa.bb.cc.ff with DCA_Master3 IP Address, 'DCAm3' in this line can be same as it is.<br>
+## DCA-3 backend block ends ---------------------------------------------------------</tt></p>
+
+<p><tt>peers MyHAproxyPeers<br>
+&nbsp; &nbsp; peer dca1haproxyn1 12.12.12.12:1024<br>
+&nbsp; &nbsp; peer dca1haproxyn2 12.12.12.13:1024<br>
+&nbsp;&nbsp; &nbsp;&nbsp;<br>
+## End of HAProxy Config file<br>
+ENDFILE</tt></p>
+
+<p><br>
+<strong>8.</strong> Double-check the configuration file again to make sure that you have typed in correct IP Addresses of Master Nodes.</p>
+
+<p><br>
+<strong>9.</strong> Check the configuration file<br>
+<tt>haproxy -c -f /etc/haproxy/haproxy.cfg</tt></p>
+
+<p><br>
+<strong>10.</strong> Start the HAProxy service and check service status. If the service does not start, check the configuration file for any typo or mistake. Run step #8 &amp; #9 again.<br>
+<tt>systemctl start haproxy<br>
+systemctl status haproxy -l</tt></p>
+
+<p><br>
+<strong>11.</strong> Make sure that both the HAProxy VMs are running exact same configuration file. You may HAProxy configuration file from one VM to another &amp; start the service. This is a good practice.</p>
+
+<p><strong>12. </strong>HAProxy Peers (aka, HAProxy in High-Availability mode) is up &amp; running now. Uncomment <tt>#LOAD_BALANCER_HOST=""</tt> parameter and set <code>"haproxy1.domain1.com"&nbsp;to LOAD_BALANCER_HOST</code> parameter in CDF's install.properties file and go ahead with CDF and ITOM Suite Installation. If you make any mistake in HAProxy Configuration file, an error may show up during CDF installation. Installation log will give clue to mistake.</p>
