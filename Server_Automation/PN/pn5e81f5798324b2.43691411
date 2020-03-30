@@ -1,8 +1,6 @@
-<p>Welcome to the world of remediation tuning parameters.</p>
-
 <p>When performing a remediation SA breaks the work into bundles. This is called chunking and the process that handles those chunks of work is called a doer.</p>
 
-<p><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e81f67223a5d4.70504322.png" style="border:0px solid black; height:203px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:637px" vspace="0"></p>
+<p><img alt="" src="/mediawiki/images/pn_images/pn_image_5e81f67223a5d4.70504322.png" style="height:203px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:637px"></p>
 
 <p>Let's examine these settings:</p>
 
@@ -60,7 +58,7 @@ for i in range(0,1000,10):
 
 <p>A plot using the two parameters from our example configuration.</p>
 
-<p><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e81f67255ad16.57087350.png" style="border:0px solid black; height:452px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:764px" vspace="0"></p>
+<p><img alt="" src="/mediawiki/images/pn_images/pn_image_5e81f67255ad16.57087350.png" style="height:452px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:764px"></p>
 
 <p>The system tries to keep the number of servers in a doer chunk balanced and below the&nbsp;<strong>chunk_size: 40</strong>&nbsp;boundary.</p>
 
@@ -82,24 +80,20 @@ If you want each slice to be given more work you increase&nbsp;<strong>chunk_siz
 
 <p>Work is distributed to slices based on a DOER</p>
 
-<p><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e81f672873866.76068459.png" style="border:0px solid black; height:260px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:699px" vspace="0"></p>
-
-<p>&nbsp;</p>
+<p><img alt="" src="/mediawiki/images/pn_images/pn_image_5e81f672873866.76068459.png" style="height:260px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:699px"></p>
 
 <hr>
 <p><strong>What does a doer do ?</strong></p>
 
 <p>For a chunk of servers it runs through these phases; analyze, stage, action and compliance. Which corresponds to, what do I need to do on this server, download the work, perform the work and check the work was done. There are a few more phases but these are the main ones we are concerned about.</p>
 
-<p><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e81f672bada78.07322992.png" style="border:0px solid black; height:312px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:931px" vspace="0"></p>
-
-<p>All the servers in a chunk progress through each phase together. For a patching job this means the actual patching (action phase) of the server won't happen until all the servers have had their RPM's or MSI patch software delivered aka staged.</p>
+<p><img alt="" src="/mediawiki/images/pn_images/pn_image_5e81f672bada78.07322992.png" style="height:312px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:931px">All the servers in a chunk progress through each phase together. For a patching job this means the actual patching (action phase) of the server won't happen until all the servers have had their RPM's or MSI patch software delivered aka staged.</p>
 
 <p>This implies we should have a smaller&nbsp;<strong>chunk_size</strong>&nbsp;and a higher&nbsp;<strong>max_concurrency</strong>&nbsp;as waiting to complete the analysis and staging on a large group of servers means servers that are ready to start patching are waiting on their fellow chunk servers before they can all move onto the next phase together.</p>
 
 <p>More doers and smaller chunks will reduce the wait time before the work commences as less servers in a doer need to be analyzed and staged before the action phase.</p>
 
-<p><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e81f672ede3c3.35722706.png" style="border:0px solid black; height:452px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:760px" vspace="0">A smaller&nbsp;<strong>chunk_size</strong>&nbsp;is not a concern as the chunker algorithm will automatically increase the number of servers in a doer once it hits the&nbsp;<strong>max_concurrency</strong>&nbsp;limit.</p>
+<p><img alt="" src="/mediawiki/images/pn_images/pn_image_5e81f672ede3c3.35722706.png" style="height:452px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:760px">A smaller&nbsp;<strong>chunk_size</strong>&nbsp;is not a concern as the chunker algorithm will automatically increase the number of servers in a doer once it hits the&nbsp;<strong>max_concurrency</strong>&nbsp;limit.</p>
 
 <p>In any case the above configuration parameters just control how the work is carved up and distributed to slices.&nbsp;The parallel execution of that work is controlled by these settings:</p>
 
