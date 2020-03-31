@@ -1,453 +1,347 @@
-
-
-
-
-
-
 <!--StartFragment-->
+<p>This section contains an example implementation checklist you can use to guide you through the minimal steps to prepare&nbsp;a SMAX&nbsp;system for use by end-users and agents.</p>
 
-<p style="margin: 0in; color: rgb(33, 37, 41);"><font face="Arial" style="" size="3">This
-section contains an example implementation checklist you can use to guide you
-through the minimal steps to prepare&nbsp;a SMAX&nbsp;system for use by
-end-users and agents.</font></p>
+<p>While&nbsp;not every area in the system is covered,&nbsp;the necessary steps are included&nbsp;for the initial setup and the most popular modules.&nbsp;Links to relevant documentation are also provided.</p>
 
-<p style="margin: 0in; color: rgb(33, 37, 41);"><font face="Arial" size="3">While&nbsp;not
-every area in the system is covered,&nbsp;the necessary steps are
-included&nbsp;for the initial setup and the most popular modules.&nbsp;Links to
-relevant documentation are also provided.</font></p>
+<p>&nbsp;</p>
 
-<p style="margin: 0in;"><font face="Arial" size="3">&nbsp;</font></p>
+<h2>Setup Core Data &amp; Customizations</h2>
 
-<h2 style="margin: 0in; color: rgb(33, 37, 41);"><span style="font-weight: bold;"><font size="5" face="Arial">Setup Core Data &amp; Customizations</font></span></h2>
+<p>The core data (such as location and group definitions)&nbsp;is used&nbsp;throughout the SMAX modules. This makes it very important to implement early in the implementation process while ensuring the data&nbsp;is created&nbsp;(or imported) correctly.&nbsp;</p>
 
-<p style="margin: 0in; color: rgb(33, 37, 41);"><font face="Arial" style="" size="3">The
-core data (such as location and group definitions)&nbsp;is used&nbsp;throughout
-the SMAX modules. This makes it very important to implement early in the
-implementation process while ensuring the data&nbsp;is created&nbsp;(or
-imported) correctly.&nbsp;</font></p>
+<p>High-level information on the&nbsp;types of&nbsp;core data needed can&nbsp;be found&nbsp;in the Getting Started guide&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/GettingStarted">here</a>.</p>
 
-<p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">High-level information on the&nbsp;types of&nbsp;core data
-needed can&nbsp;be found&nbsp;in the Getting Started guide&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/GettingStarted">here</a><span style="color: rgb(33, 37, 41);">.</span></font></p>
+<p>&nbsp;</p>
 
-<p style="margin: 0in;"><font face="Arial" size="3">&nbsp;</font></p>
+<h3><strong>☐&nbsp;</strong><strong>Review out of box Roles and&nbsp;modify&nbsp;or add as necessary</strong></h3>
 
-<h3 style="margin: 0in; color: rgb(33, 37, 41);"><font face="Arial"><span style="font-weight: bold;"><font size="5">☐</font><font size="3">&nbsp;</font></span><span style="font-weight: bold;"><font size="3">Review out of box Roles and&nbsp;modify&nbsp;or
-add as necessary</font></span></font></h3>
+<blockquote>
+<p>Review the&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/pplRoles">roles documentation</a>, which includes a list of out of the box roles.</p>
+</blockquote>
 
-<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">Review the&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/pplRoles" style="">roles documentation</a><span style="color: rgb(33, 37, 41);">, which
-includes a list of out of the box roles.</span></font></p></blockquote>
+<p>&nbsp;</p>
 
-<p style="margin: 0in;"><font face="Arial" size="3">&nbsp;</font></p>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Create or import Location data</strong></h3>
 
-<h3 style="margin: 0in; color: rgb(33, 37, 41);"><font face="Arial"><span style="font-weight:bold;font-size:18.0pt">☐</span><span style="font-weight:
-bold;font-size:11.25pt">&nbsp;</span><span style="font-weight: bold;"><font size="3">Create or import Location data</font></span></font></h3>
+<blockquote>
+<p>For more details, please review the&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/CoreData#Locations">Locations</a>&nbsp;section in the Getting Started guide.</p>
+</blockquote>
 
-<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">For more details, please review the&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/CoreData#Locations" style="">Locations</a><span style="color: rgb(33, 37, 41);">&nbsp;section
-in the Getting Started guide.</span></font></p></blockquote>
+<p>&nbsp;</p>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<p><strong>☐</strong><strong>&nbsp;</strong><strong>Create or import Organizational Groups</strong></p>
 
-<p style="margin: 0in; color: rgb(33, 37, 41);"><font face="Arial"><span style="font-weight:bold;font-size:18.0pt">☐</span><span style="font-weight:
-bold;font-size:11.25pt">&nbsp;</span><span style="font-weight: bold;"><font size="3">Create or import Organizational Groups</font></span></font></p>
+<blockquote>
+<p>Organizational Groups contain all the boxes on the company’s org chart. Business units, departments, and the company itself&nbsp;are represented&nbsp;as separate but related Organization Groups.&nbsp;</p>
 
-<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><p style="margin: 0in; color: rgb(33, 37, 41);"><font face="Arial" style="" size="3">Organizational
-Groups contain all the boxes on the company’s org chart. Business units,
-departments, and the company itself&nbsp;are represented&nbsp;as separate but
-related Organization Groups.&nbsp;</font></p><p style="margin: 0in; color: rgb(33, 37, 41);"><font face="Arial" size="3">The
-Organizational Group also contains information about the Owner/Manager of the
-Group and all the members of the Organization. Note that a person can only
-belong to one Organizational Group.</font></p><p style="margin: 0in;"><font face="Arial" size="3">&nbsp;</font></p></blockquote>
+<p>The Organizational Group also contains information about the Owner/Manager of the Group and all the members of the Organization. Note that a person can only belong to one Organizational Group.</p>
 
+<p>&nbsp;</p>
+</blockquote>
 
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Create or import Functional Groups</strong></h3>
 
+<blockquote>
+<p>Functional Groups contain the people responsible for a specific job function or process within the system.&nbsp; These groups can encompass people who belong to several Organizational Groups or may&nbsp;be used&nbsp;to further break up Organizational Groups into different functions that they support.&nbsp; For example, within a Department that builds a specific product we can create separate Functional Groups for the Database team, the UI team, and the Application team.&nbsp; It is also important to note that people can belong to multiple Functional Groups, so people that support multiple processes can belong to all the teams that are necessary.&nbsp;&nbsp;</p>
 
+<p>The main thing you will use Functional Groups for is to assign “work”. When you want a specific “Team” to work on a Request, Incident, Change, or even a Task, assign a Functional Group to the record you want them to work on.&nbsp; From there, you can also assign a specific Group member to the record, so it is not only important to define the Groups but to make sure the correct people are part of the Group.</p>
+</blockquote>
 
-<h3 style="margin: 0in; color: rgb(33, 37, 41);"><font face="Arial"><span style="font-weight:bold;font-size:18.0pt">☐</span><span style="font-weight:
-bold;font-size:11.25pt">&nbsp;</span><span style="font-weight: bold;"><font size="3">Create or import Functional Groups</font></span></font></h3>
+<p>&nbsp;</p>
 
-<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><p style="margin: 0in; color: rgb(33, 37, 41);"><font face="Arial" style="" size="3">Functional
-Groups contain the people responsible for a specific job function or process
-within the system.&nbsp; These groups can encompass people who belong to
-several Organizational Groups or may&nbsp;be used&nbsp;to further break up
-Organizational Groups into different functions that they support.&nbsp; For
-example, within a Department that builds a specific product we can create
-separate Functional Groups for the Database team, the UI team, and the
-Application team.&nbsp; It is also important to note that people can belong to
-multiple Functional Groups, so people that support multiple processes can
-belong to all the teams that are necessary.&nbsp;&nbsp;</font></p><p style="margin: 0in; color: rgb(33, 37, 41);"><font face="Arial" size="3">The
-main thing you will use Functional Groups for is to assign “work”. When you
-want a specific “Team” to work on a Request, Incident, Change, or even a Task,
-assign a Functional Group to the record you want them to work on.&nbsp; From
-there, you can also assign a specific Group member to the record, so it is not
-only important to define the Groups but to make sure the correct people are
-part of the Group.</font></p></blockquote>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Import any Users that were not part of the SSO integration</strong></h3>
 
+<blockquote>
+<p>Simple imports may be performed&nbsp;through the UI, but for more complex information consider using the&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/cg_managePersonsAPI">Manage Persons API</a>.</p>
+</blockquote>
 
+<p>&nbsp;</p>
 
-<p style="margin: 0in;"><font face="Arial" size="3">&nbsp;</font></p>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Create or import Contacts (non-users) into SMAX</strong></h3>
 
-<h3 style="margin: 0in; color: rgb(33, 37, 41);"><font face="Arial"><span style="font-weight:bold;font-size:18.0pt">☐</span><span style="font-weight:
-bold;font-size:11.25pt">&nbsp;</span><span style="font-weight: bold;"><font size="3">Import any Users that were not part of the SSO
-integration</font></span></font></h3>
+<p>&nbsp;</p>
 
-<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">Simple imports may be performed&nbsp;through the UI, but for
-more complex information consider using the</span><span style="color: rgb(33, 37, 41);">&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/cg_managePersonsAPI" style="">Manage Persons API</a><span style="color: rgb(33, 37, 41);">.</span></font></p></blockquote>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Assign Users to Roles, Locations, and Groups</strong></h3>
 
-<p style="margin: 0in;"><font face="Arial" size="3">&nbsp;</font></p>
+<blockquote>
+<p>For small implementations, this may&nbsp;be done&nbsp;manually, but most implementations will require the use of the Manage Persons API to make bulk updates.&nbsp;&nbsp;Information on this API may be found&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/cg_managePersonsAPI">here</a>.</p>
 
-<h3 style="margin: 0in; color: rgb(33, 37, 41);"><font face="Arial"><span style="font-weight:bold;font-size:18.0pt">☐</span><span style="font-weight:
-bold;font-size:11.25pt">&nbsp;</span><span style="font-weight: bold;"><font size="3">Create or import Contacts (non-users) into SMAX</font></span></font></h3>
+<p>Micro Focus provides the Connect-It product as one tool to move information from your internal data sources to SMAX.&nbsp; Connect-It makes use of the Manage Persons API so you can add attributes, set licensing, and add Users to Roles and Groups.</p>
+</blockquote>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<p>&nbsp;</p>
 
-<h3 style="margin: 0in; color: rgb(33, 37, 41);"><font face="Arial"><span style="font-weight:bold;font-size:18.0pt">☐</span><span style="font-weight:
-bold;font-size:11.25pt">&nbsp;</span><span style="font-weight: bold;"><font size="3">Assign Users to Roles, Locations, and Groups</font></span></font></h3>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Customize the notification header &amp; footer</strong></h3>
 
-<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">For small implementations, this may&nbsp;be done&nbsp;manually,
-but most implementations will require the use of the Manage Persons API to make
-bulk updates.&nbsp;&nbsp;Information on this API may be found&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/cg_managePersonsAPI" style="">here</a><span style="color: rgb(33, 37, 41);">.</span></font></p><p style="margin: 0in; color: rgb(33, 37, 41);"><font face="Arial" size="3">Micro
-Focus provides the Connect-It product as one tool to move information from your
-internal data sources to SMAX.&nbsp; Connect-It makes use of the Manage Persons
-API so you can add attributes, set licensing, and add Users to Roles and
-Groups.</font></p></blockquote>
+<p>&nbsp;</p>
 
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Update Agent training material with Location and Group information if needed</strong></h3>
 
+<p>&nbsp;</p>
 
-<p style="margin: 0in;"><font face="Arial" size="3">&nbsp;</font></p>
+<p>&nbsp;</p>
 
-<h3 style="margin: 0in; color: rgb(33, 37, 41);"><font face="Arial"><span style="font-weight:bold;font-size:18.0pt">☐</span><span style="font-weight:
-bold;font-size:11.25pt">&nbsp;</span><span style="font-weight: bold;"><font size="3">Customize the notification header &amp; footer</font></span></font></h3>
+<h2><strong>Define your primary Services</strong></h2>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<p>Services are at the core of most processes within SMAX. Taking the time to define your services fully will improve the productivity of these processes, notably the Service Catalog. You can find more information on defining your services,&nbsp;as well as&nbsp;examples, in the&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/SACMOverview">SACM Overview</a>&nbsp;chapter of the Getting Started guide.</p>
 
-<h3 style="margin: 0in; color: rgb(33, 37, 41);"><font face="Arial"><span style="font-weight:bold;font-size:18.0pt">☐</span><span style="font-weight:
-bold;font-size:11.25pt">&nbsp;</span><span style="font-weight: bold;"><font size="3">Update Agent training material with Location and
-Group information if needed</font></span></font></h3>
+<h3>&nbsp;<br>
+<strong>☐&nbsp;</strong><strong>Create Service Definitions for a few of your most important/used Services</strong></h3>
 
-<p style="margin: 0in; color: rgb(33, 37, 41);"><font face="Arial">&nbsp;</font><span style="font-weight: bold;"><font size="5" style="" face="Arial"><br></font></span></p>
+<blockquote>
+<p>Information on adding the Service Definitions can be found&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/ServiceDefn">here</a>.</p>
+</blockquote>
 
-<p style="margin: 0in; color: rgb(33, 37, 41);"><span style="font-weight: bold;"><font size="5" style="" face="Arial"><br></font></span></p><h2 style="margin: 0in; color: rgb(33, 37, 41);"><span style="font-weight: bold;"><font size="5" style="" face="Arial">Define your primary Services</font></span></h2>
+<p>&nbsp;</p>
 
-<p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">Services are at the core of most processes within SMAX. Taking
-the time to define your services fully will improve the productivity of these
-processes, notably the Service Catalog. You can find more information on
-defining your services,&nbsp;as well as&nbsp;examples, in the&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/SACMOverview" style="">SACM Overview</a><span style="color: rgb(33, 37, 41);">&nbsp;chapter
-of the Getting Started guide.</span></font></p>
+<h3><strong>☐&nbsp;</strong><strong>Create the Actual Service entries that represent these Services in your environment</strong><strong>&nbsp;</strong></h3>
 
-<h3 style="margin: 0in;"><font face="Arial" style=""><span style="font-size: 13.5pt;">&nbsp;</span><br><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font><font size="3">&nbsp;</font></span><span style="font-weight: bold; color: black;"><font size="3">Create Service Definitions for a few of
-your most important/used Services</font></span></font></h3>
+<blockquote>
+<p>Details and an example can be found&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/SACMOverview#Providing_Services">here</a>.</p>
+</blockquote>
 
+<h3>&nbsp;<br>
+<strong>☐&nbsp;</strong><strong>Where possible, define the Service Component/System Element hierarchy under these Services</strong></h3>
 
+<blockquote>
+<p>For more details, please see&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/SACMOverview#Providing_Services">this chapter&nbsp;</a>in the Getting Started guide.</p>
+</blockquote>
 
-<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">Information on adding the Service Definitions can be found</span><span style="color: rgb(33, 37, 41);">&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/ServiceDefn" style="">here</a><span style="color: rgb(33, 37, 41);">.</span></font></p></blockquote>
+<h3>&nbsp;<br>
+<strong>☐</strong><strong>&nbsp;</strong><strong>(</strong><strong>optional) Set the primary Functional Groups responsible for supporting these Services either in the Actual Service or an associated Routing Definition</strong></h3>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<blockquote>
+<p>An example of using these groups in a workflow can be found&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/cg_uc_autoAssignment">here&nbsp;in the Configuration guide</a>.</p>
+</blockquote>
 
-<h3 style="margin: 0in;"><font face="Arial" style=""><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font><span style="font-size: 13.5pt;">&nbsp;</span></span><span style="font-weight: bold; color: black;"><font size="3">Create the Actual Service entries that
-represent these Services in your environment</font></span><span style="font-size: 13.5pt; font-weight: bold; color: black;">&nbsp;</span></font></h3>
+<p>&nbsp;</p>
 
-<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><p style="margin: 0in;"><font face="Arial"><span style="font-size:12.0pt;
-color:#212529">Details and an example can be found&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/SACMOverview#Providing_Services"><span style="font-size:11.25pt">here</span></a><span style="font-size:12.0pt;
-color:#212529">.</span></font></p></blockquote>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Update Agent training material with Service information</strong></h3>
 
-<h3 style="margin:0in"><font face="Arial">&nbsp;<br></font><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font><font size="3">&nbsp;</font></span><span style="font-weight: bold; color: black;"><font size="3">Where possible, define the
-Service Component/System Element hierarchy under these Services</font></span></font></h3>
+<p>&nbsp;</p>
 
+<p>&nbsp;</p>
 
+<p><strong>Setting up Request Management</strong></p>
 
-<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">For more details, please see</span><span style="color: rgb(33, 37, 41);">&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/SACMOverview#Providing_Services" style="">this chapter&nbsp;</a><span style="color: rgb(33, 37, 41);">in the
-Getting Started guide.</span></font></p></blockquote>
+<p>Request management handles the end to end process of receiving a request from an end-user and fulfilling it. A properly prepared request management process reduces the load on agents by allowing end-users to fulfill their own requests without agent involvement either by automating common request offerings (such as password resets) or providing knowledge that will allow the end-user to answer a question by themselves. For more information, please read the&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/RequestManagement">Request Management</a>&nbsp;chapter in the Getting Started guide.</p>
 
-<h3 style="margin:0in"><font face="Arial">&nbsp;<br></font><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">(</span><span style="font-weight: bold; color: rgb(33, 37, 41);">optional)
-Set the primary Functional Groups responsible for supporting these Services
-either in the Actual Service or an associated Routing Definition</span></font></font></h3>
+<p>&nbsp;</p>
 
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Review the default Record Categories, adding or removing where necessary</strong></h3>
 
+<blockquote>
+<p>For additional details, please see&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/RequestManagement#Setting_up_our_Record_Categories">this section</a>&nbsp;in the Getting Started guide.</p>
+</blockquote>
 
-<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">An example of using these groups in a workflow can be
-found&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/cg_uc_autoAssignment" style="">here&nbsp;in the Configuration
-guide</a><span style="color: rgb(33, 37, 41);">.</span></font></p></blockquote>
+<p>&nbsp;</p>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Import existing Knowledge Articles</strong></h3>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Update Agent training
-material with Service information</span></font></font></h3>
+<blockquote>
+<p>Information on packaging existing articles and importing them into SMAX can be found&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/RequestManagement#Importing_Existing_Knowledge">here</a>.</p>
+</blockquote>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p><p style="margin: 0in; font-size: 11pt;"><font face="Arial"><br></font></p>
+<p>&nbsp;</p>
 
-<p style="margin: 0in; color: rgb(33, 37, 41);"><span style="background-color: transparent; font-family: Arial; font-size: x-large; letter-spacing: 1.1px; text-transform: initial; font-weight: 700;">Setting up Request Management</span><font size="3"><span style="background-color: transparent; font-family: Arial; letter-spacing: 1.1px; text-transform: initial;"><br></span></font></p>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Review Request Roles and ensure Agents have correct Roles</strong></h3>
 
-<p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">Request management handles the end to end process of receiving a
-request from an end-user and fulfilling it. A properly prepared request
-management process reduces the load on agents by allowing end-users to fulfill
-their own requests without agent involvement either by automating common
-request offerings (such as password resets) or providing knowledge that will
-allow the end-user to answer a question by themselves. For more information,
-please read the&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/RequestManagement" style="">Request Management</a><span style="color: rgb(33, 37, 41);">&nbsp;</span><span style="color: rgb(33, 37, 41);">chapter in
-the Getting Started guide.</span></font></p>
+<p>&nbsp;</p>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Review default Views and Reports, editing or adding&nbsp;if necessary</strong></h3>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Review the default Record
-Categories, adding or removing where necessary</span></font></font></h3>
+<blockquote>
+<p>For more information, please view&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/RequestManagement#Creating_Views_and_Reports_for_the_Dashboard">this section</a>&nbsp;of the Getting Started guide.</p>
+</blockquote>
 
-<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">For additional details, please see&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/RequestManagement#Setting_up_our_Record_Categories" style="">this section</a><span style="color: rgb(33, 37, 41);">&nbsp;</span><span style="color: rgb(33, 37, 41);">in the
-Getting Started guide.</span></font></p></blockquote>
+<p>&nbsp;</p>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Implement a satisfaction survey if desired</strong></h3>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><span style="font-weight: bold; font-size: 13.5pt; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;"><font size="3">Import existing Knowledge
-Articles</font></span></font></h3>
+<blockquote>
+<p>Surveys are explained further&nbsp;in&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/RequestManagement#Surveys">this section</a>&nbsp;of the Getting Started guide.</p>
+</blockquote>
 
-<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">Information on packaging existing articles and importing them
-into SMAX can be found</span><span style="color: rgb(33, 37, 41);">&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/RequestManagement#Importing_Existing_Knowledge" style="">here</a><span style="color: rgb(33, 37, 41);">.</span></font></p></blockquote>
+<p>&nbsp;</p>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Define a default Service Level Agreement with Service Targets for Support Requests</strong></h3>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Review Request Roles and
-ensure Agents have correct Roles</span></font></font></h3>
+<blockquote>
+<p>Please review the&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/SLM">Service Level Management</a>&nbsp;section of the Getting Started guide for more information.</p>
+</blockquote>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<p>&nbsp;</p>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><span style="font-weight: bold; font-size: 13.5pt; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;"><font size="3">Review default Views and
-Reports, editing or adding&nbsp;if necessary</font></span></font></h3>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Update Agent training materials with Request Management process flows</strong></h3>
 
-<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">For more information, please view&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/RequestManagement#Creating_Views_and_Reports_for_the_Dashboard" style="">this section</a><span style="color: rgb(33, 37, 41);">&nbsp;</span><span style="color: rgb(33, 37, 41);">of the
-Getting Started guide.</span></font></p></blockquote>
+<p>&nbsp;</p>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<p>&nbsp;</p>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Implement a satisfaction
-survey if desired</span></font></font></h3>
+<h2><strong>The Service Catalog</strong></h2>
 
-<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">Surveys are explained further&nbsp;in&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/RequestManagement#Surveys" style="">this section</a><span style="color: rgb(33, 37, 41);">&nbsp;of the
-Getting Started guide.</span></font></p></blockquote>
+<p>To consume the services IT provides, the end-users need to have a way of discovering the services available and what actions or requests they can perform against them. The service catalog provides the means of creating those available choices for both the Service Management Automation Service Portal (accessed by the end-users) and request management (accessed by the agents).&nbsp;</p>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<p>Before creating your Service Catalog, we recommend reading the&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/ServiceCatalog">associated chapter</a>&nbsp;in the Getting Started guide.</p>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Define a default Service
-Level Agreement with Service Targets for Support Requests</span></font></font></h3>
+<p>&nbsp;</p>
 
-<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">Please review the&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/SLM" style="">Service Level Management</a><span style="color: rgb(33, 37, 41);">&nbsp;section
-of the Getting Started guide for more information.</span></font></p></blockquote>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Create the high-level Service Category structure with existing Service Definitions</strong></h3>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<blockquote>
+<p>For examples and further information on setting up the category structure, review the related information&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/ServiceCatalog#The_Catalog_Structure">here</a>&nbsp;in the Getting Started guide.</p>
+</blockquote>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Update Agent training
-materials with Request Management process flows</span></font></font></h3>
+<p>&nbsp;</p>
 
-<p style="margin: 0in; color: rgb(33, 37, 41);"><font face="Arial">&nbsp;</font></p><p style="margin: 0in; color: rgb(33, 37, 41);"><font face="Arial"><br></font></p>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Create any necessary Entitlement records to attach to Offerings</strong></h3>
 
-<h2 style="margin: 0in; color: rgb(33, 37, 41);"><span style="font-weight: bold;"><font face="Arial" style="" size="5">The Service Catalog</font></span></h2>
+<blockquote>
+<p>An example of using Entitlement Rules to segregate data by location can be found&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/cg_uc_entitlements">here</a>.&nbsp;&nbsp;</p>
+</blockquote>
 
-<p style="margin: 0in; color: rgb(33, 37, 41);"><font face="Arial" style="" size="3">To
-consume the services IT provides, the end-users need to have a way of
-discovering the services available and what actions or requests they can
-perform against them. The service catalog provides the means of creating those
-available choices for both the Service Management Automation Service Portal
-(accessed by the end-users) and request management (accessed by the agents).</font><span style="font-family: Arial; font-size: medium; letter-spacing: 0.2px; background-color: transparent; color: rgba(0, 0, 0, 0.87);">&nbsp;</span></p>
+<p>&nbsp;</p>
 
-<p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">Before creating your Service Catalog, we recommend reading
-the&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/ServiceCatalog" style="">associated chapter</a><span style="color: rgb(33, 37, 41);">&nbsp;in the
-Getting Started guide.</span></font></p>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Create a few Offerings for each Service</strong></h3>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<blockquote>
+<p>Information on setting up offerings&nbsp;is located&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/ServiceCatalog#Offering">here</a>&nbsp;in the Getting Started guide.</p>
+</blockquote>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Create the high-level
-Service Category structure with existing Service Definitions</span></font></font></h3>
+<p>&nbsp;</p>
 
-<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">For examples and further information on setting up the category
-structure, review the related information&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/ServiceCatalog#The_Catalog_Structure" style="">here</a><span style="color: rgb(33, 37, 41);">&nbsp;in the
-Getting Started guide.</span></font></p></blockquote>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Customize the Self Service Portal look &amp; feel</strong></h3>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<blockquote>
+<p>You can see an example of a tailored service portal&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/ServiceCatalog#Tailoring_the_Service_Management_Automation_Service_Portal">here</a>.</p>
+</blockquote>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Create any necessary
-Entitlement records to attach to Offerings</span></font></font></h3>
+<p>&nbsp;</p>
 
-<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">An example of using Entitlement Rules to segregate data by
-location can be found&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/cg_uc_entitlements" style="">here</a><span style="color: rgb(33, 37, 41);">.&nbsp;&nbsp;</span></font></p></blockquote>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Update end-user training materials with Self Service Portal information</strong><br>
+&nbsp;</h3>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<p>&nbsp;</p>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Create a few Offerings for
-each Service</span></font></font></h3>
+<h2><strong>Setting up Incident Management</strong></h2>
 
-<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">Information on setting up offerings&nbsp;is located&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/ServiceCatalog#Offering" style="">here</a><span style="color: rgb(33, 37, 41);">&nbsp;in the
-Getting Started guide.</span></font></p></blockquote>
+<p>An Incident encompasses any disruption or degradation of a service, whether the service is internal or external. Issues with redundant hardware (or software)&nbsp;are also handled&nbsp;as an incident, even if the degradation is not apparent to an end-user.</p>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<p>The goal of the incident management process is to resolve the disruption or degradation as quickly as possible. This may often involve enacting a workaround (such as rebooting a server or restarting a specific service) rather than a permanent fix.</p>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Customize the Self Service
-Portal look &amp; feel</span></font></font></h3>
+<p>We highly recommend reviewing the&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/IncidentManagement">Incident Management chapter</a>&nbsp;in the Getting Started guide before starting your implementation.</p>
 
-<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">You can see an example of a tailored service portal&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/ServiceCatalog#Tailoring_the_Service_Management_Automation_Service_Portal" style="">here</a><span style="color: rgb(33, 37, 41);">.</span></font></p></blockquote>
+<p>&nbsp;</p>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Review the default Record Categories, adding or removing where necessary</strong></h3>
 
-<h3 style="margin: 0in; font-size: 11.25pt; color: rgb(33, 37, 41);"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Update end-user training
-materials with Self Service Portal information<br></span></font></font><font face="Arial">&nbsp;</font></h3>
+<p>&nbsp;</p>
 
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Import existing Knowledge Articles</strong></h3>
 
+<p>&nbsp;</p>
 
-<p style="margin: 0in; color: rgb(33, 37, 41);"><br></p><h2 style="margin: 0in; color: rgb(33, 37, 41);"><span style="font-weight: bold;"><font face="Arial" style="" size="5">Setting up Incident Management</font></span></h2>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Review Incident Roles and ensure Agents have correct Roles</strong></h3>
 
-<p style="margin: 0in; color: rgb(33, 37, 41);"><font face="Arial" style="" size="3">An
-Incident encompasses any disruption or degradation of a service, whether the
-service is internal or external. Issues with redundant hardware (or
-software)&nbsp;are also handled&nbsp;as an incident, even if the degradation is
-not apparent to an end-user.</font></p>
+<p>&nbsp;</p>
 
-<p style="margin: 0in; color: rgb(33, 37, 41);"><font face="Arial" size="3">The
-goal of the incident management process is to resolve the disruption or
-degradation as quickly as possible. This may often involve enacting a
-workaround (such as rebooting a server or restarting a specific service) rather
-than a permanent fix.</font></p>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Review default Views and Reports, editing or adding&nbsp;if necessary</strong></h3>
 
-<p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">We highly recommend reviewing the&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/IncidentManagement">Incident Management chapter</a><span style="color: rgb(33, 37, 41);">&nbsp;in the
-Getting Started guide before starting your implementation.</span></font></p>
+<p>&nbsp;</p>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Define a default Service Level Agreement with Service Targets</strong></h3>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Review the default Record
-Categories, adding or removing where necessary</span></font></font></h3>
+<blockquote>
+<p>Please review the&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/SLM">Service Level Management</a>&nbsp;section of the Getting Started guide for more information.</p>
+</blockquote>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<p>&nbsp;</p>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Import existing Knowledge
-Articles</span></font></font></h3>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Create Incident Models and or Templates to assist with Incident creation</strong></h3>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<blockquote>
+<p>An explanation and examples of&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/IncidentManagement#Incident_Models">Incident Models</a>&nbsp;can&nbsp;be found&nbsp;in the Getting Started guide.</p>
+</blockquote>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Review Incident Roles and
-ensure Agents have correct Roles</span></font></font></h3>
+<p>&nbsp;</p>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Update Agent training materials with Incident Management process flows</strong></h3>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Review default Views and
-Reports, editing or adding&nbsp;if necessary</span></font></font></h3>
+<p>&nbsp;</p>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<p>&nbsp;</p>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Define a default Service
-Level Agreement with Service Targets</span></font></font></h3>
+<h2><strong>Setting up Problem Management</strong></h2>
 
-<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">Please review the&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/SLM" style="">Service Level Management</a><span style="color: rgb(33, 37, 41);">&nbsp;section
-of the Getting Started guide for more information.</span></font></p></blockquote>
+<p>A problem&nbsp;is simply the cause of&nbsp;one or more incidents. The aim of the problem process is to minimize the impact of known problems on consumers and prevent recurring incidents.</p>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<p>Problem management encompasses the activities required to diagnose the root cause of incidents and determine short-term workarounds and long-term resolutions to those problems. It is also responsible for ensuring the correct resolutions&nbsp;are implemented&nbsp;through the correct control processes such as change management and release management.</p>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Create Incident Models and
-or Templates to assist with Incident creation</span></font></font></h3>
+<p>More information can be found&nbsp;in the&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/ProblemManagement">Problem Management chapter</a>&nbsp;of the Getting Started guide.</p>
 
-<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">An explanation and examples of</span><span style="color: rgb(33, 37, 41);">&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/IncidentManagement#Incident_Models" style="">Incident Models</a><span style="color: rgb(33, 37, 41);">&nbsp;can&nbsp;be
-found&nbsp;in the Getting Started guide.</span></font></p></blockquote>
+<p>&nbsp;</p>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Review the default Record Categories, adding or removing where necessary</strong></h3>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Update Agent training
-materials with Incident Management process flows</span></font></font></h3><p><font face="Arial"><font size="3"><span style="font-weight: bold; color: black;"><br></span></font></font></p>
+<p>&nbsp;</p>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Import existing Knowledge Articles</strong></h3>
 
-<h2 style="margin: 0in; color: rgb(33, 37, 41);"><span style="font-weight: bold;"><font face="Arial" style="" size="5">Setting up Problem Management</font></span></h2>
+<p>&nbsp;</p>
 
-<p style="margin: 0in; color: rgb(33, 37, 41);"><font face="Arial" style="" size="3">A
-problem&nbsp;is simply the cause of&nbsp;one or more incidents. The aim of the
-problem process is to minimize the impact of known problems on consumers and
-prevent recurring incidents.</font></p>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Review Problem Roles and ensure Agents have correct Roles</strong></h3>
 
-<p style="margin: 0in; color: rgb(33, 37, 41);"><font face="Arial" size="3">Problem
-management encompasses the activities required to diagnose the root cause of
-incidents and determine short-term workarounds and long-term resolutions to
-those problems. It is also responsible for ensuring the correct
-resolutions&nbsp;are implemented&nbsp;through the correct control processes
-such as change management and release management.</font></p>
+<p>&nbsp;</p>
 
-<p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">More information can be found&nbsp;in the&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/ProblemManagement" style="">Problem Management chapter</a><span style="color: rgb(33, 37, 41);">&nbsp;of the
-Getting Started guide.</span></font></p>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Review default Views and Reports, editing or adding&nbsp;if necessary</strong></h3>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<p>&nbsp;</p>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Review the default Record
-Categories, adding or removing where necessary</span></font></font></h3>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>(optional) Create Problem Templates to assist with Problem creation</strong></h3>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<p>&nbsp;</p>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Import existing Knowledge
-Articles</span></font></font></h3>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Update Agent training materials with Problem Management process flows</strong></h3>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<p>&nbsp;</p>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Review Problem Roles and
-ensure Agents have correct Roles</span></font></font></h3>
+<p>&nbsp;</p>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<h2><strong>Setting up Change Management</strong></h2>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Review default Views and
-Reports, editing or adding&nbsp;if necessary</span></font></font></h3>
+<p>Changes to IT infrastructure may be necessary to respond to problems or externally imposed requirements and to improve the efficiency and effectiveness of existing services. The change management process ensures that standardized methods, processes, and procedures&nbsp;are used&nbsp;for all changes to facilitate efficient and safe handling of all changes to the infrastructure, and is used to determine that the need for change outweighs the potential detrimental impact of changes.</p>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<p>The&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/ChangeManagement">Change Management chapter</a>&nbsp;of the Getting Started guide contains additional information on setting up the module.</p>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">(optional) Create
-Problem Templates to assist with Problem creation</span></font></font></h3>
+<p>&nbsp;</p>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Review the default Record Categories, adding or removing where necessary</strong></h3>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Update Agent training
-materials with Problem Management process flows</span></font></font></h3>
+<p>&nbsp;</p>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Review Change roles and ensure Agents have correct Roles</strong></h3>
 
-<p style="margin: 0in; font-size: 11.25pt; color: rgb(33, 37, 41);"><span style="font-weight:bold"><font face="Arial"><br></font></span></p><h2 style="margin: 0in; color: rgb(33, 37, 41);"><span style="font-weight: bold;"><font face="Arial" style="" size="5">Setting up Change Management</font></span></h2>
+<p>&nbsp;</p>
 
-<p style="margin: 0in; color: rgb(33, 37, 41);"><font face="Arial" style="" size="3">Changes
-to IT infrastructure may be necessary to respond to problems or externally
-imposed requirements and to improve the efficiency and effectiveness of
-existing services. The change management process ensures that standardized
-methods, processes, and procedures&nbsp;are used&nbsp;for all changes to
-facilitate efficient and safe handling of all changes to the infrastructure,
-and is used to determine that the need for change outweighs the potential
-detrimental impact of changes.</font></p>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Review default Views and Reports, editing or adding&nbsp;if necessary</strong></h3>
 
-<p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">The&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/ChangeManagement" style="">Change Management chapter</a><span style="color: rgb(33, 37, 41);">&nbsp;of the
-Getting Started guide contains additional information on setting up the module.</span></font></p>
+<p>&nbsp;</p>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Create Change Models to guide Agents in most popular and important Changes</strong></h3>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Review the default Record
-Categories, adding or removing where necessary</span></font></font></h3>
+<blockquote>
+<p>More information regarding&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/ChangeManagement#Creating_Change_Models">Change Models</a>&nbsp;can be found&nbsp;in the Getting Started guide.</p>
+</blockquote>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<p>&nbsp;</p>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Review Change roles and
-ensure Agents have correct Roles</span></font></font></h3>
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Create Time Periods for Change blackout and maintenance periods</strong></h3>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
+<blockquote>
+<p>Further information on setting up Time Periods can be found&nbsp;<a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/ChangeManagement#Setting_up_Time_Periods">here</a>&nbsp;in the Getting Started guide.</p>
+</blockquote>
 
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Review default Views and
-Reports, editing or adding&nbsp;if necessary</span></font></font></h3>
+<p>&nbsp;</p>
 
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
-
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Create Change Models to
-guide Agents in most popular and important Changes</span></font></font></h3>
-
-<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">More information regarding&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/ChangeManagement#Creating_Change_Models" style="">Change Models</a><span style="color: rgb(33, 37, 41);">&nbsp;can be
-found&nbsp;in the Getting Started guide.</span></font></p></blockquote>
-
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
-
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Create Time Periods for
-Change blackout and maintenance periods</span></font></font></h3>
-
-<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><p style="margin:0in"><font face="Arial" size="3"><span style="color: rgb(33, 37, 41);">Further information on setting up Time Periods can be
-found&nbsp;</span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/PN/ChangeManagement#Setting_up_Time_Periods" style="">here</a><span style="color: rgb(33, 37, 41);">&nbsp;in the
-Getting Started guide.</span></font></p></blockquote>
-
-<p style="margin: 0in; font-size: 11pt;"><font face="Arial">&nbsp;</font></p>
-
-<h3 style="margin:0in"><font face="Arial"><span style="font-weight: bold; color: rgb(33, 37, 41);"><font size="5">☐</font></span><font size="3"><span style="font-weight: bold; color: rgb(33, 37, 41);">&nbsp;</span><span style="font-weight: bold; color: black;">Update Agent training
-materials with Change management process flows</span></font></font></h3>
-
+<h3><strong>☐</strong><strong>&nbsp;</strong><strong>Update Agent training materials with Change management process flows</strong></h3>
 <!--EndFragment-->
