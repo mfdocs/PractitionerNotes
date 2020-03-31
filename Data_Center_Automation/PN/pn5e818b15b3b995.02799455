@@ -2,7 +2,7 @@
 
 <p>&nbsp;</p>
 
-<p>HAProxy is free, open source software that provides a high availability load balancer and proxy server for TCP and HTTP-based applications that spreads requests across multiple servers (as per Wikipedia).<br>
+<p>HAProxy is free, open source software that provides a high availability load balancer and proxy server for TCP and HTTP-based applications that spreads requests across multiple servers (<em>as per Wikipedia</em>).<br>
 ITOM Data Center Automation (DCA) suite and other ITOM suite may use an external Load Balancer, typically on a Multi-Master deployment. This document describes how to setup an External Load Balancer using HAProxy in a High-Availability mode. With minor modifications in steps, same can be setup in standalone mode as well.</p>
 
 <h2><br>
@@ -146,12 +146,12 @@ global<br>
 &nbsp; &nbsp;timeout client 50000<br>
 &nbsp; &nbsp;timeout server 50000</tt></p>
 
-<p><tt>## DCA frontend block starts ----------------------------------------------<br>
-frontend DCA_https_front<br>
+<p><tt>## Suite&nbsp;frontend block starts ----------------------------------------------<br>
+frontend Suite_https_front<br>
 &nbsp; &nbsp;bind *:443<br>
 &nbsp; &nbsp;option tcplog<br>
 &nbsp; &nbsp;mode tcp<br>
-&nbsp; &nbsp;default_backend DCA_https_back</tt></p>
+&nbsp; &nbsp;default_backend Suite_https_back</tt></p>
 
 <p><tt>frontend CDF_https_front<br>
 &nbsp; &nbsp;bind *:5443<br>
@@ -159,23 +159,23 @@ frontend DCA_https_front<br>
 &nbsp; &nbsp;mode tcp<br>
 &nbsp; &nbsp;default_backend CDF_https_back</tt></p>
 
-<p><tt>frontend DCA_https_front_8443<br>
+<p><tt>frontend Suite_https_front_8443<br>
 &nbsp; &nbsp;bind *:8443<br>
 &nbsp; &nbsp;option tcplog<br>
 &nbsp; &nbsp;mode tcp<br>
-&nbsp; &nbsp;default_backend DCA_https_back_8443</tt></p>
+&nbsp; &nbsp;default_backend Suite_https_back_8443</tt></p>
 
-<p><tt>frontend DCA_https_front_3000<br>
+<p><tt>frontend Suite_https_front_3000<br>
 &nbsp; &nbsp;bind *:3000<br>
 &nbsp; &nbsp;option tcplog<br>
 &nbsp; &nbsp;mode tcp<br>
-&nbsp; &nbsp;default_backend DCA_https_back_3000</tt></p>
+&nbsp; &nbsp;default_backend Suite_https_back_3000</tt></p>
 
-<p><tt>frontend DCA_https_front_4001<br>
+<p><tt>frontend Suite_https_front_4001<br>
 &nbsp; &nbsp;bind *:4001<br>
 &nbsp; &nbsp;option tcplog<br>
 &nbsp; &nbsp;mode tcp<br>
-&nbsp; &nbsp;default_backend DCA_https_back_4001<br>
+&nbsp; &nbsp;default_backend Suite_https_back_4001<br>
 ## DCA frontend block ends ------------------------------------------------</tt></p>
 
 <p><tt>## -- HAProxy Statistics block starts here --------------------------------<br>
@@ -202,60 +202,60 @@ listen stats<br>
 <p><tt>## and loging with admin /&nbsp;Password123XYZ<br>
 ## -- HAProxy Statistics block ends here ----------------------------------</tt></p>
 
-<p><tt>## DCA backend block starts -----------------------------------------------<br>
-## Replace aa.bb.cc.dd with IP Address of DCA Master #1 Node in this block<br>
-## Replace aa.bb.cc.ee with IP Address of DCA Master #2 Node in this block<br>
-## Replace aa.bb.cc.ff with IP Address of DCA Master #3 Node in this block<br>
-## 'DCAm1', 'DCAm2' &amp; 'DCAm3' in this block can be left as it is.<br>
-backend DCA_https_back<br>
+<p><tt>## Suite backend block starts -----------------------------------------------<br>
+## Replace aa.bb.cc.dd with IP Address of Suite&nbsp;Master #1 Node in this block<br>
+## Replace aa.bb.cc.ee with IP Address of Suite&nbsp;Master #2 Node in this block<br>
+## Replace aa.bb.cc.ff with IP Address of Suite&nbsp;Master #3 Node in this block<br>
+## 'SuiteMasterNode1', 'SuiteMasterNode2' &amp; 'SuiteMasterNode3' in this block may&nbsp;be left as it is.<br>
+backend Suite_https_back<br>
 &nbsp; &nbsp;mode tcp<br>
 &nbsp; &nbsp;balance roundrobin<br>
 &nbsp; &nbsp;option ssl-hello-chk<br>
 &nbsp; &nbsp;stick-table type ip size 20k peers MyHAproxyPeers<br>
-&nbsp; &nbsp;server DCAm1 aa.bb.cc.dd:443 check<br>
-&nbsp; &nbsp;server DCAm2 aa.bb.cc.ee:443 check<br>
-&nbsp; &nbsp;server DCAm3 aa.bb.cc.ff:443 check</tt></p>
+&nbsp; &nbsp;server SuiteMasterNode1 aa.bb.cc.dd:443 check<br>
+&nbsp; &nbsp;server SuiteMasterNode2 aa.bb.cc.ee:443 check<br>
+&nbsp; &nbsp;server SuiteMasterNode3 aa.bb.cc.ff:443 check</tt></p>
 
 <p><tt>backend CDF_https_back<br>
 &nbsp; &nbsp;mode tcp<br>
 &nbsp; &nbsp;balance roundrobin<br>
 &nbsp; &nbsp;option ssl-hello-chk<br>
 &nbsp; &nbsp;stick-table type ip size 20k peers MyHAproxyPeers<br>
-&nbsp; &nbsp;server DCAm1 aa.bb.cc.dd:5443 check<br>
-&nbsp; &nbsp;server DCAm2 aa.bb.cc.ee:5443 check<br>
-&nbsp; &nbsp;server DCAm3 aa.bb.cc.ff:5443 check</tt></p>
+&nbsp; &nbsp;server SuiteMasterNode1 aa.bb.cc.dd:5443 check<br>
+&nbsp; &nbsp;server SuiteMasterNode2 aa.bb.cc.ee:5443 check<br>
+&nbsp; &nbsp;server SuiteMasterNode3 aa.bb.cc.ff:5443 check</tt></p>
 
-<p><tt>backend DCA_https_back_8443<br>
+<p><tt>backend Suite_https_back_8443<br>
 &nbsp; &nbsp;mode tcp<br>
 &nbsp; &nbsp;balance roundrobin<br>
 &nbsp; &nbsp;option ssl-hello-chk<br>
 &nbsp; &nbsp;stick-table type ip size 20k peers MyHAproxyPeers<br>
-&nbsp; &nbsp;server DCAm1 aa.bb.cc.dd:8443 check<br>
-&nbsp; &nbsp;server DCAm2 aa.bb.cc.ee:8443 check<br>
-&nbsp; &nbsp;server DCAm3 aa.bb.cc.ff:8443 check</tt></p>
+&nbsp; &nbsp;server SuiteMasterNode1 aa.bb.cc.dd:8443 check<br>
+&nbsp; &nbsp;server SuiteMasterNode2 aa.bb.cc.ee:8443 check<br>
+&nbsp; &nbsp;server SuiteMasterNode3 aa.bb.cc.ff:8443 check</tt></p>
 
-<p><tt>backend DCA_https_back_3000<br>
+<p><tt>backend Suite_https_back_3000<br>
 &nbsp; &nbsp;mode tcp<br>
 &nbsp; &nbsp;balance roundrobin<br>
 &nbsp; &nbsp;option ssl-hello-chk<br>
 &nbsp; &nbsp;stick-table type ip size 20k peers MyHAproxyPeers<br>
-&nbsp; &nbsp;server DCAm1 aa.bb.cc.dd:3000 check<br>
-&nbsp; &nbsp;server DCAm2 aa.bb.cc.ee:3000 check<br>
-&nbsp; &nbsp;server DCAm3 aa.bb.cc.ff:3000 check</tt></p>
+&nbsp; &nbsp;server SuiteMasterNode1 aa.bb.cc.dd:3000 check<br>
+&nbsp; &nbsp;server SuiteMasterNode2 aa.bb.cc.ee:3000 check<br>
+&nbsp; &nbsp;server SuiteMasterNode3 aa.bb.cc.ff:3000 check</tt></p>
 
-<p><tt>backend DCA_https_back_4001<br>
+<p><tt>backend Suite_https_back_4001<br>
 &nbsp; &nbsp;mode tcp<br>
 &nbsp; &nbsp;balance roundrobin<br>
 &nbsp; &nbsp;option ssl-hello-chk<br>
 &nbsp; &nbsp;stick-table type ip size 20k peers MyHAproxyPeers<br>
-&nbsp; &nbsp;server DCAm1 aa.bb.cc.dd:4001 check<br>
-&nbsp; &nbsp;server DCAm2 aa.bb.cc.ee:4001 check<br>
-&nbsp; &nbsp;server DCAm3 aa.bb.cc.ff:4001 check<br>
-## DCA-3 backend block ends -----------------------------------------------</tt></p>
+&nbsp; &nbsp;server SuiteMasterNode1 aa.bb.cc.dd:4001 check<br>
+&nbsp; &nbsp;server SuiteMasterNode2 aa.bb.cc.ee:4001 check<br>
+&nbsp; &nbsp;server SuiteMasterNode3 aa.bb.cc.ff:4001 check<br>
+## Suite&nbsp;backend block ends -----------------------------------------------</tt></p>
 
 <p><tt>peers MyHAproxyPeers<br>
-&nbsp; &nbsp; peer dca1haproxyn1 12.12.12.12:1024<br>
-&nbsp; &nbsp; peer dca1haproxyn2 12.12.12.13:1024<br>
+&nbsp; &nbsp; peer haproxy1n1 12.12.12.12:1024<br>
+&nbsp; &nbsp; peer haproxy1n2 12.12.12.13:1024<br>
 &nbsp;&nbsp; &nbsp;&nbsp;<br>
 ## End of HAProxy Config file<br>
 ENDFILE</tt></p>
@@ -276,3 +276,13 @@ systemctl status haproxy -l</tt></p>
 <strong>11.</strong> Make sure that both the HAProxy VMs are running exact same configuration file. You may HAProxy configuration file from one VM to another &amp; start the service. This is a good practice.</p>
 
 <p><strong>12. </strong>HAProxy Peers (aka, HAProxy in High-Availability mode) is up &amp; running now. Uncomment <tt>#LOAD_BALANCER_HOST=""</tt> parameter and set <code>"haproxy1.domain1.com"&nbsp;to LOAD_BALANCER_HOST</code> parameter in CDF's install.properties file and go ahead with CDF and ITOM Suite Installation. If there is any mis-configuration in HAProxy Configuration file, an error may show up during CDF installation. CDF Installation log will have&nbsp;clue to troubleshoot. Fix it and proceed with CDF &amp; Suite installation.</p>
+
+<p>&nbsp;</p>
+
+<p>Note:&nbsp;&nbsp;</p>
+
+<ul>
+	<li>Setting up External Load Balancer in High-Availability mode come very handy;&nbsp;one node can be taken offline to any maintenance/repair of VM.</li>
+	<li>If External Load Balancer service goes offline completely (meaning, HAProxy service is offline&nbsp;all nodes of External Load Balancer), some PODs of ITOM suite will start 'terminating' and PODs will come back to "runnng" state once HAProxy service is in running state in any node of HAProxy Peer.</li>
+	<li>It is imporatant that certificate that is used in&nbsp;ITOM Suite with External Load Balancer has properly configured "Subject Alternative Names".</li>
+</ul>
