@@ -1,1 +1,74 @@
- 
+<p>This document will show how one can re-balance the routes on satellites such that a different core is considered the primary route. In this example a pair of satellites in the OX1 realm will be resigned such that the IXNAY core becomes the lowest cost route.</p>
+
+<p><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e862ef29374c8.08631642.png" style="border:0px solid black; height:500px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:669px" vspace="0"></p>
+
+<p>The first step to reweighing satellites is planning and understand what has to be done. The above diagram can be obtained by the use of the cora tool shipped in the OPSWtool support bundle. MeshHardware is gathered so that the primary core can be highlighted on the mesh gateway diagram.</p>
+
+<pre>[root@wfs0 ~]# cora -c MeshGateways,MeshHardware -i -v server
+Gathering
+... MeshGateways - 3s
+... MeshHardware - 16s
+Starting web server on port 8000
+Point your browser @ http://wfs0.cpe.opsware.com:8000
+^C to stop it.</pre>
+
+<p>Important pieces of information to look for. In the red outlined boxes two satellites in the same realm have been selected. Its important that if you are reweighing satellites that all gateways in the same realm have the same weights to their nearest root realm. In this case the root realm is the mgw-OXPR gateway.</p>
+
+<p>Each satellite with have a directory corresponding to the gateway name mentioned in the diagram: ox1-1</p>
+
+<pre>[root@wfsat1 ~]# ls /etc/opt/opsware/opswgw-ox1-1/
+BWT.conf  opswgw.custom  opswgw.properties
+[root@wfsat1 ~]#</pre>
+
+<p>and ox1-2</p>
+
+<pre>[root@wfsat2 ~]# ls /etc/opt/opsware/opswgw-ox1-2/
+BWT.conf  opswgw.custom  opswgw.properties
+[root@wfsat2 ~]#</pre>
+
+<p>It worth pointing out here that a naming convention has been use when installing the satellites and their gateways. Each satellite gateway in the same realm is suffixed with a numeral to indicate it belongs in the same realm; ox1-1 and ox1-2 are the two gateways in the ox1 realm.</p>
+
+<p>The weights for a satellite are found distributed across two files; opswgw.custom and opswgw.properties</p>
+
+<pre>[root@wfsat1 opswgw-ox1-1]# grep ^opswgw.TunnelSrc opswgw.custom opswgw.properties
+opswgw.custom:opswgw.TunnelSrc=192.168.210.53:2001:200:0:/var/opt/opsware/crypto/opswgw-ox1-1/opswgw.pem
+opswgw.properties:opswgw.TunnelSrc=192.168.210.51:2001:100:0:/var/opt/opsware/crypto/opswgw-ox1-1/opswgw.pem
+[root@wfsat1 opswgw-ox1-1]#</pre>
+
+<p>The primary weight (the lowest) will appear in the opswgw.properties file with the other fail-over routes in the opswgw.custom file.</p>
+
+<p>The significance of this is that on an upgrade the opswgw.properties file will be reset with the parent_gw.ip as defined in the /var/opt/opsware/install_opsware/cdf/cdf.xml file.</p>
+
+<pre>       <opswareparameter name="satellite.parentgw.ip" value="192.168.210.51" ttl="3600" dc="2017-06-24T00:30:24Z"></opswareparameter></pre>
+
+<p>Which means if you modify opsgw.properties and switch IP addresses to re-balance you also need to adjust the CDF file lest on an upgrade it reverts and cause you a problem as you'll have multiple routes at different weight to the same root gateway and no fail over.</p>
+
+<p>The weight remains where they are the IP addresses are being adjusted.</p>
+
+<p>Making the changes on ox1-1 gateway</p>
+
+<pre>vi /etc/opt/opsware/opswgw-ox1-1/opsgw.custom
+opswgw.TunnelSrc=192.168.210.51:2001:200:0:/var/opt/opsware/crypto/opswgw-ox1-1/opswgw.pem
+
+vi /etc/opt/opsware/opswgw-ox1-1/opsgw.properties
+opswgw.TunnelSrc=192.168.210.53:2001:100:0:/var/opt/opsware/crypto/opswgw-ox1-1/opswgw.pem
+
+vi /var/opt/opsware/install_opsware/cdf/cdf.xml
+<opswareparameter name="satellite.parentgw.ip" value="192.168.210.53" ttl="3600" dc="2017-06-24T00:30:24Z"></opswareparameter></pre>
+
+<p>Making the changes on ox1-2 gateway</p>
+
+<pre>vi /etc/opt/opsware/opswgw-ox1-2/opswgw.custom
+opswgw.custom:opswgw.TunnelSrc=192.168.210.51:2001:200:0:/var/opt/opsware/crypto/opswgw-ox1-2/opswgw.pem
+
+vi /etc/opt/opsware/opswgw-ox1-2/opsgw.properties
+opswgw.properties:opswgw.TunnelSrc=192.168.210.53:2001:100:0:/var/opt/opsware/crypto/opswgw-ox1-2/opswgw.pem
+
+vi /var/opt/opsware/install_opsware/cdf/cdf.xml
+<opswareparameter name="satellite.parentgw.ip" value="192.168.210.53" ttl="3600" dc="2017-06-24T00:30:24Z"></opswareparameter></pre>
+
+<p>After a restart the gateways on each satellite can be verified to have re-weighted using the CORA tool</p>
+
+<p><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e862ef2c51d50.44884733.png" style="border:0px solid black; height:387px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:512px" vspace="0"></p>
+
+<p>Observe that the two satellites now have a preference for the IXNAY core as their lowest cost route.</p>
