@@ -87,12 +87,12 @@ Configure the VMs and setup steps</h2>
 <p><tt>yum install -y chrony<br>
 mkdir -p /var/lib/chrony<br>
 echo &gt; /var/lib/chrony/driftfile<br>
-cat &lt;&lt;ENDFILE &gt;/etc/chrony.conf<br>
+cat &lt;<endfile>/etc/chrony.conf<br>
 server NTP_SERVER_IP_ADDRESS iburst<br>
 driftfile /var/lib/chrony/driftfile<br>
 ENDFILE<br>
 systemctl enable chronyd; chronyd -q; systemctl start chronyd<br>
-chronyc -a makestep; systemctl restart chronyd; timedatectl</tt></p>
+chronyc -a makestep; systemctl restart chronyd; timedatectl</endfile></tt></p>
 
 <p>## Note - Run date/time commands to ensure that system date/time is in sync with that of NTP server.</p>
 
@@ -122,7 +122,7 @@ haproxy -v</tt></p>
 <strong>7.</strong> Backup any existing haproxy.cfg file and compose a new haproxy.cfg file for your ITOM Suite. The following configuration file has been&nbsp;tested.<br>
 <tt>mv /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg__original</tt></p>
 
-<p><tt>cat &lt;&lt;ENDFILE &gt;/etc/haproxy/haproxy.cfg<br>
+<p><tt>cat &lt;<endfile>/etc/haproxy/haproxy.cfg<br>
 ## Start of HAProxy Configuration file<br>
 global<br>
 &nbsp; &nbsp;log /dev/log local0<br>
@@ -132,7 +132,7 @@ global<br>
 &nbsp; &nbsp;stats timeout 30s<br>
 &nbsp; &nbsp;user haproxy<br>
 &nbsp; &nbsp;group haproxy<br>
-&nbsp; &nbsp;daemon</tt></p>
+&nbsp; &nbsp;daemon</endfile></tt></p>
 
 <p><tt>&nbsp; &nbsp;# turn on stats unix socket<br>
 &nbsp; &nbsp;stats socket /var/lib/haproxy/stats</tt></p>
@@ -175,7 +175,13 @@ frontend Suite_https_front<br>
 &nbsp; &nbsp;bind *:4001<br>
 &nbsp; &nbsp;option tcplog<br>
 &nbsp; &nbsp;mode tcp<br>
-&nbsp; &nbsp;default_backend Suite_https_back_4001<br>
+&nbsp; &nbsp;default_backend Suite_https_back_4001</tt></p>
+
+<p><tt>frontend Suite_https_back_autopass_33814<br>
+&nbsp; &nbsp;bind *:33814<br>
+&nbsp; &nbsp;option tcplog<br>
+&nbsp; &nbsp;mode tcp<br>
+&nbsp; &nbsp;default_backend Suite_https_back_autopass_33814<br>
 ## DCA frontend block ends ------------------------------------------------</tt></p>
 
 <p><tt>## -- HAProxy Statistics block starts here --------------------------------<br>
@@ -250,7 +256,16 @@ backend Suite_https_back<br>
 &nbsp; &nbsp;stick-table type ip size 20k peers MyHAproxyPeers<br>
 &nbsp; &nbsp;server SuiteMasterNode1 aa.bb.cc.dd:4001 check<br>
 &nbsp; &nbsp;server SuiteMasterNode2 aa.bb.cc.ee:4001 check<br>
-&nbsp; &nbsp;server SuiteMasterNode3 aa.bb.cc.ff:4001 check<br>
+&nbsp; &nbsp;server SuiteMasterNode3 aa.bb.cc.ff:4001 check</tt></p>
+
+<p><tt>backend Suite_https_back_autopass_33814<br>
+&nbsp; &nbsp;mode tcp<br>
+&nbsp; &nbsp;balance roundrobin<br>
+&nbsp; &nbsp;option ssl-hello-chk<br>
+&nbsp; &nbsp;stick-table type ip size 20k peers MyHAproxyPeers<br>
+&nbsp; &nbsp;server SuiteMasterNode1 aa.bb.cc.dd:33814 check<br>
+&nbsp; &nbsp;server SuiteMasterNode2 aa.bb.cc.ee:33814 check<br>
+&nbsp; &nbsp;server SuiteMasterNode3 aa.bb.cc.ff:33814 check<br>
 ## Suite&nbsp;backend block ends -----------------------------------------------</tt></p>
 
 <p><tt>peers MyHAproxyPeers<br>
