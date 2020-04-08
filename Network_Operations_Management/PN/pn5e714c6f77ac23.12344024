@@ -1,8 +1,7 @@
 <p>Business Value Dashboards present your data in real time in a very flexible layout for visualizing on any browser capable device.&nbsp; Within Micro Focus Network Operations Management (NOM) suite, there are several out-of-the-box data sources, such as incidents from Network Node Manager (NNMi) and device configuration and vulnerability from Network Automation (NA).&nbsp; These data sources can be streamed to BVD when integration is enabled.&nbsp;&nbsp; However, the current NOM Suite by default does not include an out-of-the-box performance metrics data source for BVD.&nbsp; This article will demonstrate how to build a new data channel solution to achieve this requirement with a concrete use case.</p>
 
 <p><strong>Use Case Description</strong>:&nbsp; Due to the COVID-19 outbreak, Company A is requesting all its employees to work from home.&nbsp; The company is responding to an urgent request from top management and needs to conduct a network stress test.&nbsp; This is done to make sure its network infrastructure is capable of providing sufficient bandwidth and to identify bottlenecks rapidly.&nbsp; Also top managers request insight into network status and performance. They want to use NOM to capture the required metrics to validate the test and stream the results to an executive business dashboard such as the one shown below:<br>
-<br>
-<img alt="" src="/mediawiki/images/pn_images/pn_image_5e714dfd440523.36246833.jpeg" style="height:281px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px"></p>
+(Image to be uploaded)</p>
 
 <p><strong>Use Case Implementation:</strong> The use case&nbsp;was implemented in the following three steps:</p>
 
@@ -67,13 +66,11 @@ Once the script established a stream data channel with the BVD server for each m
 	<li>The top-level executive dashboard displays the company’s VPN architecture on the right panel.&nbsp;&nbsp;<br>
 	The VPN is protected by firewall servers and a number of routers were deployed behind the firewall servers.&nbsp; The left panel displays the time-series of the number of concurrent session on 2 firewall servers.&nbsp;<br>
 	The firewall widgets or router widgets on the right panel can be configured to link to a drill-down dashboard.<br>
+	(Image to be uploaded)<br>
+	&nbsp;</li>
+	<li>The drill-down dashboard displays network metric data, such as interface and CPU utilization on firewall servers and routers.&nbsp; This dashboard is of more interest to network engineers.<br>
+	(Image to be uploaded)&nbsp;<br>
 	<br>
-	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;Top-level Executive Business Dashboard<br>
-	<img alt="" src="/mediawiki/images/pn_images/pn_image_5e7158c42b7187.63461447.jpeg" style="height:281px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px"></li>
-	<li>The drill-down dashboard displays network metric data, such as interface and CPU utilization on firewall servers and routers.&nbsp; This dashboard is of more interest to network engineers.&nbsp;<br>
-	<br>
-	&nbsp; &nbsp; &nbsp; &nbsp;Drill-down dashboard showing more network performance data<br>
-	<img alt="" src="/mediawiki/images/pn_images/pn_image_5e7158c4bfe3d0.42136887.png" style="height:303px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px"><br>
 	Notes:<br>
 	a)&nbsp;As a prerequisite, NNMi and NA integration with BVD has to be configured.&nbsp; Instructions can be found <a href="https://docs.microfocus.com/itom/Network_Node_Manager_i:2019.11/NetworkDataBVD">here</a><br>
 	b)&nbsp;The script needs to run on the NPS server as it executes SQL queries to the NPS database.</li>
