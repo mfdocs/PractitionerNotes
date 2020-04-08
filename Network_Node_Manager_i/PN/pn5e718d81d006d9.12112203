@@ -1,8 +1,8 @@
 <p>Business Value Dashboards present your data in real time in a very flexible layout for visualizing on any browser capable device.&nbsp; Within Micro Focus Network Operations Management (NOM) suite, there are several out-of-the-box data sources, such as incidents from Network Node Manager (NNMi) and device configuration and vulnerability from Network Automation (NA).&nbsp; These data sources can be streamed to BVD when integration is enabled.&nbsp;&nbsp; However, the current NOM Suite by default does not include an out-of-the-box performance metrics data source for BVD.&nbsp; This article will demonstrate how to build a new data channel solution to achieve this requirement with a concrete use case.</p>
 
-<p><strong>Use Case Description</strong>:&nbsp; Due to the COVID-19 outbreak, Company A is requesting all its employees to work from home.&nbsp; The company is responding to an urgent request from top management and needs to conduct a network stress test.&nbsp; This is done to make sure its network infrastructure is capable of providing sufficient bandwidth and to identify bottlenecks rapidly.&nbsp; Also top managers request insight into network status and performance. They want to use NOM to capture the required metrics to validate the test and stream the results to an executive business dashboard such as the one shown below:<br>
-<br>
-<img style="height:281px; margin:0px; width:500px" alt="" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e714dfd440523.36246833.jpeg"></p>
+<p><strong>Use Case Description</strong>:&nbsp; Due to the COVID-19 outbreak, Company A is requesting all its employees to work from home.&nbsp; The company is responding to an urgent request from top management and needs to conduct a network stress test.&nbsp; This is done to make sure its network infrastructure is capable of providing sufficient bandwidth and to identify bottlenecks rapidly.&nbsp; Also top managers request insight into network status and performance. They want to use NOM to capture the required metrics to validate the test and stream the results to an executive business dashboard such as the one shown below:</p>
+
+<p>(Image to be uploaded)</p>
 
 <p><strong>Use Case Implementation:</strong> The use case&nbsp;was implemented in the following three steps:</p>
 
@@ -33,17 +33,17 @@ CPU and Interface utilizations are part of NNMi standard performance polling col
 The MIB variable identified in Step 1, cfwConnectionStatValue, is not part of NNMi’s standard (out-of-the-box) SNMP polling. &nbsp;NNMi provides a feature called “Custom Poller” which allows users to collect non-standard MIB variables.<br>
 Create a custom poller “ConcurrentSessionPoller” as shown below:<br>
 <br>
-<img style="height:322px; margin:0px; width:450px" alt="" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7153f0193995.92249861.png"><br>
+<img alt="" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7153f0193995.92249861.png" style="height:322px; margin:0px; width:450px"><br>
 <br>
 (The details of creating a custom poller are not covered in this article.&nbsp; Instructions can be found <a href="https://docs.microfocus.com/NNMi/10.30/Content/Administer/nmAdminHelp/nmAdmConfCP0200CreateCPCol.htm">here</a>)<br>
 This custom poller will be polling the number of concurrent session from the firewall server every 5 minutes and store the data in the NPS server.<br>
 To limit the impact of polling for CPU and Interface utilizations on all devices, create a node group “COVID-19” containing only those devices of interest for this use case: the firewall server and the routers:<br>
 <br>
-<img style="height:373px; margin:0px; width:450px" alt="" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7153f042cf90.56002371.png"></p>
+<img alt="" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7153f042cf90.56002371.png" style="height:373px; margin:0px; width:450px"></p>
 
 <p>Then enable the performance polling on the node group:<br>
 <br>
-<img style="height:342px; margin:0px; width:450px" alt="" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7155531df910.36331397.png"><br>
+<img alt="" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7155531df910.36331397.png" style="height:342px; margin:0px; width:450px"><br>
 <br>
 <strong>Step 3 - Create a script to retrieve the collected metrics from NNMi NPS and stream them to BVD</strong><br>
 As the title indicated, this article is mainly about streaming performance metrics from NNMi to BVD.&nbsp; Therefore this is the most important step.&nbsp; In this step, we wrote a script which essentially performs three tasks:</p>
@@ -57,7 +57,7 @@ As the title indicated, this article is mainly about streaming performance metri
 <p>These tasks are repeated every 5 minutes.<br>
 Once the script established a stream data channel with the BVD server for each metric, these performance metrics will be available to choose in BVD Dashboard Configuration page:<br>
 <br>
-<img style="height:419px; margin:0px; width:450px" alt="" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7155535a1d81.47387266.png"></p>
+<img alt="" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7155535a1d81.47387266.png" style="height:419px; margin:0px; width:450px"></p>
 
 <p>Now, each metric (data channel) can easily be associated with a particular widget in your dashboard. Streamed metrics will immediately be visible in BVD as shown in the following example.</p>
 
@@ -67,13 +67,11 @@ Once the script established a stream data channel with the BVD server for each m
 	<li>The top-level executive dashboard displays the company’s VPN architecture on the right panel.&nbsp;&nbsp;<br>
 	The VPN is protected by firewall servers and a number of routers were deployed behind the firewall servers.&nbsp; The left panel displays the time-series of the number of concurrent session on 2 firewall servers.&nbsp;<br>
 	The firewall widgets or router widgets on the right panel can be configured to link to a drill-down dashboard.<br>
-	<br>
-	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;Top-level Executive Business Dashboard<br>
-	<img style="height:281px; margin:0px; width:500px" alt="" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7158c42b7187.63461447.jpeg"></li>
+	(Image to be uploaded)<br>
+	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</li>
 	<li>The drill-down dashboard displays network metric data, such as interface and CPU utilization on firewall servers and routers.&nbsp; This dashboard is of more interest to network engineers.&nbsp;<br>
+	(Image to be uploaded)<br>
 	<br>
-	&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; Drill-down dashboard showing more network performance data<br>
-	<img style="height:303px; margin:0px; width:500px" alt="" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7158c4bfe3d0.42136887.png"><br>
 	Notes:<br>
 	a)&nbsp;As a prerequisite, NNMi and NA integration with BVD has to be configured.&nbsp; Instructions can be found <a href="https://docs.microfocus.com/itom/Network_Node_Manager_i:2019.11/NetworkDataBVD">here</a><br>
 	b)&nbsp;The script needs to run on the NPS server as it executes SQL queries to the NPS database.</li>
