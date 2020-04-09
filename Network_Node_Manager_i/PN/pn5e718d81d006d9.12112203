@@ -2,7 +2,7 @@
 
 <p><strong>Use Case Description</strong>:&nbsp; Due to the COVID-19 outbreak, Company A is requesting all its employees to work from home.&nbsp; The company is responding to an urgent request from top management and needs to conduct a network stress test.&nbsp; This is done to make sure its network infrastructure is capable of providing sufficient bandwidth and to identify bottlenecks rapidly.&nbsp; Also executives request insight into network status and performance. They want to use NOM to capture the required metrics to validate the test, and stream the results to an executive business dashboard such as the one shown below:</p>
 
-<p><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e8fb3c8048609.77267466.jpeg" style="border:0px solid black; height:281px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px" vspace="0"></p>
+<p><img alt="" src="/mediawiki/images/pn_images/pn_image_5e8fb3c8048609.77267466.jpeg" style="height:281px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px"></p>
 
 <p><strong>Use Case Implementation:</strong> The use case&nbsp;was implemented in the following three steps:</p>
 
@@ -34,13 +34,13 @@ CPU and Interface utilizations are part of NNMi standard performance polling col
 The MIB variable identified in Step 1, cfwConnectionStatValue, is not part of NNMi’s standard (out-of-the-box) SNMP polling. &nbsp;NNMi provides a feature called “Custom Poller” which allows users to collect non-standard MIB variables.<br>
 Create a custom poller “ConcurrentSessionPoller” as shown below:<br>
 <br>
-<img alt="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7153f0193995.92249861.png" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7153f0193995.92249861.png" style="height:492px; width:687px"><br>
+<img alt="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7153f0193995.92249861.png" border="0" hspace="0" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7153f0193995.92249861.png" style="border:0px solid black; height:358px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px" vspace="0"><br>
 <br>
 (The details of creating a custom poller are not covered in this article.&nbsp; Instructions can be found <a href="https://docs.microfocus.com/NNMi/10.30/Content/Administer/nmAdminHelp/nmAdmConfCP0200CreateCPCol.htm">here</a>)<br>
 This custom poller will be polling the number of concurrent session from the VPN Appliance every 5 minutes and store the data in the NPS server.<br>
 To limit the impact of polling for CPU and Interface utilizations on all devices, create a node group “COVID-19” containing only those devices of interest for this use case: the VPN Appliances&nbsp;and the routers:<br>
 <br>
-<img alt="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7153f042cf90.56002371.png" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7153f042cf90.56002371.png" style="height:429px; width:517px"></p>
+<img alt="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7153f042cf90.56002371.png" border="0" hspace="0" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7153f042cf90.56002371.png" style="border:0px solid black; height:415px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px" vspace="0"></p>
 
 <p>Then enable the performance polling on the node group:<br>
 <br>
@@ -141,7 +141,7 @@ Two scripts, &nbsp;sqlgenerator.ovpl and streamtobvd.sh for this solution are in
 
 <p>sub showUsage {</p>
 
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $usage = qq(Usage: sqlgenerator.ovpl [-h] -p <extensionpack> -a sqlgen/colgen</extensionpack></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $usage = qq(Usage: sqlgenerator.ovpl [-h] -p -a sqlgen/colgen</p>
 
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -h&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Display usage</p>
 
@@ -684,7 +684,7 @@ streamtobvd.sh<strong>:</strong></p>
 
 <p>usage(){</p>
 
-<p>&nbsp; echo "Usage: $0 -s <bvd fqdn=""> -k <bvdapikey> -f <sql file="">"</sql></bvdapikey></bvd></p>
+<p>&nbsp; echo "Usage: $0 -s -k -f "</p>
 
 <p>&nbsp; exit 1</p>
 
