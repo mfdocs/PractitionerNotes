@@ -34,17 +34,17 @@ CPU and Interface utilizations are part of NNMi standard performance polling col
 The MIB variable identified in Step 1, cfwConnectionStatValue, is not part of NNMi’s standard (out-of-the-box) SNMP polling. &nbsp;NNMi provides a feature called “Custom Poller” which allows users to collect non-standard MIB variables.<br>
 Create a custom poller “ConcurrentSessionPoller” as shown below:<br>
 <br>
-<img alt="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7153f0193995.92249861.png" border="0" hspace="0" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7153f0193995.92249861.png" style="border:0px solid black; height:358px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px" vspace="0"><br>
+<img alt="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7153f0193995.92249861.png" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7153f0193995.92249861.png" style="height:358px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px"><br>
 <br>
 (The details of creating a custom poller are not covered in this article.&nbsp; Instructions can be found <a href="https://docs.microfocus.com/NNMi/10.30/Content/Administer/nmAdminHelp/nmAdmConfCP0200CreateCPCol.htm">here</a>)<br>
 This custom poller will be polling the number of concurrent session from the VPN Appliance every 5 minutes and store the data in the NPS server.<br>
 To limit the impact of polling for CPU and Interface utilizations on all devices, create a node group “COVID-19” containing only those devices of interest for this use case: the VPN Appliances&nbsp;and the routers:<br>
 <br>
-<img alt="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7153f042cf90.56002371.png" border="0" hspace="0" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7153f042cf90.56002371.png" style="border:0px solid black; height:415px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px" vspace="0"></p>
+<img alt="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7153f042cf90.56002371.png" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7153f042cf90.56002371.png" style="height:415px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px"></p>
 
 <p>Then enable the performance polling on the node group:<br>
 <br>
-<img alt="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7155531df910.36331397.png" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7155531df910.36331397.png" style="height:530px; width:698px"><br>
+<img alt="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7155531df910.36331397.png" border="0" hspace="0" src="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_5e7155531df910.36331397.png" style="border:0px solid black; height:380px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px" vspace="0"><br>
 <br>
 <strong>Step 3 - Use Micro Focus provided scripts to retrieve the collected metrics from NNMi NPS and stream them to BVD</strong><br>
 As the title indicated, this article is mainly about streaming performance metrics from NNMi to BVD.&nbsp; Therefore this is the most important step.&nbsp;<br>
@@ -55,7 +55,7 @@ Micro Focus provided 2 scripts, sqlgenerator.ovpl and streambvd.sh, to facilitat
 <ol>
 	<li>Run the command “about.ovpl” on the NPS server.&nbsp; The command lists all the extension packs installed on the NPS.&nbsp;<br>
 	Example:<br>
-	<br>
+	<img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e8fb6265f51a9.50007573.png" style="border:0px solid black; height:156px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px" vspace="0"><br>
 	&nbsp;</li>
 	<li>Choose an extension pack which contains the performance metrics of interest.&nbsp; For example, if you are interested in interface utilization metrics, choose the “Interface_Health” extension pack.<br>
 	Run the script:<br>
@@ -63,12 +63,14 @@ Micro Focus provided 2 scripts, sqlgenerator.ovpl and streambvd.sh, to facilitat
 	Example:<br>
 	sqlgenerator.ovpl –p Interface_Health –a colgen<br>
 	The script extracts all the metrics from the extension pack and saves them in a text file _dataColumns.config, for example, Interface_Health_dataColumns.config.</li>
-	<li>Edit the _dataColumns.config&nbsp;file.&nbsp; Uncomment out the metrics of interest in the file then save the file.&nbsp;&nbsp; For example, if the metrics of interest are “Utilization (avg)”, “Utilization (max)” and “Utilization (min)”, remove the “#” from the beginning of the line, then save the file:</li>
+	<li>Edit the _dataColumns.config&nbsp;file.&nbsp; Uncomment out the metrics of interest in the file then save the file.&nbsp;&nbsp; For example, if the metrics of interest are “Utilization (avg)”, “Utilization (max)” and “Utilization (min)”, remove the “#” from the beginning of the line, then save the file:<br>
+	<img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e8fb62692d4d2.85588626.png" style="border:0px solid black; height:160px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:283px" vspace="0"></li>
 	<li>Run the script:<br>
 	sqlgenerator.ovpl –p –a sqlgen<br>
 	Example:<br>
 	sqlgenerator.ovpl –p Interface_Health –a sqlgen<br>
-	In this step, the script will fetch all the metrics of interest specified in previous step, and generate a complex SQL query to retrieve the metrics from NPS server. &nbsp;The query will be saved in a text file with the name convention of _query.sql, for example:</li>
+	In this step, the script will fetch all the metrics of interest specified in previous step, and generate a complex SQL query to retrieve the metrics from NPS server. &nbsp;The query will be saved in a text file with the name convention of _query.sql, for example:<br>
+	<img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e8fb626c5d327.23055772.png" style="border:0px solid black; height:42px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px" vspace="0"></li>
 	<li>Run the script:<br>
 	streamtobvd.sh –s -k -f<br>
 	Where is the FQDN of the BVD server, is the BVD server’s API key (obtained from BVD Console), and is the name of the previously generated .sql query file.<br>
@@ -76,8 +78,7 @@ Micro Focus provided 2 scripts, sqlgenerator.ovpl and streambvd.sh, to facilitat
 	streamtobvd.sh –s mybvd.microfocus.com –k fa4b8c37d69445c79695739c53e0ccd5 –f interfacemetrics_query.sql<br>
 	<br>
 	In this step, the script runs SQL query against NPS database, retrieve the metrics of interest, then format the metrics into a JSON message and stream it to the BVD server.&nbsp; A new data channel with these metrics will be available in BVD, as shown below:<br>
-	<br>
-	<br>
+	<img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e8fb627197337.54864391.png" style="border:0px solid black; height:159px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px" vspace="0"><br>
 	Now, each performance metric in the new data channel can easily be associated with a particular widget in dashboard.</li>
 </ol>
 
