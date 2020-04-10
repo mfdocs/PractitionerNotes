@@ -59,24 +59,24 @@ Micro Focus provided 2 scripts, <code>sqlgenerator.ovpl</code> and <code>streamb
 	&nbsp;</li>
 	<li>Choose an extension pack which contains the performance metrics of interest.&nbsp; For example, if you are interested in interface utilization metrics, choose the “Interface_Health” extension pack.<br>
 	Run the script:<br>
-	<code>sqlgenerator.ovpl –p </code><extension pack="">&nbsp;<code>–a colgen</code><br>
+	<code>sqlgenerator.ovpl –p &lt;extension pack&gt;&nbsp;–a colgen</code><br>
 	Example:<br>
 	<code>sqlgenerator.ovpl –p Interface_Health –a colgen</code><br>
-	The script extracts all the metrics from the extension pack and saves them in a text file &lt;extension pack&gt;<code>_dataColumns.config</code>, for example, <code>Interface_Health_dataColumns.config</code>.</extension></li>
-	<li>Edit the <code>_dataColumns.config</code>&nbsp;file.&nbsp; Uncomment out the metrics of interest in the file then save the file.&nbsp;&nbsp; For example, if the metrics of interest are “<code>Utilization (avg)</code>”, “<code>Utilization (max)</code>” and “<code>Utilization (min)</code>”, remove the “#” from the beginning of the line, then save the file:<br>
+	The script extracts all the metrics from the extension pack and saves them in a text file <code>&lt;extension pack&gt;</code><code>_dataColumns.config</code>, for example, <code>Interface_Health_dataColumns.config</code>.</li>
+	<li>Edit the <code>&lt;extension pack&gt;_dataColumns.config</code>&nbsp;file.&nbsp; Uncomment out the metrics of interest in the file then save the file.&nbsp;&nbsp; For example, if the metrics of interest are “<code>Utilization (avg)</code>”, “<code>Utilization (max)</code>” and “<code>Utilization (min)</code>”, remove the “#” from the beginning of the line, then save the file:<br>
 	<br>
 	<img alt="" src="/mediawiki/images/pn_images/pn_image_5e8fb62692d4d2.85588626.png" style="height:160px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:283px"></li>
 	<li>Run the script:<br>
-	<code>sqlgenerator.ovpl –p –a sqlgen</code><br>
+	<code>sqlgenerator.ovpl –p &lt;extension pack&gt; –a sqlgen</code><br>
 	Example:<br>
 	<code>sqlgenerator.ovpl –p Interface_Health –a sqlgen</code><br>
-	In this step, the script will fetch all the metrics of interest specified in previous step, and generate a complex SQL query to retrieve the metrics from NPS server. &nbsp;The query will be saved in a text file with the name convention of <code>_query.sql</code>, for example:<br>
+	In this step, the script will fetch all the metrics of interest specified in previous step, and generate a complex SQL query to retrieve the metrics from NPS server. &nbsp;The query will be saved in a text file with the name convention of <code>&lt;extension pack&gt;_query.sql</code>, for example:<br>
 	<img alt="" src="/mediawiki/images/pn_images/pn_image_5e8fb626c5d327.23055772.png" style="height:42px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px"></li>
 	<li>Run the script:<br>
-	streamtobvd.sh –s -k -f<br>
-	Where is the FQDN of the BVD server, is the BVD server’s API key (obtained from BVD Console), and is the name of the previously generated .sql query file.<br>
+	<code>streamtobvd.sh –s &lt;BVD FQDN&gt; -k &lt;BVD KEY&gt; -f&nbsp;&lt;SQL File&gt;</code><br>
+	Where <code>&lt;BVD FQDN&gt;&nbsp;</code>is the FQDN of the BVD server, <code>&lt;BVD KEY&gt;&nbsp;</code>is the BVD server’s API key (obtained from BVD Console), and <code>&lt;SQL File&gt;&nbsp;</code>is the name of the previously generated .sql query file.<br>
 	Example:<br>
-	streamtobvd.sh –s mybvd.microfocus.com –k fa4b8c37d69445c79695739c53e0ccd5 –f interfacemetrics_query.sql<br>
+	<code>streamtobvd.sh –s mybvd.microfocus.com –k fa4b8c37d69445c79695739c53e0ccd5 –f interfacemetrics_query.sql</code><br>
 	<br>
 	In this step, the script runs SQL query against NPS database, retrieve the metrics of interest, then format the metrics into a JSON message and stream it to the BVD server.&nbsp; A new data channel with these metrics will be available in BVD, as shown below:<br>
 	<img alt="" src="/mediawiki/images/pn_images/pn_image_5e8fb627197337.54864391.png" style="height:159px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px"><br>
