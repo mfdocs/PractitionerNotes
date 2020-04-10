@@ -89,8 +89,9 @@ Micro Focus provided 2 scripts, sqlgenerator.ovpl and streambvd.sh, to facilitat
 	<li>The top-level executive dashboard displays the company’s VPN architecture on the left panel.&nbsp;&nbsp;<br>
 	The VPN is protected by a few VPN appliance servers (firewall servers) and a number of routers were deployed behind the VPN appliances.&nbsp; The right panel displays the time-series of the number of concurrent session on each VPN appliances.&nbsp;<br>
 	The VPN appliance widgets or router widgets on the left panel can be configured to link to a drill-down dashboard.<br>
-	<img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e8fb7d26b5785.63299721.jpeg" style="border:0px solid black; height:281px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px" vspace="0">&nbsp; &nbsp; &nbsp;</li>
-	<li>The drill-down dashboard displays network performance metric data, such as interface and CPU utilization on VPN appliances and routers.&nbsp; This dashboard is of more interest to network engineers:</li>
+	<img alt="" src="/mediawiki/images/pn_images/pn_image_5e8fb7d26b5785.63299721.jpeg" style="height:281px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px">&nbsp; &nbsp; &nbsp;</li>
+	<li>The drill-down dashboard displays network performance metric data, such as interface and CPU utilization on VPN appliances and routers.&nbsp; This dashboard is of more interest to network engineers:<br>
+	<img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e8fb8f814cdd5.34663268.jpeg" style="border:0px solid black; height:285px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px" vspace="0"></li>
 </ol>
 
 <p>Notes:<br>
@@ -105,731 +106,369 @@ Two scripts, &nbsp;sqlgenerator.ovpl and streamtobvd.sh for this solution are in
 
 <p>sqlgenerator.ovpl:</p>
 
-<p>#!/opt/OV/nonOV/perl/a/bin/perl -I/opt/OV/NNMPerformanceSPI/lib/perllibs/lib</p>
+<pre><code class="language-perl">#!/opt/OV/nonOV/perl/a/bin/perl -I/opt/OV/NNMPerformanceSPI/lib/perllibs/lib
+# NNM iSPI Performance
+# Purpose:
+#	To extract the data columns from a given extension pack and generate sql.
+#
 
-<p># NNM iSPI Performance</p>
+use NPS::nps;
+use DBI;
 
-<p># Purpose:</p>
 
-<p>#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; To extract the data columns from a given extension pack and generate sql.</p>
+loggername("Utility.sqlgenerator");
 
-<p>#</p>
+# Command line validations.
+my %OPTS ;
+showUsage() unless getopts("a:p:h", \%OPTS);
+showUsage() unless (defined $OPTS{p});
+
+sub showUsage {
+	my $usage = qq(Usage: sqlgenerator.ovpl [-h] -p &lt;ExtensionPack&gt; -a sqlgen/colgen
+	-h                  Display usage
+	-p ExtensionPack    Run against tables for named ExtensionPack
+	-a colgen/sqlgen
+	 NOTE :
+	 	-p ExtensionPack Name should be the first argument
+	 	colgen - to generate a list of data columns.
+	 	sqlgen - to generate the sql, "-a colgen" should be run before "-a sqlgen"
+	 	if -a is not provide default action chosen is "colgen"
+		Use "PerfSPIProxyDSN" to run the generated sql
+);
+	l10n_printf("%s", $usage);
+	exit 0;
+}
+
+#Reference Aggregations : avg, max, min, sum, cnt pctile05, pctile90, pctile95, pctile99
+#Collected Aggregations.
+#my $aggs_to_find = "avg";
+my $aggs_to_find = "avg, min, max,";
+my $catalog_table_prefix = "Column_Catalog_";
+my $catalog_table_name = $catalog_table_prefix . $EXTENSIONPACK;
+my $output_file_name = $EXTENSIONPACK . "_dataColumns" . ".config";
+my $star_star = "***";
+my $star = "*";
+my $hash = "#";
+my $col_delimiter = " | ";
+my $conn = "DSN=$cfg{PRSPI_DB_DSN}" ;
+
+my $ifname_present = "" ; # ONLY used while sql generation.
+
+# Connect to DB avoiding auto commit to preserve the table locks
+my $dbh =
+  DBI-&gt;connect("dbi:SQLAnywhere:$conn;CON=sqlgenerator.OVPL PID=$$", "", "", { RaiseError =&gt; 0, AutoCommit =&gt; 0, PrintError =&gt; 1} ) ||
+     FATAL("Unable to connect to database: %s", $DBI::errstr);
+
+
+sub getDataColumns {
+	my $aggs_list = "";
+	foreach my $aggs (split(/,/,$aggs_to_find)) {
+		my $str = "'". trim($aggs) . "'";
+		if($aggs_list eq "") {
+				$aggs_list = $str;
+			} else {
+				$aggs_list = $aggs_list . "," . $str;
+			}
+	}
+	if($aggs_list eq "") {
+		INFO("Aggregations provided is empty, exiting");
+		exit 1;
+	}
+
+	my $colSelectionSql = "SELECT MetricName FROM $catalog_table_name WHERE MetricDescrAggType in ($aggs_list) order by MetricName" ;
+	my $colNames = $dbh-&gt;selectcol_arrayref($colSelectionSql) || FATAL ("Unable to get the columns names : %s",$DBI::errstr);
+	return @$colNames;
+}
+
+sub getMetricName {
+	my $metric_name_sql = "SELECT distinct MetricBlock FROM $catalog_table_name" ;
+	my $metric_name = $dbh-&gt;selectrow_array($metric_name_sql) || FATAL ("Unable to get the metic block name: %s",$DBI::errstr);
+	return $metric_name;
+}
+
+sub persistToFile {
+	my ($metric_name, @colNames) = @_;
+	my $cnt = 0;
+	if(-e $output_file_name) {
+		WARN("The file '%s' exists, all the modifications will be overwritten" , $output_file_name);
+	}
+
+	my $file_handle = open_or_die("&gt;$output_file_name") ;
+	print $file_handle $star_star . "Data columns generated for the extension Pack :" . $EXTENSIONPACK . "\n";
+	print $file_handle $star_star . "ExtensionPack=". $EXTENSIONPACK . "\n";
+	print $file_handle $star_star . "MetricName=". $metric_name . "\n";
+	print $file_handle $star_star . "IMPORTANT STEPS : ". "\n";
+	print $file_handle $star_star . "        1. Remove “#” from the beginning of the line to choose that particular column in the generated SQL.". "\n";
+	print $file_handle $star_star . "        2. Run the script 'sqlgenerator.ovpl -p $EXTENSIONPACK -a sqlgen'". "\n\n";
+	foreach my $colName (@colNames) {
+		++$cnt;
+		print $file_handle $hash.$colName."\n";
+	}
+	close $file_handle ;
+	INFO ("Query returned %s records for the extension pack %s" , $cnt, $EXTENSIONPACK);
+	if( $cnt &gt; 0) {
+		INFO ("IMPORTANT : \n        Open the file '%s' and follow the instructions to generate the query" , $output_file_name);
+	} else {
+		WARN("Unable to generate the data columns");
+		if (-e $output_file_name) {
+			unlink($output_file_name)
+		}
+	}
+}
+
+sub readFileAndGenerateColList {
+	if(! -e $output_file_name) {
+		WARN("Data columns is not generated for this extension pack ");
+		exit 1;
+	}
+	my @selected_columns ;
+	my $metric_search_string = "MetricName=";
+	my $metric_name = "";
+	my $file_handle = open_or_die("&lt;$output_file_name") ;
+	my $row_uncommented = 0;
+	while (my $row = &lt;$file_handle&gt;) {
+	 	chomp $row;
+	 	if(($row ne "" ) &amp;&amp; !((index($row, $star_star) == 0) || index($row, $hash) == 0))  {
+	 		# This row will be uncommented column name
+	 		push (@selected_columns, $row) ;
+	 		++$row_uncommented ;
+	 	}
+
+	 	if (($metric_name eq "") &amp;&amp; $row =~ m/$metric_search_string/) {
+	 		#***MetricName=ComponentMetrics
+			my $equal_idx = index($row, "=");
+			$metric_name = substr($row, $equal_idx + 1);
+	 	}
+	}
+	if($row_uncommented &lt; 1) {
+		WARN("The file '%s' is not modified to pick the column list, modify the file and rerun the command" , $output_file_name);
+		exit 1;
+	}
+	return ($metric_name, @selected_columns);
+}
+
+sub buildSelectHeader {
+	my ($virtual_table_name) = @_;
+	my $header;
+	my $group;
+
+	#$virtual_table_name = "f_Virtual_InterfaceMetrics";    # this is to test.
+	my $ifname_column_to_check = 'Qualified Interface Name';
+	my $colSelectionSql = "SELECT column_name FROM sp_iqcolumn() WHERE table_name ='$virtual_table_name' and column_name = 'Qualified Interface Name'" ;
+	$ifname_present = $dbh-&gt;selectrow_array($colSelectionSql);
+
+	$header = "[Minute] [Minute | ], [Node Name] [Node Name | ]";  # The header has | as the delimiter so that its easy for parsing in the script.
+	if($ifname_present eq "") {
+		$group = "[Minute], [Node Name]";
+	} else {
+		#$header = "[Minute], [Node Name], replace([Qualified Interface Name], ' ','-') [Qualified Interface Name]";
+		#Removing the [Qualified Interface Name] as requested by implementation.
+		$group  = "[Minute], [Node Name], [Qualified Interface Name]";
+	}
+	return ($header, $group);
+}
+
+sub buildSelectFooter {
+	if($ifname_present ne "") {
+		return " , replace([Qualified Interface Name], ' ','-') [Qualified Interface Name | ] ";
+	}
+}
+
+sub buildIntervalSql {
+	my $interval = @_;   # minutes
+	my $ret = "";
+
+	if($interval == 5 ) {
+		$ret = " where [Minute] &gt; dateadd(second, -300, DATETIME(NOW())) ";
+	} elsif ($interval == 10 ) {
+		$ret = " where [Minute] &gt; dateadd(second, -600, DATETIME(NOW())) ";
+	} elsif ($interval == 60){
+		$ret = " where [Minute] &gt; dateadd(second, -3600, DATETIME(NOW())) ";
+	} else {
+		$ret = " where [Minute] &gt; dateadd(second, -600, DATETIME(NOW())) ";
+	}
+	return $ret;
+}
+
+sub getRange {
+	if($ifname_present eq "") {
+		return "1, 2 ";
+	} else {
+		return "1, 2, 3 ";
+	}
+}
+
+sub formatColumnNameForSelect {
+	my ($col_name) = @_;
+
+	my $sum_fn = "sum";
+	my $count_fn = "count";
+	my $div_oper = "/";
+	my $open_param = "(";
+	my $close_param = ")";
+	my $open_braces = "[";
+	my $close_braces = "]";
+
+	##((sum([Column_name]) / count([Column_name]))) [Column_name]
+
+	my $col_name_header = $open_braces . $col_name . $col_delimiter . $close_braces;  # -&gt; [Column_name | ]  --&gt; | used as a delimiter to parse.
+	my $temp_col_name = $open_braces . $col_name . $close_braces;  # -&gt; [Column_name]
+	my $temp_col_name_sum = $sum_fn. $open_param . $temp_col_name . $close_param ;  # sum ("[Column_name]")
+	my $temp_col_name_cnt = $count_fn. $open_param . $temp_col_name . $close_param;  # count ("[Column_name]")
+	my $final_col_strut = $open_param . $temp_col_name_sum . $div_oper . $temp_col_name_cnt . $close_param ;  # Build equation (sum ("[Column_name]") / count ("[Column_name]"))
+	$final_col_strut =  $final_col_strut . $col_name_header;   #  Added Header (sum ("[Column_name]") / count ("[Column_name]")) [Header]
+	return $final_col_strut
+}
+
+sub generateSql {
+	my ($metric_name, @colNamesLocal) = @_;
+	my $virtual_table_name = fVirtualTableName($metric_name);
+
+	my $select = "select ";
+	my $comma = ", ";
+	my $group_by = " group by ";
+	my $order_by = " order by ";
+	my $from = " from ";
+	my $double_quote = "\"";
+
+	my ($select_header, $group_cols) = buildSelectHeader($virtual_table_name);
+
+	my $columns_for_sel = "";
+	foreach my $col_name (@colNamesLocal) {
+		my $formatted_col_name = formatColumnNameForSelect($col_name);
+		$columns_for_sel = $columns_for_sel . $comma . $formatted_col_name;
+	}
+
+	# Add the footer columns if any.
+	my $footer_cols = buildSelectFooter();
+	$columns_for_sel = $columns_for_sel . $footer_cols;
+
+	# Add the from clause  -- the virtual table
+	my $final_sql = $columns_for_sel . $from . $double_quote . $virtual_table_name . $double_quote;
+
+	#Add where clause  -- last 10 minutes
+	$final_sql = $final_sql . buildIntervalSql(10);
+
+	# Add order by and group by
+	$final_sql = $final_sql . $group_by . $group_cols;
+	#$final_sql = $final_sql . $order_by . $select_header . $columns_for_sel ;   # convert to range
+	$final_sql = $final_sql . $order_by . getRange() ;   # convert to range
+
+	# Prepend select and select_header
+	$final_sql = $select . $select_header . $final_sql;
+
+	#Writing the sql to ouput file.
+	my $sql_file_name = lc $metric_name . "_query.sql";
+	if (-e $sql_file_name) {
+		my $backup_file_name =  $sql_file_name . "." . time;
+		print "Renamed the existing SQL file " . $sql_file_name . " to " . $backup_file_name ."\n";
+		copy_or_warn("$sql_file_name","$backup_file_name") ;
+	}
+	my $file_handle = open_or_die("&gt;$sql_file_name") ;
+	print $file_handle $final_sql;
+	close $file_handle;
+
+	#Instructions
+	print "Generated SQL is written to the file " . $sql_file_name . "\n";
+}
+
+
+my $action = $OPTS{a} || "colgen" ;  # default action to generate data columns
+
+if ($action eq "colgen") {
+	#Generating the column list
+	INFO("Generating data columns for the extension pack %s", $EXTENSIONPACK);
+	my @colNamesRet = getDataColumns();
+	my $metric_name = getMetricName();
+	persistToFile($metric_name, @colNamesRet);
+} elsif ($action eq "sqlgen") {
+	#For generating the sql
+	my ($metric_name, @columns_for_sql) = readFileAndGenerateColList();
+	generateSql($metric_name, @columns_for_sql);
+} else {
+	INFO("Invalid Action");
+	showUsage();
+}
+
+exit 0;
+</code></pre>
+
+<p>streamtobvd.sh:<br>
+&nbsp;</p>
+
+<pre><code class="language-bash">#!/bin/sh
+usage(){
+  echo "Usage: $0 -s &lt;BVD FQDN&gt; -k &lt;BVDAPIKEY&gt; -f &lt;SQL FILE&gt;"
+  exit 1
+}
+[[ $# -lt 6 ]] &amp;&amp; usage
+while [ "$1" != "" ]; do
+case $1 in
+        -s ) 	shift
+                BVDFQDN=$1
+                ;;
+        -k )    shift
+                BVDAPIKEY=$1
+                ;;
+        -f )    shift
+                SQLFILE=$1
+                ;;
+        * )     usage 
+    esac
+    shift
+done
+
+BVDURL="https://$BVDFQDN/bvd-receiver/api/submit/"
+BVDCURLURL="$BVDURL$BVDAPIKEY/dims/NodeName,PerfMetrics"
+
+FLAG=1
+
+while [ 1 ]
+do
+    dbisql -nogui -c "DSN=PerfSPIProxyDSN" $SQLFILE | grep -v "NULL" | grep -v "Execution time" | grep -v "rows)" | while read line 
+    do
+      if [ $FLAG -eq 1 ]
+      then
+        #echo "Process header---- "$line
+        FLAG=0 
+        IFS='|'
+        read -a metrics &lt;&lt;&lt; "$line"
+        metriclen=${#metrics[@]}
+        for (( k=0; k&lt;$metriclen; k++ ))
+        do
+          metrics[$k]=`echo -e "${metrics[$k]}" | sed 's/^[ \t]*//;s/[ \t]*$//'`
+          #echo ${metrics[$k]}
+        done
+        IFS=' '
+      else 
+        line=`echo $line | sed -e '/^\s*$/d' -e '/^-/d'`
+        if [ ! -z "$line" ]
+        then
+          arr=($line)
+          len=${#arr[@]}
+          NODENAME=${arr[2]}
+          JSONMSG='{"NodeName":"'$NODENAME'","PerfMetrics":"My Metrics",'
+          for (( c=3; c&lt;$len; c++ ))
+          do
+            i=$[$c-1]
+            name=${metrics[$i]}
+            if [ $c -lt $[len-1] ]
+            then
+              element="\""${name}"\"":"\""${arr[$c]}"\"", 
+            else
+              element="\""${name}"\"":"\""${arr[$c]}"\""
+            fi
+            echo $element
+            JSONMSG=${JSONMSG}$element
+          done
+          JSONMSG=${JSONMSG}"}"
+          curl -k -X POST -H "Content-Type:application/json" -d "$JSONMSG" $BVDCURLURL 
+          echo ""
+        fi
+      fi
+    done
+    sleep 300
+done
+</code></pre>
 
 <p>&nbsp;</p>
-
-<p>use NPS::nps;</p>
-
-<p>use DBI;</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;</p>
-
-<p>loggername("Utility.sqlgenerator");</p>
-
-<p>&nbsp;</p>
-
-<p># Command line validations.</p>
-
-<p>my %OPTS ;</p>
-
-<p>showUsage() unless getopts("a:p:h", \%OPTS);</p>
-
-<p>showUsage() unless (defined $OPTS{p});</p>
-
-<p>&nbsp;</p>
-
-<p>sub showUsage {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $usage = qq(Usage: sqlgenerator.ovpl [-h] -p -a sqlgen/colgen</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -h&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Display usage</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -p ExtensionPack&nbsp;&nbsp;&nbsp; Run against tables for named ExtensionPack</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -a colgen/sqlgen</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;NOTE :</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -p ExtensionPack Name should be the first argument</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; colgen - to generate a list of data columns.</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sqlgen - to generate the sql, "-a colgen" should be run before "-a sqlgen"</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if -a is not provide default action chosen is "colgen"</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Use "PerfSPIProxyDSN" to run the generated sql</p>
-
-<p>);</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; l10n_printf("%s", $usage);</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; exit 0;</p>
-
-<p>}</p>
-
-<p>&nbsp;</p>
-
-<p>#Reference Aggregations : avg, max, min, sum, cnt pctile05, pctile90, pctile95, pctile99</p>
-
-<p>#Collected Aggregations.</p>
-
-<p>#my $aggs_to_find = "avg";</p>
-
-<p>my $aggs_to_find = "avg, min, max,";</p>
-
-<p>my $catalog_table_prefix = "Column_Catalog_";</p>
-
-<p>my $catalog_table_name = $catalog_table_prefix . $EXTENSIONPACK;</p>
-
-<p>my $output_file_name = $EXTENSIONPACK . "_dataColumns" . ".config";</p>
-
-<p>my $star_star = "***";</p>
-
-<p>my $star = "*";</p>
-
-<p>my $hash = "#";</p>
-
-<p>my $col_delimiter = " | ";</p>
-
-<p>my $conn = "DSN=$cfg{PRSPI_DB_DSN}" ;</p>
-
-<p>&nbsp;</p>
-
-<p>my $ifname_present = "" ; # ONLY used while sql generation.</p>
-
-<p>&nbsp;</p>
-
-<p># Connect to DB avoiding auto commit to preserve the table locks</p>
-
-<p>my $dbh =</p>
-
-<p>&nbsp; DBI-&gt;connect("dbi:SQLAnywhere:$conn;CON=sqlgenerator.OVPL PID=$$", "", "", { RaiseError =&gt; 0, AutoCommit =&gt; 0, PrintError =&gt; 1} ) ||</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp; FATAL("Unable to connect to database: %s", $DBI::errstr);</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;</p>
-
-<p>sub getDataColumns {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $aggs_list = "";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; foreach my $aggs (split(/,/,$aggs_to_find)) {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $str = "'". trim($aggs) . "'";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if($aggs_list eq "") {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $aggs_list = $str;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } else {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $aggs_list = $aggs_list . "," . $str;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if($aggs_list eq "") {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; INFO("Aggregations provided is empty, exiting");</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; exit 1;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $colSelectionSql = "SELECT MetricName FROM $catalog_table_name WHERE MetricDescrAggType in ($aggs_list) order by MetricName" ;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $colNames = $dbh-&gt;selectcol_arrayref($colSelectionSql) || FATAL ("Unable to get the columns names : %s",$DBI::errstr);</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return @$colNames;</p>
-
-<p>}</p>
-
-<p>&nbsp;</p>
-
-<p>sub getMetricName {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $metric_name_sql = "SELECT distinct MetricBlock FROM $catalog_table_name" ;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $metric_name = $dbh-&gt;selectrow_array($metric_name_sql) || FATAL ("Unable to get the metic block name: %s",$DBI::errstr);</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return $metric_name;</p>
-
-<p>}</p>
-
-<p>&nbsp;</p>
-
-<p>sub persistToFile {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my ($metric_name, @colNames) = @_;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $cnt = 0;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(-e $output_file_name) {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; WARN("The file '%s' exists, all the modifications will be overwritten" , $output_file_name);</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $file_handle = open_or_die("&gt;$output_file_name") ;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print $file_handle $star_star . "Data columns generated for the extension Pack :" . $EXTENSIONPACK . "\n";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print $file_handle $star_star . "ExtensionPack=". $EXTENSIONPACK . "\n";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print $file_handle $star_star . "MetricName=". $metric_name . "\n";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print $file_handle $star_star . "IMPORTANT STEPS : ". "\n";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print $file_handle $star_star . "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1. Remove “#” from the beginning of the line to choose that particular column in the generated SQL.". "\n";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print $file_handle $star_star . "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2. Run the script 'sqlgenerator.ovpl -p $EXTENSIONPACK -a sqlgen'". "\n\n";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; foreach my $colName (@colNames) {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ++$cnt;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print $file_handle $hash.$colName."\n";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; close $file_handle ;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; INFO ("Query returned %s records for the extension pack %s" , $cnt, $EXTENSIONPACK);</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if( $cnt &gt; 0) {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; INFO ("IMPORTANT : \n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Open the file '%s' and follow the instructions to generate the query" , $output_file_name);</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } else {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; WARN("Unable to generate the data columns");</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (-e $output_file_name) {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; unlink($output_file_name)</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-
-<p>}</p>
-
-<p>&nbsp;</p>
-
-<p>sub readFileAndGenerateColList {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(! -e $output_file_name) {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; WARN("Data columns is not generated for this extension pack ");</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; exit 1;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my @selected_columns ;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $metric_search_string = "MetricName=";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $metric_name = "";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $file_handle = open_or_die("&lt;$output_file_name") ;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $row_uncommented = 0;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; while (my $row = &lt;$file_handle&gt;) {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; chomp $row;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(($row ne "" ) &amp;&amp; !((index($row, $star_star) == 0) || index($row, $hash) == 0))&nbsp; {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # This row will be uncommented column name</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; push (@selected_columns, $row) ;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ++$row_uncommented ;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (($metric_name eq "") &amp;&amp; $row =~ m/$metric_search_string/) {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #***MetricName=ComponentMetrics</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $equal_idx = index($row, "=");</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $metric_name = substr($row, $equal_idx + 1);</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if($row_uncommented &lt; 1) {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; WARN("The file '%s' is not modified to pick the column list, modify the file and rerun the command" , $output_file_name);</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; exit 1;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return ($metric_name, @selected_columns);</p>
-
-<p>}</p>
-
-<p>&nbsp;</p>
-
-<p>sub buildSelectHeader {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my ($virtual_table_name) = @_;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $header;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $group;</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #$virtual_table_name = "f_Virtual_InterfaceMetrics";&nbsp;&nbsp;&nbsp; # this is to test.</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $ifname_column_to_check = 'Qualified Interface Name';</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $colSelectionSql = "SELECT column_name FROM sp_iqcolumn() WHERE table_name ='$virtual_table_name' and column_name = 'Qualified Interface Name'" ;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ifname_present = $dbh-&gt;selectrow_array($colSelectionSql);</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $header = "[Minute] [Minute | ], [Node Name] [Node Name | ]";&nbsp; # The header has | as the delimiter so that its easy for parsing in the script.</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if($ifname_present eq "") {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $group = "[Minute], [Node Name]";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } else {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #$header = "[Minute], [Node Name], replace([Qualified Interface Name], ' ','-') [Qualified Interface Name]";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #Removing the [Qualified Interface Name] as requested by implementation.</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $group&nbsp; = "[Minute], [Node Name], [Qualified Interface Name]";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return ($header, $group);</p>
-
-<p>}</p>
-
-<p>&nbsp;</p>
-
-<p>sub buildSelectFooter {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if($ifname_present ne "") {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return " , replace([Qualified Interface Name], ' ','-') [Qualified Interface Name | ] ";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-
-<p>}</p>
-
-<p>&nbsp;</p>
-
-<p>sub buildIntervalSql {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $interval = @_;&nbsp;&nbsp; # minutes</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $ret = "";</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if($interval == 5 ) {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ret = " where [Minute] &gt; dateadd(second, -300, DATETIME(NOW())) ";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } elsif ($interval == 10 ) {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ret = " where [Minute] &gt; dateadd(second, -600, DATETIME(NOW())) ";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } elsif ($interval == 60){</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ret = " where [Minute] &gt; dateadd(second, -3600, DATETIME(NOW())) ";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } else {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ret = " where [Minute] &gt; dateadd(second, -600, DATETIME(NOW())) ";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return $ret;</p>
-
-<p>}</p>
-
-<p>&nbsp;</p>
-
-<p>sub getRange {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if($ifname_present eq "") {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return "1, 2 ";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } else {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return "1, 2, 3 ";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-
-<p>}</p>
-
-<p>&nbsp;</p>
-
-<p>sub formatColumnNameForSelect {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my ($col_name) = @_;</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $sum_fn = "sum";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $count_fn = "count";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $div_oper = "/";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $open_param = "(";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $close_param = ")";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $open_braces = "[";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $close_braces = "]";</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ##((sum([Column_name]) / count([Column_name]))) [Column_name]</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $col_name_header = $open_braces . $col_name . $col_delimiter . $close_braces;&nbsp; # -&gt; [Column_name | ]&nbsp; --&gt; | used as a delimiter to parse.</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $temp_col_name = $open_braces . $col_name . $close_braces;&nbsp; # -&gt; [Column_name]</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $temp_col_name_sum = $sum_fn. $open_param . $temp_col_name . $close_param ;&nbsp; # sum ("[Column_name]")</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $temp_col_name_cnt = $count_fn. $open_param . $temp_col_name . $close_param;&nbsp; # count ("[Column_name]")</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $final_col_strut = $open_param . $temp_col_name_sum . $div_oper . $temp_col_name_cnt . $close_param ;&nbsp; # Build equation (sum ("[Column_name]") / count ("[Column_name]"))</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $final_col_strut =&nbsp; $final_col_strut . $col_name_header;&nbsp;&nbsp; #&nbsp; Added Header (sum ("[Column_name]") / count ("[Column_name]")) [Header]</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return $final_col_strut</p>
-
-<p>}</p>
-
-<p>&nbsp;</p>
-
-<p>sub generateSql {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my ($metric_name, @colNamesLocal) = @_;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $virtual_table_name = fVirtualTableName($metric_name);</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $select = "select ";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $comma = ", ";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $group_by = " group by ";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $order_by = " order by ";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $from = " from ";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $double_quote = "\"";</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my ($select_header, $group_cols) = buildSelectHeader($virtual_table_name);</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $columns_for_sel = "";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; foreach my $col_name (@colNamesLocal) {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $formatted_col_name = formatColumnNameForSelect($col_name);</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $columns_for_sel = $columns_for_sel . $comma . $formatted_col_name;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # Add the footer columns if any.</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $footer_cols = buildSelectFooter();</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $columns_for_sel = $columns_for_sel . $footer_cols;</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # Add the from clause&nbsp; -- the virtual table</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $final_sql = $columns_for_sel . $from . $double_quote . $virtual_table_name . $double_quote;</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #Add where clause&nbsp; -- last 10 minutes</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $final_sql = $final_sql . buildIntervalSql(10);</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # Add order by and group by</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $final_sql = $final_sql . $group_by . $group_cols;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #$final_sql = $final_sql . $order_by . $select_header . $columns_for_sel ;&nbsp;&nbsp; # convert to range</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $final_sql = $final_sql . $order_by . getRange() ;&nbsp;&nbsp; # convert to range</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # Prepend select and select_header</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $final_sql = $select . $select_header . $final_sql;</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #Writing the sql to ouput file.</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $sql_file_name = lc $metric_name . "_query.sql";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (-e $sql_file_name) {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $backup_file_name =&nbsp; $sql_file_name . "." . time;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print "Renamed the existing SQL file " . $sql_file_name . " to " . $backup_file_name ."\n";</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; copy_or_warn("$sql_file_name","$backup_file_name") ;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $file_handle = open_or_die("&gt;$sql_file_name") ;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print $file_handle $final_sql;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; close $file_handle;</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #Instructions</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print "Generated SQL is written to the file " . $sql_file_name . "\n";</p>
-
-<p>}</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;</p>
-
-<p>my $action = $OPTS{a} || "colgen" ;&nbsp; # default action to generate data columns</p>
-
-<p>&nbsp;</p>
-
-<p>if ($action eq "colgen") {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #Generating the column list</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; INFO("Generating data columns for the extension pack %s", $EXTENSIONPACK);</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my @colNamesRet = getDataColumns();</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my $metric_name = getMetricName();</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; persistToFile($metric_name, @colNamesRet);</p>
-
-<p>} elsif ($action eq "sqlgen") {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #For generating the sql</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my ($metric_name, @columns_for_sql) = readFileAndGenerateColList();</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generateSql($metric_name, @columns_for_sql);</p>
-
-<p>} else {</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; INFO("Invalid Action");</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; showUsage();</p>
-
-<p>}</p>
-
-<p>&nbsp;</p>
-
-<p>exit 0;</p>
-
-<p>&nbsp;</p>
-
-<p><br>
-streamtobvd.sh<strong>:</strong></p>
-
-<p>#!/bin/sh</p>
-
-<p>usage(){</p>
-
-<p>&nbsp; echo "Usage: $0 -s -k -f "</p>
-
-<p>&nbsp; exit 1</p>
-
-<p>}</p>
-
-<p>[[ $# -lt 6 ]] &amp;&amp; usage</p>
-
-<p>while [ "$1" != "" ]; do</p>
-
-<p>case $1 in</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -s ) &nbsp; shift</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; BVDFQDN=$1</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -k )&nbsp;&nbsp;&nbsp; shift</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; BVDAPIKEY=$1</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -f )&nbsp;&nbsp;&nbsp; shift</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SQLFILE=$1</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;;</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * )&nbsp;&nbsp;&nbsp;&nbsp; usage</p>
-
-<p>&nbsp;&nbsp;&nbsp; esac</p>
-
-<p>&nbsp;&nbsp;&nbsp; shift</p>
-
-<p>done</p>
-
-<p>&nbsp;</p>
-
-<p>BVDFQDN=$2</p>
-
-<p>BVDAPIKEY=$4</p>
-
-<p>SQLFILE=$6</p>
-
-<p>BVDURL="https://$BVDFQDN/bvd-receiver/api/submit/"</p>
-
-<p>BVDCURLURL="$BVDURL$BVDAPIKEY/dims/NodeName,PerfMetrics"</p>
-
-<p>&nbsp;</p>
-
-<p>FLAG=1</p>
-
-<p>&nbsp;</p>
-
-<p>while [ 1 ]</p>
-
-<p>do</p>
-
-<p>&nbsp;&nbsp;&nbsp; dbisql -nogui -c "DSN=PerfSPIProxyDSN" $SQLFILE | grep -v "NULL" | grep -v "Execution time" | grep -v "rows)" | while read line</p>
-
-<p>&nbsp;&nbsp;&nbsp; do</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if [ $FLAG -eq 1 ]</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; then</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; FLAG=0</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IFS='|'</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; read -a metrics &lt;&lt;&lt; "$line"</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; metriclen=${#metrics[@]}</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (( k=0; k&lt;$metriclen; k++ ))</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; do</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; metrics[$k]=`echo -e "${metrics[$k]}" | sed 's/^[ \t]*//;s/[ \t]*$//'`</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; done</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IFS=' '</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; line=`echo $line | sed -e '/^\s*$/d' -e '/^-/d'`</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if [ ! -z "$line" ]</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; then</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; arr=($line)</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; len=${#arr[@]}</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NODENAME=${arr[2]}</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JSONMSG='{"NodeName":"'$NODENAME'","PerfMetrics":"My Metrics",'</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (( c=3; c&lt;$len; c++ ))</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; do</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i=$[$c-1]</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; name=${metrics[$i]}</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if [ $c -lt $[len-1] ]</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; then</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; element="\""${name}"\"":"\""${arr[$c]}"\"",</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; element="\""${name}"\"":"\""${arr[$c]}"\""</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fi</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo $element</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JSONMSG=${JSONMSG}$element</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; done</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JSONMSG=${JSONMSG}"}"</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; curl -k -X POST -H "Content-Type:application/json" -d "$JSONMSG" $BVDCURLURL</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo ""</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fi</p>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fi</p>
-
-<p>&nbsp;&nbsp;&nbsp; done</p>
-
-<p>&nbsp;&nbsp;&nbsp; sleep 300</p>
-
-<p>done</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;</p>
-
-<p>​</p>
