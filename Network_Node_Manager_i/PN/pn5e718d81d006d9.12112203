@@ -59,18 +59,18 @@ Micro Focus provided 2 scripts, <code>sqlgenerator.ovpl</code> and <code>streamb
 	&nbsp;</li>
 	<li>Choose an extension pack which contains the performance metrics of interest.&nbsp; For example, if you are interested in interface utilization metrics, choose the “Interface_Health” extension pack.<br>
 	Run the script:<br>
-	<code>sqlgenerator.ovpl –p <extension pack=""> –a colgen</extension></code><br>
+	<code>sqlgenerator.ovpl –p –a colgen</code><br>
 	Example:<br>
 	<code>sqlgenerator.ovpl –p Interface_Health –a colgen</code><br>
-	The script extracts all the metrics from the extension pack and saves them in a text file <code><extension pack="">_dataColumns.config</extension></code>, for example, <code>Interface_Health_dataColumns.config</code>.</li>
-	<li>Edit the <code><extension pack="">_dataColumns.config</extension></code>&nbsp;file.&nbsp; Uncomment out the metrics of interest in the file then save the file.&nbsp;&nbsp; For example, if the metrics of interest are “<code>Utilization (avg)</code>”, “<code>Utilization (max)</code>” and “<code>Utilization (min)</code>”, remove the “#” from the beginning of the line, then save the file:<br>
+	The script extracts all the metrics from the extension pack and saves them in a text file <code>_dataColumns.config</code>, for example, <code>Interface_Health_dataColumns.config</code>.</li>
+	<li>Edit the <code>_dataColumns.config</code>&nbsp;file.&nbsp; Uncomment out the metrics of interest in the file then save the file.&nbsp;&nbsp; For example, if the metrics of interest are “<code>Utilization (avg)</code>”, “<code>Utilization (max)</code>” and “<code>Utilization (min)</code>”, remove the “#” from the beginning of the line, then save the file:<br>
 	<br>
 	<img alt="" src="/mediawiki/images/pn_images/pn_image_5e8fb62692d4d2.85588626.png" style="height:160px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:283px"></li>
 	<li>Run the script:<br>
-	<code>sqlgenerator.ovpl –p <extension pack=""> –a sqlgen</extension></code><br>
+	<code>sqlgenerator.ovpl –p –a sqlgen</code><br>
 	Example:<br>
 	<code>sqlgenerator.ovpl –p Interface_Health –a sqlgen</code><br>
-	In this step, the script will fetch all the metrics of interest specified in previous step, and generate a complex SQL query to retrieve the metrics from NPS server. &nbsp;The query will be saved in a text file with the name convention of <code><extension pack="">_query.sql</extension></code>, for example:<br>
+	In this step, the script will fetch all the metrics of interest specified in previous step, and generate a complex SQL query to retrieve the metrics from NPS server. &nbsp;The query will be saved in a text file with the name convention of <code>_query.sql</code>, for example:<br>
 	<img alt="" src="/mediawiki/images/pn_images/pn_image_5e8fb626c5d327.23055772.png" style="height:42px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px"></li>
 	<li>Run the script:<br>
 	streamtobvd.sh –s -k -f<br>
@@ -103,9 +103,9 @@ b)&nbsp;Both MF provided scripts need to run on the NPS server as it executes SQ
 This article described the implementation of a solution to a user case which allow NOM customers to collect special MIB variables and performance metrics and stream the collected metrics to a BVD dashboard. &nbsp;This article also included 2 scripts for customers to facilitate the implementation of the solution.</p>
 
 <p><strong>Appendix</strong><br>
-Two scripts, &nbsp;sqlgenerator.ovpl and streamtobvd.sh for this solution are included in this section in their entirety.&nbsp;</p>
+Two scripts, &nbsp;<code>sqlgenerator.ovpl </code>and <code>streamtobvd.sh</code> for this solution are included in this section in their entirety.&nbsp;</p>
 
-<p>sqlgenerator.ovpl:</p>
+<p><code>sqlgenerator.ovpl:</code></p>
 
 <pre><code class="language-perl">#!/opt/OV/nonOV/perl/a/bin/perl -I/opt/OV/NNMPerformanceSPI/lib/perllibs/lib
 # NNM iSPI Performance
@@ -394,8 +394,7 @@ if ($action eq "colgen") {
 exit 0;
 </code></pre>
 
-<p>streamtobvd.sh:<br>
-&nbsp;</p>
+<p><code>streamtobvd.sh:</code></p>
 
 <pre><code class="language-bash">#!/bin/sh
 usage(){
