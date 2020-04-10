@@ -1,1 +1,400 @@
- 
+<h1>Migrating an SA Database</h1>
+
+<p>The default Oracle database that is installed with SA is <u>Standard Edition</u>.&nbsp; &nbsp;Need to move to a <u>RAC </u>installation or perhaps <u>Oracle Enterprise</u> ? These instructions where created when moving an SA 10.60 internally installed DB to being external onto Oracle Enterprise.&nbsp;</p>
+
+<h2>OS Installation</h2>
+
+<p>The following kickstart file was used to configure CentOS 7.4 ready for an Oracle installation.</p>
+
+<pre># Minimal Configuration for Centos7 for installing Oracle 12
+
+authconfig --enableshadow --enablemd5
+bootloader --location=mbr
+firewall --disabled
+install
+keyboard us
+lang en_US.UTF-8
+timezone --utc UTC
+cdrom
+text
+
+# Partition information
+clearpart --all --initlabel
+#autopart
+part /boot --fstype ext3 --size=200
+part swap --size=1024
+part pv.01 --size=1 --grow --ondisk=sda
+volgroup vg_root pv.01
+logvol  /  --vgname=vg_root  --size=1 --grow --name=lv_root
+
+reboot
+rootpw opsware
+skipx
+text
+zerombr
+selinux --disabled
+
+%packages
+@Base
+# Oracle pre-requisite packages
+# https://docs.oracle.com/database/121/LTDQI/toc.htm#BABGGEBA
+binutils 
+compat-libcap1
+# Not on the media
+#compat-libstdc++-33
+gcc
+gcc-c++
+glibc
+glibc-devel
+ksh
+libaio
+libaio-devel
+libgcc
+libstdc++
+libstdc++-devel
+libXi
+libXtst
+make
+sysstat
+# extra
+nfs-utils
+autofs
+screen
+%end
+
+%post --log=/root/ks-post.log
+
+cat &gt;&gt; /etc/sysctl.conf &lt;<eof #oracle="" parameters="" begin="" kernel.shmmax="4101414912" kernel.shmall="2097152" kernel.shmmni="4096" kernel.sem="256" 32000="" 256="" net.core.rmem_default="262144" net.core.wmem_default="262144" net.core.rmem_max="4194304" net.core.wmem_max="1048576" fs.file-max="6815744" fs.aio-max-nr="1048576" net.ipv4.ip_local_port_range="9081" 65000="" end="" eof="" cat="">&gt; /etc/security/limits.conf &lt;<eof #opsware="" oracle="" parameters="" begin="" soft="" nofile="" 4096="" hard="" 65536="" nproc="" 2047="" 16384="" session="" required="" lib="" security="" pam_limits.so="" end="" eof="" systemctl="" enable="" nfs="" start="" autofs="" usr="" sbin="" groupadd="" oinstall="" dba="" useradd="" -g="" mkdir="" -p="" u01="" app="" admin="" truth="" scripts="" u02="" oradata="" u03="" u04="" chown="" -r="" oracle:oinstall="" cat="">&gt; /home/oracle/.bashrc &lt;<eof #="" uncomment="" to="" setup="" oracle_home="" on="" login="" #export="" oracle_sid="truth" #oraenv_ask="NO" .="" usr="" local="" bin="" oraenv="" oracle_home_listner="$ORACLE_HOME" eof="" yum="" -y="" install="" compat-libstdc++-33="" %end<="" pre="">
+
+<p>This package is not on the media so its pulled via YUM</p>
+
+<ul>
+	<li>compat-libstdc++-33-3.2.3</li>
+</ul>
+
+<p>If an internet connection is not available during the OS install the package can be retrieved and manually installed</p>
+
+<ul>
+	<li>
+	<p><a href="https://centos.pkgs.org/7/centos-x86_64/compat-libstdc++-33-3.2.3-72.el7.x86_64.rpm.html">https://centos.pkgs.org/7/centos-x86_64/compat-libstdc++-33-3.2.3-72.el7.x86_64.rpm.html</a></p>
+	</li>
+</ul>
+
+<h2>Oracle Enterprise installation</h2>
+
+<p>Oracle 12.1.0.2 quick installation guide</p>
+
+<ul>
+	<li>
+	<p><a href="https://docs.oracle.com/database/121/LTDQI/toc.htm">https://docs.oracle.com/database/121/LTDQI/toc.htm</a></p>
+	</li>
+</ul>
+
+<pre># su - oracle
+$ unzip /net/cheese/u02/Software/Oracle/12.1.0.2\ -\ Enterprise\ Edition/linuxamd64_12102_database_1of2.zip
+$ unzip /net/cheese/u02/Software/Oracle/12.1.0.2\ -\ Enterprise\ Edition/linuxamd64_12102_database_2of2.zip
+$ export DISPLAY=windev:0.0
+$ cd database
+$ runInstaller
+Checking monitor: must be configured to display at least 256 colors
+    &gt;&gt;&gt; Could not execute auto check for display colors using command /usr/bin/xdpyinfo. Check if the DISPLAY variable is set.    Failed &lt;&lt;&lt;&lt;
+
+Some requirement checks failed. You must fulfill these requirements before
+
+continuing with the installation,
+
+Continue? (y/n) [n] y    &lt;-- ack the warning about xdpyinfo not being present it does not matter</pre>
+
+<p><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e909e74902437.57086194.png" style="border:0px solid black; height:273px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:628px" vspace="0"></p>
+
+<p><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e909e74c95b31.22491025.png" style="border:0px solid black; height:204px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:697px" vspace="0"></p>
+
+<p><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e909e75089c80.16015029.png" style="border:0px solid black; height:303px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:607px" vspace="0"></p>
+
+<p><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e909e754d55b7.32645517.png" style="border:0px solid black; height:427px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:981px" vspace="0"></p>
+
+<p><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e909e75993774.62736505.png" style="border:0px solid black; height:794px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:1000px" vspace="0">We can ignore the warning as we configured the SWAP partition smaller than the installer wants.</p>
+
+<pre>part swap --size=1024 # Oracle wants 8GB (memory size) we give it less.
+</pre>
+
+<h2>SA database creation</h2>
+
+<p>Expand scripts.tar.gz&nbsp;into /u01/app/oracle/admin/truth/scripts and execute.&nbsp;&nbsp;The scripts can be extracted from SA Oracle installation media by following&nbsp;<a href="https://softwaresupport.softwaregrp.com/doc/KM541723" target="_blank">KM541723</a></p>
+
+<pre>[oracle@alphadb scripts]$ ./truth.sh
++ mkdir -p /u01/app/oracle/admin/truth/adump
++ mkdir -p /u01/app/oracle/admin/truth/dpdump
++ mkdir -p /u01/app/oracle/admin/truth/pfile
++ mkdir -p /u01/app/oracle/cfgtoollogs/dbca/truth
++ mkdir -p /u01/app/oracle/flash_recovery_area
++ mkdir -p /u01/app/oracle/flash_recovery_area/truth
++ ORACLE_SID=truth
++ export ORACLE_SID
++ ORACLE_HOME=/u01/app/oracle/product/12.1.0/dbhome_1/
++ export ORACLE_HOME
++ PATH=/u01/app/oracle/product/12.1.0/dbhome_1//bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/oracle/.local/bin:/home/oracle/bin
++ export PATH
++ /u01/app/oracle/product/12.1.0/dbhome_1//bin/sqlplus /nolog @/u01/app/oracle/admin/truth/scripts/truth.sql
+
+SQL*Plus: Release 12.1.0.2.0 Production on Tue Apr 24 15:54:58 2018
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+specify a password for sys as parameter 1
+Enter value for 1: opsware
+specify a password for system as parameter 2
+Enter value for 2: opsware</pre>
+
+<p><strong>This takes a while</strong></p>
+
+<p>Configure database to startup on machine startup</p>
+
+<p>/etc/oratab</p>
+
+<pre>truth:/u01/app/oracle/product/12.1.0/dbhome_1:Y</pre>
+
+<p>/etc/init.d/opsware-oracle</p>
+
+<pre>#
+# chkconfig: 235 60 20
+# description: Oracle12c 12.1.0.2
+#
+### BEGIN INIT INFO
+# Provides: opsware-oracle
+# Required-Start: $network
+# Required-Stop: $network
+# Default-Start: 2 3 5
+# Default-Stop: 0 1 4 6
+# Description: Oracle Database startup script
+### END INIT INFO
+LOCKFILEPATH=/var/lock/subsys
+LOCKFILE=oracle
+ORACLE_HOME=/u01/app/oracle/product/12.1.0/dbhome_1
+LOG=/var/log/ora_initd_startup.log
+
+# For SELinux support we need to use runuser
+# This is not possible on SLES 11 or lower, so we'll have to default to su
+SWITCH_USER_CMD=su
+if [ "`rpm -qa | grep sles-release | wc -l`" -eq 0 -a -x /sbin/runuser ]; then
+        SWITCH_USER_CMD=/sbin/runuser
+fi
+                                                                                              
+start(){
+        echo "$0: starting up..." &gt;&gt; $LOG
+        date &gt;&gt; $LOG
+        echo -n $"Starting Oracle Database: "
+                                                                                              
+        # The listener starts as part of dbstart
+        $SWITCH_USER_CMD - oracle -c "env ORACLE_HOME=$ORACLE_HOME $ORACLE_HOME/bin/dbstart $ORACLE_HOME"
+
+        # This is specific to Linux OS
+        if [[ ! -d "${LOCKFILEPATH}" ]]; then
+                mkdir -p $LOCKFILEPATH
+        fi
+        touch $LOCKFILEPATH/$LOCKFILE
+
+echo "$0: starting up complete..." &gt;&gt; $LOG
+date &gt;&gt; $LOG
+echo "Starting Oracle Database complete "
+}
+stop(){
+        echo "$0: shutting down" &gt;&gt; $LOG
+        date &gt;&gt; $LOG
+        echo -n $"Stopping Oracle Database: "
+                                                                                              
+        $SWITCH_USER_CMD - oracle -c "env ORACLE_HOME=$ORACLE_HOME $ORACLE_HOME/bin/dbshut $ORACLE_HOME"
+
+        # This is specific to Linux
+        if [ -f $LOCKFILEPATH/$LOCKFILE ]; then
+                rm -f $LOCKFILEPATH/$LOCKFILE
+        fi
+
+       echo "$0: shutdown complete..." &gt;&gt; $LOG
+       date &gt;&gt; $LOG
+       echo "Shutting Oracle Database complete "
+}
+restart(){
+   stop
+   start
+}
+case "$1" in
+'start')
+        start
+        ;;
+'stop')
+        stop
+        ;;
+'restart')
+        restart
+   ;;
+'status')
+        if [ -f $LOCKFILEPATH/$LOCKFILE ]; then
+                echo "Oracle Database instance running"
+        else
+                echo "Oracle Database instance not running"
+        fi
+   ;;
+                                                                                              
+*)
+        echo $"Usage: $0 {start|stop|restart|status}"
+        exit 1
+        ;;
+esac</pre>
+
+<p>One the startup script is in place install it</p>
+
+<pre># chkconfig opsware-oracle reset </pre>
+
+<p>You'll need to uncomment the .bashrc lines relating to setting up the DB</p>
+
+<pre>export ORACLE_SID=truth
+ORAENV_ASK=NO . /usr/local/bin/oraenv
+export ORACLE_HOME_LISTNER=$ORACLE_HOME</pre>
+
+<p>Configure listener $ORACLE_HOME/network/admin/listener.ora</p>
+
+<pre>LISTENER =
+ (ADDRESS_LIST=
+        (ADDRESS=(PROTOCOL=tcp)(HOST=192.168.4.103)(PORT=1521))
+        (ADDRESS=(PROTOCOL=ipc)(KEY=PNPKEY)))
+
+SID_LIST_LISTENER=
+  (SID_LIST=
+    (SID_DESC=
+       (SID_NAME=truth)
+       (ORACLE_HOME=/u01/app/oracle/product/12.1.0/dbhome_1)
+    )
+  )
+LOG_DIRECTORY_LISTENER=/u01/app/oracle/product/12.1.0/dbhome_1/network/log
+LOG_FILE_LISTENER=listener.log
+TRACE_DIRECTORY_LISTENER=/u01/app/oracle/product/12.1.0/dbhome_1/network/trace
+TRACE_FILE_LISTENER=listener.trc
+INBOUND_CONNECT_TIMEOUT_LISTENER=120
+# subscribe_for_node_down_event entry should be removed for RAC env.
+SUBSCRIBE_FOR_NODE_DOWN_EVENT_LISTENER=OFF
+#LOCAL_OS_AUTHENTICATION_LISTENER=OFF
+#----ADDED BY TNSLSNR 04-OCT-2005 23:06:20---
+SAVE_CONFIG_ON_STOP_LISTENER = ON
+#--------------------------------------------
+
+#----ADDED BY TNSLSNR 04-OCT-2005 23:09:20---
+PASSWORDS_LISTENER = CEE9A6452943F605
+#--------------------------------------------</pre>
+
+<p>sqlnet.ora</p>
+
+<pre>-bash-4.2$ more sqlnet.ora
+LOG_DIRECTORY_SERVER=/u01/app/oracle/product/12.1.0/dbhome_1/network/log
+LOG_FILE_SERVER=sqlnet.log
+TRACE_DIRECTORY_SERVER=/u01/app/oracle/product/12.1.0/dbhome_1/network/trace
+TRACE_FILE_SERVER=sqlnet.trc
+NAMES.DIRECTORY_PATH= (TNSNAMES)
+SQLNET.INBOUND_CONNECT_TIMEOUT=180
+</pre>
+
+<h2>SA database migration</h2>
+
+<p>Quecse all of the DB access programs</p>
+
+<pre>[root@dc1 ~]#  service opsware-sas stop spin vaultdaemon twist</pre>
+
+<p>and perform full database export.</p>
+
+<pre>SQL&gt; CREATE DIRECTORY DUMP_FILES1 AS '/tmp';
+
+Directory created.
+
+SQL&gt;
+Disconnected from Oracle Database 12c Enterprise Edition Release 12.1.0.2.0 - 64bit Production
+With the Partitioning, OLAP, Advanced Analytics and Real Application Testing options
+[oracle@green~]$ expdp system/opsware full=Y directory=DUMP_FILES1 dumpfile=DB.dmp logfile=expdpDB.log</pre>
+
+<p>Then import it.&nbsp; Our new DB server is called zuludb.</p>
+
+<pre>[oracle@zuludb ~]$ impdp system/opsware full=Y directory=DUMP_FILES1 dumpfile=DB.dmp logfile=impdpDB.log</pre>
+
+<h3>SA changes</h3>
+
+<p>/var/opt/oracle/tnsnames.ora</p>
+
+<pre>truth.zulu=(DESCRIPTION=(ADDRESS=(HOST=192.168.4.103)(PORT=1521)(PROTOCOL=tcp))(CONNECT_DATA=(SERVICE_NAME=truth)))</pre>
+
+<p>/etc/opt/opsware/vault/vault.conf</p>
+
+<pre>truth.host: 192.168.4.103</pre>
+
+<p>/opt/opsware/oi_util/startup/opsware_start.config</p>
+
+<pre>TRUTH_HOST="192.168.4.103"</pre>
+
+<p>/etc/opt/opsware/agent/agent.args</p>
+
+<pre>truth.host: 192.168.4.103</pre>
+
+<p>/etc/opt/opsware/da/da.conf -- Note DA is disabled by default in SA 10.60</p>
+
+<pre>truth.host=192.168.4.103</pre>
+
+<p>/etc/opt/opsware/tell/tell.conf</p>
+
+<pre>truth.host: 192.168.4.103</pre>
+
+<p>If you are moving a secondary core database you'll need to adjust the primary core MGW forwards for this new IP.</p>
+
+<pre>### Customized Configuration Values for opswgw-mgw-ALPHA
+opswgw.ForwardTCP=20002:ZULU-mm:192.168.4.103:1521</pre>
+
+<p>Start DB access programs</p>
+
+<pre>[root@dc1 ~]#  service opsware-sas start spin vaultdaemon twist</pre>
+
+<p>Cleanup</p>
+
+<pre>SQL&gt; drop directory dump_files1;
+
+Directory dropped.</pre>
+
+<p>Disable oracle DB startup on the core</p>
+
+<pre>chkconfig opsware-oracle off</pre>
+
+<p>You can also go ahead and reclaim all the DB space from the data files (and/or) just compress them and back them up. Not that going back is a good idea once your system has been using the new database for a while.</p>
+
+<pre>rm -f /u0*/oradata/truth/*
+</pre>
+
+<h2>Caveats</h2>
+
+<ul>
+	<li>QCIM1D171216 - HPSA configuration problem after moving DB to Oracle RAC</li>
+	<li>QCIM1D246562 - TWIST startup fails with ORA-20060</li>
+</ul>
+
+<p>If you change the global name of the database when you create a new one you'll need to make an internal database table change after performing the database import step.</p>
+
+<pre>SQL&gt; select global_name from global_name;
+GLOBAL_NAME
+---------------------------
+NEWTRUTH -&gt; This is the new global_name.
+
+SQL&gt; select db_global_name from global_sid_id;
+
+DB_GLOBAL_NAME
+-----------------------------
+TRUTH -&gt; This will show the old db_global_name and that's an issue.</pre>
+
+<p>Set the new value:</p>
+
+<pre>SQL&gt; update global_sid_id set db_global_name=(select global_name from global_name);
+
+1 row updated.
+
+SQL&gt; select db_global_name from global_sid_id;
+
+DB_GLOBAL_NAME
+------------------------------------
+NEWTRUTH
+
+SQL&gt; commit;</pre>
+</eof></eof></eof></pre>
