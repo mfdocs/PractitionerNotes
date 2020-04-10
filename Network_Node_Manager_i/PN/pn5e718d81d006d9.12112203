@@ -48,28 +48,29 @@ To limit the impact of polling for CPU and Interface utilizations on all devices
 <br>
 <strong>Step 3 - Use Micro Focus provided scripts to retrieve the collected metrics from NNMi NPS and stream them to BVD</strong><br>
 As the title indicated, this article is mainly about streaming performance metrics from NNMi to BVD.&nbsp; Therefore this is the most important step.&nbsp;<br>
-Micro Focus provided 2 scripts, sqlgenerator.ovpl and streambvd.sh, to facilitate the use case implementation.&nbsp; The scripts are attached in the Appendix.&nbsp; With the scripts, customers do not need to write complex SQL queries. By just specifying the extension pack and the metrics of interest, the sqlgenerator.ovpl&nbsp;will generate the appropriate SQL query.</p>
+Micro Focus provided 2 scripts, <code>sqlgenerator.ovpl</code> and <code>streambvd.sh</code>, to facilitate the use case implementation.&nbsp; The scripts are attached in the Appendix.&nbsp; With the scripts, customers do not need to write complex SQL queries. By just specifying the extension pack and the metrics of interest, the <code>sqlgenerator.ovpl</code>&nbsp;will generate the appropriate SQL query.</p>
 
 <p>Follow the instructions below to implement your custom solution:</p>
 
 <ol>
-	<li>Run the command “about.ovpl” on the NPS server.&nbsp; The command lists all the extension packs installed on the NPS.&nbsp;<br>
+	<li>Run the command “<code>about.ovpl</code>” on the NPS server.&nbsp; The command lists all the extension packs installed on the NPS.&nbsp;<br>
 	Example:<br>
 	<img alt="" src="/mediawiki/images/pn_images/pn_image_5e8fb6265f51a9.50007573.png" style="height:156px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px"><br>
 	&nbsp;</li>
 	<li>Choose an extension pack which contains the performance metrics of interest.&nbsp; For example, if you are interested in interface utilization metrics, choose the “Interface_Health” extension pack.<br>
 	Run the script:<br>
-	sqlgenerator.ovpl –p –a colgen<br>
+	<code>sqlgenerator.ovpl –p <extension pack=""> –a colgen</extension></code><br>
 	Example:<br>
-	sqlgenerator.ovpl –p Interface_Health –a colgen<br>
-	The script extracts all the metrics from the extension pack and saves them in a text file _dataColumns.config, for example, Interface_Health_dataColumns.config.</li>
-	<li>Edit the _dataColumns.config&nbsp;file.&nbsp; Uncomment out the metrics of interest in the file then save the file.&nbsp;&nbsp; For example, if the metrics of interest are “Utilization (avg)”, “Utilization (max)” and “Utilization (min)”, remove the “#” from the beginning of the line, then save the file:<br>
+	<code>sqlgenerator.ovpl –p Interface_Health –a colgen</code><br>
+	The script extracts all the metrics from the extension pack and saves them in a text file <code><extension pack="">_dataColumns.config</extension></code>, for example, <code>Interface_Health_dataColumns.config</code>.</li>
+	<li>Edit the <code><extension pack="">_dataColumns.config</extension></code>&nbsp;file.&nbsp; Uncomment out the metrics of interest in the file then save the file.&nbsp;&nbsp; For example, if the metrics of interest are “<code>Utilization (avg)</code>”, “<code>Utilization (max)</code>” and “<code>Utilization (min)</code>”, remove the “#” from the beginning of the line, then save the file:<br>
+	<br>
 	<img alt="" src="/mediawiki/images/pn_images/pn_image_5e8fb62692d4d2.85588626.png" style="height:160px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:283px"></li>
 	<li>Run the script:<br>
-	sqlgenerator.ovpl –p –a sqlgen<br>
+	<code>sqlgenerator.ovpl –p <extension pack=""> –a sqlgen</extension></code><br>
 	Example:<br>
-	sqlgenerator.ovpl –p Interface_Health –a sqlgen<br>
-	In this step, the script will fetch all the metrics of interest specified in previous step, and generate a complex SQL query to retrieve the metrics from NPS server. &nbsp;The query will be saved in a text file with the name convention of _query.sql, for example:<br>
+	<code>sqlgenerator.ovpl –p Interface_Health –a sqlgen</code><br>
+	In this step, the script will fetch all the metrics of interest specified in previous step, and generate a complex SQL query to retrieve the metrics from NPS server. &nbsp;The query will be saved in a text file with the name convention of <code><extension pack="">_query.sql</extension></code>, for example:<br>
 	<img alt="" src="/mediawiki/images/pn_images/pn_image_5e8fb626c5d327.23055772.png" style="height:42px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px"></li>
 	<li>Run the script:<br>
 	streamtobvd.sh –s -k -f<br>
@@ -91,7 +92,7 @@ Micro Focus provided 2 scripts, sqlgenerator.ovpl and streambvd.sh, to facilitat
 	The VPN appliance widgets or router widgets on the left panel can be configured to link to a drill-down dashboard.<br>
 	<img alt="" src="/mediawiki/images/pn_images/pn_image_5e8fb7d26b5785.63299721.jpeg" style="height:281px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px">&nbsp; &nbsp; &nbsp;</li>
 	<li>The drill-down dashboard displays network performance metric data, such as interface and CPU utilization on VPN appliances and routers.&nbsp; This dashboard is of more interest to network engineers:<br>
-	<img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e8fb8f814cdd5.34663268.jpeg" style="border:0px solid black; height:285px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px" vspace="0"></li>
+	<img alt="" src="/mediawiki/images/pn_images/pn_image_5e8fb8f814cdd5.34663268.jpeg" style="height:285px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px"></li>
 </ol>
 
 <p>Notes:<br>
