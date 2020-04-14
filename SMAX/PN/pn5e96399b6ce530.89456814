@@ -1,6 +1,129 @@
-<html><p>Watch this space!</p>
+<html><h1>Ways of Working in SMAX</h1>
 
-<p>The Technical Success team is putting together guidelines for the best practices and ways of working within SMAX.&nbsp;</p>
+<p>&nbsp;</p>
 
-<p>We'll address many areas of the application, including high level concepts, individual processes, administration, configuration, and more.</p>
+<h2>Introduction</h2>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<h2>High Level Concepts</h2>
+
+<p>&nbsp;</p>
+
+<h3>Stay close to home</h3>
+
+<h4>…and out of the box</h4>
+
+<p>In order to get the most out of your SMAX implementation, Micro Focus recommends keeping as close to the provided out-of-the-box processes as possible. These have been created based on the industry standard ITIL process definitions as well as years of experience supporting customers with their IT business.</p>
+
+<p>SMAX contains numerous methods of configuring these processes to fix specific needs but be careful not to use these to change a process into something that it wasn’t meant to support. For example, you don’t want to modify the Request process to handle Incidents. There are specific workflows, rules, and supporting process around each of these that are specific to their needs. Trying to fit a square peg into a round hole by drastically changing these processes to fit other needs will not only make the overall system more complex and unmanageable but may also cause issues when trying to upgrade to new versions, take advantage of new functionality, or implement integrations to other products.</p>
+
+<p>This document will highlight some of the methods available to streamline your SMAX processes to fit your needs without changing the methodology behind the overall system.</p>
+
+<p>&nbsp;</p>
+
+<h3>Don’t create the next buggy whip</h3>
+
+<h4>…by trying to reimplement an old system inside of SMAX</h4>
+
+<p>One of the most common causes of issues in a SMAX implementation is the attempt to recreate the functionality of an older or different Service Management application. In most cases, SMAX has a different method of implementing behaviors than whichever older product is being replaced. It is important that the implementor understands the SMAX methods and methodology and does not try to recreate exactly what they had in their previous application.</p>
+
+<p>While it would be impossible to cover every application that SMAX could replace, there is a separate document that reviews several use cases for implementors that are coming from Service Manager. That document will be completed soon and will be linked here when it is available.</p>
+
+<p>&nbsp;</p>
+
+<h2>Processes</h2>
+
+<h3>Service Request vs. Incident</h3>
+
+<p>Using the Service Request and Incident applications correctly allows an IT organization to better serve their customers while gathering important information about how those customers are using the available IT services. This in turn allows IT to improve existing services as well as identifying the need for additional ones.</p>
+
+<p>For customers moving to SMAX from non-ITIL (or older versions of ITIL) based solutions, the difference between Service Request and Incident may not be readily apparent. However, the ITIL v3 framework makes the distinction clear:</p>
+
+<ul>
+	<li><em>The goal of Service Request Management is to ensure that the user can consume the service to their satisfaction.</em></li>
+	<li><em>The goal of Incident Management is to restore normal operation of a service as quickly as possible.</em></li>
+</ul>
+
+<p>To use the example of a restaurant, Service Request handles everything that the guests (the end users) interact with. The guests can order from the menu of what the restaurant provides (the Service Catalog) or talk to the wait staff (the Service Desk operators) if they need something they can’t find on the menu. Their order is represented by a Service Request in our scenario.</p>
+
+<p>However they order it, whatever the guest asks for makes its way to the kitchen where their order is prepared. In our example, this is where the chefs (the IT operators) provide the guests with their orders. They have a variety of equipment to cook with (servers, databases, etc.), but the guests don’t need to know the details about what they are using. In fact, they might change out the equipment at any time, and the guests wouldn’t even know about it.</p>
+
+<p>When something breaks in the kitchen, the Incident Management process comes into play. If one of the ovens is malfunctioning, an Incident would be opened (because the goal is to restore normal operation of the cooking service).</p>
+
+<p>Up front, one or more of the customers may have been affected by the problems in the back. Perhaps one of their steaks was overdone due to the oven cooking at too high of a temperature. When the customer complains, a Support Request would be opened. This Request would eventually be linked to the Incident related above and would be resolved automatically once the Incident was closed but is handled as a separate process. In this way the customer has the ability to verify their issue is actually solved, as well as allowing the process to have its own SLA targets.</p>
+
+<p>While this example might be a bit of a stretch, hopefully it gets the point across. A more detailed explanation of when to use Request or Incident (and how the two work together) can be found here:</p>
+
+<p>&lt;link&gt;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<h3>Do not reopen records</h3>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<h2>Administration</h2>
+
+<h2>&nbsp;</h2>
+
+<h3>Adding users</h3>
+
+<h1>&nbsp;</h1>
+
+<h2>Configuration</h2>
+
+<p>&nbsp;</p>
+
+<h3>Designing the Service Catalog</h3>
+
+<p>(Push users to use search)</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<h3>Workflows</h3>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<h3>Using forms</h3>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<h3>Approval Plans</h3>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<h3>Data Segmentation</h3>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<h2>Data Access</h2>
+
+<p>&nbsp;</p>
+
+<h3>REST APIs</h3>
+
+<p>&nbsp;</p>
+
+<h3>PG Views</h3>
+
+<p>&nbsp;</p>
+
+<h2>Integrations</h2>
 </html>
