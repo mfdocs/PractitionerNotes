@@ -38,7 +38,45 @@
 
 	<p><strong>Appendix </strong></p>
 
-	<p>Three java classes for this solution are included in this section in their entirety.</p>
+	<p>Three java classes for this solution are included in this section in their entirety.<br>
+	<br>
+	<code>NnmWSClient.java - the main class.</code></p>
+
+	<pre><code class="language-java">package com.hp.ov.nms.sdk.client;
+
+import java.util.Properties;
+import com.hp.ov.nms.sdk.incident.NmsIncidentFault_Exception;
+import com.hp.ov.nms.sdk.node.NmsNodeFault_Exception;
+import com.hp.ov.nms.sdk.nodegroup.NmsNodeGroupFault_Exception;
+
+public class NnmWSClient {
+	private String nodeGroup="Sunnyvale";
+		
+	public static void main(String[] args) {
+		System.out.println("Starting NnmSdkClient ...\n");
+		
+		try {
+			NnmWSClient nodeClient = new NnmWSClient();
+		} catch (NmsIncidentFault_Exception e) {
+			System.out.println(e.getMessage());
+		}  catch (NmsNodeGroupFault_Exception e) {
+			System.out.println(e.getMessage());
+		}  catch (NmsNodeFault_Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	public NnmWSClient() throws NmsIncidentFault_Exception, NmsNodeGroupFault_Exception, NmsNodeFault_Exception{
+		
+		DataPoster dataPoster = new DataPoster();
+		DataRetriever dataRetriever = new DataRetriever(nodeGroup, dataPoster); 
+		dataPoster.postData();		
+	}
+}
+</code></pre>
+
+	<p><code>DataRetriever.java</code><br>
+	&nbsp;</p>
 	</li>
 </ol>
 
