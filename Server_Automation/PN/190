@@ -1,4 +1,4 @@
-<p>A server script represents a code blob that runs on a managed server. This service is used for the registration and management of server scripts within folders. It also provides means to invoke scripts on servers.</p>
+<html><p>A server script represents a code blob that runs on a managed server. This service is used for the registration and management of server scripts within folders. It also provides means to invoke scripts on servers.</p>
 
 <p>&nbsp;</p>
 
@@ -196,13 +196,9 @@ adhoc script here</pre>
 
 <p>The reason it's a heavy is due to this structure being populated.</p>
 
-<p><img src="./mediawiki/images/PN/graphviz4138907836451724440.png"></p>
-
-<p>&nbsp;</p>
+<p><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e96254f573372.07452020.png" style="border:0px solid black; height:155px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:536px" vspace="0"></p>
 
 <p>The primary issue being the JobServerInfo. For large server jobs populating this array when all we require is the job status is what causes problems.</p>
-
-<p>&nbsp;</p>
 
 <p>You may think perhaps using&nbsp;<tt>getProgress()</tt>&nbsp;method would be lighter but it still has to populate the&nbsp;<tt>JobInfoVO</tt>&nbsp;and it too suffers the same performance issue.</p>
 
@@ -215,7 +211,7 @@ def waitForJobToFinish(job_ref):
       time.sleep(60)
 </pre>
 
-<p>An enhancement request OCTCR19L333539 to create a new API that only fetches the job status is in development. In future SA releases we will be able to code</p>
+<p>An enhancement request OCTCR19L333539 to create a new API that only fetches the job status has been&nbsp;developed. With rollup&nbsp;<a href="https://softwaresupport.softwaregrp.com/doc/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00299">2018.08.007</a>&nbsp;applied&nbsp;we can code</p>
 
 <pre>  def waitForJobToFinish(jobRef):
     status = JobService.getJobStatus(jobRef)
@@ -224,4 +220,5 @@ def waitForJobToFinish(job_ref):
         status = JobService.getJobStatus(jobRef)
 </pre>
 
-<p>Until this appears using the EventCacheService is the lightest call that can be made when polling for completion.</p>
+<p>Without this patch EventCacheService is the lightest call that can be made when polling for completion.</p>
+</html>
