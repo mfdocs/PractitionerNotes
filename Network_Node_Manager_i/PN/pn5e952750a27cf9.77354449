@@ -1,1 +1,46 @@
- 
+<html><p>Business Value Dashboards present your data in real time in a very flexible layout for visualizing on any browser capable device.&nbsp; Within Micro Focus Network Operations Management (NOM) suite, there are several out-of-the-box data sources, such as incidents from Network Node Manager (NNMi) and device configuration and vulnerability data from Network Automation (NA).&nbsp; These data sources can be streamed to BVD when integration is enabled.&nbsp;&nbsp; However, these built-in OOTB data sources are limited.&nbsp; Customers often need to create custom data channels to stream to BVD. &nbsp;This article will demonstrate how to use NNMi APIs to retrieve data of interest (e.g., incident data) and build a custom data channel with a concrete use case.<br>
+<strong>Use Case Description</strong>:&nbsp; The user wants to display NNMi incident statistics of a node group in a top-level BVD dashboard, and would like to drill down to another dashboard to see more details of the incidents.&nbsp; For example, the dashboard below is a network risk dashboard which displays NNMi incident statistics:<br>
+<br>
+<img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e952ce1c25dc4.42093689.jpeg" style="border:0px solid black; height:329px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:480px" vspace="0"></p>
+
+<p>The numbers in the circle in the 2<sup>nd</sup> column are the count of critical incidents of a node group. This data field is part of an OOTB data channel “&amp;lt;Node Group&amp;gt; - Incidents”. &nbsp;&nbsp;The user then wants to drill down to another dashboard to see more details of these critical incidents, such as what these incidents are, what the source nodes of the incidents are, and at what time they occurred, etc. There are no OOTB data channels from NNMi to stream these details to BVD server.</p>
+
+<p><strong>Use Case Solution:</strong> The use case was implemented in two steps:</p>
+
+<ol>
+	<li>Retrieve the incident data of interest from NNMi via NNMi WebService APIs,</li>
+	<li>Format the data in JSON messages and stream them to a BVD dashboard.</li>
+</ol>
+
+<p>The solution was implemented with 2 java classes, <code>DataRetriever.java</code> and <code>DataPoster.java</code>.&nbsp; Details are explained in the following sections.<br>
+<br>
+<strong>Step 1 – Retrieve the incident data of interest from NNMi via NNMi WebService API</strong><br>
+<code>DataRetriever.java</code> is created to retrieve incident date.&nbsp; The class interacts with three NNMi WebServices (NodeGroupService, NodeService and IncidentService) to retrieve incidents and filter those that are relevant to the node group.&nbsp; The important methods of the class are explained in detail below in the order of execution:</p>
+
+<ol>
+	<li><code>lookupService()</code>- NNMi offers 15 WebServices for different object types, such as Node, Interface, Incident, etc.&nbsp; We need 3 WebServices for this use case, NodeService, NodeGroupService, and IncidentService.&nbsp; This method connects to the NNMi WebService URL and look for these three services.&nbsp; Upon successful completion, it returns three service objects, NmsNode, NmsNodGroup and NmsIncident, respectively.</li>
+	<li><code>authenticateService()</code>- In this method, you provide a user account to be authenticated with each service.&nbsp; The user account must be an existing NNMi user account and it must be mapped to “NNMi Web Service Clients” group. &nbsp;In this example, we use “wsclient” user account in NNMi:<br>
+	<br>
+	<img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e952ce248c3a5.18931837.jpeg" style="border:0px solid black; height:225px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:240px" vspace="0"><br>
+	&nbsp;</li>
+	<li><code>buildNodeList()</code>- This method calls the NodeGroupService’s <code><u>getMemberId</u>()</code>to get the list of node IDs in a given node group.&nbsp; However, an incident only contains <code>SourceNodeName</code> in its VARBINDs.&nbsp; Therefore, we call Node Service to get the corresponding node name for each node ID. &nbsp;The node’s name is then added to a list which is used later to filter the incidents of interest. &nbsp;This method also demonstrates how to use a simple filter to retrieve a subset of objects from the service.&nbsp; In this example, we built a filter (“id” EQ &amp;lt;nodeID&amp;gt;) in the method <code>buildFilter()</code>, then use this filter to retrieve the corresponding node object.<br>
+	&nbsp;</li>
+	<li><code>getIncidents()</code>- This method retrieves the incidents from IncidentService by calling its <code>getIncidents(Filter)</code> method. But before calling the method, we need to build a filter because we only need to retrieve the incidents with “CRITICAL” severity, and those that were registered with NNMi within past 10 minutes.&nbsp; The method <code>buildFilter2()&nbsp;</code>builds such a filter with 3 conditions, (“severity” EQ “CRITICAL”), (incident’s time stamp &amp;lt; NOW), and (incident’s time stamp &amp;gt;&nbsp;NOW – 10 minutes).&nbsp; Each condition was built as a sub-filter, then the three sub-filters were combined into a compound filter with the operator AND.<br>
+	After we retrieved all the incidents using this compound filter, we compared each incident’s VARBIND “<code>SourceNodeName</code>” with the node list generated in step 3.&nbsp; If the list contained the source node, we added this incident to an incident list maintained by the <code>DataPoster.java</code>.&nbsp; &nbsp;<br>
+	<br>
+	<strong>Step 2 - Format Incident’s data in JSON messages and stream to BVD dashboard</strong>
+	<p><code>DataPoster.java</code> is created for this step. This class maintains an internal incident list which was populated by <code>DataRetriever.java</code> if an incident passed through the filter.&nbsp; Once all the incidents were processed, the <code>PostData()</code> method was invoked.&nbsp; It formatted all the incidents’ data in JSON messages and pushed these messages to BVD server.<br>
+	Once the method established a stream data channel with the BVD server, these incident data will be available in BVD Dashboard Configuration page.&nbsp; User can associate the data with a widget group in BVD, and create a table view dashboard like the example showing below:<br>
+	<img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e952ce738fa61.84947371.jpeg" style="border:0px solid black; height:217px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px" vspace="0"></p>
+
+	<p><strong>Summary</strong><br>
+	This article described the implementation of a solution which allows NOM customers to retrieve incident data via NNMi WebService APIs, build custom data channels and stream to a BVD dashboard. &nbsp;</p>
+
+	<p><strong>Appendix </strong></p>
+
+	<p>Three java classes for this solution are included in this section in their entirety.</p>
+	</li>
+</ol>
+
+<p>&nbsp;</p>
+</html>
