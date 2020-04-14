@@ -38,9 +38,9 @@
 
 	<p><strong>Appendix </strong></p>
 
-	<p>Three java classes for this solution are included in this section in their entirety.<br>
+	<p>Three java classes for this solution are included in this section in their entirety.&nbsp; Some variables that need to be replace with appropriate values were indicated in the comments.<br>
 	<br>
-	<code>NnmWSClient.java - the main class.</code></p>
+	<code>NnmWSClient.java</code></p>
 
 	<pre><code class="language-java">package com.hp.ov.nms.sdk.client;
 
@@ -75,8 +75,188 @@ public class NnmWSClient {
 }
 </code></pre>
 
-	<p><code>DataRetriever.java</code><br>
-	&nbsp;</p>
+	<p><br>
+	<code>DataRetriever.java</code></p>
+
+	<pre><code class="language-java">package com.hp.ov.nms.sdk.client;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
+import javax.xml.namespace.QName;
+import javax.xml.ws.BindingProvider;
+
+import com.hp.ov.nms.sdk.filter.BooleanOperator;
+import com.hp.ov.nms.sdk.filter.Condition;
+import com.hp.ov.nms.sdk.filter.Expression;
+import com.hp.ov.nms.sdk.filter.Filter;
+import com.hp.ov.nms.sdk.filter.Operator;
+import com.hp.ov.nms.sdk.incident.Incident;
+import com.hp.ov.nms.sdk.incident.IncidentArray;
+import com.hp.ov.nms.sdk.incident.NmsIncident;
+import com.hp.ov.nms.sdk.incident.NmsIncidentFault_Exception;
+import com.hp.ov.nms.sdk.node.NmsNode;
+import com.hp.ov.nms.sdk.node.NmsNodeFault_Exception;
+import com.hp.ov.nms.sdk.node.Node;
+import com.hp.ov.nms.sdk.node.NodeArray;
+import com.hp.ov.nms.sdk.nodegroup.NmsNodeGroup;
+import com.hp.ov.nms.sdk.nodegroup.NmsNodeGroupFault_Exception;
+import com.hp.ov.nms.sdk.nodegroup.NodeGroup;
+import com.hp.ov.nms.sdk.nodegroup.NodeGroupArray;
+
+import net.java.dev.jaxb.array.StringArray;
+
+public class DataRetriever {
+	
+	private String wsURL="http://&lt;NNMi FQDN&gt;:80/"; //replace with your NNMi FQDN
+	private String NAMESPACE=".sdk.nms.ov.hp.com/";
+	private NmsIncident incidentService=null;
+	private NmsNodeGroup ngService=null;
+	private NmsNode nodeService=null;
+	private List&lt;String&gt; nodeGroupMembers=null;
+	private Properties nodeIdName=null;
+	private DataPoster dataPoster=null;
+	private String username="&lt;my user&gt;";  //replace with your NNMi user account
+	private String password="&lt;my password&gt;";   //replace with your password
+	private String nodeGroup = null;
+	
+	public DataRetriever(String ng, DataPoster poster) throws NmsNodeGroupFault_Exception, NmsIncidentFault_Exception, NmsNodeFault_Exception {
+		dataPoster=poster;
+		nodeGroup=ng;
+		//We need to use 3 NNMi Web Services: NodeService, NodeGroupService and IncidentService
+		//So, we need to look up these 3 services
+		nodeService=lookupService("Node").getPort(NmsNode.class);
+		incidentService=lookupService("Incident").getPort(NmsIncident.class);
+		ngService=lookupService("NodeGroup").getPort(NmsNodeGroup.class);	
+		
+		//Now we provide NNMi user/password to authenticate
+		authenticateService("Node",(BindingProvider)nodeService);
+		authenticateService("Incident",(BindingProvider)incidentService);
+		authenticateService("NodeGroup",(BindingProvider)ngService);
+		
+		//now we build a list with node names
+		buildNodeList();
+		
+		//now we retrieve all the CRITICAL incidents registered 
+		//with NNMi within the past 10 minutes 
+		String severity = "CRITICAL";
+		List&lt;Incident&gt; incidents = getIncidents(severity);
+		//we only keep the incidents with SourceNode in the node group of interest
+		for (Incident  incident : incidents){
+			if (nodeGroupMembers.contains(incident.getSourceNodeName())) {
+				dataPoster.getIncidents().add(incident);
+			}
+		}
+	}
+	
+	private void buildNodeList() throws NmsNodeGroupFault_Exception, NmsNodeFault_Exception {
+		Filter ngFilter=buildFilter("name", nodeGroup);
+		NodeGroupArray ngArray = ngService.getNodeGroups(ngFilter);
+		NodeGroup ng = ngArray.getItem().get(0);
+		StringArray nodeIds = ngService.getMemberIds(ng.getId());
+		nodeGroupMembers = new ArrayList&lt;String&gt;();
+		for (String nodeId : nodeIds.getItem()){
+			nodeGroupMembers.add(getNodeName(nodeId));
+		}	
+	}
+
+	private javax.xml.ws.Service lookupService(String name) {
+        javax.xml.ws.Service service=null;
+        String serviceWsdl=null;
+        try {
+            serviceWsdl=getServiceName(name)+"?wsdl";
+            String namespace=getNamespace(name);
+            System.out.println("Namespace: " + namespace + "\n");
+            URL url = new URL(serviceWsdl);
+            QName qname = new QName(namespace,name+"BeanService");
+            service = javax.xml.ws.Service.create(url, qname);
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }
+        return service;
+    }
+	
+	private String getServiceName(String name) {
+        return wsURL+name+"BeanService/"+name+"Bean";
+    }
+	
+	private String getNamespace(String name) {
+        String serviceNameSpace=name.toLowerCase();
+        if(name.equals("Interface")) serviceNameSpace="iface";
+        return "http://"+serviceNameSpace+NAMESPACE;
+    }
+	
+	private void authenticateService(String serviceName, BindingProvider bindingProvider) {
+        String wsdlName=getServiceName(serviceName);
+        try {
+            Map&lt;String, Object&gt; reqContext = bindingProvider.getRequestContext();
+            reqContext.put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, wsdlName);
+            reqContext.put(BindingProvider.USERNAME_PROPERTY, username);
+            reqContext.put(BindingProvider.PASSWORD_PROPERTY, password);
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }
+    }
+	
+	private String getNodeName(String nodeId) throws NmsNodeFault_Exception {
+		Filter nodeFilter=buildFilter("id", nodeId);
+		NodeArray nodeArray=nodeService.getNodes(nodeFilter);
+		List&lt;Node&gt; nodeList= nodeArray.getItem();
+		return nodeList.get(0).getName();
+	}
+	
+	private List&lt;Incident&gt; getIncidents(String severity) throws NmsIncidentFault_Exception {
+		Expression incidentFilter=buildIFilter2("severity", severity);
+		IncidentArray incidentArray = incidentService.getIncidents(incidentFilter);
+		List&lt;Incident&gt; incidentList= incidentArray.getItem();
+		return incidentList;
+	}
+	
+	private Filter buildFilter(final String propertyName, final String propertyValue){
+        propertyName.trim();
+        propertyValue.trim();
+        Condition cond = new Condition();
+        cond.setName(propertyName);
+        cond.setOperator(Operator.EQ);
+        cond.setValue(propertyValue);
+        return cond;
+	}
+	
+	private Expression buildIFilter2(final String name, final String value) {
+        Condition condition1=new Condition();
+        condition1.setName(name);
+        condition1.setOperator(Operator.EQ);
+        condition1.setValue(value);
+        
+        Long now=Calendar.getInstance().getTimeInMillis();
+        Long then=now-(15*24*60*60*1000);//10 minutes (600,000 milliseconds) old
+        
+        Condition condition2 = new Condition();
+        condition2.setName("lastOccurrenceTime");
+        condition2.setOperator(Operator.LT);
+        condition2.setValue(now.toString());
+        
+        Condition condition3 = new Condition();
+        condition3.setName("lastOccurrenceTime");
+        condition3.setOperator(Operator.GT);
+        condition3.setValue(then.toString());
+       
+        Expression exp = new Expression();
+        exp.getSubFilters().add(condition1);
+        exp.getSubFilters().add(condition2);
+        exp.getSubFilters().add(condition3);
+        exp.setOperator(BooleanOperator.AND);
+        return exp;
+    }
+
+}
+</code></pre>
+
+	<p>&nbsp;</p>
 	</li>
 </ol>
 
