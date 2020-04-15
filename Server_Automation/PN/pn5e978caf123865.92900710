@@ -10,6 +10,8 @@
 
 <p>Migrate&nbsp;jobs from the core being removed to the another core.&nbsp; &nbsp;If you have lost the primary core and this process if being followed to promote a secondary core this step will not be possible as the ALL cores in the mesh must be operational for this to work.&nbsp; <u>Backup and ZDU applicable only.</u></p>
 
+<p>Migrate jobs off of facility 1 (-u1) and onto destination facility 2 (-d2)</p>
+
 <pre>[root@dc1 tools]# ./migrate_sessions.sh -f /var/log/way_jobs -u1 -d2</pre>
 
 <p>In this example primary core <u>ALPHA </u>has been lost&nbsp;and we will promote the <u>ZULU </u>core to be the primary.</p>
@@ -24,7 +26,7 @@ DATA_CENTER_ID | DATA_CENTER_NAME
 
 <p>If you have a multimaster mesh and the primary core is lost you need to promote a secondary core to take over this role.</p>
 
-<p>From an online secondary core, mark the primary core that has been offline. This lets the replication traffic know it does not need to go there:</p>
+<p>From an online secondary core&nbsp;mark the primary core as&nbsp;offline. This lets the replication traffic know it does not need to go there:</p>
 
 <pre>/opt/opsware/bin/python &lt;primary distro&gt;/opsware_installer/tools/core_updown.pyc --role spin --offline &lt;core1 facility id&gt;</pre>
 
