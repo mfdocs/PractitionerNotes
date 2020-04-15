@@ -71,7 +71,17 @@
 
 <h3>Do not reopen records</h3>
 
-<p>&nbsp;</p>
+<p>The SMAX flows have been designed to guide a process from beginning to end, but you will notice that there are no transitions to "reopen" a process after it has reached the final phase of the workflow. The final phase of any process should not be reached until it is clear that the process is completed. Some processes, like the Request process, even have a "User Acceptance" phase where the end user can confirm whether or not the issue has been taken care of to their satisfaction. Incidents are "Resolved" and then the solution is affirmed before the process is closed. There should not be any reason to reopen a process as they should not be "closed" until it is verified that the work is done completely.</p>
+
+<p>There are many sub-process related to the original process --&nbsp;such as Service Level Agreements, related records, alerts, notifications, and more -- that would be thrown off by starting the same process over again. Furthermore, reopening a process can camouflage the true nature of an issue. If an intermittent network issue causes loss of service for an application, but an Incident is simply reopened every time the issue appears, several problems are caused:</p>
+
+<ul>
+	<li>The multiple outage times cannot be tracked</li>
+	<li>The SLA is incorrectly tracked, since the application was not actually down the entire time</li>
+	<li>The Problem process may not be triggered (where finding multiple Incidents with the same description on the same service would do so)</li>
+</ul>
+
+<p>To minimize the chances of these problems occurring, the best practice in SMAX is to not restart or reopen processes after they have been marked as completed. An agent should always start a new process, linking the two processes as related if necessary.</p>
 
 <p>&nbsp;</p>
 
