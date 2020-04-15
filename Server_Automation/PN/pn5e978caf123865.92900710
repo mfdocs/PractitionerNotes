@@ -8,11 +8,11 @@
 
 <p>These notes are where created on an SA 10.60 system.</p>
 
-<p>Migration jobs from the in-active core to the this secondary core.&nbsp;<strong>This is not possible as the script requires a spin on the core to be operational.</strong></p>
+<p>Migrate&nbsp;jobs from the core being removed to the another core.&nbsp; &nbsp;If you have lost the primary core and this process if being followed to promote a secondary core this step will not be possible as the ALL cores in the mesh must be operational for this to work.&nbsp; <u>Backup and ZDU applicable only.</u></p>
 
 <pre>[root@dc1 tools]# ./migrate_sessions.sh -f /var/log/way_jobs -u1 -d2</pre>
 
-<p>In this example the primary core <u>ALPHA </u>has been lost&nbsp;and we will promote the <u>ZULU </u>core to be the primary.</p>
+<p>In this example primary core <u>ALPHA </u>has been lost&nbsp;and we will promote the <u>ZULU </u>core to be the primary.</p>
 
 <pre># sql "select data_center_id,data_center_name from data_centers where ontogeny='PROD'"
 
@@ -203,11 +203,8 @@ script: post</pre>
 total 12
 -r-------- 1 root root 2893 Mar 22 15:46 spin.p12
 -r-------- 1 root root 2893 Mar 22 15:46 spog.p12
--r-------- 1 root root 2885 Mar 22 15:46 wordbot.p12</pre>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;</p>
+-r-------- 1 root root 2885 Mar 22 15:46 wordbot.p12
+</pre>
 
 <h2>Multi core considerations</h2>
 
@@ -221,13 +218,12 @@ opswgw.ForwardTCP=20002:IXNAY-mm:&lt;ixnay-core-db-ip&gt;:1521</pre>
 
 <p>And the ZULU core /var/opt/oracle/tnsnames.ora file needs to be amended with</p>
 
-<pre>truth.ixnay=(DESCRIPTION=(ADDRESS=(HOST=&lt;zulu-ip-address&gt;)(PORT=20002)(PROTOCOL=tcp))(CONNECT_DATA=(SERVICE_NAME=truth)))</pre>
-
-<p>&nbsp;</p>
+<pre>truth.ixnay=(DESCRIPTION=(ADDRESS=(HOST=&lt;zulu-ip-address&gt;)(PORT=20002)(PROTOCOL=tcp))(CONNECT_DATA=(SERVICE_NAME=truth)))
+</pre>
 
 <h1>Troubleshooting</h1>
 
-<p>The multimaster state diagram does not work and show this error</p>
+<p>The multimaster state diagram does not work and shows this error</p>
 
 <pre>Caused by: com.opsware.common.ProxySystemException: ID:   HPSA-019
 Code:   com.opsware.common.MessageSpec.PROXY_EXCEPTION
@@ -267,8 +263,6 @@ Details:   An internal exception of type java.net.NoRouteToHostException with me
 	<p>ref: TwistConfig.java#initMMSpin</p>
 	</li>
 </ul>
-
-<p>&nbsp;</p>
 
 <pre>&gt;&gt;&gt; spin.multimaster.getCentralSpinURL()
 'https://192.168.4.98:1004/'</pre>
