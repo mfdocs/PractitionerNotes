@@ -1,2 +1,275 @@
-<html><p>&lt;this&gt; is a test to see &lt;if&gt; the html escaping problem has been fixed.</p>
+<html><p>There are a couple reasons that a secondary code needs to be promoted to a secondary core</p>
+
+<ul>
+	<li>As part of the ZDU (Zero Downtime Upgrade) process</li>
+	<li>The primary core was lost</li>
+	<li>Making a full backup of the mesh for testing purposes.</li>
+</ul>
+
+<p>These notes are where created on an SA 10.60 system.</p>
+
+<p>Migration jobs from the in-active core to the this secondary core.&nbsp;<strong>This is not possible as the script requires a spin on the core to be operational.</strong></p>
+
+<pre>[root@dc1 tools]# ./migrate_sessions.sh -f /var/log/way_jobs -u1 -d2</pre>
+
+<p>In this example the primary core <u>ALPHA </u>has been lost&nbsp;and we will promote the <u>ZULU </u>core to be the primary.</p>
+
+<pre># sql "select data_center_id,data_center_name from data_centers where ontogeny='PROD'"
+
+Query #1 on Facility_id 2 (zulu):
+DATA_CENTER_ID | DATA_CENTER_NAME
+---------------------------------
+1              | alpha
+2              | zulu</pre>
+
+<p>If you have a multimaster mesh and the primary core is lost you need to promote a secondary core to take over this role.</p>
+
+<p>From an online secondary core, mark the primary core that has been offline. This lets the replication traffic know it does not need to go there:</p>
+
+<pre>/opt/opsware/bin/python &lt;primary distro&gt;/opsware_installer/tools/core_updown.pyc --role spin --offline &lt;core1 facility id&gt;</pre>
+
+<p>Execution:</p>
+
+<pre>[root@dc1 tools]# /opt/opsware/bin/python core_updown.pyc --role spin --offline 1
+Core ID         Peer IDs Known To Core
+-------         --------------------------------
+2               2</pre>
+
+<p>Verification it has been taken offline</p>
+
+<pre>[root@dc1 tools]# sql "select data_center_id,data_center_name,status from data_centers where ontogeny='PROD'"
+
+Query #1 on Facility_id 2 (zulu):
+DATA_CENTER_ID | DATA_CENTER_NAME | STATUS
+--------------------------------------------
+1              | alpha            | INACTIVE
+2              | zulu             | ACTIVE</pre>
+
+<p>On the Secondary core that you need to make MM-Central, run this: /opt/opsware/bin/python2 manage_spin_mm_central.pyc --attach --force</p>
+
+<pre>.../T8900-15067-GA/T8900-15067-primary/disk001/opsware_installer/tools/manage_spin_mm_central.pyc</pre>
+
+<p>This will 'promote' the box where you run the script to be MM-central spin, and 'demote' what used to be mm-central spin to regular spin.</p>
+
+<p>This secondary core is now the MM Central</p>
+
+<pre>[root@dc1 tools]# /opt/opsware/bin/python manage_spin_mm_central.pyc --attach --force
+detaching the following devices from the Spin node: [6620002L]
+attaching the following devices to MM Central Spin node: [6620002L]
+detaching the following devices from MM-central Spin node: [10001L]
+attaching the following devices to Spin node: [10001L]</pre>
+
+<p>On each slice in your Secondary cores edit the Core Gateway (cgw) properties file located in /etc/opt/opsware-cgws1-&lt;Datacenter Name&gt;/opswgw.properties. You will see a line like this:</p>
+
+<pre>opswgw.ForceRouteService=mmspin:1004:ALPHA-mm</pre>
+
+<p>It needs to be changed to the DC of the Secondary core has been been promoted</p>
+
+<pre>opswgw.ForceRouteService=mmspin:1004:ZULU-mm</pre>
+
+<p>Restart the core gateway on each installed slice after modifying the opswgw.properties file.</p>
+
+<pre>/etc/init.d/opsware-sas restart opswgw-cgws</pre>
+
+<p>Adjust egress rules for the MGW on the promoted Secondary core. Currently they will be allowing ALPHA (our lost primary core)</p>
+
+<pre># Tibco
+opswgw.EgressFilter=tcp:192.168.4.98:7501:MM:ALPHA-mm
+
+# mm central spin
+opswgw.EgressFilter=tcp:*:1521:MMSPIN:ALPHA-mm
+opswgw.EgressFilter=tcp:mmspin:1004:SPIN:
+opswgw.EgressFilter=tcp:mmspin:1004:SPIN:ALPHA-mm
+opswgw.EgressFilter=tcp:spin:1004:SPIN:
+opswgw.EgressFilter=tcp:spin:1004:SPIN:ALPHA-mm
+opswgw.EgressFilter=tcp:Vault:OMB:*:*</pre>
+
+<p>This needs to look like this to allow the new ZULU core to accept connections from others in the mesh</p>
+
+<pre># Tibco
+opswgw.EgressFilter=tcp:192.168.4.98:7501:MM:ZULU-mm
+
+# mm central spin
+opswgw.EgressFilter=tcp:*:1521:MMSPIN:ZULU-mm
+opswgw.EgressFilter=tcp:mmspin:1004:SPIN:
+opswgw.EgressFilter=tcp:mmspin:1004:SPIN:ZULU-mm
+opswgw.EgressFilter=tcp:spin:1004:SPIN:
+opswgw.EgressFilter=tcp:spin:1004:SPIN:ZULU-mm
+opswgw.EgressFilter=tcp:Vault:OMB:*:*</pre>
+
+<p>Remove all entries in the opswgw.custom file so that the Secondary core does not try to connect back to the dead core.</p>
+
+<pre>### Customized Configuration Values for opswgw-mgw-ZULU
+opswgw.TunnelSrc=192.168.4.130:2001:5:0:/var/opt/opsware/crypto/opswgw-mgw-ZULU/opswgw.p12</pre>
+
+<p>After</p>
+
+<pre>### Customized Configuration Values for opswgw-mgw-ZULU</pre>
+
+<p>Restart the mgw gateway on each secondary core after modifying its opswgw.properties/opswgw.custom file.</p>
+
+<pre>/etc/init.d/opsware-sas restart opswgw-cgws</pre>
+
+<p>Promote the secondary core's Twist to be a master - touch this file on all slices of the promoted secondary core.</p>
+
+<pre>touch /var/opt/opsware/crypto/twist/masterTwist
+chown twist /var/opt/opsware/crypto/twist/masterTwist</pre>
+
+<p>Restart the Twist make it a master and to re-initialize the MMSPIN context that it maintains to build the GUI State Diagram page.</p>
+
+<pre>/etc/init.d/opsware-sas restart twist</pre>
+
+<p>Update CDF and INV file to indicate we are primary</p>
+
+<pre>vi /var/opt/opsware/install_opsware/inv/install.inv 
+%truth_mm_slave </pre>
+
+<p>Should be changed to:</p>
+
+<pre>%truth_mm_overlay</pre>
+
+<p>CDF file change:</p>
+
+<pre>vi /var/opt/opsware/install_opsware/cdf/cdf.xml
+&lt;PublicProperty name="install_type" ttl="3600" dc="2018-04-18T17:08:38Z" encoding="str"&gt;slices_slave_custom&lt;/PublicProperty&gt;</pre>
+
+<p>Should be changed to:</p>
+
+<pre>&lt;PublicProperty name="install_type" ttl="3600" dc="2018-04-18T17:08:38Z" encoding="str"&gt;slices_master_custom&lt;/PublicProperty&gt;</pre>
+
+<p>We need to create the word_uploads directory along with the missing crypto:</p>
+
+<pre>.../SAS_10.60-70.0.74585.0/T8900-15067-GA/T8900-15067-primary/disk001/opsware_installer/hpsa_install.sh -c /var/opt/opsware/install_opsware/cdf/cdf.xml</pre>
+
+<p>As you can see its missing and the primary core normally has this installed as it uploaded all the Word content being the 1st core.</p>
+
+<pre>Install components
+==================
+
+Components to be Installed
+-------------------------
+Software Repository - Content (install once per mesh)
+
+
+Up-to-date Components (will not install)
+----------------------------------------
+Oracle RDBMS for SAS
+Model Repository, First Core
+Multimaster Infrastructure Components
+Software Repository Storage
+Slice
+OS Provisioning Media Server
+OS Provisioning Boot Server, Slice version
+
+Enter one of the following directives
+(&lt;c&gt;ontinue, &lt;p&gt;revious, &lt;h&gt;elp, &lt;q&gt;uit): c</pre>
+
+<p>You don't need to to the actually upload just the get to this part as that means the component has been installed.</p>
+
+<pre>[Mar-22-2019 15:46:07] &gt;&gt;&gt;&gt;Installing component Software Repository - Content (install once per mesh)
+....^CWARNING: an error was detected while running an external
+command or script.  The output follows:
+Traceback (most recent call last):
+  File "./tools/get_platform.py", line 21, in &lt;module&gt;
+  File "./spinwrapper.py", line 7, in &lt;module&gt;
+
+[Mar-22-2019 15:46:30] Component installation script encountered an error (exit status 999)
+[Mar-22-2019 15:46:30] Exiting Opsware Installer.
+
+For more details, please see the following file:
+/var/log/opsware/install_opsware/192.168.4.98-install-word_uploads-2019-03-22.15:45:51.verbose.log
+
+Local log file: /var/tmp/HPSA_INSTALLER/logfiles/install_word_uploads_error/192.168.4.98-install-word_uploads-2019-03-22.15:45:51.verbose.log
+*********************************
+Install of word_uploads failed on 192.168.4.98</pre>
+
+<p>Then modify the install.inv</p>
+
+<pre>%word_uploads
+build_id: opsware_70.0.74585.0
+state:  incomplete</pre>
+
+<p>To mark it as installed:</p>
+
+<pre>%word_uploads
+build_id: opsware_70.0.74585.0
+state:  complete
+script: pre
+script: post</pre>
+
+<p>This has now created and populate this directory with crypto:</p>
+
+<pre>[root@dc1 word_uploads]# ls -l /var/opt/opsware/crypto/word_uploads/
+total 12
+-r-------- 1 root root 2893 Mar 22 15:46 spin.p12
+-r-------- 1 root root 2893 Mar 22 15:46 spog.p12
+-r-------- 1 root root 2885 Mar 22 15:46 wordbot.p12</pre>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<h2>Multi core considerations</h2>
+
+<p>If this was more than a two core mesh, database tunnels for the MMSPIN will need to be setup. In this example there is a 3rd core called IXNAY which our newly promoted ZULU core must communicate with.</p>
+
+<p>/etc/opt/opsware/opswgw-mgw-ZULU/opswgw.custom</p>
+
+<pre>### Customized Configuration Values for opswgw-mgw-ZULU
+opswgw.crypto.Cipher=AES
+opswgw.ForwardTCP=20002:IXNAY-mm:&lt;ixnay-core-db-ip&gt;:1521</pre>
+
+<p>And the ZULU core /var/opt/oracle/tnsnames.ora file needs to be amended with</p>
+
+<pre>truth.ixnay=(DESCRIPTION=(ADDRESS=(HOST=&lt;zulu-ip-address&gt;)(PORT=20002)(PROTOCOL=tcp))(CONNECT_DATA=(SERVICE_NAME=truth)))</pre>
+
+<p>&nbsp;</p>
+
+<h1>Troubleshooting</h1>
+
+<p>The multimaster state diagram does not work and show this error</p>
+
+<pre>Caused by: com.opsware.common.ProxySystemException: ID:   HPSA-019
+Code:   com.opsware.common.MessageSpec.PROXY_EXCEPTION
+Details:   An internal exception of type java.net.NoRouteToHostException with message No route to host (Host unreachable) was caught.</pre>
+
+<p>Full stack trace taken from ngui logs (not shown on the screen).</p>
+
+<pre>        at java.net.PlainSocketImpl.socketConnect(Native Method)
+        at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+        at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+        at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+        at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+        at java.net.Socket.connect(Socket.java:589)
+        at java.net.Socket.connect(Socket.java:538)
+        at java.net.Socket.&lt;init&gt;(Socket.java:434)
+        at java.net.Socket.&lt;init&gt;(Socket.java:244)
+        at HTTPClient.HTTPConnection.getSocket(HTTPConnection.java:3247)
+        at HTTPClient.HTTPConnection.sendRequest(HTTPConnection.java:3002)
+        at HTTPClient.HTTPConnection.handleRequest(HTTPConnection.java:2838)
+        at HTTPClient.HTTPConnection.setupRequest(HTTPConnection.java:2630)
+        at HTTPClient.HTTPConnection.ExtensionMethod(HTTPConnection.java:1426)
+        at HTTPClient.HttpURLConnection.connect(HttpURLConnection.java:806)
+        at HTTPClient.HttpURLConnection.getOutputStream(HttpURLConnection.java:628)
+        at com.loudcloud.spinclient.xmlrpc.MethodCall.executeInner(MethodCall.java:396)
+        at com.loudcloud.spinclient.xmlrpc.MethodCall.execute(MethodCall.java:341)
+        at com.loudcloud.spinclient.spin.Spin$SpinMethodCall.execute(Spin.java:1720)
+        at com.loudcloud.spinclient.spin.Spin.apply(Spin.java:1365)
+        at com.opsware.twist.TwistSpin.apply(TwistSpin.java:48)
+        at com.opsware.admin.impl.SystemAdminServiceIntImpl.getMMState(SystemAdminServiceIntImpl.java:488)
+        at com.opsware.admin.internal.SystemAdminServiceIntBean.getMMState(SystemAdminServiceIntBean.java:42)
+        at com.opsware._gen.sejb.admin.internal._SystemAdminServiceIntBean._opsw__getMMState(_SystemAdminServiceIntBean.java:131)</pre>
+
+<p>The twist initializes the MMSPIN once on startup based on the result of this call. If this changes the Twist must be restarted.</p>
+
+<ul>
+	<li>
+	<p>ref: TwistConfig.java#initMMSpin</p>
+	</li>
+</ul>
+
+<p>&nbsp;</p>
+
+<pre>&gt;&gt;&gt; spin.multimaster.getCentralSpinURL()
+'https://192.168.4.98:1004/'</pre>
 </html>
