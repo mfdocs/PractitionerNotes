@@ -191,29 +191,29 @@ Enter value for 2: opsware</pre>
 <p><strong>​​​​​​This takes a while go get a coffee</strong></p>
 </blockquote>
 
-<p>Configure database to startup on machine startup</p>
+<p>Configure database to startup on machine startup.&nbsp; Assuming an init.d base system&nbsp;for systemd you may need different scripts.</p>
 
 <p>/etc/oratab</p>
 
-<pre>truth:/u01/app/o<strong>rac</strong>le/product/12.1.0/dbhome_1:Y</pre>
+<pre>truth:/u01/app/oracle/product/12.1.0/dbhome_1:Y</pre>
 
 <p>/etc/init.d/opsware-oracle</p>
 
 <pre>#
 # chkconfig: 235 60 20
-# description: O<strong>rac</strong>le12c 12.1.0.2
+# description: Oracle12c 12.1.0.2
 #
 ### BEGIN INIT INFO
-# Provides: opsware-o<strong>rac</strong>le
+# Provides: opsware-oracle
 # Required-Start: $network
 # Required-Stop: $network
 # Default-Start: 2 3 5
 # Default-Stop: 0 1 4 6
-# Description: O<strong>rac</strong>le Database startup script
+# Description: Oracle Database startup script
 ### END INIT INFO
 LOCKFILEPATH=/var/lock/subsys
-LOCKFILE=o<strong>rac</strong>le
-O<strong>RAC</strong>LE_HOME=/u01/app/o<strong>rac</strong>le/product/12.1.0/dbhome_1
+LOCKFILE=oracle
+ORACLE_HOME=/u01/app/oracle/product/12.1.0/dbhome_1
 LOG=/var/log/ora_initd_startup.log
 
 # For SELinux support we need to use runuser
@@ -226,10 +226,10 @@ fi
 start(){
         echo "$0: starting up..." &gt;&gt; $LOG
         date &gt;&gt; $LOG
-        echo -n $"Starting O<strong>rac</strong>le Database: "
+        echo -n $"Starting Oracle Database: "
                                                                                               
         # The listener starts as part of dbstart
-        $SWITCH_USER_CMD - o<strong>rac</strong>le -c "env O<strong>RAC</strong>LE_HOME=$O<strong>RAC</strong>LE_HOME $O<strong>RAC</strong>LE_HOME/bin/dbstart $O<strong>RAC</strong>LE_HOME"
+        $SWITCH_USER_CMD - oracle -c "env ORACLE_HOME=$ORACLE_HOME $ORACLE_HOME/bin/dbstart $ORACLE_HOME"
 
         # This is specific to Linux OS
         if [[ ! -d "${LOCKFILEPATH}" ]]; then
@@ -239,14 +239,14 @@ start(){
 
 echo "$0: starting up complete..." &gt;&gt; $LOG
 date &gt;&gt; $LOG
-echo "Starting O<strong>rac</strong>le Database complete "
+echo "Starting Oracle Database complete "
 }
 stop(){
         echo "$0: shutting down" &gt;&gt; $LOG
         date &gt;&gt; $LOG
-        echo -n $"Stopping O<strong>rac</strong>le Database: "
+        echo -n $"Stopping Oracle Database: "
                                                                                               
-        $SWITCH_USER_CMD - o<strong>rac</strong>le -c "env O<strong>RAC</strong>LE_HOME=$O<strong>RAC</strong>LE_HOME $O<strong>RAC</strong>LE_HOME/bin/dbshut $O<strong>RAC</strong>LE_HOME"
+        $SWITCH_USER_CMD - oracle -c "env ORACLE_HOME=$ORACLE_HOME $ORACLE_HOME/bin/dbshut $ORACLE_HOME"
 
         # This is specific to Linux
         if [ -f $LOCKFILEPATH/$LOCKFILE ]; then
@@ -255,7 +255,7 @@ stop(){
 
        echo "$0: shutdown complete..." &gt;&gt; $LOG
        date &gt;&gt; $LOG
-       echo "Shutting O<strong>rac</strong>le Database complete "
+       echo "Shutting Oracle Database complete "
 }
 restart(){
    stop
@@ -273,9 +273,9 @@ case "$1" in
    ;;
 'status')
         if [ -f $LOCKFILEPATH/$LOCKFILE ]; then
-                echo "O<strong>rac</strong>le Database instance running"
+                echo "Oracle Database instance running"
         else
-                echo "O<strong>rac</strong>le Database instance not running"
+                echo "Oracle Database instance not running"
         fi
    ;;
                                                                                               
@@ -287,13 +287,13 @@ esac</pre>
 
 <p>One the startup script is in place install it</p>
 
-<pre># chkconfig opsware-o<strong>rac</strong>le reset </pre>
+<pre># chkconfig opsware-oracle reset </pre>
 
 <p>You'll need to uncomment the .bashrc lines relating to setting up the DB</p>
 
-<pre>export O<strong>RAC</strong>LE_SID=truth
+<pre>export ORACLE_SID=truth
 ORAENV_ASK=NO . /usr/local/bin/oraenv
-export O<strong>RAC</strong>LE_HOME_LISTNER=$O<strong>RAC</strong>LE_HOME</pre>
+export ORACLE_HOME_LISTENER=$ORACLE_HOME</pre>
 
 <p>Configure listener $ORACLE_HOME/network/admin/listener.ora</p>
 
@@ -306,15 +306,15 @@ SID_LIST_LISTENER=
   (SID_LIST=
     (SID_DESC=
        (SID_NAME=truth)
-       (O<strong>RAC</strong>LE_HOME=/u01/app/o<strong>rac</strong>le/product/12.1.0/dbhome_1)
+       (ORACLE_HOME=/u01/app/oracle/product/12.1.0/dbhome_1)
     )
   )
-LOG_DIRECTORY_LISTENER=/u01/app/o<strong>rac</strong>le/product/12.1.0/dbhome_1/network/log
+LOG_DIRECTORY_LISTENER=/u01/app/oracle/product/12.1.0/dbhome_1/network/log
 LOG_FILE_LISTENER=listener.log
-T<strong>RAC</strong>E_DIRECTORY_LISTENER=/u01/app/o<strong>rac</strong>le/product/12.1.0/dbhome_1/network/t<strong>rac</strong>e
+T<strong>RAC</strong>E_DIRECTORY_LISTENER=/u01/app/oracle/product/12.1.0/dbhome_1/network/t<strong>rac</strong>e
 T<strong>RAC</strong>E_FILE_LISTENER=listener.trc
 INBOUND_CONNECT_TIMEOUT_LISTENER=120
-# subscribe_for_node_down_event entry should be removed for <strong>RAC</strong> env.
+# subscribe_for_node_down_event entry should be removed for RAC<strong> </strong>env.
 SUBSCRIBE_FOR_NODE_DOWN_EVENT_LISTENER=OFF
 #LOCAL_OS_AUTHENTICATION_LISTENER=OFF
 #----ADDED BY TNSLSNR 04-OCT-2005 23:06:20---
@@ -328,10 +328,10 @@ PASSWORDS_LISTENER = CEE9A6452943F605
 <p>sqlnet.ora</p>
 
 <pre>-bash-4.2$ more sqlnet.ora
-LOG_DIRECTORY_SERVER=/u01/app/o<strong>rac</strong>le/product/12.1.0/dbhome_1/network/log
+LOG_DIRECTORY_SERVER=/u01/app/oracle/product/12.1.0/dbhome_1/network/log
 LOG_FILE_SERVER=sqlnet.log
-T<strong>RAC</strong>E_DIRECTORY_SERVER=/u01/app/o<strong>rac</strong>le/product/12.1.0/dbhome_1/network/t<strong>rac</strong>e
-T<strong>RAC</strong>E_FILE_SERVER=sqlnet.trc
+TRACE_DIRECTORY_SERVER=/u01/app/oracle/product/12.1.0/dbhome_1/network/trace
+TRACE_FILE_SERVER=sqlnet.trc
 NAMES.DIRECTORY_PATH= (TNSNAMES)
 SQLNET.INBOUND_CONNECT_TIMEOUT=180
 </pre>
