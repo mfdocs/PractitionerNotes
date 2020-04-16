@@ -1,9 +1,8 @@
 <html><p><strong>Issue</strong>: Multiple causes can lead to a condition where the job has ended in a failed status on the core while the agent continues to process the job list.</p>
 
-<p>&nbsp;</p>
+<p><strong>Reason:&nbsp;</strong>Unacceptable that an&nbsp;Agent continues to process the job list while core states the job&nbsp;failed and items were skipped. This is a mis-representation of what is actually occurring.</p>
 
-<p><strong>Reason:&nbsp;</strong>Unacceptable that an&nbsp;Agent continues to process job list while core states job it failed and items were skipped. This is a mis-representation of what is actually occurring.</p>
-
+<hr>
 <p>It is key to realize that one of the most important asks is that the user knows what is really happening on the managed server. The core setting the job as FAILED after a timeout, stopping to update the job output, but in the same time having the agent do work on the managed server is a LIE we are telling the user.</p>
 
 <p>However some customers like to be lied to by their automation tool. They really don’t care that a server is either locked up, or is still working on the job assigned to them above and beyond the timeout imposed. They want to see FAILURE in the job log they want to be LIED to by the automation product even though the agent is still working on it, or the server has issues processing the working assigned to it.<br>
@@ -24,13 +23,13 @@ This is how it was in pre SA 10.23 releases.</p>
 
 <p>A value of 0 means not wait at all. This is the old behavior. This means that once the MAXIMUM timeout for the command occurs, the job will immediately be allowed to continue.</p>
 
-<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"># sa_config_checkfix -k way.command_shutdown_grace_period -v 0&nbsp;--set</div>
+<div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px"># sa_config_checkfix -k way.command_shutdown_grace_period -v 0&nbsp;--set</div>
 
 <p>However you must understand its implications and take responsibility for future failures running the same job and not blame SA when it was trying to tell you there was an issue and you didn't deal with it.</p>
 
 <p>A value of -1 is the same as "wait forever" or infinite. <strong>This is the default behavior.</strong></p>
 
-<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"># sa_config_checkfix -k way.command_shutdown_grace_period -v -1&nbsp;--set</div>
+<div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px"># sa_config_checkfix -k way.command_shutdown_grace_period -v -1&nbsp;--set</div>
 
 <p>This means that once the MAXIMUM timeout for the command occurs, the way will continue to wait forever for the command to complete.</p>
 
@@ -38,7 +37,7 @@ This is how it was in pre SA 10.23 releases.</p>
 
 <p>The 'compromise' between these two is any positive value. For example, a value of 900 would mean "after a MAXIMUM timeout occurs, lets continue to wait another 900 seconds for the command to complete, before we allow the job to continue."</p>
 
-<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"># sa_config_checkfix -k way.command_shutdown_grace_period -v 900&nbsp;--set</div>
+<div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px"># sa_config_checkfix -k way.command_shutdown_grace_period -v 900&nbsp;--set</div>
 
 <p>For example, say there is a command that has a maximum timeout of of 30 minutes, but it ends up taking 40 minutes to complete. A grace setting of 900 would mean that the job would be allowed to continue after the 40 minutes. If the command had ended up taking 50 minutes to complete, then we will allow the job to continue after 45 minutes (30m MAXIMUM timeout + 15m grace).</p>
 
