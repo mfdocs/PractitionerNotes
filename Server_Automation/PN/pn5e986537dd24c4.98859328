@@ -31,9 +31,9 @@ This is how it was in pre SA 10.23 releases.</p>
 
 <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px"># sa_config_checkfix -k way.command_shutdown_grace_period -v -1&nbsp;--set</div>
 
-<p>This means that once the MAXIMUM timeout for the command occurs, the way will continue to wait forever for the command to complete.</p>
+<p>This means that once the MAXIMUM timeout for the command occurs, the <u>Way</u>&nbsp;(Command Engine)&nbsp;will continue to wait forever for the command to complete.</p>
 
-<p>A useful side-point here is, how does the waybot know that the agent is "still working" on the command? It knows this if it continues to receive monitor pings from the agent. If these monitor pings stop coming into the waybot, then this will trigger a MONITOR timeout, and the job will be allowed to continue. This could happen if the agent was restarted by an administrator in the middle of a long running command, for example.</p>
+<p>A useful side-point here is, how does the <u>Way</u> know that the agent is "still working" on the command? It knows this if it continues to receive monitor pings from the agent. If these monitor pings stop coming into the <u>Way</u>, then this will trigger a MONITOR timeout, and the job will be allowed to continue. This could happen if the agent was restarted by an administrator in the middle of a long running command, for example.</p>
 
 <p>The 'compromise' between these two is any positive value. For example, a value of 900 would mean "after a MAXIMUM timeout occurs, lets continue to wait another 900 seconds for the command to complete, before we allow the job to continue."</p>
 
