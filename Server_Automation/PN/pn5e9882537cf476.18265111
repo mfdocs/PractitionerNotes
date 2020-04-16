@@ -6,7 +6,7 @@
 
 <p>I used the following kickstart file to configure CentOS 7.4 ready for an Oracle installation.</p>
 
-<pre># Minimal Configuration for Centos7 for installing O<strong>rac</strong>le 12
+<pre># Minimal Configuration for Centos7 for installing Oracle 12
 
 authconfig --enableshadow --enablemd5
 bootloader --location=mbr
@@ -36,7 +36,7 @@ selinux --disabled
 
 %packages
 @Base
-# O<strong>rac</strong>le pre-requisite packages
+# Oracle pre-requisite packages
 # https://docs.o<strong>rac</strong>le.com/database/121/LTDQI/toc.htm#BABGGEBA
 binutils 
 compat-libcap1
@@ -65,7 +65,7 @@ screen
 %post --log=/root/ks-post.log
 
 cat &gt;&gt; /etc/sysctl.conf &lt;&lt;EOF
-#O<strong>rac</strong>le parameters begin
+#Oracle parameters begin
 kernel.shmmax=4101414912
 kernel.shmall=2097152
 kernel.shmmni=4096
@@ -77,17 +77,17 @@ net.core.wmem_max=1048576
 fs.file-max=6815744
 fs.aio-max-nr=1048576
 net.ipv4.ip_local_port_range=9081 65000
-#O<strong>rac</strong>le parameters end
+#Oracle parameters end
 EOF
 
 cat &gt;&gt; /etc/security/limits.conf &lt;&lt;EOF
-#Opsware O<strong>rac</strong>le parameters begin
+#Opsware Oracle parameters begin
 o<strong>rac</strong>le soft nofile 4096
 o<strong>rac</strong>le hard nofile 65536
 o<strong>rac</strong>le soft nproc 2047
 o<strong>rac</strong>le hard nproc 16384
 session required /lib/security/pam_limits.so  
-#Opsware O<strong>rac</strong>le parameters end
+#Opsware Oracle parameters end
 EOF
 
 systemctl enable nfs
@@ -97,33 +97,17 @@ systemctl start autofs
 
 /usr/sbin/groupadd oinstall
 /usr/sbin/groupadd dba
-/usr/sbin/useradd -g oinstall -G dba o<strong>rac</strong>le
+/usr/sbin/useradd -g oinstall -G dba oracle
 
-mkdir -p /u01/app/o<strong>rac</strong>le/admin/truth/scripts
+mkdir -p /u01/app/oracle/admin/truth/scripts
 mkdir -p /u02/oradata/truth /u03/oradata/truth /u04/oradata/truth
 chown -R o<strong>rac</strong>le:oinstall /u01/app /u02/oradata /u03/oradata /u04/oradata
 
-cat &gt;&gt; /home/o<strong>rac</strong>le/.bashrc &lt;&lt;EOF
-# Uncomment to setup O<strong>RAC</strong>LE_HOME on login
-#export O<strong>RAC</strong>LE_SID=truth
+cat &gt;&gt; /home/oracle/.bashrc &lt;&lt;EOF
+# Uncomment to setup ORACLE_HOME on login
+#export ORACLE_SID=truth
 #ORAENV_ASK=NO . /usr/local/bin/oraenv
-#export O<strong>RAC</strong>LE_HOME_LISTNER=$O<strong>RAC</strong>LE_HOME
-EOF
-
-cat &gt;&gt; /root/.screenrc &lt;&lt;EOF
-startup_message off
-vbell on
-hardstatus on
-hardstatus alwayslastline
-hardstatus string '%{= Kd} %{= Kd}%-w%{= Kr}[%{= KW}%n %t%{= Kr}]%{= Kd}%+w %-= %{KG} %H%{KW}|%{KY}%l%{KW}|%D %M %d %Y%{= Kc} %C%A%{-}'
-nonblock on
-escape ^Oo
-bind ^x
-bind x
-attrcolor b ".I"
-attrcolor i "+b"
-defhstatus "^EH"
-altscreen on
+#export ORACLE_HOME_LISTNER=$ORACLE_HOME
 EOF
 
 yum -y install compat-libstdc++-33
@@ -145,17 +129,17 @@ yum -y install compat-libstdc++-33
 
 <h2>Oracle Enterprise installation</h2>
 
-<p>Oracle 12.1.0.2 quick installation guide</p>
+<p>Oracle 12.1.0.2 quick installation guide.&nbsp; I used&nbsp;<a href="https://sourceforge.net/projects/vcxsrv/">vcxsrv</a>&nbsp;as a windows X server on my host windev.</p>
 
 <ul>
 	<li>
-	<p><a href="https://docs.oracle.com/database/121/LTDQI/toc.htm">https://docs.o<strong>rac</strong>le.com/database/121/LTDQI/toc.htm</a></p>
+	<p><a href="https://docs.oracle.com/database/121/LTDQI/toc.htm">https://docs.oracle.com/database/121/LTDQI/toc.htm</a></p>
 	</li>
 </ul>
 
-<pre># su - o<strong>rac</strong>le
-$ unzip /net/cheese/u02/Software/O<strong>rac</strong>le/12.1.0.2\ -\ Enterprise\ Edition/linuxamd64_12102_database_1of2.zip
-$ unzip /net/cheese/u02/Software/O<strong>rac</strong>le/12.1.0.2\ -\ Enterprise\ Edition/linuxamd64_12102_database_2of2.zip
+<pre># su - oracle
+$ unzip /net/cheese/u02/Software/Oracle/12.1.0.2\ -\ Enterprise\ Edition/linuxamd64_12102_database_1of2.zip
+$ unzip /net/cheese/u02/Software/Oracle/12.1.0.2\ -\ Enterprise\ Edition/linuxamd64_12102_database_2of2.zip
 $ export DISPLAY=windev:0.0
 $ cd database
 $ runInstaller
@@ -177,37 +161,35 @@ Continue? (y/n) [n] y    &lt;-- ack the warning about xdpyinfo not being present
 
 <h2>SA database creation</h2>
 
-<p>Expand&nbsp;scripts.tar.gz&nbsp;into /u01/app/o<strong>rac</strong>le/admin/truth/scripts and execute.&nbsp; &nbsp;Consult&nbsp;<a href="https://softwaresupport.softwaregrp.com/doc/KM541723">KM541723</a>&nbsp;for directions on how to locate/extract the scripts.tar.gz from the installation media.</p>
+<p>Expand&nbsp;scripts.tar.gz&nbsp;into /u01/app/oracle/admin/truth/scripts and execute.&nbsp; &nbsp;Consult&nbsp;<a href="https://softwaresupport.softwaregrp.com/doc/KM541723">KM541723</a>&nbsp;for directions on how to locate/extract the scripts.tar.gz from the installation media.</p>
 
 <pre>[o<strong>rac</strong>le@alphadb scripts]$ ./truth.sh
-+ mkdir -p /u01/app/o<strong>rac</strong>le/admin/truth/adump
-+ mkdir -p /u01/app/o<strong>rac</strong>le/admin/truth/dpdump
-+ mkdir -p /u01/app/o<strong>rac</strong>le/admin/truth/pfile
-+ mkdir -p /u01/app/o<strong>rac</strong>le/cfgtoollogs/dbca/truth
-+ mkdir -p /u01/app/o<strong>rac</strong>le/flash_recovery_area
-+ mkdir -p /u01/app/o<strong>rac</strong>le/flash_recovery_area/truth
++ mkdir -p /u01/app/oracle/admin/truth/adump
++ mkdir -p /u01/app/oracle/admin/truth/dpdump
++ mkdir -p /u01/app/oracle/admin/truth/pfile
++ mkdir -p /u01/app/oracle/cfgtoollogs/dbca/truth
++ mkdir -p /u01/app/oracle/flash_recovery_area
++ mkdir -p /u01/app/oracle/flash_recovery_area/truth
 + O<strong>RAC</strong>LE_SID=truth
-+ export O<strong>RAC</strong>LE_SID
++ export ORACLE_SID
 + O<strong>RAC</strong>LE_HOME=/u01/app/o<strong>rac</strong>le/product/12.1.0/dbhome_1/
-+ export O<strong>RAC</strong>LE_HOME
-+ PATH=/u01/app/o<strong>rac</strong>le/product/12.1.0/dbhome_1//bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/o<strong>rac</strong>le/.local/bin:/home/o<strong>rac</strong>le/bin
++ export ORACLE_HOME
++ PATH=/u01/app/oracle/product/12.1.0/dbhome_1//bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/o<strong>rac</strong>le/.local/bin:/home/o<strong>rac</strong>le/bin
 + export PATH
-+ /u01/app/o<strong>rac</strong>le/product/12.1.0/dbhome_1//bin/sqlplus /nolog @/u01/app/o<strong>rac</strong>le/admin/truth/scripts/truth.sql
++ /u01/app/oracle/product/12.1.0/dbhome_1//bin/sqlplus /nolog @/u01/app/oracle/admin/truth/scripts/truth.sql
 
 SQL*Plus: Release 12.1.0.2.0 Production on Tue Apr 24 15:54:58 2018
 
-Copyright (c) 1982, 2014, O<strong>rac</strong>le.  All rights reserved.
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
 
 specify a password for sys as parameter 1
 Enter value for 1: opsware
 specify a password for system as parameter 2
 Enter value for 2: opsware</pre>
 
-<ul>
-	<li>
-	<p><strong>This takes a while go get a coffee</strong></p>
-	</li>
-</ul>
+<blockquote>
+<p><strong>​​​​​​This takes a while go get a coffee</strong></p>
+</blockquote>
 
 <p>Configure database to startup on machine startup</p>
 
