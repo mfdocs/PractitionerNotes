@@ -1,10 +1,10 @@
 <html><h1>Moving an SA Database</h1>
 
-<p>The default O<strong>rac</strong>le database that is installed with SA is Standard Edition. Need to move to a&nbsp;<strong>RAC</strong>&nbsp;installation or perhaps O<strong>rac</strong>le Enterprise ? These instructions where created when moving an SA 10.60 internally installed DB to being external on O<strong>rac</strong>le Enterprise.&nbsp;&nbsp;</p>
+<p>The default Oracle&nbsp;database that is installed with SA is Standard Edition. Need to move to a <strong>RAC&nbsp;</strong>installation or perhaps Oracle Enterprise ? These instructions where created when moving an SA 10.60 internally installed DB to being external on Oracle&nbsp;Enterprise.&nbsp;&nbsp;</p>
 
 <h2>OS Installation</h2>
 
-<p>I used the following kickstart file to configure CentOS 7.4 ready for an O<strong>rac</strong>le installation.</p>
+<p>I used the following kickstart file to configure CentOS 7.4 ready for an Oracle installation.</p>
 
 <pre># Minimal Configuration for Centos7 for installing O<strong>rac</strong>le 12
 
@@ -143,9 +143,9 @@ yum -y install compat-libstdc++-33
 	</li>
 </ul>
 
-<h2>O<strong>rac</strong>le Enterprise installation</h2>
+<h2>Oracle Enterprise installation</h2>
 
-<p>O<strong>rac</strong>le 12.1.0.2 quick installation guide</p>
+<p>Oracle 12.1.0.2 quick installation guide</p>
 
 <ul>
 	<li>
@@ -168,7 +168,7 @@ continuing with the installation,
 
 Continue? (y/n) [n] y    &lt;-- ack the warning about xdpyinfo not being present it does not matter</pre>
 
-<p><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e988370901767.30518849.png" style="border:0px solid black; height:273px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:628px" vspace="0"><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e988370c16217.03591724.png" style="border:0px solid black; height:204px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:697px" vspace="0"><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e988370f3a3f0.67225245.png" style="border:0px solid black; height:303px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:607px" vspace="0"><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e988371481042.23483384.png" style="border:0px solid black; height:427px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:981px" vspace="0"><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e9883719306d0.58598093.png" style="border:0px solid black; height:794px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:1000px" vspace="0"></p>
+<p><img alt="" src="/mediawiki/images/pn_images/pn_image_5e988370901767.30518849.png" style="height:273px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:628px"><img alt="" src="/mediawiki/images/pn_images/pn_image_5e988370c16217.03591724.png" style="height:204px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:697px"><img alt="" src="/mediawiki/images/pn_images/pn_image_5e988370f3a3f0.67225245.png" style="height:303px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:607px"><img alt="" src="/mediawiki/images/pn_images/pn_image_5e988371481042.23483384.png" style="height:427px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:981px"><img alt="" src="/mediawiki/images/pn_images/pn_image_5e9883719306d0.58598093.png" style="height:794px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:1000px"></p>
 
 <p>We can ignore the warning as we configured the SWAP partition smaller than the installer wants.</p>
 
@@ -215,7 +215,7 @@ Enter value for 2: opsware</pre>
 
 <pre>truth:/u01/app/o<strong>rac</strong>le/product/12.1.0/dbhome_1:Y</pre>
 
-<p>/etc/init.d/opsware-o<strong>rac</strong>le</p>
+<p>/etc/init.d/opsware-oracle</p>
 
 <pre>#
 # chkconfig: 235 60 20
@@ -313,7 +313,7 @@ esac</pre>
 ORAENV_ASK=NO . /usr/local/bin/oraenv
 export O<strong>RAC</strong>LE_HOME_LISTNER=$O<strong>RAC</strong>LE_HOME</pre>
 
-<p>Configure listener $O<strong>RAC</strong>LE_HOME/network/admin/listener.ora</p>
+<p>Configure listener $ORACLE_HOME/network/admin/listener.ora</p>
 
 <pre>LISTENER =
  (ADDRESS_LIST=
@@ -377,7 +377,7 @@ With the Partitioning, OLAP, Advanced Analytics and Real Application Testing opt
 
 <p>SA changes</p>
 
-<p>/var/opt/o<strong>rac</strong>le/tnsnames.ora</p>
+<p>/var/opt/oracle/tnsnames.ora</p>
 
 <pre>truth.zulu=(DESCRIPTION=(ADDRESS=(HOST=192.168.4.103)(PORT=1521)(PROTOCOL=tcp))(CONNECT_DATA=(SERVICE_NAME=truth)))</pre>
 
@@ -428,7 +428,7 @@ Directory dropped.</pre>
 <h2>Gotcha</h2>
 
 <ul>
-	<li>QCIM1D171216 - HPSA configuration problem after moving DB to O<strong>rac</strong>le&nbsp;<strong>RAC</strong></li>
+	<li>QCIM1D171216 - HPSA configuration problem after moving DB to Oracle&nbsp;<strong>RAC</strong></li>
 	<li>QCIM1D246562 - TWIST startup fails with ORA-20060</li>
 </ul>
 
