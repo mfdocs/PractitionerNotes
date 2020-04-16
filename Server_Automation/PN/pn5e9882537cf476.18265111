@@ -1,1 +1,461 @@
- 
+<html><h1>Moving an SA Database</h1>
+
+<p>The default O<strong>rac</strong>le database that is installed with SA is Standard Edition. Need to move to a&nbsp;<strong>RAC</strong>&nbsp;installation or perhaps O<strong>rac</strong>le Enterprise ? These instructions where created when moving an SA 10.60 internally installed DB to being external on O<strong>rac</strong>le Enterprise.&nbsp;&nbsp;</p>
+
+<h2>OS Installation</h2>
+
+<p>I used the following kickstart file to configure CentOS 7.4 ready for an O<strong>rac</strong>le installation.</p>
+
+<pre># Minimal Configuration for Centos7 for installing O<strong>rac</strong>le 12
+
+authconfig --enableshadow --enablemd5
+bootloader --location=mbr
+firewall --disabled
+install
+keyboard us
+lang en_US.UTF-8
+timezone --utc UTC
+cdrom
+text
+
+# Partition information
+clearpart --all --initlabel
+#autopart
+part /boot --fstype ext3 --size=200
+part swap --size=1024
+part pv.01 --size=1 --grow --ondisk=sda
+volgroup vg_root pv.01
+logvol  /  --vgname=vg_root  --size=1 --grow --name=lv_root
+
+reboot
+rootpw opsware
+skipx
+text
+zerombr
+selinux --disabled
+
+%packages
+@Base
+# O<strong>rac</strong>le pre-requisite packages
+# https://docs.o<strong>rac</strong>le.com/database/121/LTDQI/toc.htm#BABGGEBA
+binutils 
+compat-libcap1
+# Not on the media
+#compat-libstdc++-33
+gcc
+gcc-c++
+glibc
+glibc-devel
+ksh
+libaio
+libaio-devel
+libgcc
+libstdc++
+libstdc++-devel
+libXi
+libXtst
+make
+sysstat
+# extra
+nfs-utils
+autofs
+screen
+%end
+
+%post --log=/root/ks-post.log
+
+cat &gt;&gt; /etc/sysctl.conf &lt;&lt;EOF
+#O<strong>rac</strong>le parameters begin
+kernel.shmmax=4101414912
+kernel.shmall=2097152
+kernel.shmmni=4096
+kernel.sem=256 32000 256 256
+net.core.rmem_default=262144
+net.core.wmem_default=262144
+net.core.rmem_max=4194304
+net.core.wmem_max=1048576
+fs.file-max=6815744
+fs.aio-max-nr=1048576
+net.ipv4.ip_local_port_range=9081 65000
+#O<strong>rac</strong>le parameters end
+EOF
+
+cat &gt;&gt; /etc/security/limits.conf &lt;&lt;EOF
+#Opsware O<strong>rac</strong>le parameters begin
+o<strong>rac</strong>le soft nofile 4096
+o<strong>rac</strong>le hard nofile 65536
+o<strong>rac</strong>le soft nproc 2047
+o<strong>rac</strong>le hard nproc 16384
+session required /lib/security/pam_limits.so  
+#Opsware O<strong>rac</strong>le parameters end
+EOF
+
+systemctl enable nfs
+systemctl start nfs
+systemctl enable autofs
+systemctl start autofs
+
+/usr/sbin/groupadd oinstall
+/usr/sbin/groupadd dba
+/usr/sbin/useradd -g oinstall -G dba o<strong>rac</strong>le
+
+mkdir -p /u01/app/o<strong>rac</strong>le/admin/truth/scripts
+mkdir -p /u02/oradata/truth /u03/oradata/truth /u04/oradata/truth
+chown -R o<strong>rac</strong>le:oinstall /u01/app /u02/oradata /u03/oradata /u04/oradata
+
+cat &gt;&gt; /home/o<strong>rac</strong>le/.bashrc &lt;&lt;EOF
+# Uncomment to setup O<strong>RAC</strong>LE_HOME on login
+#export O<strong>RAC</strong>LE_SID=truth
+#ORAENV_ASK=NO . /usr/local/bin/oraenv
+#export O<strong>RAC</strong>LE_HOME_LISTNER=$O<strong>RAC</strong>LE_HOME
+EOF
+
+cat &gt;&gt; /root/.screenrc &lt;&lt;EOF
+startup_message off
+vbell on
+hardstatus on
+hardstatus alwayslastline
+hardstatus string '%{= Kd} %{= Kd}%-w%{= Kr}[%{= KW}%n %t%{= Kr}]%{= Kd}%+w %-= %{KG} %H%{KW}|%{KY}%l%{KW}|%D %M %d %Y%{= Kc} %C%A%{-}'
+nonblock on
+escape ^Oo
+bind ^x
+bind x
+attrcolor b ".I"
+attrcolor i "+b"
+defhstatus "^EH"
+altscreen on
+EOF
+
+yum -y install compat-libstdc++-33
+%end</pre>
+
+<p>This package is not on the media so its pulled via YUM</p>
+
+<ul>
+	<li>compat-libstdc++-33-3.2.3</li>
+</ul>
+
+<p>If an internet connection is not available during the OS install the package can be retrieved and manually installed</p>
+
+<ul>
+	<li>
+	<p><a href="https://centos.pkgs.org/7/centos-x86_64/compat-libstdc++-33-3.2.3-72.el7.x86_64.rpm.html">https://centos.pkgs.org/7/centos-x86_64/compat-libstdc++-33-3.2.3-72.el7.x86_64.rpm.html</a></p>
+	</li>
+</ul>
+
+<h2>O<strong>rac</strong>le Enterprise installation</h2>
+
+<p>O<strong>rac</strong>le 12.1.0.2 quick installation guide</p>
+
+<ul>
+	<li>
+	<p><a href="https://docs.oracle.com/database/121/LTDQI/toc.htm">https://docs.o<strong>rac</strong>le.com/database/121/LTDQI/toc.htm</a></p>
+	</li>
+</ul>
+
+<pre># su - o<strong>rac</strong>le
+$ unzip /net/cheese/u02/Software/O<strong>rac</strong>le/12.1.0.2\ -\ Enterprise\ Edition/linuxamd64_12102_database_1of2.zip
+$ unzip /net/cheese/u02/Software/O<strong>rac</strong>le/12.1.0.2\ -\ Enterprise\ Edition/linuxamd64_12102_database_2of2.zip
+$ export DISPLAY=windev:0.0
+$ cd database
+$ runInstaller
+Checking monitor: must be configured to display at least 256 colors
+    &gt;&gt;&gt; Could not execute auto check for display colors using command /usr/bin/xdpyinfo. Check if the DISPLAY variable is set.    Failed &lt;&lt;&lt;&lt;
+
+Some requirement checks failed. You must fulfill these requirements before
+
+continuing with the installation,
+
+Continue? (y/n) [n] y    &lt;-- ack the warning about xdpyinfo not being present it does not matter</pre>
+
+<p><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e988370901767.30518849.png" style="border:0px solid black; height:273px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:628px" vspace="0"><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e988370c16217.03591724.png" style="border:0px solid black; height:204px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:697px" vspace="0"><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e988370f3a3f0.67225245.png" style="border:0px solid black; height:303px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:607px" vspace="0"><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e988371481042.23483384.png" style="border:0px solid black; height:427px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:981px" vspace="0"><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e9883719306d0.58598093.png" style="border:0px solid black; height:794px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:1000px" vspace="0"></p>
+
+<p>We can ignore the warning as we configured the SWAP partition smaller than the installer wants.</p>
+
+<pre>part swap --size=1024 # O<strong>rac</strong>le wants 8GB (memory size) we give it less.
+</pre>
+
+<h2>SA database creation</h2>
+
+<p>Expand&nbsp;scripts.tar.gz&nbsp;into /u01/app/o<strong>rac</strong>le/admin/truth/scripts and execute.&nbsp; &nbsp;Consult&nbsp;<a href="https://softwaresupport.softwaregrp.com/doc/KM541723">KM541723</a>&nbsp;for directions on how to locate/extract the scripts.tar.gz from the installation media.</p>
+
+<pre>[o<strong>rac</strong>le@alphadb scripts]$ ./truth.sh
++ mkdir -p /u01/app/o<strong>rac</strong>le/admin/truth/adump
++ mkdir -p /u01/app/o<strong>rac</strong>le/admin/truth/dpdump
++ mkdir -p /u01/app/o<strong>rac</strong>le/admin/truth/pfile
++ mkdir -p /u01/app/o<strong>rac</strong>le/cfgtoollogs/dbca/truth
++ mkdir -p /u01/app/o<strong>rac</strong>le/flash_recovery_area
++ mkdir -p /u01/app/o<strong>rac</strong>le/flash_recovery_area/truth
++ O<strong>RAC</strong>LE_SID=truth
++ export O<strong>RAC</strong>LE_SID
++ O<strong>RAC</strong>LE_HOME=/u01/app/o<strong>rac</strong>le/product/12.1.0/dbhome_1/
++ export O<strong>RAC</strong>LE_HOME
++ PATH=/u01/app/o<strong>rac</strong>le/product/12.1.0/dbhome_1//bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/o<strong>rac</strong>le/.local/bin:/home/o<strong>rac</strong>le/bin
++ export PATH
++ /u01/app/o<strong>rac</strong>le/product/12.1.0/dbhome_1//bin/sqlplus /nolog @/u01/app/o<strong>rac</strong>le/admin/truth/scripts/truth.sql
+
+SQL*Plus: Release 12.1.0.2.0 Production on Tue Apr 24 15:54:58 2018
+
+Copyright (c) 1982, 2014, O<strong>rac</strong>le.  All rights reserved.
+
+specify a password for sys as parameter 1
+Enter value for 1: opsware
+specify a password for system as parameter 2
+Enter value for 2: opsware</pre>
+
+<ul>
+	<li>
+	<p><strong>This takes a while go get a coffee</strong></p>
+	</li>
+</ul>
+
+<p>Configure database to startup on machine startup</p>
+
+<p>/etc/oratab</p>
+
+<pre>truth:/u01/app/o<strong>rac</strong>le/product/12.1.0/dbhome_1:Y</pre>
+
+<p>/etc/init.d/opsware-o<strong>rac</strong>le</p>
+
+<pre>#
+# chkconfig: 235 60 20
+# description: O<strong>rac</strong>le12c 12.1.0.2
+#
+### BEGIN INIT INFO
+# Provides: opsware-o<strong>rac</strong>le
+# Required-Start: $network
+# Required-Stop: $network
+# Default-Start: 2 3 5
+# Default-Stop: 0 1 4 6
+# Description: O<strong>rac</strong>le Database startup script
+### END INIT INFO
+LOCKFILEPATH=/var/lock/subsys
+LOCKFILE=o<strong>rac</strong>le
+O<strong>RAC</strong>LE_HOME=/u01/app/o<strong>rac</strong>le/product/12.1.0/dbhome_1
+LOG=/var/log/ora_initd_startup.log
+
+# For SELinux support we need to use runuser
+# This is not possible on SLES 11 or lower, so we'll have to default to su
+SWITCH_USER_CMD=su
+if [ "`rpm -qa | grep sles-release | wc -l`" -eq 0 -a -x /sbin/runuser ]; then
+        SWITCH_USER_CMD=/sbin/runuser
+fi
+                                                                                              
+start(){
+        echo "$0: starting up..." &gt;&gt; $LOG
+        date &gt;&gt; $LOG
+        echo -n $"Starting O<strong>rac</strong>le Database: "
+                                                                                              
+        # The listener starts as part of dbstart
+        $SWITCH_USER_CMD - o<strong>rac</strong>le -c "env O<strong>RAC</strong>LE_HOME=$O<strong>RAC</strong>LE_HOME $O<strong>RAC</strong>LE_HOME/bin/dbstart $O<strong>RAC</strong>LE_HOME"
+
+        # This is specific to Linux OS
+        if [[ ! -d "${LOCKFILEPATH}" ]]; then
+                mkdir -p $LOCKFILEPATH
+        fi
+        touch $LOCKFILEPATH/$LOCKFILE
+
+echo "$0: starting up complete..." &gt;&gt; $LOG
+date &gt;&gt; $LOG
+echo "Starting O<strong>rac</strong>le Database complete "
+}
+stop(){
+        echo "$0: shutting down" &gt;&gt; $LOG
+        date &gt;&gt; $LOG
+        echo -n $"Stopping O<strong>rac</strong>le Database: "
+                                                                                              
+        $SWITCH_USER_CMD - o<strong>rac</strong>le -c "env O<strong>RAC</strong>LE_HOME=$O<strong>RAC</strong>LE_HOME $O<strong>RAC</strong>LE_HOME/bin/dbshut $O<strong>RAC</strong>LE_HOME"
+
+        # This is specific to Linux
+        if [ -f $LOCKFILEPATH/$LOCKFILE ]; then
+                rm -f $LOCKFILEPATH/$LOCKFILE
+        fi
+
+       echo "$0: shutdown complete..." &gt;&gt; $LOG
+       date &gt;&gt; $LOG
+       echo "Shutting O<strong>rac</strong>le Database complete "
+}
+restart(){
+   stop
+   start
+}
+case "$1" in
+'start')
+        start
+        ;;
+'stop')
+        stop
+        ;;
+'restart')
+        restart
+   ;;
+'status')
+        if [ -f $LOCKFILEPATH/$LOCKFILE ]; then
+                echo "O<strong>rac</strong>le Database instance running"
+        else
+                echo "O<strong>rac</strong>le Database instance not running"
+        fi
+   ;;
+                                                                                              
+*)
+        echo $"Usage: $0 {start|stop|restart|status}"
+        exit 1
+        ;;
+esac</pre>
+
+<p>One the startup script is in place install it</p>
+
+<pre># chkconfig opsware-o<strong>rac</strong>le reset </pre>
+
+<p>You'll need to uncomment the .bashrc lines relating to setting up the DB</p>
+
+<pre>export O<strong>RAC</strong>LE_SID=truth
+ORAENV_ASK=NO . /usr/local/bin/oraenv
+export O<strong>RAC</strong>LE_HOME_LISTNER=$O<strong>RAC</strong>LE_HOME</pre>
+
+<p>Configure listener $O<strong>RAC</strong>LE_HOME/network/admin/listener.ora</p>
+
+<pre>LISTENER =
+ (ADDRESS_LIST=
+        (ADDRESS=(PROTOCOL=tcp)(HOST=192.168.4.103)(PORT=1521))
+        (ADDRESS=(PROTOCOL=ipc)(KEY=PNPKEY)))
+
+SID_LIST_LISTENER=
+  (SID_LIST=
+    (SID_DESC=
+       (SID_NAME=truth)
+       (O<strong>RAC</strong>LE_HOME=/u01/app/o<strong>rac</strong>le/product/12.1.0/dbhome_1)
+    )
+  )
+LOG_DIRECTORY_LISTENER=/u01/app/o<strong>rac</strong>le/product/12.1.0/dbhome_1/network/log
+LOG_FILE_LISTENER=listener.log
+T<strong>RAC</strong>E_DIRECTORY_LISTENER=/u01/app/o<strong>rac</strong>le/product/12.1.0/dbhome_1/network/t<strong>rac</strong>e
+T<strong>RAC</strong>E_FILE_LISTENER=listener.trc
+INBOUND_CONNECT_TIMEOUT_LISTENER=120
+# subscribe_for_node_down_event entry should be removed for <strong>RAC</strong> env.
+SUBSCRIBE_FOR_NODE_DOWN_EVENT_LISTENER=OFF
+#LOCAL_OS_AUTHENTICATION_LISTENER=OFF
+#----ADDED BY TNSLSNR 04-OCT-2005 23:06:20---
+SAVE_CONFIG_ON_STOP_LISTENER = ON
+#--------------------------------------------
+
+#----ADDED BY TNSLSNR 04-OCT-2005 23:09:20---
+PASSWORDS_LISTENER = CEE9A6452943F605
+#--------------------------------------------</pre>
+
+<p>sqlnet.ora</p>
+
+<pre>-bash-4.2$ more sqlnet.ora
+LOG_DIRECTORY_SERVER=/u01/app/o<strong>rac</strong>le/product/12.1.0/dbhome_1/network/log
+LOG_FILE_SERVER=sqlnet.log
+T<strong>RAC</strong>E_DIRECTORY_SERVER=/u01/app/o<strong>rac</strong>le/product/12.1.0/dbhome_1/network/t<strong>rac</strong>e
+T<strong>RAC</strong>E_FILE_SERVER=sqlnet.trc
+NAMES.DIRECTORY_PATH= (TNSNAMES)
+SQLNET.INBOUND_CONNECT_TIMEOUT=180
+</pre>
+
+<h2>SA database migration</h2>
+
+<p>Quecse all of the DB access programs</p>
+
+<pre>[root@dc1 ~]#  service opsware-sas stop spin vaultdaemon twist</pre>
+
+<p>and perform full database export.</p>
+
+<pre>SQL&gt; CREATE DIRECTORY DUMP_FILES1 AS '/tmp';
+
+Directory created.
+
+SQL&gt;
+Disconnected from O<strong>rac</strong>le Database 12c Enterprise Edition Release 12.1.0.2.0 - 64bit Production
+With the Partitioning, OLAP, Advanced Analytics and Real Application Testing options
+[o<strong>rac</strong>le@green~]$ expdp system/opsware full=Y directory=DUMP_FILES1 dumpfile=DB.dmp logfile=expdpDB.log</pre>
+
+<p>Then import it.</p>
+
+<pre>[o<strong>rac</strong>le@zuludb ~]$ impdp system/opsware full=Y directory=DUMP_FILES1 dumpfile=DB.dmp logfile=impdpDB.log</pre>
+
+<p>SA changes</p>
+
+<p>/var/opt/o<strong>rac</strong>le/tnsnames.ora</p>
+
+<pre>truth.zulu=(DESCRIPTION=(ADDRESS=(HOST=192.168.4.103)(PORT=1521)(PROTOCOL=tcp))(CONNECT_DATA=(SERVICE_NAME=truth)))</pre>
+
+<p>/etc/opt/opsware/vault/vault.conf</p>
+
+<pre>truth.host: 192.168.4.103</pre>
+
+<p>/opt/opsware/oi_util/startup/opsware_start.config</p>
+
+<pre>TRUTH_HOST="192.168.4.103"</pre>
+
+<p>/etc/opt/opsware/agent/agent.args</p>
+
+<pre>truth.host: 192.168.4.103</pre>
+
+<p>/etc/opt/opsware/da/da.conf -- Note DA is disabled by default in SA 10.60</p>
+
+<pre>truth.host=192.168.4.103</pre>
+
+<p>/etc/opt/opsware/tell/tell.conf</p>
+
+<pre>truth.host: 192.168.4.103</pre>
+
+<p>If you are moving a secondary core database you'll need to adjust the primary core MGW forwards for this new IP.</p>
+
+<pre>### Customized Configuration Values for opswgw-mgw-ALPHA
+opswgw.ForwardTCP=20002:ZULU-mm:192.168.4.103:1521</pre>
+
+<p>Start DB access programs</p>
+
+<pre>[root@dc1 ~]#  service opsware-sas start spin vaultdaemon twist</pre>
+
+<p>Cleanup</p>
+
+<pre>SQL&gt; drop directory dump_files1;
+
+Directory dropped.</pre>
+
+<p>Disable o<strong>rac</strong>le DB startup on the core</p>
+
+<pre>chkconfig opsware-o<strong>rac</strong>le off</pre>
+
+<p>You can also go ahead and reclaim all the DB space from the data files (and/or) just compress them and back them up. Not that going back is a good idea once your system has been using the new database for a while.</p>
+
+<pre>rm -f /u0*/oradata/truth/*
+</pre>
+
+<h2>Gotcha</h2>
+
+<ul>
+	<li>QCIM1D171216 - HPSA configuration problem after moving DB to O<strong>rac</strong>le&nbsp;<strong>RAC</strong></li>
+	<li>QCIM1D246562 - TWIST startup fails with ORA-20060</li>
+</ul>
+
+<p>If you change the global name of the database when you create a new one you'll need to make an internal database table change after performing the database import step.</p>
+
+<pre>SQL&gt; select global_name from global_name;
+GLOBAL_NAME
+---------------------------
+NEWTRUTH -&gt; This is the new global_name.
+
+SQL&gt; select db_global_name from global_sid_id;
+
+DB_GLOBAL_NAME
+-----------------------------
+TRUTH -&gt; This will show the old db_global_name and that's an issue.</pre>
+
+<p>Set the new value:</p>
+
+<pre>SQL&gt; update global_sid_id set db_global_name=(select global_name from global_name);
+
+1 row updated.
+
+SQL&gt; select db_global_name from global_sid_id;
+
+DB_GLOBAL_NAME
+------------------------------------
+NEWTRUTH
+
+SQL&gt; commit;</pre>
+</html>
