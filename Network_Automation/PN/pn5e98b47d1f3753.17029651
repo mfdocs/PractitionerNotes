@@ -1,1 +1,84 @@
- 
+<html><p>&nbsp;</p>
+
+<p><strong>Network Automation:&nbsp; Massive Efficiency/Security Gains - A Real World Example</strong></p>
+
+<p>&nbsp;</p>
+
+<p>Network Automation (NA)&nbsp;does a lot of things and does a lot of things very well.&nbsp; I’ve personally heard customer feedback on more than one occasion that NA is one of the best tools they have deployed in their enterprise management environment overall, not just network.&nbsp; The reason is that it’s simple to install, simple to use, and is extremely powerful.&nbsp; NA provides value to all groups in an organization including InfoSec teams, NOC operators, tools managers, network architects, network managers … not just network techies.</p>
+
+<p>And it can do all that without requiring global device access by each of the teams mentioned.&nbsp; The only time the network needs to be/should be touched is when it needs to be changed.&nbsp; All hardware, software, configuration, and diagnostic data can be centrally/securely accessed by authorized NA users.</p>
+
+<p>Network Automation offers genuinely exciting opportunities to recognize massive efficiency gains, eliminate error-prone processes, while at the same time significantly reducing risk and increasing security.&nbsp; Many NA customers have asked for examples of real-world issues that our customers have solved using Network Automation.&nbsp; This article outlines one such issue … a real-world problem encountered by one of Micro Focus’ NA customers, and the outcome they achieved using NA.</p>
+
+<p><strong>Background:</strong></p>
+
+<p>This particular customer is a long time NA/NNMi user.&nbsp; They get tremendous value out of both solutions, but still recognized that the solutions were capable of so much more.&nbsp; We did multiple brown bag sessions highlighting advanced capabilities, but ironically, they’ve always been too busy to implement them.&nbsp; So they reached out to revisit the conversation, and we agreed that they would produce a list of use cases.&nbsp;</p>
+
+<p>But a funny thing happened …</p>
+
+<p>We agreed to implement the top use case on their list, and in the process, discovered during an unrelated conversation, a very powerful use case that they hadn’t even considered.&nbsp; There had recently been a <strong>major</strong> outage in their network that took down a very large number of customers, and caused repercussions throughout the organization.&nbsp; As we discussed the details of this particular incident, we all agreed that the issue relating to this outage was the #1 use case.&nbsp; Their best, most important use case, hadn’t even been on the list for consideration.&nbsp; So we switched gears to solve that issue.</p>
+
+<p><strong>The Existing Process:</strong></p>
+
+<p>The InfoSec team at this customer continually harvests lists of IP addresses from around the globe that have attempted to hack their network perimeter.&nbsp; They then create a change ticket with a spreadsheet containing the list of malicious IPs to be configured/blocked into their global enterprise firewall architecture.</p>
+
+<p>The network engineering team then received the change ticket, and manually configured each individual firewall configuration by copying/pasting each individual IP address (hundreds) for each virtual domain configured on the firewall.&nbsp; The configurations were then manually applied to each firewall (approximately 75).</p>
+
+<p><strong>The Problem:</strong></p>
+
+<p>The existing process described above takes hours and requires FTE effort.&nbsp; (Unnecessarily as we will see.)&nbsp;</p>
+
+<p>However, in one case, a malformed IP address was inadvertently copied/pasted into a firewall configuration.&nbsp; When the configuration was loaded into the firewall device, the device was confused by the malformed IP address, and decided to convert the address to 0.0.0.0.&nbsp; Doh!&nbsp; Major outage!&nbsp; Many unhappy customers!&nbsp;</p>
+
+<p>So obviously the IP address shouldn’t have been handled this way by the device vendor, but the REAL issue to highlight here is the error-prone nature of the manual process.&nbsp; In this case, the outcome was catastrophic.</p>
+
+<p><strong>The Solution:</strong></p>
+
+<p>An NA Advanced Perl API Change Plan.&nbsp; (See attached)</p>
+
+<p>NA provides two categories of Change Plans.&nbsp; Basic vs Advanced.&nbsp; Basic Change Plans are nothing more than native device syntax that network engineers use every day, and require no additional of scripting languages to implement automation.&nbsp; This is powerful.&nbsp; However, in cases that require additional processing logic, and/or integration use cases, Advanced API Change Plans can be used.</p>
+
+<p>Here’s an example of a simple, basic NA Change Plan:</p>
+
+<p><img src="/mediawiki/images/pn_images/pn_image_5e98b5c1993128.11524422.jpeg" style="height:228px; width:467px"></p>
+
+<p>It’s tempting to wow you with the complexities of the solution implemented at this customer site, but I can’t.&nbsp; It was simple.&nbsp;</p>
+
+<p>Task Options:&nbsp;</p>
+
+<ul>
+	<li>A “dry run” option that allows engineers to verify changes before sending to the device</li>
+</ul>
+
+<p>Task Inputs:&nbsp;</p>
+
+<ul>
+	<li>A change ticket ID</li>
+	<li>InfoSec provided spreadsheet containing malicious IP list to be blocked</li>
+	<li>A Task Input CSV file containing a list of firewalls to be updated along with the virtual domains to be updated on each</li>
+</ul>
+
+<p>Task Ouput:</p>
+
+<ul>
+	<li>A fully formed, fully accurate, fully annotated device configuration to be sent to the device</li>
+</ul>
+
+<p>The advanced Perl API change plan reads the spreadsheet provided by the InfoSec team, parses out all properly formatted IP addresses using a single regex match, and builds the device configuration with a loop that adds configuration lines for each malicious IP address.&nbsp; When the NA Task that runs the Change Plan is executed, the user provides a csv file with all the firewalls to be updated, along with the list of virtual domains on each firewall.&nbsp; It took about an hour to write the Perl script.</p>
+
+<p>The full script is attached, but below is a screenshot of NA Advanced Change Plan:</p>
+
+<p><img src="/mediawiki/images/pn_images/pn_image_5e98b5c2500303.57282343.jpeg" style="height:605px; width:624px"></p>
+
+<p><strong>The Result:</strong></p>
+
+<p>This customer can now update their entire global enterprise firewall infrastructure in minutes!&nbsp; A process that had previously required FTE hours of effort was eliminated.&nbsp; This customer just effectively added an additional member to their network team by leveraging the existing investment they’d made in Network Automation.</p>
+
+<p><strong>Next Steps:</strong></p>
+
+<p>The next steps are to work with the InfoSec team to automate the process end to end.&nbsp; The customer can decide if they want to truly automate the process end to end, or if they prefer to implement approvals before devices are updated.&nbsp; This can be achieved within NA using the Workflow and Approvals capability, and/or integrated with their existing ticketing system.</p>
+
+<p>For this customer, this use case was truly a home run.&nbsp; And it wasn’t even on their original list of use cases!</p>
+
+<p>&nbsp;</p>
+</html>
