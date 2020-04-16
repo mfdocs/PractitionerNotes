@@ -1,1 +1,56 @@
- 
+<html><p><strong>Issue</strong>: Multiple causes can lead to a condition where the job has ended in a failed status on the core while the agent continues to process the job list.</p>
+
+<p>&nbsp;</p>
+
+<p><strong>Reason:&nbsp;</strong>Unacceptable that an&nbsp;Agent continues to process job list while core states job it failed and items were skipped. This is a mis-representation of what is actually occurring.</p>
+
+<p>It is key to realize that one of the most important asks is that the user knows what is really happening on the managed server. The core setting the job as FAILED after a timeout, stopping to update the job output, but in the same time having the agent do work on the managed server is a LIE we are telling the user.</p>
+
+<p>However some customers like to be lied to by their automation tool. They really don’t care that a server is either locked up, or is still working on the job assigned to them above and beyond the timeout imposed. They want to see FAILURE in the job log they want to be LIED to by the automation product even though the agent is still working on it, or the server has issues processing the working assigned to it.<br>
+This is how it was in pre SA 10.23 releases.</p>
+
+<p>Pre split-brain the user will get a failure when they try to re-run the work on the same server because they have no idea that the agent might still be working on the original task. The OS itself might impose a lock preventing another job from executing. RPM DB is a single process update, Windows update is also single process. This is not SA saying failure on the re-run but the OS tools themselves now rejecting the re-run. To the customer is all the same SA continues to fail on re-execution and then blamed it because we hid the fact that the job locked up on that server by having it timeout. A Timeout is evil in this way it hides the truth.</p>
+
+<p>R&amp;D decided that it’s in the customer best interests not to be lied to.&nbsp; So this is now the default behavior. The problem is customers got so use to how it used to work they now see this change in job behavior as an SA defect not realizing that how it use to work was itself a defect.</p>
+
+<p>Before the anti-split-brain functionality, Agent hangs would still happen, they were just getting swept under the rug and never noticed, unless it happened to be an install command that would hang for say a few days and then cause a server to be mysteriously rebooted say on a Wednesday after a weekend patching window.</p>
+
+<p>This is what we call the <u>split-brain problem</u>.<br>
+<strong>Should SA accurately reflect what is going on with a server or shouldn’t it ?</strong></p>
+
+<h2><strong>Configuration</strong></h2>
+
+<p>If you are happy for a job to timeout and you accept that you might be lied with the job reporting FAILURE when work is still being done on a server then you can change this behavior back to how it use to be PRE 10.23 by adjusting this value.</p>
+
+<p>A value of 0 means not wait at all. This is the old behavior. This means that once the MAXIMUM timeout for the command occurs, the job will immediately be allowed to continue.</p>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"># sa_config_checkfix -k way.command_shutdown_grace_period -v 0&nbsp;--set</div>
+
+<p>However you must understand its implications and take responsibility for future failures running the same job and not blame SA when it was trying to tell you there was an issue and you didn't deal with it.</p>
+
+<p>A value of -1 is the same as "wait forever" or infinite. <strong>This is the default behavior.</strong></p>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"># sa_config_checkfix -k way.command_shutdown_grace_period -v -1&nbsp;--set</div>
+
+<p>This means that once the MAXIMUM timeout for the command occurs, the way will continue to wait forever for the command to complete.</p>
+
+<p>A useful side-point here is, how does the waybot know that the agent is "still working" on the command? It knows this if it continues to receive monitor pings from the agent. If these monitor pings stop coming into the waybot, then this will trigger a MONITOR timeout, and the job will be allowed to continue. This could happen if the agent was restarted by an administrator in the middle of a long running command, for example.</p>
+
+<p>The 'compromise' between these two is any positive value. For example, a value of 900 would mean "after a MAXIMUM timeout occurs, lets continue to wait another 900 seconds for the command to complete, before we allow the job to continue."</p>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"># sa_config_checkfix -k way.command_shutdown_grace_period -v 900&nbsp;--set</div>
+
+<p>For example, say there is a command that has a maximum timeout of of 30 minutes, but it ends up taking 40 minutes to complete. A grace setting of 900 would mean that the job would be allowed to continue after the 40 minutes. If the command had ended up taking 50 minutes to complete, then we will allow the job to continue after 45 minutes (30m MAXIMUM timeout + 15m grace).</p>
+
+<h2>Release note</h2>
+
+<p>From the <a href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/KM01902308">SA 10.22 Release notes</a>&nbsp;the only place where this change in behaviour is mentioned.</p>
+
+<p><strong>Timeout handling for remediation and installation jobs</strong></p>
+
+<p>Server Automation now offers improved timeout handling for remediation and installation jobs. After a timeout occurs and until the job&nbsp;execution stops, the status of the server is changed to Stopping. While in the Stopping state, the agent does not take on any additional&nbsp;jobs and completes any job that is currently in progress. Moreover, if the timeout occurs during an agent reboot, then after restarting,&nbsp;the agent will not resume the job. After the job execution stops, the server will be marked as Timed Out.</p>
+
+<p>This fixes the discrepancy of the core showing the job as Failed because of a timeout, while the agent is performing the job.</p>
+
+<p>&nbsp;</p>
+</html>
