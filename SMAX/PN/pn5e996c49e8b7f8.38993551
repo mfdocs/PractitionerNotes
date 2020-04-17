@@ -1,11 +1,11 @@
 <html><h2>Introduction</h2>
 
-<p>The SMA Update Patch Manager is a tool that helps streamline your suite upgrade process by proactively preventing the following most commonly encountered issues from happening in&nbsp;your environment.&nbsp;&nbsp;</p>
+<p>The SMA Update Patch Manager is a tool that helps streamline your suite upgrade process by proactively preventing the following most commonly encountered issues from happening in&nbsp;your environment.&nbsp; This tool contains three images, which you need to push to your own registry.&nbsp;</p>
 
 <table>
 	<tbody>
 		<tr>
-			<th>Issue Name</th>
+			<th>Issue name</th>
 			<th>Problem description</th>
 			<th>Phase</th>
 			<th>Trigger condition</th>
@@ -14,13 +14,19 @@
 		</tr>
 		<tr>
 			<td><strong>fix-cdf-deployment-status-and-version</strong></td>
-			<td><strong>Upgrade is successful but we failed to call back CDF API to reset in last Upgrade process</strong></td>
+			<td>The suite upgrade is successful, but the upgrade wizard fails to call back the CDF API to update the suite deployment status and version information in the CDF Management Portal.</td>
 			<td>Before upgrade</td>
-			<td>1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cdf_suite_status = installing/updating
-			<p>2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Itom_install_phase = running</p>
+			<td>
+			<ul>
+				<li>cdf_suite_status = installing/updating</li>
+				<li>itom_install_phase = running</li>
+			</ul>
 			</td>
-			<td>1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; update cdf_suite_version with&nbsp; itom_suite_version
-			<p>2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Update cdf_suite_status&nbsp; to install_finished</p>
+			<td>
+			<ol>
+				<li>Update cdf_suite_version with&nbsp; itom_suite_version</li>
+				<li>Update cdf_suite_status&nbsp; to install_finished</li>
+			</ol>
 			</td>
 			<td>
 			<ul>
@@ -33,13 +39,19 @@
 		</tr>
 		<tr>
 			<td><strong>fix-wrong-fqdn-of-smax-upgrade</strong></td>
-			<td>Suite-upgrade pod get wrong FQDN name from CDF</td>
+			<td>The suite-upgrade pod gets the wrong FQDN name from CDF. This may happen when you have changed the FQDN of the system.</td>
 			<td>Before upgrade</td>
-			<td>1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Upgrade pod FQDN and SMA FQDN is different
-			<p>2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Suite upgrade pod is starting or running</p>
+			<td>
+			<ul>
+				<li>The suite-upgrade pod's FQDN and the suite system's&nbsp;FQDN are&nbsp;different</li>
+				<li>The suite-upgrade pod is starting or running</li>
+			</ul>
 			</td>
-			<td>1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Change the configmap value with correct FQDN
-			<p>2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; restart upgrade pod</p>
+			<td>
+			<ol>
+				<li>Update the configmap value with&nbsp;the correct FQDN</li>
+				<li>Restart the suite-upgrade pod</li>
+			</ol>
 			</td>
 			<td>
 			<ul>
@@ -52,10 +64,10 @@
 		</tr>
 		<tr>
 			<td><strong>fix-itom-bo-ats-deployment-failed</strong></td>
-			<td><strong>Itom-bo- dependcy check fails, due to BO-ATS database did not get upgraded</strong></td>
+			<td>The itom-bo-dependcy check fails, because the <strong>bo-ats</strong> database did not get upgraded</td>
 			<td>Before upgrade</td>
-			<td>&nbsp;Configmap itom-bo-configmap DB_SCHEMA_CHECK is false.</td>
-			<td>&nbsp;Update Configmap itom-bo-configmap DB_SCHEMA_CHECK to true.</td>
+			<td>In the itom-bo-configmap configmap, DB_SCHEMA_CHECK is false.</td>
+			<td>In itom-bo-configmap, update DB_SCHEMA_CHECK to true.</td>
 			<td>
 			<ul>
 				<li>2018.08</li>
@@ -67,17 +79,23 @@
 		</tr>
 		<tr>
 			<td><strong>fix-itom-xruntime-upgrade-tenants-failed</strong></td>
-			<td>1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; call API with external FQDN
-			<p>2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; special characters in user password</p>
+			<td>
+			<p>One or more of the following:</p>
 
-			<p>3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pod always return with success, even the tenant content upgrade fail</p>
+			<ul>
+				<li>API call is maded with the external access host FQDN</li>
+				<li>Special characters are found&nbsp;in user passwords</li>
+				<li>Pod always returns a Success, even the tenant content upgrade has failed</li>
+			</ul>
 			</td>
-			<td>In upgrade</td>
-			<td>1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>itom-xruntime-upgrade-tenants</em>&nbsp;is running</td>
-			<td>1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Publish a image with patch manager
-			<p>2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Document for user to push image to registry</p>
-
-			<p>3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Retag image when tenant content upgrade start to run</p>
+			<td>During upgrade</td>
+			<td>itom-xruntime-upgrade-tenants&nbsp;is running</td>
+			<td>
+			<ol>
+				<li>Publish an image with the Update Patch Manager</li>
+				<li>Document how to push the image to the registry</li>
+				<li>Retag the image when tenant content upgrade starts running</li>
+			</ol>
 			</td>
 			<td>
 			<ul>
@@ -97,7 +115,7 @@
 
 <h2>How to use this tool</h2>
 
-<p>Run this tool on a master node (non-BYOK) or the bastion node (BYOK).</p>
+<p>Once the CDF upgrade is completed, run this tool on a master node (non-BYOK) or the bastion node (BYOK).</p>
 
 <h3>Upload the images from the tool to your registry</h3>
 
@@ -139,36 +157,34 @@ docker tag  localhost:5000/hpeswitom/ itom-itsmax-upgradetenant:{tag} ${suiteReg
 docker push ${suiteRegistry}/${registryOrgname}/itom-esm-update-patch-manager-treatment-case:{tag} 
 docker push ${suiteRegistry}/${registryOrgname}/ itom-itsmax-upgradetenant:{tag}
 </pre>
-Where: {tag} in each line should be replaced with the corresponding tag that you obtained previously.</li>
+	Where: {tag} in each line should be replaced with the corresponding tag that you obtained previously.</li>
 </ol>
 
 <h3>Run the tool</h3>
 
 <ol>
-<li>Run the following commands to start the esm-update-patch-manager pod:
-<pre>cd esm-update-patch-manager-contents
+	<li>Run the following commands to start the esm-update-patch-manager pod:
+	<pre>cd esm-update-patch-manager-contents
 chmod 700 apply_yaml.sh
 ./apply_yaml.sh
 ns=$( kubectl get ns  |grep itsma |awk '{print $1}' )
 </pre>
-</li>
+	</li>
 	<li>Wait until the esm-update-patch-manager pod is up and running:
 	<pre>kubectl get pods -n ${ns}|grep esm</pre>
 	For example:
 
 	<pre>itom-esm-update-patch-manager-job-hnfqj              1/1     Running           0          3m8s </pre>
 	</li>
-	<li>Start the patch:
+	<li>Apply the patch:
 	<pre>podName=$( kubectl get pods -n ${ns} |grep esm-update-patch-manager |awk '{print $1}' )
 kubectl exec -it ${podName} -n ${ns} /bin/bash
 cd /app/
 nohup ./patchStarter.sh -v [targetVersion] &gt; /var/log/itom-esm-update-patch-manager/nohup.log 2&gt;&amp;1 &amp;
 </pre>
-
-Where: [targetVersion] is the target version. For example, if you are upgrading to version 2018.08, replace it with 2018.08. 
-	</li>
-	<li>Start the suite upgrade, and pause when you reach the Precheck step. For details, see the "Upgrade the suite" topic.</li>
-	<li>Go to the NFS server, and check the log file in /logs/itom-esm-update-patch-manager/patchStarter-YYYYMMDD.log, and make sure that the output is "isReadytoUpdate."</li>
-	<li>Go back to the upgrade wizard and resume the suite upgrade process from the precheck step. Finish the upgrade process.</li>
+	Where: [targetVersion] is the target version. For example, if you are upgrading to version 2018.08, replace it with 2018.08.</li>
+	<li>Launch the suite upgrade process by following the instructions in&nbsp;the "Upgrade the suite" topic,&nbsp;&nbsp;and pause when you reach the Precheck step.&nbsp;</li>
+	<li>Go to the NFS server, and check the &lt;global-volume&gt;/logs/itom-esm-update-patch-manager/patchStarter-YYYYMMDD.log file to&nbsp;make sure that the file contains "isReadytoUpdate."</li>
+	<li>Go back to the upgrade wizard and resume the suite upgrade process from the precheck step, to finish the upgrade process.</li>
 </ol>
 </html>
