@@ -89,11 +89,84 @@
 
 <h2>How to use this tool</h2>
 
-<p>Run this tool on a master node (non-BYOK) or the&nbsp;bastion node (BYOK).&nbsp;</p>
+<p>Run this tool on a master node (non-BYOK) or the bastion node (BYOK).</p>
+<h3>Upload the images from the tool to your registry</h3>
+<ol>
+<li>Create a new directory such as /tmp/patch-manager/ on the master node or the bastion node. </li>
+<li>Download the Update Patch Manager packages (esm-update-patch-manager-executor-2020.05-xxx.tar.gz and esm-update-patch-manager-contents-2020.05-xxx.tar.gz from the Micro Focus ITOM Marketplace, and copy them to the directory you created. </li>
+<li>Uncompress the two files:
+<pre>tar xvlf esm-update-patch-manager-executor-2020.05-xxx.tar.gz
+tar xvlf esm-update-patch-manager-contents-2020.05-xxx.tar.gz
+</pre>
+</li>
+<li>Load new images to docker:
+<pre>cd esm-update-patch-manager-executor/
+docker load -i itom-esm-update-patch-manager-executor-2020.05-xxx.tar.gz
+cd esm-update-patch-manager-contents
+docker load -i itom-esm-update-patch-manager-treatment-case-2020.05-xxx.tar.gz
+docker load -i itom-itsmax-upgradetenant-2020.05-xxx.tar.gz
+</pre>
+The commands return the tags of the images. The following is an example:
+<pre>[root@susie esm-update-patch-manager]# docker load -i itom-esm-update-patch-manager-executor-2020.05-xxx.tar.gz
+Loaded image: localhost:5000/hpeswitom/itom-esm-update-patch-manager-executor:PR-53
+[root@susie esm-update-patch-manager]# docker load -i itom-esm-update-patch-manager-treatment-case-2020.05-xxx.tar.gz
+Loaded image: localhost:5000/hpeswitom/itom-esm-update-patch-manager-treatment-case:PR-53
+[root@susie target]# docker load -i itom-itsmax-upgradetenant-2020.05-xxx.tar.gz
+Loaded image: localhost:5000/hpeswitom/itom-itsmax-upgradetenant:4.5.1.2728-2540
+</pre>
+In this example, the image tags are: PR-53, PR-53, and 4.5.1.2728-2540.
+</li>
+<li>Retag the images:
+<pre>suiteRegistry=$( kubectl get cm base-configmap -n core -o json | jq .data.SUITE_REGISTRY )
+registryOrgname=$( kubectl get cm base-configmap -n core -o json | jq .data.REGISTRY_ORGNAME )
+docker tag  localhost:5000/hpeswitom/itom-esm-update-patch-manager-executor:{tag} ${suiteRegistry}/${registryOrgname}/itom-esm-update-patch-manager-executor:{tag}
+docker tag  localhost:5000/hpeswitom/itom-esm-update-patch-manager-treatment-case:{tag}  ${suiteRegistry}/${registryOrgname}/itom-esm-update-patch-manager-treatment-case:{tag}
+docker tag  localhost:5000/hpeswitom/ itom-itsmax-upgradetenant:{tag} ${suiteRegistry}/${registryOrgname}/ itom-itsmax-upgradetenant:{tag}
+</pre>
+Where: {tag} in each line should be replaced with the corresponding tag that you obtained in the previous step.
 
-<p>&nbsp;</p>
+</li>
+<li>Push the new images to your registry:
+<pre>docker push  ${suiteRegistry}/${registryOrgname}/itom-esm-update-patch-manager-executor:{tag}
+docker push ${suiteRegistry}/${registryOrgname}/itom-esm-update-patch-manager-treatment-case:{tag} 
+docker push ${suiteRegistry}/${registryOrgname}/ itom-itsmax-upgradetenant:{tag}
+</pre>
+Where: {tag} in each line should be replaced with the corresponding tag that you obtained previously.
+</li>
+</ol>
 
-<p>&nbsp;</p>
+<h3>Run the tool</h3>
+<ol>
+<li>Run the following commands to start the esm-update-patch-manager pod:
+<pre>cd esm-update-patch-manager-contents
+chmod 700 apply_yaml.sh
+./apply_yaml.sh
+ns=$( kubectl get ns  |grep itsma |awk '{print $1}' )
+</pre>
+</li>
+<li>Wait until the esm-update-patch-manager pod is up and running:
+<pre>kubectl get pods -n ${ns}|grep esm</pre>
+For example:
+<pre>itom-esm-update-patch-manager-job-hnfqj              1/1     Running           0          3m8s </pre>
+</li>
+<li>Start the patch:
+<pre>podName=$( kubectl get pods -n ${ns} |grep esm-update-patch-manager |awk '{print $1}' )
+kubectl exec -it ${podName} -n ${ns} /bin/bash
+cd /app/
+nohup ./patchStarter.sh -v [targetVersion] &gt; /var/log/itom-esm-update-patch-manager/nohup.log 2&gt;&amp;1 &amp;
+<pre>Where: [targetVersion] is the target version. For example, if you are upgrading to version 2018.08, replace it with 2018.08.
+</pre></pre></li>
+<li>Start the suite upgrade, and pause when you reach the Precheck step. For details, see the "Upgrade the suite" topic. 
+</li>
+<li>Go to the NFS server, and check the log file in <global-volume>/logs/itom-esm-update-patch-manager/patchStarter-YYYYMMDD.log, and make sure that the output is "isReadytoUpdate." 
+</global-volume></li>
+<li>Go back to the upgrade wizard and resume the suite upgrade process from the precheck step. Finish the upgrade process.</li>
+</ol>
 
-<p>&nbsp;</p>
+
+
+
+
+
+
 </html>
