@@ -1,1 +1,99 @@
- 
+<html><h2>Introduction</h2>
+
+<p>The SMA Update Patch Manager is a tool that helps streamline your suite upgrade process by proactively preventing the following most commonly encountered issues from happening in&nbsp;your environment.&nbsp;&nbsp;</p>
+
+<table>
+	<tbody>
+		<tr>
+			<th>Issue Name</th>
+			<th>Problem description</th>
+			<th>Phase</th>
+			<th>Trigger condition</th>
+			<th>Solution</th>
+			<th>Target version</th>
+		</tr>
+		<tr>
+			<td><strong>fix-cdf-deployment-status-and-version</strong></td>
+			<td><strong>Upgrade is successful but we failed to call back CDF API to reset in last Upgrade process</strong></td>
+			<td>Before upgrade</td>
+			<td>1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cdf_suite_status = installing/updating
+			<p>2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Itom_install_phase = running</p>
+			</td>
+			<td>1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; update cdf_suite_version with&nbsp; itom_suite_version
+			<p>2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Update cdf_suite_status&nbsp; to install_finished</p>
+			</td>
+			<td>1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2018.08
+			<p>2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2019.02</p>
+
+			<p>3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2019.05</p>
+
+			<p>4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2019.08</p>
+			</td>
+		</tr>
+		<tr>
+			<td><strong>fix-wrong-fqdn-of-smax-upgrade</strong></td>
+			<td>Suite-upgrade pod get wrong FQDN name from CDF</td>
+			<td>Before upgrade</td>
+			<td>1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Upgrade pod FQDN and SMA FQDN is different
+			<p>2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Suite upgrade pod is starting or running</p>
+			</td>
+			<td>1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Change the configmap value with correct FQDN
+			<p>2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; restart upgrade pod</p>
+			</td>
+			<td>1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2018.08
+			<p>2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2019.02</p>
+
+			<p>3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2019.05</p>
+
+			<p>4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2019.08</p>
+			</td>
+		</tr>
+		<tr>
+			<td><strong>fix-itom-bo-ats-deployment-failed</strong></td>
+			<td><strong>Itom-bo- dependcy check fails, due to BO-ATS database did not get upgraded</strong></td>
+			<td>Before upgrade</td>
+			<td>&nbsp;Configmap itom-bo-configmap DB_SCHEMA_CHECK is false.</td>
+			<td>&nbsp;Update Configmap itom-bo-configmap DB_SCHEMA_CHECK to true.</td>
+			<td>2018.08 -&gt; 2020.05
+			<p>Until we can fix this defect in bo in a future release. Otherwise, it will remain in all releases.</p>
+			</td>
+		</tr>
+		<tr>
+			<td><strong>fix-itom-xruntime-upgrade-tenants-failed</strong></td>
+			<td>1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; call API with external FQDN
+			<p>2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; special characters in user password</p>
+
+			<p>3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pod always return with success, even the tenant content upgrade fail</p>
+			</td>
+			<td>In upgrade</td>
+			<td>1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>itom-xruntime-upgrade-tenants</em>&nbsp;is running</td>
+			<td>1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Publish a image with patch manager
+			<p>2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Document for user to push image to registry</p>
+
+			<p>3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Retag image when tenant content upgrade start to run</p>
+			</td>
+			<td>1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2018.08
+			<p>2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2019.02</p>
+
+			<p>3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2019.05</p>
+
+			<p>4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2019.08</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>When to use this tool</h2>
+
+<p>Use this tool after the CDF upgrade and before the suite upgrade.&nbsp;</p>
+
+<h2>How to use this tool</h2>
+
+<p>Run this tool on a master node (non-BYOK) or the&nbsp;bastion node (BYOK).&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+</html>
