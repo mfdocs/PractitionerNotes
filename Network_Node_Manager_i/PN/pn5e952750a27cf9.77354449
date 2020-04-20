@@ -68,7 +68,7 @@ public class NnmWSClient {
 	
 	public NnmWSClient() throws NmsIncidentFault_Exception, NmsNodeGroupFault_Exception, NmsNodeFault_Exception{
 		
-		DataPoster dataPoster = new DataPoster();
+		DataPoster dataPoster = new DataPoster(nodeGroup);
 		DataRetriever dataRetriever = new DataRetriever(nodeGroup, dataPoster); 
 		dataPoster.postData();		
 	}
@@ -277,56 +277,65 @@ public class DataPoster {
 	private String bvdURL = "https://&lt;My BVD FQDN&gt;/bvd-receiver/api/submit/";
 	//replace with your BVD API Key
 	private String bvdApiKey="&lt;My BVD API Key&gt;";
+	private String bvdTags=null;
 	private List&lt;Incident&gt; incidents=null;
+	private String nodeGroup=null;
 	
-	public DataPoster() {
+	public DataPoster(String nodegrp) {
+		nodeGroup = nodegrp;
+		bvdTags = nodeGroup + ",CriticalIncident";
 		incidents = new ArrayList&lt;Incident&gt;();
 	}
 	
 	public List&lt;Incident&gt; getIncidents() {
 		return incidents;
 	}
-	
+
 	public void postData() {
-		String bvdCurlUrl= this.bvdURL + this.bvdApiKey + "/dims/NodeName,CriticalIncident";	
+		String bvdCurlUrl= this.bvdURL + this.bvdApiKey + "/tags/" + bvdTags + "/dims/NodeName,CriticalIncident";	
 		try {
+			String jsonMsg = "\'[";
+			int k = 0;
 			for (Incident  incident : incidents){
-				String jsonMsg = "\'{";
-				jsonMsg = jsonMsg + "," + "\"NodeName\"" + ":" + "\"" + incident.getSourceNodeName() + "\"" + ","
+				jsonMsg = jsonMsg + "{";
+				jsonMsg = jsonMsg + /*"," +*/ "\"NodeName\"" + ":" + "\"" + incident.getSourceNodeName() + "\"" + ","
 							  + "\"CriticalIncident\"" + ":" + "\"" + incident.getName() + "\"" + ","
-							  + "\"SourceNode\"" + ":" + "\"" + incident.getSourceNodeName() + "\"" + ","
 			                  + "\"SourceName\"" + ":" + "\"" + incident.getSourceName() + "\"" + ","
-			                  + "\"Incident\"" + ":" + "\"" + incident.getName() + "\"" + ","
 			                  + "\"LastOccurrenceTime\"" + ":" + "\"" + incident.getLastOccurrenceTime() + "\"";
-				jsonMsg = jsonMsg + "}\'";
-				jsonMsg = jsonMsg.replaceFirst(",","");
-				String curlCLI = "curl -k -X POST -H \"Content-Type: application/json\" -d " + jsonMsg 
+				jsonMsg = jsonMsg + "}";
+				if (k &lt; incidents.size()-1) {
+					jsonMsg = jsonMsg + ",";
+					k++;
+				}
+			}
+			jsonMsg = jsonMsg + "]\'";
+			//System.out.println(jsonMsg);
+			String curlCLI = "curl -s -k --noproxy --globoff -X POST -H \"Content-Type: application/json\" -d " + jsonMsg 
 					+ " " + bvdCurlUrl;
-				System.out.println(curlCLI);
+			System.out.println(curlCLI);
 			
-				String s = null;
-				// using the Runtime exec method:
-				Process p;
-				p = Runtime.getRuntime().exec(curlCLI);
-				BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
-				BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-				// read the output from the command
-				System.out.println("Here is the standard output of the command:\n");
-				while ((s = stdInput.readLine()) != null) {
-					System.out.println(s);
-				}
-				// read any errors from the attempted command
-				System.out.println("Here is the standard error of the command (if any):\n");
-			
-				while ((s = stdError.readLine()) != null) {
-					System.out.println(s);
-				}
+			String s = null;
+			// using the Runtime exec method:
+			Process p;
+			p = Runtime.getRuntime().exec(curlCLI);
+			BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+			// read the output from the command
+			System.out.println("Here is the standard output of the command:\n");
+			while ((s = stdInput.readLine()) != null) {
+				System.out.println(s);
+			}
+			// read any errors from the attempted command
+			System.out.println("Here is the standard error of the command (if any):\n");
+			while ((s = stdError.readLine()) != null) {
+				System.out.println(s);
 			}	
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-}</code></pre>
+}
+</code></pre>
 
 	<p><br>
 	&nbsp;</p>
