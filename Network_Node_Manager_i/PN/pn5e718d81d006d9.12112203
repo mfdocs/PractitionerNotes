@@ -473,5 +473,146 @@ do
 done
 </code></pre>
 
-<p>&nbsp;</p>
+<p><br>
+<code>streamtobvd.ovpl:</code><br>
+&nbsp;</p>
+
+<pre><code class="language-perl">#!/opt/OV/nonOV/perl/a/bin/perl -I/opt/OV/NNMPerformanceSPI/lib/perllibs/lib
+#use NPS::nps;
+use Getopt::Std;
+use HTTP::Request ();
+use LWP::UserAgent;
+
+my %opts;
+my %BVDFQDN;
+my %BVDAPIKEY;
+my %SQLFILE;
+
+
+sub usage {
+  print "Usage:  -s &lt;BVD FQDN&gt; -k &lt;BVDAPIKEY&gt; -f &lt;SQL FILE&gt; -m https\n";
+  exit 1;
+}
+
+
+my $argc = @ARGV;
+
+if ($argc &lt; 6) {
+  usage
+}
+
+getopts("s:k:f:m:", \%opts);
+
+if ( defined $opts{s}) {
+  $BVDFQDN = $opts{s};
+}
+
+
+if ( defined $opts{k}) {
+  $BVDAPIKEY = $opts{k};
+}
+
+if ( defined $opts{f}) {
+  $SQLFILE = $opts{f};
+}
+
+my $https = "false" ;  # https yes/no
+if (defined $opts{m}) {
+    if($opts{m} eq "https") {
+      $https = "true";
+    } 
+}
+
+#my $BVDURL="http://$BVDFQDN/api/submit/";
+my $BVDURL;
+
+if($https eq "true") {
+    $BVDURL="https://$BVDFQDN/bvd-receiver/api/submit/";
+} else {
+    $BVDURL="http://$BVDFQDN/bvd-receiver/api/submit/";
+}
+
+my $BVDCURLURL="$BVDURL$BVDAPIKEY/dims/NodeName,PerfMetrics";
+my $HEADER= ['Content-Type' =&gt; 'application/json; charset=UTF-8'];
+
+my $flag = 1;
+print_communication_mode();
+
+sub push_data_to_bvd {
+  my ($msg_to_send) = @_ ;
+  #print ("Message to send : $msg_to_send\n");
+  my $r = new HTTP::Request POST =&gt; $BVDCURLURL;
+  $r-&gt;content_type('application/json');
+  $r-&gt;content($JSONMSG);
+  my $ua = LWP::UserAgent-&gt;new();
+  if($https eq "true") {
+      $ua-&gt;ssl_opts(verify_hostname =&gt; 0);  #To bypass all certificate checks 
+  }
+  my $res = $ua-&gt;request($r);
+  if (! $res-&gt;is_success) {
+    print "Error is sending message " . $res-&gt;status_line . "\n";
+  } else {
+    print "SUCCESS " . $res-&gt;content . "\n";
+  }
+}
+
+sub print_communication_mode {
+  print "\n\n\nCommunication Configurations \n";
+  print "----------------------------\n";
+  print "Using HTTPS mode    : " . uc $https . "\n";
+  print "BVDURL              : " . $BVDURL . "\n";
+  print "----------------------------\n";
+}
+
+while (1) {
+  my $cmd = qq(dbisql -onerror exit -nogui -c "DSN=PerfSPIProxyDSN" "$SQLFILE" |);
+  #system_or_die($cmd);
+  open(PS_F, $cmd);
+  my @header;
+  my $nodeName;
+  while (&lt;PS_F&gt;) {
+    if ($flag == 1){
+      @header = split /\|/, $_;
+      $flag = 0;
+      next;
+    }
+    if ($_ =~ /Execution time/ or $_ =~ /rows/) {
+      #print ("Ignoring SQL stmt summary\n");
+      next;
+    }
+    my @data = split(' ', $_);
+    my $i = 3;
+    $nodeName = $data[2];
+    if ($nodeName eq '' or $nodeName =~ /---/) {
+      #print("Invalid data: $nodeName\n");
+      next;
+    }
+    my $element;
+    $JSONMSG="{" . '"NodeName"' . ":" . "\"" . $nodeName  . '"' .  ',"PerfMetrics":"My Metrics",';
+    #$JSONMSG="{" . '"NodeName"' . ":" . "\"" . $nodeName  .  '," PerfMetrics":"My Metrics",';
+
+    for (my $i = 3; $i &lt;= $#data; $i++) {
+      if ($i &lt;$#data) {
+        $metricName = $header[$i-1];
+        $metricName =~ s/^\s+|\s+$//g;
+        $element="\"". $metricName . "\"" . ':' . '"' . $data[$i] . '"' . ',';
+      }
+      else {
+        $metricName = $header[$i-1];
+        $metricName =~ s/^\s+|\s+$//g;
+        $element="\"". $metricName . "\"" . ':' . '"' . $data[$i] . '"';
+      }
+      $JSONMSG=$JSONMSG . $element;
+    }
+    $JSONMSG=$JSONMSG . '}';
+    push_data_to_bvd($JSONMSG); 
+	} 
+  print_communication_mode();
+  print "\nWaiting for 5 minutes to get the new data \n";
+  sleep(30);
+}
+</code></pre>
+
+<p><br>
+&nbsp;</p>
 </html>
