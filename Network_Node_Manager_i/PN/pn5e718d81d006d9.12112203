@@ -1,4 +1,4 @@
-<p>Business Value Dashboards present your data in real time in a very flexible layout for visualizing on any browser capable device.&nbsp; Within Micro Focus Network Operations Management (NOM) suite, there are several out-of-the-box data sources, such as incidents from Network Node Manager (NNMi) and device configuration and vulnerability from Network Automation (NA).&nbsp; These data sources can be streamed to BVD when integration is enabled.&nbsp;&nbsp; However, the current NOM Suite by default does not include an out-of-the-box performance metrics data source for BVD.&nbsp; This article will demonstrate how to build a new data channel solution to achieve this requirement with a concrete use case.</p>
+<html><p>Business Value Dashboards present your data in real time in a very flexible layout for visualizing on any browser capable device.&nbsp; Within Micro Focus Network Operations Management (NOM) suite, there are several out-of-the-box data sources, such as incidents from Network Node Manager (NNMi) and device configuration and vulnerability from Network Automation (NA).&nbsp; These data sources can be streamed to BVD when integration is enabled.&nbsp;&nbsp; However, the current NOM Suite by default does not include an out-of-the-box performance metrics data source for BVD.&nbsp; This article will demonstrate how to build a new data channel solution to achieve this requirement with a concrete use case.</p>
 
 <p><strong>Use Case Description</strong>:&nbsp; Due to the COVID-19 outbreak, Company A is requesting all its employees to work from home.&nbsp; The company is responding to an urgent request from top management and needs to conduct a network stress test.&nbsp; This is done to make sure its network infrastructure is capable of providing sufficient bandwidth and to identify bottlenecks rapidly.&nbsp; Also executives request insight into network status and performance. They want to use NOM to capture the required metrics to validate the test, and stream the results to an executive business dashboard such as the one shown below:</p>
 
@@ -78,8 +78,10 @@ Micro Focus provided 2 scripts, <code>sqlgenerator.ovpl</code> and <code>streamb
 	Example:<br>
 	<code>streamtobvd.sh –s mybvd.microfocus.com –k fa4b8c37d69445c79695739c53e0ccd5 –f interfacemetrics_query.sql</code><br>
 	<br>
-	In this step, the script runs SQL query against NPS database, retrieve the metrics of interest, then format the metrics into a JSON message and stream it to the BVD server.&nbsp; A new data channel with these metrics will be available in BVD, as shown below:<br>
-	<img alt="" src="/mediawiki/images/pn_images/pn_image_5e8fb627197337.54864391.png" style="height:159px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px"><br>
+	In this step, the script runs SQL query against NPS database, retrieve the metrics of interest, then format the metrics into a JSON message and stream it to the BVD server.&nbsp; A new data channel with these metrics will be available in BVD, as shown below:<img alt="" src="/mediawiki/images/pn_images/pn_image_5e8fb627197337.54864391.png" style="height:159px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:500px"><br>
+	If your NPS server is running on Windows, use the streamtobvd.ovpl.&nbsp;<br>
+	Example:<br>
+	<code>streamtobvd.ovpl&nbsp;–s mybvd.microfocus.com –k fa4b8c37d69445c79695739c53e0ccd5 –f interfacemetrics_query.sql</code><br>
 	Now, each performance metric in the new data channel can easily be associated with a particular widget in dashboard.</li>
 </ol>
 
@@ -103,7 +105,7 @@ b)&nbsp;Both MF provided scripts need to run on the NPS server as it executes SQ
 This article described the implementation of a solution to a user case which allow NOM customers to collect special MIB variables and performance metrics and stream the collected metrics to a BVD dashboard. &nbsp;This article also included 2 scripts for customers to facilitate the implementation of the solution.</p>
 
 <p><strong>Appendix</strong><br>
-Two scripts, &nbsp;<code>sqlgenerator.ovpl </code>and <code>streamtobvd.sh</code> for this solution are included in this section in their entirety.&nbsp;</p>
+Three scripts, &nbsp;<code>sqlgenerator.ovpl,&nbsp;</code><code>streamtobvd.sh</code>&nbsp;and&nbsp;<code>streamtobvd.ovpl</code>&nbsp;for this solution are included in this section in their entirety.&nbsp;</p>
 
 <p><code>sqlgenerator.ovpl:</code></p>
 
@@ -472,3 +474,4 @@ done
 </code></pre>
 
 <p>&nbsp;</p>
+</html>
