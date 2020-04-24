@@ -1,1 +1,16 @@
- 
+<html><hr>
+<pre><code class="language-javascript">function copyFunction(parent) {
+  let copyText;
+  if(parent){
+    copyText = parent.textContent;
+  }
+  if (copyText.length == 0) return;
+  const textArea = document.createElement('textarea');
+  textArea.textContent = copyText;
+  document.body.append(textArea);
+  textArea.select();
+  document.execCommand("copy");
+}</code></pre>
+
+<p>&nbsp;</p>
+</html>
