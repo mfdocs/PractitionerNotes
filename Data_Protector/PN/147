@@ -4,11 +4,29 @@
 
 <p>If you're new to this, we need to start with some basics. If the Legacy Scheduler is available in your Data Protector (not the case for releases A.10.00 up to A.10.10), a schedule for a specification (backup, copy, replication, consolidation, report groups) is stored in an ASCII file on the Cell Manager. If you create a new specification a corresponding file with the same name will be created in the directory. If there is no schedule defined, the file will be empty. You can find the files in the corresponding folders on the Cell Manager. The files are read by a process called omnitrig every 1 or&nbsp;15 minutes depending on your configuration (SchedulerGranularity in global configuration file).</p>
 
-<p><code>%DP_DATA_DIR%\Config\Server\Schedules</code> or&nbsp;<code>/etc/opt/omni/server/schedules</code> for <b>file system backup specs</b><br>
-<span style="background-color: transparent;"><code>%DP_DATA_DIR%\Config\Server</code></span><code>\Barschedules</code> or&nbsp;<code>/etc/opt/omni/server/barschedules</code> for <b>integration backup specs</b>,<b>&nbsp;</b>such as MSSQL, Exchange, VEAgent (VMware) and others<br>
-<code>%DP_DATA_DIR%\Config\Server\rptschedules</code> or&nbsp;<code>/etc/opt/omni/server/rptschedules</code> for <b>report groups</b><br>
-<code>%DP_DATA_DIR%\Config\Server\copylists\scheduled\schedules</code> or&nbsp;<code>/etc/opt/omni/server/copylists/scheduled/schedules</code> for <b>scheduled copy or replication specs</b><br>
-<code>%DP_DATA_DIR%\Config\Server\consolidationlists\scheduled\schedules</code> or&nbsp;<code>/etc/opt/omni/server/consolidationlists/scheduled/schedules</code> for <b>schedules consolidation specs</b></p>
+<h3>File system Backup Specs</h3>
+
+<p><code>%DP_DATA_DIR%\Config\Server\Schedules</code> or&nbsp;<code>/etc/opt/omni/server/schedules</code></p>
+
+<h3>Integration Backup Specs</h3>
+
+<p>Such as MSSQL, Exchange, VEAgent (VMware) and others.</p>
+
+<p><span style="background-color: transparent;"><code>%DP_DATA_DIR%\Config\Server</code></span><code>\Barschedules</code> or&nbsp;<code>/etc/opt/omni/server/barschedules</code></p>
+
+<h3>Object Operations</h3>
+
+<p>Such as&nbsp;Object Copy (including Replication), Object Consolidation and Object Verification.</p>
+
+<p><code>%DP_DATA_DIR%\Config\Server\copylists\scheduled\schedules</code> or&nbsp;<code>/etc/opt/omni/server/copylists/scheduled/schedules</code><br>
+<code>%DP_DATA_DIR%\Config\Server\consolidationlists\scheduled\schedules</code> or&nbsp;<code>/etc/opt/omni/server/consolidationlists/scheduled/schedules</code><br>
+<code>%DP_DATA_DIR%\Config\Server\verificationlists\scheduled\schedules</code> or&nbsp;<code>/etc/opt/omni/server/verificationlists/scheduled/schedules</code></p>
+
+<p>&nbsp;</p>
+
+<h3>Report Groups</h3>
+
+<p><code>%DP_DATA_DIR%\Config\Server\rptschedules</code> or&nbsp;<code>/etc/opt/omni/server/rptschedules</code></p>
 
 <div class="Admonition_Note">It is not required to restart the services when changing those files. Just be careful when using tools like <code>vi</code> or <code>vim</code> as they will create a swap file in the same directory and this may produce warnings.</div>
 
@@ -42,7 +60,7 @@
 
 <p>This is how it looks like in the Data Protector GUI.</p>
 
-<h3><img alt="" border="0" height="558" hspace="0" src="/mediawiki/images/pn_images/pn_image_5eaad1347430d5.22931415.png" style="width: 800px; height: 558px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></h3>
+<p><img alt="" border="0" src="/mediawiki/images/pn_images/pn_image_5eaad1347430d5.22931415.png" vspace="0"></p>
 
 <h3>Monthly Object Operation Sample</h3>
 
