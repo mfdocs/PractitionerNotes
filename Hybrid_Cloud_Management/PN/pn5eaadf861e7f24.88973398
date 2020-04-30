@@ -1,1 +1,377 @@
- 
+<html><h2>Premise</h2>
+
+<p>Due to the large amount of data associated with Showback cost reporting collections and the time it takes to retrieve the data from various providers, it often proves difficult to test and demo Showback and related service’s features. As such, it became abundantly apparent that some way of generating Showback collections to match a test or demo scenario in a shorter period of time and with less data was sorely needed. Enter Demo Data: the feature that leverages multitenancy within CGRO to allow demo tenant integrations to be created and collection results to be customized and run in a fraction of the time of a production collection.</p>
+
+<h2>How it works</h2>
+
+<p>Any collection run by a tenant designated as being in demo mode will automatically be seeded from Demo Data. Tenants in demo mode are designated by the IDM metadata key/value pair of CGRO-TENANT-TIER/demo.&nbsp;<br>
+Once a tenant in demo mode has been created, integrations can be configured. Upon creation of the first integration for the demo tenant, a folder is generated on the system. The default path for this folder on an NFS mount is &lt;mount-path&gt;/demo-collection/&lt;tenant&gt; where &lt;tenant&gt; is the name of the tenant in demo mode (this path can be changed by modifying the DEFAULT_DEMO_TENANT_DROP_PATH in the deployment yaml file). Within this folder, 6 files (explained in the next section) will be automatically generated with default Demo Data. Upon first creation of an integration, the default Demo Data will be loaded and a collection will be run using this data. (Note: any credentials entered will be accepted, then ignored; collections and reports will run and be displayed without using valid credentials.) At the completion of the collection, reports for the created integration will be viewable and populated with default Demo Data that provides examples of general use cases of the reports, including years of data with usage trends, cloud tags and expressions.</p>
+
+<h2>Files Created</h2>
+
+<p>As mentioned in the previous section, 6 required files are created for Demo Data. This section overviews the purpose of each file and following sections cover the contents and how to customize them.<br>
+•&nbsp;&nbsp; &nbsp;AwsDemoSeeds.json and AzureDemoSeeds.json are used to specify the instances to create during collection (for AWS these instances are EC2, RDS and S3). Each of these seeds also allow for the specification of tags for each of the created instances. These seeds will produce and populate the line items in the db at collection time (including tags for both AWS and Azure).<br>
+•&nbsp;&nbsp; &nbsp;AwsDemoColumns.json and AzureDemoColumns.json create custom columns for the seeds. These files behave essentially the same as POSTing bulk custom columns via the custom column api.<br>
+•&nbsp;&nbsp; &nbsp;AwsDemoExpressions.json and AzureDemoExpressions.json create expressions that will populate the custom columns. These files behave essentially the same as a bulk POST via the expressions API.</p>
+
+<h2>Payloads</h2>
+
+<h3>Seeds</h3>
+
+<p>Example AWS seed payload with three instances defined<br>
+[<br>
+{<br>
+&nbsp; &nbsp; "name": "CGRO-DEMO Reserved AWS EC2, 1 instance, 100% uptime, starting 2016, ending in 2017",<br>
+&nbsp; &nbsp; "startDate": "2016-07-01T00:00:00Z",<br>
+&nbsp; &nbsp; "endDate": "2017-04-01T00:00:00Z",<br>
+&nbsp; &nbsp; "pricingTerm": "Reserved",<br>
+&nbsp; &nbsp; "contractLength": "1yr",<br>
+&nbsp; &nbsp; "purchaseOption": "No Upfront",<br>
+&nbsp; &nbsp; "offeringClass": "standard",<br>
+&nbsp; &nbsp; "operatingSystem": "Linux",<br>
+&nbsp; &nbsp; "productCode": "AmazonEC2",<br>
+&nbsp; &nbsp; "tenancy": "Shared",<br>
+&nbsp; &nbsp; "uptimePercentage": 100,<br>
+&nbsp; &nbsp; "numberOfInstances": 1,<br>
+&nbsp; &nbsp; "region": "us-east-1",<br>
+&nbsp; &nbsp; "hourlyCostPerNormalizationUnit": 0.1591,<br>
+&nbsp; &nbsp; "usageAccountId": "usageAccount1",<br>
+&nbsp; &nbsp; "generatedValuesSeed": 123123,<br>
+&nbsp; &nbsp; "instanceType": {<br>
+&nbsp; &nbsp; &nbsp; "family": "t2",<br>
+&nbsp; &nbsp; &nbsp; "type": "xlarge"<br>
+&nbsp; &nbsp; },<br>
+&nbsp; &nbsp; "tags": [<br>
+&nbsp; &nbsp; &nbsp; {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "key": "foo",<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "value": "test"<br>
+&nbsp; &nbsp; &nbsp; },<br>
+&nbsp; &nbsp; &nbsp; {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "key": "owner",<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "value": "Jane Doe"<br>
+&nbsp; &nbsp; &nbsp; }<br>
+&nbsp; &nbsp; ]<br>
+},<br>
+{<br>
+&nbsp; &nbsp; "name": "CGRO-DEMO On Demand AWS RDS 100% uptime, 1 instance, starting 2017",<br>
+&nbsp; &nbsp; "startDate": "2017-01-01T00:00:00Z",<br>
+&nbsp; &nbsp; "endDate": "PERPETUAL",<br>
+&nbsp; &nbsp; "pricingTerm": "OnDemand",<br>
+&nbsp; &nbsp; "productCode": "AmazonRDS",<br>
+&nbsp; &nbsp; "uptimePercentage": 100,<br>
+&nbsp; &nbsp; "numberOfInstances": 1,<br>
+&nbsp; &nbsp; "region": "GENERATE",<br>
+&nbsp; &nbsp; "hourlyCostPerNormalizationUnit": 0.42,<br>
+&nbsp; &nbsp; "usageAccountId": "usageAccount2",<br>
+&nbsp; &nbsp; "generatedValuesSeed": 45784578,<br>
+&nbsp; &nbsp; "instanceType": {<br>
+&nbsp; &nbsp; &nbsp; "family": "GENERATE",<br>
+&nbsp; &nbsp; &nbsp; "type": "GENERATE"<br>
+&nbsp; &nbsp; }<br>
+},<br>
+{<br>
+&nbsp; &nbsp; "name": "CGRO-DEMO On Demand AWS S3 95% uptime, 1 instance, starting 2018",<br>
+&nbsp; &nbsp; "startDate": "2018-11-11T00:00:00Z",<br>
+&nbsp; &nbsp; "endDate": "PERPETUAL",<br>
+&nbsp; &nbsp; "pricingTerm": "OnDemand",<br>
+&nbsp; &nbsp; "productCode": "AmazonS3",<br>
+&nbsp; &nbsp; "uptimePercentage": 95,<br>
+&nbsp; &nbsp; "numberOfInstances": 1,<br>
+&nbsp; &nbsp; "region": "us-west-2",<br>
+&nbsp; &nbsp; "hourlyCostPerNormalizationUnit": 1.9231,<br>
+&nbsp; &nbsp; "usageAccountId": "usageAccount2",<br>
+&nbsp; &nbsp; "generatedValuesSeed": 335555<br>
+}<br>
+]<br>
+Example of Azure seed payload with two instances defined<br>
+[<br>
+{<br>
+&nbsp; &nbsp; "name": "CGRO-DEMO 1 Azure Reserved with 100% uptime starting in 2017",<br>
+&nbsp; &nbsp; "startDate": "2017-01-01T00:00:00",<br>
+&nbsp; &nbsp; "endDate": "PERPETUAL",<br>
+&nbsp; &nbsp; "pricingTerm": "Reserved",<br>
+&nbsp; &nbsp; "meterCategory": "Virtual Machines",<br>
+&nbsp; &nbsp; "meterName": "B2s",<br>
+&nbsp; &nbsp; "location": "cacentral",<br>
+&nbsp; &nbsp; "dailyCost": 0.921,<br>
+&nbsp; &nbsp; "accountId": "25556358",<br>
+&nbsp; &nbsp; "accountName": "account 1",<br>
+&nbsp; &nbsp; "numberOfInstances": 1,<br>
+&nbsp; &nbsp; "uptimePercentage": 100,<br>
+&nbsp; &nbsp; "generatedValuesSeed": 25556358,<br>
+&nbsp; &nbsp; "tags": [<br>
+&nbsp; &nbsp; &nbsp; {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "key": "owner",<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "value": "John Smith"<br>
+&nbsp; &nbsp; &nbsp; }<br>
+&nbsp; &nbsp; ]<br>
+&nbsp; },<br>
+{<br>
+&nbsp; &nbsp; "name": "1 Azure Blob with 100% uptime starting in 2017",<br>
+&nbsp; &nbsp; "startDate": "2017-01-01T00:00:00",<br>
+&nbsp; &nbsp; "endDate": "PERPETUAL",<br>
+&nbsp; &nbsp; "numberOfInstances": 1,<br>
+&nbsp; &nbsp; "uptimePercentage": 100,<br>
+&nbsp; &nbsp; "generatedValuesSeed": 1234567,<br>
+&nbsp; &nbsp; "meterCategory": "Storage",<br>
+&nbsp; &nbsp; "dailyCost": 1.0654,<br>
+&nbsp; &nbsp; "accountId": "GENERATE",<br>
+&nbsp; &nbsp; "accountName": "GENERATE",<br>
+&nbsp; &nbsp; "location": "GENERATE"<br>
+&nbsp; }<br>
+]</p>
+
+<p>Common fields<br>
+•&nbsp;&nbsp; &nbsp;"name"<br>
+o&nbsp;&nbsp; &nbsp;Required<br>
+o&nbsp;&nbsp; &nbsp;Unique<br>
+o&nbsp;&nbsp; &nbsp;String<br>
+o&nbsp;&nbsp; &nbsp;Distinguishing field&nbsp;<br>
+•&nbsp;&nbsp; &nbsp;"startDate"<br>
+o&nbsp;&nbsp; &nbsp;Required<br>
+o&nbsp;&nbsp; &nbsp;String<br>
+o&nbsp;&nbsp; &nbsp;The date where the currently defined instance(s) first appear<br>
+o&nbsp;&nbsp; &nbsp;Format<br>
+&nbsp;&nbsp; &nbsp;AWS: example "2019-12-31T00:00:00Z"<br>
+&nbsp;&nbsp; &nbsp;Azure: example "2019-12-31T00:00:00"<br>
+o&nbsp;&nbsp; &nbsp;Azure granularity is by the day<br>
+o&nbsp;&nbsp; &nbsp;AWS granularity is by the hour<br>
+•&nbsp;&nbsp; &nbsp;"endDate"<br>
+o&nbsp;&nbsp; &nbsp;Required<br>
+o&nbsp;&nbsp; &nbsp;String<br>
+o&nbsp;&nbsp; &nbsp;The date where the currently defined instance(s) last appear<br>
+o&nbsp;&nbsp; &nbsp;Format<br>
+&nbsp;&nbsp; &nbsp;Same format as "startDate"<br>
+&nbsp;&nbsp; &nbsp;A value of "PERPETUAL" will continue to generate entries for the defined instance(s) for every date since the startDate&nbsp;<br>
+o&nbsp;&nbsp; &nbsp;Azure granularity is by the day<br>
+o&nbsp;&nbsp; &nbsp;AWS granularity is by the hour<br>
+•&nbsp;&nbsp; &nbsp;"numberOfInstances"<br>
+o&nbsp;&nbsp; &nbsp;Required<br>
+o&nbsp;&nbsp; &nbsp;Integer<br>
+o&nbsp;&nbsp; &nbsp;The number of instances to create using the defined specifications<br>
+•&nbsp;&nbsp; &nbsp;"uptimePercentage"<br>
+o&nbsp;&nbsp; &nbsp;Required<br>
+o&nbsp;&nbsp; &nbsp;Integer<br>
+o&nbsp;&nbsp; &nbsp;The percentage of time the instance is active within the given time frame<br>
+•&nbsp;&nbsp; &nbsp;"generatedValuesSeed"<br>
+o&nbsp;&nbsp; &nbsp;Required<br>
+o&nbsp;&nbsp; &nbsp;Semi-Unique (i.e. not enforced, but highly recommended that it be unique unless the user is confident it won’t conflict with other data generation)<br>
+o&nbsp;&nbsp; &nbsp;Integer<br>
+o&nbsp;&nbsp; &nbsp;The seed used to generate the fields for the instance<br>
+•&nbsp;&nbsp; &nbsp;"tags"<br>
+o&nbsp;&nbsp; &nbsp;Optional<br>
+o&nbsp;&nbsp; &nbsp;Custom cloud tag<br>
+o&nbsp;&nbsp; &nbsp;Syntax:<br>
+&nbsp;&nbsp; &nbsp;Key is the unique identifier of the cloud tag (For example: Owner)<br>
+&nbsp;&nbsp; &nbsp;Value is the assigned value for that key (For example: John Doe)<br>
+&nbsp;&nbsp; &nbsp;Example:<br>
+[<br>
+{<br>
+“key”: “Owner”,<br>
+“value”: “John Doe”<br>
+},<br>
+{<br>
+“key”: “key2”,<br>
+“value”: “value2”<br>
+}<br>
+]</p>
+
+<p>AWS-specific fields (fields marked with * require specific values for Insights to function properly, please see the “Notes” section at the end of the document for further explanation)</p>
+
+<p>•&nbsp;&nbsp; &nbsp;"productCode"<br>
+o&nbsp;&nbsp; &nbsp;“AmazonEc2”, “AmazonRDS”, or “AmazonS3”<br>
+•&nbsp;&nbsp; &nbsp;"productFamily"<br>
+o&nbsp;&nbsp; &nbsp;Recommended that it be set to “Compute Instance” for EC2 and “Database Instance” for RDS and not set for S3 (the value will be automatically populated to these values if this field is left out)<br>
+•&nbsp;&nbsp; &nbsp;"operatingSystem"<br>
+o&nbsp;&nbsp; &nbsp;Must be null for AmazonRDS and AmazonS3 instances<br>
+o&nbsp;&nbsp; &nbsp;Must NOT be null for AmazonEC2<br>
+o&nbsp;&nbsp; &nbsp;Example: “Linux” or “Windows”<br>
+•&nbsp;&nbsp; &nbsp;"tenancy"<br>
+o&nbsp;&nbsp; &nbsp;Must be null for AmazonRDS and AmazonS3 instances<br>
+o&nbsp;&nbsp; &nbsp;Must NOT be null for AmazonEC2<br>
+o&nbsp;&nbsp; &nbsp;Defaults to “Shared”<br>
+•&nbsp;&nbsp; &nbsp;"region"*<br>
+o&nbsp;&nbsp; &nbsp;Required<br>
+o&nbsp;&nbsp; &nbsp;Location of the instance<br>
+&nbsp;&nbsp; &nbsp;Must be an AWS-recognized region<br>
+o&nbsp;&nbsp; &nbsp;Can be set to “GENERATE” for the value to be randomly generated<br>
+•&nbsp;&nbsp; &nbsp;"hourlyCostPerNormalizationUnit"<br>
+o&nbsp;&nbsp; &nbsp;Required<br>
+o&nbsp;&nbsp; &nbsp;Float<br>
+o&nbsp;&nbsp; &nbsp;Cost per AWS normalized unit (a pricing term family of micro is 0.5 normalization units, a pricing term family of large is 2 normalization units)<br>
+•&nbsp;&nbsp; &nbsp;"usageAccountId"<br>
+o&nbsp;&nbsp; &nbsp;Required<br>
+o&nbsp;&nbsp; &nbsp;String<br>
+o&nbsp;&nbsp; &nbsp;Unique identifier for the account<br>
+o&nbsp;&nbsp; &nbsp;Can be set to “GENERATE” for the value to be randomly generated<br>
+•&nbsp;&nbsp; &nbsp;"instanceType"*<br>
+o&nbsp;&nbsp; &nbsp;Required for AmazonRDS and AmazonEC2<br>
+o&nbsp;&nbsp; &nbsp;Must be null for AmazonS3<br>
+o&nbsp;&nbsp; &nbsp;Represents the type of the instance (t2.micro, m4.2xlarge, etc.)<br>
+o&nbsp;&nbsp; &nbsp;Syntax<br>
+&nbsp;&nbsp; &nbsp;“family” is the family of the instance, such as “t2” and “m4”<br>
+•&nbsp;&nbsp; &nbsp;For insights to work this value must be set to “t2”, “t3”, “m4”, or “GENERATE”<br>
+&nbsp;&nbsp; &nbsp;“type” is the type of instance within that family, such as “nano”, “medium”, or “large”<br>
+&nbsp;&nbsp; &nbsp;Will ultimately appear in reports “famly.type”, as in “t2.nano”<br>
+&nbsp;&nbsp; &nbsp;Example:<br>
+"instanceType": {<br>
+"family": "t2",<br>
+&nbsp; &nbsp; &nbsp; "type": "4xlarge"<br>
+}<br>
+•&nbsp;&nbsp; &nbsp;"pricingTerm"&nbsp;<br>
+o&nbsp;&nbsp; &nbsp;The method of billing for the instance<br>
+o&nbsp;&nbsp; &nbsp;Must be either “Reserved” or “On Demand”&nbsp;<br>
+&nbsp;&nbsp; &nbsp;“Reserved” – payment is made through pre-bought usage hours at a discounted rate<br>
+&nbsp;&nbsp; &nbsp;“OnDemand” – payment is made as the hours are used<br>
+•&nbsp;&nbsp; &nbsp;Reserved-only fields (Required if pricingTerm is set to “Reserved”, empty otherwise)<br>
+o&nbsp;&nbsp; &nbsp;"contractLength"<br>
+&nbsp;&nbsp; &nbsp;The length of the reservation bought that is being applied to the current instance.<br>
+&nbsp;&nbsp; &nbsp;Must be either “1yr” or “3yr”<br>
+o&nbsp;&nbsp; &nbsp;"purchaseOption"<br>
+&nbsp;&nbsp; &nbsp;The type of reservation purchased<br>
+&nbsp;&nbsp; &nbsp;Must be one of the following: “All Upfront”, “Partial Upfront”, or “No Upfront”<br>
+o&nbsp;&nbsp; &nbsp;"offeringClass"<br>
+&nbsp;&nbsp; &nbsp;Required for EC2 (if not explicitly set, will default to “standard”)<br>
+&nbsp;&nbsp; &nbsp;Optional for RDS and S3 (only set if very confident)&nbsp;<br>
+&nbsp;&nbsp; &nbsp;Acceptable values are “convertible” and “standard”<br>
+Azure-specific fields<br>
+•&nbsp;&nbsp; &nbsp;"meterCategory"<br>
+o&nbsp;&nbsp; &nbsp;Required<br>
+o&nbsp;&nbsp; &nbsp;Must be either "Virtual Machines" or "Storage"<br>
+&nbsp;&nbsp; &nbsp;“Virtual Machines” is for compute instances<br>
+&nbsp;&nbsp; &nbsp;“Storage” is for Blob instances<br>
+•&nbsp;&nbsp; &nbsp;"meterName"<br>
+o&nbsp;&nbsp; &nbsp;Required<br>
+o&nbsp;&nbsp; &nbsp;A value of “GENERATE” will automatically populate this field with a random acceptable value<br>
+o&nbsp;&nbsp; &nbsp;The type of Azure instance<br>
+o&nbsp;&nbsp; &nbsp;For example: “F2/F2s” or “A2” or “B2s”<br>
+•&nbsp;&nbsp; &nbsp;"pricingTerm"<br>
+o&nbsp;&nbsp; &nbsp;Required for a meterCategory of “Virtual Machines”<br>
+&nbsp;&nbsp; &nbsp;Acceptable options “On Demand” or “Reserved”<br>
+•&nbsp;&nbsp; &nbsp;“Reserved” – payment is made through pre-bought usage hours at a discounted rate<br>
+•&nbsp;&nbsp; &nbsp;“On Demand” – payment is made as the hours are used<br>
+o&nbsp;&nbsp; &nbsp;Must be null for a meterCategory of “Storage”<br>
+•&nbsp;&nbsp; &nbsp;"dailyCost"<br>
+o&nbsp;&nbsp; &nbsp;Required<br>
+o&nbsp;&nbsp; &nbsp;Float<br>
+o&nbsp;&nbsp; &nbsp;Cost of the instance every day it is running (Azure is billed daily, not hourly like AWS)<br>
+•&nbsp;&nbsp; &nbsp;"accountId"<br>
+o&nbsp;&nbsp; &nbsp;Required<br>
+o&nbsp;&nbsp; &nbsp;String<br>
+&nbsp;&nbsp; &nbsp;While the input is in String format, the String must only contain numbers (unless it is set to “GENERATE” – covered later)<br>
+o&nbsp;&nbsp; &nbsp;Unique number of the account that the instance belongs to<br>
+&nbsp;&nbsp; &nbsp;Each account has a unique ID, but this account/id can be assigned to multiple seeds (it is only used to tell the accounts apart)<br>
+o&nbsp;&nbsp; &nbsp;A value of “GENERATE” will automatically populate this field with a random acceptable value<br>
+•&nbsp;&nbsp; &nbsp;"accountName"<br>
+o&nbsp;&nbsp; &nbsp;Required<br>
+o&nbsp;&nbsp; &nbsp;String<br>
+o&nbsp;&nbsp; &nbsp;Name of the account that the instance belongs to<br>
+&nbsp;&nbsp; &nbsp;To reduce confusion, it is best to have a different account name for each account id&nbsp;<br>
+o&nbsp;&nbsp; &nbsp;A value of “GENERATE” will automatically populate this field with a random acceptable value<br>
+•&nbsp;&nbsp; &nbsp;"location"<br>
+o&nbsp;&nbsp; &nbsp;Required<br>
+o&nbsp;&nbsp; &nbsp;String<br>
+o&nbsp;&nbsp; &nbsp;Azure location of the instance&nbsp;<br>
+&nbsp;&nbsp; &nbsp;Must be an Azure-recognized value<br>
+&nbsp;&nbsp; &nbsp;Example: “cacentral” or “NorthCentralUs” or “canadaeast”<br>
+o&nbsp;&nbsp; &nbsp;A value of “GENERATE” will automatically populate this field with a random acceptable value.</p>
+
+<h2>Custom Columns</h2>
+
+<p>•&nbsp;&nbsp; &nbsp;For a full explanation of how Custom Columns work, please see the Custom Column documentation.<br>
+•&nbsp;&nbsp; &nbsp;Ensure that the columns names are unique within each provider in a tenant or Demo Data may act unexpectedly<br>
+Example AWS custom column payload with one column<br>
+[<br>
+&nbsp; {<br>
+&nbsp; &nbsp; "name": "CGRO-DEMO_cost_center",<br>
+&nbsp; &nbsp; "providerType": "AWS",<br>
+&nbsp; &nbsp; "description": "Keeps track of which region accounts are in"<br>
+&nbsp; }<br>
+]<br>
+Example Azure custom column payload with one column<br>
+[<br>
+&nbsp; {<br>
+&nbsp; &nbsp; "name": "CGRO-DEMO_cost_center",<br>
+&nbsp; &nbsp; "providerType": "AZURE",<br>
+&nbsp; &nbsp; "description": "Keeps track of which region accounts are in"<br>
+&nbsp; }<br>
+]</p>
+
+<h2>Expressions</h2>
+
+<p>•&nbsp;&nbsp; &nbsp;For a full explanation of how Expressions work, please see the Expressions documentation.<br>
+•&nbsp;&nbsp; &nbsp;Provide a unique name for each expression within each provider in a tenant or Demo Data may act unexpectedly<br>
+Example AWS expressions payload with three expression mapped to the AWS custom column declared in the previous section<br>
+[<br>
+&nbsp; {<br>
+&nbsp; &nbsp; "name": "CGRO-DEMO Cost Center foco account 1",<br>
+&nbsp; &nbsp; "sourceColumn": "lineitem_usageaccountid",<br>
+&nbsp; &nbsp; "sourceValue": "usageAccount1",<br>
+&nbsp; &nbsp; "targetColumn": {<br>
+&nbsp; &nbsp; &nbsp; "name": "CGRO-DEMO_cost_center",<br>
+&nbsp; &nbsp; &nbsp; "providerType": "AWS"<br>
+&nbsp; &nbsp; },<br>
+&nbsp; &nbsp; "targetValue": "Fort Collins",<br>
+&nbsp; &nbsp; "providerType": "AWS",<br>
+&nbsp; &nbsp; "operator": "EQUALS",<br>
+&nbsp; &nbsp; "tags": []<br>
+&nbsp; },<br>
+&nbsp; {<br>
+&nbsp; &nbsp; "name": "CGRO-DEMO Cost Center foco account 2",<br>
+&nbsp; &nbsp; "sourceColumn": "lineitem_usageaccountid",<br>
+&nbsp; &nbsp; "sourceValue": "usageAccount2",<br>
+&nbsp; &nbsp; "targetColumn": {<br>
+&nbsp; &nbsp; &nbsp; "name": "CGRO-DEMO_cost_center",<br>
+&nbsp; &nbsp; &nbsp; "providerType": "AWS"<br>
+&nbsp; &nbsp; },<br>
+&nbsp; &nbsp; "targetValue": "Fort Collins",<br>
+&nbsp; &nbsp; "providerType": "AWS",<br>
+&nbsp; &nbsp; "operator": "EQUALS",<br>
+&nbsp; &nbsp; "tags": []<br>
+&nbsp; },<br>
+&nbsp; {<br>
+&nbsp; &nbsp; "name": "CGRO-DEMO Cost Center Provo account 1",<br>
+&nbsp; &nbsp; "sourceColumn": "lineitem_usageaccountid",<br>
+&nbsp; &nbsp; "sourceValue": "usageAccount3",<br>
+&nbsp; &nbsp; "targetColumn": {<br>
+&nbsp; &nbsp; &nbsp; "name": "CGRO-DEMO_cost_center",<br>
+&nbsp; &nbsp; &nbsp; "providerType": "AWS"<br>
+&nbsp; &nbsp; },<br>
+&nbsp; &nbsp; "targetValue": "Provo",<br>
+&nbsp; &nbsp; "providerType": "AWS",<br>
+&nbsp; &nbsp; "operator": "EQUALS",<br>
+&nbsp; &nbsp; "tags": []<br>
+&nbsp; }<br>
+]<br>
+Example Azure expression payload with one expression mapped to the Azure custom column in the previous section<br>
+[<br>
+&nbsp; {<br>
+&nbsp; &nbsp; "name": "CGRO-DEMO Cost Center foco account 1",<br>
+&nbsp; &nbsp; "sourceColumn": "accountName",<br>
+&nbsp; &nbsp; "sourceValue": "account 1",<br>
+&nbsp; &nbsp; "targetColumn": {<br>
+&nbsp; &nbsp; &nbsp; "name": "CGRO-DEMO_cost_center",<br>
+&nbsp; &nbsp; &nbsp; "providerType": "AZURE"<br>
+&nbsp; &nbsp; },<br>
+&nbsp; &nbsp; "targetValue": "Fort Collins",<br>
+&nbsp; &nbsp; "providerType": "AZURE",<br>
+&nbsp; &nbsp; "operator": "EQUALS",<br>
+&nbsp; &nbsp; "tags": []<br>
+&nbsp; }<br>
+]</p>
+
+<h2>Notes</h2>
+
+<p>•&nbsp;&nbsp; &nbsp;Demo Data is retrieved from the file system every time a collection is created (not at the start of every collection). However, any Demo Data added through APIs will be added at the next collection (but be aware that it will only populate since the last collection, i.e. data will not be populated into the past).<br>
+•&nbsp;&nbsp; &nbsp;When an integration is deleted all seeds related to that tenant and provider are deleted as well. Currently created custom columns and expressions are not deleted (please see these the documentation for these features for deletion instructions).&nbsp;<br>
+•&nbsp;&nbsp; &nbsp;To customize the Demo Data, an integration must already have been created for the tenant. Once it is created, go into the associated tenant’s folder under the demo-collection folder and edit the file there to reflect the desired changes. Once the desired changes have been made, go back to the integration UI and delete the corresponding integration and recreate it. At this point a new collection will occur for the new seed values.<br>
+•&nbsp;&nbsp; &nbsp;* In order for AWS EC2 Demo Data to work correctly with Insights, the seeds created must include the following values:<br>
+o&nbsp;&nbsp; &nbsp;"region"<br>
+&nbsp;&nbsp; &nbsp;Must have a value of either "GENERATE" or be set to one of the following: "eu-west-1", "us-west-2", "us-west-1", "ap-northeast-1", "us-east-1", "eu-central-1", "ap-southeast-1", "ap-south-1", "ca-central-1"<br>
+o&nbsp;&nbsp; &nbsp;"instanceType"<br>
+&nbsp;&nbsp; &nbsp;"family"<br>
+•&nbsp;&nbsp; &nbsp;Must have a value of either "GENERATE" or be set to one of the following: "t2", "t3", "m4"<br>
+&nbsp;&nbsp; &nbsp;"type"<br>
+•&nbsp;&nbsp; &nbsp;Must have a value of either "GENERATE" or be set to one of the following: "nano", "micro", "small", "medium", "large", "xlarge"<br>
+&nbsp;</p>
+</html>
