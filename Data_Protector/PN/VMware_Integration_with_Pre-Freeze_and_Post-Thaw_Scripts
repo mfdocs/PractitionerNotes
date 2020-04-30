@@ -1,4 +1,20 @@
-<h1 style="font-family: MetricHPE; text-transform: none; color: rgb(0, 0, 0);">Prerequisites</h1><div><p class="MsoNormal">The VMware Tools (or open-vm-tools) must be installed and running on the Virtual Machine. You must c<span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">reate the <i>backupScripts.d </i>directory where the scripts need to be executed.</span></p><p class="MsoNormal"></p><ul><li><i>/etc/vmware-tools/backupScripts.d</i> on Linux VMs</li><li><i>C:\Program Files\VMware\VMware Tools\backupScripts.d</i> on Windows VMs</li></ul><p></p><p class="MsoNormal">The&nbsp;<i>backupScripts.d</i>&nbsp;directory may contain one or multiple scripts that will be executed in sequence. The file names of the scripts affect the execution order (e.g.&nbsp;<i>10-application.sh</i>, then&nbsp;<i>20-database.sh</i>). Each script must be able to handle&nbsp;<i>freeze, freezeFail&nbsp;</i>and<i>&nbsp;thaw</i>&nbsp;arguments passed by the VMware Tools during the different phases. Make sure the scripts are executable (permissions, correct type for the VM operating system).<o:p></o:p></p><h1>Sample Script Linux</h1><pre>#!/bin/bash
+<html><h2>Prerequisites</h2>
+
+<div>
+<p class="MsoNormal">The VMware Tools (or open-vm-tools) must be installed and running on the Virtual Machine. You must c<span style="font-size: inherit; letter-spacing: 0.2px; background-color: transparent;">reate the <i>backupScripts.d </i>directory where the scripts need to be executed.</span></p>
+
+<ul>
+	<li><i>/etc/vmware-tools/backupScripts.d</i> on Linux VMs</li>
+	<li><i>C:\Program Files\VMware\VMware Tools\backupScripts.d</i> on Windows VMs</li>
+</ul>
+
+<p>The&nbsp;<i>backupScripts.d</i>&nbsp;directory may contain one or multiple scripts that will be executed in sequence. The file names of the scripts affect the execution order (e.g.&nbsp;<i>10-application.sh</i>, then&nbsp;<i>20-database.sh</i>). Each script must be able to handle&nbsp;<i>freeze, freezeFail&nbsp;</i>and<i>&nbsp;thaw</i>&nbsp;arguments passed by the VMware Tools during the different phases. Make sure the scripts are executable (permissions, correct type for the VM operating system).</p>
+
+<h2><o:p>Sample Scripts</o:p></h2>
+
+<h3>Sample Script for Linux</h3>
+
+<pre>#!/bin/bash
 
 if [[ $1 == "freeze" ]]
 then
@@ -20,7 +36,12 @@ else
     echo "Usage: `/bin/basename $0` [ freeze | freezeFail | thaw ]"
     exit 1
 
-fi<br></pre><h1>Sample Script Windows</h1><pre>@echo off
+fi
+</pre>
+
+<h3>Sample Script Windows</h3>
+
+<pre>@echo off
 
 if "%~1" == ""         goto USAGE
 if %1    == freeze     goto FREEZE
@@ -52,4 +73,18 @@ goto END
 goto END
 
 :END
-</pre><h1>Manually Testing the Scripts</h1><div><p class="MsoNormal">While developing your pre-freeze/post-thaw script solution it might be handy to have a quick solution to test it without running a backup. In that case use the VMware vCenter client to create a VM snapshot with the&nbsp;<i>Quiesce guest file system</i>&nbsp;option defined.<o:p></o:p></p><h1>Using the Scripts in a Data Protector VMware backup</h1><p class="MsoNormal">To allow the VMware Tools to execute the scripts during the VMware Snapshot backup the option&nbsp;<i>Use quiescence snapshots</i>&nbsp;must be used. This can be enabled on the top of the VMware Datacenter, a folder or on an individual VM. To configure it use Configure Virtual Machine from the context menu on the VM, folder or Datacenter in the Source tree. You may need to un-tick the&nbsp;<i>Use common settings for selected VM</i>&nbsp;are selected. Adjust the&nbsp;<i>Level of Error</i>&nbsp;to your needs. If the backup of the VM should be performed even if the quiescence operation failed select&nbsp;<i>Warning</i>. Select&nbsp;<i>Fatal</i>&nbsp;only if the backup of the VM should not be performed unless prepared by VSS and the scripts.<o:p></o:p></p><p class="MsoNormal"><img src="https://docs.microfocus.com/mediawiki/images/PN/2019-11-24_21h48_48b.png"></p></div></div>
+</pre>
+
+<h2>Manually Testing the Scripts</h2>
+
+<div>
+<p class="MsoNormal">While developing your pre-freeze/post-thaw script solution it might be handy to have a quick solution to test it without running a backup. In that case use the VMware vCenter client to create a VM snapshot with the&nbsp;<i>Quiesce guest file system</i>&nbsp;option defined.<o:p></o:p></p>
+
+<h2>Using the Scripts in a Data Protector VMware backup</h2>
+
+<p class="MsoNormal">To allow the VMware Tools to execute the scripts during the VMware Snapshot backup the option&nbsp;<i>Use quiescence snapshots</i>&nbsp;must be used. This can be enabled on the top of the VMware Datacenter, a folder or on an individual VM. To configure it use Configure Virtual Machine from the context menu on the VM, folder or Datacenter in the Source tree. You may need to un-tick the&nbsp;<i>Use common settings for selected VM</i>&nbsp;are selected. Adjust the&nbsp;<i>Level of Error</i>&nbsp;to your needs. If the backup of the VM should be performed even if the quiescence operation failed select&nbsp;<i>Warning</i>. Select&nbsp;<i>Fatal</i>&nbsp;only if the backup of the VM should not be performed unless prepared by VSS and the scripts.<o:p></o:p></p>
+
+<p class="MsoNormal"><img src="https://docs.microfocus.com/mediawiki/images/PN/2019-11-24_21h48_48b.png"></p>
+</div>
+</div>
+</html>
