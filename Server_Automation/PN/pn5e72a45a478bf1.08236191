@@ -1,4 +1,4 @@
-<p>Server Automation has many tuning parameters this document is a best practice minimum recommended baseline as a delta from what is shipped.&nbsp;&nbsp;</p>
+<html><p>Server Automation has many tuning parameters this document is a best practice minimum recommended baseline as a delta from what is shipped.&nbsp;&nbsp;</p>
 
 <p>Tuning parameters can be examined and set using the&nbsp;<strong>sa_config_checkfix</strong>&nbsp;tool. A manual page is available for this and you should familiarize yourself with its operation as an alternative to locating and adjusting mesh wide parameter via the GUI.</p>
 
@@ -323,10 +323,10 @@ To prevent superseded patches from being imported.</p>
 	<tbody>
 		<tr>
 			<td>
-			<p><code>&lt;</code><code>min-pool-size</code><code>&gt;20<!--</code--><code>min-pool-size</code><code>&gt;</code></code></p><code>
+			<p><code>&lt;</code><code>min-pool-size</code><code>&gt;20<!--</code--><code>min-pool-size</code><code>&gt;</code></code></p>
 
-			<p><code>&lt;</code><code>min-pool-size</code><code>&gt;100<!--</code--><code>min-pool-size</code><code>&gt;</code></code></p><code>
-			</code></code></td>
+			<p><code><code>&lt;</code><code>min-pool-size</code><code>&gt;100<!--</code--><code>min-pool-size</code><code>&gt;</code></code></code></p>
+			</td>
 		</tr>
 	</tbody>
 </table>
@@ -339,10 +339,10 @@ To prevent superseded patches from being imported.</p>
 	<tbody>
 		<tr>
 			<td>
-			<p><code>&lt;</code><code>min-pool-size</code><code>&gt;100<!--</code--><code>min-pool-size</code><code>&gt;</code></code></p><code>
+			<p><code>&lt;</code><code>min-pool-size</code><code>&gt;100<!--</code--><code>min-pool-size</code><code>&gt;</code></code></p>
 
-			<p><code>&lt;</code><code>max-pool-size</code><code>&gt;200<!--</code--><code>max-pool-size</code><code>&gt;</code></code></p><code>
-			</code></code></td>
+			<p><code><code>&lt;</code><code>max-pool-size</code><code>&gt;200<!--</code--><code>max-pool-size</code><code>&gt;</code></code></code></p>
+			</td>
 		</tr>
 	</tbody>
 </table>
@@ -353,12 +353,12 @@ To prevent superseded patches from being imported.</p>
 	<tbody>
 		<tr>
 			<td>
-			<p><code>&lt;</code><code>initial-capacity</code><code>&gt;20<!--</code--><code>initial-capacity</code><code>&gt;</code></code></p><code>
+			<p><code>&lt;</code><code>initial-capacity</code><code>&gt;20<!--</code--><code>initial-capacity</code><code>&gt;</code></code></p>
 
-			<p><code>&lt;</code><code>max-capacity</code><code>&gt;100<!--</code--><code>max-capacity</code><code>&gt;</code></code></p><code>
+			<p><code><code>&lt;</code><code>max-capacity</code><code>&gt;100<!--</code--><code>max-capacity</code><code>&gt;</code></code></code></p>
 
-			<p><code>&lt;</code><code>capacity-increment</code><code>&gt;2<!--</code--><code>capacity-increment</code><code>&gt;</code></code></p><code>
-			</code></code></code></td>
+			<p><code><code><code>&lt;</code><code>capacity-increment</code><code>&gt;2<!--</code--><code>capacity-increment</code><code>&gt;</code></code></code></code></p>
+			</td>
 		</tr>
 	</tbody>
 </table>
@@ -371,12 +371,12 @@ To prevent superseded patches from being imported.</p>
 	<tbody>
 		<tr>
 			<td>
-			<p><code>&lt;</code><code>initial-capacity</code><code>&gt;100<!--</code--><code>initial-capacity</code><code>&gt;</code></code></p><code>
+			<p><code>&lt;</code><code>initial-capacity</code><code>&gt;100<!--</code--><code>initial-capacity</code><code>&gt;</code></code></p>
 
-			<p><code>&lt;</code><code>max-capacity</code><code>&gt;200<!--</code--><code>max-capacity</code><code>&gt;</code></code></p><code>
+			<p><code><code>&lt;</code><code>max-capacity</code><code>&gt;200<!--</code--><code>max-capacity</code><code>&gt;</code></code></code></p>
 
-			<p><code>&lt;</code><code>capacity-increment</code><code>&gt;10<!--</code--><code>capacity-increment</code><code>&gt;</code></code></p><code>
-			</code></code></code></td>
+			<p><code><code><code>&lt;</code><code>capacity-increment</code><code>&gt;10<!--</code--><code>capacity-increment</code><code>&gt;</code></code></code></code></p>
+			</td>
 		</tr>
 	</tbody>
 </table>
@@ -507,7 +507,7 @@ To prevent superseded patches from being imported.</p>
 <ul>
 	<li><code>way.twist_launch_timeout_default</code>: the launch (job start) timeout. This is used as is for the command startup (i.e. if it says 3600 seconds, then the actual timeout is 3600 seconds)</li>
 	<li><code>way.command_shutdown_grace_period</code>: this affect the max timeout. The max duration of the job is calculated as follows:<br>
-	<timeout set="" on="" job=""> + <way.command_shutdown_grace_period> + &lt;150 seconds&gt;<br>
+	<timeout job="" on="" set=""> + <way.command_shutdown_grace_period> + &lt;150 seconds&gt;<br>
 	&nbsp;</way.command_shutdown_grace_period></timeout></li>
 </ul>
 
@@ -694,3 +694,23 @@ To prevent superseded patches from being imported.</p>
 		</tr>
 	</tbody>
 </table>
+
+<h2>Gateway</h2>
+
+<p>The ident service&nbsp;is single threaded on port 4040.&nbsp;By default the "net.core.somaxconn"&nbsp;is set to 128, which&nbsp;limits the listen queue to only 128.&nbsp;The opswgw asks for&nbsp;a listen queue size of 512.&nbsp;When this queue is full,&nbsp;it will cause&nbsp;SYN and&nbsp;SYN/ACK packets to&nbsp;be ignored on&nbsp;the server side.</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><font face="monospace">echo 'net.core.somaxconn = 512' &gt;&gt; /etc/sysctl.conf<br>
+			sysctl&nbsp;-p</font></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<ul>
+	<li>OCTCR19L728183 Scalability issue around on-demand batchbot configuration query, spin's ident based authentication, and lack of egress gw load balancing</li>
+</ul>
+</html>
