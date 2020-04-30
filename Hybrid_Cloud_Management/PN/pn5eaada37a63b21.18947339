@@ -1,17 +1,25 @@
-<html><p>What are Expressions<br>
-Expressions are a data augmentation feature used to add custom business logic to existing cloud provider billing data. &nbsp;During the collection process expressions locate specific billing costs and add additional data depending on custom business rules. &nbsp;This data is then accessible inside of showback reports in the form of custom filters and allows users to tailor reports to their business’s needs.</p>
+<html><p>This topic describes how to use showback expressions to enhance your cloud billing data.</p>
 
-<p>Overview<br>
-In order to use expressions there must first be custom columns created in order to store potential results. &nbsp;You cannot create an expression without first having a custom column. &nbsp;<br>
-APIs (V2)<br>
-Expressions are currently only configurable through APIs. &nbsp;UI support will be added in future versions of the product. &nbsp;Examples found below will guide you through an example business use case for expressions and show you how to use APIs to configure it. &nbsp;This section refers to the V2 APIs which are only available out of the box in HCM 2019.11 and forward, including HCMX introduced (as beta) in 20.02 &nbsp;There are patches available in HCM 2019.08 which include the V2 APIs. We strongly recommend using the V2 APIs if you want to interact with expressions programmatically for their better format and validation. &nbsp;If you do not have access to a rest client or are using out of the box HCM 2019.08 see documentation for V1 APIs. Further references in this document will be to HCMX for the sake of simplicity.</p>
+<h1>What are Expressions</h1>
 
-<p>Authorization<br>
-Authorization for V2 APIs uses the same X-Auth-Token found in the user’s browser session. &nbsp;This can be obtained by inspecting the cookies for the HCMX SMC domain and is valid for use in APIs for 30 minutes. &nbsp;<br>
+<p>Expressions are a data augmentation feature used to add custom business logic to existing cloud provider billing data. &nbsp;During the collection process expressions locate specific billing costs and add additional data depending on custom business rules. &nbsp;This data is then accessible inside of showback reports in the form of custom filters and allows users to tailor reports to their business’s needs.</p>
+
+<h1>Overview</h1>
+
+<p>In order to use expressions there must first be custom columns created in order to store potential results. &nbsp;You cannot create an expression without first having a custom column.</p>
+
+<h1>APIs (V2)</h1>
+
+<p>Expressions are currently only configurable through APIs. &nbsp;UI support will be added in future versions of the product. &nbsp;Examples found below will guide you through an example business use case for expressions and show you how to use APIs to configure it. &nbsp;This section refers to the V2 APIs which are only available out of the box in HCM 2019.11 and forward, including HCMX introduced (as beta) in 20.02 &nbsp;There are patches available in HCM 2019.08 which include the V2 APIs. We strongly recommend using the V2 APIs if you want to interact with expressions programmatically for their better format and validation. &nbsp;If you do not have access to a rest client or are using out of the box HCM 2019.08 see documentation for V1 APIs. Further references in this document will be to HCMX for the sake of simplicity.</p>
+
+<h2>Authorization</h2>
+
+<p>Authorization for V2 APIs uses the same X-Auth-Token found in the user’s browser session. &nbsp;This can be obtained by inspecting the cookies for the HCMX SMC domain and is valid for use in APIs for 30 minutes. &nbsp;<br>
 To use this token for authorization in APIs take the value found in the cookie X-Auth-Token and pass is as a cookie with the same name in the following API examples.</p>
 
-<p>API Definitions<br>
-This section describes how to read the API definitions in this guide. &nbsp;<br>
+<h2>API Definitions</h2>
+
+<p>This section describes how to read the API definitions in this guide. &nbsp;<br>
 Below is an example API definition:</p>
 
 <p>GET: https://{{hostname}}:{{hcmx-ingress-port}}/showback-gateway/v2/custom-columns/create</p>
