@@ -4,31 +4,27 @@
 
 <p>If you're new to this, we need to start with some basics. If the Legacy Scheduler is available in your Data Protector (not the case for releases A.10.00 up to A.10.10), a schedule for a specification (backup, copy, replication, consolidation, report groups) is stored in an ASCII file on the Cell Manager. If you create a new specification a corresponding file with the same name will be created in the directory. If there is no schedule defined, the file will be empty. You can find the files in the corresponding folders on the Cell Manager. The files are read by a process called omnitrig every 1 or&nbsp;15 minutes depending on your configuration (SchedulerGranularity in global configuration file).</p>
 
-<h3>File system Backup Specs</h3>
-
-<p><code>%DP_DATA_DIR%\Config\Server\Schedules</code> or&nbsp;<code>/etc/opt/omni/server/schedules</code></p>
-
-<h3>Integration Backup Specs</h3>
-
-<p>Such as MSSQL, Exchange, VEAgent (VMware) and others.</p>
-
-<p><span style="background-color: transparent;"><code>%DP_DATA_DIR%\Config\Server</code></span><code>\Barschedules</code> or&nbsp;<code>/etc/opt/omni/server/barschedules</code></p>
-
-<h3>Object Operations</h3>
-
-<p>Such as&nbsp;Object Copy (including Replication), Object Consolidation and Object Verification.</p>
-
-<p><code>%DP_DATA_DIR%\Config\Server\copylists\scheduled\schedules</code> or&nbsp;<code>/etc/opt/omni/server/copylists/scheduled/schedules</code><br>
-<code>%DP_DATA_DIR%\Config\Server\consolidationlists\scheduled\schedules</code> or&nbsp;<code>/etc/opt/omni/server/consolidationlists/scheduled/schedules</code><br>
-<code>%DP_DATA_DIR%\Config\Server\verificationlists\scheduled\schedules</code> or&nbsp;<code>/etc/opt/omni/server/verificationlists/scheduled/schedules</code></p>
-
-<p>&nbsp;</p>
-
-<h3>Report Groups</h3>
-
-<p><code>%DP_DATA_DIR%\Config\Server\rptschedules</code> or&nbsp;<code>/etc/opt/omni/server/rptschedules</code></p>
-
 <div class="Admonition_Note">It is not required to restart the services when changing those files. Just be careful when using tools like <code>vi</code> or <code>vim</code> as they will create a swap file in the same directory and this may produce warnings.</div>
+
+<h2>Location of the Legacy Scheduler Files</h2>
+
+<p><strong>File system Backup Specs</strong></p>
+
+<div class="Admonition_Note"><code>%DP_DATA_DIR%\Config\Server\Schedules</code> or&nbsp;<code>/etc/opt/omni/server/schedules</code></div>
+
+<p><strong>Integration Backup Specs</strong>, such as MSSQL, Exchange, VEAgent (VMware) and others.</p>
+
+<div class="Admonition_Note"><span style="background-color: transparent;"><code>%DP_DATA_DIR%\Config\Server</code></span><code>\Barschedules</code> or&nbsp;<code>/etc/opt/omni/server/barschedules</code></div>
+
+<p><strong>Object Operations</strong>, such as&nbsp;Object Copy (including Replication), Object Consolidation and Object Verification.</p>
+
+<div class="Admonition_Note"><code>%DP_DATA_DIR%\Config\Server\copylists\scheduled\schedules</code> or&nbsp;<code>/etc/opt/omni/server/copylists/scheduled/schedules</code><br>
+<code>%DP_DATA_DIR%\Config\Server\consolidationlists\scheduled\schedules</code> or&nbsp;<code>/etc/opt/omni/server/consolidationlists/scheduled/schedules</code><br>
+<code>%DP_DATA_DIR%\Config\Server\verificationlists\scheduled\schedules</code> or&nbsp;<code>/etc/opt/omni/server/verificationlists/scheduled/schedules</code></div>
+
+<p><strong>Report Groups</strong></p>
+
+<div class="Admonition_Note"><code>%DP_DATA_DIR%\Config\Server\rptschedules</code> or&nbsp;<code>/etc/opt/omni/server/rptschedules</code></div>
 
 <h2>Monthly Schedule Samples</h2>
 
