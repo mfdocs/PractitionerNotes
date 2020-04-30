@@ -1,1 +1,313 @@
- 
+<html><p>What are Expressions<br>
+Expressions are a data augmentation feature used to add custom business logic to existing cloud provider billing data. &nbsp;During the collection process expressions locate specific billing costs and add additional data depending on custom business rules. &nbsp;This data is then accessible inside of showback reports in the form of custom filters and allows users to tailor reports to their business’s needs.</p>
+
+<p>Overview<br>
+In order to use expressions there must first be custom columns created in order to store potential results. &nbsp;You cannot create an expression without first having a custom column. &nbsp;<br>
+APIs (V2)<br>
+Expressions are currently only configurable through APIs. &nbsp;UI support will be added in future versions of the product. &nbsp;Examples found below will guide you through an example business use case for expressions and show you how to use APIs to configure it. &nbsp;This section refers to the V2 APIs which are only available out of the box in HCM 2019.11 and forward, including HCMX introduced (as beta) in 20.02 &nbsp;There are patches available in HCM 2019.08 which include the V2 APIs. We strongly recommend using the V2 APIs if you want to interact with expressions programmatically for their better format and validation. &nbsp;If you do not have access to a rest client or are using out of the box HCM 2019.08 see documentation for V1 APIs. Further references in this document will be to HCMX for the sake of simplicity.</p>
+
+<p>Authorization<br>
+Authorization for V2 APIs uses the same X-Auth-Token found in the user’s browser session. &nbsp;This can be obtained by inspecting the cookies for the HCMX SMC domain and is valid for use in APIs for 30 minutes. &nbsp;<br>
+To use this token for authorization in APIs take the value found in the cookie X-Auth-Token and pass is as a cookie with the same name in the following API examples.</p>
+
+<p>API Definitions<br>
+This section describes how to read the API definitions in this guide. &nbsp;<br>
+Below is an example API definition:</p>
+
+<p>GET: https://{{hostname}}:{{hcmx-ingress-port}}/showback-gateway/v2/custom-columns/create</p>
+
+<p>Authorization:<br>
+Cookie: x-auth-token={{x-auth-token}}</p>
+
+<p>Query Parameters:&nbsp;<br>
+size={{size}}; page={{page}}</p>
+
+<p>Body:<br>
+{<br>
+&nbsp;&nbsp; &nbsp;"name" : "Cost Center",<br>
+&nbsp;&nbsp; &nbsp;"providerType" : "AWS",<br>
+&nbsp;&nbsp; &nbsp;"description" : "This custom column specifies the cost center for this billing record"<br>
+}</p>
+
+<p>“GET”: describes the http method to be used for the request. &nbsp;When accessing a URL in a web browser the browser automatically uses the http method GET (this is used for V1 APIs).</p>
+
+<p>“https://{{hostname}}:{{hcmx-ingress-port}}/showback-gateway/v2/custom-columns/create”: Is the path needed to make this request. &nbsp;Values which are surrounded by double curly braces (ex: {{hostname}}) are placeholders that need to be replaced with their actual values for the current HCMX system. &nbsp;The following placeholders are used in the guide.</p>
+
+<p>{{hostname}}: This is the fully qualified path for the HCMX host or IP address of the host. &nbsp;This is the same URL used to access the service management console.&nbsp;</p>
+
+<p>{{hcmx-ingress-port}}: This is the external port that is hosting HCMX. &nbsp;If no port is found in the URL for the SMC it is configured to use the default HTTPS port 443.</p>
+
+<p>{{x-auth-token}}: &nbsp;This is the authorization token described in the above authorization section. &nbsp;If you are using the V2 version of expression APIs you will need to know how to configure a cookie in your rest client or method of choice. &nbsp;The value for this token must be replaced and included in the cookie key “x-auth-token” in order to authenticate all APIs in this guide.</p>
+
+<p>“Query Parameters: size={{size}}; page={{page}}” &nbsp;This section describes the query parameters which can be used on the request. &nbsp;Depending on the rest client used parameters may be included on the request path in the format: https://{{hostname}}:{{hcmx-ingress-port}}/showback-gateway/v2/custom-columns/create<br>
+?size={{size}}&amp;page={{page}} or in a dedicated part of the request configuration.</p>
+
+<p>{{size}}: Specifies the maximum number of results to return.<br>
+{{page}}: Specifies the offset of pages of size {{size}} to skip before returning the next results.</p>
+
+<p>Example Use Case: Using Expressions to Assign Billing to Cost Centers<br>
+In this example an organization makes use of cost centers when assigning responsibility for cloud provider bills. &nbsp;</p>
+
+<p>Create Custom Column<br>
+Before creating an expression we need a place to store its results. &nbsp;Custom columns are user defined data storage that is attached to each billing record.&nbsp;</p>
+
+<p>GET: https://{{hostname}}:{{hcmx-ingress-port}}/showback-gateway/v2/custom-columns/create<br>
+Cookie: x-auth-token={{x-auth-token}}<br>
+Body:<br>
+{<br>
+&nbsp;&nbsp; &nbsp;"name" : "Cost Center",<br>
+&nbsp;&nbsp; &nbsp;"providerType" : "AWS",<br>
+&nbsp;&nbsp; &nbsp;"description" : "This custom column specifies the cost center for this billing record"<br>
+}<br>
+Body Parameters:<br>
+“name” (Required): [1-255char] Specifies the name to be used for values in the column. &nbsp; This field is also used as the display name of the filter type in showback reports.<br>
+“providerType” (Required): [“AWS”, “Azure”] Defines which provider type the custom column is for.<br>
+“description” (optional): [0-4000] Describes the business purpose of the values stored in the custom column.<br>
+Return Body:<br>
+{<br>
+&nbsp; &nbsp; "id": "ea724e043cbd431aabbd2082a1ff8d95",<br>
+&nbsp; &nbsp; "name": "Cost Center",<br>
+&nbsp; &nbsp; "description": "This custom column specifies the cost center for this billing record",<br>
+&nbsp; &nbsp; "providerType": "AWS"<br>
+}<br>
+Notable Return Body Fields:<br>
+“id”: specifies the unique identifier for the created custom column used in get and delete APIs</p>
+
+<p>Get Custom Column by ID<br>
+To get an existing expression by ID append the “id” found in the response of the creation or list API to following path:</p>
+
+<p>GET: https://{{hostname}}:{{hcmx-ingress-port}}/showback-gateway/v2/custom-columns/{{id}}</p>
+
+<p>Authorization:<br>
+Cookie: x-auth-token={{x-auth-token}}</p>
+
+<p>Return Body:<br>
+{<br>
+&nbsp; &nbsp; "id": "ea724e043cbd431aabbd2082a1ff8d95",<br>
+&nbsp; &nbsp; "name": "Cost Center",<br>
+&nbsp; &nbsp; "description": "This custom column specifies the cost center for this billing record",<br>
+&nbsp; &nbsp; "providerType": "AWS"<br>
+}</p>
+
+<p>Get Custom Columns<br>
+This API gets all custom columns currently configured.</p>
+
+<p>GET: https://{{hostname}}:{{hcmx-ingress-port}}/showback-gateway/v2/custom-columns?name={{name}}&amp;size={{size}}&amp;page={{page}}</p>
+
+<p>Query Parameters:&nbsp;<br>
+name={{name}} Search text to be compared against existing custom column names this can be used to find columns ids for deletion<br>
+size={{size}} The maximum number of custom columns to return<br>
+page={{page}} The offset&nbsp;</p>
+
+<p>Authorization:<br>
+Cookie: x-auth-token={{x-auth-token}}</p>
+
+<p>Return Body:<br>
+{<br>
+&nbsp; &nbsp; "content": [<br>
+&nbsp; &nbsp; &nbsp; &nbsp; {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "id": "4fe128f8f2cd4f4b8a5e040437d5963c",<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "name": "Cost Center",<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "description": "This custom column specifies the cost center for this billing record",<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "providerType": "AWS"<br>
+&nbsp; &nbsp; &nbsp; &nbsp; }<br>
+&nbsp; &nbsp; ],<br>
+&nbsp; &nbsp; "number": 0,<br>
+&nbsp; &nbsp; "size": 20,<br>
+&nbsp; &nbsp; "totalElements": 1,<br>
+&nbsp; &nbsp; "pageable": {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "sort": {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "sorted": false,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "unsorted": true,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "empty": true<br>
+&nbsp; &nbsp; &nbsp; &nbsp; },<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "offset": 0,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "pageNumber": 0,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "pageSize": 20,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "unpaged": false,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "paged": true<br>
+&nbsp; &nbsp; },<br>
+&nbsp; &nbsp; "last": true,<br>
+&nbsp; &nbsp; "totalPages": 1,<br>
+&nbsp; &nbsp; "sort": {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "sorted": false,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "unsorted": true,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "empty": true<br>
+&nbsp; &nbsp; },<br>
+&nbsp; &nbsp; "first": true,<br>
+&nbsp; &nbsp; "numberOfElements": 1,<br>
+&nbsp; &nbsp; "empty": false<br>
+}</p>
+
+<p>Notable Return Body Fields:<br>
+“content”: contains the list of custom columns each as an element of the array.<br>
+“pageable”: returns the page control parameters which were included in the request.<br>
+“last”: indicates whether the current page is the last page in the result set</p>
+
+<p>Delete Custom Column by ID<br>
+This API deletes a custom column based on its ID. &nbsp;IDs can be found using the Get API where you can search using name, or page through all available columns. *NOTE this will also delete any expressions attached to that custom column.</p>
+
+<p>GET: https://{{hostname}}:{{hcmx-ingress-port}}/showback-gateway/v2/custom-columns/delete?id={{id}}</p>
+
+<p>Query Parameters:&nbsp;<br>
+id={{id}} The ID of the custom column to be deleted</p>
+
+<p>Authorization:<br>
+Cookie: x-auth-token={{x-auth-token}}</p>
+
+<p><br>
+Create Expression<br>
+Before creating expressions insure that custom columns have already been created and the names for these columns is known. &nbsp;The above section goes into detail for how to create and manage custom columns.</p>
+
+<p>This API shows how to create a new expression. &nbsp;</p>
+
+<p>GET: https://{{hostname}}:{{hcmx-ingress-port}}/showback-gateway/v2/expressions /create</p>
+
+<p>Authorization:<br>
+Cookie: x-auth-token={{x-auth-token}}</p>
+
+<p>Body:<br>
+{<br>
+&nbsp; &nbsp; "name": "Expression for account id and cost location",<br>
+&nbsp; &nbsp; "sourceColumn": "lineitem_usageaccountid",<br>
+&nbsp; &nbsp; "sourceValue": "MyAccountId",<br>
+&nbsp; &nbsp; "targetColumn": {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "name": "Cost Center"<br>
+&nbsp; &nbsp; },<br>
+&nbsp; &nbsp; "targetValue": "My Cost Center",<br>
+&nbsp; &nbsp; "providerType": "AWS",<br>
+&nbsp; &nbsp; "operator": "EQUALS",<br>
+&nbsp; &nbsp; "tags": [<br>
+&nbsp; &nbsp; &nbsp; &nbsp; {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "tag": "cost center"<br>
+&nbsp; &nbsp; &nbsp; &nbsp; },<br>
+&nbsp; &nbsp; &nbsp; &nbsp; {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "tag": "my account id"<br>
+&nbsp; &nbsp; &nbsp; &nbsp; }<br>
+&nbsp; &nbsp; ]<br>
+}<br>
+Body Parameters:<br>
+“name”: (Optional): [1-255char] Used to describe the purpose for the expression<br>
+“sourceColumn”: (Required): &nbsp;Determines which column the expression will be based on in the billing data<br>
+“sourceValue”: (Required): &nbsp;The value which will be used with the operator to determine if the expression applies to the billing row.<br>
+“targetColumn”: (Required): The value must match an existing custom column by name and for the same provider type.<br>
+“targetValue”: (Required): The value to be assigned to the target column if the expression evaluates true for the given source column, operator and source value.<br>
+“Operator”: (Required) [“EQUALS”] The operation to be performed against the source column and source value, only EQUALS is supported at this time.<br>
+“tags”: (Optional): Tags are user defined string that can be used for organization of expressions and searching.<br>
+Return Body:<br>
+{<br>
+&nbsp; &nbsp; "id": "c9f15858a4f147f082310970e4e337f5",<br>
+&nbsp; &nbsp; "name": "",<br>
+&nbsp; &nbsp; "sourceColumn": "lineitem_usageaccountid",<br>
+&nbsp; &nbsp; "sourceValue": "MyAccountId",<br>
+&nbsp; &nbsp; "targetColumn": {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "id": "499d7b27a6204314be3d332891dda3bf",<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "name": "Cost Center",<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "description": "This custom column specifies the cost center for this billing record",<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "providerType": "AWS"<br>
+&nbsp; &nbsp; },<br>
+&nbsp; &nbsp; "targetValue": "My Cost Center",<br>
+&nbsp; &nbsp; "providerType": "AWS",<br>
+&nbsp; &nbsp; "operator": "EQUALS",<br>
+&nbsp; &nbsp; "tags": [<br>
+&nbsp; &nbsp; &nbsp; &nbsp; {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "tag": "cost center"<br>
+&nbsp; &nbsp; &nbsp; &nbsp; },<br>
+&nbsp; &nbsp; &nbsp; &nbsp; {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "tag": "my account id"<br>
+&nbsp; &nbsp; &nbsp; &nbsp; }<br>
+&nbsp; &nbsp; ]<br>
+}&nbsp;</p>
+
+<p>Notable Return Body Fields:<br>
+“id”: specifies the unique identifier for the created expression used in get and delete APIs</p>
+
+<p><br>
+Get Expressions<br>
+This API gets all expressions currently configured.</p>
+
+<p>GET: https://{{hostname}}:{{hcmx-ingress-port}}/showback-gateway/v2/expressions?tags={{tags}}&amp;name={{name}&amp;sourceColumn={{sourceColumn}}&amp;sourceValue={{sourceValue}}&amp;targetValue={{targetValue}}&amp;providerType={{providerType}}</p>
+
+<p>Query Parameters:&nbsp;<br>
+tags={{tags}} Searches against all tags configured on any expressions. &nbsp;*NOTE: this filter option cannot be used in combination with other searching parameters.<br>
+name={{name}} &nbsp;Searches for all expressions that contain the search text in the name field. &nbsp;Case insensitive. Usable with other search parameters.<br>
+sourceColumn={{sourceColumn}} &nbsp;Searches for all expressions that contain the search text in the sourceColumn field. &nbsp;Case insensitive. Usable with other search parameters.<br>
+sourceValue={{sourceValue}} &nbsp;Searches for all expressions that contain the search text in the sourceValue field. &nbsp;Case insensitive. Usable with other search parameters.<br>
+targetValue={{targetValue}} &nbsp;Searches for all expressions that contain the search text in the targetValue field. &nbsp;Case insensitive. Usable with other search parameters.<br>
+providerType={{providerType}} [“AWS”, “AZURE”] Searches for all expressions that contain the search text in the providerType field. &nbsp;Case insensitive. Usable with other search parameters.</p>
+
+<p><br>
+Authorization:<br>
+Cookie: x-auth-token={{x-auth-token}}</p>
+
+<p>Return Body:<br>
+{<br>
+&nbsp; &nbsp; "content": [<br>
+&nbsp; &nbsp; &nbsp; &nbsp; {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "id": "c9f15858a4f147f082310970e4e337f5",<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "name": "",<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "sourceColumn": "lineitem_usageaccountid",<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "sourceValue": "MyAccountId",<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "targetColumn": {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "id": "499d7b27a6204314be3d332891dda3bf",<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "name": "Cost Center",<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "description": "This custom column specifies the cost center for this billing record",<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "providerType": "AWS"<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "targetValue": "My Cost Center",<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "providerType": "AWS",<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "operator": "EQUALS",<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "tags": [<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "tag": "cost center"<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "tag": "my account id"<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br>
+&nbsp; &nbsp; &nbsp; &nbsp; }<br>
+&nbsp; &nbsp; ],<br>
+&nbsp; &nbsp; "number": 0,<br>
+&nbsp; &nbsp; "size": 20,<br>
+&nbsp; &nbsp; "totalElements": 1,<br>
+&nbsp; &nbsp; "pageable": {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "sort": {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "sorted": false,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "unsorted": true,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "empty": true<br>
+&nbsp; &nbsp; &nbsp; &nbsp; },<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "offset": 0,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "pageSize": 20,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "pageNumber": 0,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "unpaged": false,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "paged": true<br>
+&nbsp; &nbsp; },<br>
+&nbsp; &nbsp; "last": true,<br>
+&nbsp; &nbsp; "totalPages": 1,<br>
+&nbsp; &nbsp; "sort": {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "sorted": false,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "unsorted": true,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; "empty": true<br>
+&nbsp; &nbsp; },<br>
+&nbsp; &nbsp; "first": true,<br>
+&nbsp; &nbsp; "numberOfElements": 1,<br>
+&nbsp; &nbsp; "empty": false<br>
+}</p>
+
+<p>Notable Return Body Fields:<br>
+“content”: contains the list of custom columns each as an element of the array.<br>
+“pageable”: returns the page control parameters which were included in the request.<br>
+“last”: indicates whether the current page is the last page in the result set</p>
+
+<p>Delete Expression<br>
+This API deletes an expression based on its ID. &nbsp;IDs can be found using the Get API where you can search using name, or page through all available columns</p>
+
+<p>GET: https://{{hostname}}:{{hcmx-ingress-port}}/showback-gateway/v2/expressions/delete?id={{id}}</p>
+
+<p>Query Parameters:&nbsp;<br>
+id={{id}} The ID of the expression to be deleted</p>
+
+<p>Authorization:<br>
+Cookie: x-auth-token={{x-auth-token}}<br>
+&nbsp;</p>
+</html>
