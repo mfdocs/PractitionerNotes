@@ -1,4 +1,17 @@
-File systems continue to grow and the underlaying disk subsystems become faster. Backing up a single file system with just one Disk Agent limits the backup and restore throughput. This document will guide you on how to quickly setup a file system backup spec that can start a large amount of Data Protector Disk Agents in parallel. It may be used to backup very large file systems on Windows File servers or NAS systems using CIFS.<h1>Prerequesites</h1><div>Configure the Disk Agent with the <i>omnirc</i> option <i>OB2SKIPDIRECTORY=1</i>. This can be done by directly editing the file on the client or using <i>omnicc -update_omnirc OB2SKIPDIRECTORY -value 1 -hosts client.domain.com</i> from the Cell Manager.<br></div><div><h1>Setup the Datalist</h1><div>Create a new ASCII file in <i>%DP_HOME_DIR%\Config\Server\Datalists </i>(Windows) or <i>/etc/opt/omni/server/datalists </i>(Linux, HP-UX). The file (e.g. <i>FS_FILESERVER</i>) should not have an extension with the following content.<br></div><div><br></div><pre>DATALIST "FS_FILESYSTEM"
+<html><p>File systems continue to grow and the underlaying disk subsystems become faster. Backing up a single file system with just one Disk Agent limits the backup and restore throughput. This document will guide you on how to quickly setup a file system backup spec that can start a large amount of Data Protector Disk Agents in parallel. It may be used to backup very large file systems on Windows File servers or NAS systems using CIFS.</p>
+
+<h2>Prerequesites</h2>
+
+<div>Configure the Disk Agent with the <i>omnirc</i> option <i>OB2SKIPDIRECTORY=1</i>. This can be done by directly editing the file on the client or using <i>omnicc -update_omnirc OB2SKIPDIRECTORY -value 1 -hosts client.domain.com</i> from the Cell Manager.</div>
+
+<div>
+<h2>Setup the Datalist for a Windows Client</h2>
+
+<div>Create a new ASCII file in <i>%DP_HOME_DIR%\Config\Server\Datalists </i>(Windows) or <i>/etc/opt/omni/server/datalists </i>(Linux, HP-UX). The file (e.g. <i>FS_FILESERVER</i>) should not have an extension with the following content.</div>
+
+<div>&nbsp;</div>
+
+<pre>DATALIST "FS_FILESYSTEM"
 DESCRIPTION "This backup requires OB2SKIPDIRECTORY=1 on the Disk Agent"
 DYNAMIC 1 27
 DEFAULTS
@@ -1222,4 +1235,31 @@ WINFS "H:\Home\Z*" client.domain.com:"/H"
                 "/Home/_*"
                 "/Home/$*"
 } 
-</pre><div><br></div><div>Replace the following strings using search and replace of your favorite text editor. You need to be exact and should follow the sequence to ensure consistent results. In the following example we will change the backup spec from <i>H:\Home </i>to <i>X:\</i>.</div><div><ol><li><span style="font-weight: 700;">FS_FILESYSTEM</span>&nbsp;with the file name of the datalist that is used (e.g. FS_FILESERVER if the datalist is saved as FS_FILESERVER)</li><li><span style="font-weight: 700;">client.domain.com</span>&nbsp;with the client where the backup needs to be executed (e.g. fileserver.company.local)</li><li><span style="font-weight: 700;">:"/H"</span>&nbsp;with the corresponding drive letter where the folder and/or drive resides (e.g. "/X")</li><li><b>H:\Home\</b> with the folder and/or drive that you want to backup (e.g X:\)</li><li><span style="font-weight: 700;">H:\Home</span>&nbsp;with the folder and/or drive that you want to backup (e.g X:\)</li><li><b style="background-color: transparent;">"/Home/ </b><span style="background-color: transparent;">with the tree where to start the backup (e.g. "/)</span><br></li><li><b>"/Home</b>&nbsp;with&nbsp;<span style="background-color: transparent;">the tree where to start the backup (e.g. "/)</span></li><li><b style="background-color: transparent;">REPLACE_BACKUP_DEVICE</b><span style="background-color: transparent;"> with the backup device you want to use. This can be done in the GUI. You should also consider adjusting the load balancing to match source performance and target device capabilities.</span><br></li></ol></div><h1>Validation</h1><div>After saving the datalist, verify the results in the Data Protector GUI. Also review the other important options such as data and catalog&nbsp;<span style="background-color: transparent;">protection and adjust them accordingly.&nbsp;</span><span style="background-color: transparent;">Consider the number of CPU cores available on the backup client. Especially when using Server-side or Source-side Deduplication this kind of backup adds additional load to the system.</span></div><div><br></div><div>Execute the backup and also verify the results in the <i>Restore </i>context of the Data Protector GUI. Select <i>Flesystem </i>and browse the objects backed up on the client. You will see 27 objects for the client. Each of them should only contain a subset of the files backed up. All files and folders starting with A will be in the <i>X:\A* </i>object and so on. All other files will be backed up in the <i>X:\ </i>object.</div></div>
+</pre>
+
+<div>&nbsp;</div>
+
+<div>Replace the following strings using search and replace of your favorite text editor. You need to be exact and should follow the sequence to ensure consistent results. In the following example we will change the backup spec from <i>H:\Home </i>to <i>X:\</i>.</div>
+
+<div>
+<ol>
+	<li><span style="font-weight: 700;">FS_FILESYSTEM</span>&nbsp;with the file name of the datalist that is used (e.g. FS_FILESERVER if the datalist is saved as FS_FILESERVER)</li>
+	<li><span style="font-weight: 700;">client.domain.com</span>&nbsp;with the client where the backup needs to be executed (e.g. fileserver.company.local)</li>
+	<li><span style="font-weight: 700;">:"/H"</span>&nbsp;with the corresponding drive letter where the folder and/or drive resides (e.g. "/X")</li>
+	<li><b>H:\Home\</b> with the folder and/or drive that you want to backup (e.g X:\)</li>
+	<li><span style="font-weight: 700;">H:\Home</span>&nbsp;with the folder and/or drive that you want to backup (e.g X:\)</li>
+	<li><b style="background-color: transparent;">"/Home/ </b><span style="background-color: transparent;">with the tree where to start the backup (e.g. "/)</span></li>
+	<li><b>"/Home</b>&nbsp;with&nbsp;<span style="background-color: transparent;">the tree where to start the backup (e.g. "/)</span></li>
+	<li><b style="background-color: transparent;">REPLACE_BACKUP_DEVICE</b><span style="background-color: transparent;"> with the backup device you want to use. This can be done in the GUI. You should also consider adjusting the load balancing to match source performance and target device capabilities.</span></li>
+</ol>
+</div>
+
+<h2>Validation</h2>
+
+<div>After saving the datalist, verify the results in the Data Protector GUI. Also review the other important options such as data and catalog&nbsp;<span style="background-color: transparent;">protection and adjust them accordingly.&nbsp;</span><span style="background-color: transparent;">Consider the number of CPU cores available on the backup client. Especially when using Server-side or Source-side Deduplication this kind of backup adds additional load to the system.</span></div>
+
+<div>&nbsp;</div>
+
+<div>Execute the backup and also verify the results in the <i>Restore </i>context of the Data Protector GUI. Select <i>Flesystem </i>and browse the objects backed up on the client. You will see 27 objects for the client. Each of them should only contain a subset of the files backed up. All files and folders starting with A will be in the <i>X:\A* </i>object and so on. All other files will be backed up in the <i>X:\ </i>object.</div>
+</div>
+</html>
