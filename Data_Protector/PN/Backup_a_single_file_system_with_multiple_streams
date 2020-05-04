@@ -3,7 +3,7 @@
 <div>
 <h2>Create the&nbsp;Datalist for a Windows Client</h2>
 
-<div>Create a new ASCII file in <i>%DP_HOME_DIR%\Config\Server\Datalists </i>(Windows) or <i>/etc/opt/omni/server/datalists </i>(Linux, HP-UX). The file (e.g. <i>FS_FILESERVER</i>) should not have an extension with the following content.</div>
+<p>Create a new ASCII file in <code>%DP_HOME_DIR%\Config\Server\Datalists</code><i> </i>(Windows) or <code>/etc/opt/omni/server/datalists</code><i> </i>(Linux, HP-UX). The file (e.g. FS_FILESERVER) should not have an extension with the following content.</p>
 
 <div>
 <pre><code>DATALIST "FS_FILESYSTEM"
@@ -1231,10 +1231,8 @@ WINFS "H:\Home\Z*" client.domain.com:"/H"
 		"/Home/$*"
 } </code></pre>
 
-<p>&nbsp;</p>
-</div>
-
 <h3>Modify the Backup Spec for a Windows Client</h3>
+</div>
 
 <div>Replace the following strings using search and replace of your favorite text editor. You need to be exact and should follow the sequence to ensure consistent results. In the following example we will change the backup spec from <i>H:\Home </i>to <i>X:\</i>.</div>
 
@@ -1253,7 +1251,7 @@ WINFS "H:\Home\Z*" client.domain.com:"/H"
 
 <h2>Setup the&nbsp;Datalist for a Linux or UNIX Client</h2>
 
-<div>Create a new ASCII file in <i>%DP_HOME_DIR%\Config\Server\Datalists </i>(Windows) or <i>/etc/opt/omni/server/datalists </i>(Linux, HP-UX). The file (e.g. <i>FS_FILESERVER</i>) should not have an extension with the following content.</div>
+<p>Create a new ASCII file in <code>%DP_HOME_DIR%\Config\Server\Datalists</code><i> </i>(Windows) or <code>/etc/opt/omni/server/datalists</code><i> </i>(Linux, HP-UX). The file (e.g. FS_FILESERVER) should not have an extension with the following content.</p>
 
 <div>
 <pre><code>DATALIST "FS_FILESYSTEM"
@@ -3222,10 +3220,8 @@ FILESYSTEM "/tmp/Z*" client.domain.com:"/tmp"
 
 <h2>Validation</h2>
 
-<div>After saving the datalist, verify the results in the Data Protector GUI. Also review the other important options such as data and catalog&nbsp;<span style="background-color: transparent;">protection and adjust them accordingly.&nbsp;</span><span style="background-color: transparent;">Consider the number of CPU cores available on the backup client. Especially when using Server-side or Source-side Deduplication this kind of backup adds additional load to the system.</span></div>
+<p>After saving the datalist, verify the results in the Data Protector GUI. Also review the other important options such as data and catalog&nbsp;<span style="background-color: transparent;">protection and adjust them accordingly.&nbsp;</span><span style="background-color: transparent;">Consider the number of CPU cores available on the backup client. Especially when using Server-side or Source-side Deduplication this kind of backup adds additional load to the system.</span></p>
 
-<div>&nbsp;</div>
-
-<div>Execute the backup and also verify the results in the <i>Restore </i>context of the Data Protector GUI. Select <i>Flesystem </i>and browse the objects backed up on the client. You will see 27 objects for the client. Each of them should only contain a subset of the files backed up. All files and folders starting with A will be in the <i>X:\A* </i>object and so on. All other files will be backed up in the <i>X:\ </i>object.</div>
+<p>Execute the backup and also verify the results in the <i>Restore </i>context of the Data Protector GUI. Select <i>Flesystem </i>and browse the objects backed up on the client. You will see a large number of objects for the client. Each of them should only contain a subset of the files backed up. All files and folders starting with A will be in the <i>X:\A* </i>object and so on. All other files will be backed up in the <i>X:\ </i>object.</p>
 </div>
 </html>
