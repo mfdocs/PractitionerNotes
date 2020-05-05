@@ -354,7 +354,7 @@
 
 			<p><span style="line-height:normal">Note: The nodes can be fetched from the RTSM for OBM running in the container-based environment only.</span></p>
 
-			<p><span style="line-height:normal">The node list file format is one hostname or IP address per line. The node list file should be present in the same location where custom content zip is present. i.e., &lt;conf volume&gt;/content-administration/var/content-administration/content/custom</span></p>
+			<p><span style="line-height:normal">The node list file format is one hostname or IP address per line. The node list file should be present in the same location where custom content zip is present. i.e., <em>&lt;conf-volume&gt;/itom-opsb-content-administration/var/content-administration/content/custom/</em></span></p>
 			</td>
 		</tr>
 		<tr>
@@ -546,15 +546,9 @@
 <p style="margin-bottom:12px">For configuring content that is not part of the out-of-the-box content set:</p>
 
 <ul>
-	<li>Put the content ZIP file in the &lt;conf volume&gt;/content-administration/var/content-administration/content/custom directory.&nbsp; For example:&nbsp;</li>
+	<li>Put the content ZIP file in the &lt;conf-volume&gt;/itom-opsb-content-administration/var/content-administration/content/custom/. &nbsp;</li>
 </ul>
 </div>
-
-<blockquote style="margin-left:40px; border:none; padding:0px">
-<blockquote style="margin-left:40px; border:none; padding:0px">
-<p style="margin-bottom:12px"><em>&lt;conf-volume&gt;/itom-opsb-content-administration/var/content-administration/content/custom/</em></p>
-</blockquote>
-</blockquote>
 
 <div>
 <ul>
@@ -835,7 +829,7 @@
 	<ul style="list-style-type:circle">
 		<li style="margin-bottom:16px; margin-left:96px">If OBM is in mixed mode, you must create a list of nodes from where you want to collect the Apache performance metrics and specify the name of the node list file in the&nbsp;<span style="font-weight:700">file_selection_list</span>.</li>
 		<li style="margin-bottom:16px; margin-left:96px">If OBM is containerized, you can specify a TQL query name in the&nbsp;<span style="font-weight:700">tql_selection_list</span>&nbsp;and/or customize the node list.</li>
-		<li style="margin-bottom:16px; margin-left:96px">In this example, create a node list and save it at &lt;conf-volume&gt;/content-administration/var/content-administration/content/custom/nodelist.txt. This ensures that the node list is accessible to the Node Resolver. You can use any editor to create a text file containing a line separated list of IP addresses or FQDN of the nodes from which you want to collect the metrics.</li>
+		<li style="margin-bottom:16px; margin-left:96px">In this example, create a node list and save it at <em>&lt;conf-volume&gt;/itom-opsb-content-administration/var/content-administration/content/custom/</em>. This ensures that the node list is accessible to the Node Resolver. You can use any editor to create a text file containing a line separated list of IP addresses or FQDN of the nodes from which you want to collect the metrics.</li>
 		<li style="margin-bottom:16px; margin-left:96px">You can get the list of managed nodes by executing the below command on OBM server and create a node list:
 		<ul style="list-style-type:square">
 			<li style="margin-bottom:16px; margin-left:48px">On Windows (PowerShell):&nbsp;<span style="font-size:9pt"><span style="line-height:12.84px"><span style='font-family:"Courier New"'>C:\HPBSM\opr\bin\opr-node.bat -ln -view_name Apache_Deployment -username &lt;username&gt; -password &lt;password&gt; | Select-String "Primary" | %{$_.Line.Split("=")[-1]}</span></span></span></li>
@@ -934,11 +928,11 @@
 	<li style="margin-bottom:12px; margin-left:32px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login to the NFS server</li>
 	<li style="margin-bottom:12px; margin-left:32px"><span style="font-size:9pt"><span style="line-height:12.84px"><span style='font-family:"Courier New"'>cd /tmp</span></span></span></li>
 	<li style="margin-bottom:12px; margin-left:32px"><span style="font-size:9pt"><span style="line-height:12.84px"><span style='font-family:"Courier New"'>zip -r Apache_Metrics_Integration_Content.zip Apache_Metrics_Integration_Content</span></span></span></li>
-	<li style="margin-bottom:12px; margin-left:32px"><span style="font-size:9pt"><span style="line-height:12.84px"><span style='font-family:"Courier New"'>mv Apache_Metrics_Integration_Content.zip &lt;NFS share&gt;/conf/content-administration/var/content-administration/content/custom</span></span></span></li>
+	<li style="margin-bottom:12px; margin-left:32px"><span style="font-size:9pt"><span style="line-height:12.84px"><span style='font-family:"Courier New"'>mv Apache_Metrics_Integration_Content.zip &lt;conf-volume&gt;/itom-opsb-content-administration/var/content-administration/content/custom/</span></span></span></li>
 </ol>
 
 <ol start="2">
-	<li style="margin-bottom:12px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Create a node list file which contains the IP addresses or FQDNs of the managed nodes from which you want to collect the metrics and place the node list under &lt;NFS share&gt;/conf/content-administration/var/content-administration/content/custom directory.</li>
+	<li style="margin-bottom:12px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Create a node list file which contains the IP addresses or FQDNs of the managed nodes from which you want to collect the metrics and place the node list under &lt;conf-volume&gt;/itom-opsb-content-administration/var/content-administration/content/custom/ directory.</li>
 	<li style="margin-bottom:12px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ensure the file ownership is set to the same SYSTEM_USER_ID and SYSTEM_GROUP_ID specified for the NFS directory owner, which is 1999 and 1999 by default. For example:</li>
 </ol>
 
