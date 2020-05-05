@@ -949,7 +949,7 @@
 	<li style="margin-bottom:12px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Execute the below command to integrate Apache metrics to the COSO Data Lake.</li>
 </ol>
 
-<p style="margin-bottom:12px; margin-left:24px"><span style="font-size:10pt"><span style="line-height:14.2667px"><span style='font-family:"Courier New"'>/opt/content-administration/bin/opsb-content-service.sh -conf all -category Apache</span></span></span></p>
+<p style="margin-bottom:12px; margin-left:24px"><span style="font-size:10pt"><span style="line-height:14.2667px"><span style='font-family:"Courier New"'>/opt/content-administration/bin/opsb-content-service.sh configure -configuration_types all -category Apache</span></span></span></p>
 
 <h2>Dataflow validation</h2>
 
@@ -990,7 +990,7 @@
 
 <p style="margin-bottom:12px"><span style="line-height:normal">NOTE3: In the log file paths, you need to replace the placeholder &lt;*&gt; with the latest running pod name.&nbsp; Run this command to get the current pod names and which nodes they run on:</span></p>
 
-<p style="margin-bottom:12px"><span style="line-height:normal"><span style="font-size:10pt"><span style='font-family:"Courier New"'>kubectl get pods -n $(kubectl get ns | awk '/opsbridge/ {print $1}') -owide</span></span></span></p>
+<p style="margin-bottom:12px"><span style="line-height:normal"><span style="font-size:10pt"><span style='font-family:"Courier New"'>kubectl get pods -n $(kubectl get ns | awk '/opsbridge/ {print $1}') -o wide</span></span></span></p>
 
 <ol>
 	<li style="margin-bottom:12px"><span style="line-height:normal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;itom-opsb-content-administration log (opsb-content-service and opsb-content-service-cli.log)</span></li>
