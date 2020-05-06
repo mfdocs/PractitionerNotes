@@ -134,69 +134,105 @@ Example of Azure seed payload with two instances defined<br>
 	<ul>
 		<li>Required</li>
 		<li>Unique</li>
+		<li>String</li>
+		<li>Distinguishing field</li>
+	</ul>
+	</li>
+	<li>"startDate"
+	<ul>
+		<li>Required</li>
+		<li>String</li>
+		<li>The date where the currently defined instance(s) first appear</li>
+		<li>Format
+		<ul>
+			<li>AWS: example "2019-12-31T00:00:00Z"</li>
+			<li>Azure: example "2019-12-31T00:00:00"</li>
+		</ul>
+		</li>
+		<li>Azure granularity is by the day</li>
+		<li>AWS granularity is by the hour</li>
+	</ul>
+	</li>
+	<li>"endDate"
+	<ul>
+		<li>Required</li>
+		<li>String</li>
+		<li>The date where the currently defined instance(s) last appear</li>
+		<li>Format
+		<ul>
+			<li>Same format as "startDate"</li>
+			<li>A value of "PERPETUAL" will continue to generate entries for the defined instance(s) for every date since the startDate</li>
+		</ul>
+		</li>
+		<li>Azure granularity is by the day</li>
+		<li>AWS granularity is by the hour</li>
+	</ul>
+	</li>
+	<li>"numberOfInstances"
+	<ul>
+		<li>Required</li>
+		<li>Integer</li>
+		<li>The number of instances to create using the defined specifications</li>
+	</ul>
+	</li>
+	<li>"uptimePercentage"
+	<ul>
+		<li>Required</li>
+		<li>Integer</li>
+		<li>The percentage of time the instance is active within the given time frame</li>
+	</ul>
+	</li>
+	<li>"generatedValuesSeed"
+	<ul>
+		<li>Required</li>
+		<li>Semi-Unique (i.e. not enforced, but highly recommended that it be unique unless the user is confident it won’t conflict with other data generation)</li>
+		<li>Integer</li>
+		<li>The seed used to generate the fields for the instance</li>
+	</ul>
+	</li>
+	<li>"tags"
+	<ul>
+		<li>Optional</li>
+		<li>Custom cloud tag</li>
+		<li>Syntax:
+		<ul>
+			<li>Key is the unique identifier of the cloud tag (For example: Owner)</li>
+			<li>Value is the assigned value for that key (For example: John Doe)</li>
+			<li>Example:</li>
+		</ul>
+		</li>
 	</ul>
 	</li>
 </ul>
 
-<p>o&nbsp;&nbsp; &nbsp;String<br>
-o&nbsp;&nbsp; &nbsp;Distinguishing field&nbsp;<br>
-•&nbsp;&nbsp; &nbsp;"startDate"<br>
-o&nbsp;&nbsp; &nbsp;Required<br>
-o&nbsp;&nbsp; &nbsp;String<br>
-o&nbsp;&nbsp; &nbsp;The date where the currently defined instance(s) first appear<br>
-o&nbsp;&nbsp; &nbsp;Format<br>
-&nbsp;&nbsp; &nbsp;AWS: example "2019-12-31T00:00:00Z"<br>
-&nbsp;&nbsp; &nbsp;Azure: example "2019-12-31T00:00:00"<br>
-o&nbsp;&nbsp; &nbsp;Azure granularity is by the day<br>
-o&nbsp;&nbsp; &nbsp;AWS granularity is by the hour<br>
-•&nbsp;&nbsp; &nbsp;"endDate"<br>
-o&nbsp;&nbsp; &nbsp;Required<br>
-o&nbsp;&nbsp; &nbsp;String<br>
-o&nbsp;&nbsp; &nbsp;The date where the currently defined instance(s) last appear<br>
-o&nbsp;&nbsp; &nbsp;Format<br>
-&nbsp;&nbsp; &nbsp;Same format as "startDate"<br>
-&nbsp;&nbsp; &nbsp;A value of "PERPETUAL" will continue to generate entries for the defined instance(s) for every date since the startDate&nbsp;<br>
-o&nbsp;&nbsp; &nbsp;Azure granularity is by the day<br>
-o&nbsp;&nbsp; &nbsp;AWS granularity is by the hour<br>
-•&nbsp;&nbsp; &nbsp;"numberOfInstances"<br>
-o&nbsp;&nbsp; &nbsp;Required<br>
-o&nbsp;&nbsp; &nbsp;Integer<br>
-o&nbsp;&nbsp; &nbsp;The number of instances to create using the defined specifications<br>
-•&nbsp;&nbsp; &nbsp;"uptimePercentage"<br>
-o&nbsp;&nbsp; &nbsp;Required<br>
-o&nbsp;&nbsp; &nbsp;Integer<br>
-o&nbsp;&nbsp; &nbsp;The percentage of time the instance is active within the given time frame<br>
-•&nbsp;&nbsp; &nbsp;"generatedValuesSeed"<br>
-o&nbsp;&nbsp; &nbsp;Required<br>
-o&nbsp;&nbsp; &nbsp;Semi-Unique (i.e. not enforced, but highly recommended that it be unique unless the user is confident it won’t conflict with other data generation)<br>
-o&nbsp;&nbsp; &nbsp;Integer<br>
-o&nbsp;&nbsp; &nbsp;The seed used to generate the fields for the instance<br>
-•&nbsp;&nbsp; &nbsp;"tags"<br>
-o&nbsp;&nbsp; &nbsp;Optional<br>
-o&nbsp;&nbsp; &nbsp;Custom cloud tag<br>
-o&nbsp;&nbsp; &nbsp;Syntax:<br>
-&nbsp;&nbsp; &nbsp;Key is the unique identifier of the cloud tag (For example: Owner)<br>
-&nbsp;&nbsp; &nbsp;Value is the assigned value for that key (For example: John Doe)<br>
-&nbsp;&nbsp; &nbsp;Example:<br>
-[<br>
-{<br>
-“key”: “Owner”,<br>
-“value”: “John Doe”<br>
-},<br>
-{<br>
-“key”: “key2”,<br>
-“value”: “value2”<br>
-}<br>
-]</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;[<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;“key”: “Owner”,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; “value”: “John Doe”<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; “key”: “key2”,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; “value”: “value2”<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]</p>
 
 <p>AWS-specific fields (fields marked with * require specific values for Insights to function properly, please see the “Notes” section at the end of the document for further explanation)</p>
 
-<p>•&nbsp;&nbsp; &nbsp;"productCode"<br>
-o&nbsp;&nbsp; &nbsp;“AmazonEc2”, “AmazonRDS”, or “AmazonS3”<br>
-•&nbsp;&nbsp; &nbsp;"productFamily"<br>
-o&nbsp;&nbsp; &nbsp;Recommended that it be set to “Compute Instance” for EC2 and “Database Instance” for RDS and not set for S3 (the value will be automatically populated to these values if this field is left out)<br>
-•&nbsp;&nbsp; &nbsp;"operatingSystem"<br>
-o&nbsp;&nbsp; &nbsp;Must be null for AmazonRDS and AmazonS3 instances<br>
+<ul>
+	<li>"productCode"
+	<ul>
+		<li>“AmazonEc2”, “AmazonRDS”, or “AmazonS3”</li>
+	</ul>
+	</li>
+	<li>"productFamily"
+	<ul>
+		<li>Recommended that it be set to “Compute Instance” for EC2 and “Database Instance” for RDS and not set for S3 (the value will be automatically populated to these values if this field is left out)</li>
+		<li>"operatingSystem"</li>
+	</ul>
+	</li>
+</ul>
+
+<p>o&nbsp;&nbsp; &nbsp;Must be null for AmazonRDS and AmazonS3 instances<br>
 o&nbsp;&nbsp; &nbsp;Must NOT be null for AmazonEC2<br>
 o&nbsp;&nbsp; &nbsp;Example: “Linux” or “Windows”<br>
 •&nbsp;&nbsp; &nbsp;"tenancy"<br>
