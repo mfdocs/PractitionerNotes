@@ -6,14 +6,19 @@
 
 <p>Any collection run by a tenant designated as being in demo mode will automatically be seeded from Demo Data. Tenants in demo mode are designated by the IDM metadata key/value pair of <code>CGRO-TENANT-TIER/demo</code>.</p>
 
-<p>Once a tenant in demo mode has been created, integrations can be configured. Upon creation of the first integration for the demo tenant, a folder is generated on the system. The default path for this folder on an NFS mount is <code>&lt;mount-path&gt;/demo-collection/&lt;tenant&gt;</code> where <code>&lt;tenant&gt;</code> is the name of the tenant in demo mode (this path can be changed by modifying the <code>DEFAULT_DEMO_TENANT_DROP_PATH</code> in the deployment yaml file). Within this folder, 6 files (explained in the next section) will be automatically generated with default Demo Data. Upon first creation of an integration, the default Demo Data will be loaded and a collection will be run using this data. (Note: any credentials entered will be accepted, then ignored; collections and reports will run and be displayed without using valid credentials.) At the completion of the collection, reports for the created integration will be viewable and populated with default Demo Data that provides examples of general use cases of the reports, including years of data with usage trends, cloud tags and expressions.</p>
+<p>Once a tenant in demo mode has been created, integrations can be configured. Upon creation of the first integration for the demo tenant, a folder is generated on the system. The default path for this folder on an NFS mount is <code>&lt;mount-path&gt;/demo-collection/&lt;tenant&gt;</code> where <code>&lt;tenant&gt;</code> is the name of the tenant in demo mode (this path can be changed by modifying the <code>DEFAULT_DEMO_TENANT_DROP_PATH</code> in the deployment yaml file). Within this folder, 6 files (explained in the next section) will be automatically generated with default Demo Data.</p>
+
+<p>Upon first creation of an integration, the default Demo Data will be loaded and a collection will be run using this data. (Note: any credentials entered will be accepted, then ignored; collections and reports will run and be displayed without using valid credentials.) At the completion of the collection, reports for the created integration will be viewable and populated with default Demo Data that provides examples of general use cases of the reports, including years of data with usage trends, cloud tags and expressions.</p>
 
 <h2>Files Created</h2>
 
-<p>As mentioned in the previous section, 6 required files are created for Demo Data. This section overviews the purpose of each file and following sections cover the contents and how to customize them.<br>
-•&nbsp;&nbsp; &nbsp;AwsDemoSeeds.json and AzureDemoSeeds.json are used to specify the instances to create during collection (for AWS these instances are EC2, RDS and S3). Each of these seeds also allow for the specification of tags for each of the created instances. These seeds will produce and populate the line items in the db at collection time (including tags for both AWS and Azure).<br>
-•&nbsp;&nbsp; &nbsp;AwsDemoColumns.json and AzureDemoColumns.json create custom columns for the seeds. These files behave essentially the same as POSTing bulk custom columns via the custom column api.<br>
-•&nbsp;&nbsp; &nbsp;AwsDemoExpressions.json and AzureDemoExpressions.json create expressions that will populate the custom columns. These files behave essentially the same as a bulk POST via the expressions API.</p>
+<p>As mentioned in the previous section, 6 required files are created for Demo Data. This section overviews the purpose of each file and following sections cover the contents and how to customize them.</p>
+
+<ul>
+	<li><code>AwsDemoSeeds.json</code> and <code>AzureDemoSeeds.json</code> are used to specify the instances to create during collection (for AWS these instances are EC2, RDS and S3). Each of these seeds also allow for the specification of tags for each of the created instances. These seeds will produce and populate the line items in the db at collection time (including tags for both AWS and Azure).</li>
+	<li><code>AwsDemoColumns.json</code> and <code>AzureDemoColumns.json</code> create custom columns for the seeds. These files behave essentially the same as POSTing bulk custom columns via the custom column api.</li>
+	<li><code>AwsDemoExpressions.json</code> and <code>AzureDemoExpressions.json</code> create expressions that will populate the custom columns. These files behave essentially the same as a bulk POST via the expressions API.</li>
+</ul>
 
 <h2>Payloads</h2>
 
@@ -122,11 +127,18 @@ Example of Azure seed payload with two instances defined<br>
 &nbsp; }<br>
 ]</p>
 
-<p>Common fields<br>
-•&nbsp;&nbsp; &nbsp;"name"<br>
-o&nbsp;&nbsp; &nbsp;Required<br>
-o&nbsp;&nbsp; &nbsp;Unique<br>
-o&nbsp;&nbsp; &nbsp;String<br>
+<p>Common fields</p>
+
+<ul>
+	<li>"name"
+	<ul>
+		<li>Required</li>
+		<li>Unique</li>
+	</ul>
+	</li>
+</ul>
+
+<p>o&nbsp;&nbsp; &nbsp;String<br>
 o&nbsp;&nbsp; &nbsp;Distinguishing field&nbsp;<br>
 •&nbsp;&nbsp; &nbsp;"startDate"<br>
 o&nbsp;&nbsp; &nbsp;Required<br>
