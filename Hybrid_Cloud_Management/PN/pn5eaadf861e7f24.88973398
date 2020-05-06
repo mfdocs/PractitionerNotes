@@ -227,109 +227,206 @@ Example of Azure seed payload with two instances defined<br>
 	<li>"productFamily"
 	<ul>
 		<li>Recommended that it be set to “Compute Instance” for EC2 and “Database Instance” for RDS and not set for S3 (the value will be automatically populated to these values if this field is left out)</li>
-		<li>"operatingSystem"</li>
+	</ul>
+	</li>
+	<li>"operatingSystem"
+	<ul>
+		<li>Must be null for AmazonRDS and AmazonS3 instances</li>
+		<li>Must NOT be null for AmazonEC2</li>
+		<li>Example: “Linux” or “Windows”</li>
+	</ul>
+	</li>
+	<li>"tenancy"
+	<ul>
+		<li>Must be null for AmazonRDS and AmazonS3 instances</li>
+		<li>Must NOT be null for AmazonEC2</li>
+		<li>Defaults to “Shared”</li>
+	</ul>
+	</li>
+	<li>"region"
+	<ul>
+		<li>Required</li>
+		<li>Location of the instance
+		<ul>
+			<li>Must be an AWS-recognized region</li>
+		</ul>
+		</li>
+		<li>Can be set to “GENERATE” for the value to be randomly generated</li>
+	</ul>
+	</li>
+	<li>"hourlyCostPerNormalizationUnit"
+	<ul>
+		<li>Required</li>
+		<li>Float</li>
+		<li>Cost per AWS normalized unit (a pricing term family of micro is 0.5 normalization units, a pricing term family of large is 2 normalization units)</li>
+	</ul>
+	</li>
+	<li>"usageAccountId"
+	<ul>
+		<li>Required</li>
+		<li>String</li>
+		<li>Unique identifier for the account</li>
+		<li>Can be set to “GENERATE” for the value to be randomly generated</li>
+	</ul>
+	</li>
+	<li>"instanceType"
+	<ul>
+		<li>Required for AmazonRDS and AmazonEC2</li>
+		<li>Must be null for AmazonS3</li>
+		<li>Represents the type of the instance (t2.micro, m4.2xlarge, etc.)</li>
+		<li>Syntax
+		<ul>
+			<li>“family” is the family of the instance, such as “t2” and “m4”
+			<ul>
+				<li>For insights to work this value must be set to “t2”, “t3”, “m4”, or “GENERATE”</li>
+			</ul>
+			</li>
+			<li>“type” is the type of instance within that family, such as “nano”, “medium”, or “large”</li>
+			<li>Will ultimately appear in reports “famly.type”, as in “t2.nano”</li>
+			<li>Example:</li>
+		</ul>
+		</li>
 	</ul>
 	</li>
 </ul>
 
-<p>o&nbsp;&nbsp; &nbsp;Must be null for AmazonRDS and AmazonS3 instances<br>
-o&nbsp;&nbsp; &nbsp;Must NOT be null for AmazonEC2<br>
-o&nbsp;&nbsp; &nbsp;Example: “Linux” or “Windows”<br>
-•&nbsp;&nbsp; &nbsp;"tenancy"<br>
-o&nbsp;&nbsp; &nbsp;Must be null for AmazonRDS and AmazonS3 instances<br>
-o&nbsp;&nbsp; &nbsp;Must NOT be null for AmazonEC2<br>
-o&nbsp;&nbsp; &nbsp;Defaults to “Shared”<br>
-•&nbsp;&nbsp; &nbsp;"region"*<br>
-o&nbsp;&nbsp; &nbsp;Required<br>
-o&nbsp;&nbsp; &nbsp;Location of the instance<br>
-&nbsp;&nbsp; &nbsp;Must be an AWS-recognized region<br>
-o&nbsp;&nbsp; &nbsp;Can be set to “GENERATE” for the value to be randomly generated<br>
-•&nbsp;&nbsp; &nbsp;"hourlyCostPerNormalizationUnit"<br>
-o&nbsp;&nbsp; &nbsp;Required<br>
-o&nbsp;&nbsp; &nbsp;Float<br>
-o&nbsp;&nbsp; &nbsp;Cost per AWS normalized unit (a pricing term family of micro is 0.5 normalization units, a pricing term family of large is 2 normalization units)<br>
-•&nbsp;&nbsp; &nbsp;"usageAccountId"<br>
-o&nbsp;&nbsp; &nbsp;Required<br>
-o&nbsp;&nbsp; &nbsp;String<br>
-o&nbsp;&nbsp; &nbsp;Unique identifier for the account<br>
-o&nbsp;&nbsp; &nbsp;Can be set to “GENERATE” for the value to be randomly generated<br>
-•&nbsp;&nbsp; &nbsp;"instanceType"*<br>
-o&nbsp;&nbsp; &nbsp;Required for AmazonRDS and AmazonEC2<br>
-o&nbsp;&nbsp; &nbsp;Must be null for AmazonS3<br>
-o&nbsp;&nbsp; &nbsp;Represents the type of the instance (t2.micro, m4.2xlarge, etc.)<br>
-o&nbsp;&nbsp; &nbsp;Syntax<br>
-&nbsp;&nbsp; &nbsp;“family” is the family of the instance, such as “t2” and “m4”<br>
-•&nbsp;&nbsp; &nbsp;For insights to work this value must be set to “t2”, “t3”, “m4”, or “GENERATE”<br>
-&nbsp;&nbsp; &nbsp;“type” is the type of instance within that family, such as “nano”, “medium”, or “large”<br>
-&nbsp;&nbsp; &nbsp;Will ultimately appear in reports “famly.type”, as in “t2.nano”<br>
-&nbsp;&nbsp; &nbsp;Example:<br>
-"instanceType": {<br>
-"family": "t2",<br>
-&nbsp; &nbsp; &nbsp; "type": "4xlarge"<br>
-}<br>
-•&nbsp;&nbsp; &nbsp;"pricingTerm"&nbsp;<br>
-o&nbsp;&nbsp; &nbsp;The method of billing for the instance<br>
-o&nbsp;&nbsp; &nbsp;Must be either “Reserved” or “On Demand”&nbsp;<br>
-&nbsp;&nbsp; &nbsp;“Reserved” – payment is made through pre-bought usage hours at a discounted rate<br>
-&nbsp;&nbsp; &nbsp;“OnDemand” – payment is made as the hours are used<br>
-•&nbsp;&nbsp; &nbsp;Reserved-only fields (Required if pricingTerm is set to “Reserved”, empty otherwise)<br>
-o&nbsp;&nbsp; &nbsp;"contractLength"<br>
-&nbsp;&nbsp; &nbsp;The length of the reservation bought that is being applied to the current instance.<br>
-&nbsp;&nbsp; &nbsp;Must be either “1yr” or “3yr”<br>
-o&nbsp;&nbsp; &nbsp;"purchaseOption"<br>
-&nbsp;&nbsp; &nbsp;The type of reservation purchased<br>
-&nbsp;&nbsp; &nbsp;Must be one of the following: “All Upfront”, “Partial Upfront”, or “No Upfront”<br>
-o&nbsp;&nbsp; &nbsp;"offeringClass"<br>
-&nbsp;&nbsp; &nbsp;Required for EC2 (if not explicitly set, will default to “standard”)<br>
-&nbsp;&nbsp; &nbsp;Optional for RDS and S3 (only set if very confident)&nbsp;<br>
-&nbsp;&nbsp; &nbsp;Acceptable values are “convertible” and “standard”<br>
-Azure-specific fields<br>
-•&nbsp;&nbsp; &nbsp;"meterCategory"<br>
-o&nbsp;&nbsp; &nbsp;Required<br>
-o&nbsp;&nbsp; &nbsp;Must be either "Virtual Machines" or "Storage"<br>
-&nbsp;&nbsp; &nbsp;“Virtual Machines” is for compute instances<br>
-&nbsp;&nbsp; &nbsp;“Storage” is for Blob instances<br>
-•&nbsp;&nbsp; &nbsp;"meterName"<br>
-o&nbsp;&nbsp; &nbsp;Required<br>
-o&nbsp;&nbsp; &nbsp;A value of “GENERATE” will automatically populate this field with a random acceptable value<br>
-o&nbsp;&nbsp; &nbsp;The type of Azure instance<br>
-o&nbsp;&nbsp; &nbsp;For example: “F2/F2s” or “A2” or “B2s”<br>
-•&nbsp;&nbsp; &nbsp;"pricingTerm"<br>
-o&nbsp;&nbsp; &nbsp;Required for a meterCategory of “Virtual Machines”<br>
-&nbsp;&nbsp; &nbsp;Acceptable options “On Demand” or “Reserved”<br>
-•&nbsp;&nbsp; &nbsp;“Reserved” – payment is made through pre-bought usage hours at a discounted rate<br>
-•&nbsp;&nbsp; &nbsp;“On Demand” – payment is made as the hours are used<br>
-o&nbsp;&nbsp; &nbsp;Must be null for a meterCategory of “Storage”<br>
-•&nbsp;&nbsp; &nbsp;"dailyCost"<br>
-o&nbsp;&nbsp; &nbsp;Required<br>
-o&nbsp;&nbsp; &nbsp;Float<br>
-o&nbsp;&nbsp; &nbsp;Cost of the instance every day it is running (Azure is billed daily, not hourly like AWS)<br>
-•&nbsp;&nbsp; &nbsp;"accountId"<br>
-o&nbsp;&nbsp; &nbsp;Required<br>
-o&nbsp;&nbsp; &nbsp;String<br>
-&nbsp;&nbsp; &nbsp;While the input is in String format, the String must only contain numbers (unless it is set to “GENERATE” – covered later)<br>
-o&nbsp;&nbsp; &nbsp;Unique number of the account that the instance belongs to<br>
-&nbsp;&nbsp; &nbsp;Each account has a unique ID, but this account/id can be assigned to multiple seeds (it is only used to tell the accounts apart)<br>
-o&nbsp;&nbsp; &nbsp;A value of “GENERATE” will automatically populate this field with a random acceptable value<br>
-•&nbsp;&nbsp; &nbsp;"accountName"<br>
-o&nbsp;&nbsp; &nbsp;Required<br>
-o&nbsp;&nbsp; &nbsp;String<br>
-o&nbsp;&nbsp; &nbsp;Name of the account that the instance belongs to<br>
-&nbsp;&nbsp; &nbsp;To reduce confusion, it is best to have a different account name for each account id&nbsp;<br>
-o&nbsp;&nbsp; &nbsp;A value of “GENERATE” will automatically populate this field with a random acceptable value<br>
-•&nbsp;&nbsp; &nbsp;"location"<br>
-o&nbsp;&nbsp; &nbsp;Required<br>
-o&nbsp;&nbsp; &nbsp;String<br>
-o&nbsp;&nbsp; &nbsp;Azure location of the instance&nbsp;<br>
-&nbsp;&nbsp; &nbsp;Must be an Azure-recognized value<br>
-&nbsp;&nbsp; &nbsp;Example: “cacentral” or “NorthCentralUs” or “canadaeast”<br>
-o&nbsp;&nbsp; &nbsp;A value of “GENERATE” will automatically populate this field with a random acceptable value.</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "instanceType": {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"family": "t2",<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; "type": "4xlarge"<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;}</p>
+
+<ul>
+	<li>&nbsp; &nbsp;"pricingTerm"
+	<ul>
+		<li>The method of billing for the instance</li>
+		<li>Must be either “Reserved” or “On Demand”
+		<ul>
+			<li>“Reserved” – payment is made through pre-bought usage hours at a discounted rate</li>
+			<li>“OnDemand” – payment is made as the hours are used</li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+	<li>Reserved-only fields (Required if pricingTerm is set to “Reserved”, empty otherwise)
+	<ul>
+		<li>"contractLength"
+		<ul>
+			<li>The length of the reservation bought that is being applied to the current instance.</li>
+			<li>Must be either “1yr” or “3yr”</li>
+		</ul>
+		</li>
+		<li>"purchaseOption"
+		<ul>
+			<li>The type of reservation purchased</li>
+			<li>Must be one of the following: “All Upfront”, “Partial Upfront”, or “No Upfront”</li>
+		</ul>
+		</li>
+		<li>"offeringClass"
+		<ul>
+			<li>Required for EC2 (if not explicitly set, will default to “standard”)</li>
+			<li>Optional for RDS and S3 (only set if very confident)&nbsp;</li>
+			<li>Acceptable values are “convertible” and “standard”</li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+</ul>
+
+<p>Azure-specific fields</p>
+
+<ul>
+	<li>"meterCategory"
+	<ul>
+		<li>Required</li>
+		<li>Must be either "Virtual Machines" or "Storage"
+		<ul>
+			<li>“Virtual Machines” is for compute instances</li>
+			<li>“Storage” is for Blob instances</li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+	<li>"meterName"
+	<ul>
+		<li>Required</li>
+		<li>A value of “GENERATE” will automatically populate this field with a random acceptable value</li>
+		<li>The type of Azure instance</li>
+		<li>For example: “F2/F2s” or “A2” or “B2s”</li>
+	</ul>
+	</li>
+	<li>"pricingTerm"
+	<ul>
+		<li>Required for a meterCategory of “Virtual Machines”
+		<ul>
+			<li>Acceptable options “On Demand” or “Reserved”
+			<ul>
+				<li>“Reserved” – payment is made through pre-bought usage hours at a discounted rate</li>
+				<li>“On Demand” – payment is made as the hours are used</li>
+			</ul>
+			</li>
+		</ul>
+		</li>
+		<li>Must be null for a meterCategory of “Storage”</li>
+	</ul>
+	</li>
+	<li>"dailyCost"
+	<ul>
+		<li>Required</li>
+		<li>Float</li>
+		<li>Cost of the instance every day it is running (Azure is billed daily, not hourly like AWS)</li>
+	</ul>
+	</li>
+	<li>"accountId"
+	<ul>
+		<li>Required</li>
+		<li>String
+		<ul>
+			<li>While the input is in String format, the String must only contain numbers (unless it is set to “GENERATE” – covered later)</li>
+		</ul>
+		</li>
+		<li>Unique number of the account that the instance belongs to
+		<ul>
+			<li>Each account has a unique ID, but this account/id can be assigned to multiple seeds (it is only used to tell the accounts apart)</li>
+		</ul>
+		</li>
+		<li>A value of “GENERATE” will automatically populate this field with a random acceptable value</li>
+	</ul>
+	</li>
+	<li>"accountName"
+	<ul>
+		<li>Required</li>
+		<li>String</li>
+		<li>Name of the account that the instance belongs to
+		<ul>
+			<li>To reduce confusion, it is best to have a different account name for each account id</li>
+		</ul>
+		</li>
+		<li>A value of “GENERATE” will automatically populate this field with a random acceptable value</li>
+	</ul>
+	</li>
+	<li>"location"
+	<ul>
+		<li>Required</li>
+		<li>String</li>
+		<li>Azure location of the instance
+		<ul>
+			<li>Must be an Azure-recognized value</li>
+			<li>Example: “cacentral” or “NorthCentralUs” or “canadaeast”</li>
+		</ul>
+		</li>
+		<li>A value of “GENERATE” will automatically populate this field with a random acceptable value.</li>
+	</ul>
+	</li>
+</ul>
 
 <h2>Custom Columns</h2>
 
-<p>•&nbsp;&nbsp; &nbsp;For a full explanation of how Custom Columns work, please see the Custom Column documentation.<br>
-•&nbsp;&nbsp; &nbsp;Ensure that the columns names are unique within each provider in a tenant or Demo Data may act unexpectedly<br>
-Example AWS custom column payload with one column<br>
+<ul>
+	<li>For a full explanation of how Custom Columns work, please see the Custom Column documentation.</li>
+	<li>Ensure that the columns names are unique within each provider in a tenant or Demo Data may act unexpectedly</li>
+</ul>
+
+<p>Example AWS custom column payload with one column<br>
 [<br>
 &nbsp; {<br>
 &nbsp; &nbsp; "name": "CGRO-DEMO_cost_center",<br>
@@ -411,16 +508,32 @@ Example Azure expression payload with one expression mapped to the Azure custom 
 
 <h2>Notes</h2>
 
-<p>•&nbsp;&nbsp; &nbsp;Demo Data is retrieved from the file system every time a collection is created (not at the start of every collection). However, any Demo Data added through APIs will be added at the next collection (but be aware that it will only populate since the last collection, i.e. data will not be populated into the past).<br>
-•&nbsp;&nbsp; &nbsp;When an integration is deleted all seeds related to that tenant and provider are deleted as well. Currently created custom columns and expressions are not deleted (please see these the documentation for these features for deletion instructions).&nbsp;<br>
-•&nbsp;&nbsp; &nbsp;To customize the Demo Data, an integration must already have been created for the tenant. Once it is created, go into the associated tenant’s folder under the demo-collection folder and edit the file there to reflect the desired changes. Once the desired changes have been made, go back to the integration UI and delete the corresponding integration and recreate it. At this point a new collection will occur for the new seed values.<br>
-•&nbsp;&nbsp; &nbsp;* In order for AWS EC2 Demo Data to work correctly with Insights, the seeds created must include the following values:<br>
-o&nbsp;&nbsp; &nbsp;"region"<br>
-&nbsp;&nbsp; &nbsp;Must have a value of either "GENERATE" or be set to one of the following: "eu-west-1", "us-west-2", "us-west-1", "ap-northeast-1", "us-east-1", "eu-central-1", "ap-southeast-1", "ap-south-1", "ca-central-1"<br>
-o&nbsp;&nbsp; &nbsp;"instanceType"<br>
-&nbsp;&nbsp; &nbsp;"family"<br>
-•&nbsp;&nbsp; &nbsp;Must have a value of either "GENERATE" or be set to one of the following: "t2", "t3", "m4"<br>
-&nbsp;&nbsp; &nbsp;"type"<br>
-•&nbsp;&nbsp; &nbsp;Must have a value of either "GENERATE" or be set to one of the following: "nano", "micro", "small", "medium", "large", "xlarge"<br>
-&nbsp;</p>
+<ul>
+	<li>Demo Data is retrieved from the file system every time a collection is created (not at the start of every collection). However, any Demo Data added through APIs will be added at the next collection (but be aware that it will only populate since the last collection, i.e. data will not be populated into the past).</li>
+	<li>When an integration is deleted all seeds related to that tenant and provider are deleted as well. Currently created custom columns and expressions are not deleted (please see these the documentation for these features for deletion instructions).</li>
+	<li>To customize the Demo Data, an integration must already have been created for the tenant. Once it is created, go into the associated tenant’s folder under the <code>demo-collection</code> folder and edit the file there to reflect the desired changes. Once the desired changes have been made, go back to the integration UI and delete the corresponding integration and recreate it. At this point a new collection will occur for the new seed values.</li>
+	<li>* In order for AWS EC2 Demo Data to work correctly with Insights, the seeds created must include the following values:
+	<ul>
+		<li>"region"
+		<ul>
+			<li>Must have a value of either <code>"GENERATE"</code> or be set to one of the following: <code>"eu-west-1", "us-west-2", "us-west-1", "ap-northeast-1", "us-east-1", "eu-central-1", "ap-southeast-1", "ap-south-1", "ca-central-1"</code></li>
+		</ul>
+		</li>
+		<li>"instanceType"
+		<ul>
+			<li>"family"
+			<ul>
+				<li>Must have a value of either <code>"GENERATE"</code> or be set to one of the following: <code>"t2"</code>,<code> "t3"</code>,<code> "m4"</code></li>
+			</ul>
+			</li>
+			<li>"type"
+			<ul>
+				<li>Must have a value of either "GENERATE" or be set to one of the following: <code>"nano"</code>,<code> "micro"</code>,<code> "small"</code>,<code> "medium"</code>,<code> "large"</code>,<code> "xlarge"</code></li>
+			</ul>
+			</li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+</ul>
 </html>
