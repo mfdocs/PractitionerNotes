@@ -39,10 +39,97 @@ The changes made in the Server settings will result in a new option while creati
 	<li>Select the <strong>Advanced Scripting</strong> checkbox</li>
 	<li>Verify that the <strong>Language&nbsp;</strong>drop down has the newly added scripting language.</li>
 </ol>
-
-<p></p>
+&nbsp;
 
 <h4><b>Create&nbsp;advanced scripts using Python</b></h4>
 You will now be able to create and use Python scripts that can connect to devices and perform advanced data manipulation.<br>
 These scripts can be developed in <strong>Script&nbsp;</strong>area of both Change Plans and Diagnostics.&nbsp;<br>
-<img alt="" border="0" height="589" hspace="0" src="/mediawiki/images/pn_images/pn_image_5ebc47cf545546.92567337.png" style="width: 800px; height: 589px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></html>
+<img alt="" border="0" height="589" hspace="0" src="/mediawiki/images/pn_images/pn_image_5ebc47cf545546.92567337.png" style="width: 800px; height: 589px; margin: 0px; border: 0px solid black;" vspace="0" width="800">
+<h3><br>
+<strong>Convert SSH/Telnet sessions to device via NA Proxy to Python scripts</strong></h3>
+One of the powerful features of NA is to be able to connect to the device via NA proxy and record all the steps performed on that device. This recorded procedure can then be converted to a script and executed as a Change Plan against a bunch of devices.<br>
+In this section I will share the steps to convert the recorded device session to a Python script, which can then be altered according to the needs and executed against a host of devices.
+<ol>
+	<li>Open the file adjustable_options.rcx file for editing (found in &lt;NA install dir&gt;/jre/ folder)</li>
+	<li>Copy the xml content provided below and paste it after the last &lt;/option&gt; tag and before &lt;/options&gt; tag. Save the file</li>
+</ol>
+
+<pre><code class="language-markup">
+        &lt;!-- python --&gt;
+        &lt;option name="AutoScript/python"&gt;true&lt;/option&gt;
+
+        &lt;option name="AutoScript/python/header/default" notrim="true"&gt;&lt;![CDATA[
+import base64
+import paramiko
+import sys
+import time
+
+
+def get_output(session):
+            output = ''
+            data=''
+            time.sleep(1)
+
+            not_done = True
+            MAX_RETRY = 5
+
+            while (not_done or MAX_RETRY &gt; 0):
+                    if(session.recv_ready()):
+                            data = session.recv(65535).decode('ascii')
+                            output += data
+                            if MAX_RETRY &lt; 5:
+                                    MAX_RETRY = 5
+                    else:
+                        not_done = False
+                        MAX_RETRY = MAX_RETRY - 1
+
+            return output
+
+
+
+client = paramiko.SSHClient()
+client.load_system_host_keys()
+device = '#$tc_device_id$'
+sshport = '$tc_proxy_ssh_port$'
+client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+client.connect('localhost', username='$tc_user_username$', password='$NA_Password$', port=sshport)
+transport = client.get_transport()
+session = transport.open_session()
+session.set_combine_stderr(True)
+session.invoke_shell()
+
+get_output(session)
+
+session.send('connect ' + device + '\n')
+output = get_output(session)
+print(output)
+
+session.send('terminal length 0\n')
+output = get_output(session)
+
+    ]]&gt;
+        &lt;/option&gt;
+
+        &lt;option name="AutoScript/python/percommand/default" notrim="true"&gt;&lt;![CDATA[
+
+print('&lt;&lt;CMD&gt;&gt;\n')
+session.send('&lt;&lt;CMD&gt;&gt;\n')
+output = get_output(session)
+print('\n' + output)
+
+    ]]&gt;
+        &lt;/option&gt;
+
+        &lt;option name="AutoScript/python/footer/default" notrim="true"&gt;&lt;![CDATA[
+session.send('exit\n')
+output = get_output(session)
+print(output)
+
+client.close()
+
+    ]]&gt;
+        &lt;/option&gt;
+
+        &lt;option name="AutoScript/python/logout/default"&gt;exit,quit,logout,lo&lt;/option&gt;
+</code></pre>
+</html>
