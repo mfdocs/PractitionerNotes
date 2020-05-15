@@ -28,9 +28,9 @@
 	</tbody>
 </table>
 
-<p>The tuning falls into two categories. Functional based and Component based. As tuning should be applied holistically cherry picking items from this guide is&nbsp;<strong>discouraged</strong>. If additional tuning it required an understanding of the components affects and its impact should be made before putting it in place.&nbsp;&nbsp;</p>
+<p>The tuning falls into two categories. Functional based and Component-based. As tuning should be applied holistically cherry-picking items from this guide is&nbsp;<strong>discouraged</strong>. If additional tuning it required an understanding of the components affects and its impact should be made before putting it in place.&nbsp;&nbsp;</p>
 
-<p>The tuning of timeout values with some exceptions that are not performance related have been omitted.</p>
+<p>The tuning of timeout values with some exceptions that are not performance-related have been omitted.</p>
 
 <h2>Disable importing Windows Superseded patches</h2>
 
@@ -47,7 +47,7 @@ To prevent superseded patches from being imported.</p>
 	</tbody>
 </table>
 
-<p>Purging existing unused patches will shrink the amount of data that needs to be compared improving performance:&nbsp;&nbsp;</p>
+<p>Purging existing unused patches will shrink the amount of data that needs to be compared leading to&nbsp;improved&nbsp;performance:&nbsp;&nbsp;</p>
 
 <table border="0" cellpadding="0" cellspacing="0">
 	<tbody>
@@ -124,7 +124,7 @@ To prevent superseded patches from being imported.</p>
 <p>The tuning parameter was added as part of this enhancement</p>
 
 <ul>
-	<li>QCCR1D252426 - Communication Test execution makes too many Spin call</li>
+	<li>QCCR1D252426 - Communication Test execution makes too many Spin calls</li>
 </ul>
 
 <p></p>
@@ -201,7 +201,7 @@ To prevent superseded patches from being imported.</p>
 	</tbody>
 </table>
 
-<p>The spoke pools where increased from their defaults of 10/11 to 50/51 in the following releases; 10.10.006, 10.20.006, 10.21.004. However for high audit load this increase may still not be sufficient.&nbsp;&nbsp;</p>
+<p>The spoke pools were increased from their defaults of 10/11 to 50/51 in the following releases; 10.10.006, 10.20.006, 10.21.004. However, for high audit load, this increase may still not be sufficient.&nbsp;&nbsp;</p>
 
 <ul>
 	<li>
@@ -245,7 +245,7 @@ To prevent superseded patches from being imported.</p>
 
 <p>An audit compliance scan will run on a server for a maximum of&nbsp;<strong>way.ssct_snapshotcompliance_timeout</strong>&nbsp;1800s (30min) before it reaches its MAXIMUM limit where the Way stops waiting for the results. The SPOKE will continue waiting a little longer&nbsp;<strong>spoke.handler.cmdoutput.timeout_atcore</strong>&nbsp;&nbsp;</p>
 
-<p>If audits take longer than 30 min to complete this tuning parameters will need to be adjusted. This should be tuned in concert with the _atcore parameter. The rule&nbsp;&nbsp;</p>
+<p>If audits take longer than 30 min to complete this tuning parameter will need to be adjusted. This should be tuned in concert with the _atcore parameter. The rule&nbsp;&nbsp;</p>
 
 <table border="0" cellpadding="0" cellspacing="0">
 	<tbody>
@@ -275,7 +275,7 @@ To prevent superseded patches from being imported.</p>
 	</tbody>
 </table>
 
-<p>SSCT WayScript has hardcoded limit of 3600 no point pushing the&nbsp;<strong>sm.method.overall.timeout</strong>&nbsp;timeout higher.</p>
+<p>SSCT WayScript has hardcoded limit of 3600 no point pushing the&nbsp;<strong>sm.method.overall.timeout</strong>&nbsp;higher.</p>
 
 <ul>
 	<li>QCIM1D133182 -&nbsp;Discovered Software snapshot creation failure</li>
@@ -297,7 +297,7 @@ To prevent superseded patches from being imported.</p>
 	</tbody>
 </table>
 
-<p>Exclude login event sync for automated service accounts.&nbsp; This parameter should be adjusted inline with the user(s) used for OO integration and CSA automation. It minimizes mesh conflicts in exchange for a loss of an update to the last user login timestamp for these accounts.</p>
+<p>Exclude login event sync for automated service accounts.&nbsp; This parameter should be adjusted in line with the user(s) used for OO integration and CSA automation. It minimizes mesh conflicts in exchange for a loss of an update to the last user login timestamp for these accounts.</p>
 
 <p><strong>/etc/opt/opsware/twist/twist_custom.conf</strong></p>
 
@@ -477,7 +477,7 @@ To prevent superseded patches from being imported.</p>
 	</tbody>
 </table>
 
-<p>The consequence of this defect fix is that it ends up causing Twist to excessively flush its cache inducing a performance issue and sometime crashing out Way Jobs.&nbsp; Turning it off will be of benefit if the ADM sub-system is not being used.&nbsp; If you don't know what ADM is, you're not using it.</p>
+<p>The consequence of this defect fix is that it ends up causing Twist to excessively flush its cache inducing a performance issue and sometimes crashing out Way Jobs.&nbsp; Turning it off will be of benefit if the ADM sub-system is not being used.&nbsp; If you don't know what ADM is, you're not using it.</p>
 
 <h3>Split-Brain</h3>
 
@@ -488,15 +488,14 @@ To prevent superseded patches from being imported.</p>
 <ul>
 	<li>QCCR1D240570 -&nbsp;Add option to deactivate the split-brain functionality and allow jobs to time out</li>
 	<li><a href="https://softwaresupport.softwaregrp.com/doc/KM02895479">KM2895479</a></li>
+	<li><a href="https://docs.microfocus.com/itom/Server_Automation:2018.08/PN/pn5e986537dd24c4.98859328">Split Brain Job Timeout</a>&nbsp;best practice guide.</li>
 </ul>
-
-<p></p>
 
 <table border="0" cellpadding="0" cellspacing="0">
 	<tbody>
 		<tr>
 			<td>
-			<p><code># sa_config_checkfix -k way.command_shutdown_grace_period -v <value> --set</value></code></p>
+			<p><code># sa_config_checkfix -k way.command_shutdown_grace_period -v 0&nbsp;<value>--set</value></code></p>
 			</td>
 		</tr>
 	</tbody>
@@ -505,8 +504,8 @@ To prevent superseded patches from being imported.</p>
 <p>There are 2 possible timeout values that can affect a job. These are given by the following parameters:</p>
 
 <ul>
-	<li><code>way.twist_launch_timeout_default</code>: the launch (job start) timeout. This is used as is for the command startup (i.e. if it says 3600 seconds, then the actual timeout is 3600 seconds)</li>
-	<li><code>way.command_shutdown_grace_period</code>: this affect the max timeout. The max duration of the job is calculated as follows:<br>
+	<li><code>way.twist_launch_timeout_default</code>: the launch (job start) timeout. This is used as-is for the command startup (i.e. if it says 3600 seconds, then the actual timeout is 3600 seconds)</li>
+	<li><code>way.command_shutdown_grace_period</code>: this affects the max timeout. The max duration of the job is calculated as follows:<br>
 	<timeout job="" on="" set=""> + <way.command_shutdown_grace_period> + &lt;150 seconds&gt;<br>
 	&nbsp;</way.command_shutdown_grace_period></timeout></li>
 </ul>
@@ -535,11 +534,11 @@ To prevent superseded patches from being imported.</p>
 	</tbody>
 </table>
 
-<p>We should have a smaller&nbsp;<code>chunk_size</code>&nbsp;and a higher&nbsp;<code>max_concurrency</code>. More&nbsp;doers&nbsp;will reduce the wait time before remediation commences as less servers in a&nbsp;doer&nbsp;need to transition though each phase. The&nbsp;chunker&nbsp;will increase the&nbsp;<code>chunk_size</code>&nbsp;itself once the&nbsp;<code>max_concurrency</code>&nbsp;limit has been reached so this is less important to tune.&nbsp;&nbsp;</p>
+<p>We should have a smaller&nbsp;<code>chunk_size</code>&nbsp;and a higher&nbsp;<code>max_concurrency</code>. More&nbsp;doers&nbsp;will reduce the wait time before remediation commences as fewer servers in a&nbsp;doer&nbsp;need to transition through each phase. The&nbsp;chunker&nbsp;will increase the&nbsp;<code>chunk_size</code>&nbsp;itself once the&nbsp;<code>max_concurrency</code>&nbsp;limit has been reached so this is less important to tune.&nbsp;&nbsp;</p>
 
 <p>Increasing&nbsp;<code>chunk_size</code>&nbsp;too large will have a throughput performance penalty as all the servers in the&nbsp;chunk&nbsp;must complete each phase&nbsp;<em>(analyze/stage/action)</em>&nbsp;in the&nbsp;doer&nbsp;before they can all progress.&nbsp;</p>
 
-<p>The tuning parameter&nbsp;<code>way.max_remediations</code>&nbsp;should really be called&nbsp;<code>way.max_remediates.stage_analyse</code>&nbsp;because it pertains to how much concurrency is allowed in those two phases.&nbsp; &nbsp;The three phases being; stage, analyse and action.&nbsp; &nbsp;The action phase has it own tuning parameter and in the annals of SA one parameter use to be used for all three.</p>
+<p>The tuning parameter&nbsp;<code>way.max_remediations</code>&nbsp;should really be called&nbsp;<code>way.max_remediates.stage_analyse</code>&nbsp;because it pertains to how much concurrency is allowed in those two phases.&nbsp; &nbsp;The three phases being; stage, analyse and action.&nbsp; &nbsp;The action phase has its own tuning parameter and in the annals of SA one parameter used to be used for all three.</p>
 
 <p>This is how long we wait for the agent to respond to our pokes and callback to get the Command we just queued up for it.&nbsp; The default value is excessive.</p>
 
@@ -555,7 +554,7 @@ To prevent superseded patches from being imported.</p>
 
 <p>This is used when doing remediation's and it appears when asking a server to execute a script, get its installed units (for patching computations), performing a reconcile post patching, checking available disk space before staging, and other activities during the remediation phases.</p>
 
-<p>Windows patches can take longer to installer than allowed by SA.&nbsp; &nbsp;Old server hardware and Microsoft's&nbsp;every increasing patch payloads are putting a strain on customer infrastructure and SA just needs to wait longer.&nbsp; Its recommended that you increase this timeout:</p>
+<p>Windows patches can take longer to installer than allowed by SA.&nbsp; &nbsp;Old server hardware and Microsoft's&nbsp;every increasing patch payloads are putting a strain on customer infrastructure and SA just needs to wait longer.&nbsp; It's recommended that you increase this timeout:</p>
 
 <table border="0" cellpadding="0" cellspacing="0">
 	<tbody>
@@ -589,7 +588,7 @@ To prevent superseded patches from being imported.</p>
 	</tbody>
 </table>
 
-<p>Additional memory may need to be assigned to the vault to handle large transactions. Unless out of memory error are being experience don't increase the JVM. There is no tuning parameter to accomplish this task requiring a direct edit of a script. On upgrade this may be reverted which is why its recommended not to adjust it unless OOM's are occurring.&nbsp;&nbsp;</p>
+<p>Additional memory may need to be assigned to the vault to handle large transactions. Unless out of memory error are being experienced don't increase the JVM. There is no tuning parameter to accomplish this task requiring a direct edit of a script. On upgrade, this may be reverted which is why its recommended not to adjust it unless OOM's are occurring.&nbsp;&nbsp;</p>
 
 <p>For SA &lt;= 10.60 an increase in the vault memory requires the editing of the vault startup script</p>
 
@@ -697,7 +696,7 @@ To prevent superseded patches from being imported.</p>
 
 <h2>Gateway</h2>
 
-<p>The ident service&nbsp;is single threaded on port 4040.&nbsp;By default the "net.core.somaxconn"&nbsp;is set to 128, which&nbsp;limits the listen queue to only 128.&nbsp;The opswgw asks for&nbsp;a listen queue size of 512.&nbsp;When this queue is full,&nbsp;it will cause&nbsp;SYN and&nbsp;SYN/ACK packets to&nbsp;be ignored on&nbsp;the server side.</p>
+<p>The ident service&nbsp;is single-threaded on port 4040.&nbsp;By default the "net.core.somaxconn"&nbsp;is set to 128, which&nbsp;limits the listen to queue to only 128.&nbsp;The opswgw asks for&nbsp;a listen to queue size of 512.&nbsp;When this queue is full,&nbsp;it will cause&nbsp;SYN and&nbsp;SYN/ACK packets to&nbsp;be ignored on&nbsp;the server-side.</p>
 
 <table border="0" cellpadding="0" cellspacing="0">
 	<tbody>
