@@ -1,558 +1,247 @@
-
-
-
-
-
-
-<!--StartFragment-->
-
+<html><!--StartFragment-->
 <div style="direction:ltr;border-width:100%">
-
 <div style="direction:ltr;margin-top:0in;margin-left:0in;width:7.7715in">
-
-<div style="direction:ltr;margin-top:0in;margin-left:0in;width:7.7715in">
-
-
-
-
-
-
-
-<!--StartFragment-->
+<div style="direction:ltr;margin-top:0in;margin-left:0in;width:7.7715in"><!--StartFragment-->
+<p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
+color:black">After SMA is installed, you may need to switch SMA to a new NFS server for some reasons. For example,<span style="mso-spacerun:yes">&nbsp; </span>the existing NFS server requires maintenance, is not stable, or has performance issues.</p>
 
 <p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:black">After SMA is installed, you may need to switch SMA to a new NFS
-server for some reasons. For example,<span style="mso-spacerun:yes">&nbsp;
-</span>the existing NFS server requires maintenance, is not stable, or has
-performance issues. </p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:black">The following describes the process of switching SMA from one NFS
-server to another. </p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:black"><span style="font-weight:bold">Note: during this process, SMA will
-experience downtime. For this reason, perform this operation only in a
-scheduled<span style="mso-spacerun:yes">&nbsp; </span>maintenance window.</span></p><p style="margin:0in;margin-left:.375in;font-family:MetricHPE;font-size:16.0pt;
-color:black"><span style="font-weight:bold">Part I: CDF</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:black">Following the document below to change the NFS server for CDF</p><p style="margin:0in;margin-left:.375in"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/changePersistentVolumes"><span style="font-family:Calibri;font-size:11.25pt" lang="en-US">https://docs.microfocus.com/itom/SMAX:2019.11/changePersistentVolumes</span></a><span style="font-family:Calibri;font-size:11.0pt;color:black" lang="zh-CN">&nbsp;</span></p><p style="margin:0in;margin-left:.375in;font-family:MetricHPE;font-size:16.0pt;
-color:black"><span style="font-weight:bold">Part II: SMA</span></p><ol type="1" style="margin-left:.375in;direction:ltr;unicode-bidi:embed;
+color:black">The following describes the process of switching SMA from one NFS server to another.</p>
+
+<p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
+color:black"><span style="font-weight:bold">Note: during this process, SMA will experience downtime. For this reason, perform this operation only in a scheduled<span style="mso-spacerun:yes">&nbsp; </span>maintenance window.</span></p>
+
+<p style="margin:0in;margin-left:.375in;font-family:MetricHPE;font-size:16.0pt;
+color:black"><span style="font-weight:bold">Part I: CDF</span></p>
+
+<p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
+color:black">Following the document below to change the NFS server for CDF</p>
+
+<p style="margin:0in;margin-left:.375in"><a href="https://docs.microfocus.com/itom/SMAX:2019.11/changePersistentVolumes"><span lang="en-US" style="font-family:Calibri;font-size:11.25pt">https://docs.microfocus.com/itom/SMAX:2019.11/changePersistentVolumes</span></a><span lang="zh-CN" style="font-family:Calibri;font-size:11.0pt;color:black">&nbsp;</span></p>
+
+<p style="margin:0in;margin-left:.375in;font-family:MetricHPE;font-size:16.0pt;
+color:black"><span style="font-weight:bold">Part II: SMA</span></p>
+
+<ol style="margin-left:.375in;direction:ltr;unicode-bidi:embed;
  margin-top:0in;margin-bottom:0in;font-family:Calibri;font-size:11.0pt;
- font-weight:normal;font-style:normal">
- <li value="1" style="margin-top:0;margin-bottom:0;vertical-align:middle;
-     color:black"><span style="font-family:Calibri;font-size:11.0pt;font-weight:
-     normal;font-style:normal;font-family:Calibri;font-size:11.0pt">Stop SMA
-     first.</span></li>
-</ol><ol type="1" style="margin-left:.375in;direction:ltr;unicode-bidi:embed;
+ font-weight:normal;font-style:normal" type="1">
+	<li style="margin-top:0;margin-bottom:0;vertical-align:middle;
+     color:black" value="1"><span style="font-family:Calibri;font-size:11.0pt;font-weight:
+     normal;font-style:normal;font-family:Calibri;font-size:11.0pt">Stop SMA first.</span></li>
+</ol>
+
+<ol style="margin-left:.375in;direction:ltr;unicode-bidi:embed;
  margin-top:0in;margin-bottom:0in;font-family:Calibri;font-size:13.5pt;
- font-weight:normal;font-style:normal">
- <li value="2" style="margin-top:0;margin-bottom:0;vertical-align:middle;
-     color:black"><span style="font-family:MetricHPE;font-size:13.5pt;
-     font-weight:normal;font-style:normal;font-family:MetricHPE;font-size:13.5pt">Run
-     the following script on one master node.</span></li>
- <li style="margin-top:0;margin-bottom:0;vertical-align:middle;color:black"><span style="font-family:MetricHPE;font-size:13.5pt">Check that all PVs are set
-     up correctly:<span style="mso-spacerun:yes">&nbsp;&nbsp; </span>//Kathy: add
-     command? </span></li>
- <li style="margin-top:0;margin-bottom:0;vertical-align:middle;color:black"><span style="font-family:MetricHPE;font-size:13.5pt;color:black" lang="en-US">and
-     then restart the Kubernetes cluster as described in </span><a href="https://docs.microfocus.com/itom/SMAX:2019.11/RestartSMASuite"><span style="font-family:Calibri;font-size:11.0pt" lang="zh-CN">https://docs.microfocus.com/itom/SMAX:2019.11/RestartSMASuite</span></a><span style="font-family:Calibri;font-size:11.0pt;color:black" lang="zh-CN">.</span></li>
-</ol><p style="margin:0in;margin-left:.375in;font-family:MetricHPE;font-size:13.5pt;
-color:black">&nbsp;</p><p style="margin:0in;margin-left:.375in;font-family:MetricHPE;font-size:13.5pt;
-color:black">The script will perform the following operations:</p><ul type="disc" style="margin-left:.75in;direction:ltr;unicode-bidi:embed;
- margin-top:0in;margin-bottom:0in">
- <li style="margin-top:0;margin-bottom:0;vertical-align:middle;color:black"><span style="font-family:Calibri;font-size:11.0pt" lang="en-US">Back up the
-     current PV for the Kubernetes cluster in the /tmp/</span><span style="font-style:italic;font-family:Calibri;font-size:11.0pt" lang="zh-CN">Persistentvolume/</span><span style="font-family:Calibri;font-size:11.0pt" lang="zh-CN">pv/old folder</span></li>
- <li style="margin-top:0;margin-bottom:0;vertical-align:middle;color:black"><span style="font-family:Calibri;font-size:11.0pt" lang="en-US">Create a new PV
-     yaml file in the new folder /tmp/</span><span style="font-style:italic;
-     font-family:Calibri;font-size:11.0pt" lang="zh-CN">Persistentvolume/</span><span style="font-family:Calibri;font-size:11.0pt" lang="zh-CN">pv/new</span></li>
- <li style="margin-top:0;margin-bottom:0;vertical-align:middle;color:black"><span style="font-family:Calibri;font-size:11.0pt" lang="en-US">Back up the
-     current PVC for the Kubernetes cluster in the /tmp/</span><span style="font-style:italic;font-family:Calibri;font-size:11.0pt" lang="zh-CN">Persistentvolume/</span><span style="font-family:Calibri;font-size:11.0pt" lang="zh-CN">pvc/old folder</span></li>
- <li style="margin-top:0;margin-bottom:0;vertical-align:middle;color:black"><span style="font-family:Calibri;font-size:11.0pt" lang="en-US">Create a new PVC
-     yaml file in the new folder /tmp/</span><span style="font-style:italic;
-     font-family:Calibri;font-size:11.0pt" lang="zh-CN">Persistentvolume/</span><span style="font-family:Calibri;font-size:11.0pt" lang="zh-CN">pvc/new</span></li>
- <li style="margin-top:0;margin-bottom:0;vertical-align:middle;color:black"><span style="font-family:Calibri;font-size:11.0pt">Create a new PVC with the
-     updated PVC yaml.</span></li>
- <li style="margin-top:0;margin-bottom:0;vertical-align:middle;color:black"><span style="font-family:Calibri;font-size:11.0pt">Create a new PV with the
-     updated PV yaml</span></li>
-</ul><p style="margin:0in;margin-left:.375in;font-family:calibri;font-size:11.0pt;
-color:black">&nbsp;</p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">################
-Script Begin&nbsp;################&nbsp;</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp;#!/bin/bash</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white"># This script
-is used to change PV IP address (keep path) for an installed SMAX&nbsp;</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white"># This script
-will:&nbsp;</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white"># * Backup
-current PV for Kubernetes cluster under /tmp/Persistentvolume/pv/old folder</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white"># * Create new
-PV yaml file in the new folder /tmp/Persistentvolume/pv/new</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white"># * Backup
-current PVC for Kubernetes cluster under /tmp/Persistentvolume/pvc/old folder</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white"># * Create new
-PVC yaml file in the new folder /tmp/Persistentvolume/pvc/new</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white"># * Create new
-PVC with updated PVC yaml.</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white"># * Create new
-PV with updated PV yaml.</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">#set -x</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">if [ $# -lt 2
-]; then</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; &nbsp;
-echo "Usage: $0 &lt;old_pv_path&gt; &lt;new_pv_path&gt;"</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; &nbsp;
-exit 1</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">fi</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">oldpv=$1</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">newpv=$2</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">file_date=`date
-"+%Y%m%d%H%M%S"`</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">ns=`kubectl get
-namespace |grep itsma | cut -f1 -d " "`</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">if [ -d
-/tmp/Persistentvolume/pv ]; then</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; mv
-/tmp/Persistentvolume/pv /tmp/Persistentvolume/pv.bak.${file_date}</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">fi</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">if [ -d
-/tmp/Persistentvolume/pvc ]; then</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; mv
-/tmp/Persistentvolume/pvc /tmp/Persistentvolume/pvc.bak.${file_date}</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">fi</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">mkdir -p
-/tmp/Persistentvolume/pvc/old</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">mkdir -p
-/tmp/Persistentvolume/pvc/new</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">mkdir -p
-/tmp/Persistentvolume/pv/old</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">mkdir -p
-/tmp/Persistentvolume/pv/new</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">change_pv() {</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; file=$1</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; sed -i
-'/annotations/d' $file</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; sed -i
-'/kubernetes.io/d' $file</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; sed -i
-'/creatiofileTimestamp/d' $file</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; sed -i
-'/deletionGrfilecePeriodSeconds/d' $file</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; sed -i
-'/finalizers/d'file$file</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; sed -i
-'/selfLink/d' $file</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; sed -i
-'/resourceVersion/d' $file</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; sed -i
-'/uid/d' $file</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; sed
--i'/status/d' $file</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; sed -i
-'/fileessage/d' $file</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">}</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">change_pvc() {</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; file=$1</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; sed -i
-'/annotations/d' $file</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; sed -i
-'/kubernetes.io/d' $file</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; sed -i
-'/creationTimestamp/d' $file</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; sed -i
-'/deletionGracePeriodSeconds/d' $file</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; sed -i
--e 's/finalizers:/namespace: itsma1/g' $file</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; sed -i
-'/selfLink/d' $file</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; sed -i
-'/resourceVersion/d' $file</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; sed -i
-'/uid/d' $file</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; sed -i
-'/status/d' $file</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; sed -i
-'/message/d' $file</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">}</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">save_pvc() {</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; for i in
-`kubectl get pvc -n $ns | grep -v NAME | grep $ns | cut -f1 -d " "`</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; do</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; &nbsp;
-echo "save pvc: $i"</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; &nbsp;
-kubectl get pvc $i -n $ns -o yaml --export &gt;
-/tmp/Persistentvolume/pvc/old/${i}_pvc.yaml</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; &nbsp;
-kubectl get pvc $i -n $ns -o yaml --export&gt;
-/tmp/Persistentvolume/pvc/new/${i}_pvc.yaml</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; &nbsp;
-change_pvc /tmp/Persistentvolume/pvc/new/${i}_pvc.yaml</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; done</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">}</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C">&nbsp;</p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">delete_pvc() {</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; for i in
-`kubectl get pvc -n $ns | grep -v NAME | grep $ns | cut -f1 -d " "`</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; do</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; &nbsp;
-echo "delete pvc: $i"</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; &nbsp;
-kubectl patch pvc $i -n $ns -p '{"metadata":{"finalizers":
-[]}}' --type=merge</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; &nbsp;
-kubectl delete pvc $i -n $ns --force --grace-period=0</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; done</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">}</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">save_pv() {</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; for i in
-`kubectl get pv | grep -v NAME |&nbsp; grep $ns | cut -f1 -d " "`</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; do</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; &nbsp;
-echo "save pv: $i"</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; &nbsp;
-kubectl get pv $i -o yaml --export &gt;
-/tmp/Persistentvolume/pv/old/${i}_pv.yaml</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; &nbsp;
-kubectl get pv $i -o yaml --export| sed 's/'${oldpv}'/'${newpv}'/g' &gt;
-/tmp/Persistentvolume/pv/new/${i}_pv.yaml</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; &nbsp;
-change_pvc /tmp/Persistentvolume/pv/new/${i}_pv.yaml</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; done</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">}</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">delete_pv() {</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; for i in
-`kubectl get pv | grep -v NAME |&nbsp; grep $ns| cut -f1 -d " "`</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; do</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; &nbsp;
-echo "delete pv: $i"</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; &nbsp;
-kubectl delete pv $i --force --grace-period=0</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; done</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">}</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">create_pv() {</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; for i in
-`find /tmp/Persistentvolume/pv/new -type f`</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; do</span></p><p style="margin:0in;margin-left:.375in;font-size:11.0pt;color:#78230C"><span style="font-style:italic;font-family:Calibri;background:white">&nbsp; &nbsp;
-echo "create pv</span><span style="font-style:italic;font-family:&quot;Microsoft YaHei&quot;;
-background:white">：</span><span style="font-style:italic;font-family:Calibri;
-background:white"> $i"</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; &nbsp;
-kubectl create -f $i</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; done</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">}</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">create_pvc() {</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; for i in
-`find /tmp/Persistentvolume/pvc/new -type f`</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; do</span></p><p style="margin:0in;margin-left:.375in;font-size:11.0pt;color:#78230C"><span style="font-style:italic;font-family:Calibri;background:white">&nbsp; &nbsp;
-echo "create pvc</span><span style="font-style:italic;font-family:&quot;Microsoft YaHei&quot;;
-background:white">：</span><span style="font-style:italic;font-family:Calibri;
-background:white"> $i"</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; &nbsp;
-kubectl create -f $i</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; done</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">}</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">function
-check_pod(){</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">pod_name=$1</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">echo checking
-pod status for ${pod_name}</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">number=`kubectl
-get pods -n $ns -o wide |grep ${pod_name} | awk -F " *|/" '($3!=$4 ||
-$5!="Running") &amp;&amp; $5!="Completed" {print $0}' |wc
--l`</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">if [ $number
--gt 0 ]; then</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; echo
-"Error: pod ($pod_name) is running, please make sure SMAX($ns) is stopped
-first."</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">&nbsp; exit 1</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">fi</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">}</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">check_pod
-rabbitmq</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">check_pod
-platform</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">check_pod idm</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">save_pv</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">save_pvc</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">delete_pvc</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">delete_pv</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">create_pv</span></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">create_pvc</span></p><p style="margin: 0in 0in 0in 0.375in; font-family: Calibri; font-size: 11pt;">
-
-
-
-
-
-<!--StartFragment-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--EndFragment--></p><p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
-color:#78230C"><span style="font-style:italic;background:white">################
-Script End&nbsp;################&nbsp;</span></p></div></div></div>
-
-<!--EndFragment-->
+ font-weight:normal;font-style:normal" type="1">
+	<li style="margin-top:0;margin-bottom:0;vertical-align:middle;
+     color:black" value="2"><span style="font-family:MetricHPE;font-size:13.5pt;
+     font-weight:normal;font-style:normal;font-family:MetricHPE;font-size:13.5pt">Run the following script on one master node.</span></li>
+	<li style="margin-top:0;margin-bottom:0;vertical-align:middle;color:black"><span style="font-family:MetricHPE;font-size:13.5pt">Check that all PVs are set up correctly:<span style="mso-spacerun:yes">&nbsp;&nbsp; </span>//Kathy: add command? </span></li>
+	<li style="margin-top:0;margin-bottom:0;vertical-align:middle;color:black"><span lang="en-US" style="font-family:MetricHPE;font-size:13.5pt;color:black">and then restart the Kubernetes cluster as described in </span><a href="https://docs.microfocus.com/itom/SMAX:2019.11/RestartSMASuite"><span lang="zh-CN" style="font-family:Calibri;font-size:11.0pt">https://docs.microfocus.com/itom/SMAX:2019.11/RestartSMASuite</span></a><span lang="zh-CN" style="font-family:Calibri;font-size:11.0pt;color:black">.</span></li>
+</ol>
+
+<p style="margin:0in;margin-left:.375in;font-family:MetricHPE;font-size:13.5pt;
+color:black"></p>
+
+<p style="margin:0in;margin-left:.375in;font-family:MetricHPE;font-size:13.5pt;
+color:black">The script will perform the following operations:</p>
+
+<ul style="margin-left:.75in;direction:ltr;unicode-bidi:embed;
+ margin-top:0in;margin-bottom:0in" type="disc">
+	<li style="margin-top:0;margin-bottom:0;vertical-align:middle;color:black"><span lang="en-US" style="font-family:Calibri;font-size:11.0pt">Back up the current PV for the Kubernetes cluster in the /tmp/</span><span lang="zh-CN" style="font-style:italic;font-family:Calibri;font-size:11.0pt">Persistentvolume/</span><span lang="zh-CN" style="font-family:Calibri;font-size:11.0pt">pv/old folder</span></li>
+	<li style="margin-top:0;margin-bottom:0;vertical-align:middle;color:black"><span lang="en-US" style="font-family:Calibri;font-size:11.0pt">Create a new PV yaml file in the new folder /tmp/</span><span lang="zh-CN" style="font-style:italic;
+     font-family:Calibri;font-size:11.0pt">Persistentvolume/</span><span lang="zh-CN" style="font-family:Calibri;font-size:11.0pt">pv/new</span></li>
+	<li style="margin-top:0;margin-bottom:0;vertical-align:middle;color:black"><span lang="en-US" style="font-family:Calibri;font-size:11.0pt">Back up the current PVC for the Kubernetes cluster in the /tmp/</span><span lang="zh-CN" style="font-style:italic;font-family:Calibri;font-size:11.0pt">Persistentvolume/</span><span lang="zh-CN" style="font-family:Calibri;font-size:11.0pt">pvc/old folder</span></li>
+	<li style="margin-top:0;margin-bottom:0;vertical-align:middle;color:black"><span lang="en-US" style="font-family:Calibri;font-size:11.0pt">Create a new PVC yaml file in the new folder /tmp/</span><span lang="zh-CN" style="font-style:italic;
+     font-family:Calibri;font-size:11.0pt">Persistentvolume/</span><span lang="zh-CN" style="font-family:Calibri;font-size:11.0pt">pvc/new</span></li>
+	<li style="margin-top:0;margin-bottom:0;vertical-align:middle;color:black"><span style="font-family:Calibri;font-size:11.0pt">Create a new PVC with the updated PVC yaml.</span></li>
+	<li style="margin-top:0;margin-bottom:0;vertical-align:middle;color:black"><span style="font-family:Calibri;font-size:11.0pt">Create a new PV with the updated PV yaml</span></li>
+</ul>
+
+<p style="margin:0in;margin-left:.375in;font-family:calibri;font-size:11.0pt;
+color:black"></p>
+
+<p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
+color:#78230C"><span style="font-style:italic;background:white">################ Script Begin&nbsp;################&nbsp;</span></p>
+
+<p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
+color:#78230C"><span style="font-style:italic;background:white">&nbsp;#!/bin/bash<br>
+# This script is used to change PV IP address (keep path) for an installed SMAX<br>
+# This script will:<br>
+# * Backup current PV for Kubernetes cluster under /tmp/Persistentvolume/pv/old folder<br>
+# * Create new PV yaml file in the new folder /tmp/Persistentvolume/pv/new<br>
+# * Backup current PVC for Kubernetes cluster under /tmp/Persistentvolume/pvc/old folder<br>
+# * Create new PVC yaml file in the new folder /tmp/Persistentvolume/pvc/new<br>
+# * Create new PVC with updated PVC yaml.<br>
+# * Create new PV with updated PV yaml.<br>
+<br>
+#set -x<br>
+<br>
+if [ $# -lt 2 ]; then<br>
+&nbsp; &nbsp; echo "Usage: $0 &lt;old_value&gt; &lt;new_value&gt; &lt;old_value&gt; &lt;new_value&gt;"<br>
+&nbsp; &nbsp; exit 1<br>
+elif [ $# -eq 2 ]; then<br>
+&nbsp; oldpv1=$1<br>
+&nbsp; newpv1=$2<br>
+elif [ $# -eq 3 ]; then<br>
+&nbsp; echo " 3 prameter is not available, Usage: $0 &lt;old_value&gt; &lt;new_value&gt; &lt;old_value&gt; &lt;new_value&gt;"<br>
+&nbsp; exit 1<br>
+elif [ $# -eq 4 ]; then<br>
+&nbsp; oldpv1=$1<br>
+&nbsp; newpv1=$2<br>
+&nbsp; oldpv2=$3<br>
+&nbsp; newpv2=$4<br>
+else<br>
+&nbsp; echo "prameter number is not available, should be 2 or 4, Usage: $0 &lt;old_value&gt; &lt;new_value&gt; &lt;old_value&gt; &lt;new_value&gt;"<br>
+&nbsp; exit 1<br>
+fi<br>
+<br>
+oldpv1=`echo $oldpv1 | sed 's/\//XXXXX/g'`<br>
+newpv1=`echo $newpv1 | sed 's/\//XXXXX/g'`<br>
+oldpv2=`echo $oldpv2 | sed 's/\//XXXXX/g'`<br>
+newpv2=`echo $newpv2 | sed 's/\//XXXXX/g'`<br>
+<br>
+file_date=`date "+%Y%m%d%H%M%S"`<br>
+<br>
+<br>
+if [ -d /tmp/Persistentvolume/pv ]; then<br>
+&nbsp; mv /tmp/Persistentvolume/pv /tmp/Persistentvolume/pv.bak.${file_date}<br>
+fi<br>
+if [ -d /tmp/Persistentvolume/pvc ]; then<br>
+&nbsp; mv /tmp/Persistentvolume/pvc /tmp/Persistentvolume/pvc.bak.${file_date}<br>
+fi<br>
+<br>
+create_folder(){<br>
+mkdir -p /tmp/Persistentvolume/pvc/$ns/old<br>
+mkdir -p /tmp/Persistentvolume/pvc/$ns/new<br>
+mkdir -p /tmp/Persistentvolume/pv/$ns/old<br>
+mkdir -p /tmp/Persistentvolume/pv/$ns/new<br>
+}<br>
+<br>
+change_pv() {<br>
+&nbsp; file=$1<br>
+&nbsp; sed -i '/annotations/d' $file<br>
+&nbsp; sed -i '/kubernetes.io/d' $file<br>
+&nbsp; sed -i '/creatiofileTimestamp/d' $file<br>
+&nbsp; sed -i '/deletionGrfilecePeriodSeconds/d' $file<br>
+&nbsp; sed -i '/finalizers/d' $file<br>
+&nbsp; sed -i '/selfLink/d' $file<br>
+&nbsp; sed -i '/resourceVersion/d' $file<br>
+&nbsp; sed -i '/uid/d' $file<br>
+&nbsp; sed -i'/status/d' $file<br>
+&nbsp; sed -i '/fileessage/d' $file<br>
+&nbsp; sed -i '/phase:/d' $file<br>
+}<br>
+<br>
+change_pvc() {<br>
+&nbsp; file=$1<br>
+&nbsp; sed -i '/annotations/d' $file<br>
+&nbsp; sed -i '/kubernetes.io/d' $file<br>
+&nbsp; sed -i '/creationTimestamp/d' $file<br>
+&nbsp; sed -i '/deletionGracePeriodSeconds/d' $file<br>
+&nbsp; sed -i '/selfLink/d' $file<br>
+&nbsp; sed -i '/resourceVersion/d' $file<br>
+&nbsp; sed -i '/finalizers:/d' $file<br>
+&nbsp; sed -i '/uid/d' $file<br>
+&nbsp; sed -i '/message/d' $file<br>
+&nbsp; sed -i '/^status/,/^\phase/{/^status/!{/^\phase/!d}}' &nbsp;$file<br>
+&nbsp; sed -i '/status:/d' $file<br>
+}<br>
+<br>
+save_pvc() {<br>
+&nbsp; for i in `kubectl get pvc -n $ns | grep -v NAME | cut -f1 -d " "`<br>
+&nbsp; do<br>
+&nbsp; &nbsp; echo "save pvc: $i"<br>
+&nbsp; &nbsp; kubectl get pvc $i -n $ns -o yaml &nbsp;&gt; /tmp/Persistentvolume/pvc/$ns/old/${i}_pvc.yaml<br>
+&nbsp; &nbsp; kubectl get pvc $i -n $ns -o yaml &gt; /tmp/Persistentvolume/pvc/$ns/new/${i}_pvc.yaml<br>
+&nbsp; &nbsp; change_pvc /tmp/Persistentvolume/pvc/$ns/new/${i}_pvc.yaml<br>
+&nbsp; done<br>
+}<br>
+<br>
+delete_pvc() {<br>
+&nbsp; for i in `kubectl get pvc -n $ns | grep -v NAME | cut -f1 -d " "`<br>
+&nbsp; do<br>
+&nbsp; &nbsp; echo "delete pvc: $i"<br>
+&nbsp; &nbsp; kubectl patch pvc $i -n $ns -p '{"metadata":{"finalizers": []}}' --type=merge<br>
+&nbsp; &nbsp; kubectl delete pvc $i -n $ns --force --grace-period=0<br>
+&nbsp; done<br>
+}<br>
+<br>
+save_pv() {<br>
+&nbsp; for i in `kubectl get pvc -n $ns | grep -v NAME &nbsp;| awk '{print $3}'`<br>
+&nbsp; do<br>
+&nbsp; &nbsp; echo "save pv: $i"<br>
+&nbsp; &nbsp; kubectl get pv $i -o yaml &nbsp;&gt; /tmp/Persistentvolume/pv/$ns/old/${i}_pv.yaml<br>
+&nbsp; &nbsp; kubectl get pv $i -o yaml | sed 's/\//XXXXX/g' &nbsp;&gt; /tmp/Persistentvolume/pv/$ns/new/${i}_pv.yaml<br>
+&nbsp; &nbsp; sed -i -e &nbsp;"s/${oldpv1}/${newpv1}/g" /tmp/Persistentvolume/pv/$ns/new/${i}_pv.yaml<br>
+&nbsp; &nbsp; sed -i -e &nbsp;"s/${oldpv2}/${newpv2}/g" /tmp/Persistentvolume/pv/$ns/new/${i}_pv.yaml<br>
+&nbsp; &nbsp; sed -i -e 's/XXXXX/\//g' /tmp/Persistentvolume/pv/$ns/new/${i}_pv.yaml<br>
+&nbsp; &nbsp; change_pvc /tmp/Persistentvolume/pv/$ns/new/${i}_pv.yaml<br>
+&nbsp; done<br>
+&nbsp; kubectl get pvc -n $ns | grep -v NAME &nbsp;| awk '{print $3}' &gt; /tmp/pv.list<br>
+}<br>
+<br>
+delete_pv() {<br>
+&nbsp; for i in `cat /tmp/pv.list`<br>
+&nbsp; do<br>
+&nbsp; &nbsp; echo "delete pv: $i"<br>
+&nbsp; &nbsp; kubectl delete pv $i --force --grace-period=0<br>
+&nbsp; done<br>
+&nbsp; rm -rf /tmp/pv.list<br>
+}<br>
+<br>
+create_pv() {<br>
+&nbsp; for i in `find /tmp/Persistentvolume/pv/$ns/new -type f`<br>
+&nbsp; do<br>
+&nbsp; &nbsp; echo "create pv： $i"<br>
+&nbsp; &nbsp; kubectl create -f $i<br>
+&nbsp; done<br>
+}<br>
+<br>
+create_pvc() {<br>
+&nbsp; for i in `find /tmp/Persistentvolume/pvc/$ns/new -type f`<br>
+&nbsp; do<br>
+&nbsp; &nbsp; echo "create pvc： $i"<br>
+&nbsp; &nbsp; kubectl create -f $i<br>
+&nbsp; done<br>
+}<br>
+<br>
+function check_pod(){<br>
+pod_name=$1<br>
+echo checking pod status for ${pod_name}<br>
+number=`kubectl get pods -n $ns -o wide |grep -v controller |grep ${pod_name} | awk -F " *|/" '($3!=$4 || $5!="Running") &amp;&amp; $5!="Completed" {print $0}' |wc -l`<br>
+if [ $number -gt 0 ]; then<br>
+&nbsp; echo "Error: pod ($pod_name) is running, please make sure SMAX($ns) is stopped first."<br>
+&nbsp; exit 1<br>
+fi<br>
+}<br>
+<br>
+ns=`kubectl get namespace |grep itsma | cut -f1 -d " "`<br>
+itsma_ns=`kubectl get namespace |grep itsma | cut -f1 -d " "`<br>
+create_folder<br>
+check_pod rabbitmq<br>
+check_pod platform<br>
+check_pod idm<br>
+save_pv<br>
+save_pvc<br>
+delete_pvc<br>
+delete_pv<br>
+create_pv<br>
+create_pvc<br>
+ns=core<br>
+create_folder<br>
+save_pv<br>
+save_pvc<br>
+delete_pvc<br>
+delete_pv<br>
+create_pv<br>
+create_pvc</span></p>
+
+<p style="margin: 0in 0in 0in 0.375in; font-family: Calibri; font-size: 11pt;"><!--StartFragment--><!--EndFragment--></p>
+
+<p style="margin:0in;margin-left:.375in;font-family:Calibri;font-size:11.0pt;
+color:#78230C"><span style="font-style:italic;background:white">################ Script End&nbsp;################&nbsp;</span></p>
+</div>
+</div>
+</div>
+<!--EndFragment--></html>
