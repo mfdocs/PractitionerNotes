@@ -1,1 +1,346 @@
- 
+<html><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Micro Focus Hybrid Cloud Management (HCM) allows end users to deploy virtual machines on vCenter. &nbsp;After a virtual machine has been deployed, end users of HCM may need access to web console of virtual machines for the following scenarios:</span></span></span>
+<ul>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Troubleshoot Virtual Machine (VM) issues.</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Open a login session to virtual machine when remote connections such as Remote Desktop Protocol (RDP) and Secure Socket Shell (SSH) are not functioning.</span></span></span></li>
+</ul>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">This practitioner note describes a solution to allow access to vCenter VM web console for HCM end users. This solution has the following pre-requisites:</span></span></span>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">HCM (Either classic or containerized versions)</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">An Operations Orchestration (OO) Remote Action Server (RAS) running on a Microsoft (MS) Windows operating system. </span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">MS Windows operating system with PowerShell version 5.1 or later. OO RAS and PowerShell can be hosted on the&nbsp; same Windows server.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">PowerShell with VMware PowerCLI module. </span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">PowerShell host with remoting enabled.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">vCenter 5.5 or later.</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Connectivity to vCenter vSphere application from OO RAS and PowerShell.</span></span></span></li>
+</ol>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">The solution works as follows:</span></span></span>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">An end user requests for a new vCenter virtual machine subscription from HCM end user portal.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">HCM submits request to deploy virtual machine to a pre-configured OO workflow.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">The OO workflow triggers a PowerShell script after creation of VM.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">The PowerShell script returns VM web console URL to the OO workflow.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">The OO workflow returns the VM web console URL along with other VM information to HCM.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">HCM creates VM subscription and assigns that subscription to the end user. </span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">End user brings up VM subscription service instance details. The VM web console URL is displayed as one of the properties of deployed service instance.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">End user clicks on VM web console URL to launch VM web console to the deployed virtual machine. </span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">If virtual machine name changes or if SSL certificate changes on vCenter, or if the web console URL does not work for some reason, the end user launches an action to update the VM web console URL in the end user portal. As a result, the VM web console URL is updated for the virtual machine.</span></span></span></li>
+</ol>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Follow the steps below to implement this solution, allowing vCenter VM web console access to end users in HCM.</span></span></span><br>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>Configure HCM, OO and PowerShell environment</b></span></span></span>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Get a list of OO flows that needs to be modified to allow vCenter VM web console access to end users.</span></span></span></li>
+</ol>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Login to the HCM Service Management Console.</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Open the service design for the service that deploys vCenter virtual machines. There may be more than one service design that deploys vCenter virtual machines.</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Select and view the component that corresponds to vCenter virtual machine.</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Click “RESOURCE OFFERINGS” tab. Select the “SUN” icon and click “Navigate to Resource Offering”</span></span></span></li>
+</ul>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">&nbsp;<img id="Picture_x0020_3" src="/mediawiki/images/pn_images/pn_image_5ec843c999f8f3.96870023.png" style="width:303pt; height:171.75pt"> </span></span></span>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Click “LIFECYCLE” tab. In the sample screenshot below, “vCenter Deploy VM” OO flow is defined as a service lifecycle OO flow that provisions a VM. Note down the OO flow name. There may be more than one service design that deploys vCenter virtual machines. Repeat the above steps for each service design and note down all OO flow names used in resource offering lifecycle provisioning stages.</span></span></span></li>
+</ul>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img id="Picture_x0020_4" src="/mediawiki/images/pn_images/pn_image_5ec843c9e50c00.43294824.png" style="width:303.75pt; height:202.5pt"> </span></span></span><br>
+&nbsp;
+<ol start="2">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Modify OO flows to return the VM Web Console URL to HCM</span></span></span></li>
+</ol>
+&nbsp;
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Launch OO studio. </span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Attached to this practitioner notes, you will find the following artifacts available for download:</span></span></span>
+	<ul style="list-style-type:circle">
+		<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">OO flow “Get VM Web Console URL” in XML format. </span></span></span></li>
+		<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">OO flow “vCenter Update VM Web Console URL” in XML format.</span></span></span></li>
+		<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">OO content system properties “vCenterWebConsoleLocale”,” vCenterWebConsolePort”,” vCenterWebConsolePowershellHost” and “vCenterWebConsoleScriptPath” in XML format.</span></span></span></li>
+		<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">OO content system account “vCenterWebConsolePSCred” in XML format.</span></span></span></li>
+		<li style="margin-left:8px; margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">“Get-VMWebConsoleURL.ps1” PowerShell script. </span></span></span></li>
+	</ul>
+	</li>
+</ul>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">The “Get VM Web Console URL” OO flow retrieves vCenter VM web console URL for a specified virtual machine. The flow invokes the Windows PowerShell script “Get-VMWebConsoleURL.ps1” to generate vCenter VM web console URL. &nbsp;The “Get VM Web Console URL” OO flow is invoked during provisioning stages of a virtual machine. The “vCenter Update VM Web Console URL” OO flow updates VM web console URL for an already deployed virtual machine. The “vCenter Update VM Web Console URL” OO flow is invoked as a user action on an already deployed virtual machine.</span></span></span><br>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">The OO flows and the PowerShell script can be further enhanced to meet your coding style, implement organization specific requirements, perform additional checks required for your environment, to improve performance, to use as a reference, etc. Use these OO flows and the PowerShell script as is and it is not supported by Micro Focus.</span></span></span>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Copy the “Get VM Web Console URL.xml” file to an appropriate OO studio workspace project directory of your choice.&nbsp; In the sample screenshot below, the “Get VM Web Console URL.xml” file has been saved in the following OO studio workspace project directory: C:\Users\user01\.oo\Workspace\CSA VMware vCenter Sequenced [18.0.3]\Content\Library\CSA Content Pack\Providers\vCenter\Subflows</span></span></span></li>
+</ul>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img id="Picture_x0020_17" src="/mediawiki/images/pn_images/pn_image_5ec843ca439312.27741377.png" style="width:375.75pt; height:303.75pt"> </span></span></span>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Copy the “vCenter Update VM Web Console URL.xml” file to an appropriate OO studio workspace project directory of your choice.&nbsp; In the sample screenshot below, the “vCenter Update VM Web Console URL.xml” file has been saved in the following OO studio workspace project directory: C:\Users\user01\.oo\Workspace\CSA VMware vCenter Sequenced [18.0.3]\Content\Library\CSA Content Pack\Providers\vCenter\Actions</span></span></span></li>
+</ul>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img id="Picture_x0020_21" src="/mediawiki/images/pn_images/pn_image_5ec843ca846e79.08823929.png" style="width:366pt; height:251.25pt"> </span></span></span><br>
+&nbsp;
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Copy the files “vCenterWebConsoleLocale.xml”,” vCenterWebConsolePort.xml”,” vCenterWebConsolePowershellHost.xml” and “vCenterWebConsoleScriptPath.xml” to &nbsp;the “System Properties” directory of project workspace. In the sample screenshot below, the “vCenterWebConsoleLocale.xml”,” vCenterWebConsolePort.xml”,” vCenterWebConsolePowershellHost.xml” and “vCenterWebConsoleScriptPath.xml” files have been saved in the following OO studio workspace project directory: C:\Users\user01\.oo\Workspace\CSA VMware vCenter Sequenced [18.0.3]\Content\Configuration\System Properties</span></span></span></li>
+</ul>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img id="Picture_x0020_16" src="/mediawiki/images/pn_images/pn_image_5ec843cacb5be4.67503560.png" style="width:388.5pt; height:119.25pt"> </span></span></span>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Copy the “vCenterWebConsolePSCred.xml” file to the “System Accounts” directory of project workspace. In the sample screenshot below, the &nbsp;“vCenterWebConsolePSCred.xml” file has been saved in the following OO studio workspace project directory: C:\Users\user01\.oo\Workspace\CSA VMware vCenter Sequenced [18.0.3]\Content\Configuration\System Accounts</span></span></span></li>
+</ul>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img id="Picture_x0020_15" src="/mediawiki/images/pn_images/pn_image_5ec843cb1b0214.24848697.png" style="width:353.25pt; height:60.75pt"> </span></span></span>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Refresh the project in OO Studio so that the “Get VM Web Console URL” flow, “vCenter Update VM Web Console URL” flow, System Accounts and System Properties become available for use in OO studio.</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">In OO Studio, navigate to System Accounts and System Properties. Validate that the following system account is available: “vCenterWebConsolePSCred”. Validate that the following system properties are available: “vCenterWebConsoleLocale”,” vCenterWebConsolePort”,” vCenterWebConsolePowershellHost” and “vCenterWebConsoleScriptPath”</span></span></span></li>
+</ul>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img id="Picture_x0020_18" src="/mediawiki/images/pn_images/pn_image_5ec843cb4f9169.00529838.png" style="width:171.75pt; height:220.5pt"> </span></span></span>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">In OO Studio, navigate and click the “Get VM Web Console URL” flow. A screenshot of the “Get VM Web Console URL” flow is shown below:</span></span></span></li>
+</ul>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img id="Picture_x0020_2" src="/mediawiki/images/pn_images/pn_image_5ec843cb977fe5.10691301.png" style="width:387.75pt; height:134.25pt"> </span></span></span>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">The “Get VM Web Console URL” flow has the following inputs</span></span></span>
+
+	<ul style="list-style-type:circle">
+		<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>vmId</b>: ID of the virtual machine for which web console URL has to be generated. Expects ID in the following format vm-xxxx (For example, vm-1234).</span></span></span></li>
+		<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>vCenterPort</b>: vCenter server port number. Uses 443 as the default port number.</span></span></span></li>
+		<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>vCenterHost</b>: vCenter server’s fully qualified domain name or IP address.</span></span></span></li>
+		<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>vCenterUser</b>: vCenter login ID. </span></span></span></li>
+		<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>vCenterPwd</b>: vCenter login password.</span></span></span></li>
+		<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>overrideNRAS</b>: Supply windows RAS group name used in your OO Central architecture. By default uses “Windows” as the RAS group name.</span></span></span></li>
+	</ul>
+	</li>
+</ul>
+&nbsp;
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">The “Get VM Web Console URL” flow outputs VM web console URL.</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Insert “Get VM Web Console URL” flow as a subflow in all of the identified flows that deploys a virtual machine. Supply values for the inputs to the “Get VM Web Console URL” subflow. In the sample screenshot below, the “Get VM Web Console URL” flow has been inserted as a step/subflow in the “vCenter Deploy VM” OO flow. The “Get VM Web Console URL” step is inserted after provision of VM step.</span></span></span></li>
+</ul>
+<br>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><v:shape adj="2230" fillcolor="#5b9bd5 [3204]" id="Left_x0020_Arrow_x0020_5" o:gfxdata="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
+ehY33jTXm4uUWu6pUOjxoLQWbrQv/5cX58016C1zA01MpqCJd9zxW/UmlMwEpR1/Ctt+uIxTqB2h
+lryIhnBgNpE8e+HPwywpF7KHRJQFXJNOxgYxkZh7lMQdX02/TANNNIdo36o1IIQL69wm0MpFcw6S
+bicZT6d4Is20GxIV6ewWGD7jCudTrX5+sNJkM0j3MAqOvTGd8dsISqzZrqoABkTA6U81i2ZA4Diz
+JLJF/S01ppx2zfNEXUOZHNE0QnlHMck8g2sqL93Rd2UMjLt8zhBQIyR5IxyHqsGaQbW6adk1Mh/W
+dt3TlVTkDNJc9EyLVVTXdLOYNULRBpZieb4mb3hVhBg4zezwGXUvU+5mwXVL64SyS0DAy/g5uu4Z
+GoLh2mIwyzXl8SoNK87OpXbvKCZ4imtnaRIG67cKs0txK3uEczgQnqvzg95y1YJoWqwrdaRdnyYO
+UOqNw2rHh88DcD7xAK7gA4MPspqS1ZQMruCrAbSL7Ki/4+cXhQSeZ5ISUy8k9QLTKCSNQtIsJM1C
+0iokLd/TZ+LwHUYdh/teceQNPSw/Is/XFvb3m+1/AQAA//8DAFBLAwQUAAYACAAAACEAnGZGQbsA
+AAAkAQAAKgAAAGNsaXBib2FyZC9kcmF3aW5ncy9fcmVscy9kcmF3aW5nMS54bWwucmVsc4SPzQrC
+MBCE74LvEPZu0noQkSa9iNCr1AcIyTYtNj8kUezbG+hFQfCyMLPsN7NN+7IzeWJMk3ccaloBQae8
+npzhcOsvuyOQlKXTcvYOOSyYoBXbTXPFWeZylMYpJFIoLnEYcw4nxpIa0cpEfUBXNoOPVuYio2FB
+qrs0yPZVdWDxkwHii0k6zSF2ugbSL6Ek/2f7YZgUnr16WHT5RwTLpRcWoIwGMwdKV2edNS1dgYmG
+ff0m3gAAAP//AwBQSwECLQAUAAYACAAAACEAu+VIlAUBAAAeAgAAEwAAAAAAAAAAAAAAAAAAAAAA
+W0NvbnRlbnRfVHlwZXNdLnhtbFBLAQItABQABgAIAAAAIQCtMD/xwQAAADIBAAALAAAAAAAAAAAA
+AAAAADYBAABfcmVscy8ucmVsc1BLAQItABQABgAIAAAAIQCFNJfEewMAANkHAAAfAAAAAAAAAAAA
+AAAAACACAABjbGlwYm9hcmQvZHJhd2luZ3MvZHJhd2luZzEueG1sUEsBAi0AFAAGAAgAAAAhALY7
+BCJUBgAACxoAABoAAAAAAAAAAAAAAAAA2AUAAGNsaXBib2FyZC90aGVtZS90aGVtZTEueG1sUEsB
+Ai0AFAAGAAgAAAAhAJxmRkG7AAAAJAEAACoAAAAAAAAAAAAAAAAAZAwAAGNsaXBib2FyZC9kcmF3
+aW5ncy9fcmVscy9kcmF3aW5nMS54bWwucmVsc1BLBQYAAAAABQAFAGcBAABnDQAAAAA=
+" strokecolor="#1f4d78 [1604]" strokeweight="1pt" style="position:absolute; left:0; text-align:left; margin-left:479px; margin-top:80px; width:184.85pt; height:38.15pt; rotation:1118817fd; z-index:251659264; v-text-anchor:middle" type="#_x0000_t66"> <v:textbox>
+<table width="100%">
+	<tbody>
+		<tr>
+			<td>
+			<div><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Get VM Web Console URL Subflow</span></span></span></div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+</v:textbox> </v:shape><img id="Picture_x0020_19" src="/mediawiki/images/pn_images/pn_image_5ec843cc0d0ce1.58267434.png" style="width:402pt; height:276pt"> </span></span></span>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Add a new flow output field with the name “VM Web Console URL” to all the identified VM provisioning OO flows in earlier steps. Map the “VM Web Console URL” output field name to “vmWebConsoleURL” output field. In the sample screenshot below, the “VM Web Console URL” flow output name has been added to the “vCenter Deploy VM” flow. </span></span></span></li>
+</ul>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">&nbsp;</span></span></span><br>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img id="Picture_x0020_20" src="/mediawiki/images/pn_images/pn_image_5ec843cc4e20e1.18076071.png" style="width:461.25pt; height:168pt"> </span></span></span>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">In OO Studio, navigate and click the “vCenter Update VM Web Console URL” flow. A screenshot of the “vCenter Update VM Web Console URL” flow is shown below:</span></span></span></li>
+</ul>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img id="Picture_x0020_22" src="/mediawiki/images/pn_images/pn_image_5ec843cc9dabc8.45368398.png" style="width:454.5pt; height:141.75pt"> </span></span></span>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">The “vCenter Update VM Web Console URL” flow has the following inputs</span></span></span>
+
+	<ul style="list-style-type:circle">
+		<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>vmId</b>: ID of the virtual machine for which web console URL has to be generated. Supply ID in the following format vm-xxxx (For example, vm-1234)</span></span></span></li>
+		<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>providerId</b>: HCM vCenter provider ID. HCM creates a provider ID for every provider created in HCM.</span></span></span></li>
+	</ul>
+	</li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">In OO Studio, create a new version of vCenter content pack using updated OO flows. </span></span></span></li>
+</ul>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Configure PowerShell host environment</span></span></span></li>
+</ol>
+
+<ul>
+	<li style="margin-left:32px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Create the following directory on PowerShell host: C:\vCenterScripts</span></span></span></li>
+	<li style="margin-left:32px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Copy the script “Get-VMWebConsoleURL.ps1” to the directory C:\vCenterScripts</span></span></span></li>
+	<li style="margin-left:32px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Test PowerShell script with your vCenter environment. </span></span></span>
+	<ul style="list-style-type:circle">
+		<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Open PowerShell command prompt.</span></span></span></li>
+		<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Navigate to C:\vCenterScripts directory.</span></span></span></li>
+		<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Run the PowerShell script with following syntax: .\Get-VMWebConsoleURL.ps1 -VcenterHost vCenter.FQDN.com -VcenterPort 443 -VcenterUser admin -VcenterPwd &lt;AdminPassword&gt; -VcenterWebConsolePort 9443 -VmId vm-1234 -VcenterWebConsoleLocale en_US</span></span></span></li>
+		<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Validate that script returns VM Web Console URL.</span></span></span></li>
+		<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">If there are any issues in PowerShell or vCenter connection issues due to firewall fix them and retest.</span></span></span></li>
+	</ul>
+	</li>
+</ul>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Configure OO Central to use the updated content pack</span></span></span></li>
+</ol>
+
+<ul>
+	<li style="margin-left:32px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Login to OO Central as user admin. </span></span></span></li>
+</ul>
+
+<ul>
+	<li style="margin-left:32px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Upload updated vCenter content pack to OO Central.</span></span></span></li>
+</ul>
+
+<ul>
+	<li style="margin-left:32px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Adjust the following system parameters if necessary.</span></span></span></li>
+</ul>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>vCenterWebConsoleLocale</b>: Language in which vCenter VM web console is displayed to the user. Refer to the vCenter product documentation for a list of valid locales. By default, en_US is used.</span></span></span><br>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>vCenterWebConsolePort</b>: vCenter VM web console port. Default port number is 9443. Work with your vCenter administrator to know correct web console port number for your vCenter environment.</span></span></span><br>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>vCenterWebConsolePowershellHost</b>: If Windows RAS is also used as the PowerShell host, set this value to localhost. If a different PowerShell host is used, set either fully qualified domain name of the PowerShell host or IP address of the PowerShell host.</span></span></span><br>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>vCenterWebConsoleScriptPath</b>: Absolute path to the “Get-VMWebConsoleURL.ps1” PowerShell script on PowerShell host.</span></span></span><br>
+<br>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">&nbsp;<img id="Picture_x0020_6" src="/mediawiki/images/pn_images/pn_image_5ec843ccda3fe4.09347379.png" style="width:468pt; height:77.25pt"> </span></span></span>
+
+<ul>
+	<li style="margin-left:32px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Enter login credentials for the PowerShell windows system using “vCenterWebConsolePSCred” system account.</span></span></span></li>
+</ul>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img id="Picture_x0020_7" src="/mediawiki/images/pn_images/pn_image_5ec843cd15b517.52668993.png" style="width:468pt; height:110.25pt"> </span></span></span>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Map the OO flow output field “VM Web Console URL” to HCM objects.</span></span></span></li>
+</ol>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Login to the HCM Service Management console with admin privileges.</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Navigate to the Resource Offering Lifecycle of the service that deploys vCenter virtual machines.&nbsp; &nbsp;</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Edit actions to define flow mappings for the identified flows that deploy a virtual machine. In the screenshot below, “vCenter Deploy VM” flow deploys virtual machine.</span></span></span></li>
+</ul>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img id="Picture_x0020_10" src="/mediawiki/images/pn_images/pn_image_5ec843cd578270.06602545.png" style="width:299.25pt; height:193.5pt"> </span></span></span>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">In the sample screenshot below, the “vCenter Deploy VM” OO flow output “VM Web Console URL” has been mapped to the HCM resource offering property “VM Web Console URL”</span></span></span></li>
+</ul>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img id="Picture_x0020_23" src="/mediawiki/images/pn_images/pn_image_5ec843cd983055.51551737.png" style="width:309pt; height:219.75pt"> </span></span></span>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Navigate to the Resource Offering User Operations of the service that deploys vCenter virtual machines.&nbsp;&nbsp; Click Add.</span></span></span></li>
+</ul>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img id="Picture_x0020_24" src="/mediawiki/images/pn_images/pn_image_5ec843cdc9a2a8.68247813.png" style="width:417.75pt; height:117pt"> </span></span></span>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Navigate and Select “vCenter Update VM Web Console URL” OO flow. Click Next.</span></span></span></li>
+</ul>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img id="Picture_x0020_25" src="/mediawiki/images/pn_images/pn_image_5ec843ce143da6.47456810.png" style="width:294.75pt; height:208.5pt"> </span></span></span>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Change display name to “Update VM Web Console URL”. Click Next.</span></span></span></li>
+</ul>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img id="Picture_x0020_26" src="/mediawiki/images/pn_images/pn_image_5ec843ce6dab51.90586863.png" style="width:322.5pt; height:230.25pt"> </span></span></span>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Map input and output parameters as shown in the following screenshot. Click Finish.</span></span></span></li>
+</ul>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img id="Picture_x0020_27" src="/mediawiki/images/pn_images/pn_image_5ec843cea133b4.86271384.png" style="width:300.75pt; height:213.75pt"> </span></span></span>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Unpublish the service design or create a new version of service design that deploys virtual machine.</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">On the server component, create a new field with the following details:</span></span></span>
+	<ul style="list-style-type:circle">
+		<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Type: String</span></span></span></li>
+		<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Name: vmWebConsoleURL</span></span></span></li>
+		<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Display Name: VM Web Console URL</span></span></span></li>
+		<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Consumer Visible: Checked</span></span></span></li>
+		<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Deploy settings -&gt; Visible: Unchecked</span></span></span></li>
+	</ul>
+	</li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Map the resource offering property “VM Web Console URL” to the server component property “VM Web Console URL”</span></span></span></li>
+</ul>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img id="Picture_x0020_29" src="/mediawiki/images/pn_images/pn_image_5ec843cede8392.53563698.png" style="width:357.75pt; height:265.5pt"> </span></span></span>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Save and publish service design.</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Publish offering using modified service design.</span></span></span></li>
+</ul>
+<br>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>Use VM Web Console URL from end user portal</b></span></span></span>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Deploy a new virtual machine in HCM Marketplace Portal. </span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">The following screenshot shows a deployed virtual machine with its VM Web Console URL. The value next to the VM Web Console URL field is a clickable link. Hover over the value and it displays as a clickable URL. Click on the URL.</span></span></span></li>
+</ul>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">&nbsp;<img id="Picture_x0020_30" src="/mediawiki/images/pn_images/pn_image_5ec843cf3e9fc5.78025345.jpeg" style="width:322.5pt; height:287.25pt"> </span></span></span><br>
+<br>
+&nbsp;
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">The VMWare vCenter login page is displayed. Login either using windows authentication or using credentials provided by the vCenter administrator.&nbsp; </span></span></span></li>
+</ul>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img id="Picture_x0020_1" src="/mediawiki/images/pn_images/pn_image_5ec843cf7ce548.72902539.png" style="width:278.25pt; height:186.75pt"> </span></span></span>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">After successful authentication, vmWare web console for the virtual machine is displayed. The end user is shown the VM web console only. The end user is not displayed full vSphere web client.</span></span></span></li>
+</ul>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img id="Picture_x0020_31" src="/mediawiki/images/pn_images/pn_image_5ec843cfc0b7c4.69910526.png" style="width:468pt; height:182.25pt"> </span></span></span><br>
+&nbsp;
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Launch user action “Update VM Web Console URL” on the deployed VM to get a new VM web console URL. This action is necessary if VM name changes or vCenter certificate expires or web console URL fails to launch vCenter console. </span></span></span></li>
+</ul>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img id="Picture_x0020_8" src="/mediawiki/images/pn_images/pn_image_5ec843d01e7187.17368069.png" style="width:324.75pt; height:221.25pt"> </span></span></span><br>
+&nbsp;</html>
