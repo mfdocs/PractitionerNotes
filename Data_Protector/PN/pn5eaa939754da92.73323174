@@ -1,18 +1,18 @@
-<html><p>To allow system patching and other routine maintenance acitivies on the Cell Manager or a central Media Agent&nbsp;it may be required to stop and prevent new sessions from being started.</p>
+<html><p>To allow system patching and other routine maintenance activities&nbsp;on the Cell Manager or a central Media Agent&nbsp;it may be required to stop and prevent new sessions from being started.</p>
 
 <p>There are several options for this. You may stop the trigger on the Cell Manager using <code><tt>omnitrig -stop</tt></code>&nbsp;or change schedules of backups to prevent scheduled sessions from being executed. This will work in most of the cases, but does not prevent sessions from being executed started on client systems. This is quite often seen in environments with SAP HANA, where backups are triggered by the database itself or the SAP HANA Cockpit, or Oracle where RMAN is used to perform backups, restores or verifications.</p>
 
 <h2>Enter the Maintenance Mode</h2>
 
-<p>Use the command&nbsp;<code><tt>omnisv -maintenance</tt></code> to transition from Produtction to Maintenance Mode on the Cell Manager.</p>
+<p>Use the command&nbsp;<code><tt>omnisv -maintenance</tt></code> to transition from Production to Maintenance Mode on the Cell Manager.</p>
 
 <ul>
 	<li><strong>Production to Phase 1: </strong>Sessions in progress will continue to run and new sessions are&nbsp;rejected by the Cell Manager. The trigger will be stopped.</li>
 	<li><strong>Phase 1 to Phase 2: </strong>All sessions still in progress will be actively terminated including GUI connections</li>
-	<li><strong>Phase 2 to Mainteance Mode:&nbsp;</strong>No sessions are running and&nbsp;new sessions are&nbsp;rejected by the Cell Manager. The trigger remains stopped.</li>
+	<li><strong>Phase 2 to Maintenance&nbsp;Mode:&nbsp;</strong>No sessions are running and&nbsp;new sessions are&nbsp;rejected by the Cell Manager. The trigger remains stopped.</li>
 </ul>
 
-<p>&nbsp;</p>
+<p></p>
 
 <p><img alt="" border="0" height="304" hspace="0" src="/mediawiki/images/pn_images/pn_image_5eaaae70a78274.68909384.png" style="width: 800px; height: 304px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
@@ -36,5 +36,5 @@ Cell Server is entering maintenance mode
 
 <h2>Force Maintenance Mode</h2>
 
-<p>If you need for quickly enter Maintenance Mode you can use the command&nbsp;<code><tt>omnisv -maintenance 1</tt></code>. It will not wait for the session to complete and immeadiately try to abort them.</p>
+<p>If you need for quickly enter Maintenance Mode you can use the command&nbsp;<code><tt>omnisv -maintenance 1</tt></code>. It will not wait for the session to complete and immediately&nbsp;try to abort them.</p>
 </html>
