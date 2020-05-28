@@ -479,7 +479,21 @@ To prevent superseded patches from being imported.</p>
 
 <p>The consequence of this defect fix is that it ends up causing Twist to excessively flush its cache inducing a performance issue and sometimes crashing out Way Jobs.&nbsp; Turning it off will be of benefit if the ADM sub-system is not being used.&nbsp; If you don't know what ADM is, you're not using it.</p>
 
-<h3>Split-Brain</h3>
+<p>The Way has a 10s timeout when attempting a poke request with a 10s retry.&nbsp; For estates with a large number of unreachable servers, this can set up a mini denial of service inside the Way moving jobs forward.&nbsp; A small reduction (1s) in the poke timeout will help elevate this issue.</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><font face="monospace">sa_config_checkfix -k poke.conn_timeout -v 9 --set&nbsp; &nbsp; (default 10)</font></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<h3><br>
+<br>
+Split-Brain</h3>
 
 <p>Due to the new way session job execution enhancement, introduced in 10.23 and 10.51, designed to prevent jobs&nbsp;from completing until all commands started by that job have completed, many&nbsp;customers have experienced jobs that stay ACTIVE (aka in-progress) for a long period of time.</p>
 
