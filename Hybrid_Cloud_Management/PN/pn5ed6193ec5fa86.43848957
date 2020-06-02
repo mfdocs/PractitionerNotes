@@ -1,6 +1,6 @@
 <html>After installing the Micro Focus Hybrid Cloud Management (HCM), you can improve the performance of HCM components by setting its parameters to the desired value as per your environment and usage. HCM has two main components - Cloud Service Automation (CSA) and Operation Orchestration (OO). These components cover the majority of the HCM use cases like design, deployment etc. You can fine-tune the parameters of these components to get better performance from the HCM.
 <h2>CSA Parameters</h2>
-The following are the CSA parameters and its recommended values which you can set in the hcm-csa.yaml
+The following table lists the CSA parameters and its recommended values which you can set in the hcm-csa.yaml
 
 <table border="1" cellpadding="1" cellspacing="1" style="width: 600px;">
 	<tbody>
@@ -86,7 +86,7 @@ The following are the CSA parameters and its recommended values which you can se
 </table>
 
 <h2>OO Parameters</h2>
-The following are the OO parameters and its recommended values which you can set the hcm-oo.yaml
+The following table lists the OO parameters and its recommended values which you can set in the hcm-oo.yaml
 
 <table border="1" cellpadding="1" cellspacing="1" style="width: 600px;">
 	<tbody>
@@ -137,7 +137,12 @@ You can adjust these parameters based on the load on CSA and OO, the recommended
 
 <h2>Applying changes</h2>
 <br>
-After you changed the values in these YAML files, run the following commands of the respective YAML file to apply the changes;<br>
+Both the YAML files are located in the following directory;<br>
+<br>
+<code>&lt;PERSISTENT_VOLUME_PATH&gt;/core/suite-install/hcm/output</code>&nbsp;where,<br>
+<code>PERSISTENT_VOLUME_PATH</code>&nbsp;is the directory in which the HCM Suite is installed.<br>
+<br>
+After you changed the values in these YAML files, run the following commands of the respective YAML file to recreate the pod and apply the changes;<br>
 <br>
 kubectl delete -f hcm-csa.yaml<br>
 kubectl create -f hcm-csa.yaml<br>
