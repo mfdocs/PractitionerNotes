@@ -1,1 +1,96 @@
- 
+<html><h2><span style="font-size:14.0pt"><span style="font-family:Calibri"><span style="color:#2e75b5">Improve HCM Performance by fine-tuning key parameters</span></span></span></h2>
+<span style="font-size:11.0pt"><span style="font-family:Calibri">After installing the Micro Focus Hybrid Cloud Management (HCM), you can improve the performance of HCM key services by setting its parameters to the desired value as per your environment and usage. HCM has two main key services - Cloud Service Automation (CSA) and Operation Orchestration (OO).</span></span><br>
+<span style="font-size:11.0pt"><span style="font-family:Calibri">&nbsp;</span></span><br>
+<span style="font-size:11.0pt"><span style="font-family:Calibri">The following are the CSA parameters and its recommended values which you can set in the hcm-csa.yaml</span></span><br>
+&nbsp;
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<caption></caption>
+	<tbody>
+		<tr>
+			<td><span style="font-size:11.0pt"><span style="font-family:Calibri"><span style="font-weight:bold">Parameter</span></span></span></td>
+			<td><span style="font-size:11.0pt"><span style="font-family:Calibri"><span style="font-weight:bold">Recommended value</span></span></span><br>
+			&nbsp;</td>
+			<td><span style="font-size:11.0pt"><span style="font-family:Calibri"><span style="font-weight:bold">Description</span></span></span><br>
+			&nbsp;</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:3.8423in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">CSA_PROP_DYNAMIC_PROPERTY_FETCH_READ_TIMEOUT</span></span></td>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:.6673in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">60000</span></span></td>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:5.7347in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">How long, in milliseconds, CSA attempts to fetch or retrieve data for dynamic properties.</span></span><br>
+			<span style="font-size:11.0pt"><span style="font-family:Calibri">Default:</span></span></td>
+		</tr>
+		<tr>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:3.8423in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">CSA_PROP_DYNAMIC_PROPERTY_FETCH_RESPONSE_SIZE</span></span></td>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:.6673in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">80000</span></span></td>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:5.7347in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">The maximum amount of data, in bytes, that can be retrieved for dynamic properties.</span></span><br>
+			<span style="font-size:11.0pt"><span style="font-family:Calibri">Default:</span></span></td>
+		</tr>
+		<tr>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:4.859in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">CSA_PROP_COM_HP_CSA_OO_OOCLIENT_SOCKET_TIMEOUT</span></span></td>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:.6868in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">180000</span></span></td>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:8.1159in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">How long, in milliseconds, CSA keeps a socket open for SOAPbased communication with Operations Orchestration.</span></span><br>
+			<span style="font-size:11.0pt"><span style="font-family:Calibri">Default: 180000</span></span></td>
+		</tr>
+		<tr>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:4.859in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">CSA_PROP_COM_HP_CSA_SERVICE_PROCESS_PROCESS_EXECUTOR_DELEGATE_INTERNAL_POOL_SIZE</span></span></td>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:.6868in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">20</span></span></td>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:8.1159in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">The maximum number of threads used for processing internal executors (for example, clone patterns).</span></span><br>
+			<span style="font-size:11.0pt"><span style="font-family:Calibri">Default: 4</span></span></td>
+		</tr>
+		<tr>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:4.859in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">CSA_PROP_COM_HP_CSA_SERVICE_PROCESS_PROCESS_EXECUTOR_DELEGATE_EXTERNAL_POOL_SIZE</span></span></td>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:.6868in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">20</span></span></td>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:8.1159in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">The maximum number of threads used for processing external executors (for example, Operations Orchestration).</span></span><br>
+			<span style="font-size:11.0pt"><span style="font-family:Calibri">Default: 2</span></span></td>
+		</tr>
+		<tr>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:4.859in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">CSA_PROP_COM_HP_CSA_SERVICE_PROCESS_PROCESS_EXECUTOR_DELEGATE_CALLBACK_POOL_SIZE</span></span></td>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:.6868in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">20</span></span></td>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:8.1159in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">The maximum number of threads used by the callback pool.</span></span><br>
+			<span style="font-size:11.0pt"><span style="font-family:Calibri">Default: 4</span></span></td>
+		</tr>
+		<tr>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:4.859in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">CSA_PROP_COM_HP_CSA_PROCESS_EXECUTOR_THREAD_WAKEUP_TIME</span></span></td>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:.6868in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">2500</span></span></td>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:8.1159in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">How often, in milliseconds, the process execution manager starts new process instances (which start Operations Orchestration flows) and checks the status of process instances.</span></span><br>
+			<span style="font-size:11.0pt"><span style="font-family:Calibri">Default: 2500</span></span></td>
+		</tr>
+		<tr>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:4.859in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">CSA_PROP_COM_HP_CSA_PROCESS_EXECUTOR_THREAD_POOL_CORE_SIZE</span></span></td>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:.6868in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">20</span></span></td>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:8.1159in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">The maximum number of threads used to run process instances.</span></span><br>
+			<span style="font-size:11.0pt"><span style="font-family:Calibri">Default: 4</span></span></td>
+		</tr>
+		<tr>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:4.859in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">CSA_PROP_COM_HP_CSA_LIFECYCLE_EXECUTOR_THREAD_WAKEUP_TIME</span></span></td>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:.6868in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">2500</span></span></td>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:8.1159in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">How often, in milliseconds, the lifecycle engine checks for service components that it needs to transition</span></span><br>
+			<span style="font-size:11.0pt"><span style="font-family:Calibri">Default: 2500</span></span></td>
+		</tr>
+		<tr>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:4.859in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">CSA_PROP_COM_HP_CSA_LIFECYCLE_EXECUTOR_THREAD_POOL_SIZE</span></span></td>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:.6868in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">20</span></span></td>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:8.1159in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">The maximum number of threads used to transition service components.</span></span><br>
+			<span style="font-size:11.0pt"><span style="font-family:Calibri">Default: 4</span></span></td>
+		</tr>
+		<tr>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:4.859in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">CSA_PROP_COM_HP_CSA_REQUEST_ENGINE_DEPLOYMENT_POOL_SIZE</span></span></td>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:.6868in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">8</span></span></td>
+			<td style="border-bottom:2px solid #a3a3a3; vertical-align:top; width:8.1159in; padding:5px 5px 5px 5px; border-top:2px solid #a3a3a3; border-right:2px solid #a3a3a3; border-left:2px solid #a3a3a3"><span style="font-size:11.0pt"><span style="font-family:Calibri">The maximum number of threads used by the request engine</span></span><br>
+			<span style="font-size:11.0pt"><span style="font-family:Calibri">Default: 4</span></span></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+	</tbody>
+</table>
+<br>
+<br>
+&nbsp;</html>
