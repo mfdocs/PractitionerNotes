@@ -221,12 +221,9 @@ This document describes the steps followed to back up and restore HCM 2019.02. T
 	<img data-image-src="/confluence/download/attachments/1154651006/image2020-5-20%2017%3A48%3A59.png?version=1&amp;modificationDate=1589977139000&amp;api=v2" height="173" src="https://rndwiki.houston.softwaregrp.net/confluence/download/attachments/1154651006/image2020-5-20%2017%3A48%3A59.png?version=1&amp;modificationDate=1589977139000&amp;api=v2" width="603"></li>
 </ol>
 
-<p></p>
+<h3>Backup embedded PostgreSQL databases automatically</h3>
 
-<h3 id="HCM2019.02BackupandRestore-BackupembeddedPostgreSQLdatabasesautomatically">Backup embedded PostgreSQL databases automatically</h3>
-
-<p>You can run the following command to back up the embedded suite-db and default-db PostgreSQL databases automatically.<br>
-<code>&nbsp; &nbsp;</code></p>
+<p>You can run the following command to back up the embedded suite-db and default-db PostgreSQL databases automatically.<code>&nbsp; &nbsp;</code></p>
 
 <table border="0" cellpadding="0" cellspacing="0">
 	<tbody>
@@ -242,13 +239,9 @@ Your terminal resembles the following:</p>
 
 <p><img data-image-src="/confluence/download/attachments/1154651006/image2020-5-20%2017%3A50%3A34.png?version=1&amp;modificationDate=1589977234000&amp;api=v2" src="https://rndwiki.houston.softwaregrp.net/confluence/download/attachments/1154651006/image2020-5-20%2017%3A50%3A34.png?version=1&amp;modificationDate=1589977234000&amp;api=v2"></p>
 
-<p></p>
+<h3>Back up Persistent Volumes for suite-db and embedded-db</h3>
 
-<h3 id="HCM2019.02BackupandRestore-BackupPersistentVolumesforsuite-dbandembedded-db.">Back up Persistent Volumes for suite-db and embedded-db</h3>
-
-<p>Database backup files will reside in persistence volumes, that need to be copied to backup directory. You need to go to persistent volumes hosted on local file system or login to remote NFS server and tar the files.</p>
-
-<p></p>
+<p>Database backup files will reside in persistent volumes, that need to be copied to backup directory. You need to go to persistent volumes hosted on local file system or login to remote NFS server and tar the files.</p>
 Example:&nbsp;<br>
 <em><em>cd /var/vols/itom/</em></em><br>
 <em><em><em>tar -</em></em></em>czvf&nbsp;<em><em>/path/to/backup-directory/</em></em><em>backup-postgres.tar.gz&nbsp;postgres</em><br>
@@ -257,30 +250,31 @@ Example:&nbsp;<br>
 <br>
 <em><em><em>*/path/to/backup-directory should be based on date and timestamp</em></em></em>
 
-<h2 id="HCM2019.02BackupandRestore-BackupExternalPostgreSQLdatabase"><strong>Back up External PostgreSQL database</strong></h2>
+<h2 id="HCM2019.02BackupandRestore-BackupExternalPostgreSQLdatabase">Back up external PostgreSQL database</h2>
 
-<p>It is recommended to follow vendor documentation for backup and restore.</p>
+<p>It is recommended to follow the vendor documentation for backup and restore.</p>
 
-<p>For postgres database, perform the following steps to backup&nbsp;all databases:&nbsp;ara, autopass, csa, idm, oo, oodesigner, ucmdb</p>
+<p>For Postgres database, perform the following steps to back up&nbsp;all databases:&nbsp;ara, autopass, csa, idm, oo, oodesigner, ucmdb.</p>
 
 <ol>
-	<li>Login to postgres server.&nbsp;</li>
-	<li>Execute below commands:<br>
+	<li>Log in to Postgres server.&nbsp;</li>
+	<li>Execute the below commands:<br>
 	<em><strong>su - postgres</strong></em></li>
 </ol>
 <em><strong>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; pg_dump &lt;dbname&gt; &gt; &lt;<em><em>path/to/backup-directory</em></em>&gt;/dbname.bak</strong></em><br>
-Note: replace the &lt;dbname&gt; with the required DB name
-<h2 id="HCM2019.02BackupandRestore-BackupVerticadatabase"><strong>Back up Vertica database</strong></h2>
+<strong>Note</strong>: replace the <em>&lt;dbname&gt;</em> with the appropriate DB name.
 
-<p>Refer to Vertica documentation for detailed instructions on backup and restore.</p>
+<h2 id="HCM2019.02BackupandRestore-BackupVerticadatabase">Back up Vertica database</h2>
+
+<p>Refer to Vertica documentation for detailed instructions on backup and restore:</p>
 
 <p><a href="https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2019.02/BackupHCM#Back_up_Vertica_database" rel="nofollow">https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2019.02/BackupHCM#Back_up_Vertica_database</a></p>
 
-<h2 id="HCM2019.02BackupandRestore-RestoreHCM"><strong>Restore HCM</strong></h2>
+<h2 id="HCM2019.02BackupandRestore-RestoreHCM">Restore HCM</h2>
 
-<p>The following steps needs to be performed sequentially to restore HCM. HCM namespace should be shut down before we start restoring.</p>
+<p>The following steps need&nbsp;to be performed sequentially to restore HCM. The HCM namespace should be shut down before starting the procedure.</p>
 
-<h3 id="HCM2019.02BackupandRestore-ShutDownHCM">Shut Down HCM</h3>
+<h3 id="HCM2019.02BackupandRestore-ShutDownHCM">Shut down HCM</h3>
 
 <p>Log in to any of the Kubernetes master nodes and run the following commands:</p>
 
@@ -288,52 +282,48 @@ Note: replace the &lt;dbname&gt; with the required DB name
 
 <pre><em>./cdfctl.sh runlevel set -l DOWN -n &lt;hcm-namespace&gt;</em></pre>
 
-<p>hcm-namespace can be found by running the command&nbsp;<em>&nbsp;kubectl get pods --all-namespaces | grep hcm</em></p>
+<p>The <em>hcm-namespace</em> can be found by running the command&nbsp;<em>&nbsp;kubectl get pods --all-namespaces | grep hcm</em>.</p>
 
-<h2 id="HCM2019.02BackupandRestore-RestorePersistentVolume"><strong>Restore Persistent Volume</strong></h2>
+<h2 id="HCM2019.02BackupandRestore-RestorePersistentVolume">Restore Persistent Volume</h2>
 
-<p>Restore procedure for persistent volumes depends on type of persistent volumes.&nbsp; For persistent volumes hosted on local file system or remote NFS server, approach is to untar the files and restore</p>
+<p>The restore procedure for persistent volumes depends on the type of persistent volumes.&nbsp; For persistent volumes hosted on local file system or remote NFS server, the approach is to untar the files and restore.</p>
 
-<p>Restore data from backup device to Persistent volume following the below steps -</p>
+<p>Restore the data from backup device to persistent volumes by following the steps below:</p>
+Restore the NFS data from back up location to persistent volume path.<br>
+<em><strong>Example:</strong></em>
 
-<ol>
-	<li>Restore the NFS data from back up location to persistent volume path.<br>
-	<em><strong>Example:</strong></em>
+<p>tar -xzvf /path/to/backup-directory/backup-core.tar.gz /var/vols/itom/<br>
+tar -xzvf /path/to/backup-directory/backup-hcm.tar.gz /var/vols/itom/<br>
+tar -xzvf /path/to/backup-directory/backup-logs.tar.gz /var/vols/itom/<br>
+tar -xzvf /path/to/backup-directory/backup-postgres.tar.gz /var/vols/itom/<br>
+tar -xzvf /path/to/backup-directory/backup-postgres-backup.tar.gz /var/vols/itom/<br>
+tar -xzvf /path/to/backup-directory/backup-postgres1.tar.gz /var/vols/itom/</p>
 
-	<p>tar -xzvf /path/to/backup-directory/backup-core.tar.gz /var/vols/itom/<br>
-	tar -xzvf /path/to/backup-directory/backup-hcm.tar.gz /var/vols/itom/<br>
-	tar -xzvf /path/to/backup-directory/backup-logs.tar.gz /var/vols/itom/<br>
-	tar -xzvf /path/to/backup-directory/backup-postgres.tar.gz /var/vols/itom/<br>
-	tar -xzvf /path/to/backup-directory/backup-postgres-backup.tar.gz /var/vols/itom/<br>
-	tar -xzvf /path/to/backup-directory/backup-postgres1.tar.gz /var/vols/itom/</p>
-	</li>
-</ol>
+<h2 id="HCM2019.02BackupandRestore-RestoreembeddeddatabaseandPostgres">Restore embedded database and Postgres</h2>
 
-<h2 id="HCM2019.02BackupandRestore-RestoreembeddeddatabaseandPostgres"><strong>Restore embedded database and Postgres</strong></h2>
+<p>Refer to the <strong>HCM Backup and Restore</strong> topic:&nbsp;<a href="https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2019.02/RestoreSuiteDB" rel="nofollow">https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2019.02/RestoreSuiteDB</a></p>
 
-<p>Please refer to HCM Backup and Restore doc section&nbsp;<a href="https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2019.02/RestoreSuiteDB" rel="nofollow">https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2019.02/RestoreSuiteDB</a></p>
+<h2 id="HCM2019.02BackupandRestore-Restoreexternaldatabase">Restore external database</h2>
 
-<h2 id="HCM2019.02BackupandRestore-Restoreexternaldatabase"><strong>Restore external database</strong></h2>
-
-<p>Please refer to vendor documentation for database restore procedure.</p>
+<p>Refer to vendor documentation for the database restore procedure.</p>
 
 <p>If you have used external database (PostgreSQL or Oracle) to install HCM, you need to restore the external database. Refer to the related database manual for the detailed restore steps.</p>
 
-<p>For example , to restore external postgres follow below steps,</p>
+<p>For example, to restore external postgres, follow the steps below:</p>
 
 <ol>
-	<li>Login to external postgres database shell as postgres user. (su - postgres)<br>
+	<li>Log in to external Postgres database shell as the postgres user&nbsp;(su - postgres).<br>
 	&nbsp;</li>
-	<li>Execute the following commands to drop and recreate hcmadmin databases. (ara, autopass, csa, idm, oo, oodesigner, ucmdb)<br>
+	<li>Execute the following commands to drop and recreate <em>hcmadmin</em> databases. (ara, autopass, csa, idm, oo, oodesigner, ucmdb)<br>
 	<em>drop &lt;dbname&gt;;</em><br>
 	<em>CREATE DATABASE &lt;dbname&gt; WITH OWNER = hcmadmin&nbsp;&nbsp; ENCODING = 'UTF8'&nbsp;&nbsp;TABLESPACE = pg_default&nbsp;LC_COLLATE = 'en_IN.UTF-8'&nbsp;&nbsp; LC_CTYPE = 'en_IN.UTF-8'&nbsp;&nbsp;CONNECTION LIMIT = -1;</em></li>
-	<li><em>Go to&nbsp;</em>&lt;path/to/backup-directory&gt; and execute below command to restore the database<br>
+	<li><em>Go to&nbsp;</em>&lt;path/to/backup-directory&gt; and execute below command to restore the database:<br>
 	<em><em><em>psql&nbsp;<em>&lt;dbname&gt;&nbsp;&nbsp;</em>&lt; dbname.bak;</em></em></em></li>
 </ol>
 
 <h2 id="HCM2019.02BackupandRestore-RestoreVerticadatabase">Restore Vertica database</h2>
 
-<p>Refer HCM B &amp; R documentation for vertica backup and restore steps&nbsp;<a href="https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2019.02/VerticaDatabaseBackupRestore" rel="nofollow">https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2019.02/VerticaDatabaseBackupRestore</a></p>
+<p>Refer to HCM Backup&nbsp;and Restore documentation for the step related to vertica backup and restore:&nbsp;<a href="https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2019.02/VerticaDatabaseBackupRestore" rel="nofollow">https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2019.02/VerticaDatabaseBackupRestore</a></p>
 
 <h2 id="HCM2019.02BackupandRestore-StartHCMafterRestore">Start HCM after Restore</h2>
 
