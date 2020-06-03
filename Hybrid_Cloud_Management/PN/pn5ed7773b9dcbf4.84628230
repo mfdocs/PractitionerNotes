@@ -44,17 +44,15 @@ This document describes the steps followed to back up and restore HCM 2019.02. T
 	<li>It is always recommended to use external database and NFS for production</li>
 </ul>
 
-<h2 id="HCM2019.02BackupandRestore-HowtoBackupHCM?"><strong>How to Back up</strong>&nbsp;<strong>HCM ?</strong></h2>
+<h2 id="HCM2019.02BackupandRestore-HowtoBackupHCM?">How to Back up&nbsp;HCM?</h2>
 
 <p>It is recommended to backup HCM data at frequent intervals in order to make sure data is not lost during catastrophe.&nbsp; Detailed instructions to backup HCM is provided below.</p>
 
-<p><strong>NOTE</strong>&nbsp;:&nbsp; The backup steps are independent and can be performed simultaneously in any order.</p>
+<p><b>Note</b>:&nbsp; The backup steps are independent and can be performed simultaneously in any order.</p>
 
-<h2 id="HCM2019.02BackupandRestore-BackupPersistentVolumes"><strong>Back up</strong>&nbsp;<strong>Persistent</strong>&nbsp;<strong>Volumes</strong></h2>
+<h2 id="HCM2019.02BackupandRestore-BackupPersistentVolumes">Back up&nbsp;Persistent&nbsp;Volumes</h2>
 
 <p>HCM requires the following persistent volume locations to be backed up.</p>
-
-<p></p>
 
 <table>
 	<thead>
@@ -91,13 +89,11 @@ This document describes the steps followed to back up and restore HCM 2019.02. T
 	</tbody>
 </table>
 
-<p></p>
+<p>Suite and default postgres database volumes (<strong>Rows 4,5,6 in the above table</strong>) should be backed up only after the step <strong>Backup Embedded PostgreSQL databases</strong>.</p>
 
-<p>Suite and default postgres database volumes (<strong>Rows 4,5,6 in the above table</strong>) should be backed up only after next step. (Backup Embedded PostgreSQL databases)</p>
+<p>Backup procedure for persistent volumes depends on the type of persistent volumes.&nbsp; For persistent volumes hosted on local file system or remote NFS server, recommended approach is to tar the files and save it on backup device.&nbsp;</p>
 
-<p>Backup procedure for persistent volumes depends on type of persistent volumes.&nbsp; For persistent volumes hosted on local file system or remote NFS server, recommended approach is to tar the files and save it on backup device.&nbsp;</p>
-
-<p><strong>NOTE:&nbsp;</strong>Ensure the&nbsp;ownership and permission for files and directories are preserved during backup and restore activity.</p>
+<p><strong>Note:&nbsp;</strong>Ensure the&nbsp;ownership and permission for files and directories are preserved during backup and restore activity.</p>
 
 <p>Example commands :<strong>&nbsp;</strong></p>
 
@@ -111,13 +107,11 @@ This document describes the steps followed to back up and restore HCM 2019.02. T
 
 <p>*/path/to/backup-directory should be based on date and timestamp</p>
 
-<p></p>
-
-<h2 id="HCM2019.02BackupandRestore-BackupEmbeddedPostgreSQLdatabases(suite-dbanddefault-db)"><strong>Back up Embedded PostgreSQL databases (suite-db and default-db)&nbsp;</strong></h2>
+<h2 id="HCM2019.02BackupandRestore-BackupEmbeddedPostgreSQLdatabases(suite-dbanddefault-db)">Back up Embedded PostgreSQL databases (suite-db and default-db)&nbsp;</h2>
 
 <p>Internal database backup can be performed either manual steps or automatic. Recommended way of back up is automatic.&nbsp;</p>
 
-<h3 id="HCM2019.02BackupandRestore-BackupembeddedPostgreSQLdatabasesmanually"><strong>Backup embedded PostgreSQL databases manually&nbsp;</strong></h3>
+<h3 id="HCM2019.02BackupandRestore-BackupembeddedPostgreSQLdatabasesmanually">Backup embedded PostgreSQL databases manually&nbsp;</h3>
 
 <p>If embedded PostgreSQL database is used to install CDF, we need to backup the embedded databases.</p>
 
@@ -130,7 +124,7 @@ This document describes the steps followed to back up and restore HCM 2019.02. T
 
 <p>Use database backup tool to back up the suite-db and default-db database. The tool is located under&nbsp;${K8S_HOME}/tools/postgres-backup&nbsp;directory, and the logs are available at location&nbsp;<em>/tmp/postgres_backup.log</em>.</p>
 
-<p><strong>NOTE</strong>:&nbsp;Run the following command to make sure the backup service is running:&nbsp;</p>
+<p><strong>Note</strong>:&nbsp;Run the following command to make sure the backup service is running:&nbsp;</p>
 
 <table border="0" cellpadding="0" cellspacing="0">
 	<tbody>
