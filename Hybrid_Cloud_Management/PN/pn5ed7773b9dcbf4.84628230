@@ -1,34 +1,36 @@
-<html><h2 id="HCM2019.02BackupandRestore-Scope"><strong>Scope</strong></h2>
-This document describes the steps followed to back up and restore HCM 2019.02. The scope of this document is limited to HCM 2019.02 and shouldn't be used for other versions without consulting the concerned engineer.
+<html><h2 id="HCM2019.02BackupandRestore-Scope">Scope</h2>
+This document describes the steps followed to back up and restore HCM 2019.02. The scope of this document is limited only to HCM 2019.02 and should not be used for other HCM versions without consulting the support personnel.
 
-<h2 id="HCM2019.02BackupandRestore-BackupprocessofHCM"><strong>Back up process of HCM</strong></h2>
+<h2 id="HCM2019.02BackupandRestore-BackupprocessofHCM">Back up process of HCM</h2>
 
 <ul data-inline-tasks-content-id="1154651006">
-	<li data-inline-task-id="1">Back up NFS folders&nbsp; ( Persistent Volumes)</li>
+	<li data-inline-task-id="1">Back up the NFS folders&nbsp; ( Persistent Volumes)</li>
 	<li data-inline-task-id="2">Back up the embedded PostgreSQL databases (suite-db and default-db)&nbsp;</li>
-	<li data-inline-task-id="3">Back up external Postgres/Oracle /MSSQL database</li>
-	<li data-inline-task-id="4">Backup Vertica Database</li>
+	<li data-inline-task-id="3">Back up the external Postgres/Oracle /MSSQL database</li>
+	<li data-inline-task-id="4">Backup the Vertica database</li>
 	<li data-inline-task-id="11">Stop and repeat the above process if offline backup is required</li>
 </ul>
 
-<h2 id="HCM2019.02BackupandRestore-RestoreprocessofHCM"><strong>Restore process of HCM</strong></h2>
+<h2 id="HCM2019.02BackupandRestore-RestoreprocessofHCM">Restore process of HCM</h2>
 
 <ul data-inline-tasks-content-id="1154651006">
-	<li data-inline-task-id="5">Stop HCM Namespace</li>
-	<li data-inline-task-id="6">Restore NFS folders and Permission's</li>
-	<li data-inline-task-id="7">Restore embedded database and Postgres</li>
-	<li data-inline-task-id="8">Restore external Postgres/Oracle /MSSQL database</li>
-	<li data-inline-task-id="9">Restore Vertica database</li>
-	<li data-inline-task-id="10">Start HCM Namespace</li>
+	<li data-inline-task-id="5">Stop the HCM namespace</li>
+	<li data-inline-task-id="6">Restore the NFS folders and permissions</li>
+	<li data-inline-task-id="7">Restore the embedded database and Postgres</li>
+	<li data-inline-task-id="8">Restore the external Postgres/Oracle/MSSQL database</li>
+	<li data-inline-task-id="9">Restore the Vertica database</li>
+	<li data-inline-task-id="10">Start the HCM namespace</li>
 </ul>
 
-<h2 id="HCM2019.02BackupandRestore-Disclaimer"><strong>Disclaimer</strong></h2>
+<h2 id="HCM2019.02BackupandRestore-Disclaimer">Disclaimer</h2>
 
 <ul>
 	<li>HCM does not recommend point to point backups because of active transaction data in the system.<br>
 	&nbsp;</li>
 	<li>The subscriptions and its data created after the backup will have to be managed manually as the data will be different after restore.</li>
 </ul>
+
+<h2>Recommendations</h2>
 
 <ul>
 	<li>The recommended way to take backup is to shutdown the HCM namespace (See sections&nbsp;<strong><strong>Shut Down HCM and Start HCM after Restore</strong></strong>) and proceed with the backups or backup should be planned during the quiet hours where the activities initiated is completed .</li>
