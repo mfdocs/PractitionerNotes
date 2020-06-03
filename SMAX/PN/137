@@ -20,8 +20,14 @@ color:black"></p>
  font-weight:normal;font-style:normal" type="1">
 	<li style="margin-top:0;margin-bottom:0;vertical-align:middle;
      color:black" value="1"><span style="font-family:Calibri;font-size:11.0pt;font-weight:
-     normal;font-style:normal;font-family:Calibri;font-size:11.0pt">Stop SMAX first.</span></li>
+     normal;font-style:normal;font-family:Calibri;font-size:11.0pt">Stop SMAX and CDF</span></li>
 </ol>
+
+<div style="margin-top:0;margin-bottom:0;vertical-align:middle;
+     color:black">
+<pre><code>$K8S_HOME/scripts/cdfctl.sh runlevel set -l DOWN
+kubectl patch daemonset fluentd -n core -p '{"spec": {"template": {"spec": {"nodeSelector": {"non-existing": "true"}}}}}'</code></pre>
+</div>
 
 <ol style="margin-left:.375in;direction:ltr;unicode-bidi:embed;
  margin-top:0in;margin-bottom:0in;font-family:Calibri;font-size:13.5pt;
@@ -34,8 +40,12 @@ color:black"></p>
 	<li style="margin-top:0;margin-bottom:0;vertical-align:middle;color:black"><span lang="en-US" style="font-family:MetricHPE;font-size:13.5pt;color:black">and then restart the Kubernetes cluster as described in </span><a href="https://docs.microfocus.com/itom/SMAX:2020.02/RestartSMASuite">https://docs.microfocus.com/itom/SMAX:2020.02/RestartSMASuite</a><span lang="zh-CN" style="font-family:Calibri;font-size:11.0pt;color:black">.</span></li>
 </ol>
 
-<p style="margin:0in;margin-left:.375in;font-family:MetricHPE;font-size:13.5pt;
-color:black"></p>
+<pre><code>#start up CDF and SMAX
+cdfctl.sh runlevel set -l UP
+#start up fluentd
+kubectl patch daemonset fluentd -n core --type json -p '[{"op": "remove", "path": "/spec/template/spec/nodeSelector/non-existing"}]'
+
+</code></pre>
 
 <p style="margin:0in;margin-left:.375in;font-family:MetricHPE;font-size:13.5pt;
 color:black">The script will perform the following operations:</p>
