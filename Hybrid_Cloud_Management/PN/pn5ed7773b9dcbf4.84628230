@@ -112,7 +112,7 @@ This document describes the steps followed to back up and restore HCM 2019.02. T
 
 <h3 id="HCM2019.02BackupandRestore-BackupembeddedPostgreSQLdatabasesmanually">Backup embedded PostgreSQL databases manually&nbsp;</h3>
 
-<p>If embedded PostgreSQL database is used to install CDF, we need to backup the embedded databases.</p>
+<p>If embedded PostgreSQL database is used to install CDF, we need to back up the embedded databases.</p>
 
 <p>There are two embedded PostgreSQL databases:</p>
 
@@ -129,21 +129,17 @@ This document describes the steps followed to back up and restore HCM 2019.02. T
 	<tbody>
 		<tr>
 			<td>1</td>
-			<td><code>kubectl get pods --all-namespaces |&nbsp;</code><code>grep</code>&nbsp;<code>backup.</code></td>
+			<td><code>kubectl get pods --all-namespaces |&nbsp;</code><code>grep</code>&nbsp;<code>backup</code></td>
 		</tr>
 	</tbody>
 </table>
 
-<p></p>
-
 <p>Perform the following steps on any one of the master nodes to back up the suite-db database and default-db database.<br>
 <br>
-Note:&nbsp;Follow the same steps below to back up the suite-db database solely.</p>
+<strong>Note</strong>:&nbsp;Follow the same steps below to back up the suite-db database solely.</p>
 
 <ol>
 	<li>Navigate to the database backup directory with the following command:
-	<p></p>
-
 	<table border="0" cellpadding="0" cellspacing="0">
 		<tbody>
 			<tr>
@@ -153,127 +149,81 @@ Note:&nbsp;Follow the same steps below to back up the suite-db database solely.<
 		</tbody>
 	</table>
 	</li>
+	<li>Get the authorization token with the following command. Copy the token;&nbsp;you will be asked to enter this token later.
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tbody>
+			<tr>
+				<td>1</td>
+				<td><code>.</code><code>/getRestoreToken</code></td>
+			</tr>
+		</tbody>
+	</table>
+	</li>
+	<li>Run the following command to back up the database. You will be asked to enter the authorization token.
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tbody>
+			<tr>
+				<td>1</td>
+				<td><code>.</code><code>/db_admin</code><code>.sh backup</code></td>
+			</tr>
+		</tbody>
+	</table>
+	Your terminal resembles the following<br>
+	<img data-image-src="/confluence/download/attachments/1154651006/image2020-5-20%2017%3A37%3A44.png?version=1&amp;modificationDate=1589976465000&amp;api=v2" height="129" src="https://rndwiki.houston.softwaregrp.net/confluence/download/attachments/1154651006/image2020-5-20%2017%3A37%3A44.png?version=1&amp;modificationDate=1589976465000&amp;api=v2" width="758"></li>
+	<li>Run the following command to check the backup status.
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tbody>
+			<tr>
+				<td>1</td>
+				<td><code>.</code><code>/db_admin</code><code>.sh status -l {backup location} -t backup</code></td>
+			</tr>
+		</tbody>
+	</table>
+	For example:&nbsp;<code>./db_admin.sh status -l 2019-01-15T05:38:43.686Z -t backup</code><br>
+	You will be asked to input the authorization. Your terminal resembles the following:<br>
+	<img data-image-src="/confluence/download/attachments/1154651006/image2020-5-20%2017%3A40%3A32.png?version=1&amp;modificationDate=1589976633000&amp;api=v2" src="https://rndwiki.houston.softwaregrp.net/confluence/download/attachments/1154651006/image2020-5-20%2017%3A40%3A32.png?version=1&amp;modificationDate=1589976633000&amp;api=v2"></li>
+	<li>Run the following command to get the details of&nbsp;<code>db-back-vol persistent volume</code>.
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tbody>
+			<tr>
+				<td>1</td>
+				<td><code>kubectl get pv -n core |&nbsp;</code><code>grep</code>&nbsp;<code>db-backup-vol</code></td>
+			</tr>
+		</tbody>
+	</table>
+	Then your terminal resembles the following:<br>
+	<img data-image-src="/confluence/download/attachments/1154651006/image2020-5-20%2017%3A43%3A24.png?version=1&amp;modificationDate=1589976805000&amp;api=v2" src="https://rndwiki.houston.softwaregrp.net/confluence/download/attachments/1154651006/image2020-5-20%2017%3A43%3A24.png?version=1&amp;modificationDate=1589976805000&amp;api=v2"></li>
+	<li>Run the following commands to get the NFS server and NFS path details of the PV&nbsp;<code>db-back-vol</code>. Replace the &lt;db-backup-vol&gt; with the value you get from the previous step. For example, "demo-XXXXX-db-backup-vol".<br>
+	For NFS server:&nbsp;<code>kubectl get pv &lt;db-backup-vol&gt; -n core -o json | $K8S_HOME/bin/jq -r .spec.nfs.server</code><br>
+	For the NFS path:&nbsp;<code>kubectl get pv &lt;db-backup-vol&gt; -n core -o json | $K8S_HOME/bin/jq -r .spec.nfs.path</code><br>
+	Your terminal resembles the following:<br>
+	<img data-image-src="/confluence/download/attachments/1154651006/image2020-5-20%2017%3A45%3A41.png?version=1&amp;modificationDate=1589976941000&amp;api=v2" src="https://rndwiki.houston.softwaregrp.net/confluence/download/attachments/1154651006/image2020-5-20%2017%3A45%3A41.png?version=1&amp;modificationDate=1589976941000&amp;api=v2"><br>
+	In the example, the backup path is&nbsp;<em>/nfs/db-backup-vol</em>. The server is&nbsp;<em>myhost.mycomany.com</em>.</li>
+	<li>Log into the NFS server.</li>
+	<li>Run the following commands to show the log folder. Replace the &lt; NFS backup directory&gt; with the backup path you get from the previous step. For example:&nbsp;<em>/nfs/db-backup-vol</em>.
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tbody>
+			<tr>
+				<td>1<br>
+				2<br>
+				3<br>
+				4<br>
+				5</td>
+				<td><code>cd</code>&nbsp;<code>&lt;NFS backup directory&gt;</code><br>
+				&nbsp;<br>
+				<code>cd</code>&nbsp;<code>pg-data-backup</code><br>
+				&nbsp;<br>
+				<code>ll</code></td>
+			</tr>
+		</tbody>
+	</table>
+	Your terminal resembles the following:<br>
+	<img data-image-src="/confluence/download/attachments/1154651006/image2020-5-20%2017%3A48%3A59.png?version=1&amp;modificationDate=1589977139000&amp;api=v2" height="173" src="https://rndwiki.houston.softwaregrp.net/confluence/download/attachments/1154651006/image2020-5-20%2017%3A48%3A59.png?version=1&amp;modificationDate=1589977139000&amp;api=v2" width="603"></li>
 </ol>
 
-<ol>
-	<li>Get the authorization token with the following command. And copy the token. You will be asked to enter this token later.</li>
-</ol>
-
-<table border="0" cellpadding="0" cellspacing="0">
-	<tbody>
-		<tr>
-			<td>1</td>
-			<td><code>.</code><code>/getRestoreToken</code></td>
-		</tr>
-	</tbody>
-</table>
-
 <p></p>
 
-<ol>
-	<li>2. Run the following command to back up the database. You will be asked to enter the authorization token.</li>
-</ol>
-
-<table border="0" cellpadding="0" cellspacing="0">
-	<tbody>
-		<tr>
-			<td>1</td>
-			<td><code>.</code><code>/db_admin</code><code>.sh backup</code></td>
-		</tr>
-	</tbody>
-</table>
-
-<p></p>
-
-<ol>
-	<li>Your terminal resembles the following:</li>
-</ol>
-
-<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<img data-image-src="/confluence/download/attachments/1154651006/image2020-5-20%2017%3A37%3A44.png?version=1&amp;modificationDate=1589976465000&amp;api=v2" height="129" src="https://rndwiki.houston.softwaregrp.net/confluence/download/attachments/1154651006/image2020-5-20%2017%3A37%3A44.png?version=1&amp;modificationDate=1589976465000&amp;api=v2" width="758"></p>
-
-<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 3.&nbsp;Run the following command to check the backup status.</p>
-
-<p></p>
-
-<table border="0" cellpadding="0" cellspacing="0">
-	<tbody>
-		<tr>
-			<td>1</td>
-			<td><code>.</code><code>/db_admin</code><code>.sh status -l {backup location} -t backup</code></td>
-		</tr>
-	</tbody>
-</table>
-
-<p></p>
-
-<p><br>
-For example:&nbsp;<code>./db_admin.sh status -l 2019-01-15T05:38:43.686Z -t backup</code><br>
-You will be asked to input the authorization. Your terminal resembles the following:</p>
-
-<p><img data-image-src="/confluence/download/attachments/1154651006/image2020-5-20%2017%3A40%3A32.png?version=1&amp;modificationDate=1589976633000&amp;api=v2" src="https://rndwiki.houston.softwaregrp.net/confluence/download/attachments/1154651006/image2020-5-20%2017%3A40%3A32.png?version=1&amp;modificationDate=1589976633000&amp;api=v2"></p>
-
-<p>4. Run the following command to get the details of&nbsp;<code>db-back-vol persistent volume</code>.<br>
-&nbsp;</p>
-
-<p></p>
-
-<table border="0" cellpadding="0" cellspacing="0">
-	<tbody>
-		<tr>
-			<td>1</td>
-			<td><code>kubectl get pv -n core |&nbsp;</code><code>grep</code>&nbsp;<code>db-backup-vol</code></td>
-		</tr>
-	</tbody>
-</table>
-
-<p></p>
-
-<p><br>
-Then your terminal resembles the following:</p>
-
-<p><img data-image-src="/confluence/download/attachments/1154651006/image2020-5-20%2017%3A43%3A24.png?version=1&amp;modificationDate=1589976805000&amp;api=v2" src="https://rndwiki.houston.softwaregrp.net/confluence/download/attachments/1154651006/image2020-5-20%2017%3A43%3A24.png?version=1&amp;modificationDate=1589976805000&amp;api=v2"></p>
-
-<p></p>
-
-<p>5.&nbsp;Run the following commands to get the NFS server and NFS path details of the PV&nbsp;<code>db-back-vol</code>. Replace the &lt;db-backup-vol&gt; with the value you get from the previous step. For example, "demo-XXXXX-db-backup-vol".<br>
-For NFS server:&nbsp;<code>kubectl get pv &lt;db-backup-vol&gt; -n core -o json | $K8S_HOME/bin/jq -r .spec.nfs.server</code><br>
-For the NFS path:&nbsp;<code>kubectl get pv &lt;db-backup-vol&gt; -n core -o json | $K8S_HOME/bin/jq -r .spec.nfs.path</code><br>
-Your terminal resembles the following:</p>
-
-<p><img data-image-src="/confluence/download/attachments/1154651006/image2020-5-20%2017%3A45%3A41.png?version=1&amp;modificationDate=1589976941000&amp;api=v2" src="https://rndwiki.houston.softwaregrp.net/confluence/download/attachments/1154651006/image2020-5-20%2017%3A45%3A41.png?version=1&amp;modificationDate=1589976941000&amp;api=v2"></p>
-
-<p>6.&nbsp;In the example, the backup path is&nbsp;<em>/nfs/db-backup-vol</em>. The server is&nbsp;<em>myhost.mycomany.com</em>.</p>
-
-<p>7. Log into the NFS server.</p>
-
-<p>8. Run the following commands to show the log folder. Replace the &lt; NFS backup directory&gt; with the backup path you get from the previous step. For example:&nbsp;<em>/nfs/db-backup-vol</em>.</p>
-
-<p>&nbsp; &nbsp; &nbsp; &nbsp;</p>
-
-<table border="0" cellpadding="0" cellspacing="0">
-	<tbody>
-		<tr>
-			<td>1<br>
-			2<br>
-			3<br>
-			4<br>
-			5</td>
-			<td><code>cd</code>&nbsp;<code>&lt;NFS backup directory&gt;</code><br>
-			&nbsp;<br>
-			<code>cd</code>&nbsp;<code>pg-data-backup</code><br>
-			&nbsp;<br>
-			<code>ll</code></td>
-		</tr>
-	</tbody>
-</table>
-
-<p></p>
-
-<p>&nbsp;Your terminal resembles the following:</p>
-
-<p><img data-image-src="/confluence/download/attachments/1154651006/image2020-5-20%2017%3A48%3A59.png?version=1&amp;modificationDate=1589977139000&amp;api=v2" height="173" src="https://rndwiki.houston.softwaregrp.net/confluence/download/attachments/1154651006/image2020-5-20%2017%3A48%3A59.png?version=1&amp;modificationDate=1589977139000&amp;api=v2" width="603"></p>
-
-<h3 id="HCM2019.02BackupandRestore-BackupembeddedPostgreSQLdatabasesautomatically"><strong>Backup embedded PostgreSQL databases automatically</strong></h3>
+<h3 id="HCM2019.02BackupandRestore-BackupembeddedPostgreSQLdatabasesautomatically">Backup embedded PostgreSQL databases automatically</h3>
 
 <p>You can run the following command to back up the embedded suite-db and default-db PostgreSQL databases automatically.<br>
 <code>&nbsp; &nbsp;</code></p>
