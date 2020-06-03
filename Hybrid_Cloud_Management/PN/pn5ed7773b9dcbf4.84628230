@@ -1,10 +1,7 @@
-<html><h1 id="HCM2019.02BackupandRestore-Scope"><strong>Scope</strong></h1>
+<html><h2 id="HCM2019.02BackupandRestore-Scope"><strong>Scope</strong></h2>
+This document describes the steps followed to back up and restore HCM 2019.02. The scope of this document is limited to HCM 2019.02 and shouldn't be used for other versions without consulting the concerned engineer.
 
-<p>This document describes the steps followed to back up and restore HCM 2019.02. The scope of this document is limited to HCM 2019.02 and shouldn't be used for other versions without consulting the concerned engineer.</p>
-
-<p></p>
-
-<h1 id="HCM2019.02BackupandRestore-BackupprocessofHCM"><strong>Back up process of HCM</strong></h1>
+<h2 id="HCM2019.02BackupandRestore-BackupprocessofHCM"><strong>Back up process of HCM</strong></h2>
 
 <ul data-inline-tasks-content-id="1154651006">
 	<li data-inline-task-id="1">Back up NFS folders&nbsp; ( Persistent Volumes)</li>
@@ -14,7 +11,7 @@
 	<li data-inline-task-id="11">Stop and repeat the above process if offline backup is required</li>
 </ul>
 
-<h1 id="HCM2019.02BackupandRestore-RestoreprocessofHCM"><strong>Restore process of HCM</strong></h1>
+<h2 id="HCM2019.02BackupandRestore-RestoreprocessofHCM"><strong>Restore process of HCM</strong></h2>
 
 <ul data-inline-tasks-content-id="1154651006">
 	<li data-inline-task-id="5">Stop HCM Namespace</li>
@@ -25,9 +22,7 @@
 	<li data-inline-task-id="10">Start HCM Namespace</li>
 </ul>
 
-<p></p>
-
-<h1 id="HCM2019.02BackupandRestore-Disclaimer"><strong>Disclaimer</strong></h1>
+<h2 id="HCM2019.02BackupandRestore-Disclaimer"><strong>Disclaimer</strong></h2>
 
 <ul>
 	<li>HCM does not recommend point to point backups because of active transaction data in the system.<br>
@@ -47,13 +42,13 @@
 	<li>It is always recommended to use external database and NFS for production</li>
 </ul>
 
-<h1 id="HCM2019.02BackupandRestore-HowtoBackupHCM?"><strong>How to Backup</strong>&nbsp;<strong>HCM ?</strong></h1>
+<h2 id="HCM2019.02BackupandRestore-HowtoBackupHCM?"><strong>How to Back up</strong>&nbsp;<strong>HCM ?</strong></h2>
 
 <p>It is recommended to backup HCM data at frequent intervals in order to make sure data is not lost during catastrophe.&nbsp; Detailed instructions to backup HCM is provided below.</p>
 
 <p><strong>NOTE</strong>&nbsp;:&nbsp; The backup steps are independent and can be performed simultaneously in any order.</p>
 
-<h2 id="HCM2019.02BackupandRestore-BackupPersistentVolumes"><strong>Backup</strong>&nbsp;<strong>Persistent</strong>&nbsp;<strong>Volumes</strong></h2>
+<h2 id="HCM2019.02BackupandRestore-BackupPersistentVolumes"><strong>Back up</strong>&nbsp;<strong>Persistent</strong>&nbsp;<strong>Volumes</strong></h2>
 
 <p>HCM requires the following persistent volume locations to be backed up.</p>
 
@@ -116,7 +111,7 @@
 
 <p></p>
 
-<h2 id="HCM2019.02BackupandRestore-BackupEmbeddedPostgreSQLdatabases(suite-dbanddefault-db)"><strong>Backup Embedded PostgreSQL databases (suite-db and default-db)&nbsp;</strong></h2>
+<h2 id="HCM2019.02BackupandRestore-BackupEmbeddedPostgreSQLdatabases(suite-dbanddefault-db)"><strong>Back up Embedded PostgreSQL databases (suite-db and default-db)&nbsp;</strong></h2>
 
 <p>Internal database backup can be performed either manual steps or automatic. Recommended way of back up is automatic.&nbsp;</p>
 
@@ -304,7 +299,7 @@ Your terminal resembles the following:</p>
 
 <p></p>
 
-<h3 id="HCM2019.02BackupandRestore-BackupPersistentVolumesforsuite-dbandembedded-db.">Backup Persistent Volumes for suite-db and embedded-db.</h3>
+<h3 id="HCM2019.02BackupandRestore-BackupPersistentVolumesforsuite-dbandembedded-db.">Back up Persistent Volumes for suite-db and embedded-db</h3>
 
 <p>Database backup files will reside in persistence volumes, that need to be copied to backup directory. You need to go to persistent volumes hosted on local file system or login to remote NFS server and tar the files.</p>
 
@@ -317,7 +312,7 @@ Example:&nbsp;<br>
 <br>
 <em><em><em>*/path/to/backup-directory should be based on date and timestamp</em></em></em>
 
-<h2 id="HCM2019.02BackupandRestore-BackupExternalPostgreSQLdatabase"><strong>Backup External PostgreSQL database</strong></h2>
+<h2 id="HCM2019.02BackupandRestore-BackupExternalPostgreSQLdatabase"><strong>Back up External PostgreSQL database</strong></h2>
 
 <p>It is recommended to follow vendor documentation for backup and restore.</p>
 
@@ -332,13 +327,11 @@ Example:&nbsp;<br>
 Note: replace the &lt;dbname&gt; with the required DB name
 <h2 id="HCM2019.02BackupandRestore-BackupVerticadatabase"><strong>Back up Vertica database</strong></h2>
 
-<p>Please refer to Vertica documentation for detailed instructions on backup and restore.</p>
+<p>Refer to Vertica documentation for detailed instructions on backup and restore.</p>
 
 <p><a href="https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2019.02/BackupHCM#Back_up_Vertica_database" rel="nofollow">https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2019.02/BackupHCM#Back_up_Vertica_database</a></p>
 
-<p></p>
-
-<h1 id="HCM2019.02BackupandRestore-RestoreHCM"><strong>Restore HCM</strong></h1>
+<h2 id="HCM2019.02BackupandRestore-RestoreHCM"><strong>Restore HCM</strong></h2>
 
 <p>The following steps needs to be performed sequentially to restore HCM. HCM namespace should be shut down before we start restoring.</p>
 
@@ -395,9 +388,9 @@ Note: replace the &lt;dbname&gt; with the required DB name
 
 <h2 id="HCM2019.02BackupandRestore-RestoreVerticadatabase">Restore Vertica database</h2>
 
-<p>Refer HCM B &amp; R documentation for vertica backup and restore steps&nbsp;<a href="https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2019.02/VerticaDatabaseBackupRestore" rel="nofollow">https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2019.02/VerticaDatabaseBackupRestore</a>.</p>
+<p>Refer HCM B &amp; R documentation for vertica backup and restore steps&nbsp;<a href="https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2019.02/VerticaDatabaseBackupRestore" rel="nofollow">https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2019.02/VerticaDatabaseBackupRestore</a></p>
 
-<h3 id="HCM2019.02BackupandRestore-StartHCMafterRestore">Start HCM after Restore</h3>
+<h2 id="HCM2019.02BackupandRestore-StartHCMafterRestore">Start HCM after Restore</h2>
 
 <p>Log in to any of the Kubernetes master nodes and run the following commands:</p>
 
