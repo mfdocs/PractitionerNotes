@@ -1,1 +1,407 @@
- 
+<html><h1 id="HCM2019.02BackupandRestore-Scope"><strong>Scope</strong></h1>
+
+<p>This document describes the steps followed to back up and restore HCM 2019.02. The scope of this document is limited to HCM 2019.02 and shouldn't be used for other versions without consulting the concerned engineer.</p>
+
+<p></p>
+
+<h1 id="HCM2019.02BackupandRestore-BackupprocessofHCM"><strong>Back up process of HCM</strong></h1>
+
+<ul data-inline-tasks-content-id="1154651006">
+	<li data-inline-task-id="1">Back up NFS folders&nbsp; ( Persistent Volumes)</li>
+	<li data-inline-task-id="2">Back up the embedded PostgreSQL databases (suite-db and default-db)&nbsp;</li>
+	<li data-inline-task-id="3">Back up external Postgres/Oracle /MSSQL database</li>
+	<li data-inline-task-id="4">Backup Vertica Database</li>
+	<li data-inline-task-id="11">Stop and repeat the above process if offline backup is required</li>
+</ul>
+
+<h1 id="HCM2019.02BackupandRestore-RestoreprocessofHCM"><strong>Restore process of HCM</strong></h1>
+
+<ul data-inline-tasks-content-id="1154651006">
+	<li data-inline-task-id="5">Stop HCM Namespace</li>
+	<li data-inline-task-id="6">Restore NFS folders and Permission's</li>
+	<li data-inline-task-id="7">Restore embedded database and Postgres</li>
+	<li data-inline-task-id="8">Restore external Postgres/Oracle /MSSQL database</li>
+	<li data-inline-task-id="9">Restore Vertica database</li>
+	<li data-inline-task-id="10">Start HCM Namespace</li>
+</ul>
+
+<p></p>
+
+<h1 id="HCM2019.02BackupandRestore-Disclaimer"><strong>Disclaimer</strong></h1>
+
+<ul>
+	<li>HCM does not recommend point to point backups because of active transaction data in the system.<br>
+	&nbsp;</li>
+	<li>The subscriptions and its data created after the backup will have to be managed manually as the data will be different after restore.</li>
+</ul>
+
+<ul>
+	<li>The recommended way to take backup is to shutdown the HCM namespace (See sections&nbsp;<strong><strong>Shut Down HCM and Start HCM after Restore</strong></strong>) and proceed with the backups or backup should be planned during the quiet hours where the activities initiated is completed .</li>
+</ul>
+
+<ul>
+	<li>It is always recommended to use regular online backup for database and NFS .</li>
+</ul>
+
+<ul>
+	<li>It is always recommended to use external database and NFS for production</li>
+</ul>
+
+<h1 id="HCM2019.02BackupandRestore-HowtoBackupHCM?"><strong>How to Backup</strong>&nbsp;<strong>HCM ?</strong></h1>
+
+<p>It is recommended to backup HCM data at frequent intervals in order to make sure data is not lost during catastrophe.&nbsp; Detailed instructions to backup HCM is provided below.</p>
+
+<p><strong>NOTE</strong>&nbsp;:&nbsp; The backup steps are independent and can be performed simultaneously in any order.</p>
+
+<h2 id="HCM2019.02BackupandRestore-BackupPersistentVolumes"><strong>Backup</strong>&nbsp;<strong>Persistent</strong>&nbsp;<strong>Volumes</strong></h2>
+
+<p>HCM requires the following persistent volume locations to be backed up.</p>
+
+<p></p>
+
+<table>
+	<thead>
+		<tr>
+			<th data-column="0">Volume name</th>
+			<th data-column="1">Default mount point</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><strong>&lt;itom-vol-claim&gt;</strong></td>
+			<td><strong>/var/vols/itom/core</strong></td>
+		</tr>
+		<tr>
+			<td><strong>&lt;hcm-vol-claim&gt;</strong></td>
+			<td><strong>/var/vols/itom/hcm</strong></td>
+		</tr>
+		<tr>
+			<td colspan="1"><strong>&lt;logs-volume&gt;</strong></td>
+			<td colspan="1"><strong>/var/vols/itom/logs</strong></td>
+		</tr>
+		<tr>
+			<td>&lt;db-single-vol&gt;</td>
+			<td>/var/vols/itom/postgres</td>
+		</tr>
+		<tr>
+			<td>&lt;db-backup-vol&gt;</td>
+			<td>/var/vols/itom/postgres-backup</td>
+		</tr>
+		<tr>
+			<td>&lt;db-ha-volume&gt;</td>
+			<td>/var/vols/itom/postgres1</td>
+		</tr>
+	</tbody>
+</table>
+
+<p></p>
+
+<p>Suite and default postgres database volumes (<strong>Rows 4,5,6 in the above table</strong>) should be backed up only after next step. (Backup Embedded PostgreSQL databases)</p>
+
+<p>Backup procedure for persistent volumes depends on type of persistent volumes.&nbsp; For persistent volumes hosted on local file system or remote NFS server, recommended approach is to tar the files and save it on backup device.&nbsp;</p>
+
+<p><strong>NOTE:&nbsp;</strong>Ensure the&nbsp;ownership and permission for files and directories are preserved during backup and restore activity.</p>
+
+<p>Example commands :<strong>&nbsp;</strong></p>
+
+<p><em><em>cd /var/vols/itom/</em></em></p>
+
+<p><em>tar&nbsp;<em><em>&nbsp;-czvf&nbsp;</em></em>&nbsp;<em><em><em><em><strong>&nbsp;</strong>/path/to/backup-directory/</em></em></em></em>backup-core.<em>tar.gz&nbsp;</em>&nbsp; core</em></p>
+
+<p><em>tar&nbsp;<em><em>&nbsp;-czvf&nbsp;</em></em>&nbsp;<em><em><em><em><strong>&nbsp;</strong>/path/to/backup-directory/</em></em></em></em>backup-hcm.<em>tar.gz&nbsp;</em>&nbsp; hcm&nbsp;</em></p>
+
+<p><em>tar&nbsp;<em><em>&nbsp;-czvf&nbsp;</em></em><em><em><em><em><strong>&nbsp;</strong>/path/to/backup-directory/</em></em></em></em>backup-logs.<em>tar.gz&nbsp;</em>&nbsp; logs</em></p>
+
+<p>*/path/to/backup-directory should be based on date and timestamp</p>
+
+<p></p>
+
+<h2 id="HCM2019.02BackupandRestore-BackupEmbeddedPostgreSQLdatabases(suite-dbanddefault-db)"><strong>Backup Embedded PostgreSQL databases (suite-db and default-db)&nbsp;</strong></h2>
+
+<p>Internal database backup can be performed either manual steps or automatic. Recommended way of back up is automatic.&nbsp;</p>
+
+<h3 id="HCM2019.02BackupandRestore-BackupembeddedPostgreSQLdatabasesmanually"><strong>Backup embedded PostgreSQL databases manually&nbsp;</strong></h3>
+
+<p>If embedded PostgreSQL database is used to install CDF, we need to backup the embedded databases.</p>
+
+<p>There are two embedded PostgreSQL databases:</p>
+
+<ul>
+	<li>suite-db&nbsp; &nbsp; &nbsp;//&nbsp; used only by CDF apiserver.</li>
+	<li>default-db&nbsp; &nbsp;// used by CDF IdM and may also be used by the suite related components.</li>
+</ul>
+
+<p>Use database backup tool to back up the suite-db and default-db database. The tool is located under&nbsp;${K8S_HOME}/tools/postgres-backup&nbsp;directory, and the logs are available at location&nbsp;<em>/tmp/postgres_backup.log</em>.</p>
+
+<p><strong>NOTE</strong>:&nbsp;Run the following command to make sure the backup service is running:&nbsp;</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>1</td>
+			<td><code>kubectl get pods --all-namespaces |&nbsp;</code><code>grep</code>&nbsp;<code>backup.</code></td>
+		</tr>
+	</tbody>
+</table>
+
+<p></p>
+
+<p>Perform the following steps on any one of the master nodes to back up the suite-db database and default-db database.<br>
+<br>
+Note:&nbsp;Follow the same steps below to back up the suite-db database solely.</p>
+
+<ol>
+	<li>Navigate to the database backup directory with the following command:
+	<p></p>
+
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tbody>
+			<tr>
+				<td>1</td>
+				<td><code>cd</code>&nbsp;<code>${K8S_HOME}</code><code>/tools/postgres-backup</code></td>
+			</tr>
+		</tbody>
+	</table>
+	</li>
+</ol>
+
+<ol>
+	<li>Get the authorization token with the following command. And copy the token. You will be asked to enter this token later.</li>
+</ol>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>1</td>
+			<td><code>.</code><code>/getRestoreToken</code></td>
+		</tr>
+	</tbody>
+</table>
+
+<p></p>
+
+<ol>
+	<li>2. Run the following command to back up the database. You will be asked to enter the authorization token.</li>
+</ol>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>1</td>
+			<td><code>.</code><code>/db_admin</code><code>.sh backup</code></td>
+		</tr>
+	</tbody>
+</table>
+
+<p></p>
+
+<ol>
+	<li>Your terminal resembles the following:</li>
+</ol>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<img data-image-src="/confluence/download/attachments/1154651006/image2020-5-20%2017%3A37%3A44.png?version=1&amp;modificationDate=1589976465000&amp;api=v2" height="129" src="https://rndwiki.houston.softwaregrp.net/confluence/download/attachments/1154651006/image2020-5-20%2017%3A37%3A44.png?version=1&amp;modificationDate=1589976465000&amp;api=v2" width="758"></p>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 3.&nbsp;Run the following command to check the backup status.</p>
+
+<p></p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>1</td>
+			<td><code>.</code><code>/db_admin</code><code>.sh status -l {backup location} -t backup</code></td>
+		</tr>
+	</tbody>
+</table>
+
+<p></p>
+
+<p><br>
+For example:&nbsp;<code>./db_admin.sh status -l 2019-01-15T05:38:43.686Z -t backup</code><br>
+You will be asked to input the authorization. Your terminal resembles the following:</p>
+
+<p><img data-image-src="/confluence/download/attachments/1154651006/image2020-5-20%2017%3A40%3A32.png?version=1&amp;modificationDate=1589976633000&amp;api=v2" src="https://rndwiki.houston.softwaregrp.net/confluence/download/attachments/1154651006/image2020-5-20%2017%3A40%3A32.png?version=1&amp;modificationDate=1589976633000&amp;api=v2"></p>
+
+<p>4. Run the following command to get the details of&nbsp;<code>db-back-vol persistent volume</code>.<br>
+&nbsp;</p>
+
+<p></p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>1</td>
+			<td><code>kubectl get pv -n core |&nbsp;</code><code>grep</code>&nbsp;<code>db-backup-vol</code></td>
+		</tr>
+	</tbody>
+</table>
+
+<p></p>
+
+<p><br>
+Then your terminal resembles the following:</p>
+
+<p><img data-image-src="/confluence/download/attachments/1154651006/image2020-5-20%2017%3A43%3A24.png?version=1&amp;modificationDate=1589976805000&amp;api=v2" src="https://rndwiki.houston.softwaregrp.net/confluence/download/attachments/1154651006/image2020-5-20%2017%3A43%3A24.png?version=1&amp;modificationDate=1589976805000&amp;api=v2"></p>
+
+<p></p>
+
+<p>5.&nbsp;Run the following commands to get the NFS server and NFS path details of the PV&nbsp;<code>db-back-vol</code>. Replace the &lt;db-backup-vol&gt; with the value you get from the previous step. For example, "demo-XXXXX-db-backup-vol".<br>
+For NFS server:&nbsp;<code>kubectl get pv &lt;db-backup-vol&gt; -n core -o json | $K8S_HOME/bin/jq -r .spec.nfs.server</code><br>
+For the NFS path:&nbsp;<code>kubectl get pv &lt;db-backup-vol&gt; -n core -o json | $K8S_HOME/bin/jq -r .spec.nfs.path</code><br>
+Your terminal resembles the following:</p>
+
+<p><img data-image-src="/confluence/download/attachments/1154651006/image2020-5-20%2017%3A45%3A41.png?version=1&amp;modificationDate=1589976941000&amp;api=v2" src="https://rndwiki.houston.softwaregrp.net/confluence/download/attachments/1154651006/image2020-5-20%2017%3A45%3A41.png?version=1&amp;modificationDate=1589976941000&amp;api=v2"></p>
+
+<p>6.&nbsp;In the example, the backup path is&nbsp;<em>/nfs/db-backup-vol</em>. The server is&nbsp;<em>myhost.mycomany.com</em>.</p>
+
+<p>7. Log into the NFS server.</p>
+
+<p>8. Run the following commands to show the log folder. Replace the &lt; NFS backup directory&gt; with the backup path you get from the previous step. For example:&nbsp;<em>/nfs/db-backup-vol</em>.</p>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp;</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>1<br>
+			2<br>
+			3<br>
+			4<br>
+			5</td>
+			<td><code>cd</code>&nbsp;<code>&lt;NFS backup directory&gt;</code><br>
+			&nbsp;<br>
+			<code>cd</code>&nbsp;<code>pg-data-backup</code><br>
+			&nbsp;<br>
+			<code>ll</code></td>
+		</tr>
+	</tbody>
+</table>
+
+<p></p>
+
+<p>&nbsp;Your terminal resembles the following:</p>
+
+<p><img data-image-src="/confluence/download/attachments/1154651006/image2020-5-20%2017%3A48%3A59.png?version=1&amp;modificationDate=1589977139000&amp;api=v2" height="173" src="https://rndwiki.houston.softwaregrp.net/confluence/download/attachments/1154651006/image2020-5-20%2017%3A48%3A59.png?version=1&amp;modificationDate=1589977139000&amp;api=v2" width="603"></p>
+
+<h3 id="HCM2019.02BackupandRestore-BackupembeddedPostgreSQLdatabasesautomatically"><strong>Backup embedded PostgreSQL databases automatically</strong></h3>
+
+<p>You can run the following command to back up the embedded suite-db and default-db PostgreSQL databases automatically.<br>
+<code>&nbsp; &nbsp;</code></p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td><code>RESTORETOKEN=$(${K8S_HOME}/tools/postgres-backup/getRestoreToken|awk&nbsp;</code><code>'{print $3}'</code><code>)</code><br>
+			<code>&nbsp; &nbsp; echo&nbsp;</code><code>"${RESTORETOKEN}"</code>&nbsp;<code>| ${K8S_HOME}/tools/postgres-backup/db_admin.sh backup</code></td>
+		</tr>
+	</tbody>
+</table>
+
+<p><br>
+Your terminal resembles the following:</p>
+
+<p><img data-image-src="/confluence/download/attachments/1154651006/image2020-5-20%2017%3A50%3A34.png?version=1&amp;modificationDate=1589977234000&amp;api=v2" src="https://rndwiki.houston.softwaregrp.net/confluence/download/attachments/1154651006/image2020-5-20%2017%3A50%3A34.png?version=1&amp;modificationDate=1589977234000&amp;api=v2"></p>
+
+<p></p>
+
+<h3 id="HCM2019.02BackupandRestore-BackupPersistentVolumesforsuite-dbandembedded-db.">Backup Persistent Volumes for suite-db and embedded-db.</h3>
+
+<p>Database backup files will reside in persistence volumes, that need to be copied to backup directory. You need to go to persistent volumes hosted on local file system or login to remote NFS server and tar the files.</p>
+
+<p></p>
+Example:&nbsp;<br>
+<em><em>cd /var/vols/itom/</em></em><br>
+<em><em><em>tar -</em></em></em>czvf&nbsp;<em><em>/path/to/backup-directory/</em></em><em>backup-postgres.tar.gz&nbsp;postgres</em><br>
+<em><em>tar -czvf&nbsp;<em><em><strong>&nbsp;</strong>/path/to/backup-directory/</em></em>backup-<em><em>postgres-backup.<em>tar.gz&nbsp;</em></em></em>postgres-backup</em></em><br>
+<em><em>tar&nbsp;<em><em>&nbsp;-czvf&nbsp;&nbsp;</em></em><em><em><em><em>/path/to/backup-directory/</em></em></em></em>backup-<em><em><em>postgres1</em></em></em>.<em>tar.gz&nbsp;</em>&nbsp;<em>postgres1</em></em></em><br>
+<br>
+<em><em><em>*/path/to/backup-directory should be based on date and timestamp</em></em></em>
+
+<h2 id="HCM2019.02BackupandRestore-BackupExternalPostgreSQLdatabase"><strong>Backup External PostgreSQL database</strong></h2>
+
+<p>It is recommended to follow vendor documentation for backup and restore.</p>
+
+<p>For postgres database, perform the following steps to backup&nbsp;all databases:&nbsp;ara, autopass, csa, idm, oo, oodesigner, ucmdb</p>
+
+<ol>
+	<li>Login to postgres server.&nbsp;</li>
+	<li>Execute below commands:<br>
+	<em><strong>su - postgres</strong></em></li>
+</ol>
+<em><strong>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; pg_dump &lt;dbname&gt; &gt; &lt;<em><em>path/to/backup-directory</em></em>&gt;/dbname.bak</strong></em><br>
+Note: replace the &lt;dbname&gt; with the required DB name
+<h2 id="HCM2019.02BackupandRestore-BackupVerticadatabase"><strong>Back up Vertica database</strong></h2>
+
+<p>Please refer to Vertica documentation for detailed instructions on backup and restore.</p>
+
+<p><a href="https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2019.02/BackupHCM#Back_up_Vertica_database" rel="nofollow">https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2019.02/BackupHCM#Back_up_Vertica_database</a></p>
+
+<p></p>
+
+<h1 id="HCM2019.02BackupandRestore-RestoreHCM"><strong>Restore HCM</strong></h1>
+
+<p>The following steps needs to be performed sequentially to restore HCM. HCM namespace should be shut down before we start restoring.</p>
+
+<h3 id="HCM2019.02BackupandRestore-ShutDownHCM">Shut Down HCM</h3>
+
+<p>Log in to any of the Kubernetes master nodes and run the following commands:</p>
+
+<p><em>cd /opt/kubernetes/scripts</em></p>
+
+<pre><em>./cdfctl.sh runlevel set -l DOWN -n &lt;hcm-namespace&gt;</em></pre>
+
+<p>hcm-namespace can be found by running the command&nbsp;<em>&nbsp;kubectl get pods --all-namespaces | grep hcm</em></p>
+
+<h2 id="HCM2019.02BackupandRestore-RestorePersistentVolume"><strong>Restore Persistent Volume</strong></h2>
+
+<p>Restore procedure for persistent volumes depends on type of persistent volumes.&nbsp; For persistent volumes hosted on local file system or remote NFS server, approach is to untar the files and restore</p>
+
+<p>Restore data from backup device to Persistent volume following the below steps -</p>
+
+<ol>
+	<li>Restore the NFS data from back up location to persistent volume path.<br>
+	<em><strong>Example:</strong></em>
+
+	<p>tar -xzvf /path/to/backup-directory/backup-core.tar.gz /var/vols/itom/<br>
+	tar -xzvf /path/to/backup-directory/backup-hcm.tar.gz /var/vols/itom/<br>
+	tar -xzvf /path/to/backup-directory/backup-logs.tar.gz /var/vols/itom/<br>
+	tar -xzvf /path/to/backup-directory/backup-postgres.tar.gz /var/vols/itom/<br>
+	tar -xzvf /path/to/backup-directory/backup-postgres-backup.tar.gz /var/vols/itom/<br>
+	tar -xzvf /path/to/backup-directory/backup-postgres1.tar.gz /var/vols/itom/</p>
+	</li>
+</ol>
+
+<h2 id="HCM2019.02BackupandRestore-RestoreembeddeddatabaseandPostgres"><strong>Restore embedded database and Postgres</strong></h2>
+
+<p>Please refer to HCM Backup and Restore doc section&nbsp;<a href="https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2019.02/RestoreSuiteDB" rel="nofollow">https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2019.02/RestoreSuiteDB</a></p>
+
+<h2 id="HCM2019.02BackupandRestore-Restoreexternaldatabase"><strong>Restore external database</strong></h2>
+
+<p>Please refer to vendor documentation for database restore procedure.</p>
+
+<p>If you have used external database (PostgreSQL or Oracle) to install HCM, you need to restore the external database. Refer to the related database manual for the detailed restore steps.</p>
+
+<p>For example , to restore external postgres follow below steps,</p>
+
+<ol>
+	<li>Login to external postgres database shell as postgres user. (su - postgres)<br>
+	&nbsp;</li>
+	<li>Execute the following commands to drop and recreate hcmadmin databases. (ara, autopass, csa, idm, oo, oodesigner, ucmdb)<br>
+	<em>drop &lt;dbname&gt;;</em><br>
+	<em>CREATE DATABASE &lt;dbname&gt; WITH OWNER = hcmadmin&nbsp;&nbsp; ENCODING = 'UTF8'&nbsp;&nbsp;TABLESPACE = pg_default&nbsp;LC_COLLATE = 'en_IN.UTF-8'&nbsp;&nbsp; LC_CTYPE = 'en_IN.UTF-8'&nbsp;&nbsp;CONNECTION LIMIT = -1;</em></li>
+	<li><em>Go to&nbsp;</em>&lt;path/to/backup-directory&gt; and execute below command to restore the database<br>
+	<em><em><em>psql&nbsp;<em>&lt;dbname&gt;&nbsp;&nbsp;</em>&lt; dbname.bak;</em></em></em></li>
+</ol>
+
+<h2 id="HCM2019.02BackupandRestore-RestoreVerticadatabase">Restore Vertica database</h2>
+
+<p>Refer HCM B &amp; R documentation for vertica backup and restore steps&nbsp;<a href="https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2019.02/VerticaDatabaseBackupRestore" rel="nofollow">https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2019.02/VerticaDatabaseBackupRestore</a>.</p>
+
+<h3 id="HCM2019.02BackupandRestore-StartHCMafterRestore">Start HCM after Restore</h3>
+
+<p>Log in to any of the Kubernetes master nodes and run the following commands:</p>
+
+<p><em>cd /opt/kubernetes/scripts</em></p>
+
+<p><em>./cdfctl.sh runlevel set -l UP -n &lt;hcm-namespace&gt;</em></p>
+</html>
