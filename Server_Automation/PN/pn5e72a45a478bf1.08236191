@@ -459,6 +459,8 @@ To prevent superseded patches from being imported.</p>
 
 <h2>Way</h2>
 
+<h3>Excessive Twist cache resyncing</h3>
+
 <p>This tuning param was introduced to work around an edge case with the ADM product.</p>
 
 <ul>
@@ -479,6 +481,8 @@ To prevent superseded patches from being imported.</p>
 
 <p>The consequence of this defect fix is that it ends up causing Twist to excessively flush its cache inducing a performance issue and sometimes crashing out Way Jobs.&nbsp; Turning it off will be of benefit if the ADM sub-system is not being used.&nbsp; If you don't know what ADM is, you're not using it.</p>
 
+<h3>State transition blocking</h3>
+
 <p>The Way has a 10s timeout when attempting a poke request with a 10s retry.&nbsp; For estates with a large number of unreachable servers, this can set up a mini denial of service inside the Way moving jobs forward.&nbsp; A small reduction (1s) in the poke timeout will help alleviate this issue.</p>
 
 <table border="0" cellpadding="0" cellspacing="0">
@@ -490,6 +494,8 @@ To prevent superseded patches from being imported.</p>
 		</tr>
 	</tbody>
 </table>
+
+<h3>Way refreshing its cache excessively</h3>
 
 <p>If SA is not being used to provision ESX servers a workaround that causes&nbsp;the Way to force a cache refresh with a Spin call on every command sent to an agent can be disabled.</p>
 
