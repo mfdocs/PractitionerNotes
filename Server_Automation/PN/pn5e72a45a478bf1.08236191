@@ -491,9 +491,27 @@ To prevent superseded patches from being imported.</p>
 	</tbody>
 </table>
 
-<h3><br>
+<p>If SA is not being used to provision ESX servers a workaround that causes&nbsp;the Way to force a cache refresh with a Spin call on every command sent to an agent can be disabled.</p>
+
+<ul>
+	<li>OCTCR19L838880 - Allow cache refreshing for pokes to be disabled</li>
+</ul>
+
+<p>This is available from 10.60.018, 10.51.014, 2018.08.008 a restart of the Way is required.<br>
 <br>
-Split-Brain</h3>
+<strong>/etc/opt/opsware/waybot/waybot_custom.args</strong></p>
+
+<table>
+	<tbody>
+		<tr>
+			<td><font face="monospace">way.si_refresh_on_poke: 0</font></td>
+		</tr>
+	</tbody>
+</table>
+
+<p></p>
+
+<h3>Split-Brain</h3>
 
 <p>Due to the new way session job execution enhancement, introduced in 10.23 and 10.51, designed to prevent jobs&nbsp;from completing until all commands started by that job have completed, many&nbsp;customers have experienced jobs that stay ACTIVE (aka in-progress) for a long period of time.</p>
 
