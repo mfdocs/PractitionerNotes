@@ -102,7 +102,6 @@ from pytwist import twistserver
 from pytwist.com.opsware.server import ServerRef
 
 ts = twistserver.TwistServer()
-ServerService = ts.server.ServerService
 SoftwarePolicyService = ts.swmgmt.SoftwarePolicyService
 
 folderPath = lambda folderRefs: '/'.join(c.name for c in folderRefs)
@@ -119,10 +118,13 @@ for ref in ts.search.SearchService.findObjRefs(None,'software_policy'):
     path = folderPath(ts.folder.FolderService.getPath(sw.folder)[1:])
     print "%s/%s - %s"  %( path, sw.name, len(serverRefs))
 </pre>
+
 <p>Execution (output truncated)</p>
+
 <pre>Opsware/Tools/Python Opsware API Access/Python Opsware API Access - 0
 Opsware/Tools/Python/Python for SA Modules - 1
 Opsware/Tools/Solaris Patching/Solaris IPS Package Acquisition Tools - 0
 Opsware/Tools/Windows PowerShell Connector/Windows PowerShell Connector - 0
 Opsware/Tools/Chef-12.8.1/chef-solo-12.8.1 - 0
-</pre></html>
+</pre>
+</html>
