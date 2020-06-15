@@ -1,4 +1,4 @@
-<h2>Attach a new ZIP Unit to a software policy</h2>
+<html><h2>Attach a new ZIP Unit to a software policy</h2>
 
 <p>The problem we need to workaround is that there is no addXXX method so we must fetch all the items, add our item to that list, then set it all back.</p>
 
@@ -19,21 +19,21 @@ pVO.setInstallableItemData(itemList)
 SoftwarePolicyService.update(pRef, pVO, False, False)
 </pre>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Ad hoc Software Installation</h2>
 
 <p>This script will install software against a server in an ad hoc manner. Ad hoc means we don't need to create a software policy and attach it to the server and then remediate. Supplying the server and software to install is sufficient. It's what happens when you right click on a server in the UI and select "Install Software"</p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <p><img src="./mediawiki/images/PN/adhoc-install-software.png"></p>
 
-<p>&nbsp;</p>
+<p></p>
 
-<p>&nbsp;</p>
+<p></p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <pre>from pytwist.com.opsware.swmgmt import SoftwareInstallJobArgument, InstallableAttachableEntry
 from pytwist.com.opsware.pkg import ZIPRef
@@ -50,7 +50,7 @@ jobRef = ts.swmgmt.SoftwarePolicyService.startInstallSoftware(s)
 print "Submitted job: %s" % jobRef
 </pre>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Server to Software policy attachment report</h2>
 
@@ -90,4 +90,39 @@ dc1.blue.local: Opsware/Tools/ISMtool/ISMtool
 sat1.blue.local: No software polices attached
 win2003-bt7xcc6: No software polices attached</pre>
 
-<p>Improvements to the code to improve performance could involve creating a cache for the software policy folder path to avoid recomputation.</p>
+<p>Improvements to the code to improve performance could involve creating a cache for the software policy folder path to avoid recomputation.<br>
+&nbsp;</p>
+
+<h2>Software policy to Server attachment report</h2>
+
+<p>This report counts the number of servers attached to each software policy, this could be used to understand orphaned, or unused software policies, in the system that are candidates for deletion.</p>
+
+<pre>#!/opt/opsware/agent/bin/python
+from pytwist import twistserver
+from pytwist.com.opsware.server import ServerRef
+
+ts = twistserver.TwistServer()
+ServerService = ts.server.ServerService
+SoftwarePolicyService = ts.swmgmt.SoftwarePolicyService
+
+folderPath = lambda folderRefs: '/'.join(c.name for c in folderRefs)
+
+# For each software policy
+for ref in ts.search.SearchService.findObjRefs(None,'software_policy'):
+    # Servers attached
+    serverRefs = [x.policyAttachable
+                  for x in SoftwarePolicyService.getPolicyAttachableAssociations([ref])
+                  if isinstance(x.policyAttachable, ServerRef)]
+    # The VO
+    sw = SoftwarePolicyService.getSoftwarePolicyVO(ref)
+    # Compute software repository path.
+    path = folderPath(ts.folder.FolderService.getPath(sw.folder)[1:])
+    print "%s/%s - %s"  %( path, sw.name, len(serverRefs))
+</pre>
+<p>Execution (output truncated)</p>
+<pre>Opsware/Tools/Python Opsware API Access/Python Opsware API Access - 0
+Opsware/Tools/Python/Python for SA Modules - 1
+Opsware/Tools/Solaris Patching/Solaris IPS Package Acquisition Tools - 0
+Opsware/Tools/Windows PowerShell Connector/Windows PowerShell Connector - 0
+Opsware/Tools/Chef-12.8.1/chef-solo-12.8.1 - 0
+</pre></html>
