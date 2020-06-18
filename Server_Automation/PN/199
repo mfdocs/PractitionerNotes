@@ -1,8 +1,8 @@
-<p>Jobs represent actions in SA that run in the background and have progress and results.</p>
+<html><p>Jobs represent actions in SA that run in the background and have progress and results.</p>
 
 <p>You cannot access job information using core authentication. That is you must make an&nbsp;<tt>authenticate(user,pass)</tt>&nbsp;call.</p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Canceling a scheduled job</h2>
 
@@ -34,7 +34,7 @@ except JobNotScheduledException:
     print "Job not scheduled"
 </pre>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Start a scheduled job now</h2>
 
@@ -183,11 +183,11 @@ except NotFoundException:
 
 <p><img src="./mediawiki/images/PN/Recurring-jobs.png"></p>
 
-<p>&nbsp;</p>
+<p></p>
 
-<p>&nbsp;</p>
+<p></p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <pre>[root@dc1 JobService]# ./startJobNow.py 114680001
 Found child job (ScheduledJobRef:114740001)
@@ -196,4 +196,26 @@ Rescheduled to run at Tue Oct  8 19:33:19 2019</pre>
 
 <p>The PENDING child was rescheduled and it has executed becoming visible in the Job Logs</p>
 
-<p><img src="./mediawiki/images/PN/Recurring-job-child.png"></p>
+<p><img src="./mediawiki/images/PN/Recurring-job-child.png"><br>
+<br>
+</p><h2>Orphaned recurring jobs</h2>
+<p>xxx</p>
+<pre>#!/opt/opsware/bin/python
+# An orphaned recurring job is one where all its underlying servers no longer exists
+
+from pytwist.twistserver import TwistServer
+from pytwist.com.opsware.compliance.sco import AuditTaskRef
+
+ts = TwistServer()
+ts.authenticate('brett','opsware')
+AuditTaskService = ts.compliance.sco.AuditTaskService
+JobService = ts.job.JobService
+
+jobs = ts.search.SearchService.findObjRefs('(job_status = RECURRING) &amp; (job_visible = 1)','job')
+for j in JobService.getJobInfoVOs(jobs):
+    if isinstance(j.taskRef, AuditTaskRef):
+        auditTaskVO = AuditTaskService.getAuditTaskVO(j.taskRef)
+        if len(auditTaskVO.targets) == 0:
+            print "Job '%s' has Zero Servers" % j.ref
+</pre>
+</html>
