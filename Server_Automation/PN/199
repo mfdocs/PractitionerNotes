@@ -197,17 +197,18 @@ Rescheduled to run at Tue Oct  8 19:33:19 2019</pre>
 <p>The PENDING child was rescheduled and it has executed becoming visible in the Job Logs</p>
 
 <p><img src="./mediawiki/images/PN/Recurring-job-child.png"><br>
-<br>
-</p><h2>Orphaned recurring jobs</h2>
-<p>xxx</p>
-<pre>#!/opt/opsware/bin/python
-# An orphaned recurring job is one where all its underlying servers no longer exists
+&nbsp;</p>
 
+<h2>Orphaned recurring jobs</h2>
+
+<p>An orphaned recurring job is one where all its underlying servers no longer exists.&nbsp; This code snippet will look for all visible recurring jobs in the system that are Audits and examine it&nbsp;to see if there are still associated servers.</p>
+
+<pre>#!/opt/opsware/bin/python
 from pytwist.twistserver import TwistServer
 from pytwist.com.opsware.compliance.sco import AuditTaskRef
 
 ts = TwistServer()
-ts.authenticate('brett','opsware')
+ts.authenticate('user','pass')
 AuditTaskService = ts.compliance.sco.AuditTaskService
 JobService = ts.job.JobService
 
