@@ -210,10 +210,9 @@ from pytwist.com.opsware.compliance.sco import AuditTaskRef
 ts = TwistServer()
 ts.authenticate('user','pass')
 AuditTaskService = ts.compliance.sco.AuditTaskService
-JobService = ts.job.JobService
 
 jobs = ts.search.SearchService.findObjRefs('(job_status = RECURRING) &amp; (job_visible = 1)','job')
-for j in JobService.getJobInfoVOs(jobs):
+for j in ts.job.JobService.getJobInfoVOs(jobs):
     if isinstance(j.taskRef, AuditTaskRef):
         auditTaskVO = AuditTaskService.getAuditTaskVO(j.taskRef)
         if len(auditTaskVO.targets) == 0:
