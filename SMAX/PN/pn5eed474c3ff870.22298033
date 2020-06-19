@@ -1,1 +1,45 @@
- 
+<html><h2>Introduction</h2>
+<br>
+Although not a best-practice, some implementations allow for certain users to add &nbsp;"ad-hoc" or "manual" approvals to a Request or Change process after it begins. SMAX can be configured for these types of approvals through Studio configurations to the desired process.<br>
+<br>
+This configuration can be done either at the process level -- affecting every record of this type -- or at the Model/Offering level, which only affects those records using the associated Model/Offering.&nbsp;
+<h2>Use Case</h2>
+<br>
+The customer wants their Service Desk Agents to have the ability to add an approver to a Request.&nbsp;<br>
+<br>
+The following example describes how to allow such an approval for an Offering, but can be easily modified for a Change Model.<br>
+&nbsp;
+<h3>Configuration Steps - Summary</h3>
+
+<ol>
+	<li>Create a user option that contains the name of the ad-hoc approval person to an Offering</li>
+	<li>Add the user option to the approval plan of the Offering</li>
+</ol>
+
+<h3><br>
+Configuration Steps - Detail</h3>
+
+<ol>
+	<li>
+	<h4>Create the user option</h4>
+	</li>
+</ol>
+<br>
+Bring up the Offering that will use the ad-hoc approval and create a user option to contain the user or group that will need to approve. The user option should use the "Field type" of "Entity Link", and the "Entity type" should be "Person" or "Group" depending on which is desired. The "Visibility" field should be set to "Agent" so the end user cannot assign the approver themselves.<br>
+<br>
+<img alt="" border="0" file="UserOption.png" height="384" hspace="0" src="/mediawiki/images/pn_images/pn_image_5eed48d7e927c4.39072640.png" style="width: 800px; height: 384px; margin: 0px; border: 0px solid black;" vspace="0" width="800"><br>
+Add the approver to the approval plan<br>
+<br>
+Select the "Task Plan" tab on the Offering, and ensure the "Approve" plan is selected. First, add a decision node that will determine whether or not an ad-hoc approver has been added.<br>
+<br>
+<br>
+From the "Yes" node, add a new approval node that uses the user option created in the previous step as the sole approver.<br>
+<br>
+Then create a join node and set the path of the approval and the "No" node to it.<br>
+<br>
+Once these steps are complete, the ad-hoc approver may be added to any Request that uses this Offering.<br>
+<br>
+Some things to consider when using this solution:<br>
+&nbsp;&nbsp; &nbsp;1) Once the Approval plan is created, the approvals may no longer be modified. Therefore the ad-hoc approver must be added before the Request reaches this point in the workflow. Consider adding a rendering rule to the Offering that makes the Ad Hoc Approver field read-only once the Request arrives at the approval phase.<br>
+&nbsp;&nbsp; &nbsp;2) When adding Approval plans to an Offering, the approvals are appended after those defined in the Request record type (in the Studio). If the ad-hoc approvals need to be the first line of approvals, they need to be configured into the Request workflow rather than in an Offering (or in the Change workflow rather than the Change Model). In this case, the field that contains the ad-hoc approver must be added to the record via Studio rather than using a user option.<br>
+&nbsp;</html>
