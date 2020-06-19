@@ -1,1 +1,736 @@
- 
+<html><h2>Intended audience</h2>
+
+<p>The information in this document is for basic users of PostgreSQL. It is not intended to replace the PostgreSQL documentation or best practices. For more information, see <a href="https://www.postgresql.org/docs/10/index.html" rel="nofollow" target="1">PostgreSQL</a> and <a href="http://www.pgpool.net/docs/latest/en/html" rel="nofollow" target="1">pgpool-II</a> documentation.</p>
+
+<h2 id="Disclaimer">Disclaimer</h2>
+
+<p>Do not use this document when:</p>
+
+<ul>
+	<li>You have an external PostgreSQL in your organization.</li>
+	<li>You have a self-managed network.</li>
+	<li>Your virtual IP address is stable.</li>
+	<li>This is a sample edit.</li>
+</ul>
+
+<h2 id="Limitations">Limitations</h2>
+
+<p>The following limitations apply to this setup:</p>
+
+<ul>
+	<li>After a database failover, the original primary database node is detached from the cluster. You must manually execute steps to promote this node back as the primary node. Until these steps are performed, the database will not be highly available. For details on how to do this, see Manage a database failover.</li>
+	<li>You need to configure another Pgpool/watchdog to avoid having an exception scenario where both nodes in the cluster act as the master. This is not addressed in this document.</li>
+</ul>
+
+<h2 id="Set_up_an_external_PostgreSQL_High_Availability_(HA)_system_for_ITOM_suites">Set up an external PostgreSQL High Availability (HA) system for ITOM suites</h2>
+
+<p>After you have installed the ITOM suite with a single node external PostgreSQL database, run the setup procedures in this document to extend the database to a HA setup. The procedures provided in this document use the load balancer IP address instead of the virtual IP address.<br>
+<img alt="PGHA architecture.png" data-file-height="349" data-file-width="550" height="349" src="/mediawiki/images/9/93/PGHA_architecture.png" width="550"></p>
+
+<h3 id="Prepare_the_environments">Prepare the environments</h3>
+
+<p>This section provides information about the hardware and software configurations required for setting up the external PostgreSQL HA environment for ITOM suites. However, this is not an exhaustive list, and other configurations may be supported.</p>
+
+<p>The procedures documented have been tested with the following software versions only.</p>
+
+<h3 id="Software">Software</h3>
+
+<ul>
+	<li>PostgreSQL version: 10.x</li>
+	<li>Pgpool version: 4.0.2</li>
+	<li>LINUX OS: CentOS 7.5</li>
+</ul>
+
+<h3 id="Hardware">Hardware</h3>
+
+<p>A total of four systems are required for setting High Availability for PostgreSQL.</p>
+
+<table>
+	<tbody>
+		<tr>
+			<th>Node Type</th>
+			<th>CPU, Memory, HDD</th>
+			<th>Operating systems</th>
+			<th>Comments</th>
+		</tr>
+		<tr>
+			<td>Database node1</td>
+			<td>4 vCPU, 24GB RAM, 350GB HDD</td>
+			<td>CentOS 7.5</td>
+			<td>Referred as “dbnode1”. It must be able to access the YUM repository to download the following packages:
+			<ul>
+				<li><code>postgresql10-&lt;10.x&gt;-2PGDG.rhel7.x86_64</code></li>
+				<li><code>postgresql10-libs-&lt;10.x&gt;-2PGDG.rhel7.x86_64</code></li>
+				<li><code>postgresql10-server-&lt;10.x&gt;-2PGDG.rhel7.x86_64</code></li>
+				<li><code>postgresql10-contrib-&lt;10.x&gt;-2PGDG.rhel7.x86_64</code></li>
+				<li><code>pgpool-II-pg95-4.0.2-1pgdg.rhel7.x86_64</code></li>
+				<li><code>ntpdate</code></li>
+				<li><code>ntp</code></li>
+			</ul>
+			</td>
+		</tr>
+		<tr>
+			<td>Database node2</td>
+			<td>4 vCPU, 24GB RAM, 350GB HDD</td>
+			<td>CentOS 7.5</td>
+			<td>Referred as “dbnode2”. It must be able to access the YUM repository to download the following packages:
+			<ul>
+				<li><code>postgresql10-&lt;10.x&gt;-2PGDG.rhel7.x86_64</code></li>
+				<li><code>postgresql10-libs-&lt;10.x&gt;-2PGDG.rhel7.x86_64</code></li>
+				<li><code>postgresql10-server-&lt;10.x&gt;-2PGDG.rhel7.x86_64</code></li>
+				<li><code>postgresql10-contrib-&lt;10.x&gt;-2PGDG.rhel7.x86_64</code></li>
+				<li><code>pgpool-II-pg95-4.0.2-1pgdg.rhel7.x86_64</code></li>
+				<li><code>ntpdate</code></li>
+				<li><code>ntp</code></li>
+			</ul>
+			</td>
+		</tr>
+		<tr>
+			<td>HA Proxy Server</td>
+			<td>4 vCPU, 16GB RAM</td>
+			<td>CentOS 7.5</td>
+			<td>For on-premise deployment.</td>
+		</tr>
+		<tr>
+			<td>Deployment node</td>
+			<td>4 vCPU, 8GB RAM</td>
+			<td>CentOS 7.5</td>
+			<td>Referred to as “dpnode” (deployment node). It is used to deploy the PGHA environment and can be removed once the environment is setup.</td>
+		</tr>
+	</tbody>
+</table>
+
+<h3 id="Configure_the_VM_roles">Configure the VM roles</h3>
+
+<p>Add the IP/hostname mappings in the <code>/etc/hosts</code> files on the deployment and database nodes.<br>
+For example:</p>
+
+<pre><code>172.17.2.4   &lt;dpnode hostname&gt;</code>
+
+<code>172.17.2.5   &lt;dbnode1 hostname&gt;</code>
+
+<code>172.17.2.6   &lt;dbnode2 hostname&gt;</code>
+
+<code>172.17.2.7   &lt;loadBalancer hostname&gt;</code>
+
+</pre>
+
+<p>To change the host name:</p>
+
+<ol>
+	<li>Run the following command on the dpnode as a root user:
+	<pre>hostname &lt;dpnode hostname&gt;</pre>
+	</li>
+	<li>Run the following command on the dbnode1 as a root user:
+	<pre>hostname &lt;dbnode1 hostname&gt;</pre>
+	</li>
+	<li>Run the following command on the dbnode2 as a root user:
+	<pre>hostname &lt;dbnode2 hostname&gt;</pre>
+	</li>
+</ol>
+
+<p>Ensure that the host name in each <code>/etc/hostname</code> file is the same as the ones set in the steps above.</p>
+
+<h3 id="Configure_the_environment">Configure the environment</h3>
+
+<p>If your environment uses a proxy server to access the internet, ensure that you enable the proxy variables in the <code>/etc/environment</code> and <code>/etc/yum.conf</code> files on the dpnode, dbnode1, and dbnode2. Edit the files and specify the URL of your proxy server for <b>http_proxy</b> and <b>https_proxy</b> variables.<br>
+<b>For example</b>:<br>
+<code>export http_proxy=&lt;url of your proxy server&gt;:&lt;proxy port number&gt;</code><br>
+<code>export https_proxy=&lt;url of your proxy server&gt;:&lt;proxy port number&gt;</code></p>
+
+<p>You may also wish to export these variables at the command-line.</p>
+
+<h3 id="Install_PostgreSQL_on_dbnode1_and_dbnode2">Install PostgreSQL on dbnode1 and dbnode2</h3>
+
+<p>To install PostgreSQL:</p>
+
+<ol>
+	<li>Run the following commands on dbnode1 and dbnode2:<br>
+	<code>yum install -y https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-centos10-10-2.noarch.rpm</code><br>
+	<code>yum install -y postgresql10-server</code><br>
+	<code>yum install -y postgresql10-contrib</code><br>
+	<code>/usr/pgsql-10/bin/postgresql-10-setup initdb</code><br>
+	<code>systemctl enable postgresql-10.service</code><br>
+	<code>systemctl start postgresql-10.service</code></li>
+	<li>Run the following command to set the postgres user password. This enables SSH communication between dbnode1 and dbnode2:
+	<pre>passwd postgres</pre>
+	</li>
+	<li>Modify the <b>listen_addresses</b> variable in the <code>/var/lib/pgsql/10/data/postgresql.conf</code> file on dbnode1 and dbnode2:
+	<pre>listen_addresses='*'</pre>
+	</li>
+	<li>Run the following command to restart the PostgreSQL service:
+	<pre>systemctl restart postgresql-10.service</pre>
+	</li>
+</ol>
+
+<h3 id="Install_iptables_service_on_dbnode1_and_dbnode2">Install iptables service on dbnode1 and dbnode2</h3>
+
+<p>To install iptables service on both the database nodes:</p>
+
+<ol>
+	<li>Run the following commands as a root user on dbnode1 and dbnode2:<br>
+	<code>yum install -y iptables-services</code> &nbsp;&nbsp;(you may also need to install or update its dependencies)<br>
+	<code>systemctl enable iptables</code><br>
+	<code>systemctl start iptables</code></li>
+	<li>In the <code>/etc/sysconfig/iptables</code> file, remove any existing "-A" lines and add the following:<br>
+	<code>-A INPUT -i lo -j ACCEPT</code><br>
+	<code>-A INPUT -p icmp -j ACCEPT</code><br>
+	<code>-A INPUT -p tcp -m tcp --dport 22 -j ACCEPT</code><br>
+	<code>-A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT</code><br>
+	<code>-A INPUT -p tcp -m tcp --dport 5432 -j ACCEPT</code><br>
+	<code>-A INPUT -j DROP</code><br>
+	<code>-A FORWARD -j REJECT --reject-with icmp-host-prohibited</code></li>
+	<li>Run the following command as root to restart the <code>iptables</code> service:
+	<pre>systemctl restart iptables</pre>
+	</li>
+	<li>Run the following commands on dbnode1 and dbnode2 to enable port 5432:<br>
+	<code>yum install nc</code><br>
+	<code>nc -i 5 &lt;dbnode1 hostname&gt; 5432</code><br>
+	<code>nc -i 5 &lt;dbnode2 hostname&gt; 5432</code></li>
+</ol>
+
+<p>If successful, these commands will terminate once the timeout has expired.</p>
+
+<p>Ensure there are no errors after running these commands. If you encounter any errors, please fix them and then proceed with the configuration.</p>
+
+<h3 id="Enable_SSH_connection_between_dbnode1_and_dbnode2">Enable SSH connection between dbnode1 and dbnode2</h3>
+
+<p>Skip this step if an SSH connection is already enabled in your environment.</p>
+
+<ol>
+	<li>Open the <code>/etc/ssh/sshd_conﬁg</code> file</li>
+	<li>Update the value of <code>PasswordAuthentication</code> to <code>yes</code>:
+	<pre>PasswordAuthentication yes</pre>
+	</li>
+	<li>Run the following command to restart the <code>sshd</code> service:
+	<pre>systemctl restart sshd</pre>
+	</li>
+</ol>
+
+<h3 id="Install_ansible_as_root_on_dpnode">Install ansible as root on dpnode</h3>
+
+<p>Run the following commands to install <code>ansible</code> as root on the dpnode:<br>
+<code>yum install -y python-devel python-pip python</code><br>
+<code>yum install -y openssl-devel</code><br>
+<code>curl <a href="https://bootstrap.pypa.io/get-pip.py" rel="nofollow" target="1">https://bootstrap.pypa.io/get-pip.py</a> -o /tmp/get-pip.py</code><br>
+<code>python /tmp/get-pip.py</code><br>
+<code>pip install paramiko PyYAML Jinja2 httplib2 six</code><br>
+<code>pip install ansible</code></p>
+
+<h3 id="Execute_the_deployment_scripts">Execute the deployment scripts</h3>
+
+<p>Run the following commands to execute the deployment script:</p>
+
+<ol>
+	<li>Download the ITOM PostgreSQL HA package (ITOM_External_PG_HA.zip) from <a href="https://marketplace.microfocus.com/itom/content/postgresql-ha-setup" rel="nofollow" target="1">Marketplace</a>.</li>
+	<li>Extract the content of the package, then copy the <code>pgha-deploy-master</code> folder to the <code>/tmp</code> folder on the dpnode.</li>
+	<li>Prepare <code>"pgha"</code> user on the dpnode, dbnode1, and dbnode2. To do this:
+	<ol>
+		<li>Run the following commands as a root user on dpnode, dbnode1, and dbnode2 to create a <code>"pgha"</code> user. The <b>passwd pgha</b> command prompts you to provide a password for the <b>pgha</b> user.<br>
+		<code>groupadd pgha</code><br>
+		<code>useradd pgha -g pgha </code><br>
+		<code>passwd pgha</code></li>
+		<li>Run the following command to provide <code>sudo</code> access to <code>"pgha"</code> user:
+		<pre>visudo</pre>
+		</li>
+		<li>Add the following below <code>“root ALL=(ALL) ALL”</code> in the file that opens:
+		<pre>pgha	ALL=(ALL)	ALL</pre>
+		Ensure the <code>/etc/sudoers</code> file contains the new pgha user.</li>
+	</ol>
+	</li>
+	<li>Deploy PGHA with two PostgreSQL servers and two Pgpools. To do this:
+	<ol>
+		<li>Verify the network connectivity. To do this, run the following commands to establish an SSH connection from the dpnode (acting as the Ansible Management Node) to dbnode1 and dbnode2:<br>
+		<code>su - pgha</code> &nbsp;(Enter the password provided in step 3a above)<br>
+		<code>ssh-keygen -t rsa -f ~/.ssh/id_rsa</code><br>
+		<code>ssh-copy-id pgha@&lt;dpnode host name&gt;</code><br>
+		<code>ssh-copy-id pgha@&lt;dbnode1 host name&gt;</code><br>
+		<code>ssh-copy-id pgha@&lt;dbnode2 host name&gt;</code></li>
+		<li>Run the following commands to configure Ansible nodes on the dpnode:<br>
+		<code>su - pgha</code> &nbsp;(Enter the password provided in step 3a above)<br>
+		<code>cp -R /tmp/pgha-deploy-master /home/pgha</code><br>
+		<code>tar xvf pgha-deploy-master</code><br>
+		<code>cd pgha-deploy-master</code><br>
+		<code>cp inventory/hosts.example inventory/hosts.default</code></li>
+		<li>Modify the <code>inventory/hosts.default</code> file to use the following settings. Ensure that you specify the hostnames for the dpnode, dbnode1, and dbnode2 servers:<br>
+		<code>[dp]</code><br>
+		<code>&lt;dpnode hostname&gt;</code><br>
+		<code>[db_m]</code><br>
+		<code>&lt;dbnode1 hostname&gt;</code><br>
+		<code>[db_s]</code><br>
+		<code>&lt;dbnode2 hostname&gt;</code><br>
+		<code>[db:children]</code><br>
+		<code>db_m</code><br>
+		<code>db_s</code><br>
+		<code>[pghad:children]</code><br>
+		<code>dp</code><br>
+		<code>db</code><br>
+		<code>[internet:children]</code><br>
+		<code>dp</code></li>
+		<li>Run the following commands as a <code>"pgha"</code> user to check the Ansible node hosts ﬁle on the dpnode:<br>
+		<code>cd /home/pgha/pgha-deploy-master</code><br>
+		<code>ansible pghad -u pgha -m ping -c paramiko</code><br>
+		<br>
+		<b>Sample output</b>:<br>
+		<code>dpnode | SUCCESS =&gt; {</code><br>
+		<code>"changed": false,</code><br>
+		<code>"ping": "pong"</code><br>
+		<code>}</code><br>
+		<code>dbnode2 | SUCCESS =&gt; { </code><br>
+		<code>"changed": false,</code><br>
+		<code>"ping": "pong"</code><br>
+		<code>}</code><br>
+		<code>dbnode1 | SUCCESS =&gt; {</code><br>
+		<code>"changed": false,</code><br>
+		<code>"ping": "pong"</code><br>
+		<code>}</code></li>
+		<li>Set the Ethernet interface name in group <code>vars</code> on the dpnode. To do this:
+		<ol>
+			<li>Run the following command as a root user on dbnode1 and dbnode2 to get the Ethernet interface name:
+			<pre>ifconfig –a</pre>
+			</li>
+			<li>Run the following command to update the "interface" value on the dpnode to the dbnode1 and dbnode2 value:
+			<pre>vi /home/pgha/pgha-deploy-master/group_vars/pghad.yml</pre>
+			</li>
+		</ol>
+		</li>
+		<li>Run the following commands on the dpnode, dbnode1, and dbnode2:<br>
+		<code>yum install -y yum-utils</code><br>
+		<br>
+		<code>yum -d 2 -y install epel-release</code><br>
+		<br>
+		<code>yum install -y rsync</code></li>
+		<li>Run the following command to update pgha permissions for the <code>pgha-deploy-master</code> folder:
+		<pre>chown -R pgha:pgha /home/pgha/pgha-deploy-master</pre>
+		</li>
+		<li>Run the PGHA deployment (ansible-playbook) script as the <code>"pgha"</code> user on the dpnode:<br>
+		<code>cd /home/pgha/pgha-deploy-master</code><br>
+		<br>
+		<code>ansible -m setup dp</code><br>
+		<br>
+		<code>ansible -m setup db</code><br>
+		<br>
+		<code>ansible-playbook pghad.yml -c paramiko --ask-become-pass -u pgha 2&gt;&amp;1 | tee setup.out</code><br>
+		<br>
+		<i>(note that the last command may take a considerable amount of time to complete).</i>
+		<ul>
+			<li>If your ansible does not support the <code>include:</code> statement, modify the main.yml file <code>include:</code> command to look as follows:</li>
+		</ul>
+		<code>include_tasks: clean.yml</code><br>
+		<br>
+		<code>vars:</code><br>
+		<br>
+		<code>hosts: 127.0.0.1</code><br>
+		<br>
+		<code>connection: local</code><br>
+		&nbsp;</li>
+		<li>Run the following command to check the PostgreSQL HA status any one of the database nodes:
+		<pre>psql -h &lt;dbnode1 hostmame&gt; -p 9999 -U postgres -c 'show pool_nodes'</pre>
+
+		<p>Enter the postgres password defined in <b>Install PostgreSQL on dbnode1 and dbnode2</b>, step 2 above.<br>
+		<br>
+		For example:</p>
+
+		<pre><code>psql -h dbnode1 -p 9999 -U postgres -c 'show pool_nodes'</code>
+
+<code>Password for user postgres:</code>
+
+<code>node_id | hostname | port | status | lb_weight |  role   | select_cnt | load_balance...</code>
+
+<code>--------+----------+------+--------+-----------+---------+------------+-------</code>
+
+<code>0       | dbnode1  | 5432 | up     | 0.500000  | primary | 2          | true  </code>
+
+<code>1       | dbnode2  | 5432 | up     | 0.500000  | standby | 0          | false </code>
+</pre>
+		</li>
+		<li>If the status of dbnode1 or dbnode2 is <code>DOWN</code>, run the following <code>pcp</code> command as a root user or as the <code>“postgres”</code> user to bring it <code>UP</code>:
+		<pre>pcp_attach_node -h &lt;dbnode host&gt; -p 9898 -U postgres -n &lt;node_id&gt;</pre>
+
+		<p>For example:</p>
+
+		<pre>pcp_attach_node -h dbnode1 -p 9898 -U postgres -n 1</pre>
+		</li>
+		<li>Run the following command to check the replication count on any one of the three nodes:
+		<pre>psql -h &lt;dbnode1&gt; -p 9999 -U postgres -c 'select sent_lsn,replay_lsn from pg_stat_replication'</pre>
+		&nbsp;
+
+		<p>For example:<br>
+		<code>sent_lsn | replay_lsn</code><br>
+		<code>---------------+-----------------</code><br>
+		<code>0/1EFF50C8 | 0/1EFF5050</code></p>
+		<code>(1 row)</code></li>
+		<li>Run the following command on dbnode1 and dbnode2 to update the <code>pool_passwd</code> file with the new PostgreSQL database user created:
+		<pre>/usr/bin/pg_md5 -m -u [user] [password]</pre>
+		</li>
+	</ol>
+	</li>
+</ol>
+
+<h3 id="Conﬁgure_the_load_balancer">Conﬁgure the load balancer</h3>
+
+<p>You must configure the load balancer in order to redirect all the suite database requests to the Pgpools.</p>
+
+<p>There are two types of load balancers supported in ITOM suite:</p>
+
+<ol>
+	<li>Using “‘haproxy’ in SSL Pass-Through mode” for on-premise deployments of ITOM suite.</li>
+	<li>Using “MS Azure load balancer” for ITOM suites that support deployments in MS Azure.</li>
+</ol>
+
+<h4 id="Configure_haproxy_in_SSL_Pass-Through_mode">Configure haproxy in SSL Pass-Through mode</h4>
+
+<p>Haproxy in SSL Pass-Through mode is used as an on premise load balancer. To configure this:</p>
+
+<p></p>
+
+<p>Replace DB_HOST1 and DB_HOST2 with actual host names.<br>
+A user may choose to acknowledge these risks and enable haproxy to enable listening for stats in a test environment.<br>
+Steps to enable HAProxy Stats web interface on port 6080:<br>
+1) vi /etc/haproxy/haproxy.cfg<br>
+2) un-comment the 17 lines beginning with "listen stats *.6080"<br>
+3) Stats can be accessed using http://&lt;load-balancer-node&gt;:6080/stats"</p>
+
+<ol>
+	<li>Optional: If haproxy is not installed on the system to be used as a load balancer, install it. To do this, run the following command:
+	<pre>yum install haproxy</pre>
+	&nbsp;
+
+	<p>Important</p>
+	Change the default credentials and implement security best practices required by your organization for the configuration of haproxy.</li>
+	<li>Run the following command to check if haproxy is installed on the system to be used as a load balancer:
+	<pre>haproxy –v</pre>
+	</li>
+	<li>Create or Update the <code>/etc/haproxy/haproxy.cfg</code> file with the following content:<br>
+	<code>global</code><br>
+	<br>
+	<code>maxconn 1600</code><br>
+	<br>
+	<code>tune.ssl.default-dh-param 2048</code><br>
+	<br>
+	<code>log 127.0.0.1 local0</code><br>
+	<br>
+	<code>chroot /var/lib/haproxy</code><br>
+	<br>
+	<code>defaults</code><br>
+	<br>
+	<code>timeout connect 10000s</code><br>
+	<br>
+	<code>timeout client 30000s</code><br>
+	<br>
+	<code>timeout server 10000s</code><br>
+	<br>
+	<code>frontend localhost</code><br>
+	<br>
+	<code>bind *:5432</code><br>
+	<br>
+	<code>mode tcp</code><br>
+	<br>
+	<code>option tcplog</code><br>
+	<br>
+	<code>default_backend pgsql</code><br>
+	<br>
+	<code>backend pgsql</code><br>
+	<br>
+	<code>mode tcp</code><br>
+	<br>
+	<code>balance roundrobin</code><br>
+	<br>
+	<code>option pgsql-check user postgres</code><br>
+	<br>
+	<code>server master1 &lt;DB_HOST1&gt;:9999 check</code><br>
+	<br>
+	<code>server master2 &lt;DB_HOST2&gt;:9999 check</code><br>
+	<br>
+	<code>#&nbsp;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</code><br>
+	<br>
+	<code>#&nbsp;!!!!!!!!!!!!!!!!!!!!!!!!! LEGAL DISCLAIMER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</code><br>
+	<br>
+	<code>#&nbsp;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</code><br>
+	<br>
+	<code>#&nbsp;! By selecting to enable HAProxy stats web interface, you are disabling or&nbsp;!</code><br>
+	<br>
+	<code>#&nbsp;! bypassing security features, thereby exposing the system to increased&nbsp;&nbsp;&nbsp; !</code><br>
+	<br>
+	<code>#&nbsp;! security risks. By using this option, you understand and agree to assume&nbsp;!</code><br>
+	<br>
+	<code>#&nbsp;! all associated risks and hold Micro Focus harmless for the same.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;!</code><br>
+	<br>
+	<code>#&nbsp;! Modifying haproxy.cfg to enable listening for stats on port 6080 uses a&nbsp;&nbsp;!</code><br>
+	<br>
+	<code>#&nbsp;! basic authentication login mechanism. This exposes a risk of passwords&nbsp;&nbsp; !</code><br>
+	<br>
+	<code>#&nbsp;! for the login being sent in plain text (base64 encoding). Making the &nbsp;&nbsp;&nbsp;&nbsp;!</code><br>
+	<br>
+	<code>#&nbsp;! modifications below to enable HAProxy stats is not recommended in a &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;!</code><br>
+	<br>
+	<code>#&nbsp;! production environment. HTTPS connections are not supported by&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;!</code><br>
+	<br>
+	<code>#&nbsp;!!!!!!!!!!!!!!!!!!!!!!!!!!! HAProxy stats. !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</code><br>
+	<br>
+	<code>#&nbsp;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</code><br>
+	<br>
+	<code>### Uncomment this region if you wish to enable haproxy stats</code><br>
+	<br>
+	<code>### region STATS ###</code><br>
+	<br>
+	<code># listen stats *:6080</code><br>
+	<br>
+	<code># mode http</code><br>
+	<br>
+	<code># log global</code><br>
+	<br>
+	<code>#</code><br>
+	<br>
+	<code># maxconn 800</code><br>
+	<br>
+	<code>#</code><br>
+	<br>
+	<code># timeout client 100s</code><br>
+	<br>
+	<code># timeout server 100s</code><br>
+	<br>
+	<code># timeout connect 100s</code><br>
+	<br>
+	<code># timeout queue 100s</code><br>
+	<br>
+	<code>#</code><br>
+	<br>
+	<code># stats enable</code><br>
+	<br>
+	<code># stats hide-version</code><br>
+	<br>
+	<code># stats refresh 30s</code><br>
+	<br>
+	<code># stats show-node</code><br>
+	<br>
+	<code># stats auth admin:password</code><br>
+	<br>
+	<code># stats uri /stats</code><br>
+	<br>
+	<code>### endregion STATS ###</code></li>
+	<li>Run the following command:
+	<pre>setsebool -P haproxy_connect_any=1</pre>
+	</li>
+	<li>Enable haproxy service to start at boot time:
+	<pre>systemctl enable haproxy</pre>
+	</li>
+	<li>Run the following command to start the haproxy:
+	<pre>systemctl start haproxy</pre>
+	</li>
+</ol>
+
+<h4 id="Configure_Azure_Load_Balancer">Configure Azure Load Balancer</h4>
+
+<p>To configure the load balancer using Azure load balancer:</p>
+
+<ol>
+	<li>Create an Azure internal load balancer.<br>
+	For details about how to do this, refer to the <a href="/itomw/SMAX:2019.08/CreateAzureLb" title="SMAX:2019.08/CreateAzureLb"> SMA documentation</a>.</li>
+	<li>Use TCP on port <code>9999</code> as the health probe.</li>
+	<li>Configure a loopback interface on the database nodes:
+	<ol>
+		<li>Run the following commands as root user on dbnode1 and dbnode2:
+		<pre>cd /home/pgha/pgha-deploy-master
+./create-loop.sh &lt;ILB IP&gt;</pre>
+		</li>
+		<li>Run <code>"ifconﬁg"</code> to check if the <code>"lo:1"</code> interface has been created. You may need to reboot the database nodes for the changes to take eﬀect.</li>
+		<li>Install the ITOM suite with the database nodes configured with the load balancer IP and port.</li>
+	</ol>
+	</li>
+</ol>
+
+<h2 id="Managing_PostgreSQL_database_HA_failover">Managing PostgreSQL database HA failover</h2>
+
+<h3 id="Failover_of_primary_server">Failover of primary server</h3>
+
+<p>In the event of a planned or unplanned downtime for the primary server, the standby server automatically assumes the role of the primary server, serving all database requests from the suites.</p>
+
+<h3 id="Promoting_“original_primary_server”_as_“standby”">Promoting “original primary server” as “standby”</h3>
+
+<p>Once the original primary server is back online, it will be in a detached state from the PostgreSQL HA cluster. The following steps should be performed to bring the “original primary server” as standby.</p>
+
+<ol>
+	<li>On the new primary node (dbnode2):
+	<ol>
+		<li>Run the following command to add a replication user entry for dbnode1 in ﬁle <code>/var/lib/pgsql/10/data/pg_hba.conf</code>:
+
+		<pre>host    replication repl_dbnode2     &lt;dbnode1 ip&gt;/32 md5</pre>
+		</li>
+		<li>Run the following commands to reload the <code>pg_hba.conf</code> file:
+		<pre>su - postgres
+psql -c 'SELECT pg_reload_conf();'</pre>
+		</li>
+		<li>Run the following command to create a replication slot:
+		<pre>psql -c "SELECT pg_create_physical_replication_slot('pg_haa2');"</pre>
+		</li>
+	</ol>
+	</li>
+	<li>On the original primary node (dbnode1):
+	<ol>
+		<li>Before you perform a PG sync from the current primary node, create a backup of the current PGDATA.<br>
+		The following commands are run assuming the default PGDATA directory (<code>/var/lib/pgsql/10/data</code>) is used. If you are not using the default PGDATA directory, ensure you update the following commands according to your PGDATA directory.<br>
+		<code>su - postgres</code><br>
+		<code>cd /var/lib/pgsql/10</code><br>
+		<code>mv data data.bak</code><br>
+		<code>export PGPASSWORD=PASSWORD</code><br>
+		<code>pg_basebackup -U repl_dbnode2 -X stream -D ./data -h &lt;dbnode2 IP&gt; -p 5432 -S &lt;replication_slot_name&gt;</code><br>
+		where <code>&lt;replication_slot_name&gt;</code> is the same as the one in step 1 c.</li>
+		<li>Run the following commands as a <code>postgres</code> user to modify the <code>primary_conninfo</code> line in the <code>recovery.conf </code> file:<br>
+		<code>chown postgres:postgres -R data </code><br>
+		<code>cd data</code><br>
+		<code>rm -rf trigger</code><br>
+		<code>mv recovery.done recovery.conf</code><br>
+		<code>vi recovery.conf</code></li>
+		<li>In the <code>primary_conninfo</code> line, change the host name to the new primary host name and <code>primary_slot_name</code> to <code>'&lt;replication_slot_name&gt;'</code>.</li>
+		<li>Run the following command to start Postgres:
+		<pre>systemctl start postgresql-10.service</pre>
+		</li>
+		<li>Run the following command to verify the replication:
+		<pre>psql -h &lt;dbnode hostname&gt; -p 9999 -U postgres -c 'select sent_lsn,replay_lsn from pg_stat_replication'</pre>
+		</li>
+		<li>Run the following command to verify the Pgpool status and note the node_id of the old master:
+		<pre>psql -h &lt;dbnode hostname&gt; -p 9999 -U postgres -c 'show pool_nodes'</pre>
+		</li>
+		<li>Run the following command to reattach the old master:
+		<pre>pcp_attach_node -h &lt;dbnode2 hostname&gt; -p 9898 -U postgres &lt;node_id&gt;</pre>
+		</li>
+		<li>Run the following commands to verify the Pgpool status. Both the dbnode1 and dbnode2 should be set to <code>UP</code>:
+		<pre>psql -h &lt;dbnode hostname&gt; -p 9999 -U postgres -c 'show pool_nodes'</pre>
+		</li>
+	</ol>
+	</li>
+</ol>
+
+<h3 id="Promoting_“original_primary_server”_as_“new_primary_server”">Promoting “original primary server” as “new primary server”</h3>
+
+<p>A HA failover occurs to the “standby” dbnode when the primary PostgreSQL database server is unavailable. When the original primary node comes back online, will be in a detached state from the PostgreSQL cluster. In this case, if you want to bring the original primary server back as the new primary database, you can perform the following steps to restore your system.</p>
+
+<p>Caution<br>
+Performing this step will cause data loss if the current primary database server stores new business data that does not exist in the original primary database server.</p>
+
+<ol>
+	<li>Run the following command to stop both the Pgpool services on both the database nodes:
+	<pre>systemctl stop pgpool</pre>
+	&nbsp;
+
+	<p>If the services cannot be stopped, continue to run the following commands:<br>
+	<code>ps -ef|grep pgpool|awk -F' ' '{ print $2 }'|xargs kill -9</code><br>
+	<code>rm -f /tmp/.*.9999</code></p>
+	<code>rm -f /tmp/.*.9898</code></li>
+	<li>Run the following command to stop the PostgreSQL service on both the database nodes:
+	<pre>systemctl stop postgresql-10.service</pre>
+	</li>
+	<li>Start the original primary PostgreSQL server (dbnode1).</li>
+	<li>Switch the new primary database server (dbnode2) to standby mode:
+	<ol>
+		<li>Back up the <code>&lt;PG DATA&gt;</code> folder with a new folder name (for example <code>databackup.001</code>).</li>
+		<li>Back up the PG base to sync data from the original primary server.</li>
+		<li>Copy the <code>databackup.001/recovery.done</code> file to the <code>&lt;PG DATA&gt;/recovery.conf</code> folder.</li>
+		<li>Add the following entry at the end of the <code>postgresql.conf</code> file:
+		<pre>hot_standby='on'</pre>
+		</li>
+		<li>Run the following command to start the PostgreSQL Server:
+		<pre>systemctl start postgresql-10.service</pre>
+		</li>
+		<li>Run SQL to check if this database is running in the standby mode:
+		<pre>SELECT pg_is_in_recovery()</pre>
+		</li>
+		<li>Run the following commands to check the replication status:
+		<pre>psql -h &lt;dbnode hostname&gt; -p 9999 -U postgres -c 'select sent_location,replay_location from pg_stat_replication'</pre>
+		</li>
+	</ol>
+	</li>
+	<li>Run the following command to start the Pgpool on both the database hosts:
+	<pre>systemctl start pgpool</pre>
+	</li>
+	<li>Run the following commands to check the Pgpool status; both dbnode1 and dbnode2 should be <code>UP</code>:
+	<pre>psql -h &lt;dbnode hostname&gt; -p 9999 -U postgres -c 'show pool_nodes'</pre>
+	</li>
+</ol>
+
+<h2 id="Appendix">Appendix</h2>
+
+<p>This section provides information to help you understand the PGHA setup process and to troubleshoot any problems encountered.</p>
+
+<h3 id="Set_up_PGHA_cluster_with_SSL_using_haproxy">Set up PGHA cluster with SSL using haproxy</h3>
+
+<p>Follow the steps below to set up PGHA cluster in a SSL mode when using haproxy as load balancer:</p>
+
+<ol>
+	<li>Configure the haproxy.<br>
+	Haproxy is configured in SSL Pass-Through mode. A single wild card certificate will be used for both the Pgpool servers. For more information, see Configure the load balancer.</li>
+	<li>Perform the steps below on any one of the Pgpool servers to generate a self-signed certificate and configure the Pgpool in SSL mode:<br>
+	(Note, the CN attribute e.g if Pgpool servers hostname are abc.example.com and xyz.example.com CN should be *.example.com)
+	<ol>
+		<li>
+		<pre>cd /etc/pgpool-II/</pre>
+		</li>
+		<li>
+		<pre>openssl genrsa -des3 -out server.key 1024</pre>
+		</li>
+		<li>
+		<pre>openssl rsa -in server.key -out server.key</pre>
+		</li>
+		<li>
+		<pre>chmod 400 server.key</pre>
+		</li>
+		<li>
+		<pre>chown postgres.postgres server.key</pre>
+		</li>
+		<li>
+		<pre>openssl req -new -key server.key -days 3650 -out server.crt -x509 -subj "/C=UK/ST=Massachusetts/L=Cambridge/O=Microfocus/CN=*.domain.com"</pre>
+		</li>
+		<li>
+		<pre>cp server.crt root.crt</pre>
+		</li>
+		<li>Run the following commands to update the <code>pgpool.conf</code> file:
+		<ol>
+			<li>
+			<pre>ssl = on</pre>
+			</li>
+			<li>
+			<pre>ssl_key = '/etc/pgpool-II/server.key'</pre>
+			</li>
+			<li>
+			<pre>ssl_cert = '/etc/pgpool-II/server.crt'</pre>
+			</li>
+		</ol>
+		</li>
+		<li>
+		<pre>systemctl restart pgpool</pre>
+		</li>
+	</ol>
+	</li>
+	<li>Copy <code>“server.key”</code>,<code> “server.crt”</code>, and <code>“root.crt”</code> to the other Pgpool server to location <code>“/etc/pgpool-II”</code> and update the <code>pgpool.conf</code> file:
+	<pre>ssl = on
+ssl_key = '/etc/pgpool-II/server.key'
+ssl_cert = '/etc/pgpool-II/server.crt'</pre>
+	</li>
+	<li>Run the following command to restart Pgpool:
+	<pre>ssystemctl restart pgpool</pre>
+	</li>
+</ol>
+
+<p>You can now use <code>root.crt</code> to communicate with the cluster.</p>
+
+<h3 id="Restart_PGHA">Restart PGHA</h3>
+
+<p>You can restart the PGHA system, for example, when you modify certain PostgreSQL parameters (for example, for performance tuning), these parameters require a restart to take effect. To restart the PGHA system:</p>
+
+<ol>
+	<li>Run the following command on both the database nodes to stop the Pgpool service:
+	<pre>systemctl stop pgpool</pre>
+	</li>
+	<li>Run the following command on both the database nodes to stop PostgreSQL:
+	<pre>systemctl stop postgresql-10.service</pre>
+	</li>
+	<li>If needed, modify PostgreSQL parameters on both the database nodes. For details, see the PostgreSQL documentation.</li>
+	<li>Run the following command to start PostgreSQL on both the database nodes:
+	<pre>systemctl start postgresql-10.service</pre>
+	</li>
+	<li>Run the following command on both the database nodes to start the Pgpool service:
+	<pre>systemctl start pgpool</pre>
+	</li>
+</ol>
+</html>
