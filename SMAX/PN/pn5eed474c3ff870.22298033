@@ -40,11 +40,15 @@ From the "Yes" node, add a new approval node that uses the user option created i
 <br>
 <img alt="" border="0" file="ApproveCond.png" height="513" hspace="0" src="/mediawiki/images/pn_images/pn_image_5eed4a818ec856.96800704.png" style="width: 700px; height: 513px; margin: 0px; border: 0px solid black;" vspace="0" width="700"><br>
 <br>
+The expression for the Approver field should read:
+<pre>${entity.UserOptions.AdHocApprover_c}</pre>
+<br>
 Then create a join node and set the path of the approval and the "No" node to it.<br>
 <br>
 <img alt="" border="0" file="ApprovalPlan2.png" height="305" hspace="0" src="/mediawiki/images/pn_images/pn_image_5eed4a81e3e2f5.67614109.png" style="width: 700px; height: 305px; margin: 0px; border: 0px solid black;" vspace="0" width="700">Once these steps are complete, the ad-hoc approver may be added to any Request that uses this Offering.<br>
 <br>
-Some things to consider when using this solution:<br>
+Some considerations when using this solution:<br>
+<br>
 &nbsp;&nbsp; &nbsp;1) Once the Approval plan is created, the approvals may no longer be modified. Therefore the ad-hoc approver must be added before the Request reaches this point in the workflow. Consider adding a rendering rule to the Offering that makes the Ad Hoc Approver field read-only once the Request arrives at the approval phase.<br>
 &nbsp;&nbsp; &nbsp;2) When adding Approval plans to an Offering, the approvals are appended after those defined in the Request record type (in the Studio). If the ad-hoc approvals need to be the first line of approvals, they need to be configured into the Request workflow rather than in an Offering (or in the Change workflow rather than the Change Model). In this case, the field that contains the ad-hoc approver must be added to the record via Studio rather than using a user option.<br>
 &nbsp;</html>
