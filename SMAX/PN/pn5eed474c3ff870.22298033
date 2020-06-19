@@ -19,25 +19,30 @@ The following example describes how to allow such an approval for an Offering, b
 <h3><br>
 Configuration Steps - Detail</h3>
 
-<ol>
-	<li>
-	<h4>Create the user option</h4>
-	</li>
-</ol>
+<h4><br>
+1.&nbsp;Create the user option</h4>
 <br>
 Bring up the Offering that will use the ad-hoc approval and create a user option to contain the user or group that will need to approve. The user option should use the "Field type" of "Entity Link", and the "Entity type" should be "Person" or "Group" depending on which is desired. The "Visibility" field should be set to "Agent" so the end user cannot assign the approver themselves.<br>
 <br>
 <img alt="" border="0" file="UserOption.png" height="384" hspace="0" src="/mediawiki/images/pn_images/pn_image_5eed48d7e927c4.39072640.png" style="width: 800px; height: 384px; margin: 0px; border: 0px solid black;" vspace="0" width="800"><br>
-Add the approver to the approval plan<br>
+&nbsp;
+<h4>2. Add the approver to the approval plan</h4>
 <br>
 Select the "Task Plan" tab on the Offering, and ensure the "Approve" plan is selected. First, add a decision node that will determine whether or not an ad-hoc approver has been added.<br>
 <br>
+The "In case of" should read:
+<pre>${entity.UserOptions.AdHocApprover_c != null}</pre>
 <br>
+Where "AdHocApprover_c" is the name of the user option created in the previous step.<br>
+<br>
+<img alt="" border="0" file="Decision.png" height="469" hspace="0" src="/mediawiki/images/pn_images/pn_image_5eed4a8132ffb0.54514801.png" style="width: 700px; height: 469px; margin: 0px; border: 0px solid black;" vspace="0" width="700"><br>
 From the "Yes" node, add a new approval node that uses the user option created in the previous step as the sole approver.<br>
+<br>
+<img alt="" border="0" file="ApproveCond.png" height="513" hspace="0" src="/mediawiki/images/pn_images/pn_image_5eed4a818ec856.96800704.png" style="width: 700px; height: 513px; margin: 0px; border: 0px solid black;" vspace="0" width="700"><br>
 <br>
 Then create a join node and set the path of the approval and the "No" node to it.<br>
 <br>
-Once these steps are complete, the ad-hoc approver may be added to any Request that uses this Offering.<br>
+<img alt="" border="0" file="ApprovalPlan2.png" height="305" hspace="0" src="/mediawiki/images/pn_images/pn_image_5eed4a81e3e2f5.67614109.png" style="width: 700px; height: 305px; margin: 0px; border: 0px solid black;" vspace="0" width="700">Once these steps are complete, the ad-hoc approver may be added to any Request that uses this Offering.<br>
 <br>
 Some things to consider when using this solution:<br>
 &nbsp;&nbsp; &nbsp;1) Once the Approval plan is created, the approvals may no longer be modified. Therefore the ad-hoc approver must be added before the Request reaches this point in the workflow. Consider adding a rendering rule to the Offering that makes the Ad Hoc Approver field read-only once the Request arrives at the approval phase.<br>
