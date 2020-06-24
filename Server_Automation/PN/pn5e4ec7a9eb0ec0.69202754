@@ -1,6 +1,6 @@
-<h1>Core recert best practices</h1>
+<html><h1>Core recert best practices</h1>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Configuration settings</h2>
 
@@ -16,7 +16,7 @@
 	<li>QCCR1D219593 - Core recert skipping phase 4 will lead to SWR comms tests failures causing phase8 not to recert the agent</li>
 </ul>
 
-<p>&nbsp;</p>
+<p></p>
 
 <pre>agent_recert.using_cdr=1</pre>
 
@@ -36,7 +36,7 @@
 
 <p>The other reason to set this duration low is that the&nbsp;<strong>recertCora</strong>&nbsp;tool graphs a phases' throughput based on the job results. These are only saved when a job completes. If you are running 24hr you get no results until the&nbsp;<strong>success_rate</strong>&nbsp;has been reached and the job naturally terminates.</p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Mesh Topology changes</h2>
 
@@ -46,7 +46,7 @@
 
 <p>The reason being is that phase 1 performs a discover mesh and caches how the environment looked when then process began. If you change the topology the recertification won't know about it and anything you add will be skipped.</p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Phase 8 : Agent certificate cache exhaustion</h2>
 
@@ -63,9 +63,10 @@
 
 <p>This increase will take about 4hr before the cache is full.</p>
 
-<p>Once the recertification (Phase 8) is complete the parameter may be reduced back to 100 with Spin restarts appropriately.&nbsp;The cached PEM files may be deleted and the Spin will simply repopulate it to the current highwater setting.</p>
+<p>Once the recertification (Phase 8) is complete the parameter should be reduced back to 100 with Spin restarts appropriately.&nbsp;The cached PEM files may be deleted and the Spin will simply repopulate it to the current highwater setting.&nbsp; Failure to do this will result in Spin performance issues later on during normal usage as the directory of agent certificates is being scanned once every second to detect usage and population.&nbsp;<br>
+&nbsp;</p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Phase 9 : Recert user permission omission</h2>
 
@@ -79,7 +80,7 @@
 	</li>
 </ul>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Phase 11 : Truth resigning issues</h2>
 
@@ -138,7 +139,7 @@ ORA-04088: error during execution of trigger 'TRUTH.AUDIT_EVENTS_RTRG'' during '
 	</li>
 </ul>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Phase 4/8/12 : File system space</h2>
 
@@ -216,7 +217,7 @@ way.debug_size set to "0" on node "ServiceLevel/Opsware/way"</pre>
 	<li>QCCR1D248367 Agent Upgrade fails for older 45.x agents using python 1.5</li>
 </ul>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Monitoring the recertification</h2>
 
@@ -232,7 +233,7 @@ way.debug_size set to "0" on node "ServiceLevel/Opsware/way"</pre>
 
 <pre># /opt/opsware/support/bin/recertCora -v server -i</pre>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Starting jobs manually</h2>
 
@@ -255,7 +256,7 @@ Rescheduled to run at Fri Feb 14 12:48:24 2020
 
 <p>The jobs for the phases can be discover by using the&nbsp;<strong>recertCora</strong>&nbsp;tool or by using the corerecert tool.</p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Manually moving phases</h2>
 
@@ -267,3 +268,4 @@ Rescheduled to run at Fri Feb 14 12:48:24 2020
 </pre>
 
 <p>Failure to do this may mean that for example are you in Phase 8 (recert agent) whilst jobs for Phase 4 (Push CA to agent) are still running.</p>
+</html>
