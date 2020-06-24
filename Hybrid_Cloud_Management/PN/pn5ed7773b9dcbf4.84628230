@@ -96,7 +96,7 @@ cd /opt/kubernetes/scripts<br>
 </table>
 
 <p><br>
-Suite and default postgres database volumes (rows 4, 5, and 6 in the above table) should be backed up only after next the step <strong>Back up Embedded PostgreSQL databases&nbsp;(suite-db and default-db)&nbsp;</strong>explained below.<br>
+Suite and default postgres database volumes (Rows 4,5,6 in the above table) should be backed up only after backing up embedded database. See <em>Back up Embedded PostgreSQL databases&nbsp;(suite-db and default-db)</em>&nbsp;below.<br>
 <br>
 Backup procedure for persistent volumes depends on type of persistent volumes. &nbsp;For persistent volumes hosted on local file system or remote NFS server, recommended approach is to tar the files and save it on backup device.&nbsp;<br>
 <br>
@@ -210,10 +210,6 @@ For postgres database, perform the following steps to backup all databases: ara,
 <p><br>
 Refer to <a href="https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2019.02/BackupHCM#Back_up_Vertica_database">Back up Vertica database</a>. For detailed instructions on backup and restore:, refer to Vertica documentation.&nbsp;</p>
 
-<h2>How to take an offline backup?</h2>
-
-<p>The steps to take an offline backup is to shut down the HCM namespace (<code>./cdfctl.sh runlevel set -l DOWN -n &lt;hcm-namespace&gt;</code>) &nbsp;before starting the backup process.</p>
-
 <h2>Restore HCM</h2>
 
 <p>Perform the following steps sequentially to restore HCM. The HCM namespace should be shut down before you start restoring.</p>
@@ -268,6 +264,12 @@ For example, to restore the external postgres follow below steps:</p>
 <h2>Start HCM after restore</h2>
 
 <p>Log in to any of the Kubernetes master nodes and run the following commands:<br>
+In case of offline backup (refer step <em>How to do an offline Backup?</em>) , the core namespace should be restored by running the commands<br>
+<code>cd /opt/kubernetes/scripts<br>
+./cdfctl.sh runlevel set -l UP -n core</code><br>
+<br>
+When the core pods have created successfully, run the following commands to restore HCM namespace:<br>
+<br>
 <code>cd /opt/kubernetes/scripts<br>
 ./cdfctl.sh runlevel set -l UP -n &lt;hcm-namespace&gt;</code></p>
 </html>
