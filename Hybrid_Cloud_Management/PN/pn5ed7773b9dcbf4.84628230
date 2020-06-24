@@ -11,6 +11,7 @@
 	<li>Back up Vertica database</li>
 	<li>Stop and repeat the above process if offline backup is required</li>
 </ul>
+<strong>Note</strong>: It is recommended to trigger the above backup process at same the time.
 
 <h2>Restore process of HCM</h2>
 
@@ -23,21 +24,36 @@
 	<li>Start HCM Namespace</li>
 </ol>
 
-<p><strong>Note</strong>: Restore process should be done sequentially.</p>
+<p><strong>Note</strong>: The restore process should be done sequentially.</p>
+
+<h2>How to do an offline backup?</h2>
+
+<p>The offline backup procedure will make sure that there is no active transactional data loss in the system and ensure all components will be in a stable state after the restore.<br>
+<br>
+The steps to take an offline backup is to shutdown the HCM namespace (<code>./cdfctl.sh runlevel set -l DOWN -n &lt;hcm-namespace&gt;</code>) &nbsp;before starting the backup process.<br>
+<br>
+The core namespace should be shut down to prevent active transactions(<code>./cdfctl.sh runlevel set -l DOWN -n core</code>) only after the step <em>Back up Embedded PostgreSQL databases (suite-db and default-db)</em> explained below.&nbsp;<br>
+<br>
+Log in to any of the Kubernetes master nodes and run the following commands:<br>
+<br>
+<code>cd /opt/kubernetes/scripts<br>
+./cdfctl.sh runlevel set -l UP -n &lt;hcm-namespace&gt;<br>
+cd /opt/kubernetes/scripts<br>
+./cdfctl.sh runlevel set -l UP -n core</code></p>
 
 <h2>Disclaimers</h2>
 
 <ul>
-	<li>HCM does not recommend point in time &nbsp;backup/restore because of transactional data.</li>
+	<li>HCM does not recommend point in time &nbsp;backup/restore because of active transactional data which may lead to discrepancy at the time of restore.</li>
 	<li>The subscriptions and its data created after the backup will have to be managed manually as the data will be different after restore.</li>
 	<li>It is always recommended to use regular online backup for database and NFS.</li>
 	<li>It is always recommended to use external database and NFS for production.</li>
 	<li>There is no sequence to be followed for HCM backup process, but restore.should be done in the sequence specified under restore process.</li>
 </ul>
 
-<h2>How to back up HCM?</h2>
+<h2>How to Backup HCM ?</h2>
 
-<p>It is recommended to back up HCM data at frequent intervals to make sure data is not lost during a catastrophe. &nbsp;Detailed instructions to back up HCM is provided below.<br>
+<p>It is recommended to back up the HCM data at frequent intervals in order to make sure the data is not lost during a catastrophe. &nbsp;Detailed instructions to back up HCM are provided below.<br>
 <br>
 <strong>Note</strong>: &nbsp;The backup steps are independent and can be performed simultaneously in any order.</p>
 
