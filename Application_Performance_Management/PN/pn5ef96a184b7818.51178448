@@ -1,1 +1,70 @@
- 
+<html><h3 class="mysupport-document-content-heading" style="border-bottom-color: rgb(238, 238, 238); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box; color: inherit; font-family: inherit; font-size: 24px; font-style: normal; font-variant: normal; font-weight: 500; letter-spacing: normal; line-height: 1.1; margin-bottom: 12px; margin-left: 0px; margin-right: 0px; margin-top: 24px; orphans: 2; text-align: left; text-decoration: none; text-indent: 0px; text-transform: none; -webkit-text-stroke-width: 0px; white-space: normal; word-spacing: 0px;">Summary</h3>
+
+<div class="marbot10" id="content_reference" style='box-sizing: border-box; color: rgb(51, 51, 51); font-family: "tk-aktiv-grotesk-n4",sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; letter-spacing: normal; margin-bottom: 10px; orphans: 2; text-align: left; text-decoration: none; text-indent: 0px; text-transform: none; -webkit-text-stroke-width: 0px; white-space: normal; word-spacing: 0px;'>APM - Configure JBoss to support more HTTP parameters</div>
+
+<h3 class="mysupport-document-content-heading" style="border-bottom-color: rgb(238, 238, 238); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box; color: inherit; font-family: inherit; font-size: 24px; font-style: normal; font-variant: normal; font-weight: 500; letter-spacing: normal; line-height: 1.1; margin-bottom: 12px; margin-left: 0px; margin-right: 0px; margin-top: 24px; orphans: 2; text-align: left; text-decoration: none; text-indent: 0px; text-transform: none; -webkit-text-stroke-width: 0px; white-space: normal; word-spacing: 0px;">Problem</h3>
+
+<div id="content_reference" style='box-sizing: border-box; color: rgb(51, 51, 51); font-family: "tk-aktiv-grotesk-n4",sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-decoration: none; text-indent: 0px; text-transform: none; -webkit-text-stroke-width: 0px; white-space: normal; word-spacing: 0px;'>
+<p class="Heading" style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span style="box-sizing: border-box; font-size: 16px;"><span style="box-sizing: border-box; font-family: verdana;"><u style="box-sizing: border-box;"><strong style="box-sizing: border-box; font-weight: bold;"><span lang="EN-US" style="box-sizing: border-box;">Problem</span></strong></u></span></span><span lang="EN-US" style="box-sizing: border-box;"><o:p style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"></o:p></span></p>
+
+<p class="BodyText" style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span style="box-sizing: border-box; font-size: 13px;"><span style="box-sizing: border-box; font-family: arial;"><span lang="EN-US" style="box-sizing: border-box;">It was reported by some of APM product users, that when recipient filter is set on “Alert Log” report that is available under ”Applications&gt;End User Management” and the number of available recipient is more than 500, select all option doesn’t work. On clicking “Ok” after selecting all, when the application filter is reopened, it shows that only 470 recipients got selected. The expected behavior is to retain all recipients that was initially selected. The concern was raised for Alert Log report however, it can theoretically with and request sending huge number of parameters.</span></span></span></p>
+
+<p class="BodyText" style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span lang="EN-US" style="box-sizing: border-box;"><o:p style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"></o:p></span></p>
+
+<p class="BodyText" style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"></p>
+
+<p style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span style="box-sizing: border-box; font-size: 16px;"><span style="box-sizing: border-box; font-family: verdana;"><u style="box-sizing: border-box;"><strong style="box-sizing: border-box; font-weight: bold;">Identification</strong></u></span></span></p>
+
+<p style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span style="box-sizing: border-box; font-size: 13px;"><span style="box-sizing: border-box; font-family: arial;">If you observe below indicated error on HPBSM\jboss-as\standalone\log\server.log, it’s an indication that JBoss is ignoring some of the parameters on the HTTP request.</span></span></p>
+
+<p style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span style="box-sizing: border-box; font-size: 13px;"><span style="box-sizing: border-box; font-family: arial;"><em style="box-sizing: border-box; font-style: italic;">JBWEB002004: More than the maximum number of request parameters (GET plus POST) for a single request (512) were detected. Any parameters beyond this limit have been ignored. To change this limit, set the maxParameterCount attribute on the Connector.</em></span></span></p>
+
+<p style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"></p>
+</div>
+
+<h3 class="mysupport-document-content-heading" style="border-bottom-color: rgb(238, 238, 238); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box; color: inherit; font-family: inherit; font-size: 24px; font-style: normal; font-variant: normal; font-weight: 500; letter-spacing: normal; line-height: 1.1; margin-bottom: 12px; margin-left: 0px; margin-right: 0px; margin-top: 24px; orphans: 2; text-align: left; text-decoration: none; text-indent: 0px; text-transform: none; -webkit-text-stroke-width: 0px; white-space: normal; word-spacing: 0px;">Cause</h3>
+
+<div id="content_reference" style='box-sizing: border-box; color: rgb(51, 51, 51); font-family: "tk-aktiv-grotesk-n4",sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-decoration: none; text-indent: 0px; text-transform: none; -webkit-text-stroke-width: 0px; white-space: normal; word-spacing: 0px;'>
+<p style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span style="box-sizing: border-box; font-size: 16px;"><span style="box-sizing: border-box; font-family: verdana;"><u style="box-sizing: border-box;"><strong style="box-sizing: border-box; font-weight: bold;">Cause</strong></u></span></span></p>
+
+<p style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span style="box-sizing: border-box; font-size: 13px;"><span style="box-sizing: border-box; font-family: arial;">All application servers including JBoss , which is used by APM has a inbuilt way to restrict the maximum number of values that can be send via a HTTP call. It’s done in order to prevent server performance degradation due to incoming HTTP requests with large number of parameters.&nbsp;&nbsp; For JBoss the default value of maximum parameters is 512, hence any parameters beyond 512 are ignored, which can lead to inconsistent application behavior.</span></span></p>
+
+<p style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"></p>
+</div>
+
+<h3 class="mysupport-document-content-heading" style="border-bottom-color: rgb(238, 238, 238); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box; color: inherit; font-family: inherit; font-size: 24px; font-style: normal; font-variant: normal; font-weight: 500; letter-spacing: normal; line-height: 1.1; margin-bottom: 12px; margin-left: 0px; margin-right: 0px; margin-top: 24px; orphans: 2; text-align: left; text-decoration: none; text-indent: 0px; text-transform: none; -webkit-text-stroke-width: 0px; white-space: normal; word-spacing: 0px;">Fix</h3>
+
+<div id="content_reference" style='box-sizing: border-box; color: rgb(51, 51, 51); font-family: "tk-aktiv-grotesk-n4",sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-decoration: none; text-indent: 0px; text-transform: none; -webkit-text-stroke-width: 0px; white-space: normal; word-spacing: 0px;'>
+<p style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span style="box-sizing: border-box; font-size: 16px;"><span style="box-sizing: border-box; font-family: verdana;"><u style="box-sizing: border-box;"><strong style="box-sizing: border-box; font-weight: bold;">Solution</strong></u></span></span></p>
+
+<p style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span style="box-sizing: border-box; font-size: 13px;"><span style="box-sizing: border-box; font-family: arial;">The solution is to increase the number of HTTP parameters that can be accepted by JBoss.</span></span></p>
+
+<p style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span style="box-sizing: border-box; font-size: 13px;"><span style="box-sizing: border-box; font-family: arial;">Take a backup of C:\HPBSM\jboss-as\standalone\configuration\standalone.xml</span></span></p>
+
+<p style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span style="box-sizing: border-box; font-size: 13px;"><span style="box-sizing: border-box; font-family: arial;">Open C:\HPBSM\jboss-as\standalone\configuration\standalone.xml file for editing.</span></span></p>
+
+<p style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span style="box-sizing: border-box; font-size: 13px;"><span style="box-sizing: border-box; font-family: arial;">Under &lt;system-properties&gt; tag, add the following line</span></span></p>
+
+<p style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span style="box-sizing: border-box; font-size: 13px;"><span style="box-sizing: border-box; font-family: arial;">&lt;property name="org.apache.tomcat.util.http.Parameters.MAX_COUNT" value="1000"/&gt;</span></span></p>
+
+<p style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span style="box-sizing: border-box; font-size: 13px;"><span style="box-sizing: border-box; font-family: arial;">Note that the value 1000 is just an example, a good rule of thumb would be to set it to “500+Maximum number of recipients available on the system”</span></span></p>
+
+<p style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span style="box-sizing: border-box; font-size: 13px;"><span style="box-sizing: border-box; font-family: arial;">Below is what the system-properties section would look like after change.</span></span></p>
+
+<p style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span style="box-sizing: border-box; font-size: 13px;"><span style="box-sizing: border-box; font-family: arial;">&lt;system-properties&gt;</span></span></p>
+
+<p style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span style="box-sizing: border-box; font-size: 13px;"><span style="box-sizing: border-box; font-family: arial;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property name="jboss.as.management.blocking.timeout" value="16000"/&gt;</span></span></p>
+
+<p style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span style="box-sizing: border-box; font-size: 13px;"><span style="box-sizing: border-box; font-family: arial;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property name="org.apache.jasper.compiler.Parser.STRICT_QUOTE_ESCAPING" value="false"/&gt;</span></span></p>
+
+<p style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span style="box-sizing: border-box; font-size: 13px;"><span style="box-sizing: border-box; font-family: arial;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property name="org.apache.catalina.connector.URI_ENCODING" value="UTF-8"/&gt;</span></span></p>
+
+<p style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span style="box-sizing: border-box; font-size: 13px;"><span style="box-sizing: border-box; font-family: arial;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;property name="org.apache.tomcat.util.http.Parameters.MAX_COUNT" value="1000"/&gt;</span></span></p>
+
+<p style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span style="box-sizing: border-box; font-size: 13px;"><span style="box-sizing: border-box; font-family: arial;">&nbsp;&nbsp;&nbsp; &lt;/system-properties&gt;</span></span></p>
+
+<p style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span style="box-sizing: border-box; font-size: 13px;"><span style="box-sizing: border-box; font-family: arial;">Restart APM</span></span></p>
+
+<p style="box-sizing: border-box; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><span style="box-sizing: border-box; font-size: 13px;"><span style="box-sizing: border-box; font-family: arial;">Repeat step 1 to 4 for all APM servers.</span></span></p>
+</div>
+</html>
