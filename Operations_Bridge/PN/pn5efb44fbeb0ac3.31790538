@@ -109,9 +109,8 @@
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">for f in $(df | awk '/kubernetes/ {print $6}'); do umount $f; done</span></span></span></div>
 &nbsp;
 
-<div class="Admonition_Note" style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><b><u><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Note</span></span></span></u></b><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">: Set ${K8S_HOME} to /opt/kubernetes if not resolved.</span></span><br>
-<span style="font-family:Calibri,sans-serif">Shut down the VM’s and take a snapshot of the same Virtual Machines, which are part of the cluster set up.</span></span></div>
-&nbsp;
+<div class="Admonition_Note"><b><u><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Note</span></span></span></u></b><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">: Set ${K8S_HOME} to /opt/kubernetes if not resolved.</span></span><br>
+<span style="font-family:Calibri,sans-serif">Shut down the VM’s and take a snapshot of the same Virtual Machines, which are part of the cluster set up.</span></span>&nbsp;</div>
 
 <h2 style="margin-top: 16px;"><span style="font-size:16pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal"><a name="_Toc42082573">Postgres DB migration</a></span></span></span></span></span></h2>
 
@@ -155,11 +154,10 @@
 <div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">SELECT sum(pg_database_size(pg_database.datname)/1024.0) FROM pg_database ;</span></span></span></div>
 &nbsp;
 
-<h2 style="margin-top:3px"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal"><a name="_Toc42082580">Dump&nbsp;the OpsBridge databases</a></span></span></span></span></span></h2>
+<h3 style="margin-top: 3px;"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal"><a name="_Toc42082580">Dump&nbsp;the OpsBridge databases</a></span></span></span></span></span></h3>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Make sure the Postgres DB is UP and RUNNING.&nbsp;</span></span><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Run the below command to get the postgres service name:</span></span>
 
 <div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">systemctl status | grep postgresql | grep service</span></span></span></div>
-<br>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">And then check the status of the service using the command. It should show active (running):</span></span>
 
 <div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">systemctl status &lt;postgresql-service-name&gt;</span></span></span></div>
@@ -176,7 +174,6 @@
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">On completion, one should see the below message</span></span>
 
 <div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">Successfully removed #N large objects from database "&lt;suite_db_name&gt;".</span></span></span></div>
-<br>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Run the below command to create the dump file for all the databases:</span></span>
 
 <div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="color:#c00000">pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;autopassdb&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;autopassdb&gt;.sql</span></span></span></span><br>
@@ -185,5 +182,74 @@
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="color:#c00000">pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;event&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;eventdb&gt;.sql</span></span></span></span><br>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="color:#c00000">pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;mgmt&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;mgmtdb&gt;.sql</span></span></span></span><br>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="color:#c00000">pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;rtsm&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;rtsmdb&gt;.sql</span></span></span></span></div>
+&nbsp;
+
+<h3 style="margin-top: 3px;"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal"><a name="_Toc42082581">Upgrade the Postgres version</a></span></span></span></span></span></h3>
+
+<h4 style="margin-top: 3px;"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f4d78"><span style="font-weight:normal"><a name="_Toc42082582">Back up the existing pg_hba.conf and postgresql.conf</a></span></span></span></span></span></h4>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Take a back up of the below .conf files from the Postgres server.<br>
+/var/lib/pgsql/9.5/data/pg_hba.conf</span></span><br>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">/var/lib/pgsql/9.5/data/postgresql.conf</span></span></span>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><b><u><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Note</span></span></span></u></b><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">: The path might change based on the version installed.</span></span></span></div>
+&nbsp;
+
+<h4 style="margin-top: 3px;"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f4d78"><span style="font-weight:normal"><a name="_Toc42082583">Shutdown the DB</a></span></span></span></span></span></h4>
+<span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Login as Postgres super user and run the below command.</span></span></span>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">su - &lt;postgres_su_user&gt;</span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">/usr/pgsql-9.5/bin/pg_ctl stop</span></span></span></div>
+&nbsp;
+
+<div class="Admonition_Note"><b><u><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Note</span></span></span></u></b><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">: The path for pg_ctl might change based on the version installed.</span></span></span></div>
+&nbsp;
+
+<h4 style="margin-top: 3px;"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f4d78"><span style="font-weight:normal"><a name="_Toc42082584">Rename the old Installation directory</a></span></span></span></span></span></h4>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">mv /usr/pgsql-9.5 /usr/pgsql-9.5_old</span></span></span><br>
+&nbsp;
+<h4>&nbsp;<a name="_Toc42082585" style="font-family: &quot;Calibri Light&quot;, sans-serif; font-size: 12pt; background-color: rgb(255, 255, 255);">Install the new version</a></h4>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Select the suitable options from the below page. Below list of commands is for installing the version Postgres 10.</span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span class="MsoHyperlink" style="color:#0563c1"><span style="text-decoration:underline"><a href="https://www.postgresql.org/download/linux/redhat/" style="color:#0563c1; text-decoration:underline" target="_blank">https://www.postgresql.org/download/linux/redhat/</a></span></span></span></span>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="color:#c00000">yum install <a href="https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm" style="color:#0563c1; text-decoration:underline"><span style="color:#c00000"><span style="text-decoration:none"><span style="text-underline:none">https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm</span></span></span></a></span></span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="color:#c00000">yum install postgresql10</span></span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="color:#c00000">yum install postgresql10-server</span></span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="color:#c00000">yum install postgresql10-contrib</span></span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="color:#c00000">/usr/pgsql-10/bin/postgresql-10-setup initdb</span></span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="color:#c00000">systemctl enable postgresql-10</span></span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="color:#c00000">systemctl start postgresql-10</span></span></span></span></div>
+&nbsp;
+
+<h4 style="margin-top: 3px;"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f4d78"><span style="font-weight:normal"><a name="_Toc42082586">Restore the changes in the conf files</a></span></span></span></span></span></h4>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><b>File</b> <span style="color:#c00000">/var/lib/pgsql/10/data/pg_hba.conf</span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Add the below entries at the end of the file</span></span>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">host all all 0.0.0.0/0 md5</span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">host all all ::/0 md5</span></span></span></div>
 <br>
-&nbsp;</html>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><b>File</b> <span style="color:#c00000">/var/lib/pgsql/10/data/postgresql.conf</span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Uncomment and change the entries of listen_addresses and port to below</span></span>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">listen_addresses = '*'</span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">port = &lt;pg_port&gt;</span></span></span></div>
+<br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Followed by the restart of the service</span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">systemctl restart postgresql-10.service</span></span></span><br>
+&nbsp;
+<h3 style="margin-top: 3px;"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal"><a name="_Toc42082587">Restore the DUMP</a></span></span></span></span></span></h3>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Recreate the Databases and users which existed in Old OpsBridge Postgres DB</span></span>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">CREATE ROLE &lt;cdfidmuser&gt; WITH LOGIN PASSWORD '&lt;Password&gt;'; </span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">CREATE DATABASE &lt;cdfidmdb&gt; OWNER &lt;cdfidmuser&gt;; </span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">CREATE DATABASE &lt;autopassdb&gt; OWNER &lt;cdfidmuser&gt;;</span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">CREATE DATABASE &lt;bvddb&gt; OWNER &lt;cdfidmuser&gt;;</span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">CREATE DATABASE &lt;rtsmdb&gt; OWNER &lt;cdfidmuser&gt;; </span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">\c &lt;rtsmdb&gt; ;</span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">CREATE EXTENSION IF NOT EXISTS "uuid-ossp";</span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">CREATE DATABASE &lt;mgmtdb&gt; OWNER &lt;cdfidmuser&gt;; </span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">\c &lt;mgmtdb&gt; ;</span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">CREATE EXTENSION IF NOT EXISTS "uuid-ossp";</span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">CREATE DATABASE &lt;eventdb&gt; OWNER &lt;cdfidmuser&gt;;</span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">\c &lt;eventdb&gt; ;</span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">CREATE EXTENSION IF NOT EXISTS "uuid-ossp"</span></span></span></div>
+</html>
