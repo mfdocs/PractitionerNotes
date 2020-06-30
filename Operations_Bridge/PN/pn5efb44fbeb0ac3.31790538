@@ -111,4 +111,46 @@
 
 <div class="Admonition_Note" style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><b><u><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Note</span></span></span></u></b><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">: Set ${K8S_HOME} to /opt/kubernetes if not resolved.</span></span><br>
 <span style="font-family:Calibri,sans-serif">Shut down the VM’s and take a snapshot of the same Virtual Machines.</span></span></div>
+&nbsp;
+
+<h2 style="margin-top: 16px;"><span style="font-size:16pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal"><a name="_Toc42082573">Postgres DB migration</a></span></span></span></span></span></h2>
+
+<h3 style="margin-top: 3px;"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal"><a name="_Toc42082574">Pre-requisite</a></span></span></span></span></span></h3>
+
+<ol>
+	<li class="MsoNoSpacing" style="margin-left: 8px; text-align: justify;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Make sure that the CDF cluster is DOWN.</span></span></li>
+	<li class="MsoNoSpacing" style="margin-left: 8px; text-align: justify;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Enough space for taking the Postgres dump</span></span></li>
+</ol>
+
+<h4 style="margin-top: 3px;"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f4d78"><span style="font-weight:normal"><a name="_Toc42082575">Check postgres connection with super user</a></span></span></span></span></span></h4>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">From the Postgres Node, run the below command</span></span>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">psql "dbname=&lt;dbname&gt; password=&lt;password&gt; host=&lt;pg_host&gt; port=&lt;pg_port&gt; user=&lt;super_user&gt;"</span></span></span><br>
+<strong><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">OR</span></span></strong><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">su - postgres</span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">psql postgres postgres</span></span></span></div>
+&nbsp;
+
+<h4 style="margin-top: 3px;"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f4d78"><span style="font-weight:normal"><a name="_Toc42082576">Get the current Postgres Version</a></span></span></span></span></span></h4>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Once logged in as super user, run the below command. This would be good to have a check on the version and its compatibility for upgrade to higher version of Postgres.</span></span>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">SHOW server_version ;</span></span></span></div>
+&nbsp;
+
+<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f4d78"><span style="font-weight:normal"><a name="_Toc42082577">Get the DB list from the External POSTGRES Node</a></span></span></span></span></span></h3>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">As a super user, run the below command to get the OpsBridge Suite DB list. As of today, the below listed Databases would be targeted for migration.</span></span>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">SELECT datname FROM pg_database WHERE datistemplate = false and datname != 'replication_db' and datname != 'postgres' ;</span></span></span></div>
+&nbsp;
+
+<h4 style="margin-top: 3px;"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f4d78"><span style="font-weight:normal"><a name="_Toc42082578">Check if suite username passed is correct</a></span></span></span></span></span></h4>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">As a super user, run the below command to check if the owner has the access to the OpsBridge Suite DB list. This would be necessary in case it’s automated in the script and also make sure that we know the credentials in the Source and Target environment are same.</span></span>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">Select count(name) from (SELECT d.datname as name,pg_catalog.pg_get_userbyid(d.datdba) as owner FROM pg_catalog.pg_database d )a where name='&lt;suite_db_name&gt;' and owner != 'postgres' and owner = '&lt;suite_db_user&gt;' ;</span></span></span></div>
+&nbsp;
+
+<h4 style="margin-top: 3px;"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f4d78"><span style="font-weight:normal"><a name="_Toc42082579">Get the Total database size</a></span></span></span></span></span></h4>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">As a super user, run the below command to get the size of the DB</span></span>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">SELECT sum(pg_database_size(pg_database.datname)/1024.0) FROM pg_database ;</span></span></span></div>
 </html>
