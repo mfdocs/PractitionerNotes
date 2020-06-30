@@ -2,7 +2,7 @@
 <span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">As most of us know any customer who is willing to upgrade to the latest version of OpsBridge Suite, has go through multiple (quarterly) upgrades, since there is no direct upgrade supported so far.&nbsp;This particular document tries to capture each and every, detailed aspect which needs to be kept in mind and worked upon to achieve a successful upgrade, without (or minimal) Configuration DATA loss (from the Postgres side of the house).</span></span></span>&nbsp;
 
 <h2 style="margin-top: 16px;"><strong><span style="font-size:16pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal"><a name="_Toc42082558">Back up configuration</a></span></span></span></span></span></strong></h2>
-&nbsp;
+&lt;&nbsp;<span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">and </span></span></span>TBD&gt;
 
 <h3 style="margin-top: 3px;"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal"><a name="_Toc42082559">Get the number of Replica Sets</a></span></span></span></span></span></h3>
 <span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Store the output of the below command to keep a track of the replicasets being configured in your current working (old environment)</span></span></span>
@@ -31,7 +31,7 @@
 <div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><span style="color:#c00000">kubectl edit cm dns-hosts-configmap -n kube-system</span></span></span></span></div>
 &nbsp;
 
-<h2 style="margin-top: 3px;"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal"><a name="_Toc42082562">Backup custom node list and ucmdb config.json</a></span></span></span></span></span></h2>
+<h3 style="margin-top: 3px;"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal"><a name="_Toc42082562">Backup custom node list and ucmdb config.json</a></span></span></span></span></span></h3>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><b><u>Note</u></b><u>:</u> Skip if you have not configured it as part of Agent Metric Collector in your older version of OpsBridge Suite</span></span><br>
 <br>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">This is needed only if the current version of OpsBridge Suite installed, has Collection Service capability selected and Agent Metric Collector configured. <b>In case if you have NOT configured or customized the node list, then feel free to skip this section</b>. One needs to back up the below files from NFS location.</span></span><br>
