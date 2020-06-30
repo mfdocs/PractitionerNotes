@@ -22,9 +22,11 @@
 <br>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">&lt;NFS-omi-volume-1&gt;/omi/var/opt/OV/conf/xpl/config/local_settings.ini</span></span></span><br>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">&lt;NFS-omi-volume-1&gt;/omi/var/opt/OV/shared/server/conf/xpl/config/local_settings.ini</span></span></span></div>
-<br>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><b><u>Note</u></b>: There is no use case of backing up the entire Data directory, as with new version of Suite, customer would be deploying new policies. (May be monitoring policies or say the policies for virtualization collector).</span></span><br>
 &nbsp;
+
+<div class="Admonition_Note"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><b><u>Note</u></b>: There is no use case of backing up the entire Data directory, as with new version of Suite, customer would be deploying new policies. (May be monitoring policies or say the policies for virtualization collector).</span></span></div>
+&nbsp;
+
 <h3 style="margin-top: 3px;"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal"><a name="_Toc42082561">DNS Configmap for non-DNS environment</a></span></span></span></span></span></h3>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">In case if the environment was a non-DNS environment, kindly take a backup of the entries in the configuration map named dns-hosts-configmap, under kube-system namespace, to be used in the new 2019.11 environment too.</span></span>
 
@@ -32,7 +34,8 @@
 &nbsp;
 
 <h3 style="margin-top: 3px;"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal"><a name="_Toc42082562">Backup custom node list and ucmdb config.json</a></span></span></span></span></span></h3>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><b><u>Note</u></b><u>:</u> Skip if you have not configured it as part of Agent Metric Collector in your older version of OpsBridge Suite</span></span><br>
+
+<div class="Admonition_Note"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><b><u>Note</u></b><u>:</u> Skip if you have not configured it as part of Agent Metric Collector in your older version of OpsBridge Suite</span></span></div>
 <br>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">This is needed only if the current version of OpsBridge Suite installed, has Collection Service capability selected and Agent Metric Collector configured. <b>In case if you have NOT configured or customized the node list, then feel free to skip this section</b>. One needs to back up the below files from NFS location.</span></span><br>
 &nbsp;
@@ -51,9 +54,11 @@
 &nbsp;
 
 <h3 style="margin-top: 3px;"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal"><a name="_Toc42082565">Store the YAML Changes</a></span></span></span></span></span></h3>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Run the script (will be shared to the customers) to capture the values changed/edited in an html format. Internally it would use the ‘kubectl diff’ command. As these values/changes needs to be done in the YAML files, post installation of 2019.11 version too.</span></span><br>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><b><u>Note</u></b>: The kubectl <b>diff</b> option may not be available in older version of K8S.</span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Run the script (will be shared to the customers) to capture the values changed/edited in an html format. Internally it would use the ‘kubectl diff’ command. As these values/changes needs to be done in the YAML files, post installation of 2019.11 version too.</span></span>
+
+<div class="Admonition_Note"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><b><u>Note</u></b>: The kubectl <b>diff</b> option may not be available in older version of K8S.</span></span></div>
 &nbsp;
+
 <h3 style="margin-top: 3px;"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal"><a name="_Toc42082566">Store the MASTER_KEY from ucmdb POD</a></span></span></span></span></span></h3>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Login to the ucmdb POD and get the secret by executing the below command</span></span>
 
@@ -74,10 +79,10 @@
 
 <div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><code><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">kubectl get secret ingress-controller-tls-secret -n &lt;opsbridge_namespace&gt; -o json | jq '.data."tls.crt"' --raw-output | base64 -d &gt; chain.pem</span></span></span><br>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">kubectl get secret ingress-controller-tls-secret -n &lt;opsbridge_namespace&gt; -o json | jq '.data."tls.key"' --raw-output | base64 -d &gt; key.pem</span></span></span></code></div>
-<br>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><b><u>Note</u></b>: In case if you see that ‘jq’ is not installed on the CentOS, Master node. Run the below commands (after consulting your system admin).</span></span>
+&nbsp;
 
-<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11pt"><span style="line-height:normal"><span style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt"><span style="vertical-align:baseline"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">yum install epel-release -y</span></span></span></span></span></span><br>
+<div class="Admonition_Note"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><b><u>Note</u></b>: In case if you see that ‘jq’ is not installed on the CentOS, Master node. Run the below commands (after consulting your system admin).</span></span><br>
+<span style="font-size:11pt"><span style="line-height:normal"><span style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt"><span style="vertical-align:baseline"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">yum install epel-release -y</span></span></span></span></span></span><br>
 <span style="font-size:11pt"><span style="line-height:normal"><span style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt"><span style="vertical-align:baseline"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">yum install jq -y</span></span></span></span></span></span></div>
 &nbsp;
 
@@ -88,4 +93,22 @@
 <h3 style="margin-top: 3px;"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal"><a name="_Toc42082569">Clear the UCMDB history</a></span></span></span></span></span></h3>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Follow the instructions in the below document to clear/purge the UCMDB history</span></span><br>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span class="MsoHyperlink" style="color:#0563c1"><span style="text-decoration:underline"><a href="https://docs.microfocus.com/itom/Operations_Bridge_Manager:2019.11/ServerAdminPurgingTr" style="color:#0563c1; text-decoration:underline">https://docs.microfocus.com/itom/Operations_Bridge_Manager:2019.11/ServerAdminPurgingTr</a></span></span></span></span><br>
-&nbsp;</html>
+&nbsp;
+<h2 style="margin-top:3px"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal"><a name="_Toc42082570">Bring down the cluster</a></span></span></span></span></span></h2>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Make sure all the PODS are up and running.&nbsp;Shut down Suite pods by Running the below command.&nbsp;Make sure that all the PODS are DOWN and the Suite too. Ignore the Completed pods.</span></span>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">${K8S_HOME}/scripts/cdfctl.sh -f runlevel set -l DOWN</span></span></span></div>
+<br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Run the below command on all the Worker Nodes. Once it completes on the Worker Nodes, execute the same on the Master Nodes.</span></span>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">${K8S_HOME}/bin/kube-stop.sh -y</span></span></span></div>
+<br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Check if there any mount points still active. On the Master node, run the following command. If you see any residual, then kindly run the second command to un-mount the same. To be executed, in case if the NFS is on the Master node.</span></span>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">df -k | grep kubernetes</span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">for f in $(df | awk '/kubernetes/ {print $6}'); do umount $f; done</span></span></span></div>
+&nbsp;
+
+<div class="Admonition_Note" style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><b><u><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Note</span></span></span></u></b><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">: Set ${K8S_HOME} to /opt/kubernetes if not resolved.</span></span><br>
+<span style="font-family:Calibri,sans-serif">Shut down the VM’s and take a snapshot of the same Virtual Machines.</span></span></div>
+</html>
