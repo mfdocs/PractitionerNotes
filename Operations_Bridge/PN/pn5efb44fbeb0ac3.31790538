@@ -5,74 +5,84 @@
 &nbsp;
 
 <h3 style="margin-top: 3px;"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal"><a name="_Toc42082559">Get the number of Replica Sets</a></span></span></span></span></span></h3>
-<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Store the output of the below command to keep a track of the replicasets being configured in your current working (old environment)</span></span></span><br>
-<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">kubectl get replicasets --all-namespaces &gt;&gt; /tmp/&lt;ReplicaSets.txt&gt;</span></span></span></span>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Store the output of the below command to keep a track of the replicasets being configured in your current working (old environment)</span></span></span>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">kubectl get replicasets --all-namespaces &gt;&gt; /tmp/&lt;ReplicaSets.txt&gt;</span></span></span></span></div>
+&nbsp;
 
 <h3 style="margin-top: 3px;"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal"><a name="_Toc42082560">Store the XPL configurations from current environment</a></span></span></span></span></span></h3>
 <span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">One needs to take a backup of the below files from the NFS location, in order to save the XPL settings being made. The changes need to be manually set on the new environment.</span></span></span><br>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><b>Collection Service (Collect once data broker pod)</b></span></span><br>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">&lt;NFS-conf-volume&gt;/co/oa/oa1/conf/OV/conf/xpl/config/local_settings.ini</span></span></span><br>
 <br>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><b>For OBM in container</b></span></span><br>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">&lt;NFS-omi-volume-0&gt;/omi/var/opt/OV/conf/xpl/config/local_settings.ini</span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><b>For OBM in container</b></span></span>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">&lt;NFS-omi-volume-0&gt;/omi/var/opt/OV/conf/xpl/config/local_settings.ini</span></span></span><br>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">&lt;NFS-omi-volume-0&gt;/omi/var/opt/OV/shared/server/conf/xpl/config/local_settings.ini</span></span></span><br>
 <br>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">&lt;NFS-omi-volume-1&gt;/omi/var/opt/OV/conf/xpl/config/local_settings.ini</span></span></span><br>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">&lt;NFS-omi-volume-1&gt;/omi/var/opt/OV/shared/server/conf/xpl/config/local_settings.ini</span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">&lt;NFS-omi-volume-1&gt;/omi/var/opt/OV/shared/server/conf/xpl/config/local_settings.ini</span></span></span></div>
 <br>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><b><u>Note</u></b>: There is no use case of backing up the entire Data directory, as with new version of Suite, customer would be deploying new policies. (May be monitoring policies or say the policies for virtualization collector).</span></span><br>
 &nbsp;
 <h3 style="margin-top: 3px;"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal"><a name="_Toc42082561">DNS Configmap for non-DNS environment</a></span></span></span></span></span></h3>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">In case if the environment was a non-DNS environment, kindly take a backup of the entries in the configuration map named dns-hosts-configmap, under kube-system namespace, to be used in the new 2019.11 environment too.</span></span><br>
-<span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><span style="color:#c00000">kubectl edit cm dns-hosts-configmap -n kube-system</span></span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">In case if the environment was a non-DNS environment, kindly take a backup of the entries in the configuration map named dns-hosts-configmap, under kube-system namespace, to be used in the new 2019.11 environment too.</span></span>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><span style="color:#c00000">kubectl edit cm dns-hosts-configmap -n kube-system</span></span></span></span></div>
 &nbsp;
+
 <h2 style="margin-top: 3px;"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal"><a name="_Toc42082562">Backup custom node list and ucmdb config.json</a></span></span></span></span></span></h2>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><b><u>Note</u></b><u>:</u> Skip if you have not configured it as part of Agent Metric Collector in your older version of OpsBridge Suite</span></span><br>
 <br>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">This is needed only if the current version of OpsBridge Suite installed, has Collection Service capability selected and Agent Metric Collector configured. <b>In case if you have NOT configured or customized the node list, then feel free to skip this section</b>. One needs to back up the below files from NFS location.</span></span><br>
 &nbsp;
 <h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f4d78"><span style="font-weight:normal"><a name="_Toc42082563">OBM containerized</a></span></span></span></span></span></h3>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><b>File name: </b>Custom Node list file</span></span>
-
-<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><b>Location:</b> <span style="color:#c00000">&lt;NFS-conf-volume&gt;/content-administration/var/content-administration/content/custom/</span></span></span></p>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><b>File name: </b>Custom Node list file</span></span><br>
+<b style="font-family: Calibri, sans-serif; font-size: 11pt;">Location:</b><span style="font-family: Calibri, sans-serif; font-size: 11pt;"> </span><span style="font-family: Calibri, sans-serif; font-size: 11pt; color: rgb(192, 0, 0);">&lt;NFS-conf-volume&gt;/content-administration/var/content-administration/content/custom/</span>
 
 <h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f4d78"><span style="font-weight:normal"><a name="_Toc42082564">External OBM</a></span></span></span></span></span></h3>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Login to the itom-opsb-content-administration POD, and back up the below mentioned file. Use the ‘kubectl cp’ command mentioned below to take a back-up of the same file.</span></span><br>
 <br>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><b>File name: </b>sample_ucmdb_config.json</span></span><br>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><b>Location</b>: <span style="color:#c00000">/opt/content-administration/conf</span></span></span><br>
-<br>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">kubectl -n &lt;opsbridge_namespace&gt; exec -ti &lt;itom-opsb-content-administration-pod&gt; -c itom-opsb-content-administration bash</span></span></span><br>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">kubectl cp &lt;opsbridge_namespace&gt;/&lt;itom-opsb-content-administration-pod&gt;:/opt/content-administration/conf/&lt;sample_ucmdb_config.json&gt; /tmp/sample_ucmdb_config.json -c itom-opsb-content-administration</span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><b>Location</b>: <span style="color:#c00000">/opt/content-administration/conf</span></span></span>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">kubectl -n &lt;opsbridge_namespace&gt; exec -ti &lt;itom-opsb-content-administration-pod&gt; -c itom-opsb-content-administration bash</span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">kubectl cp &lt;opsbridge_namespace&gt;/&lt;itom-opsb-content-administration-pod&gt;:/opt/content-administration/conf/&lt;sample_ucmdb_config.json&gt; /tmp/sample_ucmdb_config.json -c itom-opsb-content-administration</span></span></span></div>
 &nbsp;
+
 <div style="margin-top: 3px;"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal"><a name="_Toc42082565">Store the YAML Changes</a></span></span></span></span></span></div>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Run the script (will be shared to the customers) to capture the values changed/edited in an html format. Internally it would use the ‘kubectl diff’ command. As these values/changes needs to be done in the YAML files, post installation of 2019.11 version too.</span></span><br>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><b><u>Note</u></b>: The kubectl <b>diff</b> option may not be available in older version of K8S.</span></span><br>
 &nbsp;
 <h2 style="margin-top: 3px;"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal"><a name="_Toc42082566">Store the MASTER_KEY from ucmdb POD</a></span></span></span></span></span></h2>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Login to the ucmdb POD and get the secret by executing the below command</span></span><br>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000"># get_secret MASTER_KEY</span></span></span><br>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">PASS=HZJ4/zEMtTZd+47tz5/PpbfCRTNjszKGxpeGftGKFpwri9IvKqbZgl0c0e7OG7Fp</span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Login to the ucmdb POD and get the secret by executing the below command</span></span>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000"># get_secret MASTER_KEY</span></span></span></div>
 <br>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">This VALUE should be saved. And to be used in the new environment.</span></span><br>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">One can also get the secret from the below command</span></span><br>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">kubectl -n core exec -i $(kubectl -n core get pods -o name -l app=suite-conf-sel-opsbridge | cut -d '/' -f 2) -c suite-config -- get_secret MASTER_KEY</span></span></span><br>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">PASS=CXUHhdyvrOOnHSTpo3rMj/uOI+z4lezJW21pzbkZtC7DWB6pxKT11WIDpeRaWU08</span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">One can also get the secret from the below command</span></span>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">kubectl -n core exec -i $(kubectl -n core get pods -o name -l app=suite-conf-sel-opsbridge | cut -d '/' -f 2) -c suite-config -- get_secret MASTER_KEY</span></span></span></div>
 &nbsp;
+
 <h2 style="margin-top:3px"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal"><a name="_Toc42082567">Back up the Certificates realms and PEM files</a></span></span></span></span></span></h2>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Back up the RE: Realm External, the Cert loaded on NGINX controllers.</span></span><br>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">kubectl cp core/&lt;suite-conf-pod-opsbridge&gt;:/var/run/secrets/boostport.com/trustedCAs/RE_ca.crt /tmp/RE_ca.crt -c kubernetes-vault-renew</span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Back up the RE: Realm External, the Cert loaded on NGINX controllers.</span></span>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">kubectl cp core/&lt;suite-conf-pod-opsbridge&gt;:/var/run/secrets/boostport.com/trustedCAs/RE_ca.crt /tmp/RE_ca.crt -c kubernetes-vault-renew</span></span></span></div>
 <br>
-<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Basically, one needs to retrieve the cert and key from the secret of the OpsBridge namespace (as this is the cert which is used to terminate port 443). Run the below command to retrieve the same. The name of the secret would be nginx-default-secret under OpsBridge Namespace for later version of Suites.</span></span></span><br>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">kubectl get secret ingress-controller-tls-secret -n &lt;opsbridge_namespace&gt; -o json | jq '.data."tls.crt"' --raw-output | base64 -d &gt; chain.pem</span></span></span><br>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">kubectl get secret ingress-controller-tls-secret -n &lt;opsbridge_namespace&gt; -o json | jq '.data."tls.key"' --raw-output | base64 -d &gt; key.pem</span></span></span><br>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Basically, one needs to retrieve the cert and key from the secret of the OpsBridge namespace (as this is the cert which is used to terminate port 443). Run the below command to retrieve the same. The name of the secret would be nginx-default-secret under OpsBridge Namespace for later version of Suites.</span></span></span>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><code><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">kubectl get secret ingress-controller-tls-secret -n &lt;opsbridge_namespace&gt; -o json | jq '.data."tls.crt"' --raw-output | base64 -d &gt; chain.pem</span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">kubectl get secret ingress-controller-tls-secret -n &lt;opsbridge_namespace&gt; -o json | jq '.data."tls.key"' --raw-output | base64 -d &gt; key.pem</span></span></span></code></div>
 <br>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><b><u>Note</u></b>: In case if you see that ‘jq’ is not installed on the CentOS, Master node. Run the below commands (after consulting your system admin).</span></span><br>
-<span style="font-size:11pt"><span style="line-height:normal"><span style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt"><span style="vertical-align:baseline"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">yum install epel-release -y</span></span></span></span></span></span><br>
-<span style="font-size:11pt"><span style="line-height:normal"><span style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt"><span style="vertical-align:baseline"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">yum install jq -y</span></span></span></span></span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><b><u>Note</u></b>: In case if you see that ‘jq’ is not installed on the CentOS, Master node. Run the below commands (after consulting your system admin).</span></span>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><span style="font-size:11pt"><span style="line-height:normal"><span style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt"><span style="vertical-align:baseline"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">yum install epel-release -y</span></span></span></span></span></span><br>
+<span style="font-size:11pt"><span style="line-height:normal"><span style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt"><span style="vertical-align:baseline"><span style="font-family:Calibri,sans-serif"><span style="color:#c00000">yum install jq -y</span></span></span></span></span></span></div>
 &nbsp;
+
 <h2 style="margin-top:3px"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal"><a name="_Toc42082568">Configure Event Auto Archiving</a></span></span></span></span></span></h2>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Follow the doc for Event Archiving.</span></span><br>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Follow the instructions in the below document for Event Archiving.</span></span><br>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span class="MsoHyperlink" style="color:#0563c1"><span style="text-decoration:underline"><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.11/oprArchiveEventsCLI" style="color:#0563c1; text-decoration:underline">https://docs.microfocus.com/itom/Operations_Bridge:2019.11/oprArchiveEventsCLI</a></span></span></span></span><br>
 &nbsp;
 <h2 style="margin-top:3px"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal"><a name="_Toc42082569">Clear the UCMDB history</a></span></span></span></span></span></h2>
