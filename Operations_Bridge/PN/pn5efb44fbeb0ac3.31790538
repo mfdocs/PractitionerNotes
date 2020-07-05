@@ -208,8 +208,11 @@ Take a back up of the below .conf files from the Postgres server.</p>
 
 <p style="margin-top: 16px;">Login as Postgres super user and run the below command.</p>
 
-<pre><code class="language-bash">su - &lt;postgres_su_user&gt;
-/usr/pgsql-9.5/bin/pg_ctl stop&nbsp;</code></pre>
+<pre><code class="language-bash">
+su - &lt;postgres_su_user&gt;
+/usr/pgsql-9.5/bin/pg_ctl stop
+</code>
+</pre>
 
 <div class="Admonition_Note" style="margin-top: 16px;"><strong>Note</strong>: The path for pg_ctl might change based on the version installed.</div>
 
@@ -254,13 +257,17 @@ port = &lt;pg_port&gt;</div>
 CREATE DATABASE &lt;cdfidmdb&gt; OWNER &lt;cdfidmuser&gt;;
 CREATE DATABASE &lt;autopassdb&gt; OWNER &lt;cdfidmuser&gt;;
 CREATE DATABASE &lt;bvddb&gt; OWNER &lt;cdfidmuser&gt;;
+
 CREATE DATABASE &lt;rtsmdb&gt; OWNER &lt;cdfidmuser&gt;;
-\c &lt;rtsmdb&gt; ;
+\c &lt;rtsmdb&gt;;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE DATABASE &lt;mgmtdb&gt; OWNER &lt;cdfidmuser&gt;;
-\c &lt;mgmtdb&gt; ;
+\c &lt;mgmtdb&gt;;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE DATABASE &lt;eventdb&gt; OWNER &lt;cdfidmuser&gt;;
-\c &lt;eventdb&gt; ;
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";</code></pre>
-</html>
+\c &lt;eventdb&gt;;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+</code>
+</pre></html>
