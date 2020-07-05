@@ -187,7 +187,7 @@ SELECT sum(pg_database_size(pg_database.datname)/1024.0) FROM pg_database ;&nbsp
 Successfully removed #N large objects from database "&lt;suite_db_name&gt;".<br>
 Run the below command to create the dump file for all the databases:</p>
 
-<pre><code class="language-actionscript">pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;autopassdb&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;autopassdb&gt;.sql
+<pre><code class="language-bash">pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;autopassdb&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;autopassdb&gt;.sql
 pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;cdfidmdb&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;cdfidmdb&gt;.sql
 pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;bvd&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;bvddb&gt;.sql
 pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;event&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;eventdb&gt;.sql
@@ -223,13 +223,13 @@ Take a back up of the below .conf files from the Postgres server.</p>
 Select the suitable options from the below page. Below list of commands is for installing the version Postgres 10.<br>
 <a href="https://www.postgresql.org/download/linux/redhat/" target="_blank">https://www.postgresql.org/download/linux/redhat/</a></p>
 
-<pre><code class="language-bash">yum install https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-yum install postgresql10
-yum install postgresql10-server
-yum install postgresql10-contrib
-/usr/pgsql-10/bin/postgresql-10-setup initdb
-systemctl enable postgresql-10
-systemctl start postgresql-10</code></pre>
+<pre><code class="language-bash">yum install https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm;
+yum install postgresql10;
+yum install postgresql10-server;
+yum install postgresql10-contrib;
+/usr/pgsql-10/bin/postgresql-10-setup initdb;
+systemctl enable postgresql-10;
+systemctl start postgresql-10;</code></pre>
 
 <p style="margin-top: 16px;">Restore the changes in the conf files<br>
 File /var/lib/pgsql/10/data/pg_hba.conf<br>
@@ -252,22 +252,21 @@ port = &lt;pg_port&gt;</div>
 
 <p style="margin-top: 16px;">Recreate the Databases and users which existed in Old OpsBridge Postgres DB</p>
 
-<pre><code class="language-vim">CREATE ROLE &lt;cdfidmuser&gt; WITH LOGIN PASSWORD '&lt;Password&gt;';
-CREATE DATABASE &lt;cdfidmdb&gt; OWNER &lt;cdfidmuser&gt;;
-CREATE DATABASE &lt;autopassdb&gt; OWNER &lt;cdfidmuser&gt;;
-CREATE DATABASE &lt;bvddb&gt; OWNER &lt;cdfidmuser&gt;;
+<pre><code class="language-bash">CREATE ROLE &lt;cdfidmuser&gt; WITH LOGIN PASSWORD '&lt;Password&gt;' ;
+CREATE DATABASE &lt;cdfidmdb&gt; OWNER &lt;cdfidmuser&gt; ;
+CREATE DATABASE &lt;autopassdb&gt; OWNER &lt;cdfidmuser&gt; ;
+CREATE DATABASE &lt;bvddb&gt; OWNER &lt;cdfidmuser&gt; ;
 
-CREATE DATABASE &lt;rtsmdb&gt; OWNER &lt;cdfidmuser&gt;;
-\c &lt;rtsmdb&gt;;
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE DATABASE &lt;rtsmdb&gt; OWNER &lt;cdfidmuser&gt; ;
+\c &lt;rtsmdb&gt; ;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp" ;
 
-CREATE DATABASE &lt;mgmtdb&gt; OWNER &lt;cdfidmuser&gt;;
-\c &lt;mgmtdb&gt;;
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE DATABASE &lt;mgmtdb&gt; OWNER &lt;cdfidmuser&gt; ;
+\c &lt;mgmtdb&gt; ;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp" ;
 
-CREATE DATABASE &lt;eventdb&gt; OWNER &lt;cdfidmuser&gt;;
-\c &lt;eventdb&gt;;
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-</code>
+CREATE DATABASE &lt;eventdb&gt; OWNER &lt;cdfidmuser&gt; ;
+\c &lt;eventdb&gt; ;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp" ;</code>
 </pre>
 </html>
