@@ -11,7 +11,7 @@
 
 <p style="margin-top: 16px;">Store the output of the below command to keep a track of the replicasets being configured in your current working (old environment)</p>
 
-<pre><code class="language-vim">kubectl get replicasets --all-namespaces &gt;&gt; /tmp/&lt;ReplicaSets.txt&gt;</code></pre>
+<pre><code>kubectl get replicasets --all-namespaces &gt;&gt; /tmp/&lt;ReplicaSets.txt&gt;</code></pre>
 
 <h3 style="margin-top: 16px;">Store the XPL configurations from current environment</h3>
 
@@ -54,7 +54,7 @@ Collection Service (Collect once data broker pod)</p>
 <strong>File name:</strong> sample_ucmdb_config.json<br>
 <strong>Location:</strong> /opt/content-administration/conf</p>
 
-<pre><code class="language-bash">kubectl -n &lt;opsbridge_namespace&gt; exec -ti &lt;itom-opsb-content-administration-pod&gt; -c itom-opsb-content-administration bash
+<pre><code>kubectl -n &lt;opsbridge_namespace&gt; exec -ti &lt;itom-opsb-content-administration-pod&gt; -c itom-opsb-content-administration bash
 kubectl cp &lt;opsbridge_namespace&gt;/&lt;itom-opsb-content-administration-pod&gt;:/opt/content-administration/conf/&lt;sample_ucmdb_config.json&gt; /tmp/sample_ucmdb_config.json -c itom-opsb-content-administration</code></pre>
 
 <h3 style="margin-top: 16px;">Store the YAML Changes</h3>
@@ -78,11 +78,11 @@ One can also get the secret from the below command</p>
 
 <p style="margin-top: 16px;">Back up the RE: Realm External, the Cert loaded on NGINX controllers.</p>
 
-<pre><code class="language-bash">kubectl cp core/&lt;suite-conf-pod-opsbridge&gt;:/var/run/secrets/boostport.com/trustedCAs/RE_ca.crt /tmp/RE_ca.crt -c kubernetes-vault-renew</code></pre>
+<pre><code>kubectl cp core/&lt;suite-conf-pod-opsbridge&gt;:/var/run/secrets/boostport.com/trustedCAs/RE_ca.crt /tmp/RE_ca.crt -c kubernetes-vault-renew</code></pre>
 
 <p style="margin-top: 16px;">Basically, one needs to retrieve the cert and key from the secret of the OpsBridge namespace (as this is the cert which is used to terminate port 443). Run the below command to retrieve the same. The name of the secret would be nginx-default-secret under OpsBridge Namespace for later version of Suites.</p>
 
-<pre><code class="language-bash">kubectl get secret ingress-controller-tls-secret -n &lt;opsbridge_namespace&gt; -o json | jq '.data."tls.crt"' --raw-output | base64 -d &gt; chain.pem
+<pre><code>kubectl get secret ingress-controller-tls-secret -n &lt;opsbridge_namespace&gt; -o json | jq '.data."tls.crt"' --raw-output | base64 -d &gt; chain.pem
 kubectl get secret ingress-controller-tls-secret -n &lt;opsbridge_namespace&gt; -o json | jq '.data."tls.key"' --raw-output | base64 -d &gt; key.pem</code></pre>
 
 <div class="Admonition_Note" style="margin-top: 16px;"><strong>Note</strong>: In case if you see that ‘jq’ is not installed on the CentOS, Master node. Run the below commands (after consulting your system admin).</div>
@@ -169,7 +169,7 @@ SELECT sum(pg_database_size(pg_database.datname)/1024.0) FROM pg_database ;&nbsp
 
 <p style="margin-top: 16px;">And then check the status of the service using the command. It should show active (running):</p>
 
-<pre><code class="language-bash">systemctl status &lt;postgresql-service-name&gt;</code></pre>
+<pre><code>systemctl status &lt;postgresql-service-name&gt;</code></pre>
 
 <h4 style="margin-top: 16px;">For large Database:</h4>
 
@@ -181,7 +181,7 @@ SELECT sum(pg_database_size(pg_database.datname)/1024.0) FROM pg_database ;&nbsp
 
 <p style="margin-top: 16px;">Once confirmed, execute without ‘-n’ option.</p>
 
-<pre><code class="language-bash">vacuumlo -v -h &lt;pg_host&gt; -U &lt;super_user&gt; -W -p &lt;pg_port&gt; &lt;suite_db_name&gt;</code></pre>
+<pre><code>vacuumlo -v -h &lt;pg_host&gt; -U &lt;super_user&gt; -W -p &lt;pg_port&gt; &lt;suite_db_name&gt;</code></pre>
 
 <p style="margin-top: 16px;">On completion, one should see the below message<br>
 Successfully removed #N large objects from database "&lt;suite_db_name&gt;".<br>
@@ -208,7 +208,7 @@ Take a back up of the below .conf files from the Postgres server.</p>
 
 <p style="margin-top: 16px;">Login as Postgres super user and run the below command.</p>
 
-<pre><code class="language-bash">su - &lt;postgres_su_user&gt;
+<pre><code>su - &lt;postgres_su_user&gt;
 /usr/pgsql-9.5/bin/pg_ctl stop
 </code>
 </pre>
