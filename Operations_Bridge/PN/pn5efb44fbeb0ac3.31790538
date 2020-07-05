@@ -69,8 +69,9 @@ kubectl cp &lt;opsbridge_namespace&gt;/&lt;itom-opsb-content-administration-pod&
 
 <pre><code class="language-bash">get_secret MASTER_KEY</code></pre>
 
-<p style="margin-top: 16px;">This VALUE should be saved. And to be used in the new environment.<br>
-One can also get the secret from the below command</p>
+<div class="Admonition_Important" style="margin-top: 16px;">This VALUE should be saved. And to be used in the new environment.</div>
+
+<p style="margin-top: 16px;">One can also get the secret from the below command</p>
 
 <pre><code class="language-bash">kubectl -n core exec -i $(kubectl -n core get pods -o name -l app=suite-conf-sel-opsbridge | cut -d '/' -f 2) -c suite-config -- get_secret MASTER_KEY</code></pre>
 
@@ -147,10 +148,11 @@ psql postgres postgres</code></pre>
 
 <h3 style="margin-top: 16px;">Get the DB list from the External POSTGRES Node</h3>
 
-<p style="margin-top: 16px;">As a super user, run the below command to get the OpsBridge Suite DB list. As of today, the below listed Databases would be targeted for migration.<br>
-SELECT datname FROM pg_database WHERE datistemplate = false and datname != 'replication_db' and datname != 'postgres' ;</p>
+<p style="margin-top: 16px;">As a super user, run the below command to get the OpsBridge Suite DB list. As of today, the below listed Databases would be targeted for migration.</p>
 
 <h3 style="margin-top: 16px;">Check if suite username passed is correct</h3>
+
+<pre><code class="language-sql">SELECT datname FROM pg_database WHERE datistemplate = false and datname != 'replication_db' and datname != 'postgres' ;</code></pre>
 
 <p style="margin-top: 16px;">As a super user, run the below command to check if the owner has the access to the OpsBridge Suite DB list. This would be necessary in case it’s automated in the script and also make sure that we know the credentials in the Source and Target environment are same.</p>
 
@@ -158,8 +160,9 @@ SELECT datname FROM pg_database WHERE datistemplate = false and datname != 'repl
 
 <h3 style="margin-top: 16px;">Get the Total database size</h3>
 
-<p style="margin-top: 16px;">As a super user, run the below command to get the size of the DB<br>
-SELECT sum(pg_database_size(pg_database.datname)/1024.0) FROM pg_database ;&nbsp;</p>
+<p style="margin-top: 16px;">As a super user, run the below command to get the size of the DB</p>
+
+<pre><code class="language-sql">SELECT sum(pg_database_size(pg_database.datname)/1024.0) FROM pg_database ;&nbsp;</code></pre>
 
 <h3 style="margin-top: 16px;">Dump&nbsp;the OpsBridge databases</h3>
 
@@ -187,12 +190,12 @@ SELECT sum(pg_database_size(pg_database.datname)/1024.0) FROM pg_database ;&nbsp
 Successfully removed #N large objects from database "&lt;suite_db_name&gt;".<br>
 Run the below command to create the dump file for all the databases:</p>
 
-<pre><code>pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;autopassdb&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;autopassdb&gt;.sql
-pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;cdfidmdb&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;cdfidmdb&gt;.sql
-pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;bvd&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;bvddb&gt;.sql
-pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;event&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;eventdb&gt;.sql
-pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;mgmt&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;mgmtdb&gt;.sql
-pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;rtsm&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;rtsmdb&gt;.sql</code></pre>
+<pre><code>pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;autopassdb&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;autopassdb&gt;.sql ;
+pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;cdfidmdb&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;cdfidmdb&gt;.sql '
+pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;bvd&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;bvddb&gt;.sql ;
+pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;event&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;eventdb&gt;.sql ;
+pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;mgmt&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;mgmtdb&gt;.sql ;
+pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;rtsm&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;rtsmdb&gt;.sql ;</code></pre>
 
 <h3 style="margin-top: 16px;">Upgrade the Postgres version</h3>
 
@@ -232,19 +235,21 @@ systemctl enable postgresql-10;
 systemctl start postgresql-10;</code></pre>
 
 <p style="margin-top: 16px;">Restore the changes in the conf files<br>
-File /var/lib/pgsql/10/data/pg_hba.conf<br>
+<strong>File Name</strong>:&nbsp;pg_hba.conf<br>
+<strong>Location</strong>: /var/lib/pgsql/10/data<br>
 Add the below entries at the end of the file</p>
 
 <div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;">host all all 0.0.0.0/0 md5<br>
 host all all ::/0 md5</div>
 
-<p style="margin-top: 16px;">File /var/lib/pgsql/10/data/postgresql.conf<br>
-Uncomment and change the entries of listen_addresses and port to below</p>
+<p style="margin-top: 16px;"><strong>File Name:&nbsp;</strong>postgresql.conf<br>
+<strong>Location:</strong> /var/lib/pgsql/10/data<br>
+Remove the comment and change the entries of listen_addresses and port to below</p>
 
 <div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;">listen_addresses = '*'<br>
 port = &lt;pg_port&gt;</div>
 
-<p style="margin-top: 16px;">Followed by the restart of the service</p>
+<p style="margin-top: 16px;">Followed by the restart of the service by running the below command</p>
 
 <pre><code class="language-bash">systemctl restart postgresql-10.service</code></pre>
 
