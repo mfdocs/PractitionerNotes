@@ -156,13 +156,13 @@ psql postgres postgres</code></pre>
 
 <p style="margin-top: 16px;">As a super user, run the below command to check if the owner has the access to the OpsBridge Suite DB list. This would be necessary in case it’s automated in the script and also make sure that we know the credentials in the Source and Target environment are same.</p>
 
-<pre><code class="language-sql">Select count(name) from (SELECT d.datname as name,pg_catalog.pg_get_userbyid(d.datdba) as owner FROM pg_catalog.pg_database d )a where name='&lt;suite_db_name&gt;' and owner != 'postgres' and owner = '&lt;suite_db_user&gt;' ;</code></pre>
+<pre><code>Select count(name) from (SELECT d.datname as name,pg_catalog.pg_get_userbyid(d.datdba) as owner FROM pg_catalog.pg_database d )a where name='&lt;suite_db_name&gt;' and owner != 'postgres' and owner = '&lt;suite_db_user&gt;' ;</code></pre>
 
 <h3 style="margin-top: 16px;">Get the Total database size</h3>
 
 <p style="margin-top: 16px;">As a super user, run the below command to get the size of the DB</p>
 
-<pre><code class="language-sql">SELECT sum(pg_database_size(pg_database.datname)/1024.0) FROM pg_database ;&nbsp;</code></pre>
+<pre><code class="language-sql">SELECT sum(pg_database_size(pg_database.datname)/1024.0) FROM pg_database ;</code></pre>
 
 <h3 style="margin-top: 16px;">Dump&nbsp;the OpsBridge databases</h3>
 
@@ -176,7 +176,7 @@ psql postgres postgres</code></pre>
 
 <h4 style="margin-top: 16px;">For large Database:</h4>
 
-<p style="margin-top: 16px;">Run VACCUMLO on &lt;event&gt; DB and &lt;RTSM&gt; DB (not on other DBs). Run the below command to analyze.</p>
+<p style="margin-top: 16px;">Run VACCUMLO on Event&nbsp;DB and RTSM&nbsp;DB (not on other DBs). Run the below command to analyze.</p>
 
 <pre><code>/usr/pgsql-&lt;version&gt;/bin/vacuumlo -v -n -h &lt;pg_host&gt; -U &lt;super_user&gt; -W -p &lt;pg_port&gt; &lt;suite_db_name&gt;</code></pre>
 
@@ -274,4 +274,8 @@ CREATE DATABASE &lt;eventdb&gt; OWNER &lt;cdfidmuser&gt; ;
 \c &lt;eventdb&gt; ;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp" ;</code>
 </pre>
+
+<p style="margin-top: 16px;">kjkjdfkd<br>
+<br>
+&nbsp;</p>
 </html>
