@@ -250,14 +250,14 @@ port = &lt;pg_port&gt;</div>
 
 <p style="margin-top: 16px;">Recreate the Databases and users which existed in Old OpsBridge Postgres DB</p>
 
-<pre><code class="language-actionscript">CREATE ROLE &lt;cdfidmuser&gt; WITH LOGIN PASSWORD '&lt;Password&gt;'; 
-CREATE DATABASE &lt;cdfidmdb&gt; OWNER &lt;cdfidmuser&gt;; 
+<pre><code class="language-bash">CREATE ROLE &lt;cdfidmuser&gt; WITH LOGIN PASSWORD '&lt;Password&gt;';
+CREATE DATABASE &lt;cdfidmdb&gt; OWNER &lt;cdfidmuser&gt;;
 CREATE DATABASE &lt;autopassdb&gt; OWNER &lt;cdfidmuser&gt;;
 CREATE DATABASE &lt;bvddb&gt; OWNER &lt;cdfidmuser&gt;;
-CREATE DATABASE &lt;rtsmdb&gt; OWNER &lt;cdfidmuser&gt;; 
+CREATE DATABASE &lt;rtsmdb&gt; OWNER &lt;cdfidmuser&gt;;
 \c &lt;rtsmdb&gt; ;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE DATABASE &lt;mgmtdb&gt; OWNER &lt;cdfidmuser&gt;; 
+CREATE DATABASE &lt;mgmtdb&gt; OWNER &lt;cdfidmuser&gt;;
 \c &lt;mgmtdb&gt; ;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE DATABASE &lt;eventdb&gt; OWNER &lt;cdfidmuser&gt;;
