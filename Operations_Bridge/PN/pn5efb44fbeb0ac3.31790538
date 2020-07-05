@@ -58,8 +58,9 @@ kubectl cp &lt;opsbridge_namespace&gt;/&lt;itom-opsb-content-administration-pod&
 
 <h3 style="margin-top: 16px;">Store the YAML Changes</h3>
 
-<p style="margin-top: 16px;">Run the script (will be shared to the customers) to capture the values changed/edited in an html format. Internally it would use the ‘kubectl diff’ command. As these values/changes needs to be done in the YAML files, post installation of 2019.11 version too.<br>
-Note: The kubectl diff option may not be available in older version of K8S.</p>
+<p style="margin-top: 16px;">Run the script (will be shared to the customers) to capture the values changed/edited in an html format. Internally it would use the ‘kubectl diff’ command. As these values/changes needs to be done in the YAML files, post installation of 2019.11 version too.</p>
+
+<div class="Admonition_Note" style="margin-top: 16px;"><strong>Note</strong>: The kubectl diff option may not be available in older version of K8S.</div>
 
 <h3 style="margin-top: 16px;">Store the MASTER_KEY from ucmdb POD</h3>
 
@@ -128,11 +129,14 @@ for f in $(df | awk '/kubernetes/ {print $6}'); do umount $f; done</code></pre>
 
 <h3 style="margin-top: 16px;">Check postgres connection with super user</h3>
 
-<p style="margin-top: 16px;">From the Postgres Node, run the below command<br>
-psql "dbname=&lt;dbname&gt; password=&lt;password&gt; host=&lt;pg_host&gt; port=&lt;pg_port&gt; user=&lt;super_user&gt;"<br>
-OR<br>
-su - postgres<br>
-psql postgres postgres</p>
+<p style="margin-top: 16px;">From the Postgres Node, run the below command</p>
+
+<pre><code class="language-bash">psql "dbname=&lt;dbname&gt; password=&lt;password&gt; host=&lt;pg_host&gt; port=&lt;pg_port&gt; user=&lt;super_user&gt;"</code></pre>
+
+<p style="margin-top: 16px;">OR</p>
+
+<pre><code class="language-bash">su - postgres
+psql postgres postgres</code></pre>
 
 <h3 style="margin-top: 16px;">Get the current Postgres Version</h3>
 
@@ -168,69 +172,84 @@ SELECT sum(pg_database_size(pg_database.datname)/1024.0) FROM pg_database ;&nbsp
 
 <h4 style="margin-top: 16px;">For large Database:</h4>
 
-<p style="margin-top: 16px;">Run VACCUMLO on &lt;event&gt; DB and &lt;RTSM&gt; DB (not on other DBs). Run the below command to analyze.<br>
-/usr/pgsql-&lt;version&gt;/bin/vacuumlo -v -n -h &lt;pg_host&gt; -U &lt;super_user&gt; -W -p &lt;pg_port&gt; &lt;suite_db_name&gt;<br>
-Note: -n is for don’t remove anything, just show what would be done<br>
-<br>
-Once confirmed, execute without ‘-n’ option.<br>
-vacuumlo -v -h &lt;pg_host&gt; -U &lt;super_user&gt; -W -p &lt;pg_port&gt; &lt;suite_db_name&gt;<br>
-On completion, one should see the below message<br>
+<p style="margin-top: 16px;">Run VACCUMLO on &lt;event&gt; DB and &lt;RTSM&gt; DB (not on other DBs). Run the below command to analyze.</p>
+
+<pre><code class="language-bash">/usr/pgsql-&lt;version&gt;/bin/vacuumlo -v -n -h &lt;pg_host&gt; -U &lt;super_user&gt; -W -p &lt;pg_port&gt; &lt;suite_db_name&gt;</code></pre>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><strong>Note</strong>: -n is for don’t remove anything, just show what would be done</div>
+
+<p style="margin-top: 16px;">Once confirmed, execute without ‘-n’ option.</p>
+
+<pre><code class="language-bash">vacuumlo -v -h &lt;pg_host&gt; -U &lt;super_user&gt; -W -p &lt;pg_port&gt; &lt;suite_db_name&gt;</code></pre>
+
+<p style="margin-top: 16px;">On completion, one should see the below message<br>
 Successfully removed #N large objects from database "&lt;suite_db_name&gt;".<br>
 Run the below command to create the dump file for all the databases:</p>
 
-<pre><code class="language-sql">pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;autopassdb&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;autopassdb&gt;.sql
+<pre><code class="language-bash">pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;autopassdb&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;autopassdb&gt;.sql
 pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;cdfidmdb&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;cdfidmdb&gt;.sql
 pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;bvd&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;bvddb&gt;.sql
 pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;event&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;eventdb&gt;.sql
 pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;mgmt&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;mgmtdb&gt;.sql
 pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;rtsm&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;rtsmdb&gt;.sql</code></pre>
 
-<p style="margin-top: 16px;">Upgrade the Postgres version<br>
-Back up the existing pg_hba.conf and postgresql.conf<br>
-Take a back up of the below .conf files from the Postgres server.<br>
-/var/lib/pgsql/9.5/data/pg_hba.conf<br>
-/var/lib/pgsql/9.5/data/postgresql.conf<br>
-Note: The path might change based on the version installed.<br>
-&nbsp;<br>
-Shutdown the DB<br>
-Login as Postgres super user and run the below command.<br>
-su - &lt;postgres_su_user&gt;<br>
-/usr/pgsql-9.5/bin/pg_ctl stop<br>
-&nbsp;<br>
-Note: The path for pg_ctl might change based on the version installed.<br>
-&nbsp;<br>
-Rename the old Installation directory<br>
-mv /usr/pgsql-9.5 /usr/pgsql-9.5_old<br>
-&nbsp;<br>
-&nbsp;Install the new version<br>
-Select the suitable options from the below page. Below list of commands is for installing the version Postgres 10.<br>
-https://www.postgresql.org/download/linux/redhat/<br>
-yum install https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm<br>
-yum install postgresql10<br>
-yum install postgresql10-server<br>
-yum install postgresql10-contrib<br>
-/usr/pgsql-10/bin/postgresql-10-setup initdb<br>
-systemctl enable postgresql-10<br>
-systemctl start postgresql-10<br>
-&nbsp;<br>
-Restore the changes in the conf files<br>
-File /var/lib/pgsql/10/data/pg_hba.conf<br>
-Add the below entries at the end of the file<br>
-host all all 0.0.0.0/0 md5<br>
-host all all ::/0 md5<br>
-<br>
-File /var/lib/pgsql/10/data/postgresql.conf<br>
-Uncomment and change the entries of listen_addresses and port to below<br>
-listen_addresses = '*'<br>
-port = &lt;pg_port&gt;<br>
-<br>
-Followed by the restart of the service<br>
-systemctl restart postgresql-10.service<br>
-&nbsp;<br>
-Restore the DUMP<br>
-Recreate the Databases and users which existed in Old OpsBridge Postgres DB</p>
+<h3 style="margin-top: 16px;">Upgrade the Postgres version</h3>
 
-<pre><code class="language-sql">CREATE ROLE &lt;cdfidmuser&gt; WITH LOGIN PASSWORD '&lt;Password&gt;';&nbsp;
+<p style="margin-top: 16px;">Back up the existing pg_hba.conf and postgresql.conf<br>
+Take a back up of the below .conf files from the Postgres server.</p>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;">/var/lib/pgsql/9.5/data/pg_hba.conf<br>
+/var/lib/pgsql/9.5/data/postgresql.conf</div>
+
+<div class="Admonition_Note" style="margin-top: 16px;"><strong>Note</strong>: The path might change based on the version installed.</div>
+
+<h3 style="margin-top: 16px;">Shutdown the DB</h3>
+
+<p style="margin-top: 16px;">Login as Postgres super user and run the below command.</p>
+
+<pre><code class="language-bash">su - &lt;postgres_su_user&gt;
+/usr/pgsql-9.5/bin/pg_ctl stop&nbsp;</code></pre>
+
+<div class="Admonition_Note" style="margin-top: 16px;"><strong>Note</strong>: The path for pg_ctl might change based on the version installed.</div>
+
+<p style="margin-top: 16px;">Rename the old Installation directory</p>
+
+<pre><code class="language-bash">mv /usr/pgsql-9.5 /usr/pgsql-9.5_old</code></pre>
+
+<p style="margin-top: 16px;">Install the new version<br>
+Select the suitable options from the below page. Below list of commands is for installing the version Postgres 10.<br>
+<a href="https://www.postgresql.org/download/linux/redhat/" target="_blank">https://www.postgresql.org/download/linux/redhat/</a></p>
+
+<pre><code class="language-bash">yum install https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+yum install postgresql10
+yum install postgresql10-server
+yum install postgresql10-contrib
+/usr/pgsql-10/bin/postgresql-10-setup initdb
+systemctl enable postgresql-10
+systemctl start postgresql-10</code></pre>
+
+<p style="margin-top: 16px;">Restore the changes in the conf files<br>
+File /var/lib/pgsql/10/data/pg_hba.conf<br>
+Add the below entries at the end of the file</p>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;">host all all 0.0.0.0/0 md5<br>
+host all all ::/0 md5</div>
+
+<p style="margin-top: 16px;">File /var/lib/pgsql/10/data/postgresql.conf<br>
+Uncomment and change the entries of listen_addresses and port to below</p>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;">listen_addresses = '*'<br>
+port = &lt;pg_port&gt;</div>
+
+<p style="margin-top: 16px;">Followed by the restart of the service</p>
+
+<pre><code class="language-bash">systemctl restart postgresql-10.service</code></pre>
+
+<h3 style="margin-top: 16px;">Restore the DUMP</h3>
+
+<p style="margin-top: 16px;">Recreate the Databases and users which existed in Old OpsBridge Postgres DB</p>
+
+<pre><code class="language-bash">CREATE ROLE &lt;cdfidmuser&gt; WITH LOGIN PASSWORD '&lt;Password&gt;';&nbsp;
 CREATE DATABASE &lt;cdfidmdb&gt; OWNER &lt;cdfidmuser&gt;;&nbsp;
 CREATE DATABASE &lt;autopassdb&gt; OWNER &lt;cdfidmuser&gt;;
 CREATE DATABASE &lt;bvddb&gt; OWNER &lt;cdfidmuser&gt;;
