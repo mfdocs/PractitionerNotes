@@ -208,8 +208,7 @@ Take a back up of the below .conf files from the Postgres server.</p>
 
 <p style="margin-top: 16px;">Login as Postgres super user and run the below command.</p>
 
-<pre><code class="language-bash">
-su - &lt;postgres_su_user&gt;
+<pre><code class="language-bash">su - &lt;postgres_su_user&gt;
 /usr/pgsql-9.5/bin/pg_ctl stop
 </code>
 </pre>
@@ -253,7 +252,7 @@ port = &lt;pg_port&gt;</div>
 
 <p style="margin-top: 16px;">Recreate the Databases and users which existed in Old OpsBridge Postgres DB</p>
 
-<pre><code class="language-sql">CREATE ROLE &lt;cdfidmuser&gt; WITH LOGIN PASSWORD '&lt;Password&gt;';
+<pre><code class="language-vim">CREATE ROLE &lt;cdfidmuser&gt; WITH LOGIN PASSWORD '&lt;Password&gt;';
 CREATE DATABASE &lt;cdfidmdb&gt; OWNER &lt;cdfidmuser&gt;;
 CREATE DATABASE &lt;autopassdb&gt; OWNER &lt;cdfidmuser&gt;;
 CREATE DATABASE &lt;bvddb&gt; OWNER &lt;cdfidmuser&gt;;
@@ -270,4 +269,5 @@ CREATE DATABASE &lt;eventdb&gt; OWNER &lt;cdfidmuser&gt;;
 \c &lt;eventdb&gt;;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 </code>
-</pre></html>
+</pre>
+</html>
