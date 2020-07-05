@@ -187,7 +187,7 @@ SELECT sum(pg_database_size(pg_database.datname)/1024.0) FROM pg_database ;&nbsp
 Successfully removed #N large objects from database "&lt;suite_db_name&gt;".<br>
 Run the below command to create the dump file for all the databases:</p>
 
-<pre><code class="language-bash">pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;autopassdb&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;autopassdb&gt;.sql
+<pre><code class="language-actionscript">pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;autopassdb&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;autopassdb&gt;.sql
 pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;cdfidmdb&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;cdfidmdb&gt;.sql
 pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;bvd&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;bvddb&gt;.sql
 pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;event&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;eventdb&gt;.sql
@@ -250,7 +250,7 @@ port = &lt;pg_port&gt;</div>
 
 <p style="margin-top: 16px;">Recreate the Databases and users which existed in Old OpsBridge Postgres DB</p>
 
-<pre><code class="language-bash">CREATE ROLE &lt;cdfidmuser&gt; WITH LOGIN PASSWORD '&lt;Password&gt;'; 
+<pre><code class="language-actionscript">CREATE ROLE &lt;cdfidmuser&gt; WITH LOGIN PASSWORD '&lt;Password&gt;'; 
 CREATE DATABASE &lt;cdfidmdb&gt; OWNER &lt;cdfidmuser&gt;; 
 CREATE DATABASE &lt;autopassdb&gt; OWNER &lt;cdfidmuser&gt;;
 CREATE DATABASE &lt;bvddb&gt; OWNER &lt;cdfidmuser&gt;;
