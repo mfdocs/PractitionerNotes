@@ -132,7 +132,7 @@ for f in $(df | awk '/kubernetes/ {print $6}'); do umount $f; done</code></pre>
 
 <p style="margin-top: 16px;">From the Postgres Node, run the below command</p>
 
-<pre><code class="language-bash">psql "dbname=&lt;dbname&gt; password=&lt;password&gt; host=&lt;pg_host&gt; port=&lt;pg_port&gt; user=&lt;super_user&gt;"</code></pre>
+<pre><code>psql "dbname=&lt;dbname&gt; password=&lt;password&gt; host=&lt;pg_host&gt; port=&lt;pg_port&gt; user=&lt;super_user&gt;"</code></pre>
 
 <p style="margin-top: 16px;">OR</p>
 
@@ -175,7 +175,7 @@ SELECT sum(pg_database_size(pg_database.datname)/1024.0) FROM pg_database ;&nbsp
 
 <p style="margin-top: 16px;">Run VACCUMLO on &lt;event&gt; DB and &lt;RTSM&gt; DB (not on other DBs). Run the below command to analyze.</p>
 
-<pre><code class="language-bash">/usr/pgsql-&lt;version&gt;/bin/vacuumlo -v -n -h &lt;pg_host&gt; -U &lt;super_user&gt; -W -p &lt;pg_port&gt; &lt;suite_db_name&gt;</code></pre>
+<pre><code>/usr/pgsql-&lt;version&gt;/bin/vacuumlo -v -n -h &lt;pg_host&gt; -U &lt;super_user&gt; -W -p &lt;pg_port&gt; &lt;suite_db_name&gt;</code></pre>
 
 <div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><strong>Note</strong>: -n is for don’t remove anything, just show what would be done</div>
 
@@ -187,7 +187,7 @@ SELECT sum(pg_database_size(pg_database.datname)/1024.0) FROM pg_database ;&nbsp
 Successfully removed #N large objects from database "&lt;suite_db_name&gt;".<br>
 Run the below command to create the dump file for all the databases:</p>
 
-<pre><code class="language-bash">pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;autopassdb&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;autopassdb&gt;.sql
+<pre><code>pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;autopassdb&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;autopassdb&gt;.sql
 pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;cdfidmdb&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;cdfidmdb&gt;.sql
 pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;bvd&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;bvddb&gt;.sql
 pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;event&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;eventdb&gt;.sql
