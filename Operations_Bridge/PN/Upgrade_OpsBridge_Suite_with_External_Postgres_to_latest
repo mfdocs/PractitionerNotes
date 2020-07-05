@@ -1,0 +1,265 @@
+<html><h2 style="margin-top: 16px;">Introduction</h2>
+
+<p style="margin-top: 16px;">As most of us know any customer who is willing to upgrade to the latest version of OpsBridge Suite, has go through multiple (quarterly) upgrades, since there is no direct upgrade supported so far.&nbsp;This particular document tries to capture each and every, detailed aspect which needs to be kept in mind and worked upon to achieve a successful upgrade, without (or minimal) Configuration DATA loss (from the Postgres side of the house).&nbsp;</p>
+
+<h2 style="margin-top: 16px;">Back up configuration</h2>
+
+<p style="margin-top: 16px;">&lt; Introduction TBD&gt;</p>
+
+<h3 style="margin-top: 16px;">Get the number of Replica Sets</h3>
+
+<p style="margin-top: 16px;">Store the output of the below command to keep a track of the replicasets being configured in your current working (old environment)</p>
+
+<pre><code class="language-bash">kubectl get replicasets --all-namespaces &gt;&gt; /tmp/&lt;ReplicaSets.txt&gt;</code></pre>
+
+<h3 style="margin-top: 16px;">Store the XPL configurations from current environment</h3>
+
+<p style="margin-top: 16px;">One needs to take a backup of the below files from the NFS location, in order to save the XPL settings being made. The changes need to be manually set on the new environment.<br>
+Collection Service (Collect once data broker pod)</p>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;">&lt;NFS-conf-volume&gt;/co/oa/oa1/conf/OV/conf/xpl/config/local_settings.ini</div>
+
+<h4 style="margin-top: 16px;">For OBM in container</h4>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;">&lt;NFS-omi-volume-0&gt;/omi/var/opt/OV/conf/xpl/config/local_settings.ini<br>
+&lt;NFS-omi-volume-0&gt;/omi/var/opt/OV/shared/server/conf/xpl/config/local_settings.ini<br>
+<br>
+&lt;NFS-omi-volume-1&gt;/omi/var/opt/OV/conf/xpl/config/local_settings.ini<br>
+&lt;NFS-omi-volume-1&gt;/omi/var/opt/OV/shared/server/conf/xpl/config/local_settings.ini</div>
+
+<div class="Admonition_Note" style="margin-top: 16px;">&nbsp;<strong>Note</strong>: There is no use case of backing up the entire Data directory, as with new version of Suite, customer would be deploying new policies. (May be monitoring policies or say the policies for virtualization collector).</div>
+
+<h3 style="margin-top: 16px;">DNS Configmap for non-DNS environment</h3>
+
+<p style="margin-top: 16px;">In case if the environment was a non-DNS environment, kindly take a backup of the entries in the configuration map named dns-hosts-configmap, under kube-system namespace, to be used in the new 2019.11 environment too.</p>
+
+<pre><code class="language-bash">kubectl edit cm dns-hosts-configmap -n kube-system</code></pre>
+
+<h3 style="margin-top: 16px;">Backup custom node list and ucmdb config.json</h3>
+
+<div class="Admonition_Note" style="margin-top: 16px;"><strong>Note</strong>: Skip if you have not configured it as part of Agent Metric Collector in your older version of OpsBridge Suite</div>
+
+<p style="margin-top: 16px;">This is needed only if the current version of OpsBridge Suite installed, has Collection Service capability selected and Agent Metric Collector configured. In case if you have NOT configured or customized the node list, then feel free to skip this section. One needs to back up the below files from NFS location.</p>
+
+<h4 style="margin-top: 16px;">OBM containerized</h4>
+
+<p style="margin-top: 16px;"><strong>File name:</strong> Custom Node list file<br>
+<strong>Location:</strong> &lt;NFS-conf-volume&gt;/content-administration/var/content-administration/content/custom/</p>
+
+<h4 style="margin-top: 16px;">OBM&nbsp;External</h4>
+
+<p style="margin-top: 16px;">Login to the itom-opsb-content-administration POD, and back up the below mentioned file. Use the ‘kubectl cp’ command mentioned below to take a back-up of the same file.<br>
+<br>
+<strong>File name:</strong> sample_ucmdb_config.json<br>
+<strong>Location:</strong> /opt/content-administration/conf</p>
+
+<pre><code class="language-bash">kubectl -n &lt;opsbridge_namespace&gt; exec -ti &lt;itom-opsb-content-administration-pod&gt; -c itom-opsb-content-administration bash
+kubectl cp &lt;opsbridge_namespace&gt;/&lt;itom-opsb-content-administration-pod&gt;:/opt/content-administration/conf/&lt;sample_ucmdb_config.json&gt; /tmp/sample_ucmdb_config.json -c itom-opsb-content-administration</code></pre>
+
+<h3 style="margin-top: 16px;">Store the YAML Changes</h3>
+
+<p style="margin-top: 16px;">Run the script (will be shared to the customers) to capture the values changed/edited in an html format. Internally it would use the ‘kubectl diff’ command. As these values/changes needs to be done in the YAML files, post installation of 2019.11 version too.</p>
+
+<div class="Admonition_Note" style="margin-top: 16px;"><strong>Note</strong>: The kubectl diff option may not be available in older version of K8S.</div>
+
+<h3 style="margin-top: 16px;">Store the MASTER_KEY from ucmdb POD</h3>
+
+<p style="margin-top: 16px;">Login to the ucmdb POD and get the secret by executing the below command</p>
+
+<pre><code class="language-bash">get_secret MASTER_KEY</code></pre>
+
+<p style="margin-top: 16px;">This VALUE should be saved. And to be used in the new environment.<br>
+One can also get the secret from the below command</p>
+
+<pre><code class="language-bash">kubectl -n core exec -i $(kubectl -n core get pods -o name -l app=suite-conf-sel-opsbridge | cut -d '/' -f 2) -c suite-config -- get_secret MASTER_KEY</code></pre>
+
+<h3 style="margin-top: 16px;">Back up the Certificates realms and PEM files</h3>
+
+<p style="margin-top: 16px;">Back up the RE: Realm External, the Cert loaded on NGINX controllers.</p>
+
+<pre><code class="language-bash">kubectl cp core/&lt;suite-conf-pod-opsbridge&gt;:/var/run/secrets/boostport.com/trustedCAs/RE_ca.crt /tmp/RE_ca.crt -c kubernetes-vault-renew</code></pre>
+
+<p style="margin-top: 16px;">Basically, one needs to retrieve the cert and key from the secret of the OpsBridge namespace (as this is the cert which is used to terminate port 443). Run the below command to retrieve the same. The name of the secret would be nginx-default-secret under OpsBridge Namespace for later version of Suites.</p>
+
+<pre><code class="language-bash">kubectl get secret ingress-controller-tls-secret -n &lt;opsbridge_namespace&gt; -o json | jq '.data."tls.crt"' --raw-output | base64 -d &gt; chain.pem
+kubectl get secret ingress-controller-tls-secret -n &lt;opsbridge_namespace&gt; -o json | jq '.data."tls.key"' --raw-output | base64 -d &gt; key.pem</code></pre>
+
+<div class="Admonition_Note" style="margin-top: 16px;"><strong>Note</strong>: In case if you see that ‘jq’ is not installed on the CentOS, Master node. Run the below commands (after consulting your system admin).</div>
+
+<pre><code class="language-bash">yum install epel-release -y
+yum install jq -y</code></pre>
+
+<h3 style="margin-top: 16px;">Configure Event Auto Archiving</h3>
+
+<p style="margin-top: 16px;">Follow the instructions in the below document for Event Archiving.<br>
+<a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.11/oprArchiveEventsCLI" target="_blank">https://docs.microfocus.com/itom/Operations_Bridge:2019.11/oprArchiveEventsCLI</a></p>
+
+<h3 style="margin-top: 16px;">Clear the UCMDB history</h3>
+
+<p style="margin-top: 16px;">Follow the instructions in the below document to clear/purge the UCMDB history<br>
+<a href="https://docs.microfocus.com/itom/Operations_Bridge_Manager:2019.11/ServerAdminPurgingTr" target="_blank">https://docs.microfocus.com/itom/Operations_Bridge_Manager:2019.11/ServerAdminPurgingTr</a></p>
+
+<h2 style="margin-top: 16px;">Bring down the cluster</h2>
+
+<p style="margin-top: 16px;">Make sure all the PODS are up and running.&nbsp;Shut down Suite pods by Running the below command.&nbsp;Make sure that all the PODS are DOWN and the Suite too. Ignore the Completed pods.</p>
+
+<pre><code class="language-bash">${K8S_HOME}/scripts/cdfctl.sh -f runlevel set -l DOWN</code></pre>
+
+<p style="margin-top: 16px;">Run the below command on all the Worker Nodes. Once it completes on the Worker Nodes, execute the same on the Master Nodes.</p>
+
+<pre><code class="language-bash">${K8S_HOME}/bin/kube-stop.sh -y</code></pre>
+
+<p style="margin-top: 16px;">Check if there any mount points still active. On the Master node, run the following command. If you see any residual, then kindly run the second command to un-mount the same. To be executed, in case if the NFS is on the Master node.</p>
+
+<pre><code class="language-bash">df -k | grep kubernetes
+for f in $(df | awk '/kubernetes/ {print $6}'); do umount $f; done</code></pre>
+
+<div class="Admonition_Note" style="margin-top: 16px;"><strong>Note</strong>: Set ${K8S_HOME} to /opt/kubernetes if not resolved.</div>
+
+<p style="margin-top: 16px;">Shut down the VM’s and take a snapshot of the same Virtual Machines, which are part of the cluster set up.&nbsp;</p>
+
+<h2 style="margin-top: 16px;">Postgres DB migration</h2>
+
+<h3 style="margin-top: 16px;">Pre-requisite</h3>
+
+<ul>
+	<li style="margin-top: 16px;">Make sure that the CDF cluster is DOWN.</li>
+	<li style="margin-top: 16px;">Enough space for taking the Postgres dump</li>
+</ul>
+
+<h3 style="margin-top: 16px;">Check postgres connection with super user</h3>
+
+<p style="margin-top: 16px;">From the Postgres Node, run the below command</p>
+
+<pre><code class="language-bash">psql "dbname=&lt;dbname&gt; password=&lt;password&gt; host=&lt;pg_host&gt; port=&lt;pg_port&gt; user=&lt;super_user&gt;"</code></pre>
+
+<p style="margin-top: 16px;">OR</p>
+
+<pre><code class="language-bash">su - postgres
+psql postgres postgres</code></pre>
+
+<h3 style="margin-top: 16px;">Get the current Postgres Version</h3>
+
+<p style="margin-top: 16px;">Once logged in as super user, run the below command. This would be good to have a check on the version and its compatibility for upgrade to higher version of Postgres.</p>
+
+<pre><code class="language-sql">SHOW server_version ;</code></pre>
+
+<h3 style="margin-top: 16px;">Get the DB list from the External POSTGRES Node</h3>
+
+<p style="margin-top: 16px;">As a super user, run the below command to get the OpsBridge Suite DB list. As of today, the below listed Databases would be targeted for migration.<br>
+SELECT datname FROM pg_database WHERE datistemplate = false and datname != 'replication_db' and datname != 'postgres' ;</p>
+
+<h3 style="margin-top: 16px;">Check if suite username passed is correct</h3>
+
+<p style="margin-top: 16px;">As a super user, run the below command to check if the owner has the access to the OpsBridge Suite DB list. This would be necessary in case it’s automated in the script and also make sure that we know the credentials in the Source and Target environment are same.</p>
+
+<pre><code class="language-sql">Select count(name) from (SELECT d.datname as name,pg_catalog.pg_get_userbyid(d.datdba) as owner FROM pg_catalog.pg_database d )a where name='&lt;suite_db_name&gt;' and owner != 'postgres' and owner = '&lt;suite_db_user&gt;' ;</code></pre>
+
+<h3 style="margin-top: 16px;">Get the Total database size</h3>
+
+<p style="margin-top: 16px;">As a super user, run the below command to get the size of the DB<br>
+SELECT sum(pg_database_size(pg_database.datname)/1024.0) FROM pg_database ;&nbsp;</p>
+
+<h3 style="margin-top: 16px;">Dump&nbsp;the OpsBridge databases</h3>
+
+<p style="margin-top: 16px;">Make sure the Postgres DB is UP and RUNNING.&nbsp;Run the below command to get the postgres service name:</p>
+
+<pre><code class="language-bash">systemctl status | grep postgresql | grep service</code></pre>
+
+<p style="margin-top: 16px;">And then check the status of the service using the command. It should show active (running):</p>
+
+<pre><code class="language-bash">systemctl status &lt;postgresql-service-name&gt;</code></pre>
+
+<h4 style="margin-top: 16px;">For large Database:</h4>
+
+<p style="margin-top: 16px;">Run VACCUMLO on &lt;event&gt; DB and &lt;RTSM&gt; DB (not on other DBs). Run the below command to analyze.</p>
+
+<pre><code class="language-bash">/usr/pgsql-&lt;version&gt;/bin/vacuumlo -v -n -h &lt;pg_host&gt; -U &lt;super_user&gt; -W -p &lt;pg_port&gt; &lt;suite_db_name&gt;</code></pre>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;"><strong>Note</strong>: -n is for don’t remove anything, just show what would be done</div>
+
+<p style="margin-top: 16px;">Once confirmed, execute without ‘-n’ option.</p>
+
+<pre><code class="language-bash">vacuumlo -v -h &lt;pg_host&gt; -U &lt;super_user&gt; -W -p &lt;pg_port&gt; &lt;suite_db_name&gt;</code></pre>
+
+<p style="margin-top: 16px;">On completion, one should see the below message<br>
+Successfully removed #N large objects from database "&lt;suite_db_name&gt;".<br>
+Run the below command to create the dump file for all the databases:</p>
+
+<pre><code class="language-bash">pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;autopassdb&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;autopassdb&gt;.sql
+pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;cdfidmdb&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;cdfidmdb&gt;.sql
+pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;bvd&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;bvddb&gt;.sql
+pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;event&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;eventdb&gt;.sql
+pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;mgmt&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;mgmtdb&gt;.sql
+pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;rtsm&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;rtsmdb&gt;.sql</code></pre>
+
+<h3 style="margin-top: 16px;">Upgrade the Postgres version</h3>
+
+<p style="margin-top: 16px;">Back up the existing pg_hba.conf and postgresql.conf<br>
+Take a back up of the below .conf files from the Postgres server.</p>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;">/var/lib/pgsql/9.5/data/pg_hba.conf<br>
+/var/lib/pgsql/9.5/data/postgresql.conf</div>
+
+<div class="Admonition_Note" style="margin-top: 16px;"><strong>Note</strong>: The path might change based on the version installed.</div>
+
+<h3 style="margin-top: 16px;">Shutdown the DB</h3>
+
+<p style="margin-top: 16px;">Login as Postgres super user and run the below command.</p>
+
+<pre><code class="language-bash">su - &lt;postgres_su_user&gt;
+/usr/pgsql-9.5/bin/pg_ctl stop&nbsp;</code></pre>
+
+<div class="Admonition_Note" style="margin-top: 16px;"><strong>Note</strong>: The path for pg_ctl might change based on the version installed.</div>
+
+<p style="margin-top: 16px;">Rename the old Installation directory</p>
+
+<pre><code class="language-bash">mv /usr/pgsql-9.5 /usr/pgsql-9.5_old</code></pre>
+
+<p style="margin-top: 16px;">Install the new version<br>
+Select the suitable options from the below page. Below list of commands is for installing the version Postgres 10.<br>
+<a href="https://www.postgresql.org/download/linux/redhat/" target="_blank">https://www.postgresql.org/download/linux/redhat/</a></p>
+
+<pre><code class="language-bash">yum install https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+yum install postgresql10
+yum install postgresql10-server
+yum install postgresql10-contrib
+/usr/pgsql-10/bin/postgresql-10-setup initdb
+systemctl enable postgresql-10
+systemctl start postgresql-10</code></pre>
+
+<p style="margin-top: 16px;">Restore the changes in the conf files<br>
+File /var/lib/pgsql/10/data/pg_hba.conf<br>
+Add the below entries at the end of the file</p>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;">host all all 0.0.0.0/0 md5<br>
+host all all ::/0 md5</div>
+
+<p style="margin-top: 16px;">File /var/lib/pgsql/10/data/postgresql.conf<br>
+Uncomment and change the entries of listen_addresses and port to below</p>
+
+<div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;">listen_addresses = '*'<br>
+port = &lt;pg_port&gt;</div>
+
+<p style="margin-top: 16px;">Followed by the restart of the service</p>
+
+<pre><code class="language-bash">systemctl restart postgresql-10.service</code></pre>
+
+<h3 style="margin-top: 16px;">Restore the DUMP</h3>
+
+<p style="margin-top: 16px;">Recreate the Databases and users which existed in Old OpsBridge Postgres DB</p>
+
+<pre><code class="language-bash">CREATE ROLE &lt;cdfidmuser&gt; WITH LOGIN PASSWORD '&lt;Password&gt;';&nbsp;
+CREATE DATABASE &lt;cdfidmdb&gt; OWNER &lt;cdfidmuser&gt;;&nbsp;
+CREATE DATABASE &lt;autopassdb&gt; OWNER &lt;cdfidmuser&gt;;
+CREATE DATABASE &lt;bvddb&gt; OWNER &lt;cdfidmuser&gt;;
+CREATE DATABASE &lt;rtsmdb&gt; OWNER &lt;cdfidmuser&gt;;&nbsp;
+\c &lt;rtsmdb&gt; ;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE DATABASE &lt;mgmtdb&gt; OWNER &lt;cdfidmuser&gt;;&nbsp;
+\c &lt;mgmtdb&gt; ;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE DATABASE &lt;eventdb&gt; OWNER &lt;cdfidmuser&gt;;
+\c &lt;eventdb&gt; ;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";</code></pre>
+</html>
