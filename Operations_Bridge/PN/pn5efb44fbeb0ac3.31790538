@@ -212,9 +212,7 @@ Take a back up of the below .conf files from the Postgres server.</p>
 <p style="margin-top: 16px;">Login as Postgres super user and run the below command.</p>
 
 <pre><code>su - &lt;postgres_su_user&gt;
-/usr/pgsql-9.5/bin/pg_ctl stop
-</code>
-</pre>
+/usr/pgsql-9.5/bin/pg_ctl stop</code></pre>
 
 <div class="Admonition_Note" style="margin-top: 16px;"><strong>Note</strong>: The path for pg_ctl might change based on the version installed.</div>
 
@@ -339,7 +337,8 @@ ALTER USER &lt;cdfidmuser&gt; SET search_path TO &lt;cdfidmschema&gt; ;
 \du+
 \dn+</code></pre>
 
-<p><img alt="" border="1" file="" height="341" hspace="0" src="/mediawiki/images/pn_images/pn_image_5f02ff2aa3b944.28065111.jpeg" style="width:800px;height:341px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:1px solid black;" vspace="0" width="800"><br>
+<p>One should see a similar output as shown below.<br>
+<img alt="" border="1" file="" height="341" hspace="0" src="/mediawiki/images/pn_images/pn_image_5f02ff2aa3b944.28065111.jpeg" style="width:800px;height:341px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:1px solid black;" vspace="0" width="800"><br>
 Try connecting to the databases using the Suite user name</p>
 
 <pre><code>psql -h &lt;pg_host&gt; dbname=&lt;suite_db&gt; -p &lt;pg_port&gt; -U &lt;suite_user_name&gt;</code></pre>
@@ -362,14 +361,58 @@ Try connecting to the databases using the Suite user name</p>
 
 <h3>Select Capabilities</h3>
 
-<p>Feel free to choose additional capabilities as compared to ones chosen in the previous version of OpsBridge Suite.<img alt="" border="1" file="" height="299" hspace="0" src="/mediawiki/images/pn_images/pn_image_5f0302d89f4407.30330001.jpeg" style="width: 800px; height: 299px; margin: 0px; border: 1px solid black;" vspace="0" width="800"></p>
+<p>Feel free to choose additional capabilities as compared to ones chosen in the previous version of OpsBridge Suite.<br>
+<img alt="" border="1" file="" height="299" hspace="0" src="/mediawiki/images/pn_images/pn_image_5f0302d89f4407.30330001.jpeg" style="width: 800px; height: 299px; margin: 0px; border: 1px solid black;" vspace="0" width="800"></p>
 
 <h3>Database details</h3>
 
-<p>Select PostgreSQL option instead of Out-of-the-box PostgreSQL. Make sure you enter the same Database Host, Port associated with the external Postgres which was used in the old OpsBridge Suite set up. Similarly maintain the same entries for Database Name, User and Password, which was used in the old OpsBridge Suite set up . Ignore the warning as the DB (though created) would be empty. &nbsp;<br>
-<br>
-ere<br>
-&nbsp;</p>
+<p>Select PostgreSQL option instead of Out-of-the-box PostgreSQL. Make sure you enter the same Database Host, Port associated with the external Postgres which was used in the old OpsBridge Suite set up. Similarly maintain the same entries for Database Name, User and Password, which was used in the old OpsBridge Suite set up . Ignore the warning as the DB (though created) would be empty. &nbsp;</p>
+
+<h3>Deployment Size</h3>
+
+<p>Choose the deployment size in accordance to the current requirement</p>
+
+<h3>Single Master to Multi-Master switch</h3>
+
+<p>Single Master to Single Master, keep the same FQDN as that of the previous set up as the External Hostname.<br>
+Single Master to Multi Master (for Master High availability), make sure you configure the previous value of External Hostname as a VIP and update the same in the field External Hostname. Which would mean, one would need 3 new nodes to be added as Master Nodes. And the old Master’s IP and FQDN should be used as HA_VIRTUAL_IP. The Old Single Master node should NOT be up and&nbsp;running.</p>
+
+<div class="Admonition_Important">This is very crucial for integrations.</div>
+
+<p>The Agents and SiS nodes would be in buffering state till the DOWN time. Once the Cluster and the capabilities are UP, and the connectivity is established, the buffered Events should reach to the OMi Event Browser.</p>
+
+<h3>External Hostname and Custom Certificates</h3>
+
+<p>In the Connection page (After selecting the Deployment Size), make sure that the External Hostname is properly configured.</p>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 1200px;">
+	<thead>
+		<tr>
+			<th scope="col">Older version</th>
+			<th scope="col">2019.11</th>
+			<th scope="col">External Host Name</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Multiple Master</td>
+			<td>Multiple Master</td>
+			<td>Keep the same as used in older version of Ops Bridge Suite, which would be the HA_VIRTUAL_IP</td>
+		</tr>
+		<tr>
+			<td>Single Master</td>
+			<td>Single Master</td>
+			<td>Keep the same as used in older version of Ops Bridge Suite, which would be the FQDN of the Single Master</td>
+		</tr>
+		<tr>
+			<td>Single Master</td>
+			<td>Multiple Master</td>
+			<td>Configure the External Hostname, which was used in older OpsBridge Suite version, as the HA_VIRTUAL_IP of the new 2019.11 set up. And this would mandate additional Master nodes as part of the cluster infrastructure.</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Select the option ‘Use custom certificates’ and upload the respective RE_CA.CRT, CHAIN.PEM and KEY.PM exported from the Older version of OpsBridge Suite as shown below.</p>
 
 <p></p>
 </html>
