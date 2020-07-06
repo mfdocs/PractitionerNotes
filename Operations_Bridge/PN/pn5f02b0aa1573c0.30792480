@@ -3,7 +3,41 @@
 <div><span style="color:#000000;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Customers who are willing to upgrade to the latest version of OpsBridge Suite 2019.11, has to go through multiple (quarterly) upgrades, since there is no direct upgrade supported so far. To avoid the huge effort, time and complexity the aberrant suggestion was to go ahead with a plan to migrate their current environment WITHOUT undergoing multiple HOPS.</span></span><br>
 <br>
 <span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Customers who are running their PRODUCTION environment in OpsBridge Suite with embedded Postgres and lots of integrations with Operations Agent (incl. Management packs / OpsC) and SiS servers, etc., also need to be preserved for upgrade use case.</span></span></span><br>
-<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This document tries to capture every detailed aspect which needs to be followed to achieve a successful migration, without (or minimal) Configuration DATA loss (from the Postgres side of the house). VERTICA DB (used for COSO) is NOT considered, as there is NO migration plan.</span></span></span></span></div>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This document tries to capture every detailed aspect which needs to be followed to achieve a successful migration, without (or minimal) Configuration DATA loss (from the Postgres side of the house). VERTICA DB (used for COSO) is NOT considered, as there is NO migration plan.</span></span></span></span><br>
+&nbsp;</div>
 
 <div class="Admonition_Note"><span style="color:#000000;"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Scope of migration: Any OpsBridge suite with embedded Postgres (not less than 2018.11 version) to OpsBridge suite 2019.11 with external Postgres.</span></span></span></span></div>
+
+<h2>Migration Pre-requisites</h2>
+
+<h3>Install mlocate package on Master node</h3>
+
+<div>In case if you see that ‘mlocate’&nbsp;&nbsp;package is not installed on the CentOS, Master node. Run the below commands (after consulting your system admin).</div>
+
+<pre><code>yum install mlocate -y</code></pre>
+
+<h3></h3>
+
+<h3>Install jq package on Master node</h3>
+In case if you see that ‘jq’&nbsp; package is not installed on the CentOS, Master node. Run the below commands (after consulting your system admin).
+
+<pre><code>yum install epel-release -y
+yum install jq -y</code></pre>
+
+<h3><br>
+Install External Postgres</h3>
+Install supported Postgres server version on an external database server. Refer OpsBridge 2019.11 installation document for the supported Postgres version.&nbsp;<br>
+External Postgres server must be accessible to Master node.<br>
+&nbsp;
+<h3>Configure NFS volumes</h3>
+Configure two new NFS volumes:
+
+<ol>
+	<li>&nbsp;The first volume will be used to store&nbsp;backup data for this migration workflow.</li>
+	<li>The second volume needs to be configured as per OpsBridge suite 2019.11 install document. This volume will be used for installation of OpsBridge 2019.11.</li>
+</ol>
+
+<div class="Admonition_Note">Note:&nbsp; Any additional pre-requisites as per OpsBridge 2019.11 install document can be pre-configured to reduce migration window.&nbsp;</div>
+
+<h2>Back up Cluster</h2>
 </html>
