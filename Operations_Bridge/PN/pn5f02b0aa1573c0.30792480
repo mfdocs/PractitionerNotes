@@ -16,22 +16,17 @@
 
 <pre><code>yum install mlocate -y</code></pre>
 
-<h3></h3>
-
 <h3>Install jq package on Master node</h3>
 In case if you see that ‘jq’&nbsp; package is not installed on the CentOS, Master node. Run the below commands (after consulting your system admin).
 
 <pre><code>yum install epel-release -y
 yum install jq -y</code></pre>
 
-<h3><br>
-Install External Postgres</h3>
+<h3>Install External Postgres</h3>
 Install supported Postgres server version on an external database server. Refer OpsBridge 2019.11 installation document for the supported Postgres version.&nbsp;<br>
 External Postgres server must be accessible to Master node.<br>
-&nbsp;
-<h3>Configure NFS volumes</h3>
+&nbsp;<span style="color: rgb(0, 0, 0); font-family: MetricHPE_Medium; font-size: 20px;">Configure NFS volumes</span><br>
 Configure two new NFS volumes:
-
 <ol>
 	<li>&nbsp;The first volume will be used to store&nbsp;backup data for this migration workflow.</li>
 	<li>The second volume needs to be configured as per OpsBridge suite 2019.11 install document. This volume will be used for installation of OpsBridge 2019.11.</li>
@@ -40,4 +35,18 @@ Configure two new NFS volumes:
 <div class="Admonition_Note">Note:&nbsp; Any additional pre-requisites as per OpsBridge 2019.11 install document can be pre-configured to reduce migration window.&nbsp;</div>
 
 <h2>Back up Cluster</h2>
-</html>
+
+<h3 style="margin-top: 3px;">Note down all db connections in BVD (Skip if BVD capability not installed)</h3>
+Login to BVD UI and navigate to Settings -&gt; Data Collectors. Note down the db connections created in BVD for data collectors on 2018.11. The db connection need to be re-created manually on BVD post migration to 2019.11.<br>
+<img alt="" border="0" file="" height="352" hspace="0" src="https://docs.microfocus.com/mediawiki/images/2/2b/bvd1-pre-req.jpg" style="width:672px;height:352px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="672">
+<h3>Note down all users, user groups and user roles attributes in BVD (Skip if BVD capability not installed)</h3>
+Login to BVD UI and navigate to Settings -&gt; Users and Roles. &nbsp;Note down all the users, user groups and user roles attributes which is created in BVD. This has to be restored manually if attributes for these objects are observed to be missing post migration.&nbsp;
+
+<h3>Configure Event Auto Archiving</h3>
+Follow the doc <a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.11/oprArchiveEventsCLI" target="_blank">here</a> for Event Archiving.<br>
+&nbsp;
+<h3>Clear the UCMDB history</h3>
+Follow the instructions <a href="https://docs.microfocus.com/itom/Operations_Bridge_Manager:2019.11/ServerAdminPurgingTr" target="_blank">here</a> to clear/purge the UCMDB history<br>
+<br>
+<br>
+&nbsp;</html>
