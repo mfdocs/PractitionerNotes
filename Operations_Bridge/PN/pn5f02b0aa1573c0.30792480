@@ -67,7 +67,43 @@ Execute this command on the Master node.&nbsp; The databases listed would be tar
 As a super user, run the below command to check ownership rights to OpsBridge Suite DB list. Choose the database name from the above section to list ownership.&nbsp;
 
 <pre><code>kubectl exec -it &nbsp;&lt;postgres-pod-name&gt; --namespace core &nbsp;-c itom-postgresql-default &nbsp;-- bash -c "psql -U postgres -d postgres &nbsp;-c '\l+'" | grep -E 'Owner|&lt;database-name&gt;'</code></pre>
-<img alt="" border="0" file="" height="72" hspace="0" src="/mediawiki/images/pn_images/pn_image_5f02f44a3a4ff4.23557573.jpeg" style="width: 800px; height: 72px; margin: 0px; border: 0px solid black;" vspace="0" width="800"><br>
+
+<h3>Get the Total embedded database size (Optional)</h3>
+As a super user, run the below command to get the size of the DB.&nbsp;
+
+<pre><code>kubectl exec -it &nbsp;&lt;postgres-pod-name&gt; &nbsp;--namespace core -c itom-postgresql-default -- bash -c "psql -U postgres -d postgres -c 'SELECT sum(pg_database_size(pg_database.datname)/1024.0) FROM pg_database ;'"</code></pre>
+
+<h3>Execute backup script&nbsp;</h3>
+Download and execute backupScript.sh script on Master node to backup following configurations:
+
+<ol>
+	<li>Certificates: &nbsp;Key.pm</li>
+	<li>Configmaps</li>
+	<li>Embedded Postgres configuration files: postgressql.conf &amp; pg_hba.conf</li>
+	<li>UCMDB Master key&nbsp;</li>
+	<li>Embedded Postgres user credentials.&nbsp;</li>
+	<li>Embedded Postgres database&nbsp;</li>
+</ol>
+Script requirements&nbsp;
+
+<ol>
+	<li>Must be executed with super user permission on Master node</li>
+	<li>Ensure all pods are running before executing the script&nbsp;</li>
+</ol>
+The script will save backed up data under &lt;NFS-Folder&gt;/opsb_migration/ directory. DO NOT DELETE any data from this folder as it will be used for database restore and post migration step workflows.&nbsp;<br>
+Download the script on master node and assign required execution permission before script execution.
+<pre><code class="language-bash">chmod +x backupScript.sh
+./backupScript.sh</code></pre>
+&nbsp;
+
+<div class="Admonition_Note">&nbsp;Note: &nbsp;<br>
+1.&nbsp;&nbsp;It is recommended to take backup on NFS mount which has sufficient disk space to hold all the backup files including database backup<br>
+2.&nbsp;&nbsp;To maintain embedded Postgres data consistency this script will scale down the deployment under opsbridge-xxx namespace.&nbsp;</div>
+Use scp to transfer files from master to remote postgres server.
+
+<pre><code>scp -r &lt;NFS-Folder&gt;/opsb_migration/&lt;time-stamp&gt;/dbbackups/*.dump &nbsp; &nbsp; root@&lt;External-Postgres-hostname&gt;:/var/2018.11.Backup/dbbackups
+scp -r &lt;NFS-Folder&gt;/opsb_migration/&lt;time-stamp&gt;/conf/* &nbsp; &nbsp; &nbsp;root@&lt; External-Postgres-hostname&gt;:/var/2018.11.Backup/conf
+</code></pre>
 <br>
 <br>
 &nbsp;<br>
