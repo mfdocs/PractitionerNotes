@@ -469,6 +469,86 @@ Single Master to Multi Master (for Master High availability), make sure you conf
 
 <div class="Admonition_Note"><strong>Note</strong>: The Vertica DB, user and credentials needs to be provided as per the new set up.</div>
 
-<p><br>
-ere</p>
+<p>Once the ucmd pod is up and running, restore the Master_key, with the value saved from the old OpsBridge Suite set up.<br>
+update_secret MASTER_KEY &lt;ValueSaved&gt;</p>
+
+<h3>Configure the YAML</h3>
+
+<p>Edit the respective kubernetes objects like deployments, replica sets etc., to match to that of the old configurations and values. One can do the same via the Management Portal or via editing the YAML files. Check the number of Replicas which was saved in <strong>ReplicaSets.txt.</strong></p>
+
+<h3>Operations Agent XPL settings</h3>
+
+<p>Change the values from the old set up (local_settings.ini) to update them in the new one, and restart Operations Agent</p>
+
+<pre><code>ovconfchg -ns &lt;Namespace&gt; -set &lt;Variable&gt; &lt;Value&gt;
+ovconfchg -ns &lt;Namespace&gt; -set &lt;Variable&gt; &lt;Value&gt; -ovrg server</code></pre>
+
+<h3>Custom node list and ucmdb config.json</h3>
+
+<div class="Admonition_Note"><strong>Note</strong>: Skip if Agent Metric Collector was NEVER configured in the older version, and also If it is a NEW capability chosen in 2019.11.</div>
+
+<p>In case if you do NOT want to configure or customize the node list, then feel free to skip this section. One needs to place the below files, saved from the old environment to the below NFS location.<br>
+OBM containerized<br>
+File name: Custom Node list file<br>
+Location: &lt;NFS-conf-volume&gt;/content-administration/var/content-administration/content/custom/<br>
+External OBM<br>
+Login to the itom-opsb-content-administration POD, and place the old ucmdb config json file in the below mentioned file. Use the ‘kubectl cp’ command mentioned below to place of the same file.<br>
+File name: sample_ucmdb_config.json<br>
+Location: /opt/content-administration/conf</p>
+
+<pre><code>kubectl -n &lt;opsbridge_namespace&gt; exec -ti &lt;itom-opsb-content-administration-pod&gt; -c itom-opsb-content-administration bash
+kubectl cp /tmp/sample_ucmdb_config.json &lt;opsbridge_namespace&gt;/&lt;itom-opsb-content-administration-pod&gt;:/opt/content-administration/conf/sample_ucmdb_config.json -c itom-opsb-content-administration</code></pre>
+
+<h3>For Streaming use cases&nbsp;</h3>
+
+<p>In order to continue streaming from Sources like Operations Agent node, Site Scope, BPM and APM, one must update the “MF CDF RID CA” as the Trusted Certificates on both OBM and then on the connected streaming data sources.</p>
+
+<h4>Get the new RID CA</h4>
+
+<p>Run the below command to get RID CA and copy it inside the OBM container&nbsp;</p>
+
+<pre><code>kubectl cp core/&lt;suite-conf-pod-opsbridge-pod&gt;:/var/run/secrets/boostport.com/trustedCAs/RID_ca.crt /tmp/RID_ca.crt -c kubernetes-vault-renew</code></pre>
+
+<h4>Import the RID CA</h4>
+
+<h5>OBM container</h5>
+
+<p>Copy the RID_ca.crt into the OBM container. And then login to the OBM pod and run the following commands to update the Trusted Certificates.</p>
+
+<pre><code>kubectl cp /tmp/RID_ca.crt &lt;opsbridge-namespace&gt;/omi-0:/tmp -c omi
+/opt/OV/bin/ovcert -list
+/opt/OV/bin/ovcert -remove "&lt;MF CDF RID CA on &gt;" -ovrg server -f
+/opt/OV/bin/ovcert -importtrusted -file /tmp/RID_ca.crt -ovrg server
+/opt/OV/bin/ovcert -remove "&lt;MF CDF RID CA on &gt;" -f
+/opt/OV/bin/ovcert -importtrusted -file /tmp/RID_ca.crt</code></pre>
+
+<p>Once done, restart the ovcs on OBM pod (execute on both omi-0 and omi-1 pods if in HA)</p>
+
+<pre><code class="language-bash">/opt/OV/bin/ovc -restart ovcs</code></pre>
+
+<h5>OBM Classic</h5>
+
+<p>Transfer the file securely to the OBM. And run the same commands as shared above. Make sure you provide the right location of RID_ca.crt. And also restart ‘ovcs’</p>
+
+<h4>Update on Data Sources</h4>
+
+<h5>Linux Nodes</h5>
+
+<pre><code>/opt/OV/bin/ovcert -list
+/opt/OV/bin/ovcert -remove "&lt;MF CDF RID CA on &gt;" -ovrg server -f
+/opt/OV/bin/ovcert -updatetrusted</code></pre>
+
+<h5>Windows Nodes</h5>
+
+<pre><code>ovcert -list
+ovcert -remove "&lt;MF CDF RID CA on &gt;" -ovrg server -f
+ovcert -updatetrusted</code></pre>
+
+<h5>AIX nodes</h5>
+
+<pre><code>/usr/lpp/OV/bin/ovcert -list
+/usr/lpp/OV/bin/ovcert -remove "&lt;MF CDF RID CA on &gt;" -ovrg server -f
+/usr/lpp/OV/bin/ovcert -updatetrusted</code></pre>
+
+<p>ere</p>
 </html>
