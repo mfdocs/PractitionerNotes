@@ -275,6 +275,90 @@ CREATE DATABASE &lt;eventdb&gt; OWNER &lt;cdfidmuser&gt; ;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp" ;</code>
 </pre>
 
-<p style="margin-top: 16px;">Check for \list+, \dn+ and \du+ commands to check the current state.<br>
-<img alt="" border="1" file="" height="309" hspace="0" src="/mediawiki/images/pn_images/pn_image_5f02f96f9d0ca6.15949401.png" style="width: 800px; height: 309px; margin: 0px; border: 1px solid black;" vspace="0" width="800"></p>
+<p style="margin-top: 16px;">Check for<strong> \list+, \dn+ and \du+</strong> commands to check the current state.<br>
+Once the DB is restored, run the below commands to make the necessary changes for all the Suite Databases.</p>
+
+<pre><code>GRANT &lt;cdfidmuser&gt; TO postgres ; 
+
+\c &lt;cdfidmdb&gt; ;
+ALTER SCHEMA public OWNER TO &lt;cdfidmuser&gt; ;
+ALTER SCHEMA public RENAME TO &lt;cdfidmschema&gt; ;
+REVOKE ALL ON SCHEMA &lt;cdfidmschema&gt; from public ;
+GRANT ALL ON SCHEMA &lt;cdfidmschema&gt; to &lt;cdfidmuser&gt; ;
+GRANT ALL PRIVILEGES ON DATABASE &lt;cdfidmdb&gt; TO &lt;cdfidmuser&gt; ;
+ALTER USER &lt;cdfidmuser&gt; SET search_path TO &lt;cdfidmschema&gt; ;
+
+\c &lt;autopassdb&gt; ;
+ALTER SCHEMA public OWNER TO &lt;cdfidmuser&gt; ;
+ALTER SCHEMA public RENAME TO &lt;cdfidmschema&gt; ;
+REVOKE ALL ON SCHEMA &lt;cdfidmschema&gt; from public ;
+GRANT ALL ON SCHEMA &lt;cdfidmschema&gt; to &lt;cdfidmuser&gt; ;
+GRANT ALL PRIVILEGES ON DATABASE &lt;autopassdb&gt; TO &lt;cdfidmuser&gt; ;
+ALTER USER &lt;cdfidmuser&gt; SET search_path TO &lt;cdfidmschema&gt; ;
+
+\c &lt;bvd&gt; ;
+ALTER SCHEMA public OWNER TO &lt;cdfidmuser&gt; ;
+ALTER SCHEMA public RENAME TO &lt;cdfidmschema&gt; ;
+REVOKE ALL ON SCHEMA &lt;cdfidmschema&gt; from public ;
+GRANT ALL ON SCHEMA &lt;cdfidmschema&gt; to &lt;cdfidmuser&gt; ;
+GRANT ALL PRIVILEGES ON DATABASE &lt;bvd&gt; TO &lt;cdfidmuser&gt; ;
+ALTER USER &lt;cdfidmuser&gt; SET search_path TO &lt;cdfidmschema&gt; ;
+
+\c &lt;rtsm&gt; ;
+ALTER SCHEMA public OWNER TO &lt;cdfidmuser&gt; ;
+ALTER SCHEMA public RENAME TO &lt;cdfidmschema&gt; ;
+REVOKE ALL ON SCHEMA &lt;cdfidmschema&gt; from public ;
+GRANT ALL ON SCHEMA &lt;cdfidmschema&gt; to &lt;cdfidmuser&gt; ;
+GRANT ALL PRIVILEGES ON DATABASE &lt;rtsm&gt; TO &lt;cdfidmuser&gt; ;
+ALTER USER &lt;cdfidmuser&gt; SET search_path TO &lt;cdfidmschema&gt; ;
+
+\c &lt;mgmt&gt; ;
+ALTER SCHEMA public OWNER TO &lt;cdfidmuser&gt; ;
+ALTER SCHEMA public RENAME TO &lt;cdfidmschema&gt; ;
+REVOKE ALL ON SCHEMA &lt;cdfidmschema&gt; from public ;
+GRANT ALL ON SCHEMA &lt;cdfidmschema&gt; to &lt;cdfidmuser&gt; ;
+GRANT ALL PRIVILEGES ON DATABASE &lt;mgmt&gt; TO &lt;cdfidmuser&gt; ;
+ALTER USER &lt;cdfidmuser&gt; SET search_path TO &lt;cdfidmschema&gt; ;
+
+\c &lt;event&gt; ;
+ALTER SCHEMA public OWNER TO &lt;cdfidmuser&gt; ;
+ALTER SCHEMA public RENAME TO &lt;cdfidmschema&gt; ;
+REVOKE ALL ON SCHEMA &lt;cdfidmschema&gt; from public ;
+GRANT ALL ON SCHEMA &lt;cdfidmschema&gt; to &lt;cdfidmuser&gt; ;
+GRANT ALL PRIVILEGES ON DATABASE &lt;event&gt; TO &lt;cdfidmuser&gt; ;
+ALTER USER &lt;cdfidmuser&gt; SET search_path TO &lt;cdfidmschema&gt; ;
+</code></pre>
+
+<h3>Check Database and Users</h3>
+
+<p>Login as super&nbsp;user and check if the databases and users are intact.</p>
+
+<pre><code>su - &lt;postgres_su_user&gt;
+
+\list+
+\du+
+\dn+</code></pre>
+
+<p><img alt="" border="1" file="" height="341" hspace="0" src="/mediawiki/images/pn_images/pn_image_5f02ff2aa3b944.28065111.jpeg" style="width:800px;height:341px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:1px solid black;" vspace="0" width="800"><br>
+Try connecting to the databases using the Suite user name</p>
+
+<pre><code>psql -h &lt;pg_host&gt; dbname=&lt;suite_db&gt; -p &lt;pg_port&gt; -U &lt;suite_user_name&gt;</code></pre>
+
+<h2>Upgrade the Vertica Version</h2>
+
+<p>Drop the old data bases after stopping them. And make sure to upgrade the Vertica to the version supported by OpsBridge Suite 2019.11</p>
+
+<h2>Uninstall Older version of OpsBridge Suite</h2>
+
+<p>Follow the steps mentioned in the respective OpsBridge Suite version document to completely uninstall the Suite.&nbsp;</p>
+
+<h2>Install 2019.11&nbsp;</h2>
+
+<p>&lt;Introduction TBD&gt;<br>
+Maintain the old Administrator Password<br>
+<img alt="" border="1" file="" height="295" hspace="0" src="/mediawiki/images/pn_images/pn_image_5f02ff2b52dbc6.88211836.jpeg" style="width:800px;height:295px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:1px solid black;" vspace="0" width="800"><br>
+erere<br>
+&nbsp;</p>
+
+<p></p>
 </html>
