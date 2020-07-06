@@ -1,4 +1,4 @@
-<html><h2><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Introduction</span></span></h2>
+<html><h2>Introduction</h2>
 
 <div><span style="color:#000000;"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Customers who are willing to upgrade to the latest version of OpsBridge Suite 2019.11, has to go through multiple (quarterly) upgrades, since there is no direct upgrade supported so far. To avoid the huge effort, time and complexity the aberrant suggestion was to go ahead with a plan to migrate their current environment WITHOUT undergoing multiple HOPS.</span></span><br>
 <br>
@@ -43,12 +43,27 @@ Login to BVD UI and navigate to Settings -&gt; Data Collectors. Note down the db
 <h3><br>
 Note down all users, user groups and user roles attributes in BVD (Skip if BVD capability not installed)</h3>
 Login to BVD UI and navigate to Settings -&gt; Users and Roles. &nbsp;Note down all the users, user groups and user roles attributes which is created in BVD. This has to be restored manually if attributes for these objects are observed to be missing post migration.<br>
-&nbsp;
-<h3>Configure Event Auto Archiving</h3>
-Follow the doc <a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.11/oprArchiveEventsCLI" target="_blank">here</a> for Event Archiving.<br>
-&nbsp;
-<h3>Clear the UCMDB history</h3>
-Follow the instructions <a href="https://docs.microfocus.com/itom/Operations_Bridge_Manager:2019.11/ServerAdminPurgingTr" target="_blank">here</a> to clear/purge the UCMDB history<br>
+<span style="color: rgb(0, 0, 0); font-family: MetricHPE_Medium; font-size: 20px;">Configure Event Auto Archiving</span><br>
+Follow the instructions&nbsp;<a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.11/oprArchiveEventsCLI" target="_blank">here</a> for Event Archiving.
+
+<h3>Clear UCMDB history</h3>
+Follow the instructions <a href="https://docs.microfocus.com/itom/Operations_Bridge_Manager:2019.11/ServerAdminPurgingTr" target="_blank">here</a> to clear/purge the UCMDB history
+
+<h3>Get the current embedded Postgres Version (optional)</h3>
+Execute below command to know the embedded Postgres pod name
+
+<pre><code>kubectl get pods -n core |grep postgres | awk 'NR==1 {print $1}'</code></pre>
+Execute below command on the Master node to note Postgres version
+
+<pre><code>kubectl exec -it  &lt;postgres-pod-name&gt;  --namespace core  -- bash -c "psql -U postgres -d postgres -c 'SHOW server_version;'"</code></pre>
+
+<h3>Get the DB list from the embedded Postgres</h3>
+Execute this command on the Master node.&nbsp; The databases listed would be targeted for migration. The list of databases here may vary based on the capabilities selected during OpsBridge installation. Verify these databases are successfully restored on External postgres after restore operation.
+
+<pre><code>kubectl exec -it &nbsp;&lt;postgres-pod-name&gt; --namespace core -c itom-postgresql-default -- bash -c "psql -U postgres &nbsp;-c 'SELECT datname FROM pg_database WHERE datistemplate = false and datname != \$\$replication_db\$\$ and datname != \$\$postgres\$\$;'"
+</code></pre>
 <br>
+<br>
+&nbsp;<br>
 <br>
 &nbsp;</html>
