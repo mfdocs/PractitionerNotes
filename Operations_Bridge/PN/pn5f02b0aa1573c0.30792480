@@ -372,24 +372,39 @@ You need to set up database connection in BVD 2019.11 as shown below with the ex
 	<li>Click Setting and select <strong>Data Collectors</strong>.&nbsp;</li>
 	<li>On <strong>Data Collectors</strong> page, click three dots (as shown below) and select <strong>DB Connection Setting</strong>.&nbsp;</li>
 </ol>
-&nbsp; &nbsp; &nbsp; &lt;Screenshot&gt;<br>
+<strong>&nbsp; &nbsp; &nbsp; &lt;Screenshot&gt;</strong><br>
 &nbsp; &nbsp; &nbsp;3. Fill in all required details in <strong>SET UP DB CONNECTION</strong> form. The details you enter here should contain the same information as in previous BVD database connection.<br>
-&nbsp; &nbsp; &nbsp; &lt;Screenshot&gt;<br>
+<strong>&nbsp; &nbsp; &nbsp; &lt;Screenshot&gt;</strong><br>
 &nbsp; &nbsp; &nbsp;4.&nbsp;Click <strong>TEST CONNECTION </strong>to ensure the database connection.&nbsp;<br>
 &nbsp; &nbsp; &nbsp;5. Click <strong>SAVE SETTINGS</strong>.&nbsp;<br>
 Once you have set up the database connection, you need to run all the queries at least once in BVD 2019.11 to enable dashboards to show all the data elements.&nbsp;<br>
 &nbsp;&nbsp; &nbsp;1. Click settings, select <strong>Data Collectors</strong> to list all the data or parameter queries.&nbsp;<br>
-&nbsp;&nbsp; &nbsp;&lt;Screenshot&gt;<br>
+<strong>&nbsp;&nbsp; &nbsp;&lt;Screenshot&gt;</strong><br>
 &nbsp;&nbsp; &nbsp;2. Click edit button to view all the details of the query.&nbsp;<br>
 &nbsp;&nbsp; &nbsp;3. Click <strong>RUN</strong> under Query*.<br>
-&nbsp;&nbsp; &nbsp;&lt;Screenshot&gt;<br>
+<strong>&nbsp;&nbsp; &nbsp;&lt;Screenshot&gt;</strong><br>
 &nbsp;&nbsp; &nbsp;4. After you run the query, click <strong>SAVE DATA QUERY</strong>.&nbsp;<br>
 &nbsp;&nbsp; &nbsp;5. You need to edit and run all the queries listed under <strong>Data Collector</strong>.&nbsp;<br>
 Once you perform all of the above steps, view the dashboards to verify whether you can see all the dashboard elements.<br>
 For example, when you run a data query called <strong>Multicategory</strong> and save the query, you will be able to see the updated values on the dashboard. When you hover mouse-pointer over <strong>Multicategory</strong> under <strong>Data Channel</strong>, you will see when was the latest update made.<br>
-&nbsp;&nbsp; &nbsp;&lt;Screenshot&gt;<br>
-<br>
-<br>
+<strong>&nbsp;&nbsp; &nbsp;&lt;Screenshot&gt;</strong>
+
+<h2>OBM User Roles</h2>
+Post migration you may observe few custom user roles do not retain permissions granted in previous OpsBridge installation. &nbsp;Follow below steps to fix this issue:
+
+<ol>
+	<li>Login to OBM</li>
+	<li>Navigate to Administration &gt; Users &gt; Users, Groups, and Roles menu in OBM.</li>
+	<li>Select the role</li>
+	<li>Edit the role</li>
+	<li>Save Role</li>
+</ol>
+
+<h2>BVD Users &amp; Groups</h2>
+In few cases It was observed that post migration BVD does not retain Users and Groups attributes. Hence edit the settings for each of these objects and restore them manually.&nbsp;<br>
+UCMDB license<br>
+Try logging to JMX-Console or to the local client using the &lt;RTSM&gt; user. In case if you get the below error, install this <a href="https://rdapps.swinfra.net/hotfix/#/hotfix/10075" target="_blank">Hotfix</a>.<br>
+<strong>&lt;Screenshot&gt;</strong><br>
 <br>
 <br>
 <br>
