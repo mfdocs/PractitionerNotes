@@ -77,7 +77,7 @@ As a super user, run the below command to get the size of the DB.&nbsp;
 Download and execute backupScript.sh script on Master node to backup following configurations:
 
 <ol>
-	<li>Certificates: &nbsp;Key.pm</li>
+	<li>Certificates:&nbsp; chain.pem, key.pm,&nbsp;RE_ca&nbsp;</li>
 	<li>Configmaps</li>
 	<li>Embedded Postgres configuration files: postgressql.conf &amp; pg_hba.conf</li>
 	<li>UCMDB Master key&nbsp;</li>
@@ -157,8 +157,98 @@ Try connecting to the database as cdfidm user. Execute the command from master n
 
 <pre><code>psql "dbname=&lt;dbname&gt; password=&lt;password&gt; host=&lt;postgres_node&gt; port=5432 user=cdfidm"
 \dt+</code></pre>
+
+<h2>Bring down the cluster&nbsp;</h2>
+Make sure all the PODS are up and running.&nbsp;Shut down Suite pods by Running the below command:
+
+<pre><code class="language-bash">${K8S_HOME}/scripts/cdfctl.sh -f runlevel set -l DOWN</code></pre>
 <br>
+Make sure that all the PODS are DOWN and the Suite too. Ignore the Completed pods.<br>
+List of pods in Core namespace post execution of cdfctl.sh command
+<pre><code>kubectl get pods -n core&nbsp;</code></pre>
+&lt;Screenshot&gt;<br>
 <br>
+List of pods in OpsBridge namespace post execution of cdfctl.sh
+<pre><code>kubectl get pods -n &lt;OpsBridge-namespace&gt;</code></pre>
+&lt;Screenshot&gt;
+
+<h3>Take a snapshot of Master and Worker nodes (Optional)</h3>
+Run the below command on all the Worker Nodes, followed by the Master Nodes
+
+<pre><code class="language-bash">${K8S_HOME}/bin/kube-stop.sh -y</code></pre>
+&lt;screenshot&gt;<br>
+<br>
+Check if there any mount points still active. On the Master node, run the following command. If you see any residual, then kindly run the second command to un-mount the same.
+<pre><code class="language-bash">df -k | grep kubernetes
+for f in $(df | awk '/kubernetes/ {print $6}'); do umount $f; done
+</code></pre>
+Shut down the VM’s and take a snapshot of the same Virtual Machines.
+
+<div class="Admonition_Note">Note: It is recommended to take snapshot of Master and Worker nodes in case restore of this setup is needed at later point in time.</div>
+Run the below command on the Master nodes, followed by worker nodes
+
+<pre><code class="language-bash">${K8S_HOME}/bin/kube-start.sh</code></pre>
+Bring up Suite pods by Running the below command:
+
+<pre><code class="language-bash">${K8S_HOME}/scripts/cdfctl.sh runlevel set -l UP -f</code></pre>
+
+<h3>Check the status of Agent Nodes (Optional)</h3>
+Once the cluster is totally down, one would see that the Integrations like Agent and SiS, will be in buffering state.<br>
+&lt;Screenshot&gt;
+<h2>Uninstall OpsBridge</h2>
+Refer to the uninstallation document corresponding to the OpsBridge version you have.&nbsp;<br>
+For example, uninstallation document for OpsBridge 2018.11 with embedded Postgres can be found <a href="https://docs.microfocus.com/itom/Operations_Bridge:2018.11/Uninstall_OpsB" target="_blank">here</a>
+
+<h2>Install OpsBridge 2019.11&nbsp;</h2>
+
+<h4>Maintain the old Administrator Password</h4>
+&lt;Screenshot&gt;
+
+<h4>Select Capabilities</h4>
+Select the capabilities as chosen in previous OpsBridge installation.<br>
+&lt;Screenshot&gt;
+<h4>Database details</h4>
+Maintain the same entries for Database Name, User and Password. Ignore the warning.<br>
+&lt;Screenshot&gt;<br>
+&lt;Screenshot&gt;
+<h4>Deployment Size</h4>
+Choose the deployment size in accordance to the current requirement
+
+<h4>Single Master to Multi-Master?</h4>
+Single Master to Single Master, keep the same FQDN as that of the previous set up as the External Hostname.<br>
+<br>
+Single Master to Multi Master (for Master High availability), make sure you configure the previous value of External Hostname as a VIP and update the same in the field External Hostname. Which would mean, one would need 3 FRESH nodes to be added as Master Nodes. And the old Master’s IP and FQDN should be used as HA_VIRTUAL_IP. The Old node should NOT be running.<br>
+<br>
+This is very crucial for integrations.<br>
+The Agents and SiS nodes would be in buffering state till the DOWN time. Once the Cluster and the capabilities are UP, and the connectivity is established, the buffered events should reach to the OMi event Browser.
+<h4>External Hostname and Custom Certificates</h4>
+In the Connection page (After selecting the Deployment Size), make sure that the External Hostname is properly configured.
+
+<table class="MsoTableGrid" style="border-collapse:collapse; border:none">
+	<tbody>
+		<tr>
+			<td style="border-bottom:2px solid black; width:138px; padding:0in 7px 0in 7px; background-color:#bfbfbf; border-top:2px solid black; border-right:2px solid black; border-left:2px solid black" valign="top"><font face="Calibri, sans-serif"><span style="font-size: 14.6667px;"><b>Previous OpsBridge Installation</b></span></font></td>
+			<td style="border-bottom:2px solid black; width:168px; padding:0in 7px 0in 7px; background-color:#bfbfbf; border-top:2px solid black; border-right:2px solid black; border-left:none" valign="top"><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b><span style="color:black">OpsBridge 2019.11<br>
+			Installation</span></b></span></span></span></td>
+			<td style="border-bottom:2px solid black; width:318px; padding:0in 7px 0in 7px; background-color:#bfbfbf; border-top:2px solid black; border-right:2px solid black; border-left:none" valign="top"><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b><span style="color:black">External Hostname</span></b></span></span></span></td>
+		</tr>
+		<tr>
+			<td style="border-bottom:2px solid black; width:138px; padding:0in 7px 0in 7px; border-top:none; border-right:2px solid black; border-left:2px solid black" valign="top"><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Multi-Master</span></span></span></td>
+			<td style="border-bottom:2px solid black; width:168px; padding:0in 7px 0in 7px; border-top:none; border-right:2px solid black; border-left:none" valign="top"><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Multi-Master</span></span></span></td>
+			<td style="border-bottom:2px solid black; width:318px; padding:0in 7px 0in 7px; border-top:none; border-right:2px solid black; border-left:none" valign="top"><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Keep the same as used in 2018.11, which would the HA_VIRTUAL_IP</span></span></span></td>
+		</tr>
+		<tr>
+			<td style="border-bottom:2px solid black; width:138px; padding:0in 7px 0in 7px; border-top:none; border-right:2px solid black; border-left:2px solid black" valign="top"><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Single Master</span></span></span></td>
+			<td style="border-bottom:2px solid black; width:168px; padding:0in 7px 0in 7px; border-top:none; border-right:2px solid black; border-left:none" valign="top"><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Single Master</span></span></span></td>
+			<td style="border-bottom:2px solid black; width:318px; padding:0in 7px 0in 7px; border-top:none; border-right:2px solid black; border-left:none" valign="top"><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Same of the Master FQDN</span></span></span></td>
+		</tr>
+		<tr>
+			<td style="border-bottom:2px solid black; width:138px; padding:0in 7px 0in 7px; border-top:none; border-right:2px solid black; border-left:2px solid black" valign="top"><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Single Master</span></span></span></td>
+			<td style="border-bottom:2px solid black; width:168px; padding:0in 7px 0in 7px; border-top:none; border-right:2px solid black; border-left:none" valign="top"><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Multi-Master</span></span></span></td>
+			<td style="border-bottom:2px solid black; width:318px; padding:0in 7px 0in 7px; border-top:none; border-right:2px solid black; border-left:none" valign="top"><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Configure the External Hostname of 2018.11 as the HA_VIRTUAL_IP of the new 2019.11 set up. And this would mandate new Master nodes.</span></span></span></td>
+		</tr>
+	</tbody>
+</table>
 <br>
 <br>
 &nbsp;<br>
