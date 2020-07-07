@@ -128,7 +128,35 @@ Once logged in as postgres super user into database, run the below command.&nbsp
 Check External Postgres connection with super user. From the master node, run the below command
 
 <pre><code>psql "dbname=&lt;dbname&gt; password=&lt;password&gt; host=&lt;postgres_node&gt; port=&lt;postgres_port&gt; user=&lt;super_user&gt;"</code></pre>
-<br>
+
+<h3>Execute database restore script&nbsp;</h3>
+Download &amp; Execute restoredbSchema.sh script on External Postgres Server to restore database backup. This script will:
+
+<ol>
+	<li>Restore database using .dump files&nbsp;</li>
+	<li>Set database user credentials for postgres &amp; cdfidm users to one existed in embedded postgres setup.</li>
+</ol>
+Script requirements:&nbsp;
+
+<ol>
+	<li>Script supports restore operation only for database backup files generated using backupScript.sh in the previous step</li>
+	<li>Must be executed with super user permission on External Postgres server</li>
+	<li>Ensure .dump and config.properties files are available on External Postgres server and have read permissions.</li>
+	<li>Database instance must be a fresh installed instance.&nbsp;</li>
+</ol>
+Assign required execution permission before script execution as below
+
+<pre><code>chmod +x restoredbSchema.sh
+./restoredbSchema.sh
+</code></pre>
+
+<div class="Admonition_Note">Note: &nbsp;<br>
+1.&nbsp; Script uses Postgres database 'postgres' user (superuser) to restore the backup on Postgres server<br>
+2.&nbsp;&nbsp;Note down cdfidm &amp; postgres user credentials post execution of this script (also available in config.properties file). &nbsp;In the later steps you need to use cdfidm user credentials to connect to External Postgres server while installing OpsBridge 2019.11.&nbsp; &nbsp; &nbsp;</div>
+Try connecting to the database as cdfidm user. Execute the command from master node and check database table ownership. Use the password from <strong>config.properties</strong> file&nbsp;
+
+<pre><code>psql "dbname=&lt;dbname&gt; password=&lt;password&gt; host=&lt;postgres_node&gt; port=5432 user=cdfidm"
+\dt+</code></pre>
 <br>
 <br>
 <br>
