@@ -104,6 +104,25 @@ Use scp to transfer files from master to remote postgres server.
 <pre><code>scp -r &lt;NFS-Folder&gt;/opsb_migration/&lt;time-stamp&gt;/dbbackups/*.dump &nbsp; &nbsp; root@&lt;External-Postgres-hostname&gt;:/var/2018.11.Backup/dbbackups
 scp -r &lt;NFS-Folder&gt;/opsb_migration/&lt;time-stamp&gt;/conf/* &nbsp; &nbsp; &nbsp;root@&lt; External-Postgres-hostname&gt;:/var/2018.11.Backup/conf
 </code></pre>
+
+<h2>Postgres DB migration</h2>
+
+<h3>Configuration file changes</h3>
+Add the below entries at the end of the pg_hba.conf file
+
+<pre><code>host all all 0.0.0.0/0 md5
+host all all ::/0 md5
+</code></pre>
+<br>
+Edit postgresql.conf file for&nbsp;listen_addresses , port and lo_compat_privileges parameters to as shown below
+<pre><code>listen_addresses = '*'
+port = 5432
+lo_compat_privileges = on
+</code></pre>
+<br>
+Restart postgres service
+<pre><code>systemctl restart postgresql-10.service</code></pre>
+<br>
 <br>
 <br>
 &nbsp;<br>
