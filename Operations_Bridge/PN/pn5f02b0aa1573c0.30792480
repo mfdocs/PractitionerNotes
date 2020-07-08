@@ -104,7 +104,7 @@ Download the script on master node and assign required execution permission befo
 <div class="Admonition_Note">&nbsp;Note: &nbsp;<br>
 1.&nbsp;&nbsp;It is recommended to take backup on NFS mount which has sufficient disk space to hold all the backup files including database backup<br>
 2.&nbsp;&nbsp;To maintain embedded Postgres data consistency this script will scale down the deployment under opsbridge-xxx namespace.&nbsp;</div>
-Use scp to transfer files from master to remote postgres server.
+Use scp to transfer database backup and configuration files from master to remote postgres server.
 
 <pre><code>scp -r &lt;NFS-Folder&gt;/opsb_migration/&lt;time-stamp&gt;/dbbackups/*.dump &nbsp; &nbsp; root@&lt;External-Postgres-hostname&gt;:/var/2018.11.Backup/dbbackups
 scp -r &lt;NFS-Folder&gt;/opsb_migration/&lt;time-stamp&gt;/conf/* &nbsp; &nbsp; &nbsp;root@&lt; External-Postgres-hostname&gt;:/var/2018.11.Backup/conf
