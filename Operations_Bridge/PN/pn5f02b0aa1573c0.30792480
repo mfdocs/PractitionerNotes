@@ -68,16 +68,12 @@ Execute this command on the Master node.&nbsp; The databases listed would be tar
 <pre><code>kubectl exec -it &nbsp;&lt;postgres-pod-name&gt; --namespace core -c itom-postgresql-default -- bash -c "psql -U postgres &nbsp;-c 'SELECT datname FROM pg_database WHERE datistemplate = false and datname != \$\$replication_db\$\$ and datname != \$\$postgres\$\$;'"
 </code></pre>
 
-<h3><br>
-<br>
-Check suite db ownership on embedded POSTGRES (Optional)</h3>
+<h3>Check suite db ownership on embedded POSTGRES (Optional)</h3>
 As a super user, run the below command to check ownership rights to OpsBridge Suite DB list. Choose the database name from the above section to list ownership.&nbsp;
 
 <pre><code>kubectl exec -it &nbsp;&lt;postgres-pod-name&gt; --namespace core &nbsp;-c itom-postgresql-default &nbsp;-- bash -c "psql -U postgres -d postgres &nbsp;-c '\l+'" | grep -E 'Owner|&lt;database-name&gt;'</code></pre>
 
-<h3><br>
-<img alt="" border="0" file="" height="72" hspace="0" src="/mediawiki/images/pn_images/pn_image_5f05581c997b83.48558562.jpeg" style="width: 800px; height: 72px; margin: 0px; border: 0px solid black;" vspace="0" width="800"><br>
-Get the Total embedded database size (Optional)</h3>
+<h3>Get the Total embedded database size (Optional)</h3>
 As a super user, run the below command to get the size of the DB.&nbsp;
 
 <pre><code>kubectl exec -it &nbsp;&lt;postgres-pod-name&gt; &nbsp;--namespace core -c itom-postgresql-default -- bash -c "psql -U postgres -d postgres -c 'SELECT sum(pg_database_size(pg_database.datname)/1024.0) FROM pg_database ;'"</code></pre>
