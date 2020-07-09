@@ -1,9 +1,9 @@
 <html><span id="cke_bm_39272S" style="display: none;">&nbsp;</span>
 <h2 style="margin-top: 16px;">Introduction</h2>
 
-<p style="margin-top: 16px;">Customers who are willing to upgrade to the latest version of OpsBridge Suite 2019.11, has to go through multiple (quarterly) upgrades, since there is no direct upgrade supported so far. To avoid the huge effort, time and complexity the aberrant suggestion was to go ahead with a plan to migrate their current environment WITHOUT undergoing multiple HOPS.<br>
+<p style="margin-top: 16px;">Customers who are willing to upgrade to the latest version of OpsBridge Suite 2019.11, have to go through multiple (quarterly) upgrades, since there is no direct upgrade supported so far. To avoid the huge effort, time and complexity the aberrant suggestion was to go ahead with a plan to migrate their current environment WITHOUT undergoing multiple HOPS.<br>
 <br>
-Customers who are running their PRODUCTION environment in containerized OpsBridge Suite with External Postgres and lots of integrations with Operations Agent (incl. Management packs / OpsC) and SiS servers, etc., also need to be preserved for upgrade use case.<br>
+Customers who are running their PRODUCTION/DEV&nbsp;environment in containerized OpsBridge Suite with External Postgres and lots of integrations with Operations Agent (incl. Management packs / OpsC) and SiS servers, etc., also need to be preserved for upgrade use case.<br>
 <br>
 This document tries to capture every detailed aspect which needs to be followed to achieve a successful migration, without (or minimal) Configuration DATA loss (from the Postgres side of the house).</p>
 
@@ -110,6 +110,15 @@ yum install jq -y</code></pre>
 <h3 style="margin-top: 16px;">Back up db connections in BVD</h3>
 
 <div class="Admonition_Note" style="margin-top: 16px;"><strong>Note</strong>: Chose to skip this section if BVD as a capability was not installed in your previous OpsBridge Suite environment.</div>
+
+<h4 style="margin-top: 16px;">DB Connections Settings</h4>
+
+<p style="margin-top: 16px;">Login to BVD UI and navigate to Administration -&gt; Data Collectors. Note down the configured values in DB&nbsp;connections settings, created in BVD for data collectors. The db connection need to be re-created manually on BVD post migration to 2019.11.<br>
+<img alt="" border="1" file="" height="243" hspace="0" src="https://docs.microfocus.com/mediawiki/images/5/5b/DB_connection_settings.JPG" style="width:496px;height:243px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:1px solid black;" vspace="0" width="496"></p>
+
+<h4 style="margin-top: 16px;">Users and Roles</h4>
+
+<p style="margin-top: 16px;">Login to BVD UI and navigate to Administration -&gt; Users and Roles. &nbsp;Note down all the users, user groups and user roles attributes which is created in BVD. This has to be restored manually if attributes for these objects are observed to be missing post migration.</p>
 
 <h2 style="margin-top: 16px;">Bring down the cluster</h2>
 
@@ -621,30 +630,42 @@ Using the bbcutil ping</h5>
 
 <h3>Restore BVD db connections</h3>
 
-<p>You need to set up database connection in BVD 2019.11 as shown below with the external database that was used for BVD with previous version of&nbsp;OpsBridge Suite set up to ensure that the dashboard is able to display all the data elements. &nbsp;<br>
-Click Setting and select Data Collectors.&nbsp;<br>
-On Data Collectors page, click three dots (as shown below) and select DB Connection Setting.&nbsp;<br>
-Fill in all required details in SET UP DB CONNECTION form. The details you enter here should contain the same information as in previous BVD database connection.<br>
-Click TEST CONNECTION to ensure the database connection.&nbsp;<br>
-Click SAVE SETTINGS.&nbsp;<br>
-<br>
-Once you have set up the database connection, you need to run all the queries at least once in BVD 2019.11 to enable dashboards to show all the data elements.&nbsp;<br>
-Click settings, select Data Collectors to list all the data or parameter queries.&nbsp;<br>
-Click edit button to view all the details of the query.&nbsp;<br>
-Click RUN under Query*.<br>
-After you run the query, click SAVE DATA QUERY.&nbsp;<br>
-You need to edit and run all the queries listed under Data Collector.&nbsp;<br>
-<br>
-Once you perform all of the above steps, view the dashboards to verify whether you can see all the dashboard elements.<br>
-For example, when you run a data query called Multicategory and save the query, you will be able to see the updated values on the dashboard. When you hover mouse-pointer over Multicategory under Data Channel, you will see when was the latest update made.<br>
-<br>
-OBM User Roles<br>
-Post migration you may observe few custom user roles do not retain permissions granted in previous OpsBridge installation. &nbsp;Follow below steps to fix this issue:<br>
-Login to OBM<br>
-Navigate to Administration &gt; Users &gt; Users, Groups, and Roles menu in OBM.<br>
-Select the role<br>
-Edit the role<br>
-Save Role<br>
-BVD Users &amp; Groups<br>
-In few cases It was observed that post migration BVD does not retain Users and Groups attributes. Hence edit the settings for each of these objects and restore them manually</p>
+<p>You need to set up database connection in BVD 2019.11 as shown below with the external database that was used for BVD with previous version of&nbsp;OpsBridge Suite set up to ensure that the dashboard is able to display all the data elements. &nbsp;</p>
+
+<ol>
+	<li>Click Setting and select Data Collectors.&nbsp;</li>
+	<li>On Data Collectors page, click three dots&nbsp;and select <strong>DB Connection Settings</strong>.&nbsp;</li>
+	<li>Fill in all required details in SET UP DB CONNECTION form. The details you enter here should contain the same information as in previous BVD database connection.</li>
+	<li>Click TEST CONNECTION to ensure the database connection.&nbsp;</li>
+	<li>Click SAVE SETTINGS.&nbsp;</li>
+</ol>
+
+<p>Once you have set up the database connection, you need to run all the queries at least once in BVD 2019.11 to enable dashboards to show all the data elements.&nbsp;</p>
+
+<ol>
+	<li>Click settings, select Data Collectors to list all the data or parameter queries.&nbsp;</li>
+	<li>Click edit button to view all the details of the query.&nbsp;</li>
+	<li>Click RUN button&nbsp;under QUERY*.</li>
+	<li>After you run the query, click SAVE DATA QUERY.&nbsp;</li>
+	<li>You need to edit and run all the queries listed under Data Collector.&nbsp;</li>
+</ol>
+
+<p>Once you perform all of the above steps, view the dashboards to verify whether you can see all the dashboard elements.<br>
+For example, when you run a data query called Multicategory and save the query, you will be able to see the updated values on the dashboard. When you hover mouse-pointer over Multicategory under Data Channel, you will see when was the latest update made.</p>
+
+<h3>OBM User Roles</h3>
+
+<p>Post migration you may observe few custom user roles do not retain permissions granted in previous OpsBridge installation. &nbsp;Follow below steps to fix this issue:</p>
+
+<ol>
+	<li>Login to OBM UI</li>
+	<li>Navigate to <strong>Administration &gt; Users &gt; Users, Groups, and Roles</strong></li>
+	<li>Select the role</li>
+	<li>Edit the role</li>
+	<li>Save Role</li>
+</ol>
+
+<h3>BVD Users &amp; Groups</h3>
+
+<p>In few cases It was observed that post migration BVD does not retain Users and Groups attributes. Hence edit the settings for each of these objects and restore them manually.</p>
 </html>
