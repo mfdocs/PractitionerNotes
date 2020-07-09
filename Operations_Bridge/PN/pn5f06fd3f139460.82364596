@@ -1,1 +1,303 @@
- 
+<html><p>&nbsp;<br>
+In a production environment, we recommend that you use an external PostgreSQL instance for the&nbsp;<code>suite-db</code>&nbsp;database. To migrate an existing&nbsp;<code>suite-db</code>&nbsp;database from the embedded PostgreSQL instance to an external PostgreSQL database, follow these steps<br>
+<br>
+<br>
+The steps involved are:</p>
+
+<ol>
+	<li>Turn Off Suite Pods using cdfctl utility.</li>
+	<li>Take database dump of all suite databases present in the internal postgres.</li>
+	<li>Transport and restore all suite database dumps into the external postgres.</li>
+	<li>Update the passwords in external postgres.</li>
+	<li>Take backup of the configmaps.</li>
+	<li>Update the configmaps to reflect host, port and certificate of external postgres.</li>
+	<li>Turn On Suite Pods using cdfctl utility.</li>
+</ol>
+In the commands mentioned below the values enclosed in angular brackets (&lt;&gt;), you need to replace only those values with respect to your environment.
+
+<h2>Prepare</h2>
+
+<p>Before you start the migration process ensure that you are performing the following tasks:</p>
+
+<ol>
+	<li>Install External Postgres Server 10.10 with TLS Enabled&nbsp;(same Postgres server version as embedded Postgres)</li>
+	<li>Note down the External Postgres Server Certificate in .crt and base64 of <code>server.crt</code> file if it is&nbsp;self signed or <code>root.crt</code>&nbsp;&nbsp;otherwise using the command:
+	<pre><code class="language-bash">base64 server.crt | sed -e ':a;N;$!ba;s/\n//g'</code></pre>
+	</li>
+	<li>Note down the password of the following keys (covered under topic Take database dump of all the suite databases present in the internal Postgres)
+	<ul>
+		<li><code>defaultdb_user_password</code></li>
+		<li><code>defaultdb_cdfidm_user_password</code></li>
+	</ul>
+	</li>
+</ol>
+
+<h2>Turn off suite pods using cdfctl utility</h2>
+
+<ol>
+	<li>Log in to the master node, run the following command to turn off suite pods:<br>
+	&nbsp;
+	<pre><code class="language-bash">${K8S_HOME}/scripts/cdfctl.sh -f runlevel set -l DOWN -n &lt;suite-namespace&gt;</code></pre>
+	<br>
+	<tt>Example:</tt>
+
+	<pre><code class="language-bash">${K8S_HOME}/scripts/cdfctl.sh -f runlevel set -l DOWN -n opsbridge-azm6h
+</code></pre>
+	&nbsp;<br>
+	This will only shut off Pods of the suite, the Pods of CDF will remain operational (which includes the internal database pod)</li>
+</ol>
+
+<ol start="2">
+	<li>&nbsp;Use “<code>kubectl get pods -n core</code>” to note down internal database pod name.</li>
+</ol>
+
+<h2><br>
+<br>
+Take database dump of all the suite databases present in the internal Postgres</h2>
+
+<p><br>
+Log on to internal database pod shell, note passwords and take database dumps</p>
+
+<pre><code class="language-bash">kubectl exec -it -c itom-postgresql-default -n core &lt;itom-postgresql-default-656d7bbb74-j7jrg&gt; /bin/bash  
+su - postgres
+get_secret defaultdb_user_password
+get_secret defaultdb_cdfidm_user_password</code></pre>
+
+<ul>
+	<li>Note down the passwords for <code>defaultdb_user_password</code> and <code>defaultdb_cdfidm_user_password</code>, you’ll need it later.</li>
+	<li>You can copy and paste all below commands in a shell script and run it as well, from /tmp folder.</li>
+</ul>
+
+<p>From the internal database pod shell, take database dumps of the following databases:<br>
+&nbsp;</p>
+
+<pre><code>mkdir -p /var/log/cdf/dbbackups
+export PGPASSWORD=$(get_secret defaultdb_user_password | cut -d "=" -f2)
+vacuumlo -v  -h default-postgresql-svc  -U  postgres -p 5432 rtsm
+vacuumlo -v  -h default-postgresql-svc  -U  postgres -p 5432 event
+pg_dump -Fc -h default-postgresql-svc -d autopassdb  -p 5432 -U postgres –v  -f /var/log/cdf/dbbackups/autopassdb.dump
+pg_dump -Fc -h default-postgresql-svc -d bvd  -p 5432 -U postgres –v -f /var/log/cdf/dbbackups/bvd.dump
+pg_dump -Fc -h default-postgresql-svc -d defaultdb  -p 5432 -U postgres –v  -f /var/log/cdf/dbbackups/defaultdb.dump
+pg_dump -Fc -h default-postgresql-svc -d event  -p 5432 -U postgres –v  -f /var/log/cdf/dbbackups/event.dump
+pg_dump -Fc -h default-postgresql-svc -d mgmt  -p 5432 -U postgres –v  -f /var/log/cdf/dbbackups/mgmt.dump
+pg_dump -Fc -h default-postgresql-svc -d rtsm  -p 5432 -U postgres –v  -f /var/log/cdf/dbbackups/rtsm.dump
+</code></pre>
+
+<p>When done, exit the pod shell.<br>
+&nbsp;</p>
+
+<h2><br>
+Transport and restore all the suite database dumps into the external Postgres</h2>
+
+<h3>Transfer the database dumps:</h3>
+
+<p>To transfer the database dumps into your external Postgres server, execute the following command:</p>
+
+<pre><code>scp -r /var/log/cdf-deployments/core/dbbackups/ &lt;postgres@server.example.net&gt;:/tmp/</code></pre>
+
+<p>On Your External Postgres Server, log on to Postgres user, then to psql prompt:</p>
+
+<pre><code>su -l postgres
+psql -U postgres -d postgres</code></pre>
+
+<p>Create <code>cdfidm</code> user with its password to the value you noted earlier for <code>defaultdb_cdfidm_user_password:</code></p>
+
+<pre><code>CREATE USER cdfidm LOGIN PASSWORD '&lt;tXjwBkqyIQhShVBwuFs=&gt;';
+GRANT cdfidm TO &nbsp;postgres;
+\q</code></pre>
+
+<h2></h2>
+You can even copy the restoration commands in a shell script and run it as well, but make sure to change directory to /tmp/dbbackups ( cd /tmp/dbbackups)
+
+<h2></h2>
+
+<h3>Restore the database dumps:</h3>
+
+<p><br>
+Execute the following commands to restore the database dumps:</p>
+
+<pre><code>cd /tmp/dbbackups
+pg_restore --create -p 5432 -d postgres -U postgres autopassdb.dump
+pg_restore --create -p 5432 -d postgres -U postgres bvd.dump
+pg_restore --create -p 5432 -d postgres -U postgres defaultdb.dump
+pg_restore --create -p 5432 -d postgres -U postgres event.dump
+pg_restore --create -p 5432 -d postgres -U postgres mgmt.dump
+pg_restore --create -p 5432 -d postgres -U postgres rtsm.dump</code></pre>
+All required databases will be created automatically as part of the restore procedure.
+
+<h2><br>
+<br>
+Update the passwords in external Postgres</h2>
+
+<p><br>
+Change the password of ‘postgres’ user to the value you noted earlier for <code>defaultdb_user_password</code></p>
+
+<pre><code>psql -U postgres -d postgres
+ALTER USER postgres LOGIN PASSWORD '&lt;00AuYXMMWL&gt;’;
+\q</code></pre>
+
+<h2><br>
+<br>
+<br>
+Take a backup of the configmaps</h2>
+
+<p><br>
+Execute the following commands to take a backup of the ConfigMaps:</p>
+
+<pre><code>kubectl get cm default-database-configmap -n core -o yaml &gt; /tmp/default-database-configmap.yaml
+kubectl get cm obsuite-config -n &lt;opsbridge-azm6h&gt; -o yaml &gt; /tmp/obsuite-config.yaml
+kubectl get cm bvd-config -n &lt;opsbridge-azm6h&gt; -o yaml &gt; /tmp/bvd-config.yaml
+kubectl get cm omi-config -n &lt;opsbridge-azm6h&gt; -o yaml &gt; /tmp/omi-config.yaml
+</code></pre>
+
+<p><strong>Note:</strong><br>
+<code>default-database-configmap</code> -&gt; responsible for <code>IDM</code><br>
+<code>obsuite-config</code> -&gt; responsible for <code>autopass</code><br>
+<code>bvd-config</code> -&gt; responsible for <code>bvd</code><br>
+<code>omi-config</code> -&gt; responsible for <code>obm</code><br>
+<br>
+&nbsp;</p>
+
+<h2>Update the ConfigMaps to reflect host, port, and certificate of external Postgres</h2>
+
+<pre><code>kubectl edit cm default-database-configmap -n core
+kubectl edit cm obsuite-config -n &lt;opsbridge-azm6h&gt;
+kubectl edit cm bvd-config -n &lt;opsbridge-azm6h&gt;
+kubectl edit cm omi-config -n &lt;opsbridge-azm6h&gt;</code></pre>
+
+<p><br>
+&nbsp;</p>
+You can skip the next set of commands&nbsp;if you want to do this automatically using the script &lt; Link to script location&gt;.
+
+<h2><br>
+&nbsp;</h2>
+
+<h3>Manual Execution</h3>
+Do not change the indentation while editing.
+
+<ol>
+	<li>Edit&nbsp;default-database-configmap and replace with values as specified below&nbsp;:
+	<pre><code>kubectl edit cm default-database-configmap -n core
+
+DEFAULT_DB_CA: &lt;base64 of .crt&nbsp;&gt;
+DEFAULT_DB_HOST: &lt;FQDN_OF_EXT_POSTGRES_SERVER&gt;
+DEFAULT_DB_PORT: &lt;POSTGRES_PORT_OF_EXT_SERVER&gt;
+EMBEDDED_DB: &lt;false&gt;</code></pre>
+	</li>
+</ol>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <img alt="" border="0" height="358" hspace="0" src="/mediawiki/images/pn_images/pn_image_5ebe1dda89c661.84339105.png" vspace="0" width="800"></p>
+
+<ol start="2">
+	<li>Edit&nbsp;obsuite-config and replace with values as specified:
+	<pre><code>kubectl edit cm obsuite-config -n &lt;opsbridge-azm6h&gt;
+
+suite.autopass_dbCa: &lt;content of .crt&gt;
+suite.autopass_dbhost: &lt;FQDN_OF_EXT_POSTGRES_SERVER&gt;
+suite.autopass_dbport: &lt;POSTGRES_PORT_OF_EXT_SERVER&gt;</code></pre>
+	</li>
+</ol>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <img alt="" border="0" height="601" hspace="0" src="/mediawiki/images/pn_images/pn_image_5ebe1ddb39a665.10350970.png" vspace="0" width="726"></p>
+
+<ol start="2">
+	<li>Edit&nbsp;bvd-config&nbsp;and replace with values as specified:
+	<pre><code>kubectl edit cm bvd-config -n &lt;opsbridge-azm6h&gt;
+
+Currently configmap changes don’t seem to affect bvd pods, investigation from BVD needed.</code></pre>
+	</li>
+	<li>Edit&nbsp;omi-config&nbsp;and replace with values as specified:
+	<pre><code>kubectl edit cm omi-config -n &lt;opsbridge-azm6h&gt;
+
+omi.dbCa.base64: &lt;base64 of .crt&gt;
+omi.dbhost: &lt;FQDN_OF_EXT_POSTGRES_SERVER&gt;
+omi.dbport: &lt;POSTGRES_PORT_OF_EXT_SERVER&gt;</code></pre>
+	</li>
+</ol>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <img alt="" border="0" height="243" hspace="0" src="/mediawiki/images/pn_images/pn_image_5ebe1ddbd76525.18210953.png" vspace="0" width="800"></p>
+
+<p><br>
+&nbsp;</p>
+
+<h2>Turn on the suite pods using cdfctl utility</h2>
+
+<p><br>
+Execute these steps to turn on the suite pods:</p>
+
+<ol>
+	<li>Restart IDM Pods
+	<pre><code>kubectl scale --replicas=0 deployment/idm -n core
+kubectl scale --replicas=2 deployment/idm -n core</code></pre>
+	</li>
+	<li>Turn On Suite Pods
+	<pre><code>${K8S_HOME}/scripts/cdfctl.sh -f runlevel set -l UP -n &lt;opsbridge-azm6h&gt;</code></pre>
+	</li>
+	<li>IDM Pods are not controlled by suite deployment, hence IDM pods need separate restart commands.</li>
+	<li>Update ucmdb’s CA key to&nbsp;&nbsp;<code>omi_db_ca_cert</code>
+	<pre><code>kubectl exec -it -c omi-artemis -n &lt;opsbridge-azm6h&gt; &lt;omi-artemis-84d7d94587-ls2fq&gt; /bin/bash
+update_secret omi_db_ca_cert &lt;base64 of .crt&gt;&nbsp;
+get_secret omi_db_ca_cert
+exit</code></pre>
+	</li>
+</ol>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <img alt="" border="0" height="253" hspace="0" src="/mediawiki/images/pn_images/pn_image_5ebe1ddc98a954.33881351.png" vspace="0" width="800"></p>
+
+<ol start="5">
+	<li>Restart ucmdb and omi Pods
+	<pre><code>kubectl -n &lt;opsbridge-azm6h&gt; scale --replicas=0 deployment/ucmdb
+kubectl -n &lt;opsbridge-azm6h&gt; scale --replicas=1 deployment/ucmdb
+kubectl -n &lt;opsbridge-azm6h&gt; scale --replicas=0 Statefulset/omi
+kubectl -n &lt;opsbridge-azm6h&gt; scale --replicas=1 Statefulset/omi</code></pre>
+	</li>
+</ol>
+<strong>Note:</strong>&nbsp; <code>ucmdb</code> and <code>omi</code> pods will totally take 45 min to start (get to 2/2)
+
+<p><br>
+&nbsp;</p>
+
+<h2>Restoring internal database in case of failures</h2>
+
+<p><br>
+If your migration fails for any reason and you want to roll back, follow the below mentioned steps.</p>
+
+<ol>
+	<li>Execute these commands to roll back to internal database:
+	<pre><code>kubectl delete cm default-database-configmap -n core
+kubectl apply -n core -f /tmp/default-database-configmap.yaml
+kubectl delete cm obsuite-config -n &lt;opsbridge-azm6h&gt;&nbsp;
+kubectl apply -n &lt;opsbridge-azm6h&gt; -f /tmp/obsuite-config.yaml
+kubectl delete cm bvd-config -n &lt;opsbridge-azm6h&gt;
+kubectl apply -n &lt;opsbridge-azm6h&gt; -f /tmp/bvd-config.yaml
+kubectl delete cm omi-config -n &lt;opsbridge-azm6h&gt;
+kubectl apply -n &lt;opsbridge-azm6h&gt; -f /tmp/omi-config.yaml
+kubectl scale --replicas=0 deployment/idm -n core
+kubectl scale --replicas=2 deployment/idm -n core
+</code></pre>
+	</li>
+	<li>Restore <code>omi_db_ca_cert</code> value to the internal Postgres base64 CA value
+	<pre><code>${K8S_HOME}/scripts/cdfctl.sh -f runlevel set -l DOWN -n &lt;opsbridge-azm6h&gt;
+${K8S_HOME}/scripts/cdfctl.sh -f runlevel set -l UP -n &lt;opsbridge-azm6h&gt;</code></pre>
+	</li>
+</ol>
+
+<h2>Deleting the internal database after success migration</h2>
+
+<ol>
+	<li>Note down internal database location on NFS folder using:
+	<pre><code>kubectl exec -it&nbsp; &lt;postgres-pod-name&gt; -n core -c itom-postgresql-default -- bash -c "mount |grep &lt;NFS-Server-fqdn&gt;" | awk -F ' ' '{ print $1 }' | tr -d '\r'</code></pre>
+	</li>
+</ol>
+
+<ol start="2">
+	<li>You can delete the internal database once you have successfully migrated to external database by executing these commands:
+	<pre><code>kubectl get deployment itom-postgresql-default -n core -o yaml &gt; /tmp/itom-postgresql-default.yaml
+kubectl delete deployment itom-postgresql-default -n core</code></pre>
+	</li>
+	<li>Clean the NFS folder locations for the internal database.</li>
+</ol>
+
+<p><br>
+&nbsp;</p>
+</html>
