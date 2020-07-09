@@ -1,15 +1,17 @@
 <html><span id="cke_bm_39272S" style="display: none;">&nbsp;</span>
 <h2 style="margin-top: 16px;">Introduction</h2>
 
-<p style="margin-top: 16px;">As most of us know any customer who is willing to upgrade to the latest version of OpsBridge Suite, has go through multiple (quarterly) upgrades, since there is no direct upgrade supported so far.&nbsp;This particular document tries to capture each and every, detailed aspect which needs to be kept in mind and worked upon to achieve a successful upgrade, without (or minimal) Configuration DATA loss (from the Postgres side of the house).&nbsp;<br>
+<p style="margin-top: 16px;">Customers who are willing to upgrade to the latest version of OpsBridge Suite 2019.11, has to go through multiple (quarterly) upgrades, since there is no direct upgrade supported so far. To avoid the huge effort, time and complexity the aberrant suggestion was to go ahead with a plan to migrate their current environment WITHOUT undergoing multiple HOPS.<br>
+<br>
 Customers who are running their PRODUCTION environment in containerized OpsBridge Suite with External Postgres and lots of integrations with Operations Agent (incl. Management packs / OpsC) and SiS servers, etc., also need to be preserved for upgrade use case.<br>
+<br>
 This document tries to capture every detailed aspect which needs to be followed to achieve a successful migration, without (or minimal) Configuration DATA loss (from the Postgres side of the house).</p>
 
 <div class="Admonition_Important" style="margin-top: 16px;"><strong>VERTICA DB</strong> (used for COSO) is <strong>NOT </strong>considered, as there is NO migration plan.</div>
 
 <h2 style="margin-top: 16px;">Back up configuration</h2>
 
-<p style="margin-top: 16px;">&lt; Introduction TBD&gt;</p>
+<p style="margin-top: 16px;">This section focuses on a set of MUST do steps before the start of Migration. This would ensure that the existing integrations and configurations, post migration to 2019.11 would be in a healthy state and functional.</p>
 
 <h3 style="margin-top: 16px;">Get the number of Replica Sets</h3>
 
@@ -104,6 +106,10 @@ yum install jq -y</code></pre>
 
 <p style="margin-top: 16px;">Follow the instructions in the below document to clear/purge the UCMDB history<br>
 <a href="https://docs.microfocus.com/itom/Operations_Bridge_Manager:2019.11/ServerAdminPurgingTr" target="_blank">https://docs.microfocus.com/itom/Operations_Bridge_Manager:2019.11/ServerAdminPurgingTr</a></p>
+
+<h3 style="margin-top: 16px;">Back up db connections in BVD</h3>
+
+<div class="Admonition_Note" style="margin-top: 16px;"><strong>Note</strong>: Chose to skip this section if BVD as a capability was not installed in your previous OpsBridge Suite environment.</div>
 
 <h2 style="margin-top: 16px;">Bring down the cluster</h2>
 
