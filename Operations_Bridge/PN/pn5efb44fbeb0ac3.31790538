@@ -135,8 +135,12 @@ for f in $(df | awk '/kubernetes/ {print $6}'); do umount $f; done</code></pre>
 <h3 style="margin-top: 16px;">Pre-requisite</h3>
 
 <ul>
-	<li style="margin-top: 16px;">Make sure that the CDF cluster is DOWN.</li>
-	<li style="margin-top: 16px;">Enough space for taking the Postgres dump</li>
+	<li style="margin-top: 16px;">
+	<p>Make sure that the CDF cluster is DOWN.</p>
+	</li>
+	<li style="margin-top: 16px;">
+	<p>Enough space for taking the Postgres dump</p>
+	</li>
 </ul>
 
 <h3 style="margin-top: 16px;">Check postgres connection with super user</h3>
@@ -363,7 +367,7 @@ Try connecting to the databases using the Suite user name</p>
 
 <h2>Install 2019.11&nbsp;</h2>
 
-<p>&lt;Introduction TBD&gt;</p>
+<p>This section guides you through the settings/credentials which needs to be used from the previous OpsBridge Suite, during the course of installing OpsBridge Suite 2019.11 with External Postgres.</p>
 
 <h3>Maintain the old Administrator Password</h3>
 
@@ -371,7 +375,7 @@ Try connecting to the databases using the Suite user name</p>
 
 <h3>Capabilities</h3>
 
-<p>Feel free to choose additional capabilities as compared to ones chosen in the previous version of OpsBridge Suite.<br>
+<p>Feel free to choose additional capabilities as compared to ones chosen in the previous version of OpsBridge Suite set up.<br>
 <img alt="" border="1" file="" height="299" hspace="0" src="/mediawiki/images/pn_images/pn_image_5f0302d89f4407.30330001.jpeg" style="width: 800px; height: 299px; margin: 0px; border: 1px solid black;" vspace="0" width="800"></p>
 
 <h3>Database</h3>
@@ -387,7 +391,7 @@ Try connecting to the databases using the Suite user name</p>
 <h4>Single Master to Multi-Master switch</h4>
 
 <p>Single Master to Single Master, keep the same FQDN as that of the previous set up as the External Hostname.<br>
-Single Master to Multi Master (for Master High availability), make sure you configure the previous value of External Hostname as a VIP and update the same in the field External Hostname. Which would mean, one would need 3 new nodes to be added as Master Nodes. And the Master’s IP and FQDN from the previous OpsBridge Suite set up should be used as HA_VIRTUAL_IP. The Old Single Master node should NOT be up and&nbsp;running.</p>
+Single Master to Multi Master (for Master High availability), make sure you configure the previous value of External Hostname as a VIP and update the same in the field External Hostname. Which would mean, one would need 3 new nodes to be added as Master Nodes. And the Master’s IP and FQDN from the previous version OpsBridge Suite set up should be used as HA_VIRTUAL_IP. The Old Single Master node should NOT be up and&nbsp;running.</p>
 
 <div class="Admonition_Important">This is very crucial for integrations.</div>
 
@@ -468,7 +472,7 @@ Single Master to Multi Master (for Master High availability), make sure you conf
 
 <div class="Admonition_Note"><strong>Note</strong>: The Vertica DB, user and credentials needs to be provided as per the new set up.</div>
 
-<p>Once the ucmd pod is up and running, restore the Master_key, with the value saved from the old OpsBridge Suite set up.<br>
+<p>Once the ucmd pod is up and running, restore the Master_key, with the value saved from the previous OpsBridge Suite set up.<br>
 update_secret MASTER_KEY &lt;ValueSaved&gt;</p>
 
 <h3>Configure the YAML</h3>
@@ -519,6 +523,10 @@ kubectl cp /tmp/sample_ucmdb_config.json &lt;opsbridge_namespace&gt;/&lt;itom-op
 <p>Copy the RID_ca.crt into the OBM container. And then login to the OBM pod and run the following commands to update the Trusted Certificates.</p>
 
 <pre><code>kubectl cp /tmp/RID_ca.crt &lt;opsbridge-namespace&gt;/omi-0:/tmp -c omi
+
+kubectl exec &lt;omi-POD&gt; -c omi -n &lt;opsbridge-namespace&gt; -ti -- bash
+su – omiuser
+
 /opt/OV/bin/ovcert -list
 /opt/OV/bin/ovcert -remove "&lt;MF CDF RID CA on &gt;" -ovrg server -f
 /opt/OV/bin/ovcert -importtrusted -file /tmp/RID_ca.crt -ovrg server
@@ -553,5 +561,90 @@ ovcert -updatetrusted</code></pre>
 /usr/lpp/OV/bin/ovcert -remove "&lt;MF CDF RID CA on &gt;" -ovrg server -f
 /usr/lpp/OV/bin/ovcert -updatetrusted</code></pre>
 
-<p>ere</p>
+<h4>Customers with multiple Data Sources</h4>
+
+<p>They can use the feature of Tools to achieve the same. Login to the OBM UI and create a new tool by following the below instructions.</p>
+
+<address><strong>Administration &gt;&gt; Operations Console &gt;&gt; Tools<br>
+CI Types &gt;&gt; Infrastructure Element &gt;&gt; Node &gt;&gt; Computer</strong></address>
+
+<p>Select the option to create a new tool. Name it as per the your choice.<br>
+Make sure to select the Category as Other Category and Operations Agent from the Drop down Menu.<br>
+<img alt="" border="1" file="" height="436" hspace="0" src="https://docs.microfocus.com/mediawiki/images/a/a2/Enable_streaming.jpg" style="width:502px;height:436px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:1px solid black;" vspace="0" width="502"><br>
+In the command Tab, enter the following command. Make sure to replace the External Host Name in the command with the one reflected in the MF CDF RID CA on the Data Sources/Nodes.</p>
+
+<pre><code>ovdeploy -cmd "ovcert -remove \"MF CDF RID CA on &lt;External Host Name&gt;\" -f " -host ${opr.monitor.host} -ovrg server; ovdeploy -cmd "ovcert -updatetrusted" -host ${opr.monitor.host} -ovrg server</code></pre>
+
+<p>Make sure the Target, Run on is chosen as Management Server. Once the details are entered, click on OK to SAVE.<br>
+<img alt="" border="1" file="" height="438" hspace="0" src="https://docs.microfocus.com/mediawiki/images/a/a7/Enable_streaming_2.jpg" style="width:501px;height:438px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:1px solid black;" vspace="0" width="501"><br>
+On the execution side, traverse to below UI. Select the Node or Node list and Select Launch Tool option. Select the above Tool and click on RUN button. One would see the execution results as shown below.</p>
+
+<address><strong>Administration &gt;&gt; Setup and Maintenance &gt;&gt; Monitored Nodes &gt;&gt; Nodes with Operations Agent</strong></address>
+
+<p><img alt="" border="1" file="" height="449" hspace="0" src="/mediawiki/images/pn_images/pn_image_5f071aaf0e1c51.60527513.jpeg" style="width: 800px; height: 449px; margin: 0px; border: 1px solid black;" vspace="0" width="800"></p>
+
+<h4>Validate the connectivity</h4>
+
+<h5>Check the details of the RID CA on Server and Node</h5>
+
+<p>If you have keytool installed on your Linux nodes, then run the below command. Once must take a note on the Owner, Issues and MD5 values.</p>
+
+<pre><code class="language-bash">keytool -printcert -v -file ca.crt | egrep "Certificate\[|Owner|Issuer|MD5"</code></pre>
+
+<p>Wherein, the ca.crt would the result of the below command (on both OBM and Managed streaming nodes)<br>
+<strong>Linux Nodes</strong></p>
+
+<pre><code class="language-bash">/opt/OV/bin/ovcert -exporttrusted -file ca.crt</code></pre>
+
+<p>For Windows, one can get the certificate file to a Linux node, and do the above steps mentioned.<br>
+<strong>AIX Nodes</strong></p>
+
+<pre><code class="language-bash">/opt/OV/bin/ovcert -exporttrusted -file ca.crt</code></pre>
+
+<h5><img alt="" border="1" file="" height="138" hspace="0" src="/mediawiki/images/pn_images/pn_image_5f071aaf7440c2.60709731.jpeg" style="width: 800px; height: 138px; margin: 0px; border: 1px solid black;" vspace="0" width="800"><br>
+Using the bbcutil ping</h5>
+
+<p>One can also validate to see if there is NO eSSLError, while executing bbcutil -ping to the Data Receiver Endpoint. eServiceError is what is is expected, which would mean that there are NO SSL errors.<br>
+<strong>Linux Nodes</strong></p>
+
+<pre><code>/opt/OV/bin/bbcutil -ping https://&lt;External_HostName&gt;:36500/itomdi/receiver</code></pre>
+
+<p><strong>Windows Nodes</strong></p>
+
+<pre><code>bbcutil -ping https://&lt;External_HostName&gt;:36500/itomdi/receiver</code></pre>
+
+<p><strong>AIX Nodes</strong></p>
+
+<pre><code>/usr/lpp/OV/bin/bbcutil -ping https://&lt;External_HostName&gt;:36500/itomdi/receiver</code></pre>
+
+<p><img alt="" border="1" file="" height="81" hspace="0" src="/mediawiki/images/pn_images/pn_image_5f071ab01b6677.42670546.jpeg" style="width: 800px; height: 81px; margin: 0px; border: 1px solid black;" vspace="0" width="800"></p>
+
+<h3>Restore BVD db connections</h3>
+
+<p>You need to set up database connection in BVD 2019.11 as shown below with the external database that was used for BVD with previous version of&nbsp;OpsBridge Suite set up to ensure that the dashboard is able to display all the data elements. &nbsp;<br>
+Click Setting and select Data Collectors.&nbsp;<br>
+On Data Collectors page, click three dots (as shown below) and select DB Connection Setting.&nbsp;<br>
+Fill in all required details in SET UP DB CONNECTION form. The details you enter here should contain the same information as in previous BVD database connection.<br>
+Click TEST CONNECTION to ensure the database connection.&nbsp;<br>
+Click SAVE SETTINGS.&nbsp;<br>
+<br>
+Once you have set up the database connection, you need to run all the queries at least once in BVD 2019.11 to enable dashboards to show all the data elements.&nbsp;<br>
+Click settings, select Data Collectors to list all the data or parameter queries.&nbsp;<br>
+Click edit button to view all the details of the query.&nbsp;<br>
+Click RUN under Query*.<br>
+After you run the query, click SAVE DATA QUERY.&nbsp;<br>
+You need to edit and run all the queries listed under Data Collector.&nbsp;<br>
+<br>
+Once you perform all of the above steps, view the dashboards to verify whether you can see all the dashboard elements.<br>
+For example, when you run a data query called Multicategory and save the query, you will be able to see the updated values on the dashboard. When you hover mouse-pointer over Multicategory under Data Channel, you will see when was the latest update made.<br>
+<br>
+OBM User Roles<br>
+Post migration you may observe few custom user roles do not retain permissions granted in previous OpsBridge installation. &nbsp;Follow below steps to fix this issue:<br>
+Login to OBM<br>
+Navigate to Administration &gt; Users &gt; Users, Groups, and Roles menu in OBM.<br>
+Select the role<br>
+Edit the role<br>
+Save Role<br>
+BVD Users &amp; Groups<br>
+In few cases It was observed that post migration BVD does not retain Users and Groups attributes. Hence edit the settings for each of these objects and restore them manually</p>
 </html>
