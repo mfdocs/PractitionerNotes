@@ -223,7 +223,7 @@ pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;rtsm&gt; -p &lt;pg_port&gt; -U &lt;s
 <h3 style="margin-top: 16px;">Upgrade the Postgres version</h3>
 
 <p style="margin-top: 16px;">Back up the existing pg_hba.conf and postgresql.conf<br>
-Take a back up of the below .conf files from the Postgres server.</p>
+Take a backup of the below .conf files from the Postgres server.</p>
 
 <div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;">/var/lib/pgsql/9.5/data/pg_hba.conf<br>
 /var/lib/pgsql/9.5/data/postgresql.conf</div>
@@ -370,13 +370,13 @@ Try connecting to the databases using the Suite user name</p>
 
 <p>Drop the old data bases after stopping them. And make sure to upgrade the Vertica to the version supported by OpsBridge Suite 2019.11</p>
 
-<h2>Uninstall Older version of OpsBridge Suite</h2>
+<h2>Uninstall older version of OpsBridge Suite</h2>
 
 <p>Follow the steps mentioned in the respective OpsBridge Suite version document to completely uninstall the Suite.&nbsp;</p>
 
 <h2>Install 2019.11&nbsp;</h2>
 
-<p>This section guides you through the settings/credentials which needs to be used from the previous OpsBridge Suite, during the course of installing OpsBridge Suite 2019.11 with External Postgres.</p>
+<p>This section guides you through the settings/credentials which needs to be used from the previous version of OpsBridge Suite, during the course of installing OpsBridge Suite 2019.11 with External Postgres.</p>
 
 <h3>Maintain the old Administrator Password</h3>
 
@@ -389,7 +389,7 @@ Try connecting to the databases using the Suite user name</p>
 
 <h3>Database</h3>
 
-<p>Select PostgreSQL option instead of Out-of-the-box PostgreSQL. Make sure you enter the same Database Host, Port associated with the external Postgres which was used in the previous OpsBridge Suite set up. Similarly maintain the same entries for Database Name, User and Password, which was used in the previous OpsBridge Suite set up . Ignore the warning as the DB (though created) would be empty. &nbsp;</p>
+<p>Select PostgreSQL option instead of Out-of-the-box PostgreSQL. Make sure you enter the same Database Host, Port associated with the external Postgres which was used in the previous version of OpsBridge Suite set up. Similarly maintain the same entries for Database Name, User and Password, which was used in the previous version of OpsBridge Suite set up. Ignore the warning as the DB (though created) would be empty. &nbsp;</p>
 
 <h3>Deployment Size</h3>
 
@@ -399,8 +399,8 @@ Try connecting to the databases using the Suite user name</p>
 
 <h4>Single Master to Multi-Master switch</h4>
 
-<p>Single Master to Single Master, keep the same FQDN as that of the previous set up as the External Hostname.<br>
-Single Master to Multi Master (for Master High availability), make sure you configure the previous value of External Hostname as a VIP and update the same in the field External Hostname. Which would mean, one would need 3 new nodes to be added as Master Nodes. And the Master’s IP and FQDN from the previous version OpsBridge Suite set up should be used as HA_VIRTUAL_IP. The Old Single Master node should NOT be up and&nbsp;running.</p>
+<p>Single Master to Single Master, keep the same FQDN as that of the previous version of OpsBridge Suite set up as the External Hostname.<br>
+Single Master to Multi Master (for Master High availability), make sure you configure the previous value of External Hostname as a VIP and update the same in the field External Hostname. Which would mean, one would need 3 new nodes to be added as Master Nodes. And the Master’s IP and FQDN from the previous version of&nbsp;OpsBridge Suite set up should be used as HA_VIRTUAL_IP. The Old Single Master node should NOT be up and&nbsp;running.</p>
 
 <div class="Admonition_Important">This is very crucial for integrations.</div>
 
@@ -422,24 +422,24 @@ Single Master to Multi Master (for Master High availability), make sure you conf
 		<tr>
 			<td>Multiple Master</td>
 			<td>Multiple Master</td>
-			<td>Keep the same as used in previous version of Ops Bridge Suite, which would be the HA_VIRTUAL_IP</td>
+			<td>Keep the same as used in previous version of OpsBridge Suite set up, which would be the HA_VIRTUAL_IP</td>
 		</tr>
 		<tr>
 			<td>Single Master</td>
 			<td>Single Master</td>
-			<td>Keep the same as used in previous version of Ops Bridge Suite, which would be the FQDN of the Single Master</td>
+			<td>Keep the same as used in previous version of OpsBridge Suite set up, which would be the FQDN of the Single Master</td>
 		</tr>
 		<tr>
 			<td>Single Master</td>
 			<td>Multiple Master</td>
-			<td>Configure the External Hostname, which was used in previous OpsBridge Suite version, as the HA_VIRTUAL_IP of the new 2019.11 set up. And this would mandate additional Master nodes as part of the cluster infrastructure.</td>
+			<td>Configure the External Hostname, which was used in previous version of OpsBridge Suite set up, as the HA_VIRTUAL_IP of the new 2019.11 set up. And this would mandate additional Master nodes as part of the cluster infrastructure.</td>
 		</tr>
 	</tbody>
 </table>
 
 <h4>Custom certificates</h4>
 
-<p>Select the option ‘Use custom certificates’ and upload the respective RE_CA.CRT, CHAIN.PEM and KEY.PM <a href="#Back up Certificate realms and PEM files">exported from the previous version of OpsBridge Suite</a> as shown below.</p>
+<p>Select the option ‘Use custom certificates’ and upload the respective RE_CA.CRT, CHAIN.PEM and KEY.PM <a href="#Back up Certificate realms and PEM files">exported from the previous version of OpsBridge Suite</a>&nbsp;set up as shown below.</p>
 
 <table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
 	<tbody>
@@ -460,23 +460,23 @@ Single Master to Multi Master (for Master High availability), make sure you conf
 
 <h3>Deploy Operations Bridge</h3>
 
-<p>Make sure you enter the values (for user nameand password as part of credentials) which were used in the previous version of OpsBridge Suite set up. The below set of guidance must be strictly followed.</p>
+<p>Make sure you enter the values (for user name and password as part of credentials) which were used in the previous version of OpsBridge Suite set up. The below set of guidance must be strictly followed.</p>
 
 <div class="Admonition_Important">Choose Custom configuration.</div>
 
-<div class="Admonition_Important">Use the certificate generated by the ITOM platform or use Upload certificates (in case if you had uploaded custom certificates for previous version of OpsBridge Suite).</div>
+<div class="Admonition_Important">Use the certificate generated by the ITOM platform or use Upload certificates (in case if you had uploaded custom certificates for previous version of OpsBridge Suite set up).</div>
 
-<div class="Admonition_Important">For JMX password, set the password for the Jmx administrator to same as configured in the previous version of&nbsp;OpsBridge.</div>
+<div class="Admonition_Important">For JMX password, set the password for the Jmx administrator to same as configured in the previous version of&nbsp;OpsBridge Suite set up.</div>
 
-<div class="Admonition_Important">For Database settings, set the names to same as configured in the previous version OpsBridge Suite</div>
+<div class="Admonition_Important">For Database settings, set the names to same as configured in the previous version of OpsBridge Suite set up</div>
 
-<div class="Admonition_Important">Enable high availability for Operations Bridge Manager, if it was set in the previous version of OpsBridge Suite. If it was not, you can still opt for High Availability for 2019.11.</div>
+<div class="Admonition_Important">Enable high availability for Operations Bridge Manager, if it was set in the previous version of OpsBridge Suite set up. If it was not, you can still opt for High Availability for 2019.11.</div>
 
-<div class="Admonition_Important">Select the Management Packs which were chosen in the previous version of OpsBridge Suite.</div>
+<div class="Admonition_Important">Select the Management Packs which were chosen in the previous version of OpsBridge Suite set up.</div>
 
-<div class="Admonition_Important">For BVD Login, use suite default administrative user account in case if you didn’t had custom credentials set in the previous version of OpsBridge Suite.</div>
+<div class="Admonition_Important">For BVD Login, use suite default administrative user account in case if you didn’t had custom credentials set in the previous version of OpsBridge Suite set up.</div>
 
-<div class="Admonition_Important">For BVD Database, set the names to same as configured in the previous version of OpsBridge Suite.</div>
+<div class="Admonition_Important">For BVD Database, set the names to same as configured in the previous version of OpsBridge Suite set up.</div>
 &nbsp;
 
 <div class="Admonition_Note"><strong>Note</strong>: The Vertica DB, user and credentials needs to be provided as per the new set up.</div>
@@ -577,7 +577,7 @@ ovcert -updatetrusted</code></pre>
 <address><strong>Administration &gt;&gt; Operations Console &gt;&gt; Tools<br>
 CI Types &gt;&gt; Infrastructure Element &gt;&gt; Node &gt;&gt; Computer</strong></address>
 
-<p>Select the option to create a new tool. Name it as per the your choice.<br>
+<p>Select the option to create a new tool. Name it as per your choice.<br>
 Make sure to select the Category as Other Category and Operations Agent from the Drop down Menu.<br>
 <img alt="" border="1" file="" height="436" hspace="0" src="https://docs.microfocus.com/mediawiki/images/a/a2/Enable_streaming.jpg" style="width:502px;height:436px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:1px solid black;" vspace="0" width="502"><br>
 In the command Tab, enter the following command. Make sure to replace the External Host Name in the command with the one reflected in the MF CDF RID CA on the Data Sources/Nodes.</p>
@@ -613,7 +613,7 @@ On the execution side, traverse to below UI. Select the Node or Node list and Se
 <h5><img alt="" border="1" file="" height="138" hspace="0" src="/mediawiki/images/pn_images/pn_image_5f071aaf7440c2.60709731.jpeg" style="width: 800px; height: 138px; margin: 0px; border: 1px solid black;" vspace="0" width="800"><br>
 Using the bbcutil ping</h5>
 
-<p>One can also validate to see if there is NO eSSLError, while executing bbcutil -ping to the Data Receiver Endpoint. eServiceError is what is is expected, which would mean that there are NO SSL errors.<br>
+<p>One can also validate to see if there is NO eSSLError, while executing bbcutil -ping to the Data Receiver Endpoint. eServiceError is what is expected, which would mean that there are NO SSL errors.<br>
 <strong>Linux Nodes</strong></p>
 
 <pre><code>/opt/OV/bin/bbcutil -ping https://&lt;External_HostName&gt;:36500/itomdi/receiver</code></pre>
@@ -651,11 +651,11 @@ Using the bbcutil ping</h5>
 </ol>
 
 <p>Once you perform all of the above steps, view the dashboards to verify whether you can see all the dashboard elements.<br>
-For example, when you run a data query called Multicategory and save the query, you will be able to see the updated values on the dashboard. When you hover mouse-pointer over Multicategory under Data Channel, you will see when was the latest update made.</p>
+For example, when you run a data query called Multi-category and save the query, you will be able to see the updated values on the dashboard. When you hover mouse-pointer over Multi-category under Data Channel, you will see when was the latest update made.</p>
 
 <h3>OBM User Roles</h3>
 
-<p>Post migration you may observe few custom user roles do not retain permissions granted in previous OpsBridge installation. &nbsp;Follow below steps to fix this issue:</p>
+<p>Post migration you may observe few custom user roles do not retain permissions granted in previous version of OpsBridge suite set up. &nbsp;Follow below steps to fix this issue:</p>
 
 <ol>
 	<li>Login to OBM UI</li>
@@ -667,5 +667,5 @@ For example, when you run a data query called Multicategory and save the query, 
 
 <h3>BVD Users &amp; Groups</h3>
 
-<p>In few cases It was observed that post migration BVD does not retain Users and Groups attributes. Hence edit the settings for each of these objects and restore them manually.</p>
+<p>In few cases it&nbsp;was observed that post migration BVD does not retain Users and Groups attributes. Hence edit the settings for each of these objects and restore them manually.</p>
 </html>
