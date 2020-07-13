@@ -265,18 +265,18 @@ host all all ::/0 md5</div>
 
 <p style="margin-top: 16px;"><strong>File Name:&nbsp;</strong>postgresql.conf<br>
 <strong>Location:</strong> /var/lib/pgsql/10/data<br>
-Remove the comment and change the entries of listen_addresses and port to below</p>
+Remove the comment and change the entries of listen_addresses and port to below.</p>
 
 <div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;">listen_addresses = '*'<br>
 port = &lt;pg_port&gt;</div>
 
-<p style="margin-top: 16px;">Followed by the restart of the service by running the below command</p>
+<p style="margin-top: 16px;">Followed by the restart of the service by running the below command.</p>
 
 <pre><code class="language-bash">systemctl restart postgresql-10.service</code></pre>
 
 <h3 style="margin-top: 16px;">Restore the DUMP</h3>
 
-<p style="margin-top: 16px;">Recreate the Databases and users which existed in Old OpsBridge Postgres DB</p>
+<p style="margin-top: 16px;">Recreate the Databases and users which existed in the previous version of OpsBridge Postgres DB.</p>
 
 <pre><code>CREATE ROLE &lt;cdfidmuser&gt; WITH LOGIN PASSWORD '&lt;Password&gt;' ;
 CREATE DATABASE &lt;cdfidmdb&gt; OWNER &lt;cdfidmuser&gt; ;
@@ -297,7 +297,17 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" ;</code>
 </pre>
 
 <p style="margin-top: 16px;">Check for<strong> \list+, \dn+ and \du+</strong> commands to check the current state.<br>
-Once the DB is restored, run the below commands to make the necessary changes for all the Suite Databases.</p>
+<br>
+Restore the DUMP using the PSQL of upgraded version. One can check the respective DB log files for any errors. Make sure the database names should be same to that of ones in the previous version of OpsBridge Suite set up.</p>
+
+<pre><code>psql -X -q -h &lt;pg_host&gt; -p &lt;pg_port&gt; -U postgres -d &lt;autopassdb&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;autopassdb&gt;.sql -L restore_&lt;autopassdb&gt;.log
+psql -X -q -h &lt;pg_host&gt; -p &lt;pg_port&gt; -U postgres -d &lt;cdfidmdb&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;cdfidmdb&gt;.sql -L restore_&lt;cdfidmdb&gt;.log
+psql -X -q -h &lt;pg_host&gt; -p &lt;pg_port&gt; -U postgres -d &lt;bvd&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;bvddb&gt;.sql -L restore_&lt;bvd&gt;.log
+psql -X -q -h &lt;pg_host&gt; -p &lt;pg_port&gt; -U postgres -d &lt;event&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;eventdb&gt;.sql -L restore_&lt;event&gt;.log
+psql -X -q -h &lt;pg_host&gt; -p &lt;pg_port&gt; -U postgres -d &lt;mgmt&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;mgmtdb&gt;.sql -L restore_&lt;mgmt&gt;.log
+psql -X -q -h &lt;pg_host&gt; -p &lt;pg_port&gt; -U postgres -d &lt;rtsm&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;rtsmdb&gt;.sql -L restore_&lt;rtsm&gt;.log</code></pre>
+
+<p style="margin-top: 16px;">Once the DB is restored, run the below commands to make the necessary changes for all the Suite Databases.</p>
 
 <pre><code>GRANT &lt;cdfidmuser&gt; TO postgres ; 
 
