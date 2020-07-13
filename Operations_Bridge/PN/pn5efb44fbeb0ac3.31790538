@@ -214,7 +214,7 @@ Successfully removed #N large objects from database "&lt;suite_db_name&gt;".<br>
 Run the below command to create the dump file for all the databases:</p>
 
 <pre><code>pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;autopassdb&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;autopassdb&gt;.sql ;
-pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;cdfidmdb&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;cdfidmdb&gt;.sql '
+pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;cdfidmdb&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;cdfidmdb&gt;.sql ;
 pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;bvd&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;bvddb&gt;.sql ;
 pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;event&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;eventdb&gt;.sql ;
 pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;mgmt&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;mgmtdb&gt;.sql ;
@@ -300,12 +300,12 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" ;</code>
 <br>
 Restore the DUMP using the PSQL of upgraded version. One can check the respective DB log files for any errors. Make sure the database names should be same to that of ones in the previous version of OpsBridge Suite set up.</p>
 
-<pre><code>psql -X -q -h &lt;pg_host&gt; -p &lt;pg_port&gt; -U postgres -d &lt;autopassdb&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;autopassdb&gt;.sql -L restore_&lt;autopassdb&gt;.log
-psql -X -q -h &lt;pg_host&gt; -p &lt;pg_port&gt; -U postgres -d &lt;cdfidmdb&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;cdfidmdb&gt;.sql -L restore_&lt;cdfidmdb&gt;.log
-psql -X -q -h &lt;pg_host&gt; -p &lt;pg_port&gt; -U postgres -d &lt;bvd&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;bvddb&gt;.sql -L restore_&lt;bvd&gt;.log
-psql -X -q -h &lt;pg_host&gt; -p &lt;pg_port&gt; -U postgres -d &lt;event&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;eventdb&gt;.sql -L restore_&lt;event&gt;.log
-psql -X -q -h &lt;pg_host&gt; -p &lt;pg_port&gt; -U postgres -d &lt;mgmt&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;mgmtdb&gt;.sql -L restore_&lt;mgmt&gt;.log
-psql -X -q -h &lt;pg_host&gt; -p &lt;pg_port&gt; -U postgres -d &lt;rtsm&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;rtsmdb&gt;.sql -L restore_&lt;rtsm&gt;.log</code></pre>
+<pre><code>psql -X -q -h &lt;pg_host&gt; -p &lt;pg_port&gt; -U postgres -d &lt;autopassdb&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;autopassdb&gt;.sql -L /tmp/restore_&lt;autopassdb&gt;.log ;
+psql -X -q -h &lt;pg_host&gt; -p &lt;pg_port&gt; -U postgres -d &lt;cdfidmdb&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;cdfidmdb&gt;.sql -L /tmp/restore_&lt;cdfidmdb&gt;.log ;
+psql -X -q -h &lt;pg_host&gt; -p &lt;pg_port&gt; -U postgres -d &lt;bvd&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;bvddb&gt;.sql -L /tmp/restore_&lt;bvd&gt;.log ;
+psql -X -q -h &lt;pg_host&gt; -p &lt;pg_port&gt; -U postgres -d &lt;event&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;eventdb&gt;.sql -L /tmp/restore_&lt;event&gt;.log ;
+psql -X -q -h &lt;pg_host&gt; -p &lt;pg_port&gt; -U postgres -d &lt;mgmt&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;mgmtdb&gt;.sql -L /tmp/restore_&lt;mgmt&gt;.log ;
+psql -X -q -h &lt;pg_host&gt; -p &lt;pg_port&gt; -U postgres -d &lt;rtsm&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;rtsmdb&gt;.sql -L /tmp/restore_&lt;rtsm&gt;.log ;</code></pre>
 
 <p style="margin-top: 16px;">Once the DB is restored, run the below commands to make the necessary changes for all the Suite Databases.</p>
 
