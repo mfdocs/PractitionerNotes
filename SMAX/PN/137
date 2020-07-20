@@ -10,7 +10,7 @@
 	<pre><code>$K8S_HOME/scripts/cdfctl.sh runlevel set -l DOWN
 kubectl patch daemonset fluentd -n core -p '{"spec": {"template": {"spec": {"nodeSelector": {"non-existing": "true"}}}}}'</code></pre>
 	</li>
-	<li>&gt;Run the script provided on this page on one master node or the bastion node.</li>
+	<li>Run the script provided on this page on one master node or the bastion node.</li>
 	<li>Check that all PVs are set up correctly, go to /tmp/Persistentvolume/pv/{namespace}/new, and check the content.</li>
 	<li>Restart the Kubernetes cluster as described in the "Restart the SMA Suite" topic.
 	<pre>#start up CDF and SMAX cdfctl.sh runlevel set -l UP
