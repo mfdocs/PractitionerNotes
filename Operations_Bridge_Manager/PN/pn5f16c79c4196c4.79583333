@@ -1,1 +1,473 @@
- 
+<html><title></title>
+<form name="frmUgAdviser"><font color="#0155EF"><script language="javascript">
+    //Version History
+    //Date: 30-June-2020  v1.00  - Initial workup and design 		- ColingG
+    //Date: 09-July-2020  v1.01  - Scoring and Influence design		- ColingG
+    //Date: 09-July-2020  v1.02  - If hardware available and moving	- ColingG
+    //				   data center then recommend in-place
+    //Date: 10-July-2020  v2.00	- Changed scoring to include additional	- ColingG
+    //				  weighting plus selectable percentage.
+   //				  Added Expert Mode
+					
+    function scoring(){
+	var inPlaceScore = 0;
+	var sideBySideScore = 0;
+	var IPdowntimeScore = 0;
+	var IPrestoreScore = 0;
+	var IPserverNameScore = 0;
+	var IPnewOsScore = 0;
+	var IPhardwareScore = 0;
+	var SBSdowntimeScore = 0;
+	var SBSrestoreScore = 0;
+	var SBSserverNameScore = 0;
+	var SBSnewOsScore = 0;
+	var SBShardwareScore = 0;
+	var inPlaceScorePct = 0;
+	var sideBySideScorePct = 0;
+
+	var Weighting = 5;
+
+	if(document.frmUgAdviser.expert_mode.checked == true){
+	        document.frmUgAdviser.downtime_score_ip.style.visibility = "visible";
+	        document.frmUgAdviser.downtime_score_sbs.style.visibility = "visible";
+	        document.frmUgAdviser.restore_score_ip.style.visibility = "visible";
+	        document.frmUgAdviser.restore_score_sbs.style.visibility = "visible";
+	        document.frmUgAdviser.server_name_score_ip.style.visibility = "visible";
+	        document.frmUgAdviser.server_name_score_sbs.style.visibility = "visible";
+	        document.frmUgAdviser.new_os_score_ip.style.visibility = "visible";
+	        document.frmUgAdviser.new_os_score_sbs.style.visibility = "visible";
+	        document.frmUgAdviser.hardware_score_ip.style.visibility = "visible";
+	        document.frmUgAdviser.hardware_score_sbs.style.visibility = "visible";
+	        document.frmUgAdviser.influence_score_ip.style.visibility = "visible";
+	        document.frmUgAdviser.influence_score_sbs.style.visibility = "visible";
+	}
+	else {
+	        document.frmUgAdviser.downtime_score_ip.style.visibility = "hidden";
+	        document.frmUgAdviser.downtime_score_sbs.style.visibility = "hidden";
+	        document.frmUgAdviser.restore_score_ip.style.visibility = "hidden";
+	        document.frmUgAdviser.restore_score_sbs.style.visibility = "hidden";
+	        document.frmUgAdviser.server_name_score_ip.style.visibility = "hidden";
+	        document.frmUgAdviser.server_name_score_sbs.style.visibility = "hidden";
+	        document.frmUgAdviser.new_os_score_ip.style.visibility = "hidden";
+	        document.frmUgAdviser.new_os_score_sbs.style.visibility = "hidden";
+	        document.frmUgAdviser.hardware_score_ip.style.visibility = "hidden";
+	        document.frmUgAdviser.hardware_score_sbs.style.visibility = "hidden";
+	        document.frmUgAdviser.influence_score_ip.style.visibility = "hidden";
+	        document.frmUgAdviser.influence_score_sbs.style.visibility = "hidden";
+	}
+
+        if (document.frmUgAdviser.downtime.value == "0"){
+		IPdowntimeScore = 0;
+		SBSdowntimeScore = 100;
+	}
+
+        if (document.frmUgAdviser.downtime.value == "1"){
+		IPdowntimeScore = 40;
+		SBSdowntimeScore = 60;
+	}
+
+        if (document.frmUgAdviser.downtime.value == "2"){
+		IPdowntimeScore = 50;
+		SBSdowntimeScore = 50;
+	}
+
+        if (document.frmUgAdviser.downtime.value == "3"){
+		IPdowntimeScore = 50;
+		SBSdowntimeScore = 50;
+	}
+
+        if (document.frmUgAdviser.restore.value == "Yes"){
+		IPrestoreScore = 0;
+		SBSrestoreScore = 100;
+
+	}
+		else if (document.frmUgAdviser.restore.value == "No"){
+			IPrestoreScore = 50;
+			SBSrestoreScore = 50;
+
+		}
+
+        if (document.frmUgAdviser.server_name.value == "Yes"){
+		IPserverNameScore = 0;
+		SBSserverNameScore = 100;
+
+	}
+		else if (document.frmUgAdviser.server_name.value == "No"){
+			IPserverNameScore = 50;
+			SBSserverNameScore = 50;
+		}
+
+        if (document.frmUgAdviser.new_os.value == "Yes"){
+		document.frmUgAdviser.server_name.value = "Yes";
+		IPnewOsScore = 0;
+		SBSnewOsScore = 100;
+
+	}
+		else if (document.frmUgAdviser.new_os.value == "No"){
+			IPnewOsScore = 50;
+			SBSnewOsScore = 50;
+		}
+
+        if (document.frmUgAdviser.hardware.value == "Yes"){
+		IPhardwareScore = 50;
+		SBShardwareScore = 50;
+	}
+		else if (document.frmUgAdviser.hardware.value == "No"){
+			IPhardwareScore = 100;
+			SBShardwareScore = 0;
+		}
+
+	//Influencers
+	if (document.frmUgAdviser.influence.value == "0"){
+	        document.frmUgAdviser.txahelp.style.visibility = "hidden";
+	        document.frmUgAdviser.txahelp.rows = "1";
+	}
+
+	if (document.frmUgAdviser.influence.value == "1"){
+	        document.frmUgAdviser.txahelp.style.visibility = "visible";
+	        document.frmUgAdviser.txahelp.rows = "2";
+	        document.frmUgAdviser.txahelp.value = "If moving to a new data center means moving to new hardware then a side-by-side" + "\r\n" + 
+	        "upgrade would required.";
+		IPhardwareScore = 0;
+		SBShardwareScore = 100;
+	}
+
+	if (document.frmUgAdviser.influence.value == "2"){
+	        document.frmUgAdviser.txahelp.style.visibility = "visible";
+	        document.frmUgAdviser.txahelp.rows = "3";
+	        document.frmUgAdviser.txahelp.value = "If the pre-production environment has a similar database size and similar setup to the" + "\r\n" + 
+	        "production environment then performing an upgrade in the pre-production environment"  + "\r\n" + 
+		"would provide more confidence in an in-place upgrade.";
+
+		if (document.frmUgAdviser.downtime.value == "0"){
+		//As Short As Possible
+		IPdowntimeScore = 50;
+		SBSdowntimeScore = 50;
+		}
+
+		if (document.frmUgAdviser.downtime.value == "1" || document.frmUgAdviser.downtime.value == "2" || document.frmUgAdviser.downtime.value == "3"){
+		//Less than 2hrs OR between 2 and 6 hrs OR 
+		IPdowntimeScore = 70;
+		SBSdowntimeScore = 30;
+		}
+
+	}
+
+	if (document.frmUgAdviser.influence.value == "3"){
+	        document.frmUgAdviser.txahelp.style.visibility = "visible";
+	        document.frmUgAdviser.txahelp.rows = "6";
+	        document.frmUgAdviser.txahelp.value = "Micro Focus offers services from Professional Services who can help with the following:" + "\r\n" + 
+	        "  o Upgrade Assessments" + "\r\n" + 
+		"  o Test Environment Upgrade Package" + "\r\n" + 
+		"  o Production Server Upgrade Package" + "\r\n" + 
+		"  o Plus additional services" + "\r\n" + 
+		"* Weighting not adjusted";
+	}
+
+	if (document.frmUgAdviser.influence.value == "4"){
+	        document.frmUgAdviser.txahelp.style.visibility = "visible";
+	        document.frmUgAdviser.txahelp.rows = "4";
+	        document.frmUgAdviser.txahelp.value = "With a side-by-side installation the Load Balancer only needs to be reconfigured so as to" + "\r\n" + 
+	        "point to the new servers, whereas without a load balancer the data collectors need to be"  + "\r\n" + 
+		"reconfigured."  + "\r\n" + 
+		"* Weighting not adjusted";
+	}
+
+	if (document.frmUgAdviser.influence.value == "5"){
+	        document.frmUgAdviser.txahelp.style.visibility = "visible";
+	        document.frmUgAdviser.txahelp.rows = "5";
+	        document.frmUgAdviser.txahelp.value = "OBM 2020.05 provides flash free Operational UI with Flash still used in the Administrative" + "\r\n" + 
+	        "UIs. Flash will be removed for the Administrative UIs by the end of the year."  + "\r\n" + 
+		"It is recommended to upgrade to 2020.05 and then use the update at the end of the year to"  + "\r\n" + 
+		"finalize the installation."  + "\r\n" + 
+		"* Weighting not adjusted";
+	}
+
+		if (document.frmUgAdviser.weight_influence.value == "0"){
+			document.frmUgAdviser.weight_pct.style.visibility = "hidden";
+		}
+
+		if (document.frmUgAdviser.weight_influence.value == "1"){
+			document.frmUgAdviser.weight_pct.style.visibility = "visible";
+		}
+
+		if (document.frmUgAdviser.weight_influence.value == "2"){
+			document.frmUgAdviser.weight_pct.style.visibility = "visible";
+		}
+
+		if (document.frmUgAdviser.weight_influence.value == "3"){
+			document.frmUgAdviser.weight_pct.style.visibility = "visible";
+		}
+
+		if (document.frmUgAdviser.weight_influence.value == "4"){
+			document.frmUgAdviser.weight_pct.style.visibility = "visible";
+		}
+
+		if (document.frmUgAdviser.weight_influence.value == "5"){
+			document.frmUgAdviser.weight_pct.style.visibility = "visible";
+		}
+
+	if ((document.frmUgAdviser.downtime.value != "unselected") && (document.frmUgAdviser.restore.value != "unselected") && (document.frmUgAdviser.server_name.value != "unselected") && (document.frmUgAdviser.new_os.value != "unselected") && (document.frmUgAdviser.hardware.value != "unselected")){
+
+		if (document.frmUgAdviser.hardware.value == "No"){
+			IPdowntimeScore = 0;
+			IPrestoreScore = 0; 
+			IPserverNameScore = 0;
+			IPnewOsScore = 0;
+			IPhardwareScore = 500;
+			SBSdowntimeScore = 0;
+			SBSrestoreScore = 0;
+			SBSserverNameScore = 0;
+			SBSnewOsScore = 0;
+			SBShardwareScore = 0;
+			document.getElementById("server_name").value = "No";
+			document.getElementById("new_os").value = "No";
+		}
+
+
+		if (document.frmUgAdviser.server_name.value == "Yes"){
+			IPdowntimeScore = 0;
+			IPrestoreScore = 0; 
+			IPserverNameScore = 0;
+			IPnewOsScore = 0;
+			IPhardwareScore = 0;
+			SBSdowntimeScore = 0;
+			SBSrestoreScore = 0;
+			SBSserverNameScore = 500;
+			SBSnewOsScore = 0;
+			SBShardwareScore = 0;
+			document.getElementById("hardware").value = "Yes";
+		}
+
+		//if ((document.frmUgAdviser.restore.value == "Yes") && (document.frmUgAdviser.hardware.value == "Yes")){
+		//	inPlaceScore = 0 ;
+		//	sideBySideScore = 50;
+		//}
+
+		if ((document.frmUgAdviser.influence.value == "1") && (document.frmUgAdviser.hardware.value == "Yes")){
+			IPdowntimeScore = 0;
+			IPrestoreScore = 0; 
+			IPserverNameScore = 0;
+			IPnewOsScore = 0;
+			IPhardwareScore = 0;
+			SBSdowntimeScore = 0;
+			SBSrestoreScore = 0;
+			SBSserverNameScore = 0;
+			SBSnewOsScore = 0;
+			SBShardwareScore = 500;
+		}
+
+		wPct = Number(document.frmUgAdviser.weight_pct.value);
+
+		if (document.frmUgAdviser.weight_influence.value == "1"){
+			Weighting = Weighting + wPct;
+			IPdowntimeScore = (IPdowntimeScore * (1 + wPct));
+			SBSdowntimeScore = (SBSdowntimeScore * (1 + wPct));
+		}
+
+		if (document.frmUgAdviser.weight_influence.value == "2"){
+			Weighting = Weighting + wPct;
+			IPrestoreScore = (IPrestoreScore * (1 + wPct));
+			SBSrestoreScore = (SBSrestoreScore * (1 + wPct));
+		}
+
+		if (document.frmUgAdviser.weight_influence.value == "3"){
+			Weighting = Weighting + wPct;
+			IPserverNameScore = (IPserverNameScore * (1 + wPct));
+			SBSserverNameScore = (SBSserverNameScore * (1 + wPct));
+		}
+
+		if (document.frmUgAdviser.weight_influence.value == "4"){
+			Weighting = Weighting + wPct;
+			IPnewOsScore = (IPnewOsScore * (1 + wPct));
+			SBSnewOsScore = (SBSnewOsScore * (1 + wPct));
+		}
+
+		if (document.frmUgAdviser.weight_influence.value == "5"){
+			Weighting = Weighting + wPct;
+			IPhardwareScore = (IPhardwareScore * (1 + wPct));
+			SBShardwareScore = (SBShardwareScore * (1 + wPct));
+		}
+
+
+		inPlaceScore = IPdowntimeScore + IPrestoreScore + IPserverNameScore + IPnewOsScore + IPhardwareScore;
+		sideBySideScore = SBSdowntimeScore + SBSrestoreScore + SBSserverNameScore + SBSnewOsScore + SBShardwareScore;
+
+		if ( (inPlaceScore == 500) && (Weighting > 5)){
+			Weighting = 5;
+		}
+		inPlaceScorePct = (inPlaceScore / Weighting);
+
+		if ( (sideBySideScore == 500) && (Weighting > 5)){
+			Weighting = 5;
+		}
+		sideBySideScorePct = (sideBySideScore / Weighting);
+
+	}
+
+		var tblScore = document.getElementById("tblScore");
+
+		if (inPlaceScorePct > sideBySideScorePct){
+			//Green
+			tblScore.rows[1].cells[0].style.backgroundColor = "#bcf5cc";
+			//Red
+			tblScore.rows[1].cells[1].style.backgroundColor = "#f5cece";
+		}
+		if (sideBySideScorePct > inPlaceScorePct ){
+			//Red
+			tblScore.rows[1].cells[0].style.backgroundColor = "#f5cece";
+			//Green
+			tblScore.rows[1].cells[1].style.backgroundColor = "#bcf5cc";
+		}
+		
+		if ( (Number.isInteger(inPlaceScorePct)) || (Number.isInteger(sideBySideScorePct)) ){
+			tblScore.rows[1].cells[0].innerHTML="<strong>" + inPlaceScorePct + "%</strong>";
+			tblScore.rows[1].cells[1].innerHTML="<strong>" + sideBySideScorePct + "%</strong>";
+		}
+		else{
+			tblScore.rows[1].cells[0].innerHTML="<strong>" + inPlaceScorePct.toFixed(2) + "%</strong>";
+			tblScore.rows[1].cells[1].innerHTML="<strong>" + sideBySideScorePct.toFixed(2) + "%</strong>";
+		}
+
+		document.frmUgAdviser.downtime_score_ip.value = "In Place: " + IPdowntimeScore;
+		document.frmUgAdviser.downtime_score_sbs.value = "Side-by-Side: " + SBSdowntimeScore;
+		document.frmUgAdviser.restore_score_ip.value = "In Place: " + IPrestoreScore;
+		document.frmUgAdviser.restore_score_sbs.value = "Side-by-Side: " + SBSrestoreScore;
+		document.frmUgAdviser.server_name_score_ip.value = "In Place: " + IPserverNameScore;
+		document.frmUgAdviser.server_name_score_sbs.value = "Side-by-Side: " + SBSserverNameScore;
+		document.frmUgAdviser.new_os_score_ip.value = "In Place: " + IPnewOsScore;
+		document.frmUgAdviser.new_os_score_sbs.value = "Side-by-Side: " + SBSnewOsScore;
+		document.frmUgAdviser.hardware_score_ip.value = "In Place: " + IPhardwareScore;
+		document.frmUgAdviser.hardware_score_sbs.value = "Side-by-Side: " + SBShardwareScore;
+
+
+		document.frmUgAdviser.influence_score_ip.value = "Total In Place: " + inPlaceScore;
+		document.frmUgAdviser.influence_score_sbs.value = "Total Side-by-Side: " + sideBySideScore;
+
+
+    }
+</script>
+<style type="text/css"><!--
+body {
+font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
+              //controls the width of the table with id=report
+#report { width: 635px; }
+table{border-collapse: collapse; border: none; font: 10pt Verdana, Geneva, Arial, Helvetica, sans-serif; color: black; margin-bottom: 10px; width: 680px;}
+table td{font-size: 12px;padding-left: 0px;padding-right: 20px;text-align: center;vertical-align:center; width: 330px;}
+table th {font-size: 12px;font-weight: bold;padding-left: 0px;padding-right: 20px;text-align: left;}
+#report th {padding-top: 12px;padding-bottom: 12px;text-align: left;background-color: #00abf3;color: white;}
+#reportwide { width: 1235px; }
+#reportwide th {padding-top: 12px;padding-bottom: 12px;text-align: left;background-color: #00abf3;color: white;}
+#WarningReport th {padding-top: 12px;padding-bottom: 12px;text-align: left;background-color: #00abf3;color: white;}
+#ErrorReport th {padding-top: 12px;padding-bottom: 12px;text-align: left;background-color: #00abf3;color: white;}
+h2{ clear: both; font-size: 130%; }
+h3{clear: both;font-size: 115%;margin-left: 20px;margin-top: 30px;}
+p{ margin-left: 20px; font-size: 14px; }
+#report tr:nth-child(even){background-color: #f2f2f2;}
+#report tr:nth-child(odd){background-color: #E5E5E5;}
+#report tr:hover { background: #eab752; }
+#reportwide tr:nth-child(even){background-color: #f2f2f2;}
+#reportwide tr:nth-child(odd){background-color: #E5E5E5;}
+#reportwide tr:hover { background: #eab752; }
+#WarningReport tr:nth-child(even){background-color: #f2f2f2;}
+#WarningReport tr:nth-child(odd){background-color: #E5E5E5;}
+#WarningReport tr:hover { background: #eab752; }
+#ErrorReport tr:nth-child(even){background-color: #f2f2f2;}
+#ErrorReport tr:nth-child(odd){background-color: #E5E5E5;}
+#ErrorReport tr:hover { background: #eab752; }
+div.column { width: 700px; float: left; }
+div.first{ padding-right: 20px; border-right: 1px  grey solid; }
+div.second{ margin-left: 30px; }
+div.third{ margin-left: 30px; }
+
+.collapsible {background-color: #eee;color: #444;cursor: pointer;border: none;;outline: none;font-size: 15px;}
+.content {padding: 0 18px;display: none;overflow: hidden;background-color: #333230;}
+#myInput {font-size: 11px; padding: 6px 10px 6px 10px; width: 110px; border: 1px solid #ddd; }" 
+#myTable { table-layout: fixed; width: 635px; }
+#myTable {border-collapse: collapse; border: none; font: 10pt Verdana, Geneva, Arial, Helvetica, sans-serif; color: black; margin-bottom: 10px; }
+#myTable th {padding-top: 12px; padding-bottom: 12px;text-align: left;background-color: #00abf3;color: white;} 
+#myTable td {font-size: 12px; padding-left: 0px;text-align: left; }
+#myTable tr:nth-child(even){background-color: #f2f2f2;}
+#myTable tr:nth-child(odd){background-color: #E5E5E5;}
+#myTable tr:hover { background: #eab752; }
+iframe {display: none;width: 800px;height: 800px;}
+#example2{ float: right; }
+svg.full_microfocus_logo {display: block;fill: #0075f3;height: 26px;width: 100px;}
+#header {background-color: #00abf3;width:100%;height:90px;text-align: center;position: fixed;top: 0;}
+.article {display: inline-block;width: 33%;text-align: left;color:#fff;}
+.style1{text-decoration: underline;}
+optgroup{font-size:24px;}
+.row.open { background: green; }
+-->
+</style>
+</font></form>
+
+<div id="header">
+<div class="article"><font color="#0155EF"><svg height="50" viewBox="0 0 31 31" width="50" xmlns="http://www.w3.org/2000/svg">
+<title></title>
+<g data-name="Layer 2" id="Layer_2"> <g data-name="Layer 1" id="Layer_1-2"> <polygon fill="#ffffff" fill-rule="evenodd" points="31 0 6 0 6 6 25 6 25 25 31 25 31 0 31 0"></polygon> <polygon fill="#ffffff" fill-rule="evenodd" points="6 6 0 6 0 31 25 31 25 25 6 25 6 6 6 6"></polygon> </g> </g> </svg> </font></div>
+
+<div class="article">
+<h1 align="center"><font color="#0155EF">2020.05 OBM Upgrade Adviser</font></h1>
+</div>
+
+<div class="article">
+<h4 align="right"></h4>
+
+<p><font color="#0155EF"><strong>Expert Mode</strong>&nbsp;<input id="expert_mode" name="expert_mode" onchange="scoring()" type="checkbox"> </font></p>
+</div>
+</div>
+<br>
+<p><font color="#0155EF"><font color="#000000">The purpose of the tool is to help with high-level discussions regarding the two different OBM 2020.05 Upgrade options of either <strong>In-Place</strong> or <strong>Side-by-Side</strong> upgrade.<br>
+The tool offers advice but ultimately the final decision is yours.</font></font></p>
+
+<p></p>
+
+<p><font color="#0155EF"><font color="#000000"><font face="Verdana"><strong>What is your tolerance for downtime?</strong></font> <select name="downtime" onchange="scoring()"><option value="unselected"></option><option value="0">As Short As Possible</option><option value="1">Less than 2hrs</option><option value="2">between 2hrs and 6hrs</option><option value="3">Greater than 1 day</option> </select> <input id="downtime_score_ip" name="downtime_score_ip" style="visibility: hidden;" type="text"><input id="downtime_score_sbs" name="downtime_score_sbs" style="visibility: hidden;" type="text"><br>
+<font face="Verdana">Agents will buffer during downtime but not forever.</font><br>
+<br>
+Less than 2hrs =&gt; Typical for newer versions of OBM with tuned database<br>
+Between 2hrs and 6hrs =&gt; Typical<br>
+Greater than 1 day =&gt; 10.12 IP6 Windows remove/install can take a long time to remove 10.12 and all IPs, hence the long time.</font></font></p>
+
+<p><font color="#0155EF"><font color="#000000"><font face="Verdana"><strong>Is a potential restore of database and OS/OBM Data from backup going to be a problem?</strong></font> <select name="restore" onchange="scoring()"><option value="unselected"></option><option value="Yes">Yes</option><option value="No">No</option> </select> <input id="restore_score_ip" name="restore_score_ip" style="visibility: hidden;" type="text"><input id="restore_score_sbs" name="restore_score_sbs" style="visibility: hidden;" type="text"><br>
+<font face="Verdana">If upgrade tests have been performed with a snapshot of production database then the risk is less.</font> </font></font></p>
+
+<p><font color="#0155EF"><font color="#000000"><font face="Verdana"><strong>Do you want to use new hardware with different server name?</strong></font> <select id="server_name" onchange="scoring()"><option value="unselected"></option><option value="Yes">Yes</option><option value="No">No</option> </select> <input id="server_name_score_ip" name="server_name_score_ip" style="visibility: hidden;" type="text"><input id="server_name_score_sbs" name="server_name_score_sbs" style="visibility: hidden;" type="text"> </font></font></p>
+
+<p><font color="#0155EF"><font color="#000000"><font face="Verdana"><strong>Do you want to use newer OS?</strong></font> <select id="new_os" onchange="scoring()"><option value="unselected"></option><option value="Yes">Yes</option><option value="No">No</option> </select> <input id="new_os_score_ip" name="new_os_score_ip" style="visibility: hidden;" type="text"><input id="new_os_score_sbs" name="new_os_score_sbs" style="visibility: hidden;" type="text"> </font></font></p>
+
+<p><font color="#0155EF"><font color="#000000"><font face="Verdana"><strong>Do you have access to additional hardware to use for the upgrade?</strong></font> <select id="hardware" onchange="scoring()"><option value="unselected"></option><option value="Yes">Yes</option><option value="No">No</option> </select> <input id="hardware_score_ip" name="hardware_score_ip" style="visibility: hidden;" type="text"><input id="hardware_score_sbs" name="hardware_score_sbs" style="visibility: hidden;" type="text"><br>
+<font face="Verdana">Note: The original servers can be re-purposed after the upgrade..</font> </font></font></p>
+
+<p><font color="#0155EF"><font color="#000000"><font face="Verdana"><strong>Give additional weighting to one of the above questions:</strong></font><br>
+<select id="weight_influence" onchange="scoring()"><option value="0">(Optional) Influence Options ...</option><option value="1">1. What is your tolerance for downtime?</option><option value="2">2. Is a potential restore of database and OS/OBM Data from backup going to be a problem?</option><option value="3">3. Do you want to use new hardware with different server name?</option><option value="4">4. Do you want to use newer OS?</option><option value="5">5. Do you have access to additional hardware to use for the upgrade?</option> </select> <select id="weight_pct" name="weight_pct" onchange="scoring()" style="visibility: hidden;"><option value=".25">25%</option><option value=".5">50%</option><option value=".75">75%</option><option value="1">100%</option> </select> </font></font></p>
+
+<p><font color="#0155EF"><font color="#000000"><font face="Verdana"><strong>Pick an additional option to influence the weighting?</strong></font><br>
+<select id="influence" onchange="scoring()"><option value="0">(Optional) Influence Options ...</option><option value="1">1. Moving to a different data center?</option><option value="2">2. Do you have a pre-production environment to validate the upgrade flow upfront?</option><option value="3">3. Do you have engineering staff who are available to perform the upgrade?</option><option value="4">4. Load Balancer already in use.</option><option value="5">5. Does the flash-free upgrade need to be completed by the end of the year?</option> </select> <input id="influence_score_ip" name="influence_score_ip" style="visibility: hidden;" type="text"><input id="influence_score_sbs" name="influence_score_sbs" style="visibility: hidden;" type="text"> </font></font></p>
+&nbsp;
+
+<table border="1" cellpadding="0" cellspacing="0" id="tblScore">
+	<tbody>
+		<tr>
+			<td><font color="#0155EF"><font color="#000000"><img border="0" height="221" id="inPlace" src="in-place-180x221.jpg" style="visibility: visble" width="180"></font></font></td>
+			<td><font color="#0155EF"><font color="#000000"><img border="0" height="220" id="sideBySide" src="side-by-side-331x220.jpg" style="visibility: visble" width="331"></font></font></td>
+		</tr>
+		<tr>
+			<td id="inPlaceScore" style="font-size: 14px; background: #a1e7ff"><font color="#0155EF"><font color="#000000">Score</font></font></td>
+			<td style="font-size: 14px; background-color: #a1e7ff"><font color="#0155EF"><font color="#000000">Score</font></font></td>
+		</tr>
+	</tbody>
+</table>
+<br>
+<font color="#0155EF"><font color="#000000"><textarea cols="94" name="txahelp" rows="1" style="visibility: hidden; background-color: #a1e7ff"></textarea> </font></font>
+
+<p style="font-size:11px;"><br>
+<font color="#0155EF"><font color="#000000">For more information please refer to <strong><a href="https://docs.microfocus.com/OMi/2020.05/OBM_Install_Upgrade/Content/OMi_install_upgr.htm">Interactive documentation</a></strong> which explains the upgrade steps in detail<br>
+<br>
+<font color="#0155EF"><!--<p align="left">Contributed by: ColinG --><br>
+Page date: 10/07/2020<br>
+Version: 2.0<br>
+Copyright Micro Focus 2020</font></font></font></p>
+<font color="#0155EF"><font color="#000000"><font color="#0155EF"> </font> </font></font></html>
