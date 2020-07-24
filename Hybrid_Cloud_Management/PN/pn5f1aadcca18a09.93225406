@@ -33,5 +33,18 @@ Steps to expose ITOM Postgres port outside of kubernetes cluster
 	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; hostPort: 5432 &nbsp;</li>
 	<li>Once YAML is modified execute below command for the changes to take effect.&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; kubectl apply -f &lt;core-vol&gt;/suite-install/yamlContent/itom-postgresql-single-svc.yaml</li>
 </ol>
-<br>
-&nbsp;</html>
+
+<h4>Postgres High Available</h4>
+Steps to follow to expose ITOM Postgres port outside of kubernetes cluster
+
+<ol>
+	<li>Add the following line to both the pg_hba.conf files;</li>
+	<li>Add hostPort: 5432 to the file, as shown below</li>
+</ol>
+&lt;core-vol&gt;/suite-install/yamlContent/itom-postgresql-pool-svc.yaml<br>
+ports:<br>
+&nbsp; &nbsp; &nbsp; &nbsp; - containerPort: 5432<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; hostPort: 5432<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; name: pg-port<br>
+&nbsp; &nbsp; &nbsp; &nbsp; - containerPort: 5050<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; name: pgrest-port</html>
