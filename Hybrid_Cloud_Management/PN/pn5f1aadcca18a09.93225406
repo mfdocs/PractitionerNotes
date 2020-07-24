@@ -119,9 +119,8 @@ Replace the base64 encoded password in the below curl commands against the autho
     "tenantName": "Provider"
 }'
 </code></pre>
-<br>
-Extract the token from the above command and replace it against the x-auth-token in the below curl command.<br>
-&nbsp;
+Extract the token from the above command and replace it against the x-auth-token in the below curl command.
+
 <pre><code>curl -k -X POST \
   https://arunp-hcm-02-m1.swinfra.net:5443/idm-service/api/system/jsondata \
   -H 'accept: application/json' \
@@ -153,4 +152,137 @@ Extract the token from the above command and replace it against the x-auth-token
              "type" : "INTEGRATION_USER"
         }
     }]'</code></pre>
+<span style="background-color:#f1c40f;">&nbsp;qpfy_an63?LL.9i8</span> is the password you have backed up before bringing down HCM 2020.05 under topic “Bring down HCM 2020.05”
+
+<h4>Download the IDM migration tool</h4>
+Download the IDM Migration tool from the below path. And copy to a directory on one of the master nodes.<br>
+<span style="background-color:#e74c3c;">&lt;TODO&gt; Provide tool down link.</span>
+
+<h4>Copy Lib file to idm migration tool directory</h4>
+mkdir ../lib<br>
+cp &lt;hcm-vol&gt;/shared/content-tools/csa/lib/CLI-lib.jar ../lib/
+<h4>Copy the src IDM encryption directory from 2018.11 to 2020.05 migrate folder</h4>
+mkdir 201811-idm-sec<br>
+cd 201811-idm-sec/<br>
+scp &lt;old-hcm-master-node&gt;:/opt/kubernetes/cfg/idm/security/*.*&nbsp;<br>
+&lt;old-hcm-master-node&gt; is one of the master node from the old version of HCM
+<h4>Migrate IDM data from 2018.11 to 2020.05</h4>
+Run the following command to generate the property files;<br>
+java -jar idm-migration-tool-05.00.000-SNAPSHOT.jar -g<br>
+Update the config.properties according to the source and target environment. You can ignore property destEncryptionDirectory.<br>
+Sample configure property would have the following entries;
+<pre><code>jdbc.dest.username=cdfidm
+srcDbType=postgres
+destEncryptionDirectory=/opt/kubernetes/cfg/idm/security/
+jdbc.src.username=cdfidm
+jdbc.src.databaseUrl=jdbc\:postgresql\://&lt;oldversion-hcm-node&gt;\:5432/defaultdb
+destDbType=postgres
+jdbc.dest.password=lnwivCoci8QzgyUQPzM=
+jdbc.src.password=eX3uAhiA05KIfax75B4=
+srcEncryptionDirectory=/root/migrate/idm/201811-idm-sec
+jdbc.dest.databaseUrl=jdbc\:postgresql\://172.17.17.47\:5432/defaultdb
+</code></pre>
+<br>
+Database password for internal postgres<br>
+kubectl exec -it itom-postgresql-default-54597fc8bd-rtzm7 -n core -c itom-postgresql-default -- get_secret defaultdb_cdfidm_user_password<br>
+OUTPUT : PASS=eX3uAhiA05KIfax75B4=<br>
+Destination Database URL – If you are using the internal postgres for CDF IDM, then IP address is the postgres service IP which you can get from below command;<br>
+kubectl get svc -n core | grep idm-postgresql-svc
+<h4>Execute the migration tool</h4>
+java -jar idm-migration-tool-05.00.000-SNAPSHOT.jar -c config.properties<br>
+<br>
+Sample output
+<pre><code class="language-bash">This tool will merge the data of the source database to the destination database.
+It is recommended to take a backup of the data present in jdbc:postgresql://172.16.52.39:5432/defaultdb
+Enter 'yes' if the backup of the destination database has been taken. Enter 'no' otherwise [yes/no]:
+yes
+Successfully initialized application
+Start of database migrate ....
+There may be a delay in the progress of the tool depending on the number of rows in the table and network latency. Please refer to the logs for the latest status.
+INFO    [22/22] rows from ABSTRACT_GROUP merged in 163 ms .................... [ DONE ]
+INFO    [40/40] rows from ABSTRACT_GROUP_METADATA merged in 77 ms ............ [ DONE ]
+INFO    [22/22] rows from ABSTRACT_GROUP_REPRESENTATION merged in 91 ms ...... [ DONE ]
+INFO    [4/4] rows from BASEAUTHCONFIGURATION merged in 30 ms ................ [ DONE ]
+INFO    [12/12] rows from DATABASE_GROUP_REP merged in 23 ms ................. [ DONE ]
+INFO    [3/3] rows from LDAP_CONFIGURATION merged in 73 ms ................... [ DONE ]
+INFO    [10/10] rows from LDAP_GROUP_REP merged in 27 ms ..................... [ DONE ]
+INFO    [264/264] rows from METADATA merged in 345 ms ........................ [ DONE ]
+INFO    [6/6] rows from ORGANIZATIONS merged in 26 ms ........................ [ DONE ]
+INFO    [49/49] rows from PERMISSION merged in 77 ms ......................... [ DONE ]
+INFO    [117/117] rows from PERMISSION_ROLE merged in 87 ms .................. [ DONE ]
+INFO    [50/50] rows from ROLES merged in 136 ms ............................. [ DONE ]
+INFO    [62/62] rows from ROLES_GROUPS merged in 36 ms ....................... [ DONE ]
+INFO    [1/1] rows from SAML_CONFIGURATION merged in 18 ms ................... [ DONE ]
+The table SCHEMA_VERSION is not present in destination database. So ignoring it and hence the contents of the table will not be merged to destination database
+INFO    [207/207] rows from TOKEN_STORE merged in 474 ms ..................... [ DONE ]
+The migration of data has been successful
+End of database migrate ....
+</code></pre>
+
+<h3><br>
+Run IDM Config JOB</h3>
+cd &lt;core-vol&gt;/suite-install/hcm/output<br>
+kubectl delete -f hcm-idm-config-data-job.yaml<br>
+kubectl create -f hcm-idm-config-data-job.yaml<br>
+kubectl logs hcm-idm-config-data-xj8l4
+<h3>Create new secret for the database password and use it in all YAML (Optional)</h3>
+Follow this step if the password to the database you installed is different to the password on the database server you point to.<br>
+update_secret NEW_DB_PASSWORD &lt;new-database-password&gt;
+<h3>Migrate Autopass</h3>
+Update &lt;core-vol&gt;/suite-install/hcm/output/hcm-autopass.yaml database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – DBHOST, DBPORT, DBNAME, DBUSER, DBPASSWORD_KEY, DBSYSTEMID.<br>
+Delete and create Autopass pods using the following commands;<br>
+kubectl delete -f hcm-autopass.yaml<br>
+kubectl create -f hcm-autopass.yaml
+<h3>Migrate CSA</h3>
+
+<h4>Copy the CSA encryption folder from old version of HCM to 2020.05</h4>
+On the HCM 2020.05 master node,<br>
+cd &lt;hcm-vol&gt;/shared/<br>
+mv encryption/ encryption_2020_05<br>
+mkdir encryption<br>
+scp &lt;old-hcm-nfs&gt;:&lt;hcm-vol&gt;/shared/encryption/*.* encryption/<br>
+chown -R itom:itom *
+<h4>Update the YAML with the database configuration details</h4>
+Update the &lt;core-vol&gt;/suite-install/hcm/output/hcm-csa.yaml database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – CSA_DB_HOST, CSA_DB_PORT, CSA_DB_USER, CSA_DB_PASSWORD_KEY, CSA_DB_NAME, CSA_DB_SERVICENAME.<br>
+Change the DEPLOYMENT_TYPE to migrate for the hcm-csa.yaml<br>
+Delete and create CSA pods using the following commands;<br>
+kubectl delete -f hcm-csa.yaml<br>
+kubectl create -f hcm-csa.yaml
+<h3>Migrate OO</h3>
+
+<h4>Copy the OO encryption folder from old version of HCM to 2020.05</h4>
+On the HCM 2020.05 master node,<br>
+cd &lt;hcm-vol&gt;/conf/<br>
+mv oo oo_2020_05<br>
+mkdir oo<br>
+scp &lt;old-hcm-nfs&gt;:&lt;hcm-vol&gt;/conf/oo/* oo/.<br>
+chown -R itom:itom *
+<h4>Update the YAML with the database configuration details</h4>
+Update the &lt;core-vol&gt;/suite-install/hcm/output/hcm-oo.yaml database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – OO_CENTRAL_DB_HOST, OO_CENTRAL_DB_PORT, OO_CENTRAL_DB_USERNAME, OO_CENTRAL_DB_PASSWORD_KEY, OO_CENTRAL_DB_NAME, OO_CENTRAL_DB_SERVICENAME.<br>
+Change the DEPLOYMENT_TYPE to migrate for the hcm-oo.yaml<br>
+Delete and create OO pods using the following commands;<br>
+kubectl delete -f hcm-oo.yaml<br>
+kubectl create -f hcm-oo.yaml
+<h3>Migrate OO Designer</h3>
+
+<h4>Copy the OO Designer encryption folder from old version of HCM to 2020.05</h4>
+On the HCM 2020.05 master node,<br>
+cd &lt;hcm-vol&gt;/conf/<br>
+mv oodesigner oodesigner_2020_05<br>
+mkdir oodesigner<br>
+scp &lt;old-hcm-nfs&gt;:&lt;hcm-vol&gt;/conf/oodesigner/* oodesigner/.<br>
+chown -R itom:itom *
+<h4>Update the YAML with the database configuration details</h4>
+Update the &lt;core-vol&gt;/suite-install/hcm/output/hcm-oodesigner.yaml database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – OO_DESIGNER_DB_HOST, OO_DESIGNER_DB_PORT, OO_DESIGNER_DB_USERNAME, OO_DESIGNER_DB_PASSWORD_KEY, OO_DESIGNER_DB_NAME, OO_DESIGNER_DB_SERVICENAME.<br>
+Change the DEPLOYMENT_TYPE to migrate for the hcm-oodesigner.yaml<br>
+Delete and create OO Designer pods using the following commands;<br>
+kubectl delete -f hcm-oodesigner.yaml<br>
+kubectl create -f hcm-oodesigner.yaml
+<h3>Migrate UCMDB</h3>
+
+<h4><span style="color: rgb(51, 51, 51); font-family: Roboto, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;;">Update the &lt;core-vol&gt;/suite-install/hcm/output/hcm-ucmdb.yaml database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – DB_HOST, DB_PORT, .</span></h4>
+Change the DEPLOYMENT_TYPE to migrate for the hcm-ucmdb.yaml<br>
+Delete and create UCMDB pods using the following commands;<br>
+kubectl delete -f hcm-ucmdb.yaml<br>
+kubectl create -f hcm-ucmdb.yaml<br>
 &nbsp;</html>
