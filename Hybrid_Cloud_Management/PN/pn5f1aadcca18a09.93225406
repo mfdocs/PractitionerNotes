@@ -25,12 +25,13 @@ If you are using the internal Postgres database for the CDF IDM database, then y
 Steps to expose ITOM Postgres port outside of kubernetes cluster
 
 <ol>
-	<li>Modifiy pg_hba.conf in &lt;db-single-vol&gt;/baseinfra-1.0/postgresql95/ folder. Add below line to the file&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;host &nbsp; &nbsp;all &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; all &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0.0.0.0/0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; md5</li>
+	<li>Modifiy pg_hba.conf in &lt;db-single-vol&gt;/baseinfra-1.0/postgresql95/ folder. Add below line to the file
+<br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;host &nbsp; &nbsp;all &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; all &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0.0.0.0/0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; md5</li>
 	<li>Add below port mapping to the postgres yaml (&lt;core-vol&gt;/suite-install/yamlContent/itom-postgresql-single-svc.yaml). Container section, under image add lines</li>
-	<li>&nbsp; &nbsp; &nbsp; &nbsp; image: localhost:5000/hpeswitomsandbox/itom-postgresql:9.5.11-0021<br>
+	<br>&nbsp; &nbsp; &nbsp; &nbsp; image: localhost:5000/hpeswitomsandbox/itom-postgresql:9.5.11-0021<br>
 	&nbsp; &nbsp; &nbsp; &nbsp; ports:<br>
 	&nbsp; &nbsp; &nbsp; &nbsp; - containerPort: 5432<br>
-	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; hostPort: 5432 &nbsp;</li>
+	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; hostPort: 5432 &nbsp;
 	<li>Once YAML is modified execute below command for the changes to take effect.&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; kubectl apply -f &lt;core-vol&gt;/suite-install/yamlContent/itom-postgresql-single-svc.yaml</li>
 </ol>
 
@@ -38,13 +39,20 @@ Steps to expose ITOM Postgres port outside of kubernetes cluster
 Steps to follow to expose ITOM Postgres port outside of kubernetes cluster
 
 <ol>
-	<li>Add the following line to both the pg_hba.conf files;</li>
-	<li>Add hostPort: 5432 to the file, as shown below</li>
-</ol>
+	<li>Add the following line to both the pg_hba.conf files;
+<br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;host &nbsp; &nbsp;all &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; all &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0.0.0.0/0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; md5
+<br><db-node1-vol>/baseinfra-1.0/postgresql95HA/node1data/pg_hba.conf
+<br><db-node2-vol>/baseinfra-1.0/postgresql95HA/node2data/pg_hba.conf
+</db-node2-vol></db-node1-vol></li>
+	<li>Add hostPort: 5432 to the file, as shown below
+
 &lt;core-vol&gt;/suite-install/yamlContent/itom-postgresql-pool-svc.yaml<br>
 ports:<br>
 &nbsp; &nbsp; &nbsp; &nbsp; - containerPort: 5432<br>
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; hostPort: 5432<br>
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; name: pg-port<br>
 &nbsp; &nbsp; &nbsp; &nbsp; - containerPort: 5050<br>
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; name: pgrest-port</html>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; name: pgrest-port
+</li>
+</ol>
+</html>
