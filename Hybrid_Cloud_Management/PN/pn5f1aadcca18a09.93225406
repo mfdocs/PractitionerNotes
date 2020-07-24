@@ -78,11 +78,79 @@ We need to recreate the IDM database in the new version of HCM installation sinc
 	<ol>
 		<li>Stop Internal Postgres<br>
 		cd &lt;core-vol&gt;/suite-install/yamlContent/<br>
-		kubectl delete -f itom-postgresql-single-svc.yaml<br>
-		</li>
-
+		kubectl delete -f itom-postgresql-single-svc.yaml</li>
+		<li>Move the postgres folder to a backup location<br>
+		mkdir ~/backupPG<br>
+		cd <db-single-vol>/baseinfra-1.0<br>
+		mv postgresql106 ~/backupPG</db-single-vol></li>
+		<li>Start Internal Postgres<br>
+		cd <core-vol>/suite-install/yamlContent/<br>
+		kubectl create -f itom-postgresql-single-svc.yaml</core-vol></li>
 	</ol>
 	</li>
 	<li>If the database used to install HCM is External Oracle or Postgresql, then back up the database following the vendor documentation. Drop and create a new database based on the HCM document.</li>
+	<li>Start IDM and Login to CDF management portal<br>
+	cd &lt;core-vol&gt;/suite-install/yamlContent/<br>
+	kubectl create -f idm.yaml<br>
+	Login to CDF management portal to ensure you can access the portal</li>
 </ol>
-</html>
+
+<h4>Reset the IDM password</h4>
+kubectl exec -it idm-7f44898bf6-h4q44 -n core -c idm -- bash<br>
+sh /idmtools/idm-installer-tools/idm.sh databaseUser resetPassword -org Provider -name "admin" -plainPwd "&lt;new-temp-password&gt;"<br>
+Login into management console and reset password correctly to the password which you had used while installation HCM.
+<h4>Create idmTransportUser in IDM</h4>
+kubectl exec -it &lt;idm-pod&gt; -n core -c idm -- get_secret idm_transport_admin_password<br>
+<span style="color:#e67e22;">OUTPUT : PASS=CqeSFXzWvb3Wdw==</span><br>
+echo -n transport_admin:CqeSFXzWvb3Wdw== | base64<br>
+<span style="color:#e67e22;">OUTPUT: dHJhbnNwb3J0X2FkbWluOkNxZVNGWHpXdmIzV2R3PT0=</span><br>
+Replace the base64 encoded password in the below curl commands against the authorization header.
+<pre><code class="language-vim">curl -k -X POST \
+  https://arunp-hcm-02-m1.swinfra.net:5443/idm-service/v2.0/tokens \
+  -H 'accept: application/json' \
+  -H 'authorization: Basic dHJhbnNwb3J0X2FkbWluOkNxZVNGWHpXdmIzV2R3PT0=' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -d '{
+    "passwordCredentials": {
+        "username": "admin",
+        "password": "&lt;hcm-password&gt;"
+    },
+    "tenantName": "Provider"
+}'
+</code></pre>
+<br>
+Extract the token from the above command and replace it against the x-auth-token in the below curl command.<br>
+&nbsp;
+<pre><code>curl -k -X POST \
+  https://arunp-hcm-02-m1.swinfra.net:5443/idm-service/api/system/jsondata \
+  -H 'accept: application/json' \
+  -H 'authorization: Basic dHJhbnNwb3J0X2FkbWluOkNxZVNGWHpXdmIzV2R3PT0=' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'x-auth-token: eyJ0eXAiOiJKV1MiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyYzkwY2RhZjcxMmZmOGJkMDE3MTJmZjkwNmY2MDEwMiIsImlzcyI6IklkTSAxLjI3LjAiLCJjb20uaHBlLmlkbTp0cnVzdG9yIjpudWxsLCJleHAiOjE1ODU2NTExMjAsImNvbS5ocC5jbG91ZDp0ZW5hbnQiOnsiaWQiOiIyYzkwY2RhZjcxMmZmOGJkMDE3MTJmZjkwMWUyMDBhZiIsIm5hbWUiOiJQcm92aWRlciIsImVuYWJsZWQiOnRydWV9LCJwcm4iOiJhZG1pbiIsImlhdCI6MTU4NTY0OTMyMCwianRpIjoiZTIyNWNjZjEtNWQyYi00NzBhLWI3N2ItODIzZjgzNzMxMDc4In0.jnFuSFzXicWl_pP_a6VQSLbRB5JC7KVsfzczw-HUgh0' \
+  -d '[{
+        "operation": "ADD_OR_UPDATE",
+        "type": "databaseUser",
+        "names": {
+            "organizationName": "PROVIDER"
+        },
+        "attributes": {
+            "name": "admin",
+            "password": "&lt;hcm_password&gt;",
+            "type" : "INTERNAL_SEEDED_USER"
+        }
+    },
+   {
+        "operation": "ADD_OR_UPDATE",
+        "type": "databaseUser",
+        "names": {
+            "organizationName": "IdMIntegration"
+        },
+        "attributes": {
+            "name": "idmTransportUser",
+              "password": "qpfy_an63?LL.9i8",
+             "type" : "INTEGRATION_USER"
+        }
+    }]'</code></pre>
+&nbsp;</html>
