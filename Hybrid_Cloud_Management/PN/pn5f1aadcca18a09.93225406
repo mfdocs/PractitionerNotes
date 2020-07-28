@@ -1,15 +1,17 @@
-<html>This document describes the process which can be followed to upgrade an older version HCM to 2020.05. The validated older versions of HCM are 2018.11, 2019.02, and 2019.05. Usually, the upgrade process includes upgrading the HCM to each individual incremental of available version, and cannot be upgraded directly to the latest available version. This would mean upgrading HCM 2018.11 to 2020.05 includes upgrading to 2019.02, 2019.05, 2019.08, 2019.11.<br>
+<html>This document describes the process which can be followed to upgrade an older version of HCM to 2020.05. The validated older versions of HCM are 2018.11, 2019.02, and 2019.05. Usually, the upgrade process includes upgrading the HCM to each individual incremental of available version, and cannot be upgraded directly to the latest available version. This would mean upgrading HCM 2018.11 to 2020.05 includes upgrading to 2019.02, 2019.05, 2019.08, 2019.11.<br>
 <br>
 The side-by-side upgrade (parallel instance-based) includes setting up a new version of the HCM 2020.05 version to which the data, configurations, and customizations would be copied to and thereby bring up the new version of HCM in another instance. The old version of HCM can be later decommissioned once the new version is LIVE.
 <h2>Pre-requisites</h2>
 The important requirement for side-by-side upgrade would be to have new servers, resources for bringing up the new HCM version. It is recommended that the resources and configurations should be the same as the older version of HCM.&nbsp;<br>
 <br>
-There can be a change in deployment architecture on the new HCM version, this would allow to make an adjustment to the HCM environment. For example, if you were using single master in the old version of HCM, you can deploy 2020.05 as multi-master.
+There can be a change in deployment architecture on the new HCM version, this would allow to make an adjustment to the HCM environment. For example, if you were using single master in the old version of HCM, you can deploy 2020.05 as multi-master.<br>
+<br>
+You have to follow the system requirements to ensure you have the supported hardware and OS requirements met.
 <h3>NFS requirements</h3>
 The new HCM instance would need its own NFS repository different from the old HCM version, the old NFS can be decommissioned after the upgrade.
 
 <h3>Database requirements</h3>
-In this upgrade, all the HCM databases of the older version are reused, the CDF IDM database is created new. So while installing the new version of HCM, you should create a new database for the CDF IDM which you would continue to use. For the HCM databases, you can use the internal Postgres or create temp databases since you will reconfigure the HCM to point to HCM databases of the older version during the upgrade process.&nbsp;<br>
+In this upgrade, all the HCM databases of the older version are reused, only a new CDF IDM database has to be created. So while installing the new version of HCM, you should create a new database for the CDF IDM which you would continue to use. For the new HCM databases, you can use the internal Postgres or create temp databases since you will reconfigure the new HCM to point to HCM databases of the older version during the upgrade process.&nbsp;<br>
 It is recommended to clone the HCM databases to use with the new HCM version. This way you could still run the older version of HCM until you have the upgrade process completed and validated.
 <h3>Virtual IP and Load Balancer configurations</h3>
 When the older version of HCM is using a Virtual IP (VIP), we cannot use the same VIP with new HCM version deployment, the new HCM 2020.05 installation will use a new VIP. You have to change the VIP of the HCM 2020.05 to use the existing VIP (from the older version) unless the DNS can be reconfigured to use the same FQDN for new VIP, this is further described in later part of this document.<br>
@@ -59,8 +61,10 @@ Steps to follow to expose ITOM Postgres port outside of Kubernetes cluster
 </ol>
 
 <h3>Bring down old version of HCM</h3>
-You need to bring down the old version of HCM only if you are reusing the HCM databases with the new version. You can skip this step if you have cloned the database.<br>
-Additionally, you have to bring down the HCM if you are going to make the finally switch to the new HCM version. This is to prevent any additional artifacts (subscriptions, designs etc.) being created in the older version of HCM.<br>
+You need to bring down the old version of HCM only if you are planning to reuse the HCM databases with the new version. You can skip this step if you have cloned the database.<br>
+<br>
+You have to bring down the HCM if you are going to make the final switch to the new HCM version. This is to prevent any additional artifacts (subscriptions, designs etc.) being created in the older version of HCM.<br>
+<br>
 /opt/kubernetes/scripts/cdfctl.sh runlevel set -l DOWN -n &lt;hcm-namespace&gt;
 <h3>Bring down HCM 2020.05</h3>
 Before bringing down, note down the following secrets on the HCM 2020.05 to use it later.<br>
@@ -100,13 +104,13 @@ We need to recreate the IDM database in the new version of HCM installation sinc
 	Login to CDF management portal to ensure you can access the portal</li>
 </ol>
 
-<h4>Reset the IDM password</h4>
-To reset the IDM password execute the following commands<br>
+<h4>Reset the IDM admin password</h4>
+To reset the IDM admin password execute the following commands<br>
 <br>
 kubectl exec -it idm-7f44898bf6-h4q44 -n core -c idm -- bash<br>
 sh /idmtools/idm-installer-tools/idm.sh databaseUser resetPassword -org Provider -name "admin" -plainPwd "&lt;new-temp-password&gt;"<br>
 <br>
-Login into management console and reset password correctly to the password which you had used while installation HCM.
+Login into the management console and reset password correctly to the password which you had used while installation HCM.
 <h4>Create idmTransportUser in IDM</h4>
 Execute the following command and note down the password which has to be used in the subsequent command<br>
 <br>
@@ -126,7 +130,7 @@ Replace the base64 encoded password in the below curl commands against the autho
   -d '{
     "passwordCredentials": {
         "username": "admin",
-        "password": "&lt;hcm-password&gt;"
+        "password": "&lt;idm-admin-password&gt;"
     },
     "tenantName": "Provider"
 }'
@@ -148,7 +152,7 @@ Extract the token from the above command and replace it against the x-auth-token
         },
         "attributes": {
             "name": "admin",
-            "password": "&lt;hcm_password&gt;",
+            "password": "&lt;idm-admin_password&gt;",
             "type" : "INTERNAL_SEEDED_USER"
         }
     },
@@ -173,12 +177,12 @@ Download the IDM Migration tool from the below path. And copy to a directory on 
 <h4>Copy Lib file to idm migration tool directory</h4>
 mkdir ../lib<br>
 cp &lt;hcm-vol&gt;/shared/content-tools/csa/lib/CLI-lib.jar ../lib/
-<h4>Copy the src IDM encryption directory from 2018.11 to 2020.05 migrate folder</h4>
-mkdir 201811-idm-sec<br>
-cd 201811-idm-sec/<br>
-scp &lt;old-hcm-master-node&gt;:/opt/kubernetes/cfg/idm/security/*.*&nbsp;<br>
+<h4>Copy the src IDM encryption directory from older version of HCM to 2020.05 migrate folder</h4>
+mkdir hcm-idm-sec<br>
+cd hcm-idm-sec/<br>
+scp &lt;old-hcm-master-node&gt;:/opt/kubernetes/cfg/idm/security/*.* .<br>
 &lt;old-hcm-master-node&gt; is one of the master node from the old version of HCM
-<h4>Migrate IDM data from 2018.11 to 2020.05</h4>
+<h4>Migrate IDM data from older version of HCM to 2020.05</h4>
 Run the following command to generate the property files;<br>
 java -jar idm-migration-tool-05.00.000-SNAPSHOT.jar -g<br>
 Update the config.properties according to the source and target environment. You can ignore property destEncryptionDirectory.<br>
@@ -191,7 +195,7 @@ jdbc.src.databaseUrl=jdbc\:postgresql\://&lt;oldversion-hcm-node&gt;\:5432/defau
 destDbType=postgres
 jdbc.dest.password=lnwivCoci8QzgyUQPzM=
 jdbc.src.password=eX3uAhiA05KIfax75B4=
-srcEncryptionDirectory=/root/migrate/idm/201811-idm-sec
+srcEncryptionDirectory=/root/migrate/idm/hcm-idm-sec
 jdbc.dest.databaseUrl=jdbc\:postgresql\://172.17.17.47\:5432/defaultdb
 </code></pre>
 <br>
@@ -199,7 +203,8 @@ Database password for internal postgres<br>
 kubectl exec -it itom-postgresql-default-54597fc8bd-rtzm7 -n core -c itom-postgresql-default -- get_secret defaultdb_cdfidm_user_password<br>
 OUTPUT : PASS=eX3uAhiA05KIfax75B4=<br>
 Destination Database URL – If you are using the internal postgres for CDF IDM, then IP address is the postgres service IP which you can get from below command;<br>
-kubectl get svc -n core | grep idm-postgresql-svc
+kubectl get svc -n core | grep idm-postgresql-svc<br>
+OUTPUT: idm-postgresql-svc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ClusterIP &nbsp; 172.17.17.248 &nbsp; &lt;none&gt; &nbsp; &nbsp; &nbsp; &nbsp;5432/TCP,5050/TCP &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 439d
 <h4>Execute the migration tool</h4>
 java -jar idm-migration-tool-05.00.000-SNAPSHOT.jar -c config.properties<br>
 <br>
@@ -237,8 +242,8 @@ cd &lt;core-vol&gt;/suite-install/hcm/output<br>
 kubectl delete -f hcm-idm-config-data-job.yaml<br>
 kubectl create -f hcm-idm-config-data-job.yaml<br>
 kubectl logs hcm-idm-config-data-xj8l4
-<h3>Create new secret for the database password and use it in all YAML (Optional)</h3>
-Follow this step if the password to the database you installed is different to the password on the database server you point to.<br>
+<h3>Create new secret for the HCM database password and use it in all YAML (Optional)</h3>
+Follow this step if the password to the HCM databases you installed is different to the password on the database server you point to.<br>
 update_secret NEW_DB_PASSWORD &lt;new-database-password&gt;
 <h3>Migrate Autopass</h3>
 Update &lt;core-vol&gt;/suite-install/hcm/output/hcm-autopass.yaml database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – DBHOST, DBPORT, DBNAME, DBUSER, DBPASSWORD_KEY, DBSYSTEMID.<br>
@@ -318,9 +323,9 @@ Follow the process to upgrade vertica if you are using any of the Cloud Service 
 	kubectl create -f hcm-coso-config-data-job.yaml</li>
 	<li>Connect to the vertica database and execute the below query<br>
 	drop schema csac cascade;</li>
-	<li>Update vertica server details in the hcm-coso-data-ingestion.yaml</li>
 	<li>Update the following yaml with vertica server details and database details where ever required
 	<ol>
+		<li>hcm-coso-data-ingestion.yaml</li>
 		<li>hcm-coso-data-processor-worker.yaml</li>
 		<li>hcm-csa-collector.yaml</li>
 		<li>hcm-showback.yaml</li>
@@ -328,8 +333,10 @@ Follow the process to upgrade vertica if you are using any of the Cloud Service 
 		<li>hcm-boost-cm.yaml</li>
 	</ol>
 	</li>
-	<li>Delete and Create the following yamls
+	<li>Apply the Vertica server changes<br>
+	Use kubectl delete -f <filename> and kubectl create -f <filename> with the following files to recreate all these yamls to apply Vertica server changes
 	<ol>
+		<li>hcm-coso-data-ingestion.yaml</li>
 		<li>hcm-coso-data-administration.yaml</li>
 		<li>hcm-coso-data-processor-job-submitter.yaml</li>
 		<li>hcm-coso-data-processor-master.yaml</li>
@@ -339,10 +346,13 @@ Follow the process to upgrade vertica if you are using any of the Cloud Service 
 		<li>hcm-csa-collector.yaml</li>
 		<li>hcm-showback.yaml</li>
 	</ol>
+	</filename></filename></li>
+	<li>Copy &lt;hcm-vol&gt;/conf/co from old version of HCM NFS to HCM 2020.05, then update Vertica details in hcm-co-optimizer.yaml and apply change
+	<ol>
+		<li>Once the Cloud Optimizer pod is running, update CSA End Point in the Cloud Optimizer UI to use the current CSA URL</li>
+	</ol>
 	</li>
-	<li>Copy &lt;hcm-vol&gt;/conf/co from old version HCM NFS to HCM 2020.05, then update vertica details in hcm-co-optimizer.yaml and delete/create it<br>
-	a.Update CSA End Point in the Cloud Optimizer UI</li>
-	<li>Copy &lt;hcm-vol&gt;/data/csb/elasticsearch from old version HCM NFS to HCM 2020.05, (remove the existing folder if exists), then start the hcm-elasticsearch.yaml</li>
+	<li>Copy &lt;hcm-vol&gt;/data/csb/elasticsearch from old version of HCM NFS to HCM 2020.05, (remove the existing folder if exists), then start the hcm-elasticsearch.yaml</li>
 </ol>
 
 <h3>Update HCM URLs</h3>
