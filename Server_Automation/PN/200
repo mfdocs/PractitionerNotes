@@ -160,7 +160,7 @@ else:
 
 <p>In this example, a Server has the following virtual column attached. Last Boot is of type DATE, the other is a STRING.</p>
 
-<p><img alt="Annotation 2020-07-29 093950.png" src="http://wiki.local/BrettEngland/PyTwist?action=AttachFile&amp;do=get&amp;target=Annotation+2020-07-29+093950.png" title="Annotation 2020-07-29 093950.png"></p>
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/f/f5/Annotation_2020-07-29_093950.png" height="102" hspace="0" src="https://docs.microfocus.com/mediawiki/images/f/f5/Annotation_2020-07-29_093950.png" style="width:661px;height:102px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="661"></p>
 
 <p>If a Server object has a custom field called "Patch Except" you can fetch the value for a server like this:</p>
 
@@ -168,7 +168,7 @@ else:
 print ts.server.ServerService.getCustomField(ref, 'Patch Except')
 </pre>
 
-<p>Each object type that supports virtual columns (Custom fields) implements the&nbsp;<a href="http://wiki.local/CustomField">?</a>CustomField interface which exposes those methods.</p>
+<p>Each object type that supports virtual columns (Custom fields) implements the&nbsp;CustomField interface which exposes those methods.</p>
 
 <p>To retrieve all the custom fields as a map (k,v pairs) you can do this.</p>
 
@@ -179,7 +179,8 @@ print ts.server.ServerService.getCustomFields(ref, namespace)
 
 <p>Manipulating a DATE type VC will require a little more effort as the value is returned as an EPOCH.</p>
 
-<pre dir="ltr" id="CA-0bc40ceee5afd4abb1c6caccadc4658e92a747c1" lang="en">epoch = ts.server.ServerService.getCustomField(ref, 'Last Boot')
+<pre dir="ltr" id="CA-0bc40ceee5afd4abb1c6caccadc4658e92a747c1" lang="en">import time
+epoch = ts.server.ServerService.getCustomField(ref, 'Last Boot')
 print time.ctime(epoch)</pre>
 
 <h2>Query a server based on a virtual column (custom field)</h2>
