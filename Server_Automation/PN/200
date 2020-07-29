@@ -1,4 +1,4 @@
-<p>A common question asked by SA users is what the differences between custom attributes and custom fields and when should each be used?</p>
+<html><p>A common question asked by SA users is what the differences between custom attributes and custom fields and when should each be used?</p>
 
 <p><strong>Custom Attribute</strong></p>
 
@@ -42,7 +42,7 @@
 	<li>If you want them to show up almost like regular fields in the properties section of the UI.</li>
 </ul>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Create a virtual column</h2>
 
@@ -66,7 +66,7 @@ except NotFoundException:
     vcRef = VCS.create(vo)
 </pre>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Attaching virtual columns</h2>
 
@@ -78,11 +78,11 @@ except NotFoundException:
 
 <p><img src="./mediawiki/images/PN/patch_exception-custom-field.png"></p>
 
-<p>&nbsp;</p>
+<p></p>
 
-<p>&nbsp;</p>
+<p></p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Using a DATE virtual column type</h2>
 
@@ -133,15 +133,15 @@ if serverRefs:
 
 <p>Neither of these fields are guaranteed to be unique within SA and you should code with this in mind.</p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <p><img src="./mediawiki/images/PN/hostname-name.png"></p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <p>Assigning a value to our Custom Field.</p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <pre>serverRefs = ts.search.SearchService.findObjRefs('ServerVO.hostName = dc1.blue.local','device')
 if len(serverRefs) == 0:
@@ -154,7 +154,33 @@ else:
 
 <p>After execution:&nbsp;<img src="./mediawiki/images/PN/patch_exception-Y.png"></p>
 
-<p>&nbsp;</p>
+<p></p>
+
+<h2 id="Getting_field_values">Getting field values</h2>
+
+<p>In this example, a Server has the following virtual column attached. Last Boot is of type DATE, the other is a STRING.</p>
+
+<p><img alt="Annotation 2020-07-29 093950.png" src="http://wiki.local/BrettEngland/PyTwist?action=AttachFile&amp;do=get&amp;target=Annotation+2020-07-29+093950.png" title="Annotation 2020-07-29 093950.png"></p>
+
+<p>If a Server object has a custom field called "Patch Except" you can fetch the value for a server like this:</p>
+
+<pre dir="ltr" id="CA-f85099962ae4f030c0cd27c911672b5ffdfdcc21" lang="en">ref = ServerRef(91590002)
+print ts.server.ServerService.getCustomField(ref, 'Patch Except')
+</pre>
+
+<p>Each object type that supports virtual columns (Custom fields) implements the&nbsp;<a href="http://wiki.local/CustomField">?</a>CustomField interface which exposes those methods.</p>
+
+<p>To retrieve all the custom fields as a map (k,v pairs) you can do this.</p>
+
+<pre dir="ltr" id="CA-11eca3a4598f3509e3e2c8b1f55a6a1b9be808fd" lang="en">ref = ServerRef(91590002)
+namespace = 'DEFAULT'
+print ts.server.ServerService.getCustomFields(ref, namespace)
+</pre>
+
+<p>Manipulating a DATE type VC will require a little more effort as the value is returned as an EPOCH.</p>
+
+<pre dir="ltr" id="CA-0bc40ceee5afd4abb1c6caccadc4658e92a747c1" lang="en">epoch = ts.server.ServerService.getCustomField(ref, 'Last Boot')
+print time.ctime(epoch)</pre>
 
 <h2>Query a server based on a virtual column (custom field)</h2>
 
@@ -194,7 +220,7 @@ rule: ((vc_string_value IN ('vc_string_id=2020001', 'Y')))
 rule (raw):(eJyllN9PwjAQx/8V3vrCQ8cQxMSHBYfBEEZAMMaQpnZFR2q7tINICP+717GNye/o632/d/fZ9W5rxJSciYglkfxAdxVcraAwMrGgKyLpF4dQX0kOUcMFZ4nSJAohWHfcJsbY6YFifSamzJrRgz/ptn3yOAzGAzLye377ORgicLHPSISaSzCtEfE8z/+ONTcmUvJpIaG/stLb+gjQfKejcb8b9G09XqSTXN+iNZqNVo52ZdMpWH+rp1DU+5wwQY2xLHsp10KVTEsqFpwkqzidXWdydFCdiItwYp1XU5VSQF5muWjJiEk05AHUfQ3XLNEedkp703RxTjuzpTLQVHSx6+biQSDRNKvhQKRVc25TZVOt/If79S+Q9X3I+iXI6eZCGxVzTeEGLFM33UKwqoVmnGwJtm/d+D2fcoWzrc8sV7GtedHyQp0tWtxtds4ILtfNH/6g4yhzp9+mxO6ug8HoxRv6Rf/yD+BU/x9cI1G6)
 sql: SELECT DISTINCT dvc_id from  (select /* ResourceTypeView.01 */ devices.* from truth.devices where devices.DVC_ID in (((((select /* RA.device_base_view */ distinct devices.dvc_id from   (select /* RA.device_virtual_column_string */ d.dvc_id as dvc_id, vc.virtual_column_id as vc_string_id, vcv.text_value as vc_string_value from truth.devices d left join truth.device_virtual_column_values dvcv on d.dvc_id = dvcv.dvc_id left join truth.virtual_column_values vcv on dvcv.virtual_column_value_id = vcv.virtual_column_value_id left join (select * from truth.virtual_columns where data_type = 'SHORT_STRING') vc on vcv.virtual_column_id = vc.virtual_column_id) device_virtual_column_string,  truth.devices where devices.opsw_lifecycle != 'DELETED' and devices.dvc_id = device_virtual_column_string.dvc_id  and upper(device_virtual_column_string.vc_string_value) in ('Y') and device_virtual_column_string.VC_STRING_ID = 2020001)))))) devices</pre>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Create a dynamic device group based on virtual column filter</h2>
 
@@ -225,3 +251,4 @@ except UniqueNameException:
 <p>Execution will create the dynamic device group and we will see our single server with the Patch Exemption.</p>
 
 <p><img src="./mediawiki/images/PN/patch_exception-dg.png"></p>
+</html>
