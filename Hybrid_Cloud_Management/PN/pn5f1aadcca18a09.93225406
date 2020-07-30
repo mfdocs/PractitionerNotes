@@ -4,19 +4,21 @@ The side-by-side upgrade (parallel instance-based) includes setting up a new ver
 <h2>Pre-requisites</h2>
 The important requirement for side-by-side upgrade would be to have new servers, resources for bringing up the new HCM version. It is recommended that the resources and configurations should be the same as the older version of HCM.&nbsp;<br>
 <br>
-There can be a change in deployment architecture on the new HCM version, this would allow to make an adjustment to the HCM environment. For example, if you were using single master in the old version of HCM, you can deploy 2020.05 as multi-master.<br>
+There can be a change in deployment architecture on the new HCM version, this would allow us to make an adjustment to the HCM environment. For example, if you were using a single master in the old version of HCM, you can deploy 2020.05 as a multi-master.<br>
 <br>
 You have to follow the system requirements to ensure you have the supported hardware and OS requirements met.
 <h3>NFS requirements</h3>
 The new HCM instance would need its own NFS repository different from the old HCM version, the old NFS can be decommissioned after the upgrade.
 
 <h3>Database requirements</h3>
-In this upgrade, all the HCM databases of the older version are reused, only a new CDF IDM database has to be created. So while installing the new version of HCM, you should create a new database for the CDF IDM which you would continue to use. For the new HCM databases, you can use the internal Postgres or create temp databases since you will reconfigure the new HCM to point to HCM databases of the older version during the upgrade process.&nbsp;<br>
+In this upgrade, a new CDF IDM database has to be created and all the HCM databases of the older version are reused. So while installing the new version of HCM, you should create a new database for the CDF IDM which you would continue to use. For the new HCM databases, you can use the internal Postgres or create temp databases since you will reconfigure the new HCM to point to HCM databases of the older version during the upgrade process.&nbsp;<br>
 It is recommended to clone the HCM databases to use with the new HCM version. This way you could still run the older version of HCM until you have the upgrade process completed and validated.
 <h3>Virtual IP and Load Balancer configurations</h3>
-When the older version of HCM is using a Virtual IP (VIP), we cannot use the same VIP with new HCM version deployment, the new HCM 2020.05 installation will use a new VIP. You have to change the VIP of the HCM 2020.05 to use the existing VIP (from the older version) unless the DNS can be reconfigured to use the same FQDN for new VIP, this is further described in later part of this document.<br>
+When the older version of HCM is using a Virtual IP (VIP), we cannot use the same VIP with new HCM version deployment, the new HCM 2020.05 installation will use a new VIP. You have to change the VIP of the HCM 2020.05 to use the existing VIP (from the older version) unless the DNS can be reconfigured to use the same FQDN for new VIP.<br>
 <br>
-When the older version HCM is using an external Load Balancer, then you can deploy the new version of HCM using the temporary load balancer and then reconfigure the external hostname in HCM after the upgrade to use the old Load Balancer. You must also change the load balancer configurations to use the new HCM instances.
+When the older version HCM is using an external Load Balancer, then you can deploy the new version of HCM using the temporary load balancer and then reconfigure the external hostname in HCM after the upgrade to use the old Load Balancer. You must also change the load balancer configurations to use the new HCM instances.<br>
+<br>
+This is further described in the latter part of this document
 <h2>Upgrade Procedure</h2>
 The upgrade process assumes that the new HCM 2020.05 is deployed and is accessible. The databases are cloned and is available on to a database server.
 
@@ -61,10 +63,13 @@ Steps to follow to expose ITOM Postgres port outside of Kubernetes cluster
 </ol>
 
 <h3>Bring down old version of HCM</h3>
-You need to bring down the old version of HCM only if you are planning to reuse the HCM databases with the new version. You can skip this step if you have cloned the database.<br>
-<br>
-You have to bring down the HCM if you are going to make the final switch to the new HCM version. This is to prevent any additional artifacts (subscriptions, designs etc.) being created in the older version of HCM.<br>
-<br>
+The following are the criteria to bring down the older version of HCM, otherwise, you can skip this step.
+
+<ol>
+	<li>If you are planning to reuse the HCM databases with the new version.</li>
+	<li>If you are going to make the final switch using the existing database with the new version.</li>
+</ol>
+To bring down the HCM, execute the following command on the older version of HCM<br>
 /opt/kubernetes/scripts/cdfctl.sh runlevel set -l DOWN -n &lt;hcm-namespace&gt;
 <h3>Bring down HCM 2020.05</h3>
 Before bringing down, note down the following secrets on the HCM 2020.05 to use it later.<br>
@@ -104,13 +109,13 @@ We need to recreate the IDM database in the new version of HCM installation sinc
 	Login to CDF management portal to ensure you can access the portal</li>
 </ol>
 
-<h4>Reset the IDM admin password</h4>
-To reset the IDM admin password execute the following commands<br>
+<h4>Reset the CDF admin password</h4>
+To reset the CDF admin password execute the following commands<br>
 <br>
 kubectl exec -it idm-7f44898bf6-h4q44 -n core -c idm -- bash<br>
 sh /idmtools/idm-installer-tools/idm.sh databaseUser resetPassword -org Provider -name "admin" -plainPwd "&lt;new-temp-password&gt;"<br>
 <br>
-Login into the management console and reset password correctly to the password which you had used while installation HCM.
+Login into the CDF management console and reset password correctly to the password which you had used while installation HCM.
 <h4>Create idmTransportUser in IDM</h4>
 Execute the following command and note down the password which has to be used in the subsequent command<br>
 <br>
@@ -130,7 +135,7 @@ Replace the base64 encoded password in the below curl commands against the autho
   -d '{
     "passwordCredentials": {
         "username": "admin",
-        "password": "&lt;idm-admin-password&gt;"
+        "password": "&lt;cdf-admin-password&gt;"
     },
     "tenantName": "Provider"
 }'
@@ -152,7 +157,7 @@ Extract the token from the above command and replace it against the x-auth-token
         },
         "attributes": {
             "name": "admin",
-            "password": "&lt;idm-admin_password&gt;",
+            "password": "&lt;cdf-admin_password&gt;",
             "type" : "INTERNAL_SEEDED_USER"
         }
     },
@@ -175,8 +180,9 @@ Download the IDM Migration tool from the below path. And copy to a directory on 
 <span style="background-color:#e74c3c;">&lt;TODO&gt; Provide tool down link.</span>
 
 <h4>Copy Lib file to idm migration tool directory</h4>
+Go to the directory where you have copied the IDM migration tool.<br>
 mkdir ../lib<br>
-cp &lt;hcm-vol&gt;/shared/content-tools/csa/lib/CLI-lib.jar ../lib/
+cp &lt;hcm-vol&gt;/shared/content-tools/csa/lib/CLI-lib.jar ../lib/.
 <h4>Copy the src IDM encryption directory from older version of HCM to 2020.05 migrate folder</h4>
 mkdir hcm-idm-sec<br>
 cd hcm-idm-sec/<br>
@@ -204,7 +210,7 @@ kubectl exec -it itom-postgresql-default-54597fc8bd-rtzm7 -n core -c itom-postgr
 OUTPUT : PASS=eX3uAhiA05KIfax75B4=<br>
 Destination Database URL – If you are using the internal postgres for CDF IDM, then IP address is the postgres service IP which you can get from below command;<br>
 kubectl get svc -n core | grep idm-postgresql-svc<br>
-OUTPUT: idm-postgresql-svc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ClusterIP &nbsp; 172.17.17.248 &nbsp; &lt;none&gt; &nbsp; &nbsp; &nbsp; &nbsp;5432/TCP,5050/TCP &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 439d
+OUTPUT: idm-postgresql-svc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ClusterIP &nbsp; 172.17.17.47 &nbsp; &lt;none&gt; &nbsp; &nbsp; &nbsp; &nbsp;5432/TCP,5050/TCP &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 439d
 <h4>Execute the migration tool</h4>
 java -jar idm-migration-tool-05.00.000-SNAPSHOT.jar -c config.properties<br>
 <br>
@@ -374,5 +380,9 @@ If you have installed the HCM 2020.05 using VIP which is different than the prev
 <a href="https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2020.05/ChangeExternalAccessHostname">https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2020.05/ChangeExternalAccessHostname</a><br>
 Once the changes are done based on these, the CDF would have been reconfigured to the new VIP.<br>
 Now you need to re-configure the HCM yamls to use the new external hostname/VIP. Find and replace the external hostname with the old version HCM external hostname. Then apply the changes using kubectl delete -f and kubectl create -f for all the HCM yamls in &lt;core-vol&gt;/suite-install/hcm/output.<br>
+<br>
+<span style="color:#c0392b;">Example:&nbsp;<br>
+sed<br>
+<span style="font-size:11.0pt"><span style="font-family:Calibri">ls -p | grep -v / | tr '\n' ','</span></span></span><br>
 <br>
 &nbsp;</html>
