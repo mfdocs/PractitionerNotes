@@ -1,17 +1,18 @@
-<html>This document describes the process which can be followed to upgrade an older version of HCM to 2020.05. The validated older versions of HCM are 2018.11, 2019.02, and 2019.05. Usually, the upgrade process includes upgrading the HCM to each individual incremental of available version, and cannot be upgraded directly to the latest available version. This would mean upgrading HCM 2018.11 to 2020.05 includes upgrading to 2019.02, 2019.05, 2019.08, 2019.11.<br>
+<html>This document describes the process which has to be followed to upgrade an older version of HCM to 2020.05. The validated older versions of HCM are 2018.11, 2019.02, and 2019.05. Typically the HCM upgrade process includes upgrading the HCM to each individual incremental of available version causing multiple hops, and cannot be upgraded directly to the latest available version. This would mean upgrading HCM 2018.11 to 2020.05 includes upgrading to 2019.02, 2019.05, 2019.08, 2019.11.<br>
 <br>
-The side-by-side upgrade (parallel instance-based) includes setting up a new version of the HCM 2020.05 version to which the data, configurations, and customizations would be copied to and thereby bring up the new version of HCM in another instance. The old version of HCM can be later decommissioned once the new version is LIVE.
+The side-by-side upgrade (parallel instance-based) would allow you to upgrade directly to the HCM 2020.05, this process requires you to set up a new version of the HCM 2020.05 version to which the data, configurations, and customizations of older HCM version would be copied to and thereby bring up the new version of HCM in another instance. The old version of the HCM instance can be later decommissioned once the new version is LIVE.
 <h2>Pre-requisites</h2>
-The important requirement for side-by-side upgrade would be to have new servers, resources for bringing up the new HCM version. It is recommended that the resources and configurations should be the same as the older version of HCM.&nbsp;<br>
+The important requirement for side-by-side upgrade would be to have new servers and resources to bring up the new HCM version. It is recommended that the new hardware specifications should be the same as the older version of HCM.&nbsp;<br>
 <br>
-There can be a change in deployment architecture on the new HCM version, this would allow us to make an adjustment to the HCM environment. For example, if you were using a single master in the old version of HCM, you can deploy 2020.05 as a multi-master.<br>
+There can be a change in deployment architecture on the new HCM version, this would allow you to make an adjustment to the HCM environment. For example, if you were using a single master in the old version of HCM, you can deploy 2020.05 as a multi-master.<br>
 <br>
-You have to follow the system requirements to ensure you have the supported hardware and OS requirements met.
+You have to follow the HCM 2020.05 system requirements to ensure you have the supported hardware and OS requirements met.
 <h3>NFS requirements</h3>
-The new HCM instance would need its own NFS repository different from the old HCM version, the old NFS can be decommissioned after the upgrade.
+The new HCM version would need its own NFS repository different from the old HCM version, the old NFS can be decommissioned after the upgrade.
 
 <h3>Database requirements</h3>
-In this upgrade, a new CDF IDM database has to be created and all the HCM databases of the older version are reused. So while installing the new version of HCM, you should create a new database for the CDF IDM which you would continue to use. For the new HCM databases, you can use the internal Postgres or create temp databases since you will reconfigure the new HCM to point to HCM databases of the older version during the upgrade process.&nbsp;<br>
+In this upgrade, a new CDF IDM database is required, you cannot reuse the existing CDF IDM database.&nbsp;The HCM databases from the older version can be reused. During the HCM 2020.05 installation, you should use a new database for the CDF IDM which you would continue to use and while configuring the HCM database you can use the internal Postgres or create temp databases since you will reconfigure to use older version HCM databases during the upgrade process.<br>
+&nbsp;<br>
 It is recommended to clone the HCM databases to use with the new HCM version. This way you could still run the older version of HCM until you have the upgrade process completed and validated.
 <h3>Virtual IP and Load Balancer configurations</h3>
 When the older version of HCM is using a Virtual IP (VIP), we cannot use the same VIP with new HCM version deployment, the new HCM 2020.05 installation will use a new VIP. You have to change the VIP of the HCM 2020.05 to use the existing VIP (from the older version) unless the DNS can be reconfigured to use the same FQDN for new VIP.<br>
