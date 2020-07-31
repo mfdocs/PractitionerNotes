@@ -3,7 +3,7 @@
 <div>Scope of this document is to provide working steps to migrate an embedded Postgres on containerized OpsBridge Suite 2019.11 to an external Postgres.&nbsp;</div>
 
 <div><br>
-In a production environment, we recommend that you use an external PostgreSQL instance for the&nbsp;<code>suite-db</code>&nbsp;database. To migrate an existing&nbsp;<code>suite-db</code>&nbsp;database from the embedded PostgreSQL instance to an external PostgreSQL database, follow these steps<br>
+In a production environment, we recommend that you use an external PostgreSQL instance for the&nbsp;<code>default-db</code>&nbsp;database. To migrate an existing&nbsp;<code>default-db</code>&nbsp;database from the embedded PostgreSQL instance to an external PostgreSQL database, follow these steps<br>
 <br>
 The steps involved are:</div>
 
@@ -24,14 +24,18 @@ The steps involved are:</div>
 <p>Before you start the migration process ensure that you are performing the following tasks:</p>
 
 <ol>
-	<li>Install External Postgres Server 10.10 with TLS Enabled&nbsp;(same Postgres server version as embedded Postgres)</li>
+	<li>Install External Postgres Server 10.10 with TLS Enabled&nbsp;(same Postgres server version as embedded Postgres, consult your database administrator for TLS certificates)&nbsp;</li>
 	<li>Note down the External Postgres Server Certificate in .crt and base64 of <code>server.crt</code> file if it is&nbsp;self signed or <code>root.crt</code>&nbsp;&nbsp;otherwise using the command:
 	<pre><code class="language-bash">base64 server.crt | sed -e ':a;N;$!ba;s/\n//g'</code></pre>
 	</li>
 	<li>Note down the password of the following keys (covered under topic Take database dump of all the suite databases present in the internal Postgres)
 	<ul>
-		<li><code>defaultdb_user_password</code></li>
-		<li><code>defaultdb_cdfidm_user_password</code></li>
+		<li>
+		<div class="Admonition_Important"><code>defaultdb_user_password</code></div>
+		</li>
+		<li>
+		<div class="Admonition_Important"><code>defaultdb_cdfidm_user_password</code></div>
+		</li>
 	</ul>
 	</li>
 </ol>
@@ -66,6 +70,8 @@ get_secret defaultdb_cdfidm_user_password</code></pre>
 	<li>Note down the passwords for <code>defaultdb_user_password</code> and <code>defaultdb_cdfidm_user_password</code>, you’ll need it later.</li>
 	<li>You can copy and paste all below commands in a shell script and run it as well, from /tmp folder.</li>
 </ul>
+
+<h3>Take database Backup</h3>
 
 <p>From the internal database pod shell, take database dumps of the following databases:</p>
 
@@ -102,13 +108,11 @@ psql -U postgres -d postgres</code></pre>
 GRANT cdfidm TO &nbsp;postgres;
 \q</code></pre>
 
-<h2></h2>
-
-<div class="Admonition_Note"><span style="color: rgb(51, 51, 51); font-family: Roboto, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 16px;">You can even copy the restoration commands in a shell script and run it as well, but make sure to change directory to /tmp/dbbackups ( cd /tmp/dbbackups)</span></div>
-
-<h3>Restore the database dumps:</h3>
+<h2>Restore the database dumps:</h2>
 
 <p>Execute the following commands to restore the database dumps:</p>
+
+<div class="Admonition_Note"><span style="color: rgb(51, 51, 51); font-family: Roboto, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 16px;">You can even copy the restoration commands in a shell script and run it as well, but make sure to change directory to /tmp/dbbackups ( cd /tmp/dbbackups)</span></div>
 
 <pre><code>cd /tmp/dbbackups
 pg_restore --create -p 5432 -d postgres -U postgres autopassdb.dump
@@ -133,9 +137,9 @@ ALTER USER postgres LOGIN PASSWORD '&lt;00AuYXMMWL&gt;’;
 <p>Execute the following commands to take a backup of the ConfigMaps:</p>
 
 <pre><code>kubectl get cm default-database-configmap -n core -o yaml &gt; /tmp/default-database-configmap.yaml
-kubectl get cm obsuite-config -n &lt;opsbridge-azm6h&gt; -o yaml &gt; /tmp/obsuite-config.yaml
-kubectl get cm bvd-config -n &lt;opsbridge-azm6h&gt; -o yaml &gt; /tmp/bvd-config.yaml
-kubectl get cm omi-config -n &lt;opsbridge-azm6h&gt; -o yaml &gt; /tmp/omi-config.yaml
+kubectl get cm obsuite-config -n &lt;suite-namespace&gt; -o yaml &gt; /tmp/obsuite-config.yaml
+kubectl get cm bvd-config -n &lt;suite-namespace&gt; -o yaml &gt; /tmp/bvd-config.yaml
+kubectl get cm omi-config -n &lt;suite-namespace&gt; -o yaml &gt; /tmp/omi-config.yaml
 </code></pre>
 
 <p><strong>Note:</strong><br>
@@ -147,13 +151,13 @@ kubectl get cm omi-config -n &lt;opsbridge-azm6h&gt; -o yaml &gt; /tmp/omi-confi
 <h2>Update the ConfigMaps to reflect host, port, and certificate of external Postgres</h2>
 
 <pre><code>kubectl edit cm default-database-configmap -n core
-kubectl edit cm obsuite-config -n &lt;opsbridge-azm6h&gt;
-kubectl edit cm bvd-config -n &lt;opsbridge-azm6h&gt;
-kubectl edit cm omi-config -n &lt;opsbridge-azm6h&gt;</code></pre>
+kubectl edit cm obsuite-config -n &lt;suite-namespace&gt;
+kubectl edit cm bvd-config -n &lt;suite-namespace&gt;
+kubectl edit cm omi-config -n &lt;suite-namespace&gt;</code></pre>
 
 <p></p>
 
-<div class="Admonition_Important">You can skip the next set of commands in this section if you want to do this automatically using the script&nbsp;available <a href="https://marketplace.microfocus.com/itom/content/migrate-embedded-postgresql-to-external-postgresql">here</a></div>
+<div class="Admonition_Important">You can skip below section "Manual Execution" if you want to do this automatically using the script available <a href="https://marketplace.microfocus.com/itom/content/migrate-embedded-postgresql-to-external-postgresql">here</a></div>
 
 <h3>Manual Execution</h3>
 
@@ -174,7 +178,7 @@ EMBEDDED_DB: &lt;false&gt;</code></pre>
 
 <ol start="2">
 	<li>Edit&nbsp;obsuite-config and replace with values as specified:
-	<pre><code>kubectl edit cm obsuite-config -n &lt;opsbridge-azm6h&gt;
+	<pre><code>kubectl edit cm obsuite-config -n &lt;suite-namespace&gt;
 
 suite.autopass_dbCa: &lt;content of .crt&gt;
 suite.autopass_dbhost: &lt;FQDN_OF_EXT_POSTGRES_SERVER&gt;
@@ -186,12 +190,12 @@ suite.autopass_dbport: &lt;POSTGRES_PORT_OF_EXT_SERVER&gt;</code></pre>
 
 <ol start="2">
 	<li>Edit&nbsp;bvd-config&nbsp;and replace with values as specified:
-	<pre><code>kubectl edit cm bvd-config -n &lt;opsbridge-azm6h&gt;
+	<pre><code>kubectl edit cm bvd-config -n &lt;suite-namespace&gt;
 
 </code></pre>
 	</li>
 	<li>Edit&nbsp;omi-config&nbsp;and replace with values as specified:
-	<pre><code>kubectl edit cm omi-config -n &lt;opsbridge-azm6h&gt;
+	<pre><code>kubectl edit cm omi-config -n &lt;suite-namespace&gt;
 
 omi.dbCa.base64: &lt;base64 of .crt&gt;
 omi.dbhost: &lt;FQDN_OF_EXT_POSTGRES_SERVER&gt;
@@ -213,11 +217,11 @@ omi.dbport: &lt;POSTGRES_PORT_OF_EXT_SERVER&gt;</code></pre>
 kubectl scale --replicas=2 deployment/idm -n core</code></pre>
 	</li>
 	<li>Turn On Suite Pods
-	<pre><code>${K8S_HOME}/scripts/cdfctl.sh -f runlevel set -l UP -n &lt;opsbridge-azm6h&gt;</code></pre>
+	<pre><code>${K8S_HOME}/scripts/cdfctl.sh -f runlevel set -l UP -n &lt;suite-namespace&gt;</code></pre>
 	</li>
 	<li>IDM Pods are not controlled by suite deployment, hence IDM pods need separate restart commands.</li>
 	<li>Update ucmdb’s CA key to&nbsp;&nbsp;<code>omi_db_ca_cert</code>
-	<pre><code>kubectl exec -it -c omi-artemis -n &lt;opsbridge-azm6h&gt; &lt;omi-artemis-84d7d94587-ls2fq&gt; /bin/bash
+	<pre><code>kubectl exec -it -c omi-artemis -n &lt;suite-namespace&gt; &lt;omi-artemis pod name&gt; /bin/bash
 update_secret omi_db_ca_cert &lt;base64 of .crt&gt;&nbsp;
 get_secret omi_db_ca_cert
 exit</code></pre>
@@ -228,10 +232,10 @@ exit</code></pre>
 
 <ol start="5">
 	<li>Restart ucmdb and omi Pods
-	<pre><code>kubectl -n &lt;opsbridge-azm6h&gt; scale --replicas=0 deployment/ucmdb
-kubectl -n &lt;opsbridge-azm6h&gt; scale --replicas=1 deployment/ucmdb
-kubectl -n &lt;opsbridge-azm6h&gt; scale --replicas=0 Statefulset/omi
-kubectl -n &lt;opsbridge-azm6h&gt; scale --replicas=1 Statefulset/omi</code></pre>
+	<pre><code>kubectl -n &lt;suite-namespace&gt; scale --replicas=0 deployment/ucmdb
+kubectl -n &lt;suite-namespace&gt; scale --replicas=1 deployment/ucmdb
+kubectl -n &lt;suite-namespace&gt; scale --replicas=0 Statefulset/omi
+kubectl -n &lt;suite-namespace&gt; scale --replicas=1 Statefulset/omi</code></pre>
 	</li>
 </ol>
 
@@ -245,19 +249,19 @@ kubectl -n &lt;opsbridge-azm6h&gt; scale --replicas=1 Statefulset/omi</code></pr
 	<li>Execute these commands to roll back to internal database:
 	<pre><code>kubectl delete cm default-database-configmap -n core
 kubectl apply -n core -f /tmp/default-database-configmap.yaml
-kubectl delete cm obsuite-config -n &lt;opsbridge-azm6h&gt;&nbsp;
-kubectl apply -n &lt;opsbridge-azm6h&gt; -f /tmp/obsuite-config.yaml
-kubectl delete cm bvd-config -n &lt;opsbridge-azm6h&gt;
-kubectl apply -n &lt;opsbridge-azm6h&gt; -f /tmp/bvd-config.yaml
-kubectl delete cm omi-config -n &lt;opsbridge-azm6h&gt;
-kubectl apply -n &lt;opsbridge-azm6h&gt; -f /tmp/omi-config.yaml
+kubectl delete cm obsuite-config -n &lt;suite-namespace&gt;&nbsp;
+kubectl apply -n &lt;suite-namespace&gt; -f /tmp/obsuite-config.yaml
+kubectl delete cm bvd-config -n &lt;suite-namespace&gt;
+kubectl apply -n &lt;suite-namespace&gt; -f /tmp/bvd-config.yaml
+kubectl delete cm omi-config -n &lt;suite-namespace&gt;
+kubectl apply -n &lt;suite-namespace&gt; -f /tmp/omi-config.yaml
 kubectl scale --replicas=0 deployment/idm -n core
 kubectl scale --replicas=2 deployment/idm -n core
 </code></pre>
 	</li>
 	<li>Restore <code>omi_db_ca_cert</code> value to the internal Postgres base64 CA value
-	<pre><code>${K8S_HOME}/scripts/cdfctl.sh -f runlevel set -l DOWN -n &lt;opsbridge-azm6h&gt;
-${K8S_HOME}/scripts/cdfctl.sh -f runlevel set -l UP -n &lt;opsbridge-azm6h&gt;</code></pre>
+	<pre><code>${K8S_HOME}/scripts/cdfctl.sh -f runlevel set -l DOWN -n &lt;suite-namespace&gt;
+${K8S_HOME}/scripts/cdfctl.sh -f runlevel set -l UP -n &lt;suite-namespace&gt;</code></pre>
 	</li>
 </ol>
 
