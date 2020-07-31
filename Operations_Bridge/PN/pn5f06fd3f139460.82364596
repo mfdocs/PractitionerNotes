@@ -113,6 +113,7 @@ GRANT cdfidm TO &nbsp;postgres;
 <p>Execute the following commands to restore the database dumps:</p>
 
 <div class="Admonition_Note"><span style="color: rgb(51, 51, 51); font-family: Roboto, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 16px;">You can even copy the restoration commands in a shell script and run it as well, but make sure to change directory to /tmp/dbbackups ( cd /tmp/dbbackups)</span></div>
+&nbsp;
 
 <pre><code>cd /tmp/dbbackups
 pg_restore --create -p 5432 -d postgres -U postgres autopassdb.dump
@@ -121,10 +122,12 @@ pg_restore --create -p 5432 -d postgres -U postgres defaultdb.dump
 pg_restore --create -p 5432 -d postgres -U postgres event.dump
 pg_restore --create -p 5432 -d postgres -U postgres mgmt.dump
 pg_restore --create -p 5432 -d postgres -U postgres rtsm.dump</code></pre>
+&nbsp;
 
 <div class="Admonition_Note">All required databases will be created automatically as part of the restore procedure.</div>
 
-<h2>Update the passwords in external Postgres</h2>
+<h2><br>
+Update the passwords in external Postgres</h2>
 
 <p>Change the password of ‘postgres’ user to the value you noted earlier for <code>defaultdb_user_password</code></p>
 
