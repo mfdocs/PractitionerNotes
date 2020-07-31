@@ -15,11 +15,11 @@ In this upgrade, a new CDF IDM database is required, you cannot reuse the existi
 &nbsp;<br>
 It is recommended to clone the HCM databases to use with the new HCM version. This way you could still run the older version of HCM until you have the upgrade process completed and validated.
 <h3>Virtual IP and Load Balancer configurations</h3>
-When the older version of HCM is using a Virtual IP (VIP), we cannot use the same VIP with new HCM version deployment, the new HCM 2020.05 installation will use a new VIP. You have to change the VIP of the HCM 2020.05 to use the existing VIP (from the older version) unless the DNS can be reconfigured to use the same FQDN for new VIP.<br>
+When the older version of HCM is using a Virtual IP (VIP), we cannot use the same VIP with new HCM version deployment, the new HCM 2020.05 installation will have to use a new VIP. You have to change the VIP of the HCM 2020.05 to use the existing VIP (from the older version) unless the DNS can be reconfigured to use the same FQDN for a new VIP.<br>
 <br>
-When the older version HCM is using an external Load Balancer, then you can deploy the new version of HCM using the temporary load balancer and then reconfigure the external hostname in HCM after the upgrade to use the old Load Balancer. You must also change the load balancer configurations to use the new HCM instances.<br>
+When the older version HCM is using an External Load Balancer, then you can deploy the new version of HCM using the temporary load balancer and then reconfigure the external hostname in HCM after the upgrade to use the actual Load Balancer. You must also change the load balancer configurations to use the new HCM instance URLs.<br>
 <br>
-This is further described in the latter part of this document
+This is further described later in this document.
 <h2>Upgrade Procedure</h2>
 The upgrade process assumes that the new HCM 2020.05 is deployed and is accessible. The databases are cloned and is available on to a database server.
 
