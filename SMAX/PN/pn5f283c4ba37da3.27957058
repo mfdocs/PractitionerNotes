@@ -1,1 +1,89 @@
- 
+<html><h2>Create the container</h2>
+POST &nbsp; /dnd/api/container
+
+<pre>{
+  "name": "AAA",
+  "description": "This is AAA design(s)",
+  "icon": "/12345/dnd/api/blobstore/IT_infrastructure.png?tag=library",
+  "container_type": "SEQUENCE_ARTIFACT_CONTAINER",
+  "tags": [
+    {
+      "@self": "/12345/dnd/api/tag/2c908cb37352b8a8017352c5b94205d7"
+    }
+  ]
+}
+</pre>
+The following is an example of the structure of the response data in JSON format:<br>
+<code>Status Code: 201</code>
+
+<pre>{
+  "@self": "/12345/dnd/api/container/2c908cb97353331f01735921a22001ea",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel",
+  "global_id": "2c908cb97353331f01735921a22001ea",
+  "name": "AAA",
+  "description": "This is AAA design(s)",
+  "icon": "/12345/dnd/api/blobstore/IT_infrastructure.png?tag=library",
+  "ext": {
+    "csa_name_key": "53255b1e-153a-4506-8cb8-2e6e3fe93566",
+    "csa_critical_system_object": false,
+    "csa_artifact_container_type": "SEQUENCE_DESIGN_BASED"
+  },
+  "container_type": "SEQUENCE_ARTIFACT_CONTAINER",
+  "tags": [
+    {
+      "@self": "/12345/dnd/api/tag/2c908cb37352b8a8017352c5b94205d7",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:tag",
+      "name": null,
+      "description": null,
+      "icon": null,
+      "color": null,
+      "scopes": null
+    }
+  ]
+}
+</pre>
+
+<h2>Create the design with version</h2>
+POST &nbsp; /dnd/api/service/design
+
+<pre>{
+  "name": "AAA",
+  "description": "This is a new design",
+  "icon": "/12345/dnd/api/blobstore/IT_infrastructure.png?tag=library",
+  "type": "sequence",
+  "version": "1.0.0",
+  "containerId": "2c908cb97353331f01735921a22001ea",
+  "url": "",
+  "upgradable": false
+}
+</pre>
+The following is an example of the structure of the response data in JSON format:<br>
+<code>Status Code: 201</code>
+
+<pre>{
+  "@self": "/12345/dnd/api/service/design/2c908cb97353331f01735921a50c01ec",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:blueprint",
+  "@content_version": "4.0",
+  "@created": "2020-07-16T19:37:23.981Z",
+  "@modified": "2020-07-16T19:37:23.981Z",
+  "global_id": "2c908cb97353331f01735921a50c01ec",
+  "name": "AAA",
+  "description": "This is a new design",
+  "icon": "/12345/dnd/api/blobstore/IT_infrastructure.png?tag=library",
+  "ext": {
+    "csa_name_key": "7abaf726-f565-4fc2-93ff-62f1fcb94d4b",
+    "csa_critical_system_object": false
+  },
+  "url": "",
+  "version": "1.0.0",
+  "published": false,
+  "containerId": "2c908cb97353331f01735921a22001ea",
+  "optionModel": {
+    "@self": "/12345/dnd/api/option-model/2c908cb97353331f01735921a50c01eb"
+  },
+  "type": "sequence",
+  "upgrades_from": [],
+  "upgrades_to": []
+}
+</pre>
+</html>
