@@ -281,7 +281,7 @@ Follow this step if the password to the HCM databases you installed is different
 update_secret NEW_DB_PASSWORD &lt;new-database-password&gt;</code></pre>
 
 <h3>Migrate Autopass</h3>
-Update &lt;core-vol&gt;/suite-install/hcm/output/hcm-autopass.yaml database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – DBHOST, DBPORT, DBNAME, DBUSER, DBPASSWORD_KEY, DBSYSTEMID.<br>
+Update <code>&lt;core-vol&gt;/suite-install/hcm/output/hcm-autopass.yaml </code>database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – DBHOST, DBPORT, DBNAME, DBUSER, DBPASSWORD_KEY, DBSYSTEMID.<br>
 Delete and create Autopass pods using the following commands;
 <pre><code class="language-vim">kubectl delete -f hcm-autopass.yaml
 kubectl create -f hcm-autopass.yaml</code></pre>
@@ -298,7 +298,7 @@ scp &lt;old-hcm-nfs&gt;:&lt;hcm-vol&gt;/shared/encryption/*.* encryption/
 chown -R itom:itom *</code></pre>
 
 <h4>Update the YAML with the database configuration details</h4>
-Update the &lt;core-vol&gt;/suite-install/hcm/output/hcm-csa.yaml database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – CSA_DB_HOST, CSA_DB_PORT, CSA_DB_USER, CSA_DB_PASSWORD_KEY, CSA_DB_NAME, CSA_DB_SERVICENAME.<br>
+Update the <code>&lt;core-vol&gt;/suite-install/hcm/output/hcm-csa.yaml</code> database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – CSA_DB_HOST, CSA_DB_PORT, CSA_DB_USER, CSA_DB_PASSWORD_KEY, CSA_DB_NAME, CSA_DB_SERVICENAME.<br>
 Change the DEPLOYMENT_TYPE to migrate for the hcm-csa.yaml<br>
 Delete and create CSA pods using the following commands;
 <pre><code class="language-vim">kubectl delete -f hcm-csa.yaml
@@ -316,7 +316,7 @@ scp &lt;old-hcm-nfs&gt;:&lt;hcm-vol&gt;/conf/oo/* oo/.
 chown -R itom:itom *</code></pre>
 
 <h4>Update the YAML with the database configuration details</h4>
-Update the &lt;core-vol&gt;/suite-install/hcm/output/hcm-oo.yaml database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – OO_CENTRAL_DB_HOST, OO_CENTRAL_DB_PORT, OO_CENTRAL_DB_USERNAME, OO_CENTRAL_DB_PASSWORD_KEY, OO_CENTRAL_DB_NAME, OO_CENTRAL_DB_SERVICENAME.<br>
+Update the <code>&lt;core-vol&gt;/suite-install/hcm/output/hcm-oo.yaml</code> database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – OO_CENTRAL_DB_HOST, OO_CENTRAL_DB_PORT, OO_CENTRAL_DB_USERNAME, OO_CENTRAL_DB_PASSWORD_KEY, OO_CENTRAL_DB_NAME, OO_CENTRAL_DB_SERVICENAME.<br>
 Change the DEPLOYMENT_TYPE to migrate for the hcm-oo.yaml<br>
 Delete and create OO pods using the following commands;
 <pre><code class="language-vim">kubectl delete -f hcm-oo.yaml
@@ -325,47 +325,55 @@ kubectl create -f hcm-oo.yaml</code></pre>
 <h3>Migrate OO Designer</h3>
 
 <h4>Copy the OO Designer encryption folder from old version of HCM to 2020.05</h4>
-On the HCM 2020.05 master node,<br>
-cd &lt;hcm-vol&gt;/conf/<br>
-mv oodesigner oodesigner_2020_05<br>
-mkdir oodesigner<br>
-scp &lt;old-hcm-nfs&gt;:&lt;hcm-vol&gt;/conf/oodesigner/* oodesigner/.<br>
-chown -R itom:itom *
+On the HCM 2020.05 master node,
+
+<pre><code class="language-vim">cd &lt;hcm-vol&gt;/conf/
+mv oodesigner oodesigner_2020_05
+mkdir oodesigner
+scp &lt;old-hcm-nfs&gt;:&lt;hcm-vol&gt;/conf/oodesigner/* oodesigner/.
+chown -R itom:itom *</code></pre>
+
 <h4>Update the YAML with the database configuration details</h4>
-Update the &lt;core-vol&gt;/suite-install/hcm/output/hcm-oodesigner.yaml database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – OO_DESIGNER_DB_HOST, OO_DESIGNER_DB_PORT, OO_DESIGNER_DB_USERNAME, OO_DESIGNER_DB_PASSWORD_KEY, OO_DESIGNER_DB_NAME, OO_DESIGNER_DB_SERVICENAME.<br>
+Update the &lt;<code>core-vol&gt;/suite-install/hcm/output/hcm-oodesigner.yaml</code> database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – OO_DESIGNER_DB_HOST, OO_DESIGNER_DB_PORT, OO_DESIGNER_DB_USERNAME, OO_DESIGNER_DB_PASSWORD_KEY, OO_DESIGNER_DB_NAME, OO_DESIGNER_DB_SERVICENAME.<br>
 Change the DEPLOYMENT_TYPE to migrate for the hcm-oodesigner.yaml<br>
-Delete and create OO Designer pods using the following commands;<br>
-kubectl delete -f hcm-oodesigner.yaml<br>
-kubectl create -f hcm-oodesigner.yaml
+Delete and create OO Designer pods using the following commands;
+<pre><code class="language-vim">kubectl delete -f hcm-oodesigner.yaml
+kubectl create -f hcm-oodesigner.yaml</code></pre>
+
 <h3>Migrate UCMDB</h3>
 
-<h4><span style="color: rgb(51, 51, 51); font-family: Roboto, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;;">Update the &lt;core-vol&gt;/suite-install/hcm/output/hcm-ucmdb.yaml database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – DB_HOST, DB_PORT, .</span></h4>
+<h4><span style="color: rgb(51, 51, 51); font-family: Roboto, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;;">Update the <code>&lt;core-vol&gt;/suite-install/hcm/output/hcm-ucmdb.yaml</code> database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – DB_HOST, DB_PORT, .</span></h4>
 Change the DEPLOYMENT_TYPE to migrate for the hcm-ucmdb.yaml<br>
-Delete and create UCMDB pods using the following commands;<br>
-kubectl delete -f hcm-ucmdb.yaml<br>
-kubectl create -f hcm-ucmdb.yaml
+Delete and create UCMDB pods using the following commands;
+<pre><code class="language-vim">kubectl delete -f hcm-ucmdb.yaml
+kubectl create -f hcm-ucmdb.yaml</code></pre>
+
 <h3>Upgrading Vertica components</h3>
-Follow the process to upgrade vertica if you are using any of the Cloud Service Brokering and Governance features
+Follow the process to upgrade Vertica if you are using any of the Cloud Service Brokering and Governance features
 
 <ol>
-	<li>Upgrade vertica to the required version level as per the documented process</li>
-	<li>Copy vertica certificate to the HCM 2020.05<br>
-	The certificates needs to be copied to &lt;hcm-vol&gt;/certs/ca folder</li>
-	<li>Clean up the following in the di folder &lt;hcm-vol&gt;/di<br>
-	mv vertica_ingestion vertica_ingestion_old<br>
-	mv administration &nbsp;administration_old</li>
-	<li>Delete and create hcm-zookeeper.yaml, hcm-kafka.yaml, wait till they are up and running<br>
-	kubectl delete -f hcm-zookeeper.yaml<br>
-	kubectl delete -f hcm-kafka.yaml<br>
-	<br>
-	kubectl create -f hcm-zookeeper.yaml<br>
-	kubectl create -f hcm-kafka.yaml</li>
-	<li>Delete and create hcm-coso-config-data-job.yaml, wait till its completed<br>
-	kubectl delete -f hcm-coso-config-data-job.yaml<br>
-	kubectl create -f hcm-coso-config-data-job.yaml</li>
-	<li>Connect to the vertica database and execute the below query<br>
-	drop schema csac cascade;</li>
-	<li>Update the following yaml with vertica server details and database details where ever required
+	<li>Upgrade Vertica to the required version level as per the documented process<br>
+	Upgrade to Vertica 9.2.0 version. For help, see&nbsp;<a href="https://www.vertica.com/docs/9.2.x/HTML/Content/Authoring/InstallationGuide/Upgrade/UpgradingVertica.htm?tocpath=Installing%20Vertica%7CUpgrading%20Vertica%7C_____0" rel="nofollow" target="1">Upgrading vertica</a>&nbsp;in the Vertica documentation.</li>
+	<li>Copy Vertica certificate to the HCM 2020.05<br>
+	The certificate&nbsp;has to be copied to <code>&lt;hcm-vol&gt;/certs/ca</code> folder</li>
+	<li>Clean up the following in the di folder <code>&lt;hcm-vol&gt;/di</code>
+	<pre><code class="language-vim">mv vertica_ingestion vertica_ingestion_old
+mv administration &nbsp;administration_old</code></pre>
+	</li>
+	<li>Delete and create <code>hcm-zookeeper.yaml, hcm-kafka.yaml</code>, wait till they are up and running
+	<pre><code class="language-vim">kubectl delete -f hcm-zookeeper.yaml
+kubectl delete -f hcm-kafka.yaml
+
+kubectl create -f hcm-zookeeper.yaml
+kubectl create -f hcm-kafka.yaml</code></pre>
+	</li>
+	<li>Delete and create <code>hcm-coso-config-data-job.yaml</code>, wait till it's completed
+	<pre><code class="language-vim">kubectl delete -f hcm-coso-config-data-job.yaml
+kubectl create -f hcm-coso-config-data-job.yaml</code></pre>
+	</li>
+	<li>Connect to the Vertica database and execute the below query<br>
+	<code>drop schema csac cascade;</code></li>
+	<li>Update the following yaml with Vertica server details and database details
 	<ol>
 		<li>hcm-coso-data-ingestion.yaml</li>
 		<li>hcm-coso-data-processor-worker.yaml</li>
@@ -376,7 +384,7 @@ Follow the process to upgrade vertica if you are using any of the Cloud Service 
 	</ol>
 	</li>
 	<li>Apply the Vertica server changes<br>
-	Use kubectl delete -f <filename> and kubectl create -f <filename> with the following files to recreate all these yamls to apply Vertica server changes
+	Use <code>kubectl delete -f</code> <filename> and <code>kubectl create -f</code> <filename> for each of the following files to recreate all these yamls to apply Vertica server changes
 	<ol>
 		<li>hcm-coso-data-ingestion.yaml</li>
 		<li>hcm-coso-data-administration.yaml</li>
@@ -389,36 +397,41 @@ Follow the process to upgrade vertica if you are using any of the Cloud Service 
 		<li>hcm-showback.yaml</li>
 	</ol>
 	</filename></filename></li>
-	<li>Copy &lt;hcm-vol&gt;/conf/co from old version of HCM NFS to HCM 2020.05, then update Vertica details in hcm-co-optimizer.yaml and apply change
+	<li>Copy <code>&lt;hcm-vol&gt;/conf/co</code> from old version of HCM NFS to HCM 2020.05, then update Vertica details in <code>hcm-co-optimizer.yaml</code> and apply change
 	<ol>
 		<li>Once the Cloud Optimizer pod is running, update CSA End Point in the Cloud Optimizer UI to use the current CSA URL</li>
 	</ol>
 	</li>
-	<li>Copy &lt;hcm-vol&gt;/data/csb/elasticsearch from old version of HCM NFS to HCM 2020.05, (remove the existing folder if exists), then start the hcm-elasticsearch.yaml</li>
+	<li>Copy <code>&lt;hcm-vol&gt;/data/csb/elasticsearch</code> from the old version of HCM NFS to HCM 2020.05, (remove the existing folder if exists), then start the <code>hcm-elasticsearch.yaml</code></li>
 </ol>
 
 <h3>Update HCM URLs</h3>
 
 <ol>
 	<li>Update the OO URLs from old host to new fqdn in access_point_table in database machine</li>
-	<li>Update Provider access point of OO, CO, DMA to new HCM FQDN in Provider UI</li>
+	<li>Update Provider access point of OO, CO&nbsp;to new HCM FQDN in Provider UI</li>
 	<li>In OO, update the CSA End Points in Content Management &gt; Configuration Items</li>
 	<li>Update ooInboundUser password in OO central with HCM_IDM_PROVIDER_ACCOUNT_OOINBOUNDUSER_PASSWORD</li>
-	<li>Run content job container - hcm-content-job.yaml</li>
+	<li>Run content job container - <code>hcm-content-job.yaml</code></li>
 </ol>
 
 <h3>Bring up all rest of the pods</h3>
-/opt/kubernetes/scripts/cdfctl.sh runlevel set -l UP -n hcm-qprrw
+
+<pre><code class="language-vim">kubectl get ns
+/opt/kubernetes/scripts/cdfctl.sh runlevel set -l UP -n &lt;hcm-namespace&gt;</code></pre>
 
 <h3>Changing VIP</h3>
 If you have installed the HCM 2020.05 using VIP which is different than the previous version of HCM and you want to reconfigure to use the same VIP as old HCM version then you have to change to the VIP on HCM 2020.05, please follow this document;<br>
 <a href="https://docs.microfocus.com/itom/SMAX:2020.05/VIPchange">https://docs.microfocus.com/itom/SMAX:2020.05/VIPchange</a><br>
 <a href="https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2020.05/ChangeExternalAccessHostname">https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2020.05/ChangeExternalAccessHostname</a><br>
 Once the changes are done based on these, the CDF would have been reconfigured to the new VIP.<br>
-Now you need to re-configure the HCM yamls to use the new external hostname/VIP. Find and replace the external hostname with the old version HCM external hostname. Then apply the changes using kubectl delete -f and kubectl create -f for all the HCM yamls in &lt;core-vol&gt;/suite-install/hcm/output.<br>
+Now you need to re-configure the HCM yamls to use the new external hostname/VIP. Find and replace the external hostname with the old version HCM external hostname. Then apply the changes using kubectl delete -f and kubectl create -f for all the HCM yamls in <code>&lt;core-vol&gt;/suite-install/hcm/output</code>.<br>
 <br>
-<span style="color:#c0392b;">Example:&nbsp;<br>
-sed<br>
-<span style="font-size:11.0pt"><span style="font-family:Calibri">ls -p | grep -v / | tr '\n' ','</span></span></span><br>
+Sample command to replace the hostname and apply changes;
+<pre><code class="language-vim">sed -i 's/oldhcm-host.domain/newhcm-host.domain/g' *.yaml
+ls -p | grep -v / | tr '\n' ','
+kubectl delete -f &lt;comma separated files&gt;
+kubectl create -f &lt;comma separated files&gt;</code></pre>
+<br>
 <br>
 &nbsp;</html>
