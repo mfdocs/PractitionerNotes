@@ -81,8 +81,8 @@ To bring down the HCM, execute the following command on the older version of HCM
 
 <h3>Bring down HCM 2020.05</h3>
 Before bringing down, note down the following secrets on the HCM 2020.05 to use it later.<br>
-<code>kubectl exec -it &lt;csa-pod&gt; -n &lt;hcm-namespace&gt; -c hcm-csa -- get_secret HCM_IDM_SVC_PASSWORD<br>
-<kbd><span style="color:#e67e22;">OUTPUT : PASS=qpfy_an63?LL.9i8</span></kbd></code><br>
+<code>kubectl exec -it &lt;csa-pod&gt; -n &lt;hcm-namespace&gt; -c hcm-csa -- get_secret HCM_IDM_SVC_PASSWORD</code><br>
+<samp>PASS=qpfy_an63?LL.9i8</samp><br>
 <br>
 Now you can bring down HCM using the following commands;
 <pre>kubectl get ns
@@ -136,10 +136,10 @@ Login into the CDF management console and reset the password correctly to the pa
 Execute the following command and note down the password which has to be used in the subsequent command<br>
 &nbsp;
 <pre>kubectl exec -it &lt;idm-pod&gt; -n core -c idm -- get_secret idm_transport_admin_password
-OUTPUT : PASS=CqeSFXzWvb3Wdw==
+PASS=CqeSFXzWvb3Wdw==
 
 echo -n transport_admin:CqeSFXzWvb3Wdw== | base64
-OUTPUT: dHJhbnNwb3J0X2FkbWluOkNxZVNGWHpXdmIzV2R3PT0=
+dHJhbnNwb3J0X2FkbWluOkNxZVNGWHpXdmIzV2R3PT0=
 </pre>
 <br>
 Replace the base64 encoded password in the below curl commands against the authorization header.
@@ -190,7 +190,8 @@ Extract the token from the above command and replace it against the x-auth-token
              "type" : "INTEGRATION_USER"
         }
     }]'</pre>
-<span style="background-color:#f1c40f;">&nbsp;qpfy_an63?LL.9i8</span> is the password you have backed up before bringing down HCM 2020.05 under the topic “Bring down HCM 2020.05”
+
+<div class="Admonition_Note"><b><i>qpfy_an63?LL.9i8</i></b> is the password you have backed up before bringing down HCM 2020.05 under the topic "Bring down HCM 2020.05"</div>
 
 <h4>Download the IDM migration tool</h4>
 Download the IDM Migration tool from the below path. And copy to a directory on one of the master nodes.<br>
@@ -229,17 +230,17 @@ jdbc.dest.databaseUrl=jdbc\:postgresql\://172.17.17.47\:5432/defaultdb
 <br>
 Database password for internal Postgresql
 <pre>kubectl exec -it &lt;postgresql-pod&gt; -n core -c itom-postgresql-default -- get_secret defaultdb_cdfidm_user_password
-OUTPUT : PASS=eX3uAhiA05KIfax75B4=
+PASS=eX3uAhiA05KIfax75B4=
 </pre>
 Destination Database URL – If you are using the internal Postgresql for CDF IDM, then IP address is the Postgresql service IP which you can get from below command;
 
 <pre>kubectl get svc -n core | grep idm-postgresql-svc
-OUTPUT: idm-postgresql-svc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ClusterIP &nbsp; 172.17.17.47 &nbsp; &lt;none&gt; &nbsp; &nbsp; &nbsp; &nbsp;5432/TCP,5050/TCP &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 439d</pre>
+idm-postgresql-svc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ClusterIP &nbsp; 172.17.17.47 &nbsp; &lt;none&gt; &nbsp; &nbsp; &nbsp; &nbsp;5432/TCP,5050/TCP &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 439d</pre>
 
 <h4>Execute the migration tool</h4>
 <code>java -jar idm-migration-tool-05.00.000-SNAPSHOT.jar -c config.properties</code><br>
 <br>
-Sample output
+The command returns a result that resembles the following
 <pre><code class="language-bash">This tool will merge the data of the source database to the destination database.
 It is recommended to take a backup of the data present in jdbc:postgresql://172.16.52.39:5432/defaultdb
 Enter 'yes' if the backup of the destination database has been taken. Enter 'no' otherwise [yes/no]:
@@ -275,7 +276,7 @@ kubectl delete -f hcm-idm-config-data-job.yaml
 kubectl create -f hcm-idm-config-data-job.yaml
 kubectl logs hcm-idm-config-data-xj8l4 -n &lt;hcm-namespace&gt;</pre>
 
-<p>Wait for the hcm-idm-config-data job to complete. Check the logs of the&nbsp;hcm-idm-config-data to ensure there is no error and the job is complete successfully.</p>
+<p>Wait for the hcm-idm-config-data job to complete. Check the logs of the hcm-idm-config-data to ensure there is no error and the job is complete successfully.</p>
 
 <h3>Create new secret for the HCM database password and use it in all YAML (Optional)</h3>
 Follow this step if the password to the HCM databases you installed is different from the password on the database server you point to.
@@ -350,10 +351,7 @@ Delete and create OO Designer pods using the following commands;
 kubectl create -f hcm-oodesigner.yaml</code></pre>
 
 <h3>Migrate UCMDB</h3>
-
-<h4><span style="color: rgb(51, 51, 51); font-family: Roboto, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;;">Update the <code>&lt;core-vol&gt;/suite-install/hcm/output/hcm-ucmdb.yaml</code> database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – DB_HOST, DB_PORT, .</span></h4>
-Change the DEPLOYMENT_TYPE to migrate for the hcm-ucmdb.yaml<br>
-<br>
+Update the <code>&lt;core-vol&gt;/suite-install/hcm/output/hcm-ucmdb.yaml</code> database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – DB_HOST, DB_PORT, DB_USER, DB_SCHEMA, DB_PASSWORD_VAULT_KEY.<br>
 Delete and create UCMDB pods using the following commands;
 <pre><code class="language-vim">kubectl delete -f hcm-ucmdb.yaml
 kubectl create -f hcm-ucmdb.yaml</code></pre>
@@ -426,11 +424,11 @@ kubectl create -f hcm-showback.yaml</code></pre>
 <h3>Update HCM URLs</h3>
 
 <ol>
-	<li>Update the OO URLs from old host to new fqdn in access_point_table in database machine</li>
-	<li>Update Provider access point of OO, CO&nbsp;to new HCM FQDN in Provider UI</li>
+	<li>Update the OO URLs from old host to new HCM endpoint in <code>access_point_table</code> in CSA database</li>
+	<li>Update the access point of OO, CO providers to new HCM endpoint in CSA Provider UI</li>
 	<li>In OO, update the CSA End Points in Content Management &gt; Configuration Items</li>
 	<li>Update ooInboundUser password in OO central with HCM_IDM_PROVIDER_ACCOUNT_OOINBOUNDUSER_PASSWORD</li>
-	<li>Run content job container - <code>hcm-content-job.yaml</code></li>
+	<li>Run content job container to get the latest OOTB content - <code>hcm-content-job.yaml</code></li>
 </ol>
 
 <h3>Bring up all rest of the pods</h3>
