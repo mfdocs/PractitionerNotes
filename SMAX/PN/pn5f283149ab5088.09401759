@@ -1,1 +1,89 @@
- 
+<html><h2>Creating Components and Component Templates</h2>
+Since the design will reference a component that is being uniquely created, the first step is to create that component. Properties and actions can be defined on the component type, for all templates of that component type to share, or they can be defined specifically on the component template itself, and not shared.
+
+<h3>List component palettes</h3>
+GET &nbsp; /dnd/api/metamodel/?view=condense<br>
+<br>
+The following is an example of the structure of the returned data in JSON format:
+<pre><code>{
+  "@total_results": 3,
+  "@start_index": 0,
+  "@items_per_page": 3,
+  "@self": "/12345/dnd/api/metamodel/",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel:collection",
+  "members": [
+    {
+      "@self": "/12345/dnd/api/metamodel/2c90d2b3736cda3d01736cfb45db619f",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel",
+      "@created": "2020-07-20T16:07:53.563Z",
+      "@modified": "2020-07-20T16:07:53.579Z",
+      "global_id": "2c90d2b3736cda3d01736cfb45db619f",
+      "name": "Legacy Palette",
+      "description": "Micro Focus Cloud Service Automation Default Component Catalog",
+      "icon": "/12345/dnd/api/blobstore/brand_logo_minimal.png?tag=library",
+      "ext": {
+        "csa_name_key": "HP_CSA",
+        "csa_critical_system_object": true,
+        "csa_description": "Micro Focus Cloud Service Automation Default Component Catalog",
+        "csa_artifact_container_type": "COMPONENT_PALETTE_SEQUENCE_BASED"
+      }
+    },
+    {
+      "@self": "/12345/dnd/api/metamodel/2c90d2b3736cda3d01736d60e04562e5",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel",
+      "@created": "2020-07-20T17:58:52.229Z",
+      "@modified": "2020-07-20T17:58:52.229Z",
+      "global_id": "2c90d2b3736cda3d01736d60e04562e5",
+      "name": "MyPalette",
+      "description": "This is a new component palette",
+      "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+      "ext": {
+        "csa_name_key": "MYPALETTE",
+        "csa_critical_system_object": false,
+        "csa_description": "",
+        "csa_artifact_container_type": "COMPONENT_PALETTE_SEQUENCE_BASED"
+      }
+    },
+    {
+      "@self": "/12345/dnd/api/metamodel/2c90d2b3736cdb7801736cdbb9280000",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel",
+      "@created": "2020-07-20T15:33:25.937Z",
+      "@modified": "2020-07-20T15:33:25.937Z",
+      "global_id": "2c90d2b3736cdb7801736cdbb9280000",
+      "name": "CMS Palette",
+      "description": "This palette contains new Micro Focus CSA component types that are modeled against Micro Focus UCMDB's CI Type system. Components of the types contained in this palette will be visible in Micro Focus UCMDB when services in CSA become active.",
+      "icon": "/12345/dnd/api/blobstore/brand_logo_minimal.png?tag=library",
+      "ext": {
+        "csa_name_key": "HPE_CSA_CI_TYPE_BASED",
+        "csa_critical_system_object": true,
+        "csa_description": "",
+        "csa_artifact_container_type": "COMPONENT_PALETTE_SEQUENCE_BASED"
+      }
+    }
+  ],
+  "@modified": "2020-07-20T17:58:52.229Z"
+}
+</code></pre>
+<br>
+Create a component palette Request<br>
+POST &nbsp; /dnd/api/metamodel
+<pre><code>
+{
+  "global_id": "",
+  "@type": "",
+  "@self": "",
+  "@created": null,
+  "@modified": null,
+  "name": "MyPalette",
+  "description": "This is a new component palette",
+  "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+  "ext": {
+    "csa_critical_system_object": false,
+    "csa_name_key": "MYPALETTE",
+    "csa_description": "",
+    "csa_parent": "",
+    "csa_artifact_container_type": null
+  }
+}
+</code></pre>
+</html>
