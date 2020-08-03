@@ -3,9 +3,9 @@
 GET &nbsp; /dnd/api/metamodel/?view=condense<br>
 <br>
 The following is an example of the structure of the response data in JSON format:<br>
-Status Code: 200
-<pre>
-  "@total_results": 3,
+<code>Status Code: 200</code>
+
+<pre>  "@total_results": 3,
   "@start_index": 0,
   "@items_per_page": 3,
   "@self": "/12345/dnd/api/metamodel/",
@@ -87,7 +87,8 @@ POST &nbsp; /dnd/api/metamodel
 </pre>
 <br>
 The following is an example of the structure of the response data in JSON format:<br>
-Status Code: 201
+<code>Status Code: 201</code>
+
 <pre>{
   "@self": "/12345/dnd/api/metamodel/2c90d2b3736cda3d01736d60e04562e5",
   "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel",
@@ -105,11 +106,11 @@ Status Code: 201
 </pre>
 
 <h2>List component types in a component palette</h2>
-GET&nbsp;&nbsp;&nbsp;/dnd/api/metamodel/&lt;component id="" palette=""&gt;<br>
+GET&nbsp;&nbsp;&nbsp;/dnd/api/metamodel/&lt;component palette id&gt;<br>
 <br>
 The following is an example of the structure of the response data in JSON format:<br>
-Status Code: 200<br>
-&nbsp;
+<code>Status Code: 200</code>
+
 <pre>{
   "@self": "/12345/dnd/api/metamodel/2c90d2b3736cda3d01736d60e04562e5",
   "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel",
@@ -186,7 +187,8 @@ POST &nbsp; /dnd/api/metamodel/&lt;component palette id&gt;
 }
 </pre>
 The following is an example of the structure of the response data in JSON format:<br>
-Status Code: 201
+<code>Status Code: 201</code>
+
 <pre>{
   "@self": "/12345/dnd/api/node/type/2c90d2b3736cda3d01736d9e087062e9",
   "@type": "urn:x-hp:2012:software:cloud:data_model:node_type",
@@ -203,6 +205,599 @@ Status Code: 201
     "csa_pattern": false,
     "csa_consumer_visible": true,
     "csa_designer_visible": true
+  }
+}
+</pre>
+
+<h2>Update a component type</h2>
+PUT &nbsp; /dnd/api/node/type/&lt;component type id&gt;
+
+<pre>{
+  "global_id": "2c90d2b3736cda3d01736d9e087062e9",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:node_type",
+  "name": "MyComponentType",
+  "description": "This is a new component type (UPDATED)",
+  "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+  "ext": {
+    "csa_critical_system_object": false,
+    "csa_name_key": "MYCOMPONENTTYPE",
+    "csa_consumer_visible": true,
+    "csa_designer_visible": true,
+    "csa_pattern": false,
+    "csa_parent": null
+  },
+  "configuration_item_type": null
+}
+</pre>
+The following is an example of the structure of the response data in JSON format:<br>
+<code>Status Code: 200</code>
+
+<pre>{
+  "@self": "/12345/dnd/api/node/type/2c90d2b3736cda3d01736d9e087062e9",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:node_type",
+  "@created": "2020-07-20T19:05:40.208Z",
+  "@modified": "2020-07-20T19:10:35.598Z",
+  "global_id": "2c90d2b3736cda3d01736d9e087062e9",
+  "name": "MyComponentType",
+  "description": "This is a new component type (UPDATED)",
+  "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+  "ext": {
+    "csa_name_key": "MYCOMPONENTTYPE",
+    "csa_critical_system_object": false,
+    "csa_parent": null,
+    "csa_pattern": false,
+    "csa_consumer_visible": true,
+    "csa_designer_visible": true
+  },
+  "metamodel": {
+    "@self": "/12345/dnd/api/metamodel/2c90d2b3736cda3d01736d60e04562e5",
+    "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel",
+    "global_id": "2c90d2b3736cda3d01736d60e04562e5",
+    "name": "MyPalette",
+    "description": "This is a new component palette",
+    "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+    "ext": {
+      "csa_name_key": "MYPALETTE",
+      "csa_critical_system_object": false,
+      "csa_artifact_container_type": null
+    }
+  }
+}
+</pre>
+
+<h2>List a component type</h2>
+GET &nbsp; /dnd/api/node/type/&lt;component type id&gt;<br>
+The following is an example of the structure of the response data in JSON format:<br>
+<code>Status Code: 200</code>
+
+<pre>{
+  "@self": "/12345/dnd/api/node/type/2c90d2b3736cda3d01736d9e087062e9",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:node_type",
+  "@created": "2020-07-20T19:05:40.208Z",
+  "@modified": "2020-07-20T19:05:40.680Z",
+  "global_id": "2c90d2b3736cda3d01736d9e087062e9",
+  "name": "MyComponentType",
+  "description": "This is a new component type",
+  "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+  "ext": {
+    "csa_name_key": "MYCOMPONENTTYPE",
+    "csa_critical_system_object": false,
+    "csa_parent": null,
+    "csa_pattern": false,
+    "csa_consumer_visible": true,
+    "csa_designer_visible": true
+  },
+  "metamodel": {
+    "@self": "/12345/dnd/api/metamodel/2c90d2b3736cda3d01736d60e04562e5",
+    "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel",
+    "global_id": "2c90d2b3736cda3d01736d60e04562e5",
+    "name": "MyPalette",
+    "description": "This is a new component palette",
+    "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+    "ext": {
+      "csa_name_key": "MYPALETTE",
+      "csa_critical_system_object": false,
+      "csa_artifact_container_type": null
+    }
+  }
+}
+</pre>
+
+<h2>List properties on a component type</h2>
+POST &nbsp; /dnd/api/property/filter
+
+<pre>{
+  "ownership": [
+    "OWNED",
+    "INHERITED"
+  ],
+  "owner": {
+    "global_id": "2c90d2b3736cda3d01736d9e087062e9"
+  }
+}
+</pre>
+The following is an example of the structure of the response data in JSON format:<br>
+<code>Status Code: 200</code>
+
+<pre>{
+  "@total_results": 1,
+  "@start_index": 0,
+  "@items_per_page": 1,
+  "@self": "/12345/dnd/api/property/filter",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel:property:collection",
+  "members": [
+    {
+      "@created": "2020-07-20T19:46:16.216Z",
+      "@modified": "2020-07-20T19:46:16.216Z",
+      "global_id": "2c90d2b3736cda3d01736dc3341862ed",
+      "name": "MyProperty",
+      "description": "A new property on my component template",
+      "icon": "/12345/dnd/api/blobstore/string.png?tag=categories&amp;tag=value_type",
+      "ext": {
+        "csa_name_key": "myProperty",
+        "csa_critical_system_object": false,
+        "csa_confidential": false,
+        "csa_consumer_visible": true
+      },
+      "@self": "/12345/dnd/api/property/2c90d2b3736cda3d01736dc3341862ed",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel:property",
+      "property_type": "STRING",
+      "property_value": "hello",
+      "upgradeLocked": false,
+      "lifecycleActionReferenceCount": 0,
+      "componentReferenceCount": 0,
+      "optionReferenceCount": 0,
+      "userOperationReferenceCount": 0,
+      "resourceOfferingPropertyMappingReferenceCount": 0,
+      "resourceOfferingMeasurablePropertyReferenceCount": 0,
+      "resourceOfferingProviderSelectionActionReferenceCount": 0,
+      "serviceDesignReferenceCount": 0,
+      "componentTemplateReferenceCount": 0,
+      "visibleWhenDeployDesign": true,
+      "requiredWhenDeployDesign": false,
+      "bindings": [],
+      "property_measure": {
+        "enabled": false,
+        "type": null,
+        "unit": null
+      },
+      "ownership": "OWNED",
+      "owner": {
+        "@self": "/12345/dnd/api/node/type/2c90d2b3736cda3d01736d9e087062e9",
+        "@type": "urn:x-hp:2012:software:cloud:data_model:node_type",
+        "@created": "2020-07-20T19:05:40.208Z",
+        "@modified": "2020-07-20T19:10:35.598Z",
+        "global_id": "2c90d2b3736cda3d01736d9e087062e9",
+        "name": "MyComponentType",
+        "description": "This is a new component type (UPDATED)",
+        "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+        "ext": {
+          "csa_name_key": "MYCOMPONENTTYPE",
+          "csa_critical_system_object": false,
+          "csa_parent": null,
+          "csa_pattern": false,
+          "csa_consumer_visible": true,
+          "csa_designer_visible": true
+        },
+        "metamodel": {
+          "@self": "/12345/dnd/api/metamodel/2c90d2b3736cda3d01736d60e04562e5",
+          "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel",
+          "global_id": "2c90d2b3736cda3d01736d60e04562e5",
+          "name": "MyPalette",
+          "description": "This is a new component palette",
+          "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+          "ext": {
+            "csa_name_key": "MYPALETTE",
+            "csa_critical_system_object": false,
+            "csa_artifact_container_type": null
+          }
+        }
+      }
+    }
+  ],
+  "@modified": "2020-07-20T19:46:16.216Z"
+}
+</pre>
+
+<h2>Create property on a component type</h2>
+POST &nbsp; /dnd/api/property
+
+<pre>{
+  "global_id": "",
+  "@type": "",
+  "name": "MyProperty",
+  "description": "A new property on my component template",
+  "property_type": "STRING",
+  "property_value": "hello",
+  "ownership": null,
+  "owner": {
+    "global_id": "2c90d2b3736cda3d01736d9e087062e9"
+  },
+  "upgradeLocked": false,
+  "bindings": [],
+  "ext": {
+    "csa_critical_system_object": false,
+    "csa_name_key": "myProperty",
+    "csa_consumer_visible": true,
+    "csa_confidential": false
+  },
+  "visibleWhenDeployDesign": true,
+  "requiredWhenDeployDesign": false
+}
+</pre>
+The following is an example of the structure of the response data in JSON format:<br>
+<code>Status Code: 201</code>
+
+<pre>{
+  "@created": "2020-07-20T19:46:16.216Z",
+  "@modified": "2020-07-20T19:46:16.216Z",
+  "global_id": "2c90d2b3736cda3d01736dc3341862ed",
+  "name": "MyProperty",
+  "description": "A new property on my component template",
+  "icon": "/12345/dnd/api/blobstore/string.png?tag=categories&amp;tag=value_type",
+  "ext": {
+    "csa_name_key": "myProperty",
+    "csa_critical_system_object": false,
+    "csa_confidential": false,
+    "csa_consumer_visible": true
+  },
+  "@self": "/12345/dnd/api/property/2c90d2b3736cda3d01736dc3341862ed",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel:property",
+  "property_type": "STRING",
+  "property_value": "hello",
+  "upgradeLocked": false,
+  "visibleWhenDeployDesign": true,
+  "requiredWhenDeployDesign": false,
+  "bindings": [],
+  "property_measure": {
+    "enabled": false,
+    "type": null,
+    "unit": null
+  },
+  "ownership": "OWNED",
+  "owner": {
+    "@self": "/12345/dnd/api/node/type/2c90d2b3736cda3d01736d9e087062e9",
+    "@type": "urn:x-hp:2012:software:cloud:data_model:node_type",
+    "@created": "2020-07-20T19:05:40.208Z",
+    "@modified": "2020-07-20T19:10:35.598Z",
+    "global_id": "2c90d2b3736cda3d01736d9e087062e9",
+    "name": "MyComponentType",
+    "description": "This is a new component type (UPDATED)",
+    "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+    "ext": {
+      "csa_name_key": "MYCOMPONENTTYPE",
+      "csa_critical_system_object": false,
+      "csa_parent": null,
+      "csa_pattern": false,
+      "csa_consumer_visible": true,
+      "csa_designer_visible": true
+    }
+  }
+}
+</pre>
+
+<h2>Update property on a component type</h2>
+PUT &nbsp; /dnd/api/property/&lt;property id&gt;
+
+<pre>{
+  "global_id": "2c90d2b3736cda3d01736dc3341862ed",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel:property",
+  "name": "MyProperty",
+  "description": "A new property on my component template (UPDATED)",
+  "property_type": "STRING",
+  "property_value": "goodbye",
+  "ownership": "OWNED",
+  "owner": {
+    "global_id": "2c90d2b3736cda3d01736d9e087062e9"
+  },
+  "upgradeLocked": false,
+  "bindings": null,
+  "ext": {
+    "csa_critical_system_object": false,
+    "csa_name_key": "myProperty",
+    "csa_consumer_visible": true,
+    "csa_confidential": false
+  },
+  "visibleWhenDeployDesign": true,
+  "requiredWhenDeployDesign": false
+}
+</pre>
+The following is an example of the structure of the response data in JSON format:<br>
+<code>Status Code: 200</code>
+
+<pre>{
+  "@created": "2020-07-20T19:46:16.216Z",
+  "@modified": "2020-07-20T19:46:16.216Z",
+  "global_id": "2c90d2b3736cda3d01736dc3341862ed",
+  "name": "MyProperty",
+  "description": "A new property on my component template (UPDATED)",
+  "icon": "/12345/dnd/api/blobstore/string.png?tag=categories&amp;tag=value_type",
+  "ext": {
+    "csa_name_key": "myProperty",
+    "csa_critical_system_object": false,
+    "csa_confidential": false,
+    "csa_consumer_visible": true
+  },
+  "@self": "/12345/dnd/api/property/2c90d2b3736cda3d01736dc3341862ed",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel:property",
+  "property_type": "STRING",
+  "property_value": "goodbye",
+  "upgradeLocked": false,
+  "visibleWhenDeployDesign": true,
+  "requiredWhenDeployDesign": false,
+  "bindings": [],
+  "property_measure": {
+    "enabled": false,
+    "type": null,
+    "unit": null
+  },
+  "ownership": "OWNED",
+  "owner": {
+    "@self": "/12345/dnd/api/node/type/2c90d2b3736cda3d01736d9e087062e9",
+    "@type": "urn:x-hp:2012:software:cloud:data_model:node_type",
+    "@created": "2020-07-20T19:05:40.208Z",
+    "@modified": "2020-07-20T19:10:35.598Z",
+    "global_id": "2c90d2b3736cda3d01736d9e087062e9",
+    "name": "MyComponentType",
+    "description": "This is a new component type (UPDATED)",
+    "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+    "ext": {
+      "csa_name_key": "MYCOMPONENTTYPE",
+      "csa_critical_system_object": false,
+      "csa_parent": null,
+      "csa_pattern": false,
+      "csa_consumer_visible": true,
+      "csa_designer_visible": true
+    }
+  }
+}
+</pre>
+
+<h2>List templates on a component type</h2>
+GET &nbsp; /dnd/api/node/type/&lt;component type id&gt;<br>
+<br>
+The following is an example of the structure of the response data in JSON format:<br>
+<code>Status Code: 200</code>
+
+<pre>{
+  "@self": "/12345/dnd/api/node/type/2c90d2b3736cda3d01736d9e087062e9/template",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:node_template:collection",
+  "@total_results": 1,
+  "members": [
+    {
+      "@self": "/12345/dnd/api/node/template/2c90d2b3736cda3d01736e26c57262f5",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:node_template",
+      "created": "2020-07-20T21:35:01.491Z",
+      "@created": "2020-07-20T21:35:01.491Z",
+      "global_id": "2c90d2b3736cda3d01736e26c57262f5",
+      "name": "MyTemplate",
+      "description": "This is a component template",
+      "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+      "ext": {
+        "csa_name_key": "MYCOMPONENTTYPE__Mon Jul 20 21:35:01 UTC 2020",
+        "csa_critical_system_object": false,
+        "csa_pattern": false,
+        "csa_consumer_visible": true
+      },
+      "ancestor": {
+        "@self": "/12345/dnd/api/node/type/2c90d2b3736cda3d01736d9e087062e9",
+        "@type": "urn:x-hp:2012:software:cloud:data_model:node_type",
+        "global_id": "2c90d2b3736cda3d01736d9e087062e9",
+        "name": "MyComponentType",
+        "description": "This is a new component type",
+        "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+        "ext": {
+          "csa_name_key": "MYCOMPONENTTYPE",
+          "csa_critical_system_object": false,
+          "csa_parent": null,
+          "csa_pattern": false,
+          "csa_consumer_visible": true,
+          "csa_designer_visible": true
+        }
+      }
+    }
+  ]
+}
+</pre>
+
+<h2>Create a component template</h2>
+POST &nbsp; /dnd/api/node/template
+
+<pre>{
+  "global_id": "",
+  "@type": "",
+  "name": "MyTemplate",
+  "description": "This is a component template",
+  "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+  "ext": {
+    "csa_critical_system_object": false,
+    "csa_name_key": "",
+    "csa_consumer_visible": true,
+    "csa_pattern": false
+  },
+  "ancestor": {
+    "global_id": "2c90d2b3736cda3d01736d9e087062e9"
+  }
+}
+</pre>
+The following is an example of the structure of the response data in JSON format:<br>
+<code>Status Code: 201</code>
+
+<pre>{
+  "@self": "/12345/dnd/api/node/template/2c90d2b3736cda3d01736e26c57262f5",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:node_template",
+  "created": "2020-07-20T21:35:01.491Z",
+  "@created": "2020-07-20T21:35:01.491Z",
+  "@modified": "2020-07-20T21:35:01.965Z",
+  "global_id": "2c90d2b3736cda3d01736e26c57262f5",
+  "name": "MyTemplate",
+  "description": "This is a component template",
+  "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+  "ext": {
+    "csa_name_key": "MYCOMPONENTTYPE__Mon Jul 20 21:35:01 UTC 2020",
+    "csa_critical_system_object": false,
+    "csa_pattern": false,
+    "csa_consumer_visible": true
+  },
+  "ancestor": {
+    "@self": "/12345/dnd/api/node/type/2c90d2b3736cda3d01736d9e087062e9",
+    "@type": "urn:x-hp:2012:software:cloud:data_model:node_type",
+    "@created": "2020-07-20T19:05:40.208Z",
+    "@modified": "2020-07-20T21:34:09.559Z",
+    "global_id": "2c90d2b3736cda3d01736d9e087062e9",
+    "name": "MyComponentType",
+    "description": "This is a new component type",
+    "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+    "ext": {
+      "csa_name_key": "MYCOMPONENTTYPE",
+      "csa_critical_system_object": false,
+      "csa_parent": null,
+      "csa_pattern": false,
+      "csa_consumer_visible": true,
+      "csa_designer_visible": true
+    },
+    "metamodel": {
+      "@self": "/12345/dnd/api/metamodel/2c90d2b3736cda3d01736d60e04562e5",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel",
+      "global_id": "2c90d2b3736cda3d01736d60e04562e5",
+      "name": "MyPalette",
+      "description": "This is a new component palette",
+      "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+      "ext": {
+        "csa_name_key": "MYPALETTE",
+        "csa_critical_system_object": false,
+        "csa_artifact_container_type": null
+      }
+    }
+  }
+}
+</pre>
+
+<h2>Update a component template</h2>
+PUT &nbsp; /dnd/api/node/template/&lt;component template id&gt;
+
+<pre>{
+  "global_id": "2c90d2b3736cda3d01736e26c57262f5",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:node_template",
+  "name": "MyTemplate",
+  "description": "This is a component template (UPDATED)",
+  "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+  "ext": {
+    "csa_critical_system_object": false,
+    "csa_name_key": "MYCOMPONENTTYPE__Mon Jul 20 21:35:01 UTC 2020",
+    "csa_consumer_visible": true,
+    "csa_pattern": false
+  },
+  "ancestor": {
+    "global_id": "2c90d2b3736cda3d01736d9e087062e9"
+  }
+}
+</pre>
+The following is an example of the structure of the response data in JSON format:<br>
+<code>Status Code: 200</code>
+
+<pre>{
+  "@self": "/12345/dnd/api/node/template/2c90d2b3736cda3d01736e26c57262f5",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:node_template",
+  "created": "2020-07-20T21:35:01.491Z",
+  "@created": "2020-07-20T21:35:01.491Z",
+  "@modified": "2020-07-20T21:38:31.454Z",
+  "global_id": "2c90d2b3736cda3d01736e26c57262f5",
+  "name": "MyTemplate",
+  "description": "This is a component template (UPDATED)",
+  "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+  "ext": {
+    "csa_name_key": "MYCOMPONENTTYPE__Mon Jul 20 21:35:01 UTC 2020",
+    "csa_critical_system_object": false,
+    "csa_pattern": false,
+    "csa_consumer_visible": true
+  },
+  "ancestor": {
+    "@self": "/12345/dnd/api/node/type/2c90d2b3736cda3d01736d9e087062e9",
+    "@type": "urn:x-hp:2012:software:cloud:data_model:node_type",
+    "@created": "2020-07-20T19:05:40.208Z",
+    "@modified": "2020-07-20T21:34:09.559Z",
+    "global_id": "2c90d2b3736cda3d01736d9e087062e9",
+    "name": "MyComponentType",
+    "description": "This is a new component type",
+    "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+    "ext": {
+      "csa_name_key": "MYCOMPONENTTYPE",
+      "csa_critical_system_object": false,
+      "csa_parent": null,
+      "csa_pattern": false,
+      "csa_consumer_visible": true,
+      "csa_designer_visible": true
+    },
+    "metamodel": {
+      "@self": "/12345/dnd/api/metamodel/2c90d2b3736cda3d01736d60e04562e5",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel",
+      "global_id": "2c90d2b3736cda3d01736d60e04562e5",
+      "name": "MyPalette",
+      "description": "This is a new component palette",
+      "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+      "ext": {
+        "csa_name_key": "MYPALETTE",
+        "csa_critical_system_object": false,
+        "csa_artifact_container_type": null
+      }
+    }
+  }
+}
+</pre>
+
+<h2>List a component template</h2>
+GET &nbsp; /dnd/api/node/template/&lt;component template id&gt;<br>
+<br>
+The following is an example of the structure of the response data in JSON format:<br>
+<code>Status Code: 200</code>
+
+<pre>{
+  "@self": "/12345/dnd/api/node/template/2c90d2b3736cda3d01736e26c57262f5",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:node_template",
+  "created": "2020-07-20T21:35:01.491Z",
+  "@created": "2020-07-20T21:35:01.491Z",
+  "@modified": "2020-07-20T21:35:01.965Z",
+  "global_id": "2c90d2b3736cda3d01736e26c57262f5",
+  "name": "MyTemplate",
+  "description": "This is a component template",
+  "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+  "ext": {
+    "csa_name_key": "MYCOMPONENTTYPE__Mon Jul 20 21:35:01 UTC 2020",
+    "csa_critical_system_object": false,
+    "csa_pattern": false,
+    "csa_consumer_visible": true
+  },
+  "ancestor": {
+    "@self": "/12345/dnd/api/node/type/2c90d2b3736cda3d01736d9e087062e9",
+    "@type": "urn:x-hp:2012:software:cloud:data_model:node_type",
+    "@created": "2020-07-20T19:05:40.208Z",
+    "@modified": "2020-07-20T21:34:09.559Z",
+    "global_id": "2c90d2b3736cda3d01736d9e087062e9",
+    "name": "MyComponentType",
+    "description": "This is a new component type",
+    "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+    "ext": {
+      "csa_name_key": "MYCOMPONENTTYPE",
+      "csa_critical_system_object": false,
+      "csa_parent": null,
+      "csa_pattern": false,
+      "csa_consumer_visible": true,
+      "csa_designer_visible": true
+    },
+    "metamodel": {
+      "@self": "/12345/dnd/api/metamodel/2c90d2b3736cda3d01736d60e04562e5",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel",
+      "global_id": "2c90d2b3736cda3d01736d60e04562e5",
+      "name": "MyPalette",
+      "description": "This is a new component palette",
+      "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+      "ext": {
+        "csa_name_key": "MYPALETTE",
+        "csa_critical_system_object": false,
+        "csa_artifact_container_type": null
+      }
+    }
   }
 }
 </pre>
