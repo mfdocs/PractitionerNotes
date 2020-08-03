@@ -1,4 +1,4 @@
-<html>This document describes the process which has to be followed to upgrade an older version of HCM to 2020.05. The validated older versions of HCM are 2018.11, 2019.02, and 2019.05. Typically the HCM upgrade process includes upgrading the HCM to each individual incremental of available version causing multiple hops, and cannot be upgraded directly to the latest available version. This would mean upgrading HCM 2018.11 to 2020.05 includes upgrading to 2019.02, 2019.05, 2019.08, 2019.11.<br>
+<html>This document describes the process to upgrade an older version of HCM to HCM 2020.05. The validated older versions of HCM are 2018.11, 2019.02, and 2019.05. Typically the HCM upgrade process includes upgrading the HCM to each individual incremental of available version causing multiple hops, and cannot be upgraded directly to the latest available version. This would mean upgrading HCM 2018.11 to 2020.05 includes upgrading to 2019.02, 2019.05, 2019.08, 2019.11.<br>
 <br>
 The side-by-side upgrade (parallel instance-based) would allow you to upgrade directly to the HCM 2020.05, this process requires you to set up a new version of the HCM 2020.05 version to which the data, configurations, and customizations of older HCM version would be copied to and thereby bring up the new version of HCM in another instance. The old version of the HCM instance can be later decommissioned once the new version is LIVE.
 <h2>Pre-requisites</h2>
@@ -86,45 +86,53 @@ kubectl get ns<br>
 We need to recreate the IDM database in the new version of HCM installation since the IDM would have initialized with the default seeded user and credentials, we need to clear all data in IDM and migrate from older IDM database and then reinitialize with HCM seeded user data. Login to HCM 2020.05 machine
 
 <ol>
-	<li>Stop IDM<br>
-	cd &lt;core-vol&gt;/suite-install/yamlContent/<br>
-	kubectl delete -f idm.yaml</li>
+	<li>Stop IDM
+	<pre><code class="language-vim">cd &lt;core-vol&gt;/suite-install/yamlContent/
+kubectl delete -f idm.yaml</code></pre>
+	</li>
 	<li>If the database used to install HCM is Internal Postgres, follow the below steps
 	<ol>
-		<li>Stop Internal Postgres<br>
-		cd &lt;core-vol&gt;/suite-install/yamlContent/<br>
-		kubectl delete -f itom-postgresql-single-svc.yaml</li>
-		<li>Move the postgres folder to a backup location<br>
-		mkdir ~/backupPG<br>
-		cd <db-single-vol>/baseinfra-1.0<br>
-		mv postgresql106 ~/backupPG</db-single-vol></li>
-		<li>Start Internal Postgres<br>
-		cd <core-vol>/suite-install/yamlContent/<br>
-		kubectl create -f itom-postgresql-single-svc.yaml</core-vol></li>
+		<li>Stop Internal Postgres
+		<pre><code class="language-vim">cd &lt;core-vol&gt;/suite-install/yamlContent/
+kubectl delete -f itom-postgresql-single-svc.yaml</code></pre>
+		</li>
+		<li>Move the postgres folder to a backup location
+		<pre><code class="language-vim">mkdir ~/backupPG
+cd /baseinfra-1.0
+mv postgresql106 ~/backupPG</code></pre>
+		</li>
+		<li>Start Internal Postgres
+		<hr>
+		<pre><code class="language-vim">cd /suite-install/yamlContent/
+kubectl create -f itom-postgresql-single-svc.yaml</code></pre>
+		</li>
 	</ol>
 	</li>
 	<li>If the database used to install HCM is External Oracle or Postgresql, then back up the database following the vendor documentation. Drop and create a new database based on the HCM document.</li>
-	<li>Start IDM and Login to CDF management portal<br>
-	cd &lt;core-vol&gt;/suite-install/yamlContent/<br>
-	kubectl create -f idm.yaml<br>
-	Login to CDF management portal to ensure you can access the portal</li>
+	<li>Start IDM and Login to CDF management portal
+	<pre><code class="language-vim">cd &lt;core-vol&gt;/suite-install/yamlContent/
+kubectl create -f idm.yaml</code></pre>
+	<br>
+	Open the&nbsp;CDF management portal to ensure you can access the portal, you might not be able to login using your existing admin password.</li>
 </ol>
 
 <h4>Reset the CDF admin password</h4>
 To reset the CDF admin password execute the following commands<br>
+&nbsp;
+<pre><code class="language-vim">kubectl exec -it idm-7f44898bf6-h4q44 -n core -c idm -- bash
+sh /idmtools/idm-installer-tools/idm.sh databaseUser resetPassword -org Provider -name "admin" -plainPwd "&lt;new-temp-password&gt;"
+</code></pre>
 <br>
-kubectl exec -it idm-7f44898bf6-h4q44 -n core -c idm -- bash<br>
-sh /idmtools/idm-installer-tools/idm.sh databaseUser resetPassword -org Provider -name "admin" -plainPwd "&lt;new-temp-password&gt;"<br>
-<br>
-Login into the CDF management console and reset password correctly to the password which you had used while installation HCM.
+Login into the CDF management console and reset the password correctly to the password which you had used while installation HCM.
 <h4>Create idmTransportUser in IDM</h4>
 Execute the following command and note down the password which has to be used in the subsequent command<br>
-<br>
-kubectl exec -it &lt;idm-pod&gt; -n core -c idm -- get_secret idm_transport_admin_password<br>
-<span style="color:#e67e22;">OUTPUT : PASS=CqeSFXzWvb3Wdw==</span><br>
-<br>
-echo -n transport_admin:CqeSFXzWvb3Wdw== | base64<br>
-<span style="color:#e67e22;">OUTPUT: dHJhbnNwb3J0X2FkbWluOkNxZVNGWHpXdmIzV2R3PT0=</span><br>
+&nbsp;
+<pre><code class="language-vim">kubectl exec -it &lt;idm-pod&gt; -n core -c idm -- get_secret idm_transport_admin_password
+OUTPUT : PASS=CqeSFXzWvb3Wdw==
+
+echo -n transport_admin:CqeSFXzWvb3Wdw== | base64
+OUTPUT: dHJhbnNwb3J0X2FkbWluOkNxZVNGWHpXdmIzV2R3PT0=
+</code></pre>
 <br>
 Replace the base64 encoded password in the below curl commands against the authorization header.
 <pre><code class="language-vim">curl -k -X POST \
@@ -181,9 +189,11 @@ Download the IDM Migration tool from the below path. And copy to a directory on 
 <span style="background-color:#e74c3c;">&lt;TODO&gt; Provide tool down link.</span>
 
 <h4>Copy Lib file to idm migration tool directory</h4>
-Go to the directory where you have copied the IDM migration tool.<br>
-mkdir ../lib<br>
-cp &lt;hcm-vol&gt;/shared/content-tools/csa/lib/CLI-lib.jar ../lib/.
+Go to the directory where you have copied the IDM migration tool.
+
+<pre><code class="language-vim">mkdir ../lib
+cp &lt;hcm-vol&gt;/shared/content-tools/csa/lib/CLI-lib.jar ../lib/.</code></pre>
+
 <h4>Copy the src IDM encryption directory from older version of HCM to 2020.05 migrate folder</h4>
 mkdir hcm-idm-sec<br>
 cd hcm-idm-sec/<br>
