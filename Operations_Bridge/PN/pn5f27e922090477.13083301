@@ -1,1 +1,94 @@
- 
+<html><h1 style="margin-top:16px"><span style="font-size:16pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal">View metrics collected using MP for Microsoft SQL (2018.11) as reports on BVD</span></span></span></span></span></h1>
+
+<h1 style="margin-top:16px"><span style="font-size:16pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal">Prerequisites</span></span></span></span></span></h1>
+
+<ul>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><span style="color:black">OpsB Suite 2020.08 should be installed</span></span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><span style="color:black">OBM 2020.05 should be installed.</span></span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><span style="color:black">Certificate exchange between the OBM and COSO Data Lake should be done. For more information, see </span><a href="https://docs.microfocus.com/itom/Operations_Bridge:2019.11/ConfigureCOSODataLake" style="color:blue; text-decoration:underline">https://docs.microfocus.com/itom/Operations_Bridge:2019.11/ConfigureCOSODataLake</a>.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><span style="color:black">BVD should be connected to COSO Data Lake.</span></span></span></span></li>
+</ul>
+&nbsp;
+
+<h1 style="margin-top:16px"><span style="font-size:16pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal">Task 1: Install MP for SQL on OBM</span></span></span></span></span></h1>
+<span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">&nbsp;</span></span></span><br>
+<span style="font-size:11pt"><span style="line-height:normal"><span style="vertical-align:middle"><span style="font-family:Calibri,sans-serif"><span style="color:black">Follow the steps mentioned on the </span><a href="https://docs.microfocus.com/itom/MP_for_Microsoft_SQL_Server:2018.11/Content_IG/SQLServer/Installing_MSSQL_1.01" style="color:blue; text-decoration:underline">Install MP for Microsoft SQL Server</a><span style="color:black"> page. </span></span></span></span></span>
+
+<h1 style="margin-top:16px"><span style="font-size:16pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal">Task 2: Install OA on the SQL server which you want to monitor.</span></span></span></span></span></h1>
+<span style="font-size:11pt"><span style="background:white"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.5pt"><span style="font-family:&quot;Arial&quot;,sans-serif">For more information on different methods of installing OA, see </span></span><a href="https://docs.microfocus.com/itom/Operations_Agent:12.14/InstallationMethods" style="color:blue; text-decoration:underline"><span style="font-size:11.5pt"><span style="font-family:&quot;Arial&quot;,sans-serif">Installation methods</span></span></a><span style="font-size:11.5pt"><span style="font-family:&quot;Arial&quot;,sans-serif">.</span></span></span></span></span></span>
+
+<h1 style="margin-top:16px"><span style="font-size:16pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal">Task 3: Perform certificate exchange between OA and OBM.</span></span></span></span></span></h1>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">For more information, see <a href="https://docs.microfocus.com/itom/Operations_Agent:12.14/ConnectingOBM" style="color:blue; text-decoration:underline">https://docs.microfocus.com/itom/Operations_Agent:12.14/ConnectingOBM</a>.</span></span></span>
+
+<h1 style="margin-top:16px"><span style="font-size:16pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal">Task 4: Configure MP for Microsoft SQL Server</span></span></span></span></span></h1>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">For more information, see <a href="https://docs.microfocus.com/itom/MP_for_Microsoft_SQL_Server:2018.11/Content_IG/SQLServer/Monitoring_SQLServer" style="color:blue; text-decoration:underline">https://docs.microfocus.com/itom/MP_for_Microsoft_SQL_Server:2018.11/Content_IG/SQLServer/Monitoring_SQLServer</a>.</span></span></span>
+
+<h1 style="margin-top:16px"><span style="font-size:16pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal">Task 5: Run scripts to create tables/ topics in COSO Data Lake.</span></span></span></span></span></h1>
+<span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">&nbsp;</span></span></span>
+
+<ol>
+	<li><span style="font-size:11pt"><span style="line-height:normal"><span style="tab-stops:list .5in"><span style="vertical-align:middle"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.5pt"><span style="background:white"><span style="color:#212529">Run the following command to get the Operations Bridge namespace:&nbsp;<br>
+	kubectl get ns</span></span></span></span></span></span></span></span></li>
+	<li><span style="font-size:11pt"><span style="line-height:normal"><span style="tab-stops:list .5in"><span style="vertical-align:middle"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.5pt"><span style="background:white"><span style="color:#212529">Run the following command to get the list all the pods that are a part of the Operations Bridge namespace:&nbsp;<br>
+	kubectl get pods -n &lt;Operations Bridge namespace&gt;</span></span></span></span></span></span></span></span></li>
+	<li><span style="font-size:11pt"><span style="line-height:normal"><span style="tab-stops:list .5in"><span style="vertical-align:middle"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.5pt"><span style="background:white"><span style="color:#212529">Copy the Operations Bridge Content Administration pod (itom-opsb-content-administration-&lt;pod ID&gt;) name and then run the command to log on:<br>
+	kubectl -n &lt;Operations Bridge namespace&gt; exec -ti &lt;Operations Bridge Content Administration pod&gt; -c itom-opsb-content-administration bash</span></span></span></span></span></span></span></span></li>
+	<li><span style="font-size:11pt"><span style="line-height:normal"><span style="tab-stops:list .5in"><span style="vertical-align:middle"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.5pt"><span style="background:white"><span style="color:#212529">Run the following commands to install&nbsp;<i>SQL </i>content:</span></span></span></span></span></span></span></span></li>
+</ol>
+<span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Segoe UI&quot;,sans-serif"><span style="color:black">opsb-content-service.sh easyconfigure -configuration_types metadata -category mssqlmp</span></span></span></span></span><br>
+<span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">&nbsp;</span></span></span><br>
+<span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.5pt"><span style="background:white"><span style="color:#212529">After you have performed the above steps, all the related tables are created in the COSO Data Lake.</span></span></span>&nbsp;</span></span></span>
+
+<h1 style="margin-top:16px"><span style="font-size:16pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal">Task 6: Deploy Metric store aspect.</span></span></span></span></span></h1>
+
+<ol start="5">
+	<li style="margin-bottom:17px"><span style="font-size:11pt"><span style="line-height:normal"><span style="tab-stops:list .5in"><span style="vertical-align:middle"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.5pt"><span style="background:white"><span style="color:black">In OBM, click&nbsp;<b>Administration &gt; Monitoring &gt; Management Templates &amp; Aspects</b>.</span></span></span></span></span></span></span></span></li>
+</ol>
+
+<ol>
+	<li style="margin-bottom:17px"><span style="font-size:11pt"><span style="line-height:normal"><span style="tab-stops:list .5in"><span style="vertical-align:middle"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.5pt"><span style="background:white"><span style="color:black">In the Configuration Folders pane:<br>
+	<b>Configuration Folders &gt; Database Management &gt; Microsoft SQL Server &gt; Microsoft SQL Server Aspects</b>.</span></span></span></span></span></span></span></span></li>
+	<li style="margin-bottom:17px"><span style="font-size:11pt"><span style="line-height:normal"><span style="tab-stops:list .5in"><span style="vertical-align:middle"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.5pt"><span style="background:white"><span style="color:black">In the&nbsp;<b>Microsoft SQL Server Aspects</b>&nbsp;folder, right-click the Microsoft SQL Metric Store aspect that you want to deploy, and then click&nbsp;<b>Assign and Deploy</b>&nbsp;item to open the Assign and Deploy Wizard.</span></span></span></span></span></span></span></span></li>
+	<li style="margin-bottom:17px"><span style="font-size:11pt"><span style="line-height:normal"><span style="tab-stops:list .5in"><span style="vertical-align:middle"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.5pt"><span style="background:white"><span style="color:black">In the&nbsp;<b>Configuration Item</b>&nbsp;tab, click the configuration item to which you want to deploy the Aspect and then click&nbsp;<b>Next</b>.</span></span></span></span></span></span></span></span></li>
+</ol>
+
+<ol start="4">
+	<li style="margin-bottom:17px"><span style="font-size:11pt"><span style="line-height:normal"><span style="tab-stops:list .5in"><span style="vertical-align:middle"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.5pt"><span style="background:white"><span style="color:black">In the&nbsp;<b>Required Parameters</b>&nbsp;tab, specify the target server as &lt;https://&lt;External Access Host&gt;:36500/itomdi/receiver&gt; and click&nbsp;<b>Next</b>.</span></span></span></span></span></span></span></span></li>
+	<li style="margin-bottom:17px"><span style="font-size:11pt"><span style="line-height:normal"><span style="tab-stops:list .5in"><span style="vertical-align:middle"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.5pt"><span style="background:white"><span style="color:black">In the&nbsp;<b>Parameter Summary</b>&nbsp;tab on&nbsp;OBM, you can change the default values of the parameters. To edit the parameters, follow these steps:</span></span></span></span></span></span></span></span></li>
+</ol>
+
+<ol start="6">
+	<li><span style="font-size:11pt"><span style="line-height:normal"><span style="tab-stops:list .5in"><span style="vertical-align:middle"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.5pt"><span style="background:white"><span style="color:black">Double-click the parameter, or select the parameter from the list, and then click&nbsp;</span></span></span></span></span></span></span></span></li>
+</ol>
+<span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><span style="color:black"><img alt="SQL 2018.06 MPPencil.PNG" id="Picture_x0020_3" src="/mediawiki/images/pn_images/pn_image_5f27e92c433a63.79621520.png" style="width:17.5pt; height:17.5pt"> </span></span></span></span><br>
+<span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.5pt"><span style="background:white"><span style="color:black">. The Edit Parameter window opens.</span></span></span></span></span></span>
+
+<ol start="7">
+	<li><span style="font-size:11pt"><span style="line-height:normal"><span style="tab-stops:list .5in"><span style="vertical-align:middle"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.5pt"><span style="background:white"><span style="color:black">Change the default value and click&nbsp;<b>OK</b>.</span></span></span></span></span></span></span></span></li>
+	<li><span style="font-size:11pt"><span style="line-height:normal"><span style="tab-stops:list .5in"><span style="vertical-align:middle"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.5pt"><span style="background:white"><span style="color:black">Click&nbsp;<b>Next</b>.</span></span></span></span></span></span></span></span></li>
+</ol>
+
+<ol start="9">
+	<li style="margin-bottom:17px"><span style="font-size:11pt"><span style="line-height:normal"><span style="tab-stops:list .5in"><span style="vertical-align:middle"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.5pt"><span style="background:white"><span style="color:black">In the&nbsp;<b>Configure Options</b>&nbsp;tab, if you do not want to enable the assignment immediately, follow the step:<br>
+	On OBM, clear the&nbsp;<b>Enable Assignment(s)</b>&nbsp;check box.<br>
+	You can then enable the assignment later using the Assignments &amp; Tuning pane.</span></span></span></span></span></span></span></span></li>
+</ol>
+
+<ol start="10">
+	<li><span style="font-size:11pt"><span style="line-height:normal"><span style="tab-stops:list .5in"><span style="vertical-align:middle"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.5pt"><span style="background:white"><span style="color:black">Click&nbsp;<b>Finish</b>.</span></span></span>&nbsp;</span></span></span></span></span></li>
+</ol>
+
+<h1 style="margin-top:16px"><span style="font-size:16pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2e74b5"><span style="font-weight:normal">Task 7: View dashboard on BVD</span></span></span></span></span></h1>
+<span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.5pt"><span style="color:black">Follow the steps to view the reports on BVD:</span></span></span></span></span>
+
+<ol>
+	<li><span style="font-size:11pt"><span style="line-height:normal"><span style="tab-stops:list .5in"><span style="vertical-align:middle"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.5pt"><span style="color:black">Log on to BVD.</span></span></span></span></span></span></span></li>
+	<li><span style="font-size:11pt"><span style="line-height:normal"><span style="tab-stops:list .5in"><span style="vertical-align:middle"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.5pt"><span style="color:black">Click&nbsp;<b>Dashboard</b>&nbsp;on the title bar.</span></span></span></span></span></span></span></li>
+	<li><span style="font-size:11pt"><span style="line-height:normal"><span style="tab-stops:list .5in"><span style="vertical-align:middle"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.5pt"><span style="color:black">The&nbsp;<b>Dashboards</b>&nbsp;menu displays the following reports:</span></span></span></span></span></span></span></li>
+</ol>
+<span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.5pt"><span style="background:white"><span style="color:black">You must be able to see the following System Executive Summary reports:</span></span></span></span></span></span><br>
+<span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.5pt"><span style="background:yellow"><span style="color:black">&lt;list of reports&gt;</span></span></span></span></span></span><br>
+<span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">&nbsp;</span></span></span><br>
+<span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">&nbsp;</span></span></span><br>
+<br>
+&nbsp;</html>
