@@ -2,8 +2,9 @@
 <h2>List component palettes</h2>
 GET &nbsp; /dnd/api/metamodel/?view=condense<br>
 <br>
-The following is an example of the structure of the returned data in JSON format:
-<pre><code>{
+The following is an example of the structure of the response data in JSON format:<br>
+Status Code: 200
+<pre>
   "@total_results": 3,
   "@start_index": 0,
   "@items_per_page": 3,
@@ -61,13 +62,12 @@ The following is an example of the structure of the returned data in JSON format
   ],
   "@modified": "2020-07-20T17:58:52.229Z"
 }
-</code></pre>
+</pre>
 
 <h2>Create a component palette</h2>
 POST &nbsp; /dnd/api/metamodel
 
-<pre><code>
-{
+<pre>{
   "global_id": "",
   "@type": "",
   "@self": "",
@@ -84,5 +84,126 @@ POST &nbsp; /dnd/api/metamodel
     "csa_artifact_container_type": null
   }
 }
-</code></pre>
+</pre>
+<br>
+The following is an example of the structure of the response data in JSON format:<br>
+Status Code: 201
+<pre>{
+  "@self": "/12345/dnd/api/metamodel/2c90d2b3736cda3d01736d60e04562e5",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel",
+  "global_id": "2c90d2b3736cda3d01736d60e04562e5",
+  "name": "MyPalette",
+  "description": "This is a new component palette",
+  "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+  "ext": {
+    "csa_name_key": "MYPALETTE",
+    "csa_critical_system_object": false,
+    "csa_description": "",
+    "csa_artifact_container_type": "COMPONENT_PALETTE_SEQUENCE_BASED"
+  }
+}
+</pre>
+
+<h2>List component types in a component palette</h2>
+GET&nbsp;&nbsp;&nbsp;/dnd/api/metamodel/&lt;component id="" palette=""&gt;<br>
+<br>
+The following is an example of the structure of the response data in JSON format:<br>
+Status Code: 200<br>
+&nbsp;
+<pre>{
+  "@self": "/12345/dnd/api/metamodel/2c90d2b3736cda3d01736d60e04562e5",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel",
+  "@created": "2020-07-20T17:58:52.229Z",
+  "@modified": null,
+  "global_id": "2c90d2b3736cda3d01736d60e04562e5",
+  "name": "MyPalette",
+  "description": "This is a new component palette",
+  "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+  "ext": {
+    "csa_name_key": "MYPALETTE",
+    "csa_critical_system_object": false,
+    "csa_description": "",
+    "csa_artifact_container_type": "COMPONENT_PALETTE_SEQUENCE_BASED"
+  },
+  "@total_results": 1,
+  "@start_index": 0,
+  "@items_per_page": 1,
+  "members": [
+    {
+      "@self": "/12345/dnd/api/node/type/2c90d2b3736cda3d01736d9e087062e9",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:node_type",
+      "global_id": "2c90d2b3736cda3d01736d9e087062e9",
+      "name": "MyComponentType",
+      "description": "This is a new component type",
+      "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+      "ext": {
+        "csa_name_key": "MYCOMPONENTTYPE",
+        "csa_critical_system_object": false,
+        "csa_parent": null,
+        "csa_pattern": false,
+        "csa_consumer_visible": true,
+        "csa_designer_visible": true
+      },
+      "metamodel": {
+        "@self": "/12345/dnd/api/metamodel/2c90d2b3736cda3d01736d60e04562e5",
+        "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel",
+        "@created": "2020-07-20T17:58:52.229Z",
+        "@modified": "2020-07-20T17:58:52.229Z",
+        "global_id": "2c90d2b3736cda3d01736d60e04562e5",
+        "name": "MyPalette",
+        "description": "This is a new component palette",
+        "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+        "ext": {
+          "csa_name_key": "MYPALETTE",
+          "csa_critical_system_object": false,
+          "csa_description": "",
+          "csa_artifact_container_type": "COMPONENT_PALETTE_SEQUENCE_BASED"
+        }
+      }
+    }
+  ]
+}
+</pre>
+
+<h2>Create a component type</h2>
+POST &nbsp; /dnd/api/metamodel/&lt;component palette id&gt;
+
+<pre>{
+  "global_id": "",
+  "@type": "",
+  "name": "MyComponentType",
+  "description": "This is a new component type",
+  "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+  "ext": {
+    "csa_critical_system_object": false,
+    "csa_name_key": "MYCOMPONENTTYPE",
+    "csa_consumer_visible": true,
+    "csa_designer_visible": true,
+    "csa_pattern": false,
+    "csa_parent": null
+  },
+  "configuration_item_type": null
+}
+</pre>
+The following is an example of the structure of the response data in JSON format:<br>
+Status Code: 201
+<pre>{
+  "@self": "/12345/dnd/api/node/type/2c90d2b3736cda3d01736d9e087062e9",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:node_type",
+  "@created": "2020-07-20T19:05:40.208Z",
+  "@modified": "2020-07-20T19:05:40.208Z",
+  "global_id": "2c90d2b3736cda3d01736d9e087062e9",
+  "name": "MyComponentType",
+  "description": "This is a new component type",
+  "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+  "ext": {
+    "csa_name_key": "MYCOMPONENTTYPE",
+    "csa_critical_system_object": false,
+    "csa_parent": null,
+    "csa_pattern": false,
+    "csa_consumer_visible": true,
+    "csa_designer_visible": true
+  }
+}
+</pre>
 </html>
