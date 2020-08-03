@@ -11,7 +11,7 @@ You have to follow the HCM 2020.05 system requirements to ensure you have the su
 The new HCM version would need its own NFS repository different from the old HCM version, the old NFS can be decommissioned after the upgrade.
 
 <h3>Database requirements</h3>
-In this upgrade, a new CDF IDM database is required, you cannot reuse the existing CDF IDM database.&nbsp;The HCM databases from the older version can be reused. During the HCM 2020.05 installation, you should use a new database for the CDF IDM which you would continue to use and while configuring the HCM database you can use the internal Postgres or create temp databases since you will reconfigure to use older version HCM databases during the upgrade process.<br>
+In this upgrade, a new CDF IDM database is required, you cannot reuse the existing CDF IDM database.&nbsp;The HCM databases from the older version can be reused. During the HCM 2020.05 installation, you should use a new database for the CDF IDM which you would continue to use and while configuring the HCM database you can use the Internal Postgresql non-HA or create temp databases since you will reconfigure to use older version HCM databases during the upgrade process.<br>
 &nbsp;<br>
 It is recommended to clone the HCM databases to use with the new HCM version. This way you could still run the older version of HCM until you have the upgrade process completed and validated.
 <h3>Virtual IP and Load Balancer configurations</h3>
@@ -21,20 +21,20 @@ When the older version HCM is using an External Load Balancer, then you can depl
 <br>
 This is further described later in this document.
 <h2>Upgrade Procedure</h2>
-The upgrade process assumes that the new HCM 2020.05 is deployed and is accessible. The databases are cloned and is available on to a database server.
+The upgrade process assumes that the new HCM 2020.05 is deployed and is accessible. The databases are cloned and are available on a database server.
 
-<h3>Expose the database port in older version HCM (Only in case of internal Postgres)</h3>
-You can skip this step if you are not using internal Postgres for the CDF IDM database.<br>
-If you are using the internal Postgres database for the CDF IDM database, then you need to expose the Postgres port on that server. This is required to migrate the IDM database to 2020.05.
+<h3>Expose the database port in older version HCM (Only in case of internal Postgresql)</h3>
+You can skip this step if you are not using internal Postgresql for the CDF IDM database.<br>
+If you are using the internal Postgresql database for the CDF IDM database on the older version of HCM, then you need to expose the Postgresql port on that server. This is required to migrate the IDM database to 2020.05. Follow the below steps on the older version of HCM.
 <h4>Single node Postgres Service</h4>
-Steps to expose ITOM Postgres port outside of kubernetes cluster
+Steps to expose ITOM Postgresql port outside of Kubernetes cluster
 
 <ol>
-	<li>Modifiy <code>pg_hba.conf</code> in <code>&lt;db-single-vol&gt;/baseinfra-1.0/postgresql95/ </code>folder. Add below line to the file
+	<li>Modify <code>pg_hba.conf</code> in <code>&lt;db-single-vol&gt;/baseinfra-1.0/postgresql95/ </code>folder. Add below line to the file
 
 	<pre><code class="language-vim">host     all     all     0.0.0.0/0     md5</code></pre>
 	</li>
-	<li>Add below port mapping to the postgres yaml (&lt;core-vol&gt;/suite-install/yamlContent/itom-postgresql-single-svc.yaml). Container section, under image add lines
+	<li>Add below port mapping to the Postgresql yaml in the&nbsp;<code>&lt;core-vol&gt;/suite-install/yamlContent/itom-postgresql-single-svc.yaml</code>. Container section, under image add lines
 	<pre><code class="language-yaml">image: localhost:5000/hpeswitomsandbox/itom-postgresql:9.5.11-0021
 ports:
 - containerPort: 5432
@@ -45,7 +45,7 @@ ports:
 </ol>
 
 <h4>Postgres High Available</h4>
-Steps to follow to expose ITOM Postgres port outside of Kubernetes cluster
+Steps to follow to expose ITOM Postgresql port outside of Kubernetes cluster
 
 <ol>
 	<li>Add the following line to both the <code>pg_hba.conf</code> files;
@@ -63,11 +63,11 @@ Steps to follow to expose ITOM Postgres port outside of Kubernetes cluster
   name: pgrest-port</code></pre>
 	</li>
 	<li>Once yaml is modified execute below command for the changes to take effect.
-	<pre><code class="language-vim">kubectl apply -f &nbsp;&lt;core-vol&gt;/suite-install/yamlContent/itom-postgresql-pool-svc.yaml</code></pre>
+	<pre><code class="language-vim">kubectl apply -f &lt;core-vol&gt;/suite-install/yamlContent/itom-postgresql-pool-svc.yaml</code></pre>
 	</li>
 </ol>
 
-<h3>Bring down old version of HCM</h3>
+<h3>Bring down the old version of HCM</h3>
 The following are the criteria to bring down the older version of HCM, otherwise, you can skip this step.
 
 <ol>
@@ -91,25 +91,25 @@ Now you can bring down HCM using the following commands;
 <h3>Migrate IDM&nbsp;</h3>
 
 <h4>Recreate IDM database</h4>
-We need to recreate the IDM database in the new version of HCM installation since the IDM would have initialized with the default seeded user and credentials, we need to clear all data in IDM and migrate from older IDM database and then reinitialize with HCM seeded user data. Login to HCM 2020.05 machine
+We need to recreate the IDM database in the new version of HCM installation since the IDM would have initialized with the default seeded user and credentials during the installation, we need to clear all data in IDM and migrate from older IDM database and then reinitialize with HCM seeded user data. On the HCM 2020.05 instance, follow the below steps.
 
 <ol>
 	<li>Stop IDM
 	<pre><code class="language-vim">cd &lt;core-vol&gt;/suite-install/yamlContent/
 kubectl delete -f idm.yaml</code></pre>
 	</li>
-	<li>If the database used to install HCM is Internal Postgres, follow the below steps
+	<li>If the database used to install HCM is Internal Postgresql, follow the below steps
 	<ol>
-		<li>Stop Internal Postgres
+		<li>Stop Internal Postgresql
 		<pre><code class="language-vim">cd &lt;core-vol&gt;/suite-install/yamlContent/
 kubectl delete -f itom-postgresql-single-svc.yaml</code></pre>
 		</li>
-		<li>Move the postgres folder to a backup location
+		<li>Move the Postgresql&nbsp;folder to a backup location
 		<pre><code class="language-vim">mkdir ~/backupPG
 cd /baseinfra-1.0
 mv postgresql106 ~/backupPG</code></pre>
 		</li>
-		<li>Start Internal Postgres
+		<li>Start Internal Postgresql
 		<hr>
 		<pre><code class="language-vim">cd /suite-install/yamlContent/
 kubectl create -f itom-postgresql-single-svc.yaml</code></pre>
@@ -117,7 +117,7 @@ kubectl create -f itom-postgresql-single-svc.yaml</code></pre>
 	</ol>
 	</li>
 	<li>If the database used to install HCM is External Oracle or Postgresql, then back up the database following the vendor documentation. Drop and create a new database based on the HCM document.</li>
-	<li>Start IDM and Login to CDF management portal
+	<li>Start IDM and open&nbsp;to CDF management portal
 	<pre><code class="language-vim">cd &lt;core-vol&gt;/suite-install/yamlContent/
 kubectl create -f idm.yaml</code></pre>
 	<br>
@@ -131,7 +131,7 @@ To reset the CDF admin password execute the following commands<br>
 sh /idmtools/idm-installer-tools/idm.sh databaseUser resetPassword -org Provider -name "admin" -plainPwd "&lt;new-temp-password&gt;"
 </code></pre>
 <br>
-Login into the CDF management console and reset the password correctly to the password which you had used while installation HCM.
+Login into the CDF management console and reset the password correctly to the password which you had used while installing HCM.
 <h4>Create idmTransportUser in IDM</h4>
 Execute the following command and note down the password which has to be used in the subsequent command<br>
 &nbsp;
@@ -190,28 +190,29 @@ Extract the token from the above command and replace it against the x-auth-token
              "type" : "INTEGRATION_USER"
         }
     }]'</code></pre>
-<span style="background-color:#f1c40f;">&nbsp;qpfy_an63?LL.9i8</span> is the password you have backed up before bringing down HCM 2020.05 under topic “Bring down HCM 2020.05”
+<span style="background-color:#f1c40f;">&nbsp;qpfy_an63?LL.9i8</span> is the password you have backed up before bringing down HCM 2020.05 under the topic “Bring down HCM 2020.05”
 
 <h4>Download the IDM migration tool</h4>
 Download the IDM Migration tool from the below path. And copy to a directory on one of the master nodes.<br>
 <span style="background-color:#e74c3c;">&lt;TODO&gt; Provide tool down link.</span>
 
-<h4>Copy Lib file to idm migration tool directory</h4>
+<h4>Copy Lib file to IDM migration tool directory</h4>
 Go to the directory where you have copied the IDM migration tool.
 
 <pre><code class="language-vim">mkdir ../lib
 cp &lt;hcm-vol&gt;/shared/content-tools/csa/lib/CLI-lib.jar ../lib/.</code></pre>
 
-<h4>Copy the src IDM encryption directory from older version of HCM to 2020.05 migrate folder</h4>
+<h4>Copy the src IDM encryption directory from the older version of HCM to 2020.05 migrate folder</h4>
 
 <pre><code class="language-vim">mkdir hcm-idm-sec
 cd hcm-idm-sec/
 scp &lt;old-hcm-master-node&gt;:/opt/kubernetes/cfg/idm/security/*.* .</code></pre>
-&lt;old-hcm-master-node&gt; is one of the master node from the old version of HCM
+&lt;old-hcm-master-node&gt; is one of the master nodes from the old version of HCM
 
-<h4>Migrate IDM data from older version of HCM to 2020.05</h4>
+<h4>Migrate IDM data from the older version of HCM to 2020.05</h4>
 Run the following command to generate the property files;<br>
 <code>java -jar idm-migration-tool-05.00.000-SNAPSHOT.jar -g</code><br>
+<br>
 Update the config.properties according to the source and target environment. You can ignore property destEncryptionDirectory.<br>
 Sample configure property would have the following entries;
 <pre><code>jdbc.dest.username=cdfidm
@@ -226,11 +227,11 @@ srcEncryptionDirectory=/root/migrate/idm/hcm-idm-sec
 jdbc.dest.databaseUrl=jdbc\:postgresql\://172.17.17.47\:5432/defaultdb
 </code></pre>
 <br>
-Database password for internal postgres
+Database password for internal Postgresql
 <pre><code class="language-vim">kubectl exec -it &lt;postgresql-pod&gt; -n core -c itom-postgresql-default -- get_secret defaultdb_cdfidm_user_password
 OUTPUT : PASS=eX3uAhiA05KIfax75B4=
 </code></pre>
-Destination Database URL – If you are using the internal postgres for CDF IDM, then IP address is the postgres service IP which you can get from below command;
+Destination Database URL – If you are using the internal Postgresql for CDF IDM, then IP address is the Postgresql service IP which you can get from below command;
 
 <pre><code class="language-vim">kubectl get svc -n core | grep idm-postgresql-svc
 OUTPUT: idm-postgresql-svc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ClusterIP &nbsp; 172.17.17.47 &nbsp; &lt;none&gt; &nbsp; &nbsp; &nbsp; &nbsp;5432/TCP,5050/TCP &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 439d</code></pre>
@@ -274,21 +275,23 @@ kubectl delete -f hcm-idm-config-data-job.yaml
 kubectl create -f hcm-idm-config-data-job.yaml
 kubectl logs hcm-idm-config-data-xj8l4 -n &lt;hcm-namespace&gt;</code></pre>
 
+<p>Wait for the hcm-idm-config-data job to complete. Check the logs of the&nbsp;hcm-idm-config-data to ensure there is no error and the job is complete successfully.</p>
+
 <h3>Create new secret for the HCM database password and use it in all YAML (Optional)</h3>
-Follow this step if the password to the HCM databases you installed is different to the password on the database server you point to.
+Follow this step if the password to the HCM databases you installed is different from the password on the database server you point to.
 
 <pre><code class="language-vim">kubectl exec -it &lt;any-hcm-pod&gt; -n &lt;hcm-namespace&gt; -c &lt;container&gt; -- bash
 update_secret NEW_DB_PASSWORD &lt;new-database-password&gt;</code></pre>
 
 <h3>Migrate Autopass</h3>
-Update <code>&lt;core-vol&gt;/suite-install/hcm/output/hcm-autopass.yaml </code>database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – DBHOST, DBPORT, DBNAME, DBUSER, DBPASSWORD_KEY, DBSYSTEMID.<br>
+Update <code>&lt;core-vol&gt;/suite-install/hcm/output/hcm-autopass.yaml </code>database configurations to point to the actual HCM database used with the old version. The properties that need to be updated are – DBHOST, DBPORT, DBNAME, DBUSER, DBPASSWORD_KEY, DBSYSTEMID.<br>
 Delete and create Autopass pods using the following commands;
 <pre><code class="language-vim">kubectl delete -f hcm-autopass.yaml
 kubectl create -f hcm-autopass.yaml</code></pre>
 
 <h3>Migrate CSA</h3>
 
-<h4>Copy the CSA encryption folder from old version of HCM to 2020.05</h4>
+<h4>Copy the CSA encryption folder from the old version of HCM to 2020.05</h4>
 On the HCM 2020.05 master node,
 
 <pre><code class="language-vim">cd &lt;hcm-vol&gt;/shared/
@@ -298,8 +301,10 @@ scp &lt;old-hcm-nfs&gt;:&lt;hcm-vol&gt;/shared/encryption/*.* encryption/
 chown -R itom:itom *</code></pre>
 
 <h4>Update the YAML with the database configuration details</h4>
-Update the <code>&lt;core-vol&gt;/suite-install/hcm/output/hcm-csa.yaml</code> database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – CSA_DB_HOST, CSA_DB_PORT, CSA_DB_USER, CSA_DB_PASSWORD_KEY, CSA_DB_NAME, CSA_DB_SERVICENAME.<br>
-Change the DEPLOYMENT_TYPE to migrate for the hcm-csa.yaml<br>
+Update the <code>&lt;core-vol&gt;/suite-install/hcm/output/hcm-csa.yaml</code> database configurations to point to the actual HCM database used with the old version. The properties that need to be updated are – CSA_DB_HOST, CSA_DB_PORT, CSA_DB_USER, CSA_DB_PASSWORD_KEY, CSA_DB_NAME, CSA_DB_SERVICENAME.<br>
+<br>
+Change the <code>DEPLOYMENT_TYPE</code> to <tt><strong>migrate</strong></tt>&nbsp;in the <code>hcm-csa.yaml</code><br>
+<br>
 Delete and create CSA pods using the following commands;
 <pre><code class="language-vim">kubectl delete -f hcm-csa.yaml
 kubectl create -f hcm-csa.yaml</code></pre>
@@ -317,14 +322,16 @@ chown -R itom:itom *</code></pre>
 
 <h4>Update the YAML with the database configuration details</h4>
 Update the <code>&lt;core-vol&gt;/suite-install/hcm/output/hcm-oo.yaml</code> database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – OO_CENTRAL_DB_HOST, OO_CENTRAL_DB_PORT, OO_CENTRAL_DB_USERNAME, OO_CENTRAL_DB_PASSWORD_KEY, OO_CENTRAL_DB_NAME, OO_CENTRAL_DB_SERVICENAME.<br>
-Change the DEPLOYMENT_TYPE to migrate for the hcm-oo.yaml<br>
+<br>
+Change the <code>DEPLOYMENT_TYPE</code> to <tt><strong>migrate</strong></tt> in the&nbsp;<code>hcm-oo.yaml</code><br>
+<br>
 Delete and create OO pods using the following commands;
 <pre><code class="language-vim">kubectl delete -f hcm-oo.yaml
 kubectl create -f hcm-oo.yaml</code></pre>
 
 <h3>Migrate OO Designer</h3>
 
-<h4>Copy the OO Designer encryption folder from old version of HCM to 2020.05</h4>
+<h4>Copy the OO Designer encryption folder from the old version of HCM to 2020.05</h4>
 On the HCM 2020.05 master node,
 
 <pre><code class="language-vim">cd &lt;hcm-vol&gt;/conf/
@@ -335,7 +342,9 @@ chown -R itom:itom *</code></pre>
 
 <h4>Update the YAML with the database configuration details</h4>
 Update the &lt;<code>core-vol&gt;/suite-install/hcm/output/hcm-oodesigner.yaml</code> database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – OO_DESIGNER_DB_HOST, OO_DESIGNER_DB_PORT, OO_DESIGNER_DB_USERNAME, OO_DESIGNER_DB_PASSWORD_KEY, OO_DESIGNER_DB_NAME, OO_DESIGNER_DB_SERVICENAME.<br>
-Change the DEPLOYMENT_TYPE to migrate for the hcm-oodesigner.yaml<br>
+<br>
+Change the <code>DEPLOYMENT_TYPE</code> to <tt><strong>migrate</strong></tt>&nbsp;in the <code>hcm-oodesigner.yaml</code><br>
+<br>
 Delete and create OO Designer pods using the following commands;
 <pre><code class="language-vim">kubectl delete -f hcm-oodesigner.yaml
 kubectl create -f hcm-oodesigner.yaml</code></pre>
@@ -344,6 +353,7 @@ kubectl create -f hcm-oodesigner.yaml</code></pre>
 
 <h4><span style="color: rgb(51, 51, 51); font-family: Roboto, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;;">Update the <code>&lt;core-vol&gt;/suite-install/hcm/output/hcm-ucmdb.yaml</code> database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – DB_HOST, DB_PORT, .</span></h4>
 Change the DEPLOYMENT_TYPE to migrate for the hcm-ucmdb.yaml<br>
+<br>
 Delete and create UCMDB pods using the following commands;
 <pre><code class="language-vim">kubectl delete -f hcm-ucmdb.yaml
 kubectl create -f hcm-ucmdb.yaml</code></pre>
@@ -385,17 +395,25 @@ kubectl create -f hcm-coso-config-data-job.yaml</code></pre>
 	</li>
 	<li>Apply the Vertica server changes<br>
 	Use <code>kubectl delete -f</code> <filename> and <code>kubectl create -f</code> <filename> for each of the following files to recreate all these yamls to apply Vertica server changes
-	<ol>
-		<li>hcm-coso-data-ingestion.yaml</li>
-		<li>hcm-coso-data-administration.yaml</li>
-		<li>hcm-coso-data-processor-job-submitter.yaml</li>
-		<li>hcm-coso-data-processor-master.yaml</li>
-		<li>hcm-coso-data-receiver.yaml</li>
-		<li>hcm-coso-data-processor-worker.yaml</li>
-		<li>hcm-boost-cm.yaml</li>
-		<li>hcm-csa-collector.yaml</li>
-		<li>hcm-showback.yaml</li>
-	</ol>
+	<pre><code class="language-vim">kubectl delete -f hcm-coso-data-ingestion.yaml
+kubectl delete -f hcm-coso-data-administration.yaml
+kubectl delete -f hcm-coso-data-processor-job-submitter.yaml
+kubectl delete -f hcm-coso-data-processor-master.yaml
+kubectl delete -f hcm-coso-data-receiver.yaml
+kubectl delete -f hcm-coso-data-processor-worker.yaml
+kubectl delete -f hcm-boost-cm.yaml
+kubectl delete -f hcm-csa-collector.yaml
+kubectl delete -f hcm-showback.yaml
+
+kubectl create -f hcm-coso-data-ingestion.yaml
+kubectl create -f hcm-coso-data-administration.yaml
+kubectl create -f hcm-coso-data-processor-job-submitter.yaml
+kubectl create -f hcm-coso-data-processor-master.yaml
+kubectl create -f hcm-coso-data-receiver.yaml
+kubectl create -f hcm-coso-data-processor-worker.yaml
+kubectl create -f hcm-boost-cm.yaml
+kubectl create -f hcm-csa-collector.yaml
+kubectl create -f hcm-showback.yaml</code></pre>
 	</filename></filename></li>
 	<li>Copy <code>&lt;hcm-vol&gt;/conf/co</code> from old version of HCM NFS to HCM 2020.05, then update Vertica details in <code>hcm-co-optimizer.yaml</code> and apply change
 	<ol>
