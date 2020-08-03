@@ -85,8 +85,8 @@ Before bringing down, note down the following secrets on the HCM 2020.05 to use 
 <kbd><span style="color:#e67e22;">OUTPUT : PASS=qpfy_an63?LL.9i8</span></kbd></code><br>
 <br>
 Now you can bring down HCM using the following commands;
-<pre><code class="language-vim">kubectl get ns
-/opt/kubernetes/scripts/cdfctl.sh runlevel set -l DOWN -n &lt;hcm-namespace&gt;</code></pre>
+<pre>kubectl get ns
+/opt/kubernetes/scripts/cdfctl.sh runlevel set -l DOWN -n &lt;hcm-namespace&gt;</pre>
 
 <h3>Migrate IDM&nbsp;</h3>
 
@@ -95,14 +95,14 @@ We need to recreate the IDM database in the new version of HCM installation sinc
 
 <ol>
 	<li>Stop IDM
-	<pre><code class="language-vim">cd &lt;core-vol&gt;/suite-install/yamlContent/
-kubectl delete -f idm.yaml</code></pre>
+	<pre>cd &lt;core-vol&gt;/suite-install/yamlContent/
+kubectl delete -f idm.yaml</pre>
 	</li>
 	<li>If the database used to install HCM is Internal Postgresql, follow the below steps
 	<ol>
 		<li>Stop Internal Postgresql
-		<pre><code class="language-vim">cd &lt;core-vol&gt;/suite-install/yamlContent/
-kubectl delete -f itom-postgresql-single-svc.yaml</code></pre>
+		<pre>cd &lt;core-vol&gt;/suite-install/yamlContent/
+kubectl delete -f itom-postgresql-single-svc.yaml</pre>
 		</li>
 		<li>Move the Postgresql&nbsp;folder to a backup location
 		<pre><code class="language-vim">mkdir ~/backupPG
@@ -118,8 +118,8 @@ kubectl create -f itom-postgresql-single-svc.yaml</code></pre>
 	</li>
 	<li>If the database used to install HCM is External Oracle or Postgresql, then back up the database following the vendor documentation. Drop and create a new database based on the HCM document.</li>
 	<li>Start IDM and open&nbsp;to CDF management portal
-	<pre><code class="language-vim">cd &lt;core-vol&gt;/suite-install/yamlContent/
-kubectl create -f idm.yaml</code></pre>
+	<pre>cd &lt;core-vol&gt;/suite-install/yamlContent/
+kubectl create -f idm.yaml</pre>
 	<br>
 	Open the&nbsp;CDF management portal to ensure you can access the portal, you might not be able to login using your existing admin password.</li>
 </ol>
@@ -127,23 +127,23 @@ kubectl create -f idm.yaml</code></pre>
 <h4>Reset the CDF admin password</h4>
 To reset the CDF admin password execute the following commands<br>
 &nbsp;
-<pre><code class="language-vim">kubectl exec -it idm-7f44898bf6-h4q44 -n core -c idm -- bash
+<pre>kubectl exec -it idm-7f44898bf6-h4q44 -n core -c idm -- bash
 sh /idmtools/idm-installer-tools/idm.sh databaseUser resetPassword -org Provider -name "admin" -plainPwd "&lt;new-temp-password&gt;"
-</code></pre>
+</pre>
 <br>
 Login into the CDF management console and reset the password correctly to the password which you had used while installing HCM.
 <h4>Create idmTransportUser in IDM</h4>
 Execute the following command and note down the password which has to be used in the subsequent command<br>
 &nbsp;
-<pre><code class="language-vim">kubectl exec -it &lt;idm-pod&gt; -n core -c idm -- get_secret idm_transport_admin_password
+<pre>kubectl exec -it &lt;idm-pod&gt; -n core -c idm -- get_secret idm_transport_admin_password
 OUTPUT : PASS=CqeSFXzWvb3Wdw==
 
 echo -n transport_admin:CqeSFXzWvb3Wdw== | base64
 OUTPUT: dHJhbnNwb3J0X2FkbWluOkNxZVNGWHpXdmIzV2R3PT0=
-</code></pre>
+</pre>
 <br>
 Replace the base64 encoded password in the below curl commands against the authorization header.
-<pre><code class="language-vim">curl -k -X POST \
+<pre>curl -k -X POST \
   https://arunp-hcm-02-m1.swinfra.net:5443/idm-service/v2.0/tokens \
   -H 'accept: application/json' \
   -H 'authorization: Basic dHJhbnNwb3J0X2FkbWluOkNxZVNGWHpXdmIzV2R3PT0=' \
@@ -156,10 +156,10 @@ Replace the base64 encoded password in the below curl commands against the autho
     },
     "tenantName": "Provider"
 }'
-</code></pre>
+</pre>
 Extract the token from the above command and replace it against the x-auth-token in the below curl command.
 
-<pre><code class="language-vim">curl -k -X POST \
+<pre>curl -k -X POST \
   https://arunp-hcm-02-m1.swinfra.net:5443/idm-service/api/system/jsondata \
   -H 'accept: application/json' \
   -H 'authorization: Basic dHJhbnNwb3J0X2FkbWluOkNxZVNGWHpXdmIzV2R3PT0=' \
@@ -189,7 +189,7 @@ Extract the token from the above command and replace it against the x-auth-token
               "password": "qpfy_an63?LL.9i8",
              "type" : "INTEGRATION_USER"
         }
-    }]'</code></pre>
+    }]'</pre>
 <span style="background-color:#f1c40f;">&nbsp;qpfy_an63?LL.9i8</span> is the password you have backed up before bringing down HCM 2020.05 under the topic “Bring down HCM 2020.05”
 
 <h4>Download the IDM migration tool</h4>
@@ -199,14 +199,14 @@ Download the IDM Migration tool from the below path. And copy to a directory on 
 <h4>Copy Lib file to IDM migration tool directory</h4>
 Go to the directory where you have copied the IDM migration tool.
 
-<pre><code class="language-vim">mkdir ../lib
-cp &lt;hcm-vol&gt;/shared/content-tools/csa/lib/CLI-lib.jar ../lib/.</code></pre>
+<pre>mkdir ../lib
+cp &lt;hcm-vol&gt;/shared/content-tools/csa/lib/CLI-lib.jar ../lib/.</pre>
 
 <h4>Copy the src IDM encryption directory from the older version of HCM to 2020.05 migrate folder</h4>
 
-<pre><code class="language-vim">mkdir hcm-idm-sec
+<pre>mkdir hcm-idm-sec
 cd hcm-idm-sec/
-scp &lt;old-hcm-master-node&gt;:/opt/kubernetes/cfg/idm/security/*.* .</code></pre>
+scp &lt;old-hcm-master-node&gt;:/opt/kubernetes/cfg/idm/security/*.* .</pre>
 &lt;old-hcm-master-node&gt; is one of the master nodes from the old version of HCM
 
 <h4>Migrate IDM data from the older version of HCM to 2020.05</h4>
@@ -215,7 +215,7 @@ Run the following command to generate the property files;<br>
 <br>
 Update the config.properties according to the source and target environment. You can ignore property destEncryptionDirectory.<br>
 Sample configure property would have the following entries;
-<pre><code>jdbc.dest.username=cdfidm
+<pre>jdbc.dest.username=cdfidm
 srcDbType=postgres
 destEncryptionDirectory=/opt/kubernetes/cfg/idm/security/
 jdbc.src.username=cdfidm
@@ -225,16 +225,16 @@ jdbc.dest.password=lnwivCoci8QzgyUQPzM=
 jdbc.src.password=eX3uAhiA05KIfax75B4=
 srcEncryptionDirectory=/root/migrate/idm/hcm-idm-sec
 jdbc.dest.databaseUrl=jdbc\:postgresql\://172.17.17.47\:5432/defaultdb
-</code></pre>
+</pre>
 <br>
 Database password for internal Postgresql
-<pre><code class="language-vim">kubectl exec -it &lt;postgresql-pod&gt; -n core -c itom-postgresql-default -- get_secret defaultdb_cdfidm_user_password
+<pre>kubectl exec -it &lt;postgresql-pod&gt; -n core -c itom-postgresql-default -- get_secret defaultdb_cdfidm_user_password
 OUTPUT : PASS=eX3uAhiA05KIfax75B4=
-</code></pre>
+</pre>
 Destination Database URL – If you are using the internal Postgresql for CDF IDM, then IP address is the Postgresql service IP which you can get from below command;
 
-<pre><code class="language-vim">kubectl get svc -n core | grep idm-postgresql-svc
-OUTPUT: idm-postgresql-svc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ClusterIP &nbsp; 172.17.17.47 &nbsp; &lt;none&gt; &nbsp; &nbsp; &nbsp; &nbsp;5432/TCP,5050/TCP &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 439d</code></pre>
+<pre>kubectl get svc -n core | grep idm-postgresql-svc
+OUTPUT: idm-postgresql-svc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ClusterIP &nbsp; 172.17.17.47 &nbsp; &lt;none&gt; &nbsp; &nbsp; &nbsp; &nbsp;5432/TCP,5050/TCP &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 439d</pre>
 
 <h4>Execute the migration tool</h4>
 <code>java -jar idm-migration-tool-05.00.000-SNAPSHOT.jar -c config.properties</code><br>
@@ -270,18 +270,18 @@ End of database migrate ....
 <h3><br>
 Run IDM Config JOB</h3>
 
-<pre><code class="language-vim">cd &lt;core-vol&gt;/suite-install/hcm/output
+<pre>cd &lt;core-vol&gt;/suite-install/hcm/output
 kubectl delete -f hcm-idm-config-data-job.yaml
 kubectl create -f hcm-idm-config-data-job.yaml
-kubectl logs hcm-idm-config-data-xj8l4 -n &lt;hcm-namespace&gt;</code></pre>
+kubectl logs hcm-idm-config-data-xj8l4 -n &lt;hcm-namespace&gt;</pre>
 
 <p>Wait for the hcm-idm-config-data job to complete. Check the logs of the&nbsp;hcm-idm-config-data to ensure there is no error and the job is complete successfully.</p>
 
 <h3>Create new secret for the HCM database password and use it in all YAML (Optional)</h3>
 Follow this step if the password to the HCM databases you installed is different from the password on the database server you point to.
 
-<pre><code class="language-vim">kubectl exec -it &lt;any-hcm-pod&gt; -n &lt;hcm-namespace&gt; -c &lt;container&gt; -- bash
-update_secret NEW_DB_PASSWORD &lt;new-database-password&gt;</code></pre>
+<pre>kubectl exec -it &lt;any-hcm-pod&gt; -n &lt;hcm-namespace&gt; -c &lt;container&gt; -- bash
+update_secret NEW_DB_PASSWORD &lt;new-database-password&gt;</pre>
 
 <h3>Migrate Autopass</h3>
 Update <code>&lt;core-vol&gt;/suite-install/hcm/output/hcm-autopass.yaml </code>database configurations to point to the actual HCM database used with the old version. The properties that need to be updated are – DBHOST, DBPORT, DBNAME, DBUSER, DBPASSWORD_KEY, DBSYSTEMID.<br>
@@ -294,11 +294,11 @@ kubectl create -f hcm-autopass.yaml</code></pre>
 <h4>Copy the CSA encryption folder from the old version of HCM to 2020.05</h4>
 On the HCM 2020.05 master node,
 
-<pre><code class="language-vim">cd &lt;hcm-vol&gt;/shared/
+<pre>cd &lt;hcm-vol&gt;/shared/
 mv encryption/ encryption_2020_05
 mkdir encryption
 scp &lt;old-hcm-nfs&gt;:&lt;hcm-vol&gt;/shared/encryption/*.* encryption/
-chown -R itom:itom *</code></pre>
+chown -R itom:itom *</pre>
 
 <h4>Update the YAML with the database configuration details</h4>
 Update the <code>&lt;core-vol&gt;/suite-install/hcm/output/hcm-csa.yaml</code> database configurations to point to the actual HCM database used with the old version. The properties that need to be updated are – CSA_DB_HOST, CSA_DB_PORT, CSA_DB_USER, CSA_DB_PASSWORD_KEY, CSA_DB_NAME, CSA_DB_SERVICENAME.<br>
@@ -314,11 +314,11 @@ kubectl create -f hcm-csa.yaml</code></pre>
 <h4>Copy the OO encryption folder from old version of HCM to 2020.05</h4>
 On the HCM 2020.05 master node,
 
-<pre><code class="language-vim">cd &lt;hcm-vol&gt;/conf/
+<pre>cd &lt;hcm-vol&gt;/conf/
 mv oo oo_2020_05
 mkdir oo
 scp &lt;old-hcm-nfs&gt;:&lt;hcm-vol&gt;/conf/oo/* oo/.
-chown -R itom:itom *</code></pre>
+chown -R itom:itom *</pre>
 
 <h4>Update the YAML with the database configuration details</h4>
 Update the <code>&lt;core-vol&gt;/suite-install/hcm/output/hcm-oo.yaml</code> database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – OO_CENTRAL_DB_HOST, OO_CENTRAL_DB_PORT, OO_CENTRAL_DB_USERNAME, OO_CENTRAL_DB_PASSWORD_KEY, OO_CENTRAL_DB_NAME, OO_CENTRAL_DB_SERVICENAME.<br>
@@ -334,11 +334,11 @@ kubectl create -f hcm-oo.yaml</code></pre>
 <h4>Copy the OO Designer encryption folder from the old version of HCM to 2020.05</h4>
 On the HCM 2020.05 master node,
 
-<pre><code class="language-vim">cd &lt;hcm-vol&gt;/conf/
+<pre>cd &lt;hcm-vol&gt;/conf/
 mv oodesigner oodesigner_2020_05
 mkdir oodesigner
 scp &lt;old-hcm-nfs&gt;:&lt;hcm-vol&gt;/conf/oodesigner/* oodesigner/.
-chown -R itom:itom *</code></pre>
+chown -R itom:itom *</pre>
 
 <h4>Update the YAML with the database configuration details</h4>
 Update the &lt;<code>core-vol&gt;/suite-install/hcm/output/hcm-oodesigner.yaml</code> database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – OO_DESIGNER_DB_HOST, OO_DESIGNER_DB_PORT, OO_DESIGNER_DB_USERNAME, OO_DESIGNER_DB_PASSWORD_KEY, OO_DESIGNER_DB_NAME, OO_DESIGNER_DB_SERVICENAME.<br>
@@ -435,8 +435,8 @@ kubectl create -f hcm-showback.yaml</code></pre>
 
 <h3>Bring up all rest of the pods</h3>
 
-<pre><code class="language-vim">kubectl get ns
-/opt/kubernetes/scripts/cdfctl.sh runlevel set -l UP -n &lt;hcm-namespace&gt;</code></pre>
+<pre>kubectl get ns
+/opt/kubernetes/scripts/cdfctl.sh runlevel set -l UP -n &lt;hcm-namespace&gt;</pre>
 
 <h3>Changing VIP</h3>
 If you have installed the HCM 2020.05 using VIP which is different than the previous version of HCM and you want to reconfigure to use the same VIP as old HCM version then you have to change to the VIP on HCM 2020.05, please follow this document;<br>
@@ -446,9 +446,9 @@ Once the changes are done based on these, the CDF would have been reconfigured t
 Now you need to re-configure the HCM yamls to use the new external hostname/VIP. Find and replace the external hostname with the old version HCM external hostname. Then apply the changes using kubectl delete -f and kubectl create -f for all the HCM yamls in <code>&lt;core-vol&gt;/suite-install/hcm/output</code>.<br>
 <br>
 Sample command to replace the hostname and apply changes;
-<pre><code class="language-vim">sed -i 's/oldhcm-host.domain/newhcm-host.domain/g' *.yaml
+<pre>sed -i 's/oldhcm-host.domain/newhcm-host.domain/g' *.yaml
 ls -p | grep -v / | tr '\n' ','
 kubectl delete -f &lt;comma separated files&gt;
-kubectl create -f &lt;comma separated files&gt;</code></pre>
+kubectl create -f &lt;comma separated files&gt;</pre>
 <br>
-End of the documentation.</html>
+&nbsp;</html>
