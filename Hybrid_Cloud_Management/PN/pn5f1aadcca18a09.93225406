@@ -19,7 +19,7 @@ When the older version of HCM is using a Virtual IP (VIP), we cannot use the sam
 <br>
 When the older version HCM is using an External Load Balancer, then you can deploy the new version of HCM using the temporary load balancer and then reconfigure the external hostname in HCM after the upgrade to use the actual Load Balancer. You must also change the load balancer configurations to use the new HCM instance URLs.<br>
 <br>
-This is further described later in this document.
+This is further described in this document in a later section.
 <h2>Upgrade Procedure</h2>
 The upgrade process assumes that the new HCM 2020.05 is deployed and is accessible. The databases are cloned and are available on a database server.
 
@@ -35,7 +35,7 @@ Steps to expose ITOM Postgresql port outside of Kubernetes cluster
 	<pre><code class="language-vim">host     all     all     0.0.0.0/0     md5</code></pre>
 	</li>
 	<li>Add below port mapping to the Postgresql yaml in the&nbsp;<code>&lt;core-vol&gt;/suite-install/yamlContent/itom-postgresql-single-svc.yaml</code>. Container section, under image add lines
-	<pre><code class="language-yaml">image: localhost:5000/hpeswitomsandbox/itom-postgresql:9.5.11-0021
+	<pre><code class="language-yaml">image: localhost:5000/hpeswitom/itom-postgresql:9.5.11-0021
 ports:
 - containerPort: 5432
   hostPort: 5432</code></pre>
@@ -89,9 +89,9 @@ Now you can bring down HCM using the following commands;
 /opt/kubernetes/scripts/cdfctl.sh runlevel set -l DOWN -n &lt;hcm-namespace&gt;</pre>
 
 <h3>Migrate IDM&nbsp;</h3>
+We need to recreate the IDM database in the new version of HCM installation since the IDM would have initialized with the default seeded user and credentials during the installation, we need to clear all data in IDM, migrate from older IDM database and then reinitialize with HCM seeded user data. Follow all the below sections of steps on the HCM 2020.05 instance.
 
 <h4>Recreate IDM database</h4>
-We need to recreate the IDM database in the new version of HCM installation since the IDM would have initialized with the default seeded user and credentials during the installation, we need to clear all data in IDM and migrate from older IDM database and then reinitialize with HCM seeded user data. On the HCM 2020.05 instance, follow the below steps.
 
 <ol>
 	<li>Stop IDM
@@ -125,16 +125,16 @@ kubectl create -f idm.yaml</pre>
 </ol>
 
 <h4>Reset the CDF admin password</h4>
-To reset the CDF admin password execute the following commands<br>
-&nbsp;
-<pre>kubectl exec -it idm-7f44898bf6-h4q44 -n core -c idm -- bash
+To reset the CDF admin password execute the following commands&nbsp;
+
+<pre>kubectl exec -it &lt;idm-pod&gt; -n core -c idm -- bash
 sh /idmtools/idm-installer-tools/idm.sh databaseUser resetPassword -org Provider -name "admin" -plainPwd "&lt;new-temp-password&gt;"
 </pre>
 <br>
 Login into the CDF management console and reset the password correctly to the password which you had used while installing HCM.
 <h4>Create idmTransportUser in IDM</h4>
-Execute the following command and note down the password which has to be used in the subsequent command<br>
-&nbsp;
+Execute the following command and note down the password which has to be used in the subsequent command&nbsp;
+
 <pre>kubectl exec -it &lt;idm-pod&gt; -n core -c idm -- get_secret idm_transport_admin_password
 PASS=CqeSFXzWvb3Wdw==
 
@@ -190,6 +190,7 @@ Extract the token from the above command and replace it against the x-auth-token
              "type" : "INTEGRATION_USER"
         }
     }]'</pre>
+&nbsp;
 
 <div class="Admonition_Note"><b><i>qpfy_an63?LL.9i8</i></b> is the password you have backed up before bringing down HCM 2020.05 under the topic "Bring down HCM 2020.05"</div>
 
@@ -273,8 +274,11 @@ The migration of data has been successful
 End of database migrate ....
 </code></pre>
 
-<h3><br>
-Run IDM Config JOB</h3>
+<h3></h3>
+
+<p>Now the IDM migration is complete.</p>
+
+<h3>Run IDM Config JOB</h3>
 
 <pre>cd &lt;core-vol&gt;/suite-install/hcm/output
 kubectl delete -f hcm-idm-config-data-job.yaml
@@ -442,11 +446,15 @@ kubectl create -f hcm-showback.yaml</code></pre>
 /opt/kubernetes/scripts/cdfctl.sh runlevel set -l UP -n &lt;hcm-namespace&gt;</pre>
 
 <h3>Changing VIP</h3>
-If you have installed the HCM 2020.05 using VIP which is different than the previous version of HCM and you want to reconfigure to use the same VIP as old HCM version then you have to change to the VIP on HCM 2020.05, please follow this document;<br>
+If you have installed the HCM 2020.05 using VIP which is different than the previous version of HCM and you want to reconfigure to use the same VIP as the older HCM version, then you have to change the VIP on HCM 2020.05. To change the VIP follow the steps in the below documents.<br>
 <a href="https://docs.microfocus.com/itom/SMAX:2020.05/VIPchange">https://docs.microfocus.com/itom/SMAX:2020.05/VIPchange</a><br>
 <a href="https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2020.05/ChangeExternalAccessHostname">https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2020.05/ChangeExternalAccessHostname</a><br>
-Once the changes are done based on these, the CDF would have been reconfigured to the new VIP.<br>
-Now you need to re-configure the HCM yamls to use the new external hostname/VIP. Find and replace the external hostname with the old version HCM external hostname. Then apply the changes using kubectl delete -f and kubectl create -f for all the HCM yamls in <code>&lt;core-vol&gt;/suite-install/hcm/output</code>.<br>
+<br>
+If you have installed the HCM 2020.05 using a&nbsp;temporary load balancer and now want to reconfigure to the actual External Load Balancer, then follow the steps in the below document.<br>
+<a href="https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2020.05/ChangeExternalAccessHostname">https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2020.05/ChangeExternalAccessHostname</a><br>
+<br>
+Once the changes are done following the documents the CDF would have been reconfigured to the new VIP or Load Balancer.<br>
+Now you need to re-configure the HCM yamls to use the new external Load Balancer/VIP. Find and replace the existing external hostname in the yamls with the actual external hostname. Then apply the changes using kubectl delete -f and kubectl create -f for all the HCM yamls in <code>&lt;core-vol&gt;/suite-install/hcm/output</code>.<br>
 <br>
 Sample command to replace the hostname and apply changes;
 <pre>sed -i 's/oldhcm-host.domain/newhcm-host.domain/g' *.yaml
@@ -454,4 +462,4 @@ ls -p | grep -v / | tr '\n' ','
 kubectl delete -f &lt;comma separated files&gt;
 kubectl create -f &lt;comma separated files&gt;</pre>
 <br>
-&nbsp;</html>
+The HCM side-by-side upgrade to 2020.05 is now complete. You can decommission the older version of HCM.</html>
