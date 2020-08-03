@@ -194,8 +194,13 @@ Extract the token from the above command and replace it against the x-auth-token
 <div class="Admonition_Note"><b><i>qpfy_an63?LL.9i8</i></b> is the password you have backed up before bringing down HCM 2020.05 under the topic "Bring down HCM 2020.05"</div>
 
 <h4>Download the IDM migration tool</h4>
-Download the IDM Migration tool from the below path. And copy to a directory on one of the master nodes.<br>
-<span style="background-color:#e74c3c;">&lt;TODO&gt; Provide tool down link.</span>
+Download the IDM Migration tool from the below path. And copy to a directory on one of the master nodes.
+
+<pre>mkdir /root/migrate/idm
+cd /root/migrate/idm
+kubectl cp suite-conf-pod-hcm-5d79547896-gnnr2:/usr/share/tomcat/webapps/ROOT/tools/hcm-migration-tool.jar /root/migrate/idm/hcm-migration-tool.jar -n core -c suite-config
+unzip hcm-migration-tool.jar BOOT-INF/lib/idm-data-migrater-tool-05.00.000-SNAPSHOT.jar
+mv BOOT-INF/lib/idm-data-migrater-tool-05.00.000-SNAPSHOT.jar .</pre>
 
 <h4>Copy Lib file to IDM migration tool directory</h4>
 Go to the directory where you have copied the IDM migration tool.
