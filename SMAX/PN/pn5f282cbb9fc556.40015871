@@ -1,5 +1,47 @@
 <html><p>This document contains all the APIs which you can use for Cloud Management, they are mostly the Design and Deploy (DND) APIs.</p>
 
+<h2>Terminology</h2>
+
+<p>The following definitions are used in the document</p>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>Design Container</td>
+			<td>A design container holds one or more design versions, and must be created before a design.</td>
+		</tr>
+		<tr>
+			<td>Design</td>
+			<td>A design (or design version) is a specific version of a design within a design container. &nbsp;A design includes a graph of components and relationships and an option model. &nbsp;Designs can be cloned to other designs with a different version.</td>
+		</tr>
+		<tr>
+			<td>Design Hierarchy</td>
+			<td>The graph of components and their relationships within a design</td>
+		</tr>
+		<tr>
+			<td>Component Palette</td>
+			<td>Component palettes are the grouping structure for component types which are used when creating service components within a service design.</td>
+		</tr>
+		<tr>
+			<td>Component Types</td>
+			<td>A component type is a hierarchical classification of items within a palette that is used when creating service components within a service design. A component type contains rules that constrain how service designs can be constructed, helping a user to properly construct a service design. Component type constraints limit the types of service components that can be connected to components of this type within a service design.</td>
+		</tr>
+		<tr>
+			<td>Component Template</td>
+			<td>A component template is a specialized version of a component type and is used to simplify service design creation. Component templates include customized settings for the properties, lifecycle actions, and resource bindings that provide initial settings for the service design.</td>
+		</tr>
+		<tr>
+			<td>Resource Offering</td>
+			<td>A resource offering links the capabilities of providers to the provisioning requirements of a service design. For example, you can create a resource offering that corresponds to a specific VMware vCenter VM template that can be cloned by HP CSA to create a VM. A resource offering includes a user-specified set of lifecycle actions that is executed during the provisioning of the resource offering. A resource offering can also include actions that will be exposed to a subscriber as public actions. Resource offerings are associated with service designs through resource bindings.<br>
+			Resource category constraints limit the categories of resource offerings that can be bound to service components of this type.</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+		</tr>
+	</tbody>
+</table>
+
 <h2>Security and Authentication</h2>
 All of the APIs can be invoked using a basic authentication header. &nbsp;Since APIs require different roles for authentication, the easiest user to use is one with the DND Administration role. &nbsp;This user will be able to invoke all APIs.
 
