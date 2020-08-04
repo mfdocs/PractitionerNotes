@@ -801,4 +801,1079 @@ The following is an example of the structure of the response data in JSON format
   }
 }
 </pre>
+
+<h2>List properties on a component template</h2>
+POST &nbsp; /dnd/api/property/filter
+
+<pre>{
+  "ownership": [
+    "OWNED",
+    "INHERITED"
+  ],
+  "owner": {
+    "global_id": "2c90d2b3736cda3d01736e26c57262f5"
+  }
+}
+</pre>
+<br>
+The following is an example of the structure of the response data in JSON format:<br>
+<code>Status Code: 200</code>
+
+<pre>{
+  "@total_results": 1,
+  "@start_index": 0,
+  "@items_per_page": 1,
+  "@self": "/12345/dnd/api/property/filter",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel:property:collection",
+  "members": [
+    {
+      "@created": "2020-07-20T21:35:01.490Z",
+      "@modified": "2020-07-20T21:35:01.917Z",
+      "global_id": "2c90d2b3736cda3d01736e26c57262f3",
+      "name": "MyProperty",
+      "description": "A new property on my component template (UPDATED)",
+      "icon": "/12345/dnd/api/blobstore/string.png?tag=categories&amp;tag=value_type",
+      "ext": {
+        "csa_name_key": "myProperty",
+        "csa_critical_system_object": false,
+        "csa_confidential": false,
+        "csa_consumer_visible": true
+      },
+      "@self": "/12345/dnd/api/property/2c90d2b3736cda3d01736e26c57262f3",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel:property",
+      "property_type": "STRING",
+      "property_value": "goodbye",
+      "upgradeLocked": false,
+      "lifecycleActionReferenceCount": 0,
+      "componentReferenceCount": 0,
+      "optionReferenceCount": 0,
+      "userOperationReferenceCount": 0,
+      "resourceOfferingPropertyMappingReferenceCount": 0,
+      "resourceOfferingMeasurablePropertyReferenceCount": 0,
+      "resourceOfferingProviderSelectionActionReferenceCount": 0,
+      "serviceDesignReferenceCount": 0,
+      "componentTemplateReferenceCount": 0,
+      "visibleWhenDeployDesign": true,
+      "requiredWhenDeployDesign": false,
+      "bindings": [],
+      "property_measure": {
+        "enabled": false,
+        "type": null,
+        "unit": null
+      },
+      "ownership": "INHERITED",
+      "owner": {
+        "@self": "/12345/dnd/api/node/type/2c90d2b3736cda3d01736d9e087062e9",
+        "@type": "urn:x-hp:2012:software:cloud:data_model:node_type",
+        "@created": "2020-07-20T19:05:40.208Z",
+        "@modified": "2020-07-20T21:34:09.559Z",
+        "global_id": "2c90d2b3736cda3d01736d9e087062e9",
+        "name": "MyComponentType",
+        "description": "This is a new component type",
+        "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+        "ext": {
+          "csa_name_key": "MYCOMPONENTTYPE",
+          "csa_critical_system_object": false,
+          "csa_parent": null,
+          "csa_pattern": false,
+          "csa_consumer_visible": true,
+          "csa_designer_visible": true
+        },
+        "metamodel": {
+          "@self": "/12345/dnd/api/metamodel/2c90d2b3736cda3d01736d60e04562e5",
+          "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel",
+          "global_id": "2c90d2b3736cda3d01736d60e04562e5",
+          "name": "MyPalette",
+          "description": "This is a new component palette",
+          "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+          "ext": {
+            "csa_name_key": "MYPALETTE",
+            "csa_critical_system_object": false,
+            "csa_artifact_container_type": null
+          }
+        }
+      }
+    }
+  ],
+  "@modified": "2020-07-20T21:35:01.917Z"
+}
+</pre>
+
+<h2>Create a property on a component template</h2>
+POST &amp;nsbp; /dnd/api/property
+
+<pre>{
+  "global_id": "",
+  "@type": "",
+  "name": "MyNewProperty",
+  "description": "This is another property",
+  "property_type": "STRING",
+  "property_value": "Tuesday",
+  "ownership": null,
+  "owner": {
+    "global_id": "2c90d2b3736cda3d01736e26c57262f5"
+  },
+  "upgradeLocked": false,
+  "bindings": [],
+  "ext": {
+    "csa_critical_system_object": false,
+    "csa_name_key": "myNewProperty",
+    "csa_consumer_visible": true,
+    "csa_confidential": false
+  },
+  "visibleWhenDeployDesign": true,
+  "requiredWhenDeployDesign": false
+}
+</pre>
+<br>
+The following is an example of the structure of the response data in JSON format:<br>
+<code>Status Code: 201</code>
+
+<pre>{
+  "@created": "2020-07-21T15:51:37.857Z",
+  "@modified": "2020-07-21T15:51:37.857Z",
+  "global_id": "2c90d2b3736cda3d01737212be8162fd",
+  "name": "MyNewProperty",
+  "description": "This is another property",
+  "icon": "/12345/dnd/api/blobstore/string.png?tag=categories&amp;tag=value_type",
+  "ext": {
+    "csa_name_key": "myNewProperty",
+    "csa_critical_system_object": false,
+    "csa_confidential": false,
+    "csa_consumer_visible": true
+  },
+  "@self": "/12345/dnd/api/property/2c90d2b3736cda3d01737212be8162fd",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel:property",
+  "property_type": "STRING",
+  "property_value": "Tuesday",
+  "upgradeLocked": false,
+  "visibleWhenDeployDesign": true,
+  "requiredWhenDeployDesign": false,
+  "bindings": [],
+  "property_measure": {
+    "enabled": false,
+    "type": null,
+    "unit": null
+  },
+  "ownership": "OWNED",
+  "owner": {
+    "@self": "/12345/dnd/api/node/template/2c90d2b3736cda3d01736e26c57262f5",
+    "@type": "urn:x-hp:2012:software:cloud:data_model:node_template",
+    "@created": "2020-07-20T21:35:01.491Z",
+    "@modified": "2020-07-21T15:47:43.268Z",
+    "global_id": "2c90d2b3736cda3d01736e26c57262f5",
+    "name": "MyTemplate",
+    "description": "This is a component template",
+    "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+    "ext": {
+      "csa_name_key": "MYCOMPONENTTYPE__Mon Jul 20 21:35:01 UTC 2020",
+      "csa_critical_system_object": false,
+      "csa_parent": null,
+      "csa_pattern": false,
+      "csa_consumer_visible": true,
+      "csa_designer_visible": true
+    }
+  }
+}
+</pre>
+
+<h2>Update a property on a component template</h2>
+PUT &nbsp; /dnd/api/property/&lt;property id&gt;
+
+<pre>{
+  "global_id": "2c90d2b3736cda3d01737212be8162fd",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel:property",
+  "name": "MyNewProperty",
+  "description": "This is another property (Updated)",
+  "property_type": "STRING",
+  "property_value": "Tuesday-updated",
+  "ownership": "OWNED",
+  "owner": {
+    "global_id": "2c90d2b3736cda3d01736e26c57262f5"
+  },
+  "upgradeLocked": false,
+  "bindings": null,
+  "ext": {
+    "csa_critical_system_object": false,
+    "csa_name_key": "myNewProperty",
+    "csa_consumer_visible": true,
+    "csa_confidential": false
+  },
+  "visibleWhenDeployDesign": true,
+  "requiredWhenDeployDesign": false
+}
+</pre>
+<br>
+The following is an example of the structure of the response data in JSON format:<br>
+<code>Status Code: 200</code>
+
+<pre>{
+  "@created": "2020-07-21T15:51:37.857Z",
+  "@modified": "2020-07-21T15:51:37.857Z",
+  "global_id": "2c90d2b3736cda3d01737212be8162fd",
+  "name": "MyNewProperty",
+  "description": "This is another property (Updated)",
+  "icon": "/12345/dnd/api/blobstore/string.png?tag=categories&amp;tag=value_type",
+  "ext": {
+    "csa_name_key": "myNewProperty",
+    "csa_critical_system_object": false,
+    "csa_confidential": false,
+    "csa_consumer_visible": true
+  },
+  "@self": "/12345/dnd/api/property/2c90d2b3736cda3d01737212be8162fd",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel:property",
+  "property_type": "STRING",
+  "property_value": "Tuesday-updated",
+  "upgradeLocked": false,
+  "visibleWhenDeployDesign": true,
+  "requiredWhenDeployDesign": false,
+  "bindings": [],
+  "property_measure": {
+    "enabled": false,
+    "type": null,
+    "unit": null
+  },
+  "ownership": "OWNED",
+  "owner": {
+    "@self": "/12345/dnd/api/node/template/2c90d2b3736cda3d01736e26c57262f5",
+    "@type": "urn:x-hp:2012:software:cloud:data_model:node_template",
+    "@created": "2020-07-20T21:35:01.491Z",
+    "@modified": "2020-07-21T15:47:43.268Z",
+    "global_id": "2c90d2b3736cda3d01736e26c57262f5",
+    "name": "MyTemplate",
+    "description": "This is a component template",
+    "icon": "/12345/dnd/api/blobstore/other.png?tag=library",
+    "ext": {
+      "csa_name_key": "MYCOMPONENTTYPE__Mon Jul 20 21:35:01 UTC 2020",
+      "csa_critical_system_object": false,
+      "csa_parent": null,
+      "csa_pattern": false,
+      "csa_consumer_visible": true,
+      "csa_designer_visible": true
+    }
+  }
+}
+</pre>
+
+<h2>List lifecycle actions on a component template</h2>
+GET &nbsp; /dnd/api/artifact/&lt;component template id&gt;/lifecycleactions<br>
+The following is an example of the structure of the response data in JSON format:<br>
+<code>Status Code: 200</code>
+
+<pre>{
+  "members": [
+    {
+      "@self": "/506465921/dnd/api/action/2c90a5aa7371fa4d0173732f936e1883",
+      "name": "7ddfdf8d-c0ca-44a9-8db5-ed4fdb371711",
+      "displayName": "Get String Length",
+      "description": "",
+      "artifactId": "2c90a5aa7371fa4d0173732f0620187a",
+      "state": {
+        "name": "DEPLOYING",
+        "displayName": "Deploying",
+        "description": "Deploying",
+        "icon": "/506465921/dnd/api/blobstore/deploying.png?tag=categories&amp;tag=lifecycle_state"
+      },
+      "substate": {
+        "name": "TRANSITION",
+        "displayName": "Transition",
+        "description": "Transition",
+        "icon": "/506465921/dnd/api/blobstore/transition.png?tag=categories&amp;tag=lifecycle_substate"
+      },
+      "orderIndex": 1,
+      "processEngine": {
+        "@self": "/506465921/dnd/api/processengine/2c90a5a2735cbece01735cbf8f51013b",
+        "name": "default_oo_engine",
+        "displayName": "Default OO Engine",
+        "description": "OO Engine created during product installation.",
+        "type": "HP_OO",
+        "icon": "/506465921/dnd/api/blobstore/hp_oo.png?tag=categories&amp;tag=process_engine_type"
+      },
+      "actionSource": {
+        "@self": "/506465921/dnd/api/processengine/2c90a5a2735cbece01735cbf8f51013b/actionSource/9700edb5-d793-43a8-954d-5f65163a84d7",
+        "id": "9700edb5-d793-43a8-954d-5f65163a84d7",
+        "type": "ACTION_SOURCE",
+        "locator": "/Library/CSA Content Pack/Common Utilities/Get String Length",
+        "processEngineId": "2c90a5a2735cbece01735cbf8f51013b",
+        "displayName": "Get String Length",
+        "description": ""
+      },
+      "consumerVisible": false,
+      "failOnError": true,
+      "pauseOnCompletion": false,
+      "errorOnTimeout": true,
+      "upgradeLocked": false,
+      "timeout": 3600
+    }
+  ]
+}
+</pre>
+
+<h2>Create a lifecycle action on a component template</h2>
+POST &nbsp; /dnd/api/action
+
+<pre>{
+  "artifactId": "2c90a5aa7371fa4d0173732f0620187a",
+  "displayName": "Get String Length",
+  "description": "",
+  "orderIndex": 1,
+  "failOnError": true,
+  "errorOnTimeout": true,
+  "pauseOnCompletion": false,
+  "timeout": 3600,
+  "processEngine": {
+    "type": "HP_OO",
+    "name": "default_oo_engine",
+    "displayName": "Default OO Engine",
+    "description": "OO Engine created during product installation.",
+    "icon": "/csa/images/categories/process_engine_type/hp_oo.png",
+    "@self": "/506465921/dnd/api/processengine/2c90a5a2735cbece01735cbf8f51013b"
+  },
+  "state": {
+    "name": "DEPLOYING"
+  },
+  "substate": {
+    "name": "TRANSITION"
+  },
+  "inputParameters": [
+    {
+      "name": "string",
+      "displayName": "string",
+      "description": "",
+      "type": "STRING",
+      "state": "",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": null
+        }
+      ],
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "validation_script": {
+        "name": null,
+        "parameters": null
+      }
+    }
+  ],
+  "outputParameters": [
+    {
+      "name": "Result",
+      "displayName": "Result",
+      "description": "",
+      "type": "STRING",
+      "state": "",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": null
+        }
+      ]
+    }
+  ],
+  "actionSource": {
+    "id": "9700edb5-d793-43a8-954d-5f65163a84d7",
+    "type": "ACTION_SOURCE",
+    "displayName": "Get String Length",
+    "description": "",
+    "processEngineId": "2c90a5a2735cbece01735cbf8f51013b",
+    "locator": "Library/CSA Content Pack/Common Utilities/Get String Length.xml",
+    "@self": "/506465921/dnd/api/processengine/2c90a5a2735cbece01735cbf8f51013b/actionsource/9700edb5-d793-43a8-954d-5f65163a84d7"
+  },
+  "@self": "/506465921/dnd/api/action/"
+}
+</pre>
+<br>
+The following is an example of the structure of the response data in JSON format:<br>
+<code>Status Code: 200</code>
+
+<pre>{
+  "@self": "/506465921/dnd/api/action/2c90a5aa7371fa4d0173732f936e1883",
+  "name": "7ddfdf8d-c0ca-44a9-8db5-ed4fdb371711",
+  "displayName": "Get String Length",
+  "description": "",
+  "artifactId": "2c90a5aa7371fa4d0173732f0620187a",
+  "state": {
+    "name": "DEPLOYING",
+    "displayName": "Deploying",
+    "description": "Deploying",
+    "icon": "/506465921/dnd/api/blobstore/deploying.png?tag=categories&amp;tag=lifecycle_state"
+  },
+  "substate": {
+    "name": "TRANSITION",
+    "displayName": "Transition",
+    "description": "Transition",
+    "icon": "/506465921/dnd/api/blobstore/transition.png?tag=categories&amp;tag=lifecycle_substate"
+  },
+  "orderIndex": 1,
+  "processEngine": {
+    "@self": "/506465921/dnd/api/processengine/2c90a5a2735cbece01735cbf8f51013b",
+    "name": "default_oo_engine",
+    "displayName": "Default OO Engine",
+    "description": "OO Engine created during product installation.",
+    "type": "HP_OO",
+    "icon": null
+  },
+  "actionSource": {
+    "@self": "/506465921/dnd/api/processengine/2c90a5a2735cbece01735cbf8f51013b/actionSource/9700edb5-d793-43a8-954d-5f65163a84d7",
+    "id": "9700edb5-d793-43a8-954d-5f65163a84d7",
+    "type": "ACTION_SOURCE",
+    "locator": "/Library/CSA Content Pack/Common Utilities/Get String Length",
+    "processEngineId": "2c90a5a2735cbece01735cbf8f51013b",
+    "displayName": "Get String Length",
+    "description": ""
+  },
+  "consumerVisible": false,
+  "failOnError": true,
+  "pauseOnCompletion": false,
+  "errorOnTimeout": true,
+  "upgradeLocked": false,
+  "timeout": 3600,
+  "inputParameters": [
+    {
+      "id": "2c90a5aa7371fa4d0173732f936e1885",
+      "name": "string",
+      "displayName": "string",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": null,
+          "displayName": null,
+          "selected": true,
+          "rawValue": null
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    }
+  ],
+  "outputParameters": [
+    {
+      "id": "2c90a5aa7371fa4d0173732f936e1887",
+      "name": "Result",
+      "displayName": "Result",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": true,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": null,
+          "displayName": null,
+          "selected": true,
+          "rawValue": null
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    }
+  ]
+}
+</pre>
+
+<h2>Update a lifecycle action on a component template</h2>
+PUT &nbsp; /dnd/api/action/&lt;action id&gt;
+
+<pre>{
+  "artifactId": "2c90a5aa7371fa4d0173732f0620187a",
+  "name": "7ddfdf8d-c0ca-44a9-8db5-ed4fdb371711",
+  "displayName": "Get String Length",
+  "description": "An updated description",
+  "orderIndex": 1,
+  "failOnError": true,
+  "errorOnTimeout": true,
+  "pauseOnCompletion": false,
+  "timeout": 3600,
+  "processEngine": {
+    "type": "HP_OO",
+    "name": "default_oo_engine",
+    "displayName": "Default OO Engine",
+    "description": "OO Engine created during product installation.",
+    "icon": "/506465921/dnd/api/blobstore/hp_oo.png?tag=categories&amp;tag=process_engine_type",
+    "@self": "/506465921/dnd/api/processengine/2c90a5a2735cbece01735cbf8f51013b"
+  },
+  "state": {
+    "name": "DEPLOYING"
+  },
+  "substate": {
+    "name": "TRANSITION"
+  },
+  "inputParameters": [
+    {
+      "id": "2c90a5aa7371fa4d0173732f936e1885",
+      "name": "string",
+      "displayName": "string",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": false,
+      "state": "UNMODIFIED",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": "hello"
+        }
+      ],
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "validation_script": {
+        "name": null,
+        "parameters": null
+      }
+    }
+  ],
+  "outputParameters": [
+    {
+      "id": "2c90a5aa7371fa4d0173732f936e1887",
+      "name": "Result",
+      "displayName": "Result",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "state": "UNMODIFIED",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": null
+        }
+      ]
+    }
+  ],
+  "actionSource": {
+    "id": "9700edb5-d793-43a8-954d-5f65163a84d7",
+    "type": "ACTION_SOURCE",
+    "displayName": "Get String Length",
+    "description": "",
+    "processEngineId": "2c90a5a2735cbece01735cbf8f51013b",
+    "locator": "/Library/CSA Content Pack/Common Utilities/Get String Length",
+    "@self": "/506465921/dnd/api/processengine/2c90a5a2735cbece01735cbf8f51013b/actionSource/9700edb5-d793-43a8-954d-5f65163a84d7"
+  },
+  "@self": "/506465921/dnd/api/action/2c90a5aa7371fa4d0173732f936e1883"
+}
+</pre>
+<br>
+The following is an example of the structure of the response data in JSON format:<br>
+<code>Status Code: 200</code>
+
+<pre>{
+  "@self": "/506465921/dnd/api/action/2c90a5aa7371fa4d0173732f936e1883",
+  "name": "7ddfdf8d-c0ca-44a9-8db5-ed4fdb371711",
+  "displayName": "Get String Length",
+  "description": "An updated description",
+  "artifactId": "2c90a5aa7371fa4d0173732f0620187a",
+  "state": {
+    "name": "DEPLOYING",
+    "displayName": "Deploying",
+    "description": "Deploying",
+    "icon": "/506465921/dnd/api/blobstore/deploying.png?tag=categories&amp;tag=lifecycle_state"
+  },
+  "substate": {
+    "name": "TRANSITION",
+    "displayName": "Transition",
+    "description": "Transition",
+    "icon": "/506465921/dnd/api/blobstore/transition.png?tag=categories&amp;tag=lifecycle_substate"
+  },
+  "orderIndex": 1,
+  "processEngine": {
+    "@self": "/506465921/dnd/api/processengine/2c90a5a2735cbece01735cbf8f51013b",
+    "name": "default_oo_engine",
+    "displayName": "Default OO Engine",
+    "description": "OO Engine created during product installation.",
+    "type": "HP_OO",
+    "icon": "/506465921/dnd/api/blobstore/hp_oo.png?tag=categories&amp;tag=process_engine_type"
+  },
+  "actionSource": {
+    "@self": "/506465921/dnd/api/processengine/2c90a5a2735cbece01735cbf8f51013b/actionSource/9700edb5-d793-43a8-954d-5f65163a84d7",
+    "id": "9700edb5-d793-43a8-954d-5f65163a84d7",
+    "type": "ACTION_SOURCE",
+    "locator": "/Library/CSA Content Pack/Common Utilities/Get String Length",
+    "processEngineId": "2c90a5a2735cbece01735cbf8f51013b",
+    "displayName": "Get String Length",
+    "description": ""
+  },
+  "consumerVisible": false,
+  "failOnError": true,
+  "pauseOnCompletion": false,
+  "errorOnTimeout": true,
+  "upgradeLocked": false,
+  "timeout": 3600,
+  "inputParameters": [
+    {
+      "id": "2c90a5aa7371fa4d0173732f936e1885",
+      "name": "string",
+      "displayName": "string",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": false,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": "hello",
+          "displayName": null,
+          "selected": true,
+          "rawValue": "hello"
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    }
+  ],
+  "outputParameters": [
+    {
+      "id": "2c90a5aa7371fa4d0173732f936e1887",
+      "name": "Result",
+      "displayName": "Result",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": true,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": null,
+          "displayName": null,
+          "selected": true,
+          "rawValue": null
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    }
+  ]
+}
+</pre>
+
+<h2>List public actions on a component template</h2>
+GET &nbsp; /dnd/api/artifact/&lt;component template id&gt;/publicactions<br>
+The following is an example of the structure of the response data in JSON format:<br>
+<code>Status Code: 200</code>
+
+<pre>{
+  "members": [
+    {
+      "@self": "/506465921/dnd/api/action/2c90a5aa7371fa4d01737341dd95188f",
+      "name": "a8afc7c4-9709-48fd-aac3-0917f8fd53dd",
+      "displayName": "Get String Length",
+      "description": "",
+      "artifactId": "2c90a5aa7371fa4d0173732f0620187a",
+      "state": {
+        "name": "DEPLOYED",
+        "displayName": "Deployed",
+        "description": "Deployed",
+        "icon": "/506465921/dnd/api/blobstore/deployed.png?tag=categories&amp;tag=lifecycle_state"
+      },
+      "orderIndex": 1,
+      "processEngine": {
+        "@self": "/506465921/dnd/api/processengine/2c90a5a2735cbece01735cbf8f51013b",
+        "name": "default_oo_engine",
+        "displayName": "Default OO Engine",
+        "description": "OO Engine created during product installation.",
+        "type": "HP_OO",
+        "icon": "/506465921/dnd/api/blobstore/hp_oo.png?tag=categories&amp;tag=process_engine_type"
+      },
+      "actionSource": {
+        "@self": "/506465921/dnd/api/processengine/2c90a5a2735cbece01735cbf8f51013b/actionSource/9700edb5-d793-43a8-954d-5f65163a84d7",
+        "id": "9700edb5-d793-43a8-954d-5f65163a84d7",
+        "type": "ACTION_SOURCE",
+        "locator": "/Library/CSA Content Pack/Common Utilities/Get String Length",
+        "processEngineId": "2c90a5a2735cbece01735cbf8f51013b",
+        "displayName": "Get String Length",
+        "description": ""
+      },
+      "consumerVisible": true,
+      "failOnError": true,
+      "pauseOnCompletion": false,
+      "errorOnTimeout": true,
+      "upgradeLocked": false,
+      "timeout": 3600
+    }
+  ]
+}
+</pre>
+
+<h2>Create a public action on a component template</h2>
+POST &nbsp; /dnd/api/action
+
+<pre>{
+  "artifactId": "2c90a5aa7371fa4d0173732f0620187a",
+  "displayName": "Get String Length",
+  "description": "",
+  "orderIndex": 1,
+  "failOnError": true,
+  "errorOnTimeout": true,
+  "pauseOnCompletion": false,
+  "timeout": 3600,
+  "processEngine": {
+    "type": "HP_OO",
+    "name": "default_oo_engine",
+    "displayName": "Default OO Engine",
+    "description": "OO Engine created during product installation.",
+    "icon": "/csa/images/categories/process_engine_type/hp_oo.png",
+    "@self": "/506465921/dnd/api/processengine/2c90a5a2735cbece01735cbf8f51013b"
+  },
+  "state": {
+    "name": "DEPLOYED"
+  },
+  "inputParameters": [
+    {
+      "name": "string",
+      "displayName": "string",
+      "description": "",
+      "type": "STRING",
+      "state": "",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": null
+        }
+      ],
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "validation_script": {
+        "name": null,
+        "parameters": null
+      }
+    }
+  ],
+  "outputParameters": [
+    {
+      "name": "Result",
+      "displayName": "Result",
+      "description": "",
+      "type": "STRING",
+      "state": "",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": null
+        }
+      ]
+    }
+  ],
+  "actionSource": {
+    "id": "9700edb5-d793-43a8-954d-5f65163a84d7",
+    "type": "ACTION_SOURCE",
+    "displayName": "Get String Length",
+    "description": "",
+    "processEngineId": "2c90a5a2735cbece01735cbf8f51013b",
+    "locator": "Library/CSA Content Pack/Common Utilities/Get String Length.xml",
+    "@self": "/506465921/dnd/api/processengine/2c90a5a2735cbece01735cbf8f51013b/actionsource/9700edb5-d793-43a8-954d-5f65163a84d7"
+  },
+  "@self": "/506465921/dnd/api/action/"
+}
+</pre>
+<br>
+The following is an example of the structure of the response data in JSON format:<br>
+<code>Status Code: 200</code>
+
+<pre>{
+  "@self": "/506465921/dnd/api/action/2c90a5aa7371fa4d01737341dd95188f",
+  "name": "a8afc7c4-9709-48fd-aac3-0917f8fd53dd",
+  "displayName": "Get String Length",
+  "description": "",
+  "artifactId": "2c90a5aa7371fa4d0173732f0620187a",
+  "state": {
+    "name": "DEPLOYED",
+    "displayName": "Deployed",
+    "description": "Deployed",
+    "icon": "/506465921/dnd/api/blobstore/deployed.png?tag=categories&amp;tag=lifecycle_state"
+  },
+  "orderIndex": 1,
+  "processEngine": {
+    "@self": "/506465921/dnd/api/processengine/2c90a5a2735cbece01735cbf8f51013b",
+    "name": "default_oo_engine",
+    "displayName": "Default OO Engine",
+    "description": "OO Engine created during product installation.",
+    "type": "HP_OO",
+    "icon": "/506465921/dnd/api/blobstore/hp_oo.png?tag=categories&amp;tag=process_engine_type"
+  },
+  "actionSource": {
+    "@self": "/506465921/dnd/api/processengine/2c90a5a2735cbece01735cbf8f51013b/actionSource/9700edb5-d793-43a8-954d-5f65163a84d7",
+    "id": "9700edb5-d793-43a8-954d-5f65163a84d7",
+    "type": "ACTION_SOURCE",
+    "locator": "/Library/CSA Content Pack/Common Utilities/Get String Length",
+    "processEngineId": "2c90a5a2735cbece01735cbf8f51013b",
+    "displayName": "Get String Length",
+    "description": ""
+  },
+  "consumerVisible": true,
+  "failOnError": true,
+  "pauseOnCompletion": false,
+  "errorOnTimeout": true,
+  "upgradeLocked": false,
+  "timeout": 3600,
+  "inputParameters": [
+    {
+      "id": "2c90a5aa7371fa4d01737341dd961893",
+      "name": "string",
+      "displayName": "string",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": null,
+          "displayName": null,
+          "selected": true,
+          "rawValue": null
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    }
+  ],
+  "outputParameters": [
+    {
+      "id": "2c90a5aa7371fa4d01737341dd961891",
+      "name": "Result",
+      "displayName": "Result",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": true,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": null,
+          "displayName": null,
+          "selected": true,
+          "rawValue": null
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    }
+  ]
+}
+</pre>
+
+<h2>Update a public action on a component template</h2>
+PUT &nbsp; /dnd/api/action/&lt;action id&gt;
+
+<pre>{
+  "artifactId": "2c90a5aa7371fa4d0173732f0620187a",
+  "name": "a8afc7c4-9709-48fd-aac3-0917f8fd53dd",
+  "displayName": "Get String Length",
+  "description": "An updated description",
+  "orderIndex": 1,
+  "failOnError": true,
+  "errorOnTimeout": true,
+  "pauseOnCompletion": false,
+  "timeout": 3600,
+  "processEngine": {
+    "type": "HP_OO",
+    "name": "default_oo_engine",
+    "displayName": "Default OO Engine",
+    "description": "OO Engine created during product installation.",
+    "icon": "/506465921/dnd/api/blobstore/hp_oo.png?tag=categories&amp;tag=process_engine_type",
+    "@self": "/506465921/dnd/api/processengine/2c90a5a2735cbece01735cbf8f51013b"
+  },
+  "state": {
+    "name": "DEPLOYED"
+  },
+  "inputParameters": [
+    {
+      "id": "2c90a5aa7371fa4d01737341dd961893",
+      "name": "string",
+      "displayName": "string",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": false,
+      "state": "UNMODIFIED",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": "hello"
+        }
+      ],
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "validation_script": {
+        "name": null,
+        "parameters": null
+      }
+    }
+  ],
+  "outputParameters": [
+    {
+      "id": "2c90a5aa7371fa4d01737341dd961891",
+      "name": "Result",
+      "displayName": "Result",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "state": "UNMODIFIED",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": null
+        }
+      ]
+    }
+  ],
+  "actionSource": {
+    "id": "9700edb5-d793-43a8-954d-5f65163a84d7",
+    "type": "ACTION_SOURCE",
+    "displayName": "Get String Length",
+    "description": "",
+    "processEngineId": "2c90a5a2735cbece01735cbf8f51013b",
+    "locator": "/Library/CSA Content Pack/Common Utilities/Get String Length",
+    "@self": "/506465921/dnd/api/processengine/2c90a5a2735cbece01735cbf8f51013b/actionSource/9700edb5-d793-43a8-954d-5f65163a84d7"
+  },
+  "@self": "/506465921/dnd/api/action/2c90a5aa7371fa4d01737341dd95188f"
+}
+</pre>
+<br>
+The following is an example of the structure of the response data in JSON format:<br>
+<code>Status Code: 200</code>
+
+<pre>{
+  "@self": "/506465921/dnd/api/action/2c90a5aa7371fa4d01737341dd95188f",
+  "name": "a8afc7c4-9709-48fd-aac3-0917f8fd53dd",
+  "displayName": "Get String Length",
+  "description": "An updated description",
+  "artifactId": "2c90a5aa7371fa4d0173732f0620187a",
+  "state": {
+    "name": "DEPLOYED",
+    "displayName": "Deployed",
+    "description": "Deployed",
+    "icon": "/506465921/dnd/api/blobstore/deployed.png?tag=categories&amp;tag=lifecycle_state"
+  },
+  "orderIndex": 1,
+  "processEngine": {
+    "@self": "/506465921/dnd/api/processengine/2c90a5a2735cbece01735cbf8f51013b",
+    "name": "default_oo_engine",
+    "displayName": "Default OO Engine",
+    "description": "OO Engine created during product installation.",
+    "type": "HP_OO",
+    "icon": "/506465921/dnd/api/blobstore/hp_oo.png?tag=categories&amp;tag=process_engine_type"
+  },
+  "actionSource": {
+    "@self": "/506465921/dnd/api/processengine/2c90a5a2735cbece01735cbf8f51013b/actionSource/9700edb5-d793-43a8-954d-5f65163a84d7",
+    "id": "9700edb5-d793-43a8-954d-5f65163a84d7",
+    "type": "ACTION_SOURCE",
+    "locator": "/Library/CSA Content Pack/Common Utilities/Get String Length",
+    "processEngineId": "2c90a5a2735cbece01735cbf8f51013b",
+    "displayName": "Get String Length",
+    "description": ""
+  },
+  "consumerVisible": true,
+  "failOnError": true,
+  "pauseOnCompletion": false,
+  "errorOnTimeout": true,
+  "upgradeLocked": false,
+  "timeout": 3600,
+  "inputParameters": [
+    {
+      "id": "2c90a5aa7371fa4d01737341dd961893",
+      "name": "string",
+      "displayName": "string",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": false,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": "hello",
+          "displayName": null,
+          "selected": true,
+          "rawValue": "hello"
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    }
+  ],
+  "outputParameters": [
+    {
+      "id": "2c90a5aa7371fa4d01737341dd961891",
+      "name": "Result",
+      "displayName": "Result",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": true,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": null,
+          "displayName": null,
+          "selected": true,
+          "rawValue": null
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    }
+  ]
+}
+</pre>
 </html>
