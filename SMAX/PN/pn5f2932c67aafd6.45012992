@@ -1,9 +1,31 @@
 <html><h2>Actions in sync</h2>
 
 <div class="Admonition_Note"><span class="autonumber">Note&nbsp;</span>When publishing a design, the user can optionally perform validation upon actions tied to OO flows within the design hierarchy. This validation checks whether the DND configuration is in sync with the current state of the OO flow signature.</div>
-GET &nbsp; /dnd/api/service/design/&lt;design id&gt;/actionsInSync<br>
-The following is an example of the structure of the response data in JSON format:<br>
-<code>Status Code: 200</code>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>GET</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/service/design/&lt;design id&gt;/actionsInSync</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Invalid inputs<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the response data in JSON format:
 
 <pre>{
   "message": "",
@@ -17,9 +39,7 @@ Note: The "actions" JSON field in the error response is of the form<br>
 &nbsp;&nbsp;&lt;action display name&gt;<br>
 &nbsp;&nbsp;...<br>
 ]</code><br>
-The following is an example of the structure of the response data in JSON format:<br>
-<code>Status Code: 200</code>
-
+The following is an example of the structure of the response data in JSON format:
 <pre>{
   "message": "The following action signatures have changed since they were last edited and need to be manually reviewed and updated.",
   "actions": {
@@ -34,11 +54,35 @@ The following is an example of the structure of the response data in JSON format
 </pre>
 
 <h2>Publish design</h2>
-POST &nbsp; /dnd/api/service/design/&lt;design id&gt;/publish<br>
-<code>{}</code><br>
-<br>
-The following is an example of the structure of the response data in JSON format:<br>
-<code>Status Code: 200</code>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>POST</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/service/design/&lt;design id&gt;/publish</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>No request body</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the response data in JSON format:
 
 <pre>{
   "isValidationSuccessful": true
@@ -59,9 +103,31 @@ The following is an example of the structure of the response data in JSON format
 </pre>
 
 <h2>List versions of a design</h2>
-GET &nbsp; /dnd/api/container/&lt;container id&gt;<br>
-The following is an example of the structure of the response data in JSON format:<br>
-<code>Status Code: 200</code>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>GET</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/container/&lt;container id&gt;</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Invalid inputs<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the response data in JSON format:
 
 <pre>{
   "@self" : "/12345/dnd/api/container/sequence/2c908cb97353331f017353344e660003",
@@ -104,11 +170,54 @@ The following is an example of the structure of the response data in JSON format
 </pre>
 
 <h2>Delete a version of a design</h2>
-DELETE /dnd/api/service/design/&lt;design id&gt;<br>
-<code>Status Code: 204<br>
-No Response body</code>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>DELETE</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/service/design/&lt;design id&gt;</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>204 - Deleted<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response</td>
+			<td>No response body</td>
+		</tr>
+	</tbody>
+</table>
 
 <h2>Delete the design container</h2>
-DELETE /dnd/api/container/&lt;container id&gt;<br>
-<code>Status Code: 204<br>
-No Response body</code></html>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>DELETE</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/container/&lt;container id&gt;</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>204 - Deleted<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response</td>
+			<td>No response body</td>
+		</tr>
+	</tbody>
+</table>
+</html>
