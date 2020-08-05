@@ -29,6 +29,23 @@ The HCM 2020.05 is deployed and is accessible.&nbsp;The older version of HCM dat
 The upgrade process assumes that the new HCM 2020.05 is deployed and is accessible. The databases are cloned and are available on a database server.
 
 <h3>Expose the database port in older version HCM (Only in case of internal Postgresql)</h3>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<thead>
+		<tr>
+			<th scope="col">Role</th>
+			<th scope="col">Location</th>
+			<th scope="col">Privileges required</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>System administrator</td>
+			<td>Master node on the older version of HCM</td>
+			<td>Root or sudo</td>
+		</tr>
+	</tbody>
+</table>
 You can skip this step if you are not using internal Postgresql for the CDF IDM database.<br>
 If you are using the internal Postgresql database for the CDF IDM database on the older version of HCM, then you need to expose the Postgresql port on that server. This is required to migrate the IDM database to 2020.05. Follow the below steps on the older version of HCM.
 <h4>Single node Postgres Service</h4>
@@ -93,7 +110,22 @@ Now you can bring down HCM using the following commands;
 <pre>kubectl get ns
 /opt/kubernetes/scripts/cdfctl.sh runlevel set -l DOWN -n &lt;hcm-namespace&gt;</pre>
 
-<h3>Migrate IDM&nbsp;</h3>
+<h3>Migrate IDM</h3>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<thead>
+		<tr>
+			<th scope="col">Role</th>
+			<th scope="col">Location</th>
+			<th scope="col">Privileges required</th>
+		</tr>
+		<tr>
+			<td>System administrator</td>
+			<td>Master node on the HCM 2020.05</td>
+			<td>Root or sudo</td>
+		</tr>
+	</thead>
+</table>
 We need to recreate the IDM database in the new version of HCM installation since the IDM would have initialized with the default seeded user and credentials during the installation, we need to clear all data in IDM, migrate from older IDM database and then reinitialize with HCM seeded user data. Follow all the below sections of steps on the HCM 2020.05 instance.
 
 <h4>Recreate IDM database</h4>
