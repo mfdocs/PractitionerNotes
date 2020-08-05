@@ -41,43 +41,43 @@ The following tables give you an overview of the upgrade tasks and where they sh
 			<td>On the master node of the older version of HCM</td>
 		</tr>
 		<tr>
-			<td>Bring down the HCM</td>
+			<td><a href="#Bring down the HCM">Bring down the HCM</a></td>
 			<td>Older version of HCM; HCM 2020.05</td>
 		</tr>
 		<tr>
-			<td>Migrate IDM</td>
+			<td><a href="#Migrate IDM">Migrate IDM</a></td>
 			<td>HCM 2020.05</td>
 		</tr>
 		<tr>
-			<td>Migrate Autopass</td>
+			<td><a href="#Migrate Autopass">Migrate Autopass</a></td>
 			<td>HCM 2020.05</td>
 		</tr>
 		<tr>
-			<td>Migrate CSA</td>
+			<td><a href="#Migrate CSA">Migrate CSA</a></td>
 			<td>HCM 2020.05</td>
 		</tr>
 		<tr>
-			<td>Migrate OO</td>
+			<td><a href="#Migrate OO">Migrate OO</a></td>
 			<td>HCM 2020.05</td>
 		</tr>
 		<tr>
-			<td>Migrate OO Designer</td>
+			<td><a href="#Migrate OO Designer">Migrate OO Designer</a></td>
 			<td>HCM 2020.05</td>
 		</tr>
 		<tr>
-			<td>Migrate UCMDB</td>
+			<td><a href="#Migrate UCMDB">Migrate UCMDB</a></td>
 			<td>HCM 2020.05</td>
 		</tr>
 		<tr>
-			<td>Migrate Vertica components</td>
+			<td><a href="#Upgrading Vertica components">Upgrade Vertica components</a></td>
 			<td>HCM 2020.05</td>
 		</tr>
 		<tr>
-			<td>Bringing up all rest of the HCM components</td>
+			<td><a href="#Bring up all rest of the pods">Bringing up all the rest of HCM components</a></td>
 			<td>HCM 2020.05</td>
 		</tr>
 		<tr>
-			<td>Changing VIP or Load Balancer</td>
+			<td><a href="#Changing VIP">Changing VIP or Load Balancer</a></td>
 			<td>HCM 2020.05</td>
 		</tr>
 	</tbody>
@@ -145,7 +145,7 @@ Steps to follow to expose ITOM Postgresql port outside of Kubernetes cluster
 	</li>
 </ol>
 
-<h3>Bring down the old version of HCM</h3>
+<h3><a id="Bring down the HCM" name="Bring down the HCM"></a>Bring down the old version of HCM</h3>
 The following are the criteria to bring down the older version of HCM, otherwise, you can skip this step.
 
 <ol>
@@ -166,7 +166,7 @@ Now you can bring down HCM using the following commands;
 <pre>kubectl get ns
 /opt/kubernetes/scripts/cdfctl.sh runlevel set -l DOWN -n &lt;hcm-namespace&gt;</pre>
 
-<h3>Migrate IDM</h3>
+<h3><a id="Migrate IDM" name="Migrate IDM"></a>Migrate IDM</h3>
 
 <table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
 	<thead>
@@ -387,13 +387,13 @@ Follow this step if the password to the HCM databases you installed is different
 <pre>kubectl exec -it &lt;any-hcm-pod&gt; -n &lt;hcm-namespace&gt; -c &lt;container&gt; -- bash
 update_secret NEW_DB_PASSWORD &lt;new-database-password&gt;</pre>
 
-<h3>Migrate Autopass</h3>
+<h3><a id="Migrate Autopass" name="Migrate Autopass"></a>Migrate Autopass</h3>
 Update <code>&lt;core-vol&gt;/suite-install/hcm/output/hcm-autopass.yaml </code>database configurations to point to the actual HCM database used with the old version. The properties that need to be updated are – DBHOST, DBPORT, DBNAME, DBUSER, DBPASSWORD_KEY, DBSYSTEMID.<br>
 Delete and create Autopass pods using the following commands;
 <pre><code class="language-vim">kubectl delete -f hcm-autopass.yaml
 kubectl create -f hcm-autopass.yaml</code></pre>
 
-<h3>Migrate CSA</h3>
+<h3><a id="Migrate CSA" name="Migrate CSA"></a>Migrate CSA</h3>
 
 <h4>Copy the CSA encryption folder from the old version of HCM to 2020.05</h4>
 On the HCM 2020.05 master node,
@@ -413,7 +413,7 @@ Delete and create CSA pods using the following commands;
 <pre><code class="language-vim">kubectl delete -f hcm-csa.yaml
 kubectl create -f hcm-csa.yaml</code></pre>
 
-<h3>Migrate OO</h3>
+<h3><a id="Migrate OO" name="Migrate OO"></a>Migrate OO</h3>
 
 <h4>Copy the OO encryption folder from old version of HCM to 2020.05</h4>
 On the HCM 2020.05 master node,
@@ -433,7 +433,7 @@ Delete and create OO pods using the following commands;
 <pre><code class="language-vim">kubectl delete -f hcm-oo.yaml
 kubectl create -f hcm-oo.yaml</code></pre>
 
-<h3>Migrate OO Designer</h3>
+<h3><a id="Migrate OO Designer" name="Migrate OO Designer"></a>Migrate OO Designer</h3>
 
 <h4>Copy the OO Designer encryption folder from the old version of HCM to 2020.05</h4>
 On the HCM 2020.05 master node,
@@ -453,13 +453,13 @@ Delete and create OO Designer pods using the following commands;
 <pre><code class="language-vim">kubectl delete -f hcm-oodesigner.yaml
 kubectl create -f hcm-oodesigner.yaml</code></pre>
 
-<h3>Migrate UCMDB</h3>
+<h3><a id="Migrate UCMDB" name="Migrate UCMDB"></a>Migrate UCMDB</h3>
 Update the <code>&lt;core-vol&gt;/suite-install/hcm/output/hcm-ucmdb.yaml</code> database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – DB_HOST, DB_PORT, DB_USER, DB_SCHEMA, DB_PASSWORD_VAULT_KEY.<br>
 Delete and create UCMDB pods using the following commands;
 <pre><code class="language-vim">kubectl delete -f hcm-ucmdb.yaml
 kubectl create -f hcm-ucmdb.yaml</code></pre>
 
-<h3>Upgrading Vertica components</h3>
+<h3><a id="Upgrading Vertica components" name="Upgrading Vertica components"></a>Upgrading Vertica components</h3>
 Ensure you have the older version of HCM stopped and its not accessing the vertica database. Follow the process to upgrade Vertica if you are using any of the Cloud Service Brokering and Governance features.
 
 <ol>
@@ -535,12 +535,12 @@ kubectl create -f hcm-showback.yaml</code></pre>
 	<li>Run content job container to get the latest OOTB content - <code>hcm-content-job.yaml</code></li>
 </ol>
 
-<h3>Bring up all rest of the pods</h3>
+<h3><a id="Bring up all rest of the pods" name="Bring up all rest of the pods"></a>Bring up all the rest of HCM components</h3>
 
 <pre>kubectl get ns
 /opt/kubernetes/scripts/cdfctl.sh runlevel set -l UP -n &lt;hcm-namespace&gt;</pre>
 
-<h3>Changing VIP</h3>
+<h3><a id="Changing VIP" name="Changing VIP"></a>Changing VIP or Load Balancer</h3>
 If you have installed the HCM 2020.05 using VIP which is different than the previous version of HCM and you want to reconfigure to use the same VIP as the older HCM version, then you have to change the VIP on HCM 2020.05. To change the VIP follow the steps in the below documents.<br>
 <a href="https://docs.microfocus.com/itom/SMAX:2020.05/VIPchange">https://docs.microfocus.com/itom/SMAX:2020.05/VIPchange</a><br>
 <a href="https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2020.05/ChangeExternalAccessHostname">https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2020.05/ChangeExternalAccessHostname</a><br>
