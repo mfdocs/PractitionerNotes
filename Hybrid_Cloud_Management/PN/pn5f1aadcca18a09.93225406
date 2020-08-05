@@ -25,9 +25,64 @@ This is further described in this document in a later section.
 <h2>Pre-requisites</h2>
 The HCM 2020.05 is deployed and is accessible.&nbsp;The older version of HCM databases is available to configure with the HCM during the upgrade process.
 
-<h2>Upgrade Procedure</h2>
-The upgrade process assumes that the new HCM 2020.05 is deployed and is accessible. The databases are cloned and are available on a database server.
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<thead>
+		<tr>
+			<th scope="col">Task</th>
+			<th scope="col">Where to perform</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Expose the database port</td>
+			<td>On the master node of the older version of HCM</td>
+		</tr>
+		<tr>
+			<td>Bring down the HCM</td>
+			<td>Older version of HCM; HCM 2020.05</td>
+		</tr>
+		<tr>
+			<td>Migrate IDM</td>
+			<td>HCM 2020.05</td>
+		</tr>
+		<tr>
+			<td>Migrate Autopass</td>
+			<td>HCM 2020.05</td>
+		</tr>
+		<tr>
+			<td>Migrate CSA</td>
+			<td>HCM 2020.05</td>
+		</tr>
+		<tr>
+			<td>Migrate OO</td>
+			<td>HCM 2020.05</td>
+		</tr>
+		<tr>
+			<td>Migrate OO Designer</td>
+			<td>HCM 2020.05</td>
+		</tr>
+		<tr>
+			<td>Migrate UCMDB</td>
+			<td>HCM 2020.05</td>
+		</tr>
+		<tr>
+			<td>Migrate Vertica components</td>
+			<td>HCM 2020.05</td>
+		</tr>
+		<tr>
+			<td>Bringing up all rest of the HCM components</td>
+			<td>HCM 2020.05</td>
+		</tr>
+		<tr>
+			<td>Changing VIP or Load Balancer</td>
+			<td>HCM 2020.05</td>
+		</tr>
+	</tbody>
+</table>
 
+<h2>Upgrade Procedure</h2>
+The following tables give you an overview of the upgrade tasks and where they should be performed.<br>
+&nbsp;
 <h3>Expose the database port in older version HCM (Only in case of internal Postgresql)</h3>
 
 <table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
@@ -179,9 +234,9 @@ echo -n transport_admin:CqeSFXzWvb3Wdw== | base64
 dHJhbnNwb3J0X2FkbWluOkNxZVNGWHpXdmIzV2R3PT0=
 </pre>
 <br>
-Replace the base64 encoded password in the below curl commands against the authorization header.
+Replace the base64 encoded password, &lt;external-fqdn&gt;, and &lt;cdf-admin-password&gt; in the below curl commands against the authorization header.
 <pre>curl -k -X POST \
-  https://arunp-hcm-02-m1.swinfra.net:5443/idm-service/v2.0/tokens \
+  https://&lt;external-fqdn&gt;:5443/idm-service/v2.0/tokens \
   -H 'accept: application/json' \
   -H 'authorization: Basic dHJhbnNwb3J0X2FkbWluOkNxZVNGWHpXdmIzV2R3PT0=' \
   -H 'cache-control: no-cache' \
@@ -194,15 +249,15 @@ Replace the base64 encoded password in the below curl commands against the autho
     "tenantName": "Provider"
 }'
 </pre>
-Extract the token from the above command and replace it against the x-auth-token in the below curl command.
+Extract the token from the above command and replace it against the x-auth-token. Replace &lt;external-fqdn&gt; and &lt;cdf-admin-password&gt; in the below curl command.
 
 <pre>curl -k -X POST \
-  https://arunp-hcm-02-m1.swinfra.net:5443/idm-service/api/system/jsondata \
+  https://&lt;external-fqdn&gt;:5443/idm-service/api/system/jsondata \
   -H 'accept: application/json' \
   -H 'authorization: Basic dHJhbnNwb3J0X2FkbWluOkNxZVNGWHpXdmIzV2R3PT0=' \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/json' \
-  -H 'x-auth-token: eyJ0eXAiOiJKV1MiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyYzkwY2RhZjcxMmZmOGJkMDE3MTJmZjkwNmY2MDEwMiIsImlzcyI6IklkTSAxLjI3LjAiLCJjb20uaHBlLmlkbTp0cnVzdG9yIjpudWxsLCJleHAiOjE1ODU2NTExMjAsImNvbS5ocC5jbG91ZDp0ZW5hbnQiOnsiaWQiOiIyYzkwY2RhZjcxMmZmOGJkMDE3MTJmZjkwMWUyMDBhZiIsIm5hbWUiOiJQcm92aWRlciIsImVuYWJsZWQiOnRydWV9LCJwcm4iOiJhZG1pbiIsImlhdCI6MTU4NTY0OTMyMCwianRpIjoiZTIyNWNjZjEtNWQyYi00NzBhLWI3N2ItODIzZjgzNzMxMDc4In0.jnFuSFzXicWl_pP_a6VQSLbRB5JC7KVsfzczw-HUgh0' \
+  -H 'x-auth-token: &lt;TOKEN&gt;' \
   -d '[{
         "operation": "ADD_OR_UPDATE",
         "type": "databaseUser",
@@ -229,10 +284,11 @@ Extract the token from the above command and replace it against the x-auth-token
     }]'</pre>
 &nbsp;
 
-<div class="Admonition_Note"><b><i>qpfy_an63?LL.9i8</i></b> is the password you have backed up before bringing down HCM 2020.05 under the topic "Bring down HCM 2020.05"</div>
+<div class="Admonition_Note"><span class="autonumber">Note&nbsp; &nbsp;</span><b><i>qpfy_an63?LL.9i8</i></b> is the password you have backed up before bringing down HCM 2020.05 under the topic "Bring down HCM 2020.05"</div>
 
-<h4>Download the IDM migration tool</h4>
-Download the IDM Migration tool from the below path. And copy to a directory on one of the master nodes.
+<h4><br>
+Download the IDM migration tool</h4>
+Copy the IDM Migration tool from the below path and move it to a directory on one of the master nodes.
 
 <pre>mkdir /root/migrate/idm
 cd /root/migrate/idm
@@ -251,14 +307,14 @@ cp &lt;hcm-vol&gt;/shared/content-tools/csa/lib/CLI-lib.jar ../lib/.</pre>
 <pre>mkdir hcm-idm-sec
 cd hcm-idm-sec/
 scp &lt;old-hcm-master-node&gt;:/opt/kubernetes/cfg/idm/security/*.* .</pre>
-&lt;old-hcm-master-node&gt; is one of the master nodes from the old version of HCM
+&lt;old-hcm-master-node&gt; is any one of the master nodes from the old version of HCM
 
-<h4>Migrate IDM data from the older version of HCM to 2020.05</h4>
+<h4>Prepare the migration tool and configure the properties file</h4>
 Run the following command to generate the property files;<br>
 <code>java -jar idm-migration-tool-05.00.000-SNAPSHOT.jar -g</code><br>
 <br>
-Update the config.properties according to the source and target environment. You can ignore property destEncryptionDirectory.<br>
-Sample configure property would have the following entries;
+Update the config.properties according to the source and target environment. You can ignore property <code>destEncryptionDirectory</code>.<br>
+Sample configure property would have the following entries for an internal Postgresql;
 <pre>jdbc.dest.username=cdfidm
 srcDbType=postgres
 destEncryptionDirectory=/opt/kubernetes/cfg/idm/security/
@@ -280,7 +336,7 @@ Destination Database URL – If you are using the internal Postgresql for CDF ID
 <pre>kubectl get svc -n core | grep idm-postgresql-svc
 idm-postgresql-svc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ClusterIP &nbsp; 172.17.17.47 &nbsp; &lt;none&gt; &nbsp; &nbsp; &nbsp; &nbsp;5432/TCP,5050/TCP &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 439d</pre>
 
-<h4>Execute the migration tool</h4>
+<h4>Execute the migration tool to migrate data from the older version of HCM to 2020.05</h4>
 <code>java -jar idm-migration-tool-05.00.000-SNAPSHOT.jar -c config.properties</code><br>
 <br>
 The command returns a result that resembles the following
@@ -406,8 +462,8 @@ kubectl create -f hcm-ucmdb.yaml</code></pre>
 Follow the process to upgrade Vertica if you are using any of the Cloud Service Brokering and Governance features
 
 <ol>
-	<li>Upgrade Vertica to the required version level as per the documented process<br>
-	Upgrade to Vertica 9.2.0 version. For help, see&nbsp;<a href="https://www.vertica.com/docs/9.2.x/HTML/Content/Authoring/InstallationGuide/Upgrade/UpgradingVertica.htm?tocpath=Installing%20Vertica%7CUpgrading%20Vertica%7C_____0" rel="nofollow" target="1">Upgrading vertica</a>&nbsp;in the Vertica documentation.</li>
+	<li>Upgrade Vertica to the required version level as per the documented process.<br>
+	Upgrade to Vertica 9.2.0-7&nbsp;version. For help, see&nbsp;<a href="https://www.vertica.com/docs/9.2.x/HTML/Content/Authoring/InstallationGuide/Upgrade/UpgradingVertica.htm?tocpath=Installing%20Vertica%7CUpgrading%20Vertica%7C_____0" rel="nofollow" target="1">Upgrading Vertica</a>&nbsp;in the Vertica documentation.</li>
 	<li>Copy Vertica certificate to the HCM 2020.05<br>
 	The certificate&nbsp;has to be copied to <code>&lt;hcm-vol&gt;/certs/ca</code> folder</li>
 	<li>Clean up the following in the di folder <code>&lt;hcm-vol&gt;/di</code>
