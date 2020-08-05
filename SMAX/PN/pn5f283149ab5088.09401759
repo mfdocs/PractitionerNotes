@@ -1,9 +1,30 @@
 <html>Since the design will reference a component that is being uniquely created, the first step is to create that component. Properties and actions can be defined on the component type, for all templates of that component type to share, or they can be defined specifically on the component template itself, and not shared.
 <h2>List component palettes</h2>
-GET &nbsp; /dnd/api/metamodel/?view=condense<br>
-<br>
-The following is an example of the structure of the response data in JSON format:<br>
-<code>Status Code: 200</code>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>GET</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/metamodel/?view=condense</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Invalid inputs<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the response data in JSON format:
 
 <pre>  "@total_results": 3,
   "@start_index": 0,
@@ -65,7 +86,35 @@ The following is an example of the structure of the response data in JSON format
 </pre>
 
 <h2>Create a component palette</h2>
-POST &nbsp; /dnd/api/metamodel
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>POST</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/metamodel</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>See example</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>201 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the request data in JSON format:
 
 <pre>{
   "global_id": "",
@@ -86,9 +135,7 @@ POST &nbsp; /dnd/api/metamodel
 }
 </pre>
 <br>
-The following is an example of the structure of the response data in JSON format:<br>
-<code>Status Code: 201</code>
-
+The following is an example of the structure of the response data in JSON format:
 <pre>{
   "@self": "/12345/dnd/api/metamodel/2c90d2b3736cda3d01736d60e04562e5",
   "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel",
@@ -106,10 +153,31 @@ The following is an example of the structure of the response data in JSON format
 </pre>
 
 <h2>List component types in a component palette</h2>
-GET&nbsp;&nbsp;&nbsp;/dnd/api/metamodel/&lt;component palette id&gt;<br>
-<br>
-The following is an example of the structure of the response data in JSON format:<br>
-<code>Status Code: 200</code>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>GET</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/metamodel/&lt;component palette id&gt;</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Invalid inputs<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the response data in JSON format:
 
 <pre>{
   "@self": "/12345/dnd/api/metamodel/2c90d2b3736cda3d01736d60e04562e5",
@@ -167,7 +235,35 @@ The following is an example of the structure of the response data in JSON format
 </pre>
 
 <h2>Create a component type</h2>
-POST &nbsp; /dnd/api/metamodel/&lt;component palette id&gt;
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>POST</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/metamodel/&lt;component palette id&gt;</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>See example</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>201 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the request data in JSON format:
 
 <pre>{
   "global_id": "",
@@ -186,8 +282,7 @@ POST &nbsp; /dnd/api/metamodel/&lt;component palette id&gt;
   "configuration_item_type": null
 }
 </pre>
-The following is an example of the structure of the response data in JSON format:<br>
-<code>Status Code: 201</code>
+The following is an example of the structure of the response data in JSON format:
 
 <pre>{
   "@self": "/12345/dnd/api/node/type/2c90d2b3736cda3d01736d9e087062e9",
@@ -210,7 +305,35 @@ The following is an example of the structure of the response data in JSON format
 </pre>
 
 <h2>Update a component type</h2>
-PUT &nbsp; /dnd/api/node/type/&lt;component type id&gt;
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>PUT</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/node/type/&lt;component type id&gt;</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>See example</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the request data in JSON format:
 
 <pre>{
   "global_id": "2c90d2b3736cda3d01736d9e087062e9",
@@ -229,8 +352,7 @@ PUT &nbsp; /dnd/api/node/type/&lt;component type id&gt;
   "configuration_item_type": null
 }
 </pre>
-The following is an example of the structure of the response data in JSON format:<br>
-<code>Status Code: 200</code>
+The following is an example of the structure of the response data in JSON format:
 
 <pre>{
   "@self": "/12345/dnd/api/node/type/2c90d2b3736cda3d01736d9e087062e9",
@@ -266,9 +388,31 @@ The following is an example of the structure of the response data in JSON format
 </pre>
 
 <h2>List a component type</h2>
-GET &nbsp; /dnd/api/node/type/&lt;component type id&gt;<br>
-The following is an example of the structure of the response data in JSON format:<br>
-<code>Status Code: 200</code>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>GET</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/node/type/&lt;component type id&gt;</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Invalid inputs<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the response data in JSON format:
 
 <pre>{
   "@self": "/12345/dnd/api/node/type/2c90d2b3736cda3d01736d9e087062e9",
@@ -304,7 +448,35 @@ The following is an example of the structure of the response data in JSON format
 </pre>
 
 <h2>List properties on a component type</h2>
-POST &nbsp; /dnd/api/property/filter
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>POST</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/property/filter</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>See example</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the request data in JSON format:
 
 <pre>{
   "ownership": [
@@ -316,8 +488,7 @@ POST &nbsp; /dnd/api/property/filter
   }
 }
 </pre>
-The following is an example of the structure of the response data in JSON format:<br>
-<code>Status Code: 200</code>
+The following is an example of the structure of the response data in JSON format:
 
 <pre>{
   "@total_results": 1,
@@ -400,7 +571,35 @@ The following is an example of the structure of the response data in JSON format
 </pre>
 
 <h2>Create property on a component type</h2>
-POST &nbsp; /dnd/api/property
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>POST</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/property</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>See example</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>201 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the request data in JSON format:
 
 <pre>{
   "global_id": "",
@@ -425,8 +624,7 @@ POST &nbsp; /dnd/api/property
   "requiredWhenDeployDesign": false
 }
 </pre>
-The following is an example of the structure of the response data in JSON format:<br>
-<code>Status Code: 201</code>
+The following is an example of the structure of the response data in JSON format:
 
 <pre>{
   "@created": "2020-07-20T19:46:16.216Z",
@@ -477,7 +675,35 @@ The following is an example of the structure of the response data in JSON format
 </pre>
 
 <h2>Update property on a component type</h2>
-PUT &nbsp; /dnd/api/property/&lt;property id&gt;
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>PUT</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/property/&lt;property id&gt;</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>See example</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the request data in JSON format:
 
 <pre>{
   "global_id": "2c90d2b3736cda3d01736dc3341862ed",
@@ -502,8 +728,7 @@ PUT &nbsp; /dnd/api/property/&lt;property id&gt;
   "requiredWhenDeployDesign": false
 }
 </pre>
-The following is an example of the structure of the response data in JSON format:<br>
-<code>Status Code: 200</code>
+The following is an example of the structure of the response data in JSON format:
 
 <pre>{
   "@created": "2020-07-20T19:46:16.216Z",
@@ -554,10 +779,31 @@ The following is an example of the structure of the response data in JSON format
 </pre>
 
 <h2>List templates on a component type</h2>
-GET &nbsp; /dnd/api/node/type/&lt;component type id&gt;<br>
-<br>
-The following is an example of the structure of the response data in JSON format:<br>
-<code>Status Code: 200</code>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>GET</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/node/type/&lt;component type id&gt;</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Invalid inputs<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the response data in JSON format:
 
 <pre>{
   "@self": "/12345/dnd/api/node/type/2c90d2b3736cda3d01736d9e087062e9/template",
@@ -601,7 +847,35 @@ The following is an example of the structure of the response data in JSON format
 </pre>
 
 <h2>Create a component template</h2>
-POST &nbsp; /dnd/api/node/template
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>POST</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/node/template</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>See example</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>201 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the request data in JSON format:
 
 <pre>{
   "global_id": "",
@@ -620,8 +894,7 @@ POST &nbsp; /dnd/api/node/template
   }
 }
 </pre>
-The following is an example of the structure of the response data in JSON format:<br>
-<code>Status Code: 201</code>
+The following is an example of the structure of the response data in JSON format:
 
 <pre>{
   "@self": "/12345/dnd/api/node/template/2c90d2b3736cda3d01736e26c57262f5",
@@ -674,7 +947,35 @@ The following is an example of the structure of the response data in JSON format
 </pre>
 
 <h2>Update a component template</h2>
-PUT &nbsp; /dnd/api/node/template/&lt;component template id&gt;
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>PUT</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/node/template/&lt;component template id&gt;</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>See example</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the request data in JSON format:
 
 <pre>{
   "global_id": "2c90d2b3736cda3d01736e26c57262f5",
@@ -693,8 +994,7 @@ PUT &nbsp; /dnd/api/node/template/&lt;component template id&gt;
   }
 }
 </pre>
-The following is an example of the structure of the response data in JSON format:<br>
-<code>Status Code: 200</code>
+The following is an example of the structure of the response data in JSON format:
 
 <pre>{
   "@self": "/12345/dnd/api/node/template/2c90d2b3736cda3d01736e26c57262f5",
@@ -747,10 +1047,31 @@ The following is an example of the structure of the response data in JSON format
 </pre>
 
 <h2>List a component template</h2>
-GET &nbsp; /dnd/api/node/template/&lt;component template id&gt;<br>
-<br>
-The following is an example of the structure of the response data in JSON format:<br>
-<code>Status Code: 200</code>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>GET</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/node/template/&lt;component template id&gt;</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Invalid inputs<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the response data in JSON format:
 
 <pre>{
   "@self": "/12345/dnd/api/node/template/2c90d2b3736cda3d01736e26c57262f5",
@@ -803,7 +1124,35 @@ The following is an example of the structure of the response data in JSON format
 </pre>
 
 <h2>List properties on a component template</h2>
-POST &nbsp; /dnd/api/property/filter
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>POST</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/property/filter</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>See example</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the request data in JSON format:
 
 <pre>{
   "ownership": [
@@ -816,9 +1165,7 @@ POST &nbsp; /dnd/api/property/filter
 }
 </pre>
 <br>
-The following is an example of the structure of the response data in JSON format:<br>
-<code>Status Code: 200</code>
-
+The following is an example of the structure of the response data in JSON format:
 <pre>{
   "@total_results": 1,
   "@start_index": 0,
@@ -900,7 +1247,35 @@ The following is an example of the structure of the response data in JSON format
 </pre>
 
 <h2>Create a property on a component template</h2>
-POST &amp;nsbp; /dnd/api/property
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>POST</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/property</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>See example</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>201 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the request data in JSON format:
 
 <pre>{
   "global_id": "",
@@ -926,9 +1301,7 @@ POST &amp;nsbp; /dnd/api/property
 }
 </pre>
 <br>
-The following is an example of the structure of the response data in JSON format:<br>
-<code>Status Code: 201</code>
-
+The following is an example of the structure of the response data in JSON format:
 <pre>{
   "@created": "2020-07-21T15:51:37.857Z",
   "@modified": "2020-07-21T15:51:37.857Z",
@@ -978,7 +1351,35 @@ The following is an example of the structure of the response data in JSON format
 </pre>
 
 <h2>Update a property on a component template</h2>
-PUT &nbsp; /dnd/api/property/&lt;property id&gt;
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>PUT</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/property/&lt;property id&gt;</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>See example</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the request data in JSON format:
 
 <pre>{
   "global_id": "2c90d2b3736cda3d01737212be8162fd",
@@ -1004,9 +1405,7 @@ PUT &nbsp; /dnd/api/property/&lt;property id&gt;
 }
 </pre>
 <br>
-The following is an example of the structure of the response data in JSON format:<br>
-<code>Status Code: 200</code>
-
+The following is an example of the structure of the response data in JSON format:
 <pre>{
   "@created": "2020-07-21T15:51:37.857Z",
   "@modified": "2020-07-21T15:51:37.857Z",
@@ -1056,9 +1455,31 @@ The following is an example of the structure of the response data in JSON format
 </pre>
 
 <h2>List lifecycle actions on a component template</h2>
-GET &nbsp; /dnd/api/artifact/&lt;component template id&gt;/lifecycleactions<br>
-The following is an example of the structure of the response data in JSON format:<br>
-<code>Status Code: 200</code>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>GET</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/artifact/&lt;component template id&gt;/lifecycleactions</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Invalid inputs<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the response data in JSON format:
 
 <pre>{
   "members": [
@@ -1110,7 +1531,35 @@ The following is an example of the structure of the response data in JSON format
 </pre>
 
 <h2>Create a lifecycle action on a component template</h2>
-POST &nbsp; /dnd/api/action
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>POST</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/action</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>See example</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the request data in JSON format:
 
 <pre>{
   "artifactId": "2c90a5aa7371fa4d0173732f0620187a",
@@ -1188,9 +1637,7 @@ POST &nbsp; /dnd/api/action
 }
 </pre>
 <br>
-The following is an example of the structure of the response data in JSON format:<br>
-<code>Status Code: 200</code>
-
+The following is an example of the structure of the response data in JSON format:
 <pre>{
   "@self": "/506465921/dnd/api/action/2c90a5aa7371fa4d0173732f936e1883",
   "name": "7ddfdf8d-c0ca-44a9-8db5-ed4fdb371711",
@@ -1291,7 +1738,35 @@ The following is an example of the structure of the response data in JSON format
 </pre>
 
 <h2>Update a lifecycle action on a component template</h2>
-PUT &nbsp; /dnd/api/action/&lt;action id&gt;
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>PUT</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/action/&lt;action id&gt;</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>See example</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the request data in JSON format:
 
 <pre>{
   "artifactId": "2c90a5aa7371fa4d0173732f0620187a",
@@ -1376,9 +1851,7 @@ PUT &nbsp; /dnd/api/action/&lt;action id&gt;
 }
 </pre>
 <br>
-The following is an example of the structure of the response data in JSON format:<br>
-<code>Status Code: 200</code>
-
+The following is an example of the structure of the response data in JSON format:
 <pre>{
   "@self": "/506465921/dnd/api/action/2c90a5aa7371fa4d0173732f936e1883",
   "name": "7ddfdf8d-c0ca-44a9-8db5-ed4fdb371711",
@@ -1479,9 +1952,31 @@ The following is an example of the structure of the response data in JSON format
 </pre>
 
 <h2>List public actions on a component template</h2>
-GET &nbsp; /dnd/api/artifact/&lt;component template id&gt;/publicactions<br>
-The following is an example of the structure of the response data in JSON format:<br>
-<code>Status Code: 200</code>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>GET</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/artifact/&lt;component template id&gt;/publicactions</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Invalid inputs<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the response data in JSON format:
 
 <pre>{
   "members": [
@@ -1527,7 +2022,35 @@ The following is an example of the structure of the response data in JSON format
 </pre>
 
 <h2>Create a public action on a component template</h2>
-POST &nbsp; /dnd/api/action
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>POST</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/action</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>See example</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the request data in JSON format:
 
 <pre>{
   "artifactId": "2c90a5aa7371fa4d0173732f0620187a",
@@ -1602,9 +2125,7 @@ POST &nbsp; /dnd/api/action
 }
 </pre>
 <br>
-The following is an example of the structure of the response data in JSON format:<br>
-<code>Status Code: 200</code>
-
+The following is an example of the structure of the response data in JSON format:
 <pre>{
   "@self": "/506465921/dnd/api/action/2c90a5aa7371fa4d01737341dd95188f",
   "name": "a8afc7c4-9709-48fd-aac3-0917f8fd53dd",
@@ -1699,7 +2220,35 @@ The following is an example of the structure of the response data in JSON format
 </pre>
 
 <h2>Update a public action on a component template</h2>
-PUT &nbsp; /dnd/api/action/&lt;action id&gt;
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>PUT</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/action/&lt;action id&gt;</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>See example</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the request data in JSON format:
 
 <pre>{
   "artifactId": "2c90a5aa7371fa4d0173732f0620187a",
@@ -1781,9 +2330,7 @@ PUT &nbsp; /dnd/api/action/&lt;action id&gt;
 }
 </pre>
 <br>
-The following is an example of the structure of the response data in JSON format:<br>
-<code>Status Code: 200</code>
-
+The following is an example of the structure of the response data in JSON format:
 <pre>{
   "@self": "/506465921/dnd/api/action/2c90a5aa7371fa4d01737341dd95188f",
   "name": "a8afc7c4-9709-48fd-aac3-0917f8fd53dd",
