@@ -18,8 +18,8 @@ The HCM 2020.05 installation requires a new NFS mount point. The older mount poi
 <h3>Databases</h3>
 
 <ul>
-	<li>You will need to create a new database for Identity Management in HCM 2020.05.</li>
-	<li>You should clone the existing HCM database. The original copy can be used to keep services running until the 2020.05 migration is complete. If there changes to the original copy of the database, then you&nbsp;have clone and&nbsp;migrate that component again.</li>
+	<li>You will need to create a new database for Identity Management (IDM) in HCM 2020.05.</li>
+	<li>You should clone the existing HCM database. The original copy can be used to keep services running until the 2020.05 migration is complete. If there changes to the original copy of the database while the services are running, then you&nbsp;have to clone and&nbsp;migrate the database for respective component again.</li>
 	<li>During the HCM 2020.05 installation, you should have a new database for the CDF IDM which you would continue to use, and while configuring the HCM database you can use the Internal Postgresql non-HA or create temporary databases since you will reconfigure to use older version HCM databases during the upgrade process. &nbsp;</li>
 </ul>
 
@@ -34,12 +34,11 @@ If you are using an External Load Balancer (ELB), then you will deploy HCM 2020.
 <h3>Pre-requisites</h3>
 
 <ul>
-	<li>The original HCM database must be cloned. The original version can continue to provide service during the upgrade. The cloned version will be migrated into 2020.05.</li>
+	<li>The original HCM database must be cloned. The original version can continue to provide service during the upgrade. The cloned database will be migrated to 2020.05.</li>
 	<li>HCM 2020.05 must be installed and deployed as described here:</li>
 </ul>
-<a href="https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2020.05/Install">https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2020.05/Install</a><br>
-<br>
-The HCM 2020.05 is deployed and is accessible.&nbsp;The older version of HCM databases is available to configure with the HCM during the upgrade procedure.
+<a href="https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2020.05/Install">https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2020.05/Install</a>
+
 <h2>Upgrade Procedure</h2>
 The following tables give you an overview of the upgrade tasks and where they should be performed.
 
@@ -53,11 +52,11 @@ The following tables give you an overview of the upgrade tasks and where they sh
 	<tbody>
 		<tr>
 			<td><a href="#Expose the database port">Expose the database port</a></td>
-			<td>On the master node of the older version of HCM</td>
+			<td>On the master node of the original version of HCM</td>
 		</tr>
 		<tr>
 			<td><a href="#Bring down the HCM">Bring down the HCM</a></td>
-			<td>Older version of HCM; HCM 2020.05</td>
+			<td>Original version of HCM; HCM 2020.05</td>
 		</tr>
 		<tr>
 			<td><a href="#Migrate IDM">Migrate IDM</a></td>
@@ -99,7 +98,7 @@ The following tables give you an overview of the upgrade tasks and where they sh
 </table>
 &nbsp;
 
-<h3><a id="Expose the database port" name="Expose the database port"></a>Expose the database port in older version HCM (Only in case of internal Postgresql)</h3>
+<h3><a id="Expose the database port" name="Expose the database port"></a>Expose the database port in original version HCM (Only in case of internal Postgresql)</h3>
 
 <table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
 	<thead>
@@ -112,14 +111,14 @@ The following tables give you an overview of the upgrade tasks and where they sh
 	<tbody>
 		<tr>
 			<td>System administrator</td>
-			<td>Master node on the older version of HCM</td>
+			<td>Master node on the original version of HCM</td>
 			<td>Root or sudo</td>
 		</tr>
 	</tbody>
 </table>
 You can skip this step if you are not using internal Postgresql for the CDF IDM database.<br>
 <br>
-If you are using the internal Postgresql database for the CDF IDM database on the older version of HCM, then you need to expose the Postgresql port on that server. This is required to migrate the IDM database to 2020.05. Follow the below steps on the existing HCM (pre 2020.05 system):
+If you are using internal PostgreSQL for CDF Identity Management, you need to expose the Postgresql port. This is required to migrate the IDM database to the 2020.05 system. Follow the below steps on the existing HCM (pre 2020.05 system):
 <h4>Single node Internal Postgres Service</h4>
 Steps for&nbsp;ITOM Internal Postgresql to expose port outside Kubernetes cluster
 
@@ -163,13 +162,13 @@ Steps for ITOM Internal Postgresql HA to expose port outside Kubernetes cluster
 </ol>
 
 <h3><a id="Bring down the HCM" name="Bring down the HCM"></a>Bring down the old version of HCM</h3>
-The following are the criteria to bring down the older version of HCM, otherwise, you can skip this step.
+The following are the criteria to bring down the original version of HCM, otherwise, you can skip this step.
 
 <ol>
 	<li>If you are planning to reuse the HCM databases with 2020.05.</li>
 	<li>If you are going to make the final switch using the original database with 2020.05.</li>
 </ol>
-To bring down the HCM, execute the following command on the older version of HCM
+To bring down the HCM, execute the following command on the original version of HCM
 
 <pre>kubectl get ns
 /opt/kubernetes/scripts/cdfctl.sh runlevel set -l DOWN -n &lt;hcm-namespace&gt;</pre>
@@ -199,7 +198,7 @@ You can bring down HCM using the following commands;
 		</tr>
 	</thead>
 </table>
-We need to recreate the IDM database in the new version of HCM installation since the IDM would have initialized with the default seeded user and credentials during the installation, we need to clear all data in IDM, migrate from older IDM database and then reinitialize with HCM seeded user data. Follow all the below sections of steps on the HCM 2020.05 instance.
+We need to recreate the IDM database in the new version of HCM installation since the IDM would have initialized with the default seeded user and credentials during the installation, we need to clear all data in IDM, migrate from original IDM database and then reinitialize with HCM seeded user data. Follow all the below sections of steps on the HCM 2020.05 instance.
 
 <h4>Recreate IDM database</h4>
 
@@ -320,7 +319,7 @@ Go to the directory where you have copied the IDM migration tool.
 <pre>mkdir ../lib
 cp &lt;hcm-vol&gt;/shared/content-tools/csa/lib/CLI-lib.jar ../lib/.</pre>
 
-<h4>Copy the src IDM encryption directory from the older version of HCM to 2020.05 migrate folder</h4>
+<h4>Copy the src IDM encryption directory from the original version of HCM to 2020.05 migrate folder</h4>
 
 <pre>mkdir hcm-idm-sec
 cd hcm-idm-sec/
@@ -354,7 +353,7 @@ Destination Database URL – If you are using the internal Postgresql for CDF ID
 <pre>kubectl get svc -n core | grep idm-postgresql-svc
 idm-postgresql-svc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ClusterIP &nbsp; 172.17.17.47 &nbsp; &lt;none&gt; &nbsp; &nbsp; &nbsp; &nbsp;5432/TCP,5050/TCP &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 439d</pre>
 
-<h4>Execute the migration tool to migrate data from the older version of HCM to 2020.05</h4>
+<h4>Execute the migration tool to migrate data from the original version of HCM to 2020.05</h4>
 <code>java -jar idm-migration-tool-05.00.000-SNAPSHOT.jar -c config.properties</code><br>
 <br>
 The command returns a result that resembles the following
@@ -477,7 +476,7 @@ Delete and create UCMDB pods using the following commands;
 kubectl create -f hcm-ucmdb.yaml</code></pre>
 
 <h3><a id="Upgrading Vertica components" name="Upgrading Vertica components"></a>Upgrading Vertica components</h3>
-Ensure you have the older version of HCM stopped and its not accessing the vertica database. Follow the process to upgrade Vertica if you are using any of the Cloud Service Brokering and Governance features.
+Ensure you have the original version of HCM stopped and its not accessing the vertica database. Follow the process to upgrade Vertica if you are using any of the Cloud Service Brokering and Governance features.
 
 <ol>
 	<li>Upgrade Vertica to the required version level as per the documented process.<br>
@@ -558,7 +557,7 @@ kubectl create -f hcm-showback.yaml</code></pre>
 /opt/kubernetes/scripts/cdfctl.sh runlevel set -l UP -n &lt;hcm-namespace&gt;</pre>
 
 <h3><a id="Changing VIP" name="Changing VIP"></a>Changing VIP or Load Balancer</h3>
-If you have installed the HCM 2020.05 using VIP which is different than the previous version of HCM and you want to reconfigure to use the same VIP as the older HCM version, then you have to change the VIP on HCM 2020.05. To change the VIP follow the steps in the below documents.<br>
+If you have installed the HCM 2020.05 using VIP which is different than the previous version of HCM and you want to reconfigure to use the same VIP as the original HCM version, then you have to change the VIP on HCM 2020.05. To change the VIP follow the steps in the below documents.<br>
 <a href="https://docs.microfocus.com/itom/SMAX:2020.05/VIPchange">https://docs.microfocus.com/itom/SMAX:2020.05/VIPchange</a><br>
 <a href="https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2020.05/ChangeExternalAccessHostname">https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2020.05/ChangeExternalAccessHostname</a><br>
 <br>
@@ -575,4 +574,4 @@ ls -p *.yaml | grep -v / | tr '\n' ','
 kubectl delete -f &lt;comma separated files&gt;
 kubectl create -f &lt;comma separated files&gt;</pre>
 <br>
-The HCM side-by-side upgrade to 2020.05 is now complete. You can decommission the older version of HCM.</html>
+The HCM side-by-side upgrade to 2020.05 is now complete. You can decommission the original version of HCM.</html>
