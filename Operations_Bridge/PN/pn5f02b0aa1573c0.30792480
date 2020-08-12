@@ -86,17 +86,23 @@ Download and execute backupScript.sh script on Master node to backup following c
 <ol>
 	<li>Certificates:&nbsp; chain.pem, key.pm,&nbsp;RE_ca&nbsp;</li>
 	<li>Configmaps</li>
-	<li>Embedded Postgres configuration files: postgressql.conf &amp; pg_hba.conf</li>
 	<li>UCMDB Master key&nbsp;</li>
-	<li>Embedded Postgres user credentials.&nbsp;</li>
+	<li>Embedded Postgres database user credentials.&nbsp;</li>
 	<li>Embedded Postgres database&nbsp;</li>
 </ol>
 Script requirements&nbsp;
 
 <ol>
-	<li>Must be executed with super user permission on Master node</li>
+	<li>Must be executed with super user permission on Master node.&nbsp;</li>
 	<li>Ensure all pods are running before executing the script&nbsp;</li>
+	<li>On embedded postgres HA environment the script must be executed on the master node where &lt;itom-postgresql-node1&gt; pod is running on. This can be determined by running following command:&nbsp;&nbsp;</li>
 </ol>
+
+<pre><code>[root@qdc5-obm1]# kubectl get pods -n core -o wide | grep post
+itom-postgresql-node1-56f4b343b6-hlsl2 &nbsp; &nbsp; &nbsp; &nbsp; 2/2 &nbsp; &nbsp; &nbsp; Running &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;60d &nbsp; &nbsp; &nbsp; 172.xxx.xxx.xxx &nbsp; master-node1.domain.com     &lt;===
+itom-postgresql-node2-d9c7err8-bkrtl &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;2/2 &nbsp; &nbsp; &nbsp; Running &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;60d &nbsp; &nbsp; &nbsp; 172.xxx.xxx.xxx &nbsp; master-node2.domain.com
+</code></pre>
+<br>
 The script will save backed up data under &lt;NFS-Folder&gt;/opsb_migration/ directory. DO NOT DELETE any data from this folder as it will be used for database restore and post migration step workflows.&nbsp;<br>
 Download the script on master node and assign required execution permission before script execution.
 <pre><code class="language-bash">chmod +x backupScript.sh
@@ -142,26 +148,28 @@ Download &amp; Execute restoredbSchema.sh script on External Postgres Server to 
 
 <ol>
 	<li>Restore database using .dump files&nbsp;</li>
-	<li>Set database user credentials for postgres &amp; cdfidm users to one existed in embedded postgres setup.</li>
+	<li>Set database user credentials for cdfidm user&nbsp;to one existed in embedded postgres setup.</li>
 </ol>
 Script requirements:&nbsp;
 
 <ol>
 	<li>Script supports restore operation only for database backup files generated using backupScript.sh in the previous step</li>
 	<li>Must be executed with super user permission on External Postgres server</li>
-	<li>Ensure .dump and config.properties files are available on External Postgres server and have read permissions.</li>
+	<li>Ensure .dump and config.properties files are available on External Postgres server and have read permissions for postgres user.</li>
 	<li>Database instance must be a fresh installed instance.&nbsp;</li>
+	<li>Provide write permission for postgres user to /tmp directory. This permission can be removed for postgres user once database restore is completed.&nbsp;</li>
 </ol>
 Assign required execution permission before script execution as below
 
 <pre><code>chmod +x restoredbSchema.sh
+su postgres
 ./restoredbSchema.sh
 </code></pre>
 &nbsp;
 
 <div class="Admonition_Note">Note: &nbsp;<br>
 1.&nbsp; Script uses Postgres database 'postgres' user (superuser) to restore the backup on Postgres server<br>
-2.&nbsp;&nbsp;Note down cdfidm &amp; postgres user credentials post execution of this script (also available in config.properties file). &nbsp;In the later steps you need to use cdfidm user credentials to connect to External Postgres server while installing OpsBridge 2019.11.&nbsp; &nbsp; &nbsp;</div>
+2.&nbsp;&nbsp;Note down cdfidm user credentials post execution of this script (also available in config.properties file). &nbsp;In the later steps you need to use cdfidm user credentials to connect to External Postgres server while installing OpsBridge 2019.11.&nbsp; &nbsp; &nbsp;</div>
 Try connecting to the database as cdfidm user. Execute the command from master node and check database table ownership. Use the password from <strong>config.properties</strong> file&nbsp;
 
 <pre><code>psql "dbname=&lt;dbname&gt; password=&lt;password&gt; host=&lt;postgres_node&gt; port=5432 user=cdfidm"
