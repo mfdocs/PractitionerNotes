@@ -170,6 +170,19 @@ su postgres
 <div class="Admonition_Note">Note: &nbsp;<br>
 1.&nbsp; Script uses Postgres database 'postgres' user (superuser) to restore the backup on Postgres server<br>
 2.&nbsp;&nbsp;Note down cdfidm user credentials post execution of this script (also available in config.properties file). &nbsp;In the later steps you need to use cdfidm user credentials to connect to External Postgres server while installing OpsBridge 2019.11.&nbsp; &nbsp; &nbsp;</div>
+If BVD capability is not enabled on existing OpsBridge Suite and you plan to enable this capability on OpsBridge Suite 2019.11 then manually create database for BVD on external postgres server by following below steps after logging into postgres database with postgres super user:
+
+<div class="Admonition_Note">CREATE DATABASE bvd OWNER cdfidm;<br>
+\c bvd;<br>
+GRANT ALL PRIVILEGES ON DATABASE bvd TO cdfidm;<br>
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";<br>
+ALTER SCHEMA public OWNER TO cdfidm;<br>
+ALTER SCHEMA public RENAME TO cdfidmschema;<br>
+REVOKE ALL ON SCHEMA cdfidmschema from public;<br>
+GRANT ALL ON SCHEMA cdfidmschema to cdfidm;<br>
+GRANT ALL PRIVILEGES ON DATABASE bvd TO cdfidm;<br>
+ALTER USER cdfidm SET search_path TO cdfidmschema;</div>
+<br>
 Try connecting to the database as cdfidm user. Execute the command from master node and check database table ownership. Use the password from <strong>config.properties</strong> file&nbsp;
 
 <pre><code>psql "dbname=&lt;dbname&gt; password=&lt;password&gt; host=&lt;postgres_node&gt; port=5432 user=cdfidm"
