@@ -32,8 +32,14 @@ If you are using an External Load Balancer (ELB), then you will deploy HCM 2020.
 <h2>Prepare</h2>
 
 <h3>Pre-requisites</h3>
-The HCM 2020.05 is deployed and is accessible.&nbsp;The older version of HCM databases is available to configure with the HCM during the upgrade procedure.
 
+<ul>
+	<li>The original HCM database must be cloned. The original version can continue to provide service during the upgrade. The cloned version will be migrated into 2020.05.</li>
+	<li>HCM 2020.05 must be installed and deployed as described here:</li>
+</ul>
+<a href="https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2020.05/Install">https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2020.05/Install</a><br>
+<br>
+The HCM 2020.05 is deployed and is accessible.&nbsp;The older version of HCM databases is available to configure with the HCM during the upgrade procedure.
 <h2>Upgrade Procedure</h2>
 The following tables give you an overview of the upgrade tasks and where they should be performed.
 
@@ -112,36 +118,38 @@ The following tables give you an overview of the upgrade tasks and where they sh
 	</tbody>
 </table>
 You can skip this step if you are not using internal Postgresql for the CDF IDM database.<br>
-If you are using the internal Postgresql database for the CDF IDM database on the older version of HCM, then you need to expose the Postgresql port on that server. This is required to migrate the IDM database to 2020.05. Follow the below steps on the older version of HCM.
-<h4>Single node Postgres Service</h4>
-Steps to expose ITOM Postgresql port outside of Kubernetes cluster
+<br>
+If you are using the internal Postgresql database for the CDF IDM database on the older version of HCM, then you need to expose the Postgresql port on that server. This is required to migrate the IDM database to 2020.05. Follow the below steps on the existing HCM (pre 2020.05 system):
+<h4>Single node Internal Postgres Service</h4>
+Steps for&nbsp;ITOM Internal Postgresql to expose port outside Kubernetes cluster
 
 <ol>
-	<li>Modify <code>pg_hba.conf</code> in <code>&lt;db-single-vol&gt;/baseinfra-1.0/postgresql95/</code> folder. Add below line to the file
+	<li>Add the following line to the Postgres configuration file&nbsp;<code>pg_hba.conf</code> in <code>&lt;db-single-vol&gt;/baseinfra-1.0/postgresql95/</code> folder
 
 	<pre><code class="language-vim">host     all     all     0.0.0.0/0     md5</code></pre>
 	</li>
-	<li>Add below port mapping to the Postgresql yaml in the&nbsp;<code>&lt;core-vol&gt;/suite-install/yamlContent/itom-postgresql-single-svc.yaml</code>. Container section, under image add lines
+	<li>Modify the Postgresql yaml file&nbsp;<code>&lt;core-vol&gt;/suite-install/yamlContent/itom-postgresql-single-svc.yaml</code>. In <code>Container&nbsp;</code>section, insert these line under <code><small>image</small></code>
 	<pre><code class="language-yaml">image: localhost:5000/hpeswitom/itom-postgresql:9.5.11-0021
 ports:
 - containerPort: 5432
   hostPort: 5432</code></pre>
 	</li>
-	<li>Once YAML is modified execute below command for the changes to take effect.<br>
+	<li>Run the following command to make the changes take effect:<br>
 	<code>kubectl apply -f &lt;core-vol&gt;/suite-install/yamlContent/itom-postgresql-single-svc.yaml</code></li>
 </ol>
 
-<h4>Postgres High Available</h4>
-Steps to follow to expose ITOM Postgresql port outside of Kubernetes cluster
+<h4>Internal Postgres High Available</h4>
+Steps for ITOM Internal Postgresql HA to expose port outside Kubernetes cluster
 
 <ol>
-	<li>Add the following line to both the <code>pg_hba.conf</code> files;
+	<li>Modify both of the <code>pg_hba.conf</code> files; <db-node1-vol><code>&lt;db-node1-vol&gt;/baseinfra-1.0/postgresql95HA/node1data/pg_hba.conf</code><br>
+	<db-node2-vol><code>&lt;db-node2-vol&gt;/baseinfra-1.0/postgresql95HA/node2data/pg_hba.conf </code></db-node2-vol></db-node1-vol>
 
-	<pre><code class="language-vim">host     all     all     0.0.0.0/0     md5</code></pre>
-	<db-node1-vol><code>&lt;db-node1-vol&gt;/baseinfra-1.0/postgresql95HA/node1data/pg_hba.conf</code><br>
-	<db-node2-vol><code>&lt;db-node2-vol&gt;/baseinfra-1.0/postgresql95HA/node2data/pg_hba.conf </code></db-node2-vol></db-node1-vol></li>
-	<li>Add <code>hostPort: 5432 </code>to the file, as shown below<br>
-	<code>&lt;core-vol&gt;/suite-install/yamlContent/itom-postgresql-pool-svc.yaml</code>
+	<pre>    <code class="language-vim">host     all     all     0.0.0.0/0     md5</code></pre>
+	</li>
+	<li>Modify the file itom-postgres-pool-svc.yaml file<br>
+	Edit the file<br>
+	<code>&lt;core-vol&gt;/suite-install/yamlContent/itom-postgresql-pool-svc.yaml</code> Modify it so that the <code>ports</code> section looks like this:
 	<pre><code class="language-yaml">ports:
 - containerPort: 5432
   hostPort: 5432
@@ -149,7 +157,7 @@ Steps to follow to expose ITOM Postgresql port outside of Kubernetes cluster
 - containerPort: 5050
   name: pgrest-port</code></pre>
 	</li>
-	<li>Once yaml is modified execute below command for the changes to take effect.
+	<li>Run the following command to make the changes take effect:
 	<pre>kubectl apply -f &lt;core-volume&gt;/suite-install/yamlContent/itom-postgresql-pool-svc.yaml</pre>
 	</li>
 </ol>
@@ -158,8 +166,8 @@ Steps to follow to expose ITOM Postgresql port outside of Kubernetes cluster
 The following are the criteria to bring down the older version of HCM, otherwise, you can skip this step.
 
 <ol>
-	<li>If you are planning to reuse the HCM databases with the new version.</li>
-	<li>If you are going to make the final switch using the existing database with the new version.</li>
+	<li>If you are planning to reuse the HCM databases with 2020.05.</li>
+	<li>If you are going to make the final switch using the original database with 2020.05.</li>
 </ol>
 To bring down the HCM, execute the following command on the older version of HCM
 
@@ -171,7 +179,7 @@ Before bringing down, note down the following secrets on the HCM 2020.05 to use 
 <code>kubectl exec -it &lt;csa-pod&gt; -n &lt;hcm-namespace&gt; -c hcm-csa -- get_secret HCM_IDM_SVC_PASSWORD</code><br>
 <samp>PASS=qpfy_an63?LL.9i8</samp><br>
 <br>
-Now you can bring down HCM using the following commands;
+You can bring down HCM using the following commands;
 <pre>kubectl get ns
 /opt/kubernetes/scripts/cdfctl.sh runlevel set -l DOWN -n &lt;hcm-namespace&gt;</pre>
 
