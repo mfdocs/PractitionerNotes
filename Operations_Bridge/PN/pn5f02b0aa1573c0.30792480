@@ -98,9 +98,9 @@ Script requirements&nbsp;
 	<li>On embedded postgres HA environment the script must be executed on the master node where &lt;itom-postgresql-node1&gt; pod is running on. This can be determined by running following command:&nbsp;&nbsp;</li>
 </ol>
 
-<pre><code>[root@qdc5-obm1]# kubectl get pods -n core -o wide | grep post
+<pre><code>[root@h-obm1]# kubectl get pods -n core -o wide | grep itom-postgresql-node1
 itom-postgresql-node1-56f4b343b6-hlsl2 &nbsp; &nbsp; &nbsp; &nbsp; 2/2 &nbsp; &nbsp; &nbsp; Running &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;60d &nbsp; &nbsp; &nbsp; 172.xxx.xxx.xxx &nbsp; master-node1.domain.com     &lt;===
-itom-postgresql-node2-d9c7err8-bkrtl &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;2/2 &nbsp; &nbsp; &nbsp; Running &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;60d &nbsp; &nbsp; &nbsp; 172.xxx.xxx.xxx &nbsp; master-node2.domain.com
+
 </code></pre>
 <br>
 The script will save backed up data under &lt;NFS-Folder&gt;/opsb_migration/ directory. DO NOT DELETE any data from this folder as it will be used for database restore and post migration step workflows.&nbsp;<br>
@@ -129,12 +129,11 @@ host all all ::/0 md5
 </code></pre>
 <br>
 Edit postgresql.conf file for&nbsp;listen_addresses , port and lo_compat_privileges parameters to as shown below
-<pre><code>listen_addresses = '*'
-port = 5432
-lo_compat_privileges = on
-</code></pre>
-<br>
+<div class="Admonition_Important">listen_addresses = '*'<br>
+port = 5432<br>
+lo_compat_privileges = on</div>
 Restart postgres service
+
 <pre><code>systemctl restart postgresql-10.service</code></pre>
 Get the current external Postgres Version (optional)<br>
 Once logged in as postgres super user into database, run the below command.&nbsp;
@@ -182,7 +181,40 @@ REVOKE ALL ON SCHEMA cdfidmschema from public;<br>
 GRANT ALL ON SCHEMA cdfidmschema to cdfidm;<br>
 GRANT ALL PRIVILEGES ON DATABASE bvd TO cdfidm;<br>
 ALTER USER cdfidm SET search_path TO cdfidmschema;</div>
+If OBM capability is not enabled on existing OpsBridge Suite and you plan to enable this capability on OpsBridge Suite 2019.11 then manually create database for OBM on external postgres server by following below steps after logging into postgres database with postgres super user:
+
+<div class="Admonition_Note">CREATE DATABASE mgmt OWNER cdfidm;<br>
+\c mgmt;<br>
+GRANT ALL PRIVILEGES ON DATABASE mgmt TO cdfidm;<br>
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";<br>
+ALTER SCHEMA public OWNER TO cdfidm;<br>
+ALTER SCHEMA public RENAME TO cdfidmschema;<br>
+REVOKE ALL ON SCHEMA cdfidmschema from public;<br>
+GRANT ALL ON SCHEMA cdfidmschema to cdfidm;<br>
+GRANT ALL PRIVILEGES ON DATABASE mgmt TO cdfidm;<br>
+ALTER USER cdfidm SET search_path TO cdfidmschema;<br>
 <br>
+CREATE DATABASE event OWNER cdfidm;<br>
+\c event;<br>
+GRANT ALL PRIVILEGES ON DATABASE event TO cdfidm;<br>
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";<br>
+ALTER SCHEMA public OWNER TO cdfidm;<br>
+ALTER SCHEMA public RENAME TO cdfidmschema;<br>
+REVOKE ALL ON SCHEMA cdfidmschema from public;<br>
+GRANT ALL ON SCHEMA cdfidmschema to cdfidm;<br>
+GRANT ALL PRIVILEGES ON DATABASE event TO cdfidm;<br>
+ALTER USER cdfidm SET search_path TO cdfidmschema;<br>
+<br>
+CREATE DATABASE rtsm OWNER cdfidm;<br>
+\c rtsm;<br>
+GRANT ALL PRIVILEGES ON DATABASE rtsm TO cdfidm;<br>
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";<br>
+ALTER SCHEMA public OWNER TO cdfidm;<br>
+ALTER SCHEMA public RENAME TO cdfidmschema;<br>
+REVOKE ALL ON SCHEMA cdfidmschema from public;<br>
+GRANT ALL ON SCHEMA cdfidmschema to cdfidm;<br>
+GRANT ALL PRIVILEGES ON DATABASE rtsm TO cdfidm;<br>
+ALTER USER cdfidm SET search_path TO cdfidmschema;</div>
 Try connecting to the database as cdfidm user. Execute the command from master node and check database table ownership. Use the password from <strong>config.properties</strong> file&nbsp;
 
 <pre><code>psql "dbname=&lt;dbname&gt; password=&lt;password&gt; host=&lt;postgres_node&gt; port=5432 user=cdfidm"
