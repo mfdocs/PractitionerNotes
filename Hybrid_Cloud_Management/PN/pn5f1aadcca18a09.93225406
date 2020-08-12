@@ -19,8 +19,8 @@ The HCM 2020.05 installation requires a new NFS mount point. The older mount poi
 
 <ul>
 	<li>You will need to create a new database for Identity Management (IDM) in HCM 2020.05.</li>
-	<li>You should clone the existing HCM database. The original copy can be used to keep services running until the 2020.05 migration is complete. If there changes to the original copy of the database while the services are running, then you&nbsp;have to clone and&nbsp;migrate the database for respective component again.</li>
-	<li>During the HCM 2020.05 installation, you should have a new database for the CDF IDM which you would continue to use, and while configuring the HCM database you can use the Internal Postgresql non-HA or create temporary databases since you will reconfigure to use older version HCM databases during the upgrade process. &nbsp;</li>
+	<li>You should clone the existing HCM database. The original copy can be used to keep services running until the 2020.05 migration is complete. If there changes to the original copy of the database while the services are running, then you have to clone and migrate the database for respective component again.</li>
+	<li>During the HCM 2020.05 installation, you should have a new database for the CDF IDM which you would continue to use, and while configuring the HCM database you can use the Internal Postgresql non-HA or create temporary databases since you will reconfigure to use older version HCM databases during the upgrade process.</li>
 </ul>
 
 <h3>Virtual IP Addresses</h3>
@@ -96,9 +96,8 @@ The following tables give you an overview of the upgrade tasks and where they sh
 		</tr>
 	</tbody>
 </table>
-&nbsp;
 
-<h3><a id="Expose the database port" name="Expose the database port"></a>Expose the database port in original version HCM (Only in case of internal Postgresql)</h3>
+<h3><a id="Expose the database port" name="Expose the database port"></a>Expose the database port in original version of HCM</h3>
 
 <table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
 	<thead>
@@ -116,18 +115,19 @@ The following tables give you an overview of the upgrade tasks and where they sh
 		</tr>
 	</tbody>
 </table>
-You can skip this step if you are not using internal Postgresql for the CDF IDM database.<br>
+
+<div class="Admonition_Note"><span class="autonumber">Note&nbsp; &nbsp;</span>You can skip this step if you are not using internal Postgresql for the CDF IDM database.</div>
 <br>
 If you are using internal PostgreSQL for CDF Identity Management, you need to expose the Postgresql port. This is required to migrate the IDM database to the 2020.05 system. Follow the below steps on the existing HCM (pre 2020.05 system):
 <h4>Single node Internal Postgres Service</h4>
-Steps for&nbsp;ITOM Internal Postgresql to expose port outside Kubernetes cluster
+Steps for ITOM Internal Postgresql to expose port outside Kubernetes cluster
 
 <ol>
-	<li>Add the following line to the Postgres configuration file&nbsp;<code>pg_hba.conf</code> in <code>&lt;db-single-vol&gt;/baseinfra-1.0/postgresql95/</code> folder
+	<li>Add the following line to the Postgres configuration file <code>pg_hba.conf</code> in <code>&lt;db-single-vol&gt;/baseinfra-1.0/postgresql95/</code> folder
 
 	<pre><code class="language-vim">host     all     all     0.0.0.0/0     md5</code></pre>
 	</li>
-	<li>Modify the Postgresql yaml file&nbsp;<code>&lt;core-vol&gt;/suite-install/yamlContent/itom-postgresql-single-svc.yaml</code>. In <code>Container&nbsp;</code>section, insert these line under <code><small>image</small></code>
+	<li>Modify the Postgresql yaml file <code>&lt;core-vol&gt;/suite-install/yamlContent/itom-postgresql-single-svc.yaml</code>. In <code>Container</code> section, insert these line under <code><small>image</small></code>
 	<pre><code class="language-yaml">image: localhost:5000/hpeswitom/itom-postgresql:9.5.11-0021
 ports:
 - containerPort: 5432
@@ -213,7 +213,7 @@ kubectl delete -f idm.yaml</pre>
 		<pre>cd &lt;core-vol&gt;/suite-install/yamlContent/
 kubectl delete -f itom-postgresql-single-svc.yaml</pre>
 		</li>
-		<li>Move the Postgresql&nbsp;folder to a backup location
+		<li>Move the Postgresql folder to a backup location
 		<pre><code class="language-vim">mkdir ~/backupPG
 cd /baseinfra-1.0
 mv postgresql106 ~/backupPG</code></pre>
@@ -226,15 +226,15 @@ kubectl create -f itom-postgresql-single-svc.yaml</code></pre>
 	</ol>
 	</li>
 	<li>If the database used to install HCM is External Oracle or Postgresql, then back up the database following the vendor documentation. Drop and create a new database based on the HCM document.</li>
-	<li>Start IDM and open&nbsp;to CDF management portal
+	<li>Start IDM and open to CDF management portal
 	<pre>cd &lt;core-vol&gt;/suite-install/yamlContent/
 kubectl create -f idm.yaml</pre>
 	<br>
-	Open the&nbsp;CDF management portal to ensure you can access the portal, you might not be able to login using your existing admin password.</li>
+	Open the CDF management portal to ensure you can access the portal, you might not be able to login using your existing admin password.</li>
 </ol>
 
 <h4>Reset the CDF admin password</h4>
-To reset the CDF admin password execute the following commands&nbsp;
+To reset the CDF admin password execute the following commands
 
 <pre>kubectl exec -it &lt;idm-pod&gt; -n core -c idm -- bash
 sh /idmtools/idm-installer-tools/idm.sh databaseUser resetPassword -org Provider -name "admin" -plainPwd "&lt;new-temp-password&gt;"
@@ -242,7 +242,7 @@ sh /idmtools/idm-installer-tools/idm.sh databaseUser resetPassword -org Provider
 <br>
 Login into the CDF management console and reset the password correctly to the password which you had used while installing HCM.
 <h4>Create idmTransportUser in IDM</h4>
-Execute the following command and note down the password which has to be used in the subsequent command&nbsp;
+Execute the following command and note down the password which has to be used in the subsequent command
 
 <pre>kubectl exec -it &lt;idm-pod&gt; -n core -c idm -- get_secret idm_transport_admin_password
 PASS=CqeSFXzWvb3Wdw==
@@ -423,7 +423,7 @@ chown -R itom:itom *</pre>
 <h4>Update the YAML with the database configuration details</h4>
 Update the <code>&lt;core-vol&gt;/suite-install/hcm/output/hcm-csa.yaml</code> database configurations to point to the actual HCM database used with the old version. The properties that need to be updated are – CSA_DB_HOST, CSA_DB_PORT, CSA_DB_USER, CSA_DB_PASSWORD_KEY, CSA_DB_NAME, CSA_DB_SERVICENAME.<br>
 <br>
-Change the <code>DEPLOYMENT_TYPE</code> to <tt><strong>migrate</strong></tt>&nbsp;in the <code>hcm-csa.yaml</code><br>
+Change the <code>DEPLOYMENT_TYPE</code> to <tt><strong>migrate</strong></tt> in the <code>hcm-csa.yaml</code><br>
 <br>
 Delete and create CSA pods using the following commands;
 <pre><code class="language-vim">kubectl delete -f hcm-csa.yaml
@@ -443,7 +443,7 @@ chown -R itom:itom *</pre>
 <h4>Update the YAML with the database configuration details</h4>
 Update the <code>&lt;core-vol&gt;/suite-install/hcm/output/hcm-oo.yaml</code> database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – OO_CENTRAL_DB_HOST, OO_CENTRAL_DB_PORT, OO_CENTRAL_DB_USERNAME, OO_CENTRAL_DB_PASSWORD_KEY, OO_CENTRAL_DB_NAME, OO_CENTRAL_DB_SERVICENAME.<br>
 <br>
-Change the <code>DEPLOYMENT_TYPE</code> to <tt><strong>migrate</strong></tt> in the&nbsp;<code>hcm-oo.yaml</code><br>
+Change the <code>DEPLOYMENT_TYPE</code> to <tt><strong>migrate</strong></tt> in the <code>hcm-oo.yaml</code><br>
 <br>
 Delete and create OO pods using the following commands;
 <pre><code class="language-vim">kubectl delete -f hcm-oo.yaml
@@ -463,7 +463,7 @@ chown -R itom:itom *</pre>
 <h4>Update the YAML with the database configuration details</h4>
 Update the &lt;<code>core-vol&gt;/suite-install/hcm/output/hcm-oodesigner.yaml</code> database configurations to point to the actual HCM database used with the old version. The properties needs to be updated are – OO_DESIGNER_DB_HOST, OO_DESIGNER_DB_PORT, OO_DESIGNER_DB_USERNAME, OO_DESIGNER_DB_PASSWORD_KEY, OO_DESIGNER_DB_NAME, OO_DESIGNER_DB_SERVICENAME.<br>
 <br>
-Change the <code>DEPLOYMENT_TYPE</code> to <tt><strong>migrate</strong></tt>&nbsp;in the <code>hcm-oodesigner.yaml</code><br>
+Change the <code>DEPLOYMENT_TYPE</code> to <tt><strong>migrate</strong></tt> in the <code>hcm-oodesigner.yaml</code><br>
 <br>
 Delete and create OO Designer pods using the following commands;
 <pre><code class="language-vim">kubectl delete -f hcm-oodesigner.yaml
@@ -480,9 +480,9 @@ Ensure you have the original version of HCM stopped and its not accessing the ve
 
 <ol>
 	<li>Upgrade Vertica to the required version level as per the documented process.<br>
-	Upgrade to Vertica 9.2.0-7&nbsp;version. For help, see&nbsp;<a href="https://www.vertica.com/docs/9.2.x/HTML/Content/Authoring/InstallationGuide/Upgrade/UpgradingVertica.htm?tocpath=Installing%20Vertica%7CUpgrading%20Vertica%7C_____0" rel="nofollow" target="1">Upgrading Vertica</a>&nbsp;in the Vertica documentation.</li>
+	Upgrade to Vertica 9.2.0-7 version. For help, see <a href="https://www.vertica.com/docs/9.2.x/HTML/Content/Authoring/InstallationGuide/Upgrade/UpgradingVertica.htm?tocpath=Installing%20Vertica%7CUpgrading%20Vertica%7C_____0" rel="nofollow" target="1">Upgrading Vertica</a> in the Vertica documentation.</li>
 	<li>Copy Vertica certificate to the HCM 2020.05<br>
-	The certificate&nbsp;has to be copied to <code>&lt;hcm-vol&gt;/certs/ca</code> folder</li>
+	The certificate has to be copied to <code>&lt;hcm-vol&gt;/certs/ca</code> folder</li>
 	<li>Clean up the following in the di folder <code>&lt;hcm-vol&gt;/di</code>
 	<pre><code class="language-vim">mv vertica_ingestion vertica_ingestion_old
 mv administration &nbsp;administration_old</code></pre>
@@ -561,7 +561,7 @@ If you have installed the HCM 2020.05 using VIP which is different than the prev
 <a href="https://docs.microfocus.com/itom/SMAX:2020.05/VIPchange">https://docs.microfocus.com/itom/SMAX:2020.05/VIPchange</a><br>
 <a href="https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2020.05/ChangeExternalAccessHostname">https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2020.05/ChangeExternalAccessHostname</a><br>
 <br>
-If you have installed the HCM 2020.05 using a&nbsp;temporary load balancer and now want to reconfigure it to the actual External Load Balancer, then follow the steps in the below document.<br>
+If you have installed the HCM 2020.05 using a temporary load balancer and now want to reconfigure it to the actual External Load Balancer, then follow the steps in the below document.<br>
 <a href="https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2020.05/ChangeExternalAccessHostname">https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2020.05/ChangeExternalAccessHostname</a><br>
 <br>
 Once the changes are done following the documents the CDF would have been reconfigured to the new VIP or Load Balancer.<br>
