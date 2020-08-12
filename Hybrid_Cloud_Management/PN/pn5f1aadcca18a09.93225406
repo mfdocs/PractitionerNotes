@@ -564,8 +564,9 @@ If you have installed the HCM 2020.05 using VIP which is different than the prev
 If you have installed the HCM 2020.05 using a temporary load balancer and now want to reconfigure it to the actual External Load Balancer, then follow the steps in the below document.<br>
 <a href="https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2020.05/ChangeExternalAccessHostname">https://docs.microfocus.com/itom/Hybrid_Cloud_Management:2020.05/ChangeExternalAccessHostname</a><br>
 <br>
-Once the changes are done following the documents the CDF would have been reconfigured to the new VIP or Load Balancer.<br>
-Now you need to re-configure the HCM yamls to use the new external Load Balancer/VIP. Find and replace the existing external hostname in the yamls with the actual external hostname. Then apply the changes using kubectl delete -f and kubectl create -f for all the HCM yamls in <code>&lt;core-vol&gt;/suite-install/hcm/output</code>.<br>
+Once the changes are done following the above documentation, the CDF would have been reconfigured to the new VIP or Load Balancer.<br>
+<br>
+You need to re-configure the HCM yamls to use the new VIP or External Load Balancer. Find and replace the existing external hostname in the yamls with the actual external hostname. Then apply the changes using kubectl delete -f and kubectl create -f for all the HCM yamls in <code>&lt;core-vol&gt;/suite-install/hcm/output</code> and wait for all the pods in HCM namespace to come up correctly.<br>
 <br>
 Sample command to replace the hostname and apply changes. Backup the files before changing them.
 <pre>cd &lt;core-vol&gt;/suite-install/hcm/output
