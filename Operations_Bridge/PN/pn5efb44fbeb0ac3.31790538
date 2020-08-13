@@ -278,6 +278,12 @@ port = &lt;pg_port&gt;</div>
 
 <p style="margin-top: 16px;">Recreate the Databases and users which existed in the previous version of OpsBridge Postgres DB. The below example is from 2018.11.&nbsp; Kindly refer to respective version of OpsBridge Suite doc, under Prepare Relational Data base section, and execute the same, before importing the data.</p>
 
+<div class="Admonition_Tip" style="margin-top: 16px;">Choose the Database's accordingly for the below set of steps mentioned, and with respect to the capabilities opted. For example:<br>
+Migrating from BVD to BVD + OBM 2019.11 OpsBridge Suite, would require the respective OBM databases to be created.<br>
+Migrating from OBM to OBM + BVD&nbsp;2019.11 OpsBridge Suite, would require the resepctive BVD database to be created.<br>
+<br>
+<u><strong>Note</strong></u>: The default databases &lt;cdfidmdb&gt;&nbsp; and&nbsp;&lt;autopassdb&gt; are mandate for any of the above.</div>
+
 <pre><code>CREATE ROLE &lt;cdfidmuser&gt; WITH LOGIN PASSWORD '&lt;Password&gt;' ;
 CREATE DATABASE &lt;cdfidmdb&gt; OWNER &lt;cdfidmuser&gt; ;
 CREATE DATABASE &lt;autopassdb&gt; OWNER &lt;cdfidmuser&gt; ;
@@ -371,7 +377,7 @@ ALTER USER &lt;cdfidmuser&gt; SET search_path TO &lt;cdfidmschema&gt; ;
 \dn+</code></pre>
 
 <p>One should see a similar output as shown below.<br>
-<img alt="" border="1" file="" height="341" hspace="0" src="/mediawiki/images/pn_images/pn_image_5f02ff2aa3b944.28065111.jpeg" style="width:800px;height:341px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:1px solid black;" vspace="0" width="800"><br>
+<br>
 Try connecting to the databases using the Suite user name</p>
 
 <pre><code>psql -h &lt;pg_host&gt; dbname=&lt;suite_db&gt; -p &lt;pg_port&gt; -U &lt;suite_user_name&gt;</code></pre>
