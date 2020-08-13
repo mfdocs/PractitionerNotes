@@ -171,7 +171,7 @@ The following are the criteria to bring down the original version of HCM, otherw
 To bring down the HCM, execute the following command on the original version of HCM
 
 <pre>kubectl get ns
-/opt/kubernetes/scripts/cdfctl.sh runlevel set -l DOWN -n &lt;hcm-namespace&gt;</pre>
+$K8S_HOME/scripts/cdfctl.sh runlevel set -l DOWN -n &lt;hcm-namespace&gt;</pre>
 
 <h3>Bring down HCM 2020.05</h3>
 Before bringing down, note down the following secrets on the HCM 2020.05 to use it later.<br>
@@ -180,7 +180,7 @@ Before bringing down, note down the following secrets on the HCM 2020.05 to use 
 <br>
 You can bring down HCM using the following commands;
 <pre>kubectl get ns
-/opt/kubernetes/scripts/cdfctl.sh runlevel set -l DOWN -n &lt;hcm-namespace&gt;</pre>
+$K8S_HOME/scripts/cdfctl.sh runlevel set -l DOWN -n &lt;hcm-namespace&gt;</pre>
 
 <h3><a id="Migrate IDM" name="Migrate IDM"></a>Migrate IDM</h3>
 
@@ -242,13 +242,13 @@ sh /idmtools/idm-installer-tools/idm.sh databaseUser resetPassword -org Provider
 <br>
 Login into the CDF management console and reset the password correctly to the password which you had used while installing HCM.
 <h4>Create idmTransportUser in IDM</h4>
-Execute the following command and note down the password which has to be used in the subsequent command
+Execute the following command and note down the base64 encoding of the username and password which has to be used in the subsequent command
 
 <pre>kubectl exec -it &lt;idm-pod&gt; -n core -c idm -- get_secret idm_transport_admin_password
-PASS=CqeSFXzWvb3Wdw==
+<tt><em>PASS=CqeSFXzWvb3Wdw==</em></tt>
 
 echo -n transport_admin:CqeSFXzWvb3Wdw== | base64
-dHJhbnNwb3J0X2FkbWluOkNxZVNGWHpXdmIzV2R3PT0=
+<tt><code><em>dHJhbnNwb3J0X2FkbWluOkNxZVNGWHpXdmIzV2R3PT0=</em></code></tt>
 </pre>
 <br>
 Replace the base64 encoded password, &lt;external-fqdn&gt;, and &lt;cdf-admin-password&gt; in the below curl commands against the authorization header.
@@ -323,7 +323,7 @@ cp &lt;hcm-vol&gt;/shared/content-tools/csa/lib/CLI-lib.jar ../lib/.</pre>
 
 <pre>mkdir hcm-idm-sec
 cd hcm-idm-sec/
-scp &lt;old-hcm-master-node&gt;:/opt/kubernetes/cfg/idm/security/*.* .</pre>
+scp &lt;old-hcm-master-node&gt;:$K8S_HOME/cfg/idm/security/*.* .</pre>
 &lt;old-hcm-master-node&gt; is any one of the master nodes from the old version of HCM
 
 <h4>Prepare the migration tool and configure the properties file</h4>
@@ -412,7 +412,7 @@ kubectl create -f hcm-autopass.yaml</code></pre>
 <h3><a id="Migrate CSA" name="Migrate CSA"></a>Migrate CSA</h3>
 
 <h4>Copy the CSA encryption folder from the old version of HCM to 2020.05</h4>
-On the HCM 2020.05 master node,
+Mount the NFS on the HCM 2020.05 master node, execute the following commands:
 
 <pre>cd &lt;hcm-vol&gt;/shared/
 mv encryption/ encryption_2020_05
@@ -432,7 +432,7 @@ kubectl create -f hcm-csa.yaml</code></pre>
 <h3><a id="Migrate OO" name="Migrate OO"></a>Migrate OO</h3>
 
 <h4>Copy the OO encryption folder from old version of HCM to 2020.05</h4>
-On the HCM 2020.05 master node,
+Mount the NFS on the HCM 2020.05 master node, execute the following commands:
 
 <pre>cd &lt;hcm-vol&gt;/conf/
 mv oo oo_2020_05
@@ -452,7 +452,7 @@ kubectl create -f hcm-oo.yaml</code></pre>
 <h3><a id="Migrate OO Designer" name="Migrate OO Designer"></a>Migrate OO Designer</h3>
 
 <h4>Copy the OO Designer encryption folder from the old version of HCM to 2020.05</h4>
-On the HCM 2020.05 master node,
+Mount the NFS on the HCM 2020.05 master node, execute the following commands:
 
 <pre>cd &lt;hcm-vol&gt;/conf/
 mv oodesigner oodesigner_2020_05
@@ -485,7 +485,7 @@ Ensure you have the original version of HCM stopped and its not accessing the ve
 	The certificate has to be copied to <code>&lt;hcm-vol&gt;/certs/ca</code> folder</li>
 	<li>Clean up the following in the di folder <code>&lt;hcm-vol&gt;/di</code>
 	<pre><code class="language-vim">mv vertica_ingestion vertica_ingestion_old
-mv administration &nbsp;administration_old</code></pre>
+mv administration administration_old</code></pre>
 	</li>
 	<li>Delete and create <code>hcm-zookeeper.yaml, hcm-kafka.yaml</code>, wait till they are up and running
 	<pre><code class="language-vim">kubectl delete -f hcm-zookeeper.yaml
@@ -554,7 +554,7 @@ kubectl create -f hcm-showback.yaml</code></pre>
 <h3><a id="Bring up all rest of the pods" name="Bring up all rest of the pods"></a>Bring up all the rest of HCM components</h3>
 
 <pre>kubectl get ns
-/opt/kubernetes/scripts/cdfctl.sh runlevel set -l UP -n &lt;hcm-namespace&gt;</pre>
+$K8S_HOME/scripts/cdfctl.sh runlevel set -l UP -n &lt;hcm-namespace&gt;</pre>
 
 <h3><a id="Changing VIP" name="Changing VIP"></a>Changing VIP or Load Balancer</h3>
 If you have installed the HCM 2020.05 using VIP which is different than the previous version of HCM and you want to reconfigure to use the same VIP as the original HCM version, then you have to change the VIP on HCM 2020.05. To change the VIP follow the steps in the below documents.<br>
