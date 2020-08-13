@@ -157,7 +157,14 @@ Script requirements:&nbsp;
 	<li>Ensure .dump and config.properties files are available on External Postgres server and have read permissions for postgres user.</li>
 	<li>Database instance must be a fresh installed instance.&nbsp;</li>
 	<li>Provide write permission for postgres user to /tmp directory. This permission can be removed for postgres user once database restore is completed.&nbsp;</li>
+	<li>Ensure&nbsp;postgres user has sufficient connections available to connect to database.&nbsp;This can be set in postgresql.conf by editing&nbsp;superuser_reserved_connections parameter.&nbsp;</li>
 </ol>
+
+<div class="Admonition_Note">Note: This parameter was set to 200 as below while testing the script.<br>
+<strong>superuser_reserved_connections = '200'</strong><br>
+You may see below error trace if not enough sessions are available.&nbsp;<br>
+<img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/55/SuperUser-Session-issue.jpg" height="105" hspace="0" src="/mediawiki/images/pn_images/pn_image_5f3549dd90ec01.15117280.jpeg" style="width: 800px; height: 105px; margin: 0px; border: 0px solid black;" vspace="0" width="800"><br>
+&nbsp;</div>
 Assign required execution permission before script execution as below
 
 <pre><code>chmod +x restoredbSchema.sh
@@ -168,7 +175,8 @@ su postgres
 
 <div class="Admonition_Note">Note: &nbsp;<br>
 1.&nbsp; Script uses Postgres database 'postgres' user (superuser) to restore the backup on Postgres server<br>
-2.&nbsp;&nbsp;Note down cdfidm user credentials post execution of this script (also available in config.properties file). &nbsp;In the later steps you need to use cdfidm user credentials to connect to External Postgres server while installing OpsBridge 2019.11.&nbsp; &nbsp; &nbsp;</div>
+2.&nbsp;&nbsp;Note down cdfidm user credentials post execution of this script (also available in config.properties file). &nbsp;In the later steps you need to use cdfidm user credentials to connect to External Postgres server while installing OpsBridge 2019.11.&nbsp; &nbsp; &nbsp;<br>
+3. If this script is interrupted or fails, it can be re-executed after deleting databases (restored/partially restored by script)&nbsp;and deleting cdfidm user from the database.&nbsp;</div>
 <br>
 If BVD capability is not enabled on existing OpsBridge Suite and you plan to enable this capability on OpsBridge Suite 2019.11 then manually create database for BVD on external postgres server by following below steps after logging into postgres database with postgres super user:
 <div class="Admonition_Note">CREATE DATABASE bvd OWNER cdfidm;<br>
@@ -220,7 +228,13 @@ Try connecting to the database as cdfidm user. Execute the command from master n
 <pre><code>psql "dbname=&lt;dbname&gt; password=&lt;password&gt; host=&lt;postgres_node&gt; port=5432 user=cdfidm"
 \dt+</code></pre>
 
-<h2>Bring down the cluster&nbsp;</h2>
+<h4><br>
+External Postgres on High-availability</h4>
+
+<div><samp>&lt;&gt;</samp></div>
+
+<h2><br>
+Bring down the cluster&nbsp;</h2>
 Make sure all the PODS are up and running.&nbsp;Shut down Suite pods by Running the below command:
 
 <pre><code class="language-bash">${K8S_HOME}/scripts/cdfctl.sh -f runlevel set -l DOWN</code></pre>
