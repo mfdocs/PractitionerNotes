@@ -160,7 +160,7 @@ Script requirements:&nbsp;
 	<li>Ensure&nbsp;postgres user has sufficient connections available to connect to database.&nbsp;This can be set in postgresql.conf by editing&nbsp;superuser_reserved_connections parameter.&nbsp;</li>
 </ol>
 
-<div class="Admonition_Note">Note: This parameter was set to 200 as below while testing the script.<br>
+<div class="Admonition_Note">Note: This parameter was set to 200 as below while testing the script. This change can be reverted back post successful database restore.<br>
 <strong>superuser_reserved_connections = '200'</strong><br>
 You may see below error trace if not enough sessions are available.&nbsp;<br>
 <img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/55/SuperUser-Session-issue.jpg" height="105" hspace="0" src="/mediawiki/images/pn_images/pn_image_5f3549dd90ec01.15117280.jpeg" style="width: 800px; height: 105px; margin: 0px; border: 0px solid black;" vspace="0" width="800"><br>
@@ -227,6 +227,7 @@ Try connecting to the database as cdfidm user. Execute the command from master n
 
 <pre><code>psql "dbname=&lt;dbname&gt; password=&lt;password&gt; host=&lt;postgres_node&gt; port=5432 user=cdfidm"
 \dt+</code></pre>
+&nbsp;
 
 <div class="Admonition_Note">In case, if External postgres server is configured on high availability then please work with your database administrator to provide necessary access for cdfidm user on the high availaibity setup.</div>
 
