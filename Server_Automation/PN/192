@@ -1,6 +1,6 @@
-<p><tt>FolderService</tt>&nbsp;provides access to the folders that appear in the Software Library of the SAS Client. Folders enable users to organize software resources into a hierarchical structure and to define security permissions that control access to the contents of folders. Folders can contain packages, software policies, OS sequences, and subfolders. A subfolder does not inherit the contents or properties of its parent.</p>
+<html><p><tt>FolderService</tt>&nbsp;provides access to the folders that appear in the Software Library of the SAS Client. Folders enable users to organize software resources into a hierarchical structure and to define security permissions that control access to the contents of folders. Folders can contain packages, software policies, OS sequences, and subfolders. A subfolder does not inherit the contents or properties of its parent.</p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Walking the folder structure</h2>
 
@@ -10,20 +10,24 @@
 
 <pre>from pytwist.com.opsware.folder import FolderRef
 
-def walk(ts, path):
-    pathref = ts.folder.FolderService.getFNode(path)
-    children = ts.folder.FolderService.getChildren(pathref)
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Courier New&quot;">def walk(ts, path, topdown=True):</span></span></span>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; pathref = ts.folder.FolderService.getFNode(path)</span></span></span>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; children = ts.folder.FolderService.getChildren(pathref)</span></span></span>
 
-    sub_folders = [x for x in children if isinstance(x,FolderRef)]
-    child_objs = [x for x in children if not isinstance(x,FolderRef)]
-    yield '/'.join(path), sub_folders, child_objs
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; sub_folders = [x for x in children if isinstance(x,FolderRef)]</span></span></span>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; child_objs = [x for x in children if not isinstance(x,FolderRef)]</span></span></span>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; if topdown:</span></span></span>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yield '/'.join(path), sub_folders, child_objs</span></span></span>
 
-    for s in sub_folders:
-        for i in walk(ts, path+[s.name]):
-            yield i
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; for s in sub_folders:</span></span></span>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for i in walk(ts, path+[s.name]<span style="color:red">, topdown</span>):</span></span></span>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yield i</span></span></span>
+
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; if not topdown:</span></span></span>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yield '/'.join(path), sub_folders, child_objs</span></span></span>
 </pre>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Counting items in a folder structure</h2>
 
@@ -48,7 +52,7 @@ Opsware/Tools/Agent Support/SLES : (sub-folders: 0, items: 2)
 Opsware/Tools/Agent Support/Java : (sub-folders: 0, items: 7)
 Opsware/Tools/Agent Support/Post-Install Customization : (sub-folders: 0, items: 1)</pre>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Locating specific items in a folder structure</h2>
 
@@ -127,7 +131,7 @@ for fnode in fNodeRefs:
 
 <p><tt>list</tt>&nbsp;without supplying any class matching string is equivalent to the&nbsp;<tt>walk</tt>&nbsp;function with the downside that the entire result set must be computed and returned from the call as its not a generator function. This call should not be abused for large sub-tree traversals.</p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Creating/Removing folder structures</h2>
 
@@ -163,11 +167,12 @@ for dirpath, _, _ in os.walk("root", topdown=True):
 
 <p><img src="./mediawiki/images/PN/root-folders.png"></p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <p>The removal of that structure is accomplish by a call to&nbsp;<tt>bulkRemove</tt>&nbsp;that will recursively delete all children below our root folder. Be careful with this call a misstep will delete the folder and its contents if you have permissions to do so.</p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <pre>fnode = ts.folder.FolderService.getFNode(['root'])
 ts.folder.FolderService.bulkRemove([fnode])</pre>
+</html>
