@@ -4,27 +4,27 @@
 
 <h2>Walking the folder structure</h2>
 
-<p>Walking a folder structure is common operation so much so we'll define a helper function, a generator, to do this based on the semantics of the python&nbsp;<tt>os.walk</tt>&nbsp;function.</p>
+<p>Walking a folder structure is a common operation so much so we'll define a helper function, a generator, to do this based on the semantics of the python&nbsp;<tt>os.walk</tt>&nbsp;function.</p>
 
 <p>folder.py</p>
 
 <pre>from pytwist.com.opsware.folder import FolderRef
 
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Courier New&quot;">def walk(ts, path, topdown=True):</span></span></span>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; pathref = ts.folder.FolderService.getFNode(path)</span></span></span>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; children = ts.folder.FolderService.getChildren(pathref)</span></span></span>
+def walk(ts, path, topdown=True):
+&nbsp;&nbsp;&nbsp;&nbsp;pathref = ts.folder.FolderService.getFNode(path)
+&nbsp;&nbsp;&nbsp;&nbsp;children = ts.folder.FolderService.getChildren(pathref)
 
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; sub_folders = [x for x in children if isinstance(x,FolderRef)]</span></span></span>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; child_objs = [x for x in children if not isinstance(x,FolderRef)]</span></span></span>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; if topdown:</span></span></span>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yield '/'.join(path), sub_folders, child_objs</span></span></span>
+&nbsp;&nbsp;&nbsp;&nbsp;sub_folders = [x for x in children if isinstance(x,FolderRef)]
+&nbsp;&nbsp;&nbsp;&nbsp;child_objs = [x for x in children if not isinstance(x,FolderRef)]
+&nbsp;&nbsp;&nbsp;&nbsp;if topdown:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;yield '/'.join(path), sub_folders, child_objs
 
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; for s in sub_folders:</span></span></span>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for i in walk(ts, path+[s.name]<span style="color:red">, topdown</span>):</span></span></span>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yield i</span></span></span>
+&nbsp;&nbsp;&nbsp;&nbsp;for s in sub_folders:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for i in walk(ts, path+[s.name], topdown):
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;yield i
 
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp; if not topdown:</span></span></span>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Courier New&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yield '/'.join(path), sub_folders, child_objs</span></span></span>
+&nbsp;&nbsp;&nbsp;&nbsp;if not topdown:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;yield '/'.join(path), sub_folders, child_objs
 </pre>
 
 <p></p>
@@ -56,7 +56,7 @@ Opsware/Tools/Agent Support/Post-Install Customization : (sub-folders: 0, items:
 
 <h2>Locating specific items in a folder structure</h2>
 
-<p>This example walks down from a root folder locating all folders that contain a software policy printing out a full folder path and a comma separated list of software policies by name found in that folder.</p>
+<p>This example walks down from a root folder locating all folders that contain a software policy printing out a full folder path and a comma-separated list of software policies by name found in that folder.</p>
 
 <p>findSoftwarePolicies.py</p>
 
@@ -135,7 +135,7 @@ for fnode in fNodeRefs:
 
 <h2>Creating/Removing folder structures</h2>
 
-<p>In this example we will replicate the following filesystem hierarchy into the SA folder structure</p>
+<p>In this example, we will replicate the following filesystem hierarchy into the SA folder structure</p>
 
 <pre>root
 ├── a
@@ -144,7 +144,7 @@ for fnode in fNodeRefs:
 │   └── d
 └── e</pre>
 
-<p>First create the structure above</p>
+<p>First, create the structure above</p>
 
 <pre>mkdir -p root/a/b/c
 mkdir root/a/d
@@ -163,13 +163,13 @@ for dirpath, _, _ in os.walk("root", topdown=True):
     FolderService.createPath(saRoot, dirpath.split('/'))
 </pre>
 
-<p>On execution the OS file system structure we created will be replicated in the SA library. What's more the code can be ran again as the&nbsp;<tt>createPath()</tt>&nbsp;call is indifferent to the fact that directories may already be present and it will only create what is missing.</p>
+<p>On execution, the OS file system structure we created will be replicated in the SA Library. What's more, the code can be run again as the&nbsp;<tt>createPath()</tt>&nbsp;call is indifferent to the fact that directories may already be present and it will only create what is missing.</p>
 
 <p><img src="./mediawiki/images/PN/root-folders.png"></p>
 
 <p></p>
 
-<p>The removal of that structure is accomplish by a call to&nbsp;<tt>bulkRemove</tt>&nbsp;that will recursively delete all children below our root folder. Be careful with this call a misstep will delete the folder and its contents if you have permissions to do so.</p>
+<p>The removal of that structure is accomplished by a call to&nbsp;<tt>bulkRemove</tt>&nbsp;that will recursively delete all children below our root folder. Be careful with this call a misstep will delete the folder and its contents if you have permissions to do so.</p>
 
 <p></p>
 
