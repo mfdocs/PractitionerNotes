@@ -586,8 +586,7 @@ Performing this step will cause data loss if the current primary database server
 
 <ol>
 	<li>Run the following command to stop both the Pgpool services on both the database nodes:
-	<pre>
-<code class="language-bash">systemctl stop pgpool</code></pre>
+	<pre><code class="language-bash">systemctl stop pgpool</code></pre>
 	&nbsp;
 
 	<p>If the services cannot be stopped, continue to run the following commands:</p>
@@ -656,8 +655,7 @@ openssl req -new -key server.key -days 3650 -out server.crt -x509 -subj "/C=UK/S
 cp server.crt root.crt</code></pre>
 		</li>
 		<li>Update the <code>pgpool.conf</code> file with the following lines:
-		<pre>
-<code class="language-apacheconf">ssl = on
+		<pre><code class="language-apacheconf">ssl = on
 ssl_key = '/etc/pgpool-II/server.key'
 ssl_cert = '/etc/pgpool-II/server.crt'</code></pre>
 		</li>
@@ -684,17 +682,14 @@ ssl_cert = '/etc/pgpool-II/server.crt'</code></pre>
 
 <ol>
 	<li>Run the following command on both the database nodes to stop the Pgpool service:
-	<pre>
-<code class="language-bash">systemctl stop pgpool.service</code></pre>
+	<pre><code class="language-bash">systemctl stop pgpool.service</code></pre>
 	</li>
 	<li>If needed, modify PostgreSQL parameters on both the database nodes. For details, see the PostgreSQL documentation.</li>
 	<li>Run the following command on both the database nodes to restart PostgreSQL if required:
-	<pre>
-<code class="language-bash">systemctl restart postgresql-10.service</code></pre>
+	<pre><code class="language-bash">systemctl restart postgresql-10.service</code></pre>
 	</li>
 	<li>Run the following command on both the database nodes to start the Pgpool service:
-	<pre>
-<code class="language-bash">systemctl start pgpool</code></pre>
+	<pre><code class="language-bash">systemctl start pgpool</code></pre>
 	</li>
 </ol>
 
