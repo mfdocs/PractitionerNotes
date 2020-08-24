@@ -186,9 +186,9 @@ systemctl start iptables</code></pre>
 -A INPUT -j DROP
 -A FORWARD -j REJECT --reject-with icmp-host-prohibited</code></pre>
 	&nbsp;</li>
-	<li>Run the following command as root to restart the <code>iptables</code> service:
-	<pre>	<code class="language-bash">systemctl restart iptables</code></pre>
-	</li>
+	<li>Run the following command as root to restart the <code>iptables</code> service: &nbsp;
+	<pre><code class="language-bash">systemctl restart iptables</code></pre>
+	&nbsp;</li>
 	<li>Run the following commands on dbnode1 and dbnode2 to enable port 5432: &nbsp;
 	<pre><code class="language-bash">yum install nc
 nc -i 5 ⟨dbnode1 hostname⟩ 5432
@@ -236,17 +236,17 @@ pip install ansible</code></pre>
 	<li>Extract the content of the package, then copy the <code>pgha-deploy-master</code> folder to the <code>/tmp</code> folder on the dpnode.</li>
 	<li>Prepare <code>"pgha"</code> user on the dpnode, dbnode1, and dbnode2. To do this:
 	<ol>
-		<li>Run the following commands as a root user on dpnode, dbnode1, and dbnode2 to create a <code>"pgha"</code> user. The <b>passwd pgha</b> command prompts you to provide a password for the <b>pgha</b> user.
+		<li>Run the following commands as a root user on dpnode, dbnode1, and dbnode2 to create a <code>"pgha"</code> user. The <b>passwd pgha</b> command prompts you to provide a password for the <b>pgha</b> user. &nbsp;
 		<pre><code class="language-bash">groupadd pgha
 useradd pgha -g pgha
 passwd pgha</code></pre>
-		</li>
+		&nbsp;</li>
 		<li>Run the following command to provide <code>sudo</code> access to <code>"pgha"</code> user:
-		<pre>		visudo</pre>
+		<pre><code class="language-bash">visudo</code></pre>
 		</li>
-		<li>Add the following below <code>“root ALL=(ALL) ALL”</code> in the file that opens:
-		<pre>		pgha	ALL=(ALL)	ALL</pre>
-		Ensure the <code>/etc/sudoers</code> file contains the new pgha user.</li>
+		<li>Add the following below <code>“root ALL=(ALL) ALL”</code> in the file that opens: &nbsp;
+		<pre><code class="language-apacheconf">pgha    ALL=(ALL)    ALL</code></pre>
+		&nbsp; Ensure the <code>/etc/sudoers</code> file contains the new pgha user.</li>
 	</ol>
 	</li>
 	<li>Deploy PGHA with two PostgreSQL servers and two Pgpools. To do this:
@@ -315,8 +315,13 @@ dbnode1 | SUCCESS =&gt; {
 yum -d 2 -y install epel-release
 yum install -y rsync</code></pre>
 		&nbsp;</li>
-		<li>Run the following command to update pgha permissions for the <code>pgha-deploy-master</code> folder:
-		<pre>		<code class="language-bash">chown -R pgha:pgha /home/pgha/pgha-deploy-master</code></pre>
+		<li>Run the following command to update pgha permissions for the <code>pgha-deploy-master</code> folder: &nbsp;
+		<pre><code class="language-bash">chown -R pgha:pgha /home/pgha/pgha-deploy-master</code></pre>
+		&nbsp;
+
+		<div class="Admonition_Important">
+		<p><span class="autonumber">Important</span></p>
+		Change the default credentials and implement security best practices required by your organization for the configuration of haproxy.</div>
 		</li>
 		<li>Run the PGHA deployment (ansible-playbook) script as the <code>"pgha"</code> user on the dpnode: &nbsp;
 		<pre><code class="language-bash">cd /home/pgha/pgha-deploy-master
@@ -397,7 +402,7 @@ node_id | hostname | port | status | lb_weight |  role   | select_cnt | load_bal
 
 <ol>
 	<li>Optional: If haproxy is not installed on the system to be used as a load balancer, install it. To do this, run the following command:
-	<pre>		yum install haproxy</pre>
+	<pre><code class="language-bash">yum install -y haproxy</code></pre>
 	&nbsp;
 
 	<div class="Admonition_Important">
@@ -405,7 +410,7 @@ node_id | hostname | port | status | lb_weight |  role   | select_cnt | load_bal
 	Change the default credentials and implement security best practices required by your organization for the configuration of haproxy.</div>
 	</li>
 	<li>Run the following command to check if haproxy is installed on the system to be used as a load balancer:
-	<pre>		haproxy –v</pre>
+	<pre><code class="language-bash">haproxy –v</code></pre>
 	</li>
 	<li>Create or Update the <code>/etc/haproxy/haproxy.conf</code> file with the following content: &nbsp;
 	<pre><code class="language-apacheconf">global
@@ -527,10 +532,9 @@ backend pgsql
 
 		<pre><code class="language-apacheconf">host    replication repl_dbnode2     ⟨dbnode1 ip⟩/32 md5</code></pre>
 		&nbsp;</li>
-		<li>Run the following commands to reload the <code>pg_hba.conf</code> file:
-		<pre>		<code class="language-bash">su postgres -c 'pg_ctl reload -D /var/lib/pgsql/10/data'</code>
-		</pre>
-		</li>
+		<li>Run the following commands to reload the <code>pg_hba.conf</code> file: &nbsp;
+		<pre><code class="language-bash">su postgres -c 'pg_ctl reload -D /var/lib/pgsql/10/data'</code></pre>
+		&nbsp;</li>
 		<li>Run the following command to create a replication slot: &nbsp;
 		<pre><code class="language-bash">psql -c "SELECT pg_create_physical_replication_slot('pg_haa2');"</code></pre>
 		&nbsp;</li>
