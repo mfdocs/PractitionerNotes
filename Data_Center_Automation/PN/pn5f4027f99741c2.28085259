@@ -279,24 +279,25 @@ db
 dp</code></pre>
 			</li>
 			<li>Run the following commands as a <code>"pgha"</code> user to check the Ansible node hosts ﬁle on the dpnode:
-			<pre>		<code class="language-bash">cd /home/pgha/pgha-deploy-master
-		ansible pghad -u pgha -m ping -c paramiko</code></pre>
-			<br>
-			<br>
-			<b>Sample output</b>:
-	
-			<pre>		<code>dpnode | SUCCESS =⟩ {
-		  "changed": false,
-		  "ping": "pong"
-		}
-		dbnode2 | SUCCESS =⟩ { 
-		  "changed": false,
-		  "ping": "pong"
-		}
-		dbnode1 | SUCCESS =⟩ {
-		  "changed": false,
-		  "ping": "pong"
-		}</code></pre>
+			<pre><code class="language-bash">cd /home/pgha/pgha-deploy-master
+ansible pghad -u pgha -m ping -c paramiko</code></pre>
+&nbsp;<br>
+<br>
+<b>Sample output</b>:
+	&nbsp;
+<pre><code>dpnode | SUCCESS =⟩ {
+  "changed": false,
+  "ping": "pong"
+}
+dbnode2 | SUCCESS =⟩ { 
+  "changed": false,
+  "ping": "pong"
+}
+dbnode1 | SUCCESS =⟩ {
+  "changed": false,
+  "ping": "pong"
+}</code></pre>
+&nbsp;
 			</li>
 			<li>Set the Ethernet interface name in group <code>vars</code> on the dpnode. To do this:
 			<ol type="a">
