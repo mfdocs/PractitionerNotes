@@ -113,21 +113,19 @@ For example:</p>
 <pre><code class="language-ini">172.17.2.4   ⟨dpnode hostname⟩
 172.17.2.5   ⟨dbnode1 hostname⟩
 172.17.2.6   ⟨dbnode2 hostname⟩
-172.17.2.7   ⟨loadBalancer hostname⟩
-	</code>
-	</pre>
+172.17.2.7   ⟨loadBalancer hostname⟩</code></pre>
 
 <p>To change the host name:</p>
 
 <ol>
 	<li>Run the following command on the dpnode as a root user:
-	<pre>	<code class="language-bash">hostname ⟨dpnode hostname⟩</code></pre>
+	<pre><code class="language-bash">hostname ⟨dpnode hostname⟩</code></pre>
 	</li>
 	<li>Run the following command on the dbnode1 as a root user:
-	<pre>	<code class="language-bash">hostname ⟨dbnode1 hostname⟨</code></pre>
+	<pre><code class="language-bash">hostname ⟨dbnode1 hostname⟨</code></pre>
 	</li>
 	<li>Run the following command on the dbnode2 as a root user:
-	<pre>	<code class="language-bash">hostname ⟨dbnode2 hostname⟩</code></pre>
+	<pre><code class="language-bash">hostname ⟨dbnode2 hostname⟩</code></pre>
 	</li>
 </ol>
 
@@ -139,8 +137,8 @@ For example:</p>
 
 <p><b>For example</b>:</p>
 
-<pre>	<code class="language-bash">export http_proxy=⟨url of your proxy server⟩:⟨proxy port number⟩
-	export https_proxy=⟨url of your proxy server⟩:⟨proxy port number⟩</code></pre>
+<pre><code class="language-bash">export http_proxy=⟨url of your proxy server⟩:⟨proxy port number⟩
+export https_proxy=⟨url of your proxy server⟩:⟨proxy port number⟩</code></pre>
 
 <p>You may also wish to export these variables at the command-line.</p>
 
@@ -150,22 +148,22 @@ For example:</p>
 
 <ol>
 	<li>Run the following commands on dbnode1 and dbnode2:
-	<pre>	<code class="language-bash">yum install -y \
-	https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-centos10-10-2.noarch.rpm
-	yum install -y postgresql10-server
-	yum install -y postgresql10-contrib
-	/usr/pgsql-10/bin/postgresql-10-setup initdb
-	systemctl enable postgresql-10.service
-	systemctl start postgresql-10.service</code></pre>
+	<pre><code class="language-bash">yum install -y \
+https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-centos10-10-2.noarch.rpm
+yum install -y postgresql10-server
+yum install -y postgresql10-contrib
+/usr/pgsql-10/bin/postgresql-10-setup initdb
+systemctl enable postgresql-10.service
+systemctl start postgresql-10.service</code></pre>
 	</li>
 	<li>Run the following command to set the postgres user password. This enables SSH communication between dbnode1 and dbnode2:
-	<pre>	passwd postgres</pre>
+	<pre><code class="language-bash">passwd postgres</code></pre>
 	</li>
 	<li>Modify the <b>listen_addresses</b> variable in the <code>/var/lib/pgsql/10/data/postgresql.conf</code> file on dbnode1 and dbnode2:
-	<pre>	<code class="language-apacheconf">listen_addresses='*'</code></pre>
+	<pre><code class="language-apacheconf">listen_addresses='*'</code></pre>
 	</li>
 	<li>Run the following command to restart the PostgreSQL service:
-	<pre>	<code class="language-bash">systemctl restart postgresql-10.service</code></pre>
+	<pre><code class="language-bash">systemctl restart postgresql-10.service</code></pre>
 	</li>
 </ol>
 
@@ -175,26 +173,26 @@ For example:</p>
 
 <ol>
 	<li>Run the following commands as a root user on dbnode1 and dbnode2:
-	<pre>	<code class="language-bash">yum install -y iptables-services #you may also need to install or update its dependencies
-	systemctl enable iptables
-	systemctl start iptables</code></pre>
+	<pre><code class="language-bash">yum install -y iptables-services #you may also need to install or update its dependencies
+systemctl enable iptables
+systemctl start iptables</code></pre>
 	</li>
 	<li>In the <code>/etc/sysconfig/iptables</code> file, remove any existing "-A" lines and add the following:
-	<pre>		<code>-A INPUT -i lo -j ACCEPT
-	-A INPUT -p icmp -j ACCEPT
-	-A INPUT -p tcp -m tcp --dport 22 -j ACCEPT
-	-A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
-	-A INPUT -p tcp -m tcp --dport 5432 -j ACCEPT
-	-A INPUT -j DROP
-	-A FORWARD -j REJECT --reject-with icmp-host-prohibited</code></pre>
+	<pre><code>-A INPUT -i lo -j ACCEPT
+-A INPUT -p icmp -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 5432 -j ACCEPT
+-A INPUT -j DROP
+-A FORWARD -j REJECT --reject-with icmp-host-prohibited</code></pre>
 	</li>
 	<li>Run the following command as root to restart the <code>iptables</code> service:
-	<pre>	<code class="language-bash">systemctl restart iptables</code></pre>
+	<pre><code class="language-bash">systemctl restart iptables</code></pre>
 	</li>
 	<li>Run the following commands on dbnode1 and dbnode2 to enable port 5432:
-	<pre>	<code class="language-bash">yum install nc
-	nc -i 5 ⟨dbnode1 hostname⟩ 5432
-	nc -i 5 ⟨dbnode2 hostname⟩ 5432</code></pre>
+	<pre><code class="language-bash">yum install nc
+nc -i 5 ⟨dbnode1 hostname⟩ 5432
+nc -i 5 ⟨dbnode2 hostname⟩ 5432</code></pre>
 	</li>
 </ol>
 
