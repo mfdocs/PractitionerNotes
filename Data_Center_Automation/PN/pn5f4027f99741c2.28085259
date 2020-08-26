@@ -573,9 +573,9 @@ For Example:
 &nbsp;
 <pre><code class="language-apacheconf">host    replication repl_dbnode2     10.0.0.2/32 md5</code></pre>
 </li>
-            <li>Run the following commands to reload the <code>pg_hba.conf</code> file:
+            <li>Run the following commands to reload the <code>pg_hba.conf</code> file as a <code>postgres</code> user:
 &nbsp;
-            <pre><code class="language-bash">su postgres -c 'pg_ctl reload -D /var/lib/pgsql/10/data'</code></pre>
+            <pre><code class="language-bash">pg_ctl reload -D /var/lib/pgsql/10/data</code></pre>
 &nbsp;
 			</li>
 			<li>Run the following query as a <code>postgres</code> user to create a replication slot:
@@ -594,6 +594,12 @@ For example:
 <pre><code class="language-bash">systemctl stop pgpool.service
 systemctl stop postgresql-10.service</code></pre>
 &nbsp;
+<p>If pgpool services cannot be stopped, continue to run the following commands:</p>
+&nbsp;
+<pre><code class="language-bash">pkill -9 pgpool 
+rm -f /tmp/.*.9999 
+rm -f /tmp/.*.9898</code></pre>
+&nbsp;
 			</li>
 			<li>Before you perform a PG sync from the current primary node, create a backup of the current PGDATA.<br>
             The following commands are run assuming the default PGDATA directory (<code>/var/lib/pgsql/10/data</code>) is used. If you are not using the default PGDATA directory, ensure you update the following commands according to your PGDATA directory.
@@ -605,14 +611,31 @@ export repl_user=⟨YOUR REPLICATION USER⟩
 export repl_slot_name=⟨YOUR REPL SLOT NAME⟩ #created in step 1.c
 export PGPASSWORD=⟨YOUR REPLICATION USER PASSWORD⟩ # found in recovery.conf or ~/.pgpass
 pg_basebackup -U $repl_user \
-                -X stream \
-                -D ./data \ 
-                -h $dbnode_ip \ 
-                -p 5432 \
-                -S $repl_slot_name # created in step 1.c
+              -X stream \
+              -D ./data \
+              -h $dbnode_ip \
+              -p 5432 \
+              -S $repl_slot_name # created in step 1.c
 chown -R postgres:postgres ./data
 chmod -R 700 ./data</code></pre>
 &nbsp;
+For example:
+&nbsp;
+<pre><code class="language-bash">export dbnode_ip="172.17.6.6"
+    cd /var/lib/pgsql/10
+    mv data data.bak
+    export repl_user="repl_dbnode2"
+    export repl_slot_name="hg_hbaa2"
+    export PGPASSWORD="PASSWORD"
+    pg_basebackup -U $repl_user \
+                  -X stream \
+                  -D ./data \
+                  -h $dbnode_ip \
+                  -p 5432 \
+                  -S $repl_slot_name
+    chown -R postgres:postgres ./data
+    chmod -R 700 ./data</code></pre>
+    &nbsp;
 			</li>
             <li>Run the following commands as a <code>postgres</code> user to modify the <code>primary_conninfo</code> line in the <code>recovery.conf </code> file:
 &nbsp;
@@ -636,12 +659,12 @@ systemctl start pgpool.service</code></pre>
 			</li>
 			<li>Run the following command to verify the Pgpool status and note the node_id of the old master:
 &nbsp;
-<pre><code class="language-bash">psql -h ⟨dbnode hostname⟩ -p 9999 -U postgres -c 'show pool_nodes'</code></pre>
+<pre><code class="language-bash">psql -h ⟨dbnode1 hostname⟩ -p 9999 -U postgres -c 'show pool_nodes'</code></pre>
 &nbsp;
 			</li>
 			<li>Run the following command to reattach the old master:
 &nbsp;
-			<pre><code class="language-bash">pcp_recovery_node -h ⟨dbnode2 hostname⟩ -p 9898 -U postgres -n ⟨node_id⟩</code></pre>
+			<pre><code class="language-bash">pcp_attach_node -h ⟨dbnode1 hostname⟩ -p 9898 -U postgres -n ⟨node_id⟩</code></pre>
 &nbsp;
 </li>
             <li>Run the following commands to verify the Pgpool status. Both the dbnode1 and dbnode2 should be set to <code>UP</code>:
