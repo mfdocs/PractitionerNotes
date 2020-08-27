@@ -26,7 +26,7 @@ NA needs to know the location of the interpreter before executing the scripts. L
 	</li>
 	<li>Save the changes</li>
 </ol>
-<img alt="" border="0" height="426" hspace="0" src="/mediawiki/images/pn_images/pn_image_5ebc436b013d16.78320498.png" style="width: 800px; height: 426px; margin: 0px; border: 0px solid black;" vspace="0" width="800">
+<img alt="" src="/mediawiki/images/pn_images/pn_image_5ebc436b013d16.78320498.png" style="width: 800px; height: 426px; margin: 0px; border: 0px solid black;" width="800" vspace="0" hspace="0" height="426" border="0">
 <h4></h4>
 
 <h4></h4>
@@ -44,13 +44,13 @@ The changes made in the Server settings will result in a new option while creati
 <h4><strong>Create&nbsp;advanced scripts using Python</strong></h4>
 You will now be able to create and use Python scripts that can connect to devices and perform advanced data manipulation.<br>
 These scripts can be developed in <strong>Script&nbsp;</strong>area of both Change Plans and Diagnostics.&nbsp;<br>
-<img alt="" border="0" height="589" hspace="0" src="/mediawiki/images/pn_images/pn_image_5ebc47cf545546.92567337.png" style="width: 800px; height: 589px; margin: 0px; border: 0px solid black;" vspace="0" width="800">
+<img alt="" src="/mediawiki/images/pn_images/pn_image_5ebc47cf545546.92567337.png" style="width: 800px; height: 589px; margin: 0px; border: 0px solid black;" width="800" vspace="0" hspace="0" height="589" border="0">
 <p></p>
 
 <h3><strong>Convert SSH/Telnet sessions to device via NA Proxy to Python scripts</strong></h3>
 One of the powerful features of NA is to be able to connect to the device via NA proxy and record all the steps performed on that device. This recorded procedure can then be converted to a script and executed as a Change Plan against a bunch of devices.<br>
 In this section I will share the steps to convert the recorded device session to a Python script, which can then be altered according to the needs and executed against a host of devices.&nbsp;
-<div>&nbsp;</div>
+<div></div>
 
 <div></div>
 
@@ -175,4 +175,9 @@ client.close()
 	<li>Provide a name to the change plan</li>
 	<li>Save the change plan.</li>
 </ol>
-This change plan can be executed as a task against a set of devices of the same device family. While scheduling the Change plan task, provide the password of the logged in NA user for the&nbsp;<strong>NA_Password&nbsp;</strong>variable.</html>
+This change plan can be executed as a task against a set of devices of the same device family. While scheduling the Change plan task, provide the password of the logged in NA user for the&nbsp;<strong>NA_Password&nbsp;</strong>variable.<br>
+<br>
+<b style="color: rgb(0, 0, 0); font-family: MetricHPE_Medium; font-size: 20px;">Python client to invoke NA SOAP APIs</b><br>
+NA exposes a number of APIs which can be invoked using SOAP (Simple Object Access Protocol). The APIs(operations) that can be invoked are documented in a WSDL which can be accessed via the NA URL - https://&lt;NA_HOST&gt;/soap?wsdl.<br>
+One could write Python scripts to invoke these APIs and automate the tasks that users wish to run.<br>
+In this article we have created a sample python script to invoke NA API using a python module called <strong>"Zeep"</strong>.</html>
