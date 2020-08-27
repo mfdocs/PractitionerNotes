@@ -175,9 +175,33 @@ client.close()
 	<li>Provide a name to the change plan</li>
 	<li>Save the change plan.</li>
 </ol>
-This change plan can be executed as a task against a set of devices of the same device family. While scheduling the Change plan task, provide the password of the logged in NA user for the&nbsp;<strong>NA_Password&nbsp;</strong>variable.<br>
-<br>
-<b style="color: rgb(0, 0, 0); font-family: MetricHPE_Medium; font-size: 20px;">Python client to invoke NA SOAP APIs</b><br>
+This change plan can be executed as a task against a set of devices of the same device family. While scheduling the Change plan task, provide the password of the logged in NA user for the&nbsp;<strong>NA_Password&nbsp;</strong>variable.
+
+<h2><b style="color: rgb(0, 0, 0); font-family: MetricHPE_Medium; font-size: 20px;">Python client to invoke NA SOAP APIs</b></h2>
 NA exposes a number of APIs which can be invoked using SOAP (Simple Object Access Protocol). The APIs(operations) that can be invoked are documented in a WSDL which can be accessed via the NA URL - https://&lt;NA_HOST&gt;/soap?wsdl.<br>
-One could write Python scripts to invoke these APIs and automate the tasks that users wish to run.<br>
-In this article we have created a sample python script to invoke NA API using a python module called <strong>"Zeep"</strong>.</html>
+One could write Python scripts to invoke these APIs and automate the tasks that users wish to run. These scripts can be executed from any server which has python and the dependent modules installed.<br>
+In this article we have created a sample python script to invoke NA API using a python module called <strong>"Zeep"</strong>.<br>
+The first step before invoking any API in the script, it needs to login to NA and then obtain a token. This token can then be used in subsequent API calls.
+<h3><br>
+Sample python script</h3>
+
+<pre><code class="language-python">from requests import Session
+from zeep import Client
+from zeep.transports import Transport
+
+session = Session()
+session.verify = False
+transport = Transport(session=session)
+client = Client(
+    'https://&lt;na_hostname&gt;/soap?wsdl=api.wsdl.wsdl2py',
+    transport=transport)
+loginResult = client.service.login(parameters={'username':'system', 'password':'admin123'})
+sesnhdr_type = client.get_element('ns0:list_deviceInputParms')
+sesnhdr = sesnhdr_type(sessionid=loginResult.Text)
+devices = client.service.list_device(_soapheaders=[sesnhdr], parameters=sesnhdr)
+print('\n\n ----------------------------- \n')
+for i in devices.ResultSet.Row:
+        print(i.hostName + ' ---&gt; '+i.primaryIPAddress)
+
+print('\n\n ----------------------------- \n')</code></pre>
+</html>
