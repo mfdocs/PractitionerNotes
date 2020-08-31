@@ -588,7 +588,7 @@ export PGPORT=⟨YOUR PRIMARY HOST PORT⟩
 export repl_slot_name=⟨YOUR REPL SLOT NAME⟩ #created in step 1.c
 export PGPASSWORD=⟨YOUR REPLICATION USER PASSWORD⟩ # found in recovery.conf or ~/.pgpass
 export PGDATA=⟨THE DESTINATION DATA DIRECTORY FOR STANDBY⟩
-pg_basebackup -X stream -D $PGDATA -S $repl_slot_name
+pg_basebackup -P -v -X stream -D $PGDATA -S $repl_slot_name
 chown -R postgres:postgres $PGDATA
 chmod -R 700 $PGDATA</code></pre>
 		&nbsp; For example: &nbsp;
@@ -599,7 +599,7 @@ mv "$PGDATA" "${PGDATA}.bak"
 export PGUSER="repl_dbnode2"
 export repl_slot_name="hg_hbaa2"
 export PGPASSWORD="PASSWORD"
-pg_basebackup -X stream -D $PGDATA -S $repl_slot_name
+pg_basebackup -P -v -X stream -D $PGDATA -S $repl_slot_name
 chown -R postgres:postgres $PGDATA
 chmod -R 700 $PGDATA</code></pre>
 		&nbsp;</li>
