@@ -28,6 +28,44 @@ The steps involved are:</div>
 	<li>Note down the External Postgres Server Certificate in .crt and base64 of <code>server.crt</code> file if it is&nbsp;self signed or <code>root.crt</code>&nbsp;&nbsp;otherwise using the command:
 	<pre><code class="language-bash">base64 server.crt | sed -e ':a;N;$!ba;s/\n//g'</code></pre>
 	</li>
+	<li>&nbsp;External Postgres server must be accessible to Master node. Use below command to check if database is accessible:
+	<pre><code>psql -h &lt;db-server-fqdn&gt; -p &lt;db-server-port&gt; -U postgres -c "SHOW server_version"</code></pre>
+	If database is configured in HA, then provide virtual ip address / HA node ip address.&nbsp;</li>
+	<li>&nbsp;If database is configured in HA,&nbsp;then check the status of all nodes using below command:
+	<pre><code>psql -h &lt;db-server-node1&gt; -p &lt;db-server-port&gt; -U postgres -c 'show pool_nodes'</code></pre>
+	The status of all the nodes must be "up".&nbsp;</li>
+	<li>Parameter settings recommended in&nbsp;pgpool.conf if external postgres configured in HA mode.
+	<table border="1" cellpadding="1" cellspacing="1">
+		<thead>
+			<tr>
+				<th scope="col">Parameter name</th>
+				<th scope="col">Small</th>
+				<th scope="col">Medium</th>
+				<th scope="col">Large</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>num_int_children</td>
+				<td>1000</td>
+				<td>1000</td>
+				<td>1000</td>
+			</tr>
+			<tr>
+				<td>child_max_connections</td>
+				<td>default value</td>
+				<td>default value</td>
+				<td>default value</td>
+			</tr>
+			<tr>
+				<td>load_balance_mode</td>
+				<td>default value</td>
+				<td>default value</td>
+				<td>default value</td>
+			</tr>
+		</tbody>
+	</table>
+	</li>
 	<li>Note down the password of the following keys (covered under topic Take database dump of all the suite databases present in the internal Postgres)
 	<ul>
 		<li>
