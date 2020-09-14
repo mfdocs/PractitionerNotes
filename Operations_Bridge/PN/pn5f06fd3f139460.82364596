@@ -45,12 +45,10 @@ The steps involved are:</div>
 	</li>
 </ul>
 
-<div></div>
-
-<div><strong>For External Postgres Server in HA</strong></div>
+<h3>For External Postgres Server in HA</h3>
 
 <div>
-<p>&nbsp;For the Operations Bridge Suite to be able to connect to an external PostgreSQL clustered environment, the cluster must be configured in such a way that it is accessible through a single virtual host name. This can be done by using a middleware (for example, pgpool-II) that maps the virtual host name to the currently active database node. The virtual host name can then be used as the dbHost parameter. Cluster in this sense are at least two database instances that form a logical unit. Strong data consistency must be ensured.</p>
+<p>For the Operations Bridge Suite to be able to connect to an external PostgreSQL clustered environment, the cluster must be configured in such a way that it is accessible through a single virtual host name. This can be done by using a middleware (for example, pgpool-II) that maps the virtual host name to the currently active database node. The virtual host name can then be used as the dbHost parameter. Cluster in this sense are at least two database instances that form a logical unit. Strong data consistency must be ensured.</p>
 
 <p>It is important that any load balancing of queries is disabled in the middleware. All queries should always reach the active (a.k.a leader) database node at any given point in time.</p>
 
@@ -105,7 +103,7 @@ The steps involved are:</div>
 
 <p>Please ensure the following inequation applies when choosing values for max_pool and num_init_children:</p>
 
-<p>max_pool * num_init_children &nbsp;&lt;= max_connections</p>
+<div class="Admonition_Note">max_pool * num_init_children &nbsp;&lt;= max_connections</div>
 
 <p>The above values for max_pool and num_init_children requires at least 2GB of process private memory.</p>
 
