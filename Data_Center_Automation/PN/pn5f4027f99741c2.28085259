@@ -25,7 +25,7 @@
 <h2 id="Set_up_an_external_PostgreSQL_High_Availability_(HA)_system_for_ITOM_suites"><span class="mw-headline" id="Set_up_an_external_PostgreSQL_High_Availability_.28HA.29_system_for_ITOM_suites">Set up an external PostgreSQL High Availability (HA) system for ITOM suites</span></h2>
 
 <p>After you have installed the ITOM suite with a single node external PostgreSQL database, run the setup procedures in this document to extend the database to a HA setup. The procedures provided in this document use the load balancer IP address instead of the virtual IP address.<br>
-<img alt="PGHA architecture.png" data-file-height="349" data-file-width="550" src="/mediawiki/images/9/93/PGHA_architecture.png" width="550" height="349"></p>
+<img alt="PGHA architecture.png" data-file-height="349" data-file-width="550" height="349" src="/mediawiki/images/9/93/PGHA_architecture.png" width="550"></p>
 
 <h3 class="mw-headline" id="Prepare_the_environments">Prepare the environments</h3>
 
@@ -37,7 +37,7 @@
 
 <ul>
 	<li>PostgreSQL version: 10.x</li>
-	<li>Pgpool version: 4.0.2</li>
+	<li>Pgpool version: 4.1.3</li>
 	<li>LINUX OS: CentOS 7.x</li>
 </ul>
 
@@ -412,7 +412,7 @@ node_id | hostname | port | status | lb_weight |  role   | select_cnt | load_bal
 	<li>Run the following command to check if haproxy is installed on the system to be used as a load balancer:
 	<pre><code class="language-bash">haproxy –v</code></pre>
 	</li>
-	<li>Create or Update the <code>/etc/haproxy/haproxy.conf</code> file with the following content: &nbsp;
+	<li>Create or Update the <code>/etc/haproxy/haproxy.cfg&nbsp;</code>file with the following content: &nbsp;
 	<pre><code class="language-apacheconf">global
     maxconn 1600
     tune.ssl.default-dh-param 2048
