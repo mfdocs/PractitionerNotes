@@ -6,7 +6,7 @@
 <p>Note: during this process, SMA will experience downtime. For this reason, perform this operation only in a scheduled maintenance window.</p>
 
 <ol>
-	<li>Stop SMAX and CDF:
+	<li>Stop SMA and CDF:
 	<pre><code>$K8S_HOME/scripts/cdfctl.sh runlevel set -l DOWN
 kubectl patch daemonset fluentd -n core -p '{"spec": {"template": {"spec": {"nodeSelector": {"non-existing": "true"}}}}}'</code></pre>
 	</li>
