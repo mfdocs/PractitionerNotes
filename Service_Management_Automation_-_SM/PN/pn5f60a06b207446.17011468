@@ -1,1 +1,119 @@
- 
+<html><!--StartFragment-->
+<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:black"><span style="background:white">After SMA is installed, it is possible to change the external database host of SMA. Note that currently we only support changing the SMA database host, not the CDF database host.<span style="mso-spacerun:yes">&nbsp; </span></span></p>
+
+<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:black"><span style="background:white">You can make this change by running a script provided below. This script will perform the following operations:</span></p>
+
+<ul style="margin-left:.375in;direction:ltr;unicode-bidi:embed;
+ margin-top:0in;margin-bottom:0in" type="disc">
+	<li style="margin-top:0;margin-bottom:0;vertical-align:middle;color:black"><span lang="en-US" style="font-family:Calibri;font-size:11.0pt;background:white">Back up the current DB configmap for the Kubernetes cluster in the /tmp/</span><span lang="zh-CN" style="font-style:italic;font-family:Calibri;font-size:11.0pt;background:
+     white">database/</span><span lang="zh-CN" style="font-family:Calibri;
+     font-size:11.0pt;background:white">/old folder</span></li>
+	<li style="margin-top:0;margin-bottom:0;vertical-align:middle;color:black"><span lang="en-US" style="font-family:Calibri;font-size:11.0pt;background:white">Create a new database yaml file in the new folder /tmp/</span><span lang="zh-CN" style="font-style:italic;font-family:Calibri;font-size:11.0pt;background:
+     white">database/</span><span lang="zh-CN" style="font-family:Calibri;
+     font-size:11.0pt;background:white">new</span></li>
+	<li style="margin-top:0;margin-bottom:0;vertical-align:middle;color:black"><span style="font-family:Calibri;font-size:11.0pt;background:white">Delete the old configmap in the cluster</span></li>
+	<li style="margin-top:0;margin-bottom:0;vertical-align:middle;color:black"><span style="font-family:Calibri;font-size:11.0pt;background:white">Create a new configmap in the cluster</span></li>
+</ul>
+
+<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:black"><span style="font-weight:bold;background:white">Note: After the execution of this script, SMA needs a restart and downtime therefore occurs. For this reason, change the SMA DB host only in a planned maintenance window.</span></p>
+
+<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:black"><span style="background:white">To change the SMA DB host, perform the following steps: </span></p>
+
+<ol style="margin-left:.375in;direction:ltr;unicode-bidi:embed;
+ margin-top:0in;margin-bottom:0in;font-family:Calibri;font-size:11.0pt;
+ font-weight:normal;font-style:normal" type="1">
+	<li style="margin-top:0;margin-bottom:0;vertical-align:middle;
+     color:black" value="1"><span style="font-family:Calibri;font-size:11.0pt;font-weight:
+     normal;font-style:normal;font-family:Calibri;font-size:11.0pt;background:
+     white">Run the following script on a master node. </span>
+
+	<pre><span style="font-family:Calibri;font-size:11.0pt;font-weight:
+     normal;font-style:normal;font-family:Calibri;font-size:11.0pt;background:
+     white"><code>################# Scripts Begin&nbsp;################
+
+#!/bin/bash
+
+#set -x&nbsp;
+
+if [ $# -lt 2 ]; then
+
+&nbsp;&nbsp;&nbsp; echo "Usage: $0 &lt;old_DB_host&gt; &lt;new_DB_host&gt;"
+
+&nbsp;&nbsp;&nbsp; exit 1
+
+fi
+
+olddb=$1
+
+newdb=$2
+
+file_date=`date "+%Y%m%d%H%M%S"`
+
+ns=`kubectl get namespace |grep itsma | cut -f1 -d " "`
+
+if [ -d /tmp/database/old ]; then
+
+&nbsp; mv /tmp/database/old /tmp/database/old.bak.${file_date}
+
+fi
+
+if [ -d /tmp/database/new ]; then
+
+&nbsp; mv /tmp/database/new /tmp/database/new.bak.${file_date}
+
+fi
+
+mkdir -p /tmp/database/old
+
+mkdir -p /tmp/database/new
+
+save_database() {
+
+&nbsp;&nbsp;&nbsp; kubectl get cm database-configmap -n $ns -o yaml &gt; /tmp/database/old/database-configmap.yaml
+
+}
+
+change_database() {
+
+&nbsp;&nbsp;&nbsp; kubectl get cm database-configmap -n $ns -o yaml | sed 's/'${olddb}'/'${newdb}'/g'&nbsp; &gt; /tmp/database/new/database-configmap.yaml
+
+}
+
+delete_database() {
+
+&nbsp;&nbsp;&nbsp; kubectl delete -f /tmp/database/old/database-configmap.yaml
+
+}
+
+create_database() {
+
+&nbsp;&nbsp;&nbsp; kubectl create -f /tmp/database/new/database-configmap.yaml
+
+}
+
+save_database
+
+change_database
+
+delete_database
+
+create_database
+
+################# Scripts End&nbsp;################</code></span></pre>
+	<span style="font-family:Calibri;font-size:11.0pt;font-weight:
+     normal;font-style:normal;font-family:Calibri;font-size:11.0pt;background:
+     white"> </span></li>
+	<li>Check if the database is changed correctly:
+	<pre><code>kubectl get configmap -n &lt;namespace&gt; database-configmap -o yaml |grep db_host</code></pre>
+
+	<p style="margin:0in;font-family:Calibri;font-size:11.0pt;color:#78230C"></p>
+	<!--EndFragment--></li>
+	<li style="margin-top:0;margin-bottom:0;vertical-align:middle;
+     color:black" value="3"><span lang="en-US" style="font-family:Calibri;font-size:11.0pt;font-weight:
+     normal;font-style:normal;font-family:Calibri;font-size:11.0pt;color:black;
+     background:white">After checking that all database configuration is set up correctly, </span><span lang="zh-CN" style="font-family:Calibri;
+     font-size:11.0pt;font-weight:normal;font-style:normal;font-family:Calibri;
+     font-size:11.0pt;color:black;background:white">restart the Kubernetes Cluster as described in "</span>Restart SMA Suite"<span lang="zh-CN" style="font-family:Calibri;font-size:11.0pt;font-weight:normal;font-style:
+     normal;font-family:Calibri;font-size:11.0pt;color:black;background:white">.</span></li>
+</ol>
+</html>
