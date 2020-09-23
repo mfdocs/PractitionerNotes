@@ -236,9 +236,7 @@ External Postgres server must be accessible to Master node. Use below command to
 
 <pre><code class="language-sql">psql -h &lt;db-server-fqdn&gt; -p &lt;db-server-port&gt; -U postgres -c "SHOW server_version"</code></pre>
 
-<p style="margin-top: 16px;"></p>
-
-<p>If database is configured in HA, then provide virtual host name.&nbsp;</p>
+<p style="margin-top: 16px;">If database is configured in HA, then provide virtual host name.&nbsp;</p>
 
 <p>For the Operations Bridge Suite to be able to connect to an external PostgreSQL clustered environment, the cluster must be configured in such a way that it is accessible through a single virtual host name. This can be done by using a middleware (for example, pgpool-II) that maps the virtual host name to the currently active database node. The virtual host name can then be used as the dbHost parameter. Cluster in this sense are at least two database instances that form a logical unit. Strong data consistency must be ensured.</p>
 
@@ -305,15 +303,11 @@ External Postgres server must be accessible to Master node. Use below command to
 
 <p style="margin-top: 16px;"></p>
 
-<p>It is important to run pgpool-II in no other mode than "streaming replication mode".</p>
+<p style="margin-top: 16px;">It is important to run pgpool-II in no other mode than "streaming replication mode".&nbsp;Please ensure the following inequation applies when choosing values for max_pool and num_init_children:<br>
+max_pool * num_init_children &nbsp;&lt;= max_connections</p>
 
-<p>Please ensure the following inequation applies when choosing values for max_pool and num_init_children:</p>
-
-<p>max_pool * num_init_children &nbsp;&lt;= max_connections</p>
-
-<p>The above values for max_pool and num_init_children requires at least 2GB of process private memory.</p>
-
-<p>Check the status of all nodes using below command:</p>
+<p style="margin-top: 16px;">The above values for max_pool and num_init_children requires at least 2GB of process private memory.<br>
+Check the status of all nodes using below command:</p>
 
 <pre><code class="language-sql">psql -h &lt;db-server-node1&gt; -p &lt;db-server-port&gt; -U postgres -c 'show pool_nodes'</code></pre>
 
@@ -468,7 +462,7 @@ ALTER USER &lt;cdfidmuser&gt; SET search_path TO &lt;cdfidmschema&gt; ;
 \dn+</code></pre>
 
 <p>One should see a similar output as shown below.<br>
-<br>
+<img alt="" border="1" file="https://docs.microfocus.com/mediawiki/images/9/99/DBCheck1.jpg" height="341" hspace="0" src="/mediawiki/images/pn_images/pn_image_5f6b097a956164.83407125.jpeg" style="width: 800px; height: 341px; margin: 0px; border: 1px solid black;" vspace="0" width="800"><br>
 Try connecting to the databases using the Suite user name</p>
 
 <pre><code>psql -h &lt;pg_host&gt; dbname=&lt;suite_db&gt; -p &lt;pg_port&gt; -U &lt;suite_user_name&gt;</code></pre>
