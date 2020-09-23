@@ -220,15 +220,106 @@ pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;event&gt; -p &lt;pg_port&gt; -U &lt;
 pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;mgmt&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;mgmtdb&gt;.sql ;
 pg_dump -Fp -c -v -h &lt;pg_host&gt; -d &lt;rtsm&gt; -p &lt;pg_port&gt; -U &lt;super-user&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;rtsmdb&gt;.sql ;</code></pre>
 
-<h3 style="margin-top: 16px;">Upgrade the Postgres version</h3>
+<h3 style="margin-top: 16px;">Back up the DB config Files</h3>
 
-<p style="margin-top: 16px;">Back up the existing pg_hba.conf and postgresql.conf<br>
-Take a backup of the below .conf files from the Postgres server.</p>
+<p style="margin-top: 16px;">Take a backup of the below .conf files from the Postgres server.</p>
 
 <div style="background:#eeeeee;border:1px solid #cccccc;padding:5px 10px;">/var/lib/pgsql/9.5/data/pg_hba.conf<br>
 /var/lib/pgsql/9.5/data/postgresql.conf</div>
 
 <div class="Admonition_Note" style="margin-top: 16px;"><strong>Note</strong>: The path might change based on the version installed.</div>
+
+<h3 style="margin-top: 16px;">Upgrade/Install the External Postgres</h3>
+
+<p style="margin-top: 16px;">Install supported Postgres server version on an external database server. Refer OpsBridge 2019.11 installation document for the supported Postgres version.&nbsp;<br>
+External Postgres server must be accessible to Master node. Use below command to check if database is accessible:</p>
+
+<pre><code class="language-sql">psql -h &lt;db-server-fqdn&gt; -p &lt;db-server-port&gt; -U postgres -c "SHOW server_version"</code></pre>
+
+<p style="margin-top: 16px;"></p>
+
+<p>If database is configured in HA, then provide virtual host name.&nbsp;</p>
+
+<p>For the Operations Bridge Suite to be able to connect to an external PostgreSQL clustered environment, the cluster must be configured in such a way that it is accessible through a single virtual host name. This can be done by using a middleware (for example, pgpool-II) that maps the virtual host name to the currently active database node. The virtual host name can then be used as the dbHost parameter. Cluster in this sense are at least two database instances that form a logical unit. Strong data consistency must be ensured.</p>
+
+<p>It is important that any load balancing of queries is disabled in the middleware. All queries should always reach the active (a.k.a leader) database node at any given point in time.</p>
+
+<p>In case the number of maximum parallel connections is configurable in the middleware it must be ensured that this value is set to a value that allows enough parallel connections up to the value set as max_connections (see "PostgreSQL parameter settings" in&nbsp;OpsBridge 2019.11 installation document for more details).</p>
+
+<p>The following example gives an example of a possible pgpool-II configuration. Microfocus does not recommend nor prefer pgpool-II over other cluster solutions. Although the following configuration gives a possible configuration, additional parameters may be required, pgpool-II might change the definition or meaning of configuration parameters which may invalidate the example set of parameters. Please refer to the documentation of pgpool-II as the only source of information &nbsp;for sizing and configuring pgpoool-II.</p>
+
+<table align="left" border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<thead>
+		<tr>
+			<th scope="col">Parameter name</th>
+			<th scope="col">Small</th>
+			<th scope="col">Medium</th>
+			<th scope="col">Large</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>num_int_children</td>
+			<td>400</td>
+			<td>400</td>
+			<td>400</td>
+		</tr>
+		<tr>
+			<td>max_pool</td>
+			<td>2</td>
+			<td>2</td>
+			<td>2</td>
+		</tr>
+		<tr>
+			<td>reserved_connections</td>
+			<td>2</td>
+			<td>2</td>
+			<td>2</td>
+		</tr>
+		<tr>
+			<td>child_max_connections</td>
+			<td>default value</td>
+			<td>default value</td>
+			<td>default value</td>
+		</tr>
+		<tr>
+			<td>load_balance_mode</td>
+			<td>false</td>
+			<td>false</td>
+			<td>false</td>
+		</tr>
+	</tbody>
+</table>
+
+<p></p>
+
+<p></p>
+
+<p></p>
+
+<p></p>
+
+<h3 style="margin-top: 16px;"></h3>
+
+<h3 style="margin-top: 16px;"></h3>
+
+<p style="margin-top: 16px;"></p>
+
+<p>It is important to run pgpool-II in no other mode than "streaming replication mode".</p>
+
+<p>Please ensure the following inequation applies when choosing values for max_pool and num_init_children:</p>
+
+<p>max_pool * num_init_children &nbsp;&lt;= max_connections</p>
+
+<p>The above values for max_pool and num_init_children requires at least 2GB of process private memory.</p>
+
+<p>Check the status of all nodes using below command:</p>
+
+<pre><code class="language-sql">psql -h &lt;db-server-node1&gt; -p &lt;db-server-port&gt; -U postgres -c 'show pool_nodes'</code></pre>
+
+<p>The status of all the nodes must be "up".&nbsp;</p>
+
+<p>Ensure Postgres server has enough disk space required for database restore. Refer embedded Postgres size as illustrated in following section as a reference to estimate disk size required.&nbsp;</p>
 
 <h3 style="margin-top: 16px;">Shutdown the DB</h3>
 
@@ -313,7 +404,7 @@ psql -X -q -h &lt;pg_host&gt; -p &lt;pg_port&gt; -U postgres -d &lt;event&gt; -f
 psql -X -q -h &lt;pg_host&gt; -p &lt;pg_port&gt; -U postgres -d &lt;mgmt&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;mgmtdb&gt;.sql -L /tmp/restore_&lt;mgmt&gt;.log ;
 psql -X -q -h &lt;pg_host&gt; -p &lt;pg_port&gt; -U postgres -d &lt;rtsm&gt; -f &lt;PG_DUMP_DIR&gt;/&lt;rtsmdb&gt;.sql -L /tmp/restore_&lt;rtsm&gt;.log ;</code></pre>
 
-<p style="margin-top: 16px;">Once the DB is restored, run the below commands to make the necessary changes for all the Suite Databases.</p>
+<p style="margin-top: 16px;">Once the DB is restored, run the below commands to make the necessary changes for all the Suite Databases. Again as mentioned earlier,&nbsp;choose to run the commands&nbsp;with respect to the capabilities opted.</p>
 
 <pre><code>GRANT &lt;cdfidmuser&gt; TO postgres ; 
 
