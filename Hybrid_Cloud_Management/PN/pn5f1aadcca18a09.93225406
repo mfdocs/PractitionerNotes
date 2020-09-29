@@ -551,9 +551,10 @@ kubectl create -f hcm-showback.yaml</code></pre>
 <h3>Update HCM URLs</h3>
 
 <ol>
-	<li>Update the OO URLs from old host to new HCM endpoint in <code>access_point_table</code> in CSA database</li>
-	<li>Update the access point of OO, CO providers to new HCM endpoint in CSA Provider UI</li>
-	<li>In OO, update the CSA End Points in Content Management &gt; Configuration Items</li>
+	<li>Update the OO URLs from old HCM endpoint to new HCM endpoint in <code>csa_access_point</code>&nbsp;table in CSA database. You can use the following query to check the endpoint entry.<br>
+	<code>select uuid, host_name, username, password, uri&nbsp;from csa_access_point where uri like '%&lt;old HCM end point&gt;%';</code></li>
+	<li>Update the Access point of OO, CO providers to new HCM endpoint in CSA Provider UI</li>
+	<li>In OO, update all the CSA End Points in Content Management &gt; Configuration Items</li>
 	<li>Update ooInboundUser password in OO central with HCM_IDM_PROVIDER_ACCOUNT_OOINBOUNDUSER_PASSWORD. Use the below command to get the password<br>
 	<code>kubectl exec -it &lt;hcm-oo-pod&gt; -n &lt;hcm-namespace&gt; -c hcm-oo -- get_secret HCM_IDM_PROVIDER_ACCOUNT_OOINBOUNDUSER_PASSWORD</code></li>
 	<li>Run content job container to get the latest OOTB content - <code>hcm-content-job.yaml</code></li>
