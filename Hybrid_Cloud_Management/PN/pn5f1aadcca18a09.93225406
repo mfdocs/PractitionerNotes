@@ -403,6 +403,10 @@ Follow this step if the password to the HCM databases you installed is different
 <pre>kubectl exec -it &lt;any-hcm-pod&gt; -n &lt;hcm-namespace&gt; -c &lt;container&gt; -- bash
 update_secret NEW_DB_PASSWORD &lt;new-database-password&gt;</pre>
 
+<h3>Copy the YAML customizations</h3>
+
+<p>If you have any changes to the properties in the HCM yaml environment section then copy those customizations into the HCM 2020.05 yaml files. You can check the HCM yaml files in <code>&lt;core-vol&gt;/suite-install/hcm/output</code></p>
+
 <h3><a id="Migrate Autopass" name="Migrate Autopass"></a>Migrate Autopass</h3>
 Update <code>&lt;core-vol&gt;/suite-install/hcm/output/hcm-autopass.yaml </code>database configurations to point to the actual HCM database used with the old version. The properties that need to be updated are – DBHOST, DBPORT, DBNAME, DBUSER, DBPASSWORD_KEY, DBSYSTEMID.<br>
 Delete and create Autopass pods using the following commands;
@@ -422,7 +426,7 @@ chown -R itom:itom *</pre>
 
 <h4>Copy the Resource Alias and JSPs from the old version of HCM to 2020.05</h4>
 
-<p>In the old version of HCM if the <code>resource-alias.xml</code> and JSPs are configured then you must copy these customizations to the HCM 2020.05. Please check the resource-alias.xml and JSPs in the following path <code>&lt;hcm-vol&gt;/sync/csa/jboss-as/standalone/deployments/csa.war/propertysources</code></p>
+<p>In the old version of HCM if the <code>resource-alias.xml</code> and JSPs are configured then you must copy these customizations to the HCM 2020.05. You can&nbsp;check the resource-alias.xml and JSPs in the following path <code>&lt;hcm-vol&gt;/sync/csa/jboss-as/standalone/deployments/csa.war/propertysources</code></p>
 
 <h4>Update the YAML with the database configuration details</h4>
 Update the <code>&lt;core-vol&gt;/suite-install/hcm/output/hcm-csa.yaml</code> database configurations to point to the actual HCM database used with the old version. The properties that need to be updated are – CSA_DB_HOST, CSA_DB_PORT, CSA_DB_USER, CSA_DB_PASSWORD_KEY, CSA_DB_NAME, CSA_DB_SERVICENAME.<br>
