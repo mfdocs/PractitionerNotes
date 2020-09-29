@@ -141,8 +141,9 @@ ports:
 Steps for ITOM Internal Postgresql HA to expose port outside Kubernetes cluster
 
 <ol>
-	<li>Modify both of the <code>pg_hba.conf</code> files; <db-node1-vol><code>&lt;db-node1-vol&gt;/baseinfra-1.0/postgresql95HA/node1data/pg_hba.conf</code><br>
-	<db-node2-vol><code>&lt;db-node2-vol&gt;/baseinfra-1.0/postgresql95HA/node2data/pg_hba.conf </code></db-node2-vol></db-node1-vol>
+	<li>Modify both of the <code>pg_hba.conf</code> files;<br>
+	<code>&lt;db-node1-vol&gt;/baseinfra-1.0/postgresql95HA/node1data/pg_hba.conf</code><br>
+	<code>&lt;db-node2-vol&gt;/baseinfra-1.0/postgresql95HA/node2data/pg_hba.conf </code>
 
 	<pre>    <code class="language-vim">host     all     all     0.0.0.0/0     md5</code></pre>
 	</li>
@@ -215,12 +216,12 @@ kubectl delete -f itom-postgresql-single-svc.yaml</pre>
 		</li>
 		<li>Move the Postgresql folder to a backup location
 		<pre><code class="language-vim">mkdir ~/backupPG
-cd /baseinfra-1.0
+cd &lt;db-volume&gt;/baseinfra-1.0
 mv postgresql106 ~/backupPG</code></pre>
 		</li>
 		<li>Start Internal Postgresql
 		<hr>
-		<pre><code class="language-vim">cd /suite-install/yamlContent/
+		<pre><code class="language-vim">cd &lt;core-vol&gt;/suite-install/yamlContent/
 kubectl create -f itom-postgresql-single-svc.yaml</code></pre>
 		</li>
 	</ol>
