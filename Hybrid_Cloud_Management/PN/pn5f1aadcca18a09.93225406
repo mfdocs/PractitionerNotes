@@ -422,8 +422,10 @@ Mount the NFS on the HCM 2020.05 master node, execute the following commands:
 <pre>cd &lt;hcm-vol&gt;/shared/
 mv encryption/ encryption_2020_05
 mkdir encryption
-scp &lt;old-hcm-nfs&gt;:&lt;hcm-vol&gt;/shared/encryption/*.* encryption/
+scp -r &lt;old-hcm-nfs&gt;:&lt;hcm-vol&gt;/shared/encryption/* encryption/
 chown -R itom:itom *</pre>
+
+<div class="Admonition_Note"><span class="autonumber">Note&nbsp; &nbsp;</span>Copy everything including the subfolders from the encryption directory</div>
 
 <h4>Copy the Resource Alias and JSPs from the old version of HCM to 2020.05</h4>
 
