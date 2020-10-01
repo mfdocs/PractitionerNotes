@@ -6,7 +6,7 @@
 
 <p>Settings in the file&nbsp;<tt>/opt/opsware/oi_util/OpswareCertTool/recert_utils/corerecert.conf</tt></p>
 
-<p><strong>debug</strong>&nbsp;mode by default is set to 0 you should always set this to 1. If a problem happens debug logs will make the investigation much easier. There is no good reason to have debug disabled.</p>
+<p><strong>debug</strong>&nbsp;mode by default is set to 0 you should always set this to 1. If a problem happens debug logs will make the investigation much easier. There is no good reason to have&nbsp;debug disabled.</p>
 
 <pre>debug=1</pre>
 
@@ -20,11 +20,11 @@
 
 <pre>agent_recert.using_cdr=1</pre>
 
-<p><strong>success_rate</strong>. Having this set to any value less than 100 means that the recert phase that is manipulating agents will&nbsp;<strong>stop</strong>&nbsp;when it reached the value configured. For example if you have 1000 reachable servers and you set this to 75 only 750 will be processed even thou the entire estate was reachable. This setting is often mistaken for&nbsp;<strong>X or more</strong>&nbsp;it does not mean this. It means&nbsp;<strong>stop when X is reached</strong>.</p>
+<p><strong>success_rate</strong>. Having this set to any value less than 100 means that the recert phase that is manipulating agents will&nbsp;<strong>stop</strong>&nbsp;when it reached the value configured. For example, if you have 1000 reachable servers and you set this to 75 only 750 will be processed even thou the entire estate was reachable. This setting is often mistaken for&nbsp;<strong>X or more</strong>&nbsp;it does not mean this. It means&nbsp;<strong>stop when X is reached</strong>.</p>
 
 <pre>agent_recert.all.facilities.success_rate=100</pre>
 
-<p><strong>duration</strong>&nbsp;Phase 4,8,12 periodicity. These phases pushes CAs, recert and remove old crypto respectively on all agents. This requires that the jobs that perform these run periodically until the desired success rate has been obtained. Due a defect</p>
+<p><strong>duration</strong>&nbsp;Phase 4,8,12 periodicity. These phases push CAs, recert and remove old crypto respectively on all agents. This requires that the jobs that perform these run periodically until the desired success rate has been obtained. Due to a defect</p>
 
 <ul>
 	<li>QCCR1D252070 - Core Recert Phases 4, 8 and 12 will DoS the Spin/Way when only unreachable servers remain</li>
@@ -40,9 +40,9 @@
 
 <h2>Mesh Topology changes</h2>
 
-<p>Its not called out in big letters but it should be.</p>
+<p>It's not called out in big letters but it should be.</p>
 
-<p>Do not change the mesh topology while a recertification is underway</p>
+<p><span style="color:#c0392b;"><strong>Do not change the mesh topology while recertification is underway</strong></span></p>
 
 <p>The reason being is that phase 1 performs a discover mesh and caches how the environment looked when then process began. If you change the topology the recertification won't know about it and anything you add will be skipped.</p>
 
@@ -98,7 +98,7 @@ ORA-04088: error during execution of trigger 'TRUTH.AUDIT_EVENTS_RTRG'' during '
 
 <p>The above error is caused because a row of the table AUDIT_EVENTS has the field CONFLICTING set to 'Y'. The&nbsp;<strong>force_resolve</strong>&nbsp;program cannot find and clear them as there is no transaction in the system in the conflicting state. They are hidden and they&nbsp;will&nbsp;cause failures in&nbsp;<strong>phase 11</strong>&nbsp;if not dealt with.</p>
 
-<p>These conflicts can be found and fixed using the high speed conflict checker available from OPSWtool-1.0.37 and above. This is&nbsp;<em>much</em>&nbsp;faster than using&nbsp;<strong>table_checker</strong>. Whereas table_checker will compare every row in the database with the same row in the other databases, conflicting_checker only examines rows in the conflicted state.</p>
+<p>These conflicts can be found and fixed using the high-speed conflict checker available from OPSWtool-1.0.37 and above. This is&nbsp;<em>much</em>&nbsp;faster than using&nbsp;<strong>table_checker</strong>. Whereas table_checker will compare every row in the database with the same row in the other databases, conflicting_checker only examines rows in the conflicted state.</p>
 
 <pre># man /opt/opsware/support/man/man1/conflicting_checker.1
 
@@ -106,7 +106,7 @@ ORA-04088: error during execution of trigger 'TRUTH.AUDIT_EVENTS_RTRG'' during '
 # ./conflicting_checker &gt; obj.txt
 # ./sync_objects obj.txt</pre>
 
-<p>To be clear the steps above should only be ran once the mesh state diagram shows no conflicts. If you have visible conflicts you should use the&nbsp;<strong>force_resolve</strong>&nbsp;tool and the GUI to clear them&nbsp;before&nbsp;checking for hidden conflicts.</p>
+<p>To be clear the steps above should only be run once the mesh state diagram shows no conflicts. If you have visible conflicts you should use the&nbsp;<strong>force_resolve</strong>&nbsp;tool and the GUI to clear them&nbsp;before&nbsp;checking for hidden conflicts.</p>
 
 <p>Whilst we are talking about Phase 11 this issue is worth noting. Fixed in;&nbsp;<a href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00287">10.60.015</a>,&nbsp;<a href="https://softwaresupport.softwaregrp.com/doc/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00286">2018.08.005</a>, pre 10.60 the fix is not backported as of Feb-2020</p>
 
@@ -114,7 +114,7 @@ ORA-04088: error during execution of trigger 'TRUTH.AUDIT_EVENTS_RTRG'' during '
 	<li>QCCR1D253339 Phase 11 overwrites the same log file use for resigning the Truth with that used for the Word</li>
 </ul>
 
-<p>The following defect will cause Phase 11 to fail if not patched.&nbsp; Fixed in 10.50.013, 10.51.004,&nbsp;</p>
+<p>The following defect will cause Phase 11 to fail if not patched.&nbsp; Fixed in 10.50.013, <a href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00240">10.51.004</a>,&nbsp;</p>
 
 <ul>
 	<li>QCCR1D242270 - Recert fails during job token resigns at phase 11</li>
@@ -148,7 +148,7 @@ ORA-04088: error during execution of trigger 'TRUTH.AUDIT_EVENTS_RTRG'' during '
 <p>Due to a defect even if you have Way debug disabled logs are still created until patched; <a href="https://softwaresupport.softwaregrp.com/doc/KM03630593">10.20.017</a>,&nbsp;<a href="https://softwaresupport.softwaregrp.com/doc/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00284">10.23.016</a>, 10.50.013,&nbsp;<a href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00283">10.51.012</a>,&nbsp;<a href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00287">10.60.015</a>,&nbsp;<a href="https://softwaresupport.softwaregrp.com/doc/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00286">2018.08.005</a></p>
 
 <ul>
-	<li>QCCR1D253419 - way.debug_size is not being honored by all wayscripts</li>
+	<li>QCCR1D253419 - way.debug_size is not being honoured by all wayscripts</li>
 </ul>
 
 <p>Disable Way debug log output from being generated into /var/log/opsware/waybot/debug, a 0 value is disabled.</p>
@@ -215,7 +215,7 @@ way.debug_size set to "0" on node "ServiceLevel/Opsware/way"</pre>
 	</tbody>
 </table>
 
-<p>If you have any 45.x agents you need this patch installed on your mesh before agents will upgrade; <a href="https://softwaresupport.softwaregrp.com/doc/KM03630593">10.20.017</a>,&nbsp;<a href="https://softwaresupport.softwaregrp.com/doc/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00274">10.23.015</a>, 10.50.013, 10.51.013,&nbsp;<a href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00256">10.60.009</a></p>
+<p>If you have any 45.x agents you need this patch installed on your mesh before agents will upgrade; <a href="https://softwaresupport.softwaregrp.com/doc/KM03630593">10.20.017</a>,&nbsp;<a href="https://softwaresupport.softwaregrp.com/doc/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00274">10.23.015</a>, 10.50.013, <a href="https://softwaresupport.softwaregrp.com/doc/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00300">10.51.013</a>,&nbsp;<a href="https://softwaresupport.softwaregrp.com/group/softwaresupport/search-result/-/facetsearch/document/LID/SRVA_00256">10.60.009</a></p>
 
 <ul>
 	<li>QCCR1D248367 Agent Upgrade fails for older 45.x agents using python 1.5</li>
@@ -229,11 +229,11 @@ way.debug_size set to "0" on node "ServiceLevel/Opsware/way"</pre>
 
 <pre>corerecert --status</pre>
 
-<p>However a much better way to monitor progress is with the&nbsp;<strong>recertCora</strong>&nbsp;tool</p>
+<p>However, a much better way to monitor progress is with the&nbsp;<strong>recertCora</strong>&nbsp;tool</p>
 
 <pre># less /opt/opsware/support/man/man1/recertCora.1</pre>
 
-<p>Typically its best to run it as a web server. You can refresh pages periodically to see what is going on using a button at the bottom of each page. Note a change of phase requires you to restart the web server.</p>
+<p>Typically its best to run it as a web server. You can refresh pages periodically to see what is going on using a button at the bottom of each page. Note a change of phase requires you to restart the webserver.</p>
 
 <pre># /opt/opsware/support/bin/recertCora -v server -i</pre>
 
@@ -241,7 +241,7 @@ way.debug_size set to "0" on node "ServiceLevel/Opsware/way"</pre>
 
 <h2>Starting jobs manually</h2>
 
-<p>Due to the duration rate being set at 1hr jobs once they have ran for this period of time will halt and start again in 24hrs time. To manually run the jobs again ahead of that 24hr start time you can use the tool&nbsp;<strong>/opt/opsware/support/bin/startJobNow</strong>&nbsp;which is available in OPSWtools-1.0.39 and above.</p>
+<p>Due to the duration rate being set at 1hr jobs once they have run for this period of time will halt and start again in 24hrs time. To manually run the jobs again ahead of that 24hr start time you can use the tool&nbsp;<strong>/opt/opsware/support/bin/startJobNow</strong>&nbsp;which is available in OPSWtools-1.0.39 and above.</p>
 
 <pre># startJobNow 145130001
 Opsware Username: recertuser
@@ -258,13 +258,13 @@ Rescheduled to run at Fri Feb 14 12:48:24 2020
 
 <p>This will allow you to reschedule a PENDING job to start immediately. Where immediate is in 1 min time due to a little wart that stops you doing 0 min.&nbsp;The sessionID is the JOB number, it may either be the RECURRING parent or the CHILD id, the tool will do the right thing.</p>
 
-<p>The jobs for the phases can be discover by using the&nbsp;<strong>recertCora</strong>&nbsp;tool or by using the corerecert tool.</p>
+<p>The jobs for the phases can be discovered by using the&nbsp;<strong>recertCora</strong>&nbsp;tool or by using the corerecert tool.</p>
 
 <p></p>
 
 <h2>Manually moving phases</h2>
 
-<p>It's unlikely that every facility is going to have 100% success. This means for example you will need to move from phase 4-&gt;6, 8-&gt;9 and 12-&gt;13 manually. What is not documented is that you must terminate all the pending jobs before you move to the next phase.&nbsp;&nbsp;As you are leaving phase manually and entering a new one you will need to provide the <strong>doit </strong>flag to force the move.</p>
+<p>It's unlikely that every facility is going to have 100% success. This means, for example, you will need to move from phase 4-&gt;6, 8-&gt;9 and 12-&gt;13 manually. What is not documented is that you must terminate all the pending jobs before you move to the next phase.&nbsp;&nbsp;As you are leaving phase manually and entering a new one you will need to provide the <strong>doit </strong>flag to force the move.</p>
 
 <pre># cd /opt/opsware/oi_util/OpswareCertTool/recert_utils/
 # ./corerecert --cancel_all_agent_recert_jobs
