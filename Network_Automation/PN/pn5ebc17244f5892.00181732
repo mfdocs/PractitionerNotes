@@ -200,8 +200,15 @@ sesnhdr_type = client.get_element('ns0:list_deviceInputParms')
 sesnhdr = sesnhdr_type(sessionid=loginResult.Text)
 devices = client.service.list_device(_soapheaders=[sesnhdr], parameters=sesnhdr)
 print('\n\n ----------------------------- \n')
+
 for i in devices.ResultSet.Row:
         print(i.hostName + ' ---&gt; '+i.primaryIPAddress)
+        params = {
+                        "ip":i.primaryIPAddress,
+                        "sessionid": loginResult.Text
+        }
+        device = client.service.show_deviceinfo(parameters=params)
+        print('/t/t === &gt;&gt;&gt; '+device.Text)
 
 print('\n\n ----------------------------- \n')</code></pre>
 </html>
