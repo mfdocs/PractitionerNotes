@@ -151,14 +151,16 @@ lo_compat_privileges = on</code></pre>
 <pre><code class="language-bash">kubectl exec -it -c itom-postgresql-default -n core &lt;itom-postgresql-default-656d7bbb74-j7jrg&gt; /bin/bash  
 su - postgres
 get_secret defaultdb_user_password
-get_secret defaultdb_cdfidm_user_password</code></pre>
+get_secret defaultdb_cdfidm_user_password
+</code></pre>
 
 <p>For Embedded postgres in HA, use the below commands to login to the pod</p>
 
 <pre><code class="language-bash">kubectl exect -it -c cdf-pgnode1 -n core itom-postgresql-node1 /bin/bash
 su - postgres
 get_secret defaultdb_user_password
-get_secret defaultdb_cdfidm_user_password</code></pre>
+get_secret defaultdb_cdfidm_user_password
+</code></pre>
 
 <ul>
 	<li>Note down the passwords for <code>defaultdb_user_password</code> and <code>defaultdb_cdfidm_user_password</code>, you’ll need it later.</li>
