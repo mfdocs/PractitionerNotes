@@ -299,7 +299,7 @@ omi.dbport: &lt;POSTGRES_PORT_OF_EXT_SERVER&gt;</code></pre>
 
 <p>Edit the deployments from the Primary Master</p>
 
-<pre><code class="language-bash">export opsbNamespace="&lt;opsbridge-namespace&gt;"
+<pre><code>export opsbNamespace="&lt;opsbridge-namespace&gt;"
 
 kubectl get deployment bvd-controller-deployment -n ${opsbNamespace} -o json &gt; json_bvd-controller-deployment.json
 jq -M '.spec.template.spec.containers[0].env += [{ "name": "BVD_DB_HOST", "valueFrom": { "configMapKeyRef": { "key": "bvd.dbhost", "name": "bvd-config" } } }, { "name": "BVD_DB_PORT", "valueFrom": { "configMapKeyRef": { "key": "bvd.dbport", "name": "bvd-config" } } }] | .spec.template.spec.initContainers[3].env += [{ "name": "BVD_DB_HOST", "valueFrom": { "configMapKeyRef": { "key": "bvd.dbhost", "name": "bvd-config" } } }, { "name": "BVD_DB_PORT", "valueFrom": { "configMapKeyRef": { "key": "bvd.dbport", "name": "bvd-config" } } }]' json_bvd-controller-deployment.json &gt; updated_json_bvd-controller-deployment.json
