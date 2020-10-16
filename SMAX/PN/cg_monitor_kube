@@ -1,37 +1,6 @@
-<div>
-<div>
-<div>&nbsp;</div>
-
-<ul>
-	<li><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cg_monitor_kube#Introduction">1 Introduction</a></li>
-	<li><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cg_monitor_kube#Background">2 Background</a>
-	<ul>
-		<li><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cg_monitor_kube#Resource_layers">2.1 Resource layers</a></li>
-		<li><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cg_monitor_kube#Case_example:_unbalanced_cluster">2.2 Case example: unbalanced cluster</a></li>
-		<li><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cg_monitor_kube#How_to_Check_Resources">2.3 How to Check Resources</a>
-		<ul>
-			<li><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cg_monitor_kube#Running_the_check_resources.py_script">2.3.1 Running the check_resources.py script</a></li>
-			<li><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cg_monitor_kube#Interpreting_the_results">2.3.2 Interpreting the results</a></li>
-			<li><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cg_monitor_kube#When_to_run_the_script">2.3.3 When to run the script</a></li>
-		</ul>
-		</li>
-		<li><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cg_monitor_kube#How_to_Tune_Resources">2.4 How to Tune Resources</a>
-		<ul>
-			<li><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cg_monitor_kube#Node_capability">2.4.1 Node capability</a></li>
-			<li><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cg_monitor_kube#Node_resources">2.4.2 Node resources</a></li>
-			<li><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cg_monitor_kube#Pod_resources">2.4.3 Pod resources</a></li>
-			<li><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cg_monitor_kube#Pod_restarts">2.4.4 Pod restarts</a></li>
-		</ul>
-		</li>
-		<li><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cg_monitor_kube#How_to_Monitor_Resources">2.5 How to Monitor Resources</a>
-		<ul>
-			<li><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cg_monitor_kube#The_resources_report.csv">2.5.1 The resources_report.csv</a></li>
-			<li><a href="https://docs.microfocus.com/itom/SMAX:2019.11/PractitionersNotes/SMAX_Config/cg_system_admin/cg_monitor_kube#Charting_in_Excel">2.5.2 Charting in Excel</a></li>
-		</ul>
-		</li>
-	</ul>
-	</li>
-</ul>
+<html><div class="mw-parser-output">
+<div class="toc" id="toc"><input class="toctogglecheckbox" id="toctogglecheckbox" role="button" style="display:none" type="checkbox">
+<div class="toctitle" dir="ltr" lang="en"></div>
 </div>
 
 <p>Resource checking, tuning and monitoring in a Kubernetes cluster is essential for both initial sizing and for subsequent ongoing environment stability. It is important to realize:</p>
@@ -45,19 +14,19 @@
 
 <p>Due to layered nature of a cluster’s resources, resource reservations and limits may need to be fine-tuned at the OS, node, pod or container level to enable a smoothly functioning suite.</p>
 
-<h2>Resource layers</h2>
+<h2 class="mw-headline" id="Resource_layers">Resource layers</h2>
 
-<p>The following diagram shows how memory assignment per pod adds up across nodes. <img alt="CheckResources1.png" src="/mediawiki/images/b/b9/CheckResources1.png" style="height:752px; width:1050px"></p>
+<p>The following diagram shows how memory assignment per pod adds up across nodes. <a class="image" onclick="javascript:loadingImage(this);"><img alt="CheckResources1.png" data-file-height="752" data-file-width="1050" height="752" src="/mediawiki/images/b/b9/CheckResources1.png" width="1050"></a></p>
 
-<h2>Case example: unbalanced cluster</h2>
+<h2 class="mw-headline" id="Case_example:_unbalanced_cluster">Case example: unbalanced cluster</h2>
 
-<p><img alt="CheckResources2.png" src="/mediawiki/images/5/55/CheckResources2.png" style="height:414px; width:1050px"> The above cluster example shows an unhealthy cluster as Worker2 is running out of memory any may soon be evicted. This will result in all its pods being rescheduled on Worker1. Worker1 will then also become overwhelmed and be evicted. This is called a cascade failure. Detecting and rebalancing some of Worker2’s load onto Worker1 or a new 3rd worker would prevent this cascade and maintain stability.</p>
+<p><a class="image" onclick="javascript:loadingImage(this);"><img alt="CheckResources2.png" data-file-height="414" data-file-width="1050" height="414" src="/mediawiki/images/5/55/CheckResources2.png" width="1050"></a> The above cluster example shows an unhealthy cluster as Worker2 is running out of memory any may soon be evicted. This will result in all its pods being rescheduled on Worker1. Worker1 will then also become overwhelmed and be evicted. This is called a cascade failure. Detecting and rebalancing some of Worker2’s load onto Worker1 or a new 3rd worker would prevent this cascade and maintain stability.</p>
 
-<h2>How to Check Resources</h2>
+<h2 class="mw-headline" id="How_to_Check_Resources">How to Check Resources</h2>
 
 <p>Kubernetes provides a number of commands to check resource usage at the node or pod level, or to check maximum resource limits, or to check node/pod status. The check_resources.py script (version 2.0+) combines all these command outputs into one single report and maintains an average record of the values for monitoring.</p>
 
-<h3>Running the check_resources.py script</h3>
+<h3 class="mw-headline" id="Running_the_check_resources.py_script">Running the check_resources.py script</h3>
 
 <p>The script, if not packaged with this documentation, should be accessible from the Micro Focus Marketplace website. It can be run by entering the command:</p>
 
@@ -66,48 +35,48 @@
 
 <p>Python 2.7.x must be installed. The script is not tested for Python 3.x.</p>
 
-<h3>Interpreting the results</h3>
+<h3 class="mw-headline" id="Interpreting_the_results">Interpreting the results</h3>
 
-<p>The output will show the following information; <img alt="CheckResources3.png" src="/mediawiki/images/3/37/CheckResources3.png" style="height:512px; width:1050px"> In more detail and for reference;</p>
+<p>The output will show the following information; <a class="image" onclick="javascript:loadingImage(this);"><img alt="CheckResources3.png" data-file-height="512" data-file-width="1050" height="512" src="/mediawiki/images/3/37/CheckResources3.png" width="1050"></a> In more detail and for reference;</p>
 
 <ol>
 	<li>Nodes
 	<ol>
-		<li><strong>Type</strong> - master &amp;/ worker</li>
-		<li><strong>Availability</strong> to schedule pods: inaccessible | cordoned | ready</li>
-		<li><strong>Node name</strong> – usually the fqdn for the server on which the node is running</li>
-		<li><strong>CPU cores</strong>: percentage of available used, actual used, total available – color coded if over 80%</li>
-		<li><strong>Memory</strong>: percentage of available used, actual used, total available – color coded if over 80%</li>
-		<li><strong>Architecture summary</strong>: OS version, processor type, docker &amp; kubelet versions</li>
-		<li><strong>Warning flags</strong>: OutOfDisk | MemoryPressure | DiskPressure</li>
+		<li><b>Type</b> - master &amp;/ worker</li>
+		<li><b>Availability</b> to schedule pods: inaccessible | cordoned | ready</li>
+		<li><b>Node name</b> – usually the fqdn for the server on which the node is running</li>
+		<li><b>CPU cores</b>: percentage of available used, actual used, total available – color coded if over 80%</li>
+		<li><b>Memory</b>: percentage of available used, actual used, total available – color coded if over 80%</li>
+		<li><b>Architecture summary</b>: OS version, processor type, docker &amp; kubelet versions</li>
+		<li><b>Warning flags</b>: OutOfDisk | MemoryPressure | DiskPressure</li>
 	</ol>
 	</li>
 	<li>Pods
 	<ol>
-		<li><strong>Namespace</strong></li>
-		<li><strong>Pod name</strong> and total pods per node</li>
-		<li><strong>CPU cores</strong>:
+		<li><b>Namespace</b></li>
+		<li><b>Pod name</b> and total pods per node</li>
+		<li><b>CPU cores</b>:
 		<ol>
-			<li><strong>Average</strong> – calculated as mean of all previously recorded values. The Notes section will outline how many data points and data range were used to generate the average, and the file that stores these values.</li>
-			<li><strong>Current</strong> – the amount of cores the pod is currently using for all its containers</li>
-			<li><strong>MAX</strong> – this is the cpu ‘Limit’ value set for the deployment</li>
+			<li><b>Average</b> – calculated as mean of all previously recorded values. The Notes section will outline how many data points and data range were used to generate the average, and the file that stores these values.</li>
+			<li><b>Current</b> – the amount of cores the pod is currently using for all its containers</li>
+			<li><b>MAX</b> – this is the cpu ‘Limit’ value set for the deployment</li>
 		</ol>
 		</li>
-		<li><strong>Memory</strong>:
+		<li><b>Memory</b>:
 		<ol>
-			<li><strong>Average</strong> – calculated as mean of all previously recorded current values</li>
-			<li><strong>Current</strong> – the amount of MB of memory the pod is currently using for all its containers</li>
-			<li><strong>MAX</strong> – this is the memory ‘Limit’ value set for the deployment</li>
+			<li><b>Average</b> – calculated as mean of all previously recorded current values</li>
+			<li><b>Current</b> – the amount of MB of memory the pod is currently using for all its containers</li>
+			<li><b>MAX</b> – this is the memory ‘Limit’ value set for the deployment</li>
 		</ol>
 		</li>
-		<li><strong>Status</strong> of pod, e.g.; “Running”, “Terminating” and the number of containers that apply, e.g.; 1 of 2, 2 of 2</li>
-		<li><strong>Restart count</strong> – the number of times this pod has failed its probe check or experienced and error and been started over. This is color coded if it is statistically more than 2 times the standard deviation from the average (if over 10), to indicate an outlier with excessive restarts and warranting review.</li>
-		<li><strong>Age</strong> – the amount of time this pod, with its unique ID, has been scheduled</li>
+		<li><b>Status</b> of pod, e.g.; “Running”, “Terminating” and the number of containers that apply, e.g.; 1 of 2, 2 of 2</li>
+		<li><b>Restart count</b> – the number of times this pod has failed its probe check or experienced and error and been started over. This is color coded if it is statistically more than 2 times the standard deviation from the average (if over 10), to indicate an outlier with excessive restarts and warranting review.</li>
+		<li><b>Age</b> – the amount of time this pod, with its unique ID, has been scheduled</li>
 	</ol>
 	</li>
 </ol>
 
-<h3>When to run the script</h3>
+<h3 class="mw-headline" id="When_to_run_the_script">When to run the script</h3>
 
 <p>Important times to (re)check resources are;</p>
 
@@ -123,7 +92,7 @@
 <pre>crontab -l | { cat; echo "*/15 * * * * python /root/check_resources.py"; } | crontab -&nbsp;; crontab -l
 </pre>
 
-<h2>How to Tune Resources</h2>
+<h2 class="mw-headline" id="How_to_Tune_Resources">How to Tune Resources</h2>
 
 <p>Tuning can also refer to other aspects of a Kubernetes cluster such as software config, database, network, file storage, etc. The following is tuning specific to memory and cpu for keeping pods running and balanced across nodes, and preventing node eviction.</p>
 
@@ -131,7 +100,7 @@
 
 <p>Note that these recommendations are algorithmically generated and may or may not be relevant to every scenario. If in doubt, or if it’s a Production environment, check the product documentation and with Support.</p>
 
-<h3>Node capability</h3>
+<h3 class="mw-headline" id="Node_capability">Node capability</h3>
 
 <p>This is which nodes have issues that will impact scheduling. The node may be down, firewalled, or cordoned, preventing new pods being scheduled to such a node and consequently degrading cluster stability.</p>
 
@@ -141,7 +110,7 @@
 	<li>For cordoned nodes, run the command #: kubectl uncordon &lt;node-name&gt;</li>
 </ul>
 
-<h3>Node resources</h3>
+<h3 class="mw-headline" id="Node_resources">Node resources</h3>
 
 <p>This is which nodes are low on resources.</p>
 
@@ -159,7 +128,7 @@ kubectl delete pod &lt;pod-name&gt; -n&lt;ns&gt;  #repeat until balanced
 	<li>If there are no other nodes that are not also busy, the suggestion is to add more OS resources or another worker. The latter can be done in the CDF management page on the :5443 port.</li>
 </ul>
 
-<h3>Pod resources</h3>
+<h3 class="mw-headline" id="Pod_resources">Pod resources</h3>
 
 <p>If a pod is using more than 80% of the resources, the suggestion is made to increase the replica count, if it is part of a replicaset, or to increase the resource “limit”.</p>
 
@@ -181,7 +150,7 @@ kubectl delete pod &lt;pod-name&gt; -n&lt;ns&gt;  #repeat until balanced
 
 <p>Some pods are not designed to have multiple replicas – check the documentation. Continually increasing the replica count is not recommended unless there are unique use cases. Add up to a couple additional replicas to handle additional load, otherwise contact Support to review the cluster sizing and unique usage patterns. It is not recommended to completely resize the cluster in this manner as additional parameters are needed.</p>
 
-<h3>Pod restarts</h3>
+<h3 class="mw-headline" id="Pod_restarts">Pod restarts</h3>
 
 <p>If a pod has a high restart count then the suggestion is made to review the pod logs for reasons why. It is triggered when the restart count is more than 2 times the standard deviation from the average. The pod log can be reviewed for possible causes, and if no issues other than a failed probe, then the probe timeout could be increased in the deployment configuration.</p>
 
@@ -194,11 +163,11 @@ kubectl delete pod &lt;pod-name&gt; -n&lt;ns&gt;  #repeat until balanced
 
 <p>This should be done carefully and per documentation or Support guidance.</p>
 
-<h2>How to Monitor Resources</h2>
+<h2 class="mw-headline" id="How_to_Monitor_Resources">How to Monitor Resources</h2>
 
-<p>There are number of more comprehensive kubernetes resource monitoring tools available, for example; the built in interface on the :5443 port, or a 3rd-party implementation of Prometheus, etc. The following is a simple no-install approach for admins to obtain and interact with memory and cpu utilization data that is related to stability.&nbsp;</p>
+<p>There are number of more comprehensive kubernetes resource monitoring tools available, for example; the built in interface on the :5443 port, or a 3rd-party implementation of Prometheus, etc. The following is a simple no-install approach for admins to obtain and interact with memory and cpu utilization data that is related to stability.</p>
 
-<h3>The resources_report.csv</h3>
+<h3 class="mw-headline" id="The_resources_report.csv">The resources_report.csv</h3>
 
 <p>Every time check_resources.py is run, either manually or via a scheduled cron job every 15 minutes for example, a spreadsheet is updated with the latest cpu and memory reading for each node and each pod. The contents may look like this excerpt;</p>
 
@@ -212,20 +181,20 @@ pod,cpu,idm-68c78b998d-9vt8d, .02, .02,0
 pod,mem,idm-68c78b998d-9vt8d,541,541,520
 </pre>
 
-<p><em>The first line shows the header where is type is node/pod, metric is cpu/mem, and then the name of the node/pod. Following that are the list of dates the measurements were taken. There are two lines for each node/pod; one for the memory and one for the cpu. The above example shows smax_worker1.net’s resources slightly increased on the 3rd reading, and the idm pod’s memory dropped.</em></p>
+<p><i>The first line shows the header where is type is node/pod, metric is cpu/mem, and then the name of the node/pod. Following that are the list of dates the measurements were taken. There are two lines for each node/pod; one for the memory and one for the cpu. The above example shows smax_worker1.net’s resources slightly increased on the 3rd reading, and the idm pod’s memory dropped.</i></p>
 
-<h3>Charting in Excel</h3>
+<h3 class="mw-headline" id="Charting_in_Excel">Charting in Excel</h3>
 
 <p>For multiple columns you can open the csv in Excel. By selecting all data, then clicking Insert &gt; Table, the data can be filtered down by type or metric.</p>
 
 <p>Chart the data with one of the line graphs;</p>
 
-<pre><img alt="CheckResources4.png" src="/mediawiki/images/2/20/CheckResources4.png" style="height:587px; width:1050px">
+<pre><a class="image" onclick="javascript:loadingImage(this);"><img alt="CheckResources4.png" data-file-height="587" data-file-width="1050" height="587" src="/mediawiki/images/2/20/CheckResources4.png" width="1050"></a>
 </pre>
 
 <p>Or add a column to the table and then insert a sparkline for charting a greater number of columns;</p>
 
-<pre><img alt="CheckResources5.png" src="/mediawiki/images/6/68/CheckResources5.png" style="height:600px; width:1050px">
+<pre><a class="image" onclick="javascript:loadingImage(this);"><img alt="CheckResources5.png" data-file-height="600" data-file-width="1050" height="600" src="/mediawiki/images/6/68/CheckResources5.png" width="1050"></a>
 </pre>
 
 <p>When a node or pod’s total resources exceeds 80%, review the Recommendations for that node. If pod resources start to climb over time, consider scheduling rebalances or restarts.</p>
@@ -249,3 +218,4 @@ Transclusion expansion time report (%,ms,calls,template)
 100.00%    0.000      1 -total
 --><!-- Saved in parser cache with key docops_wiki:pcache:idhash:875828-0!canonical and timestamp 20200217094450 and revision id 1577600
  --></div>
+</html>
