@@ -107,9 +107,24 @@ The steps involved are:</div>
 
 <p>The above values for max_pool and num_init_children requires at least 2GB of process private memory.</p>
 
+<p>Add the below entries at the end of the pg_hba.conf file</p>
+
+<pre><code>host all all 0.0.0.0/0 md5
+host all all ::/0 md5</code></pre>
+
+<p>Edit postgresql.conf file for listen_addresses , port and lo_compat_privileges parameters to as shown below.</p>
+
+<pre><code>listen_addresses = '*'
+port = 5432
+lo_compat_privileges = on</code></pre>
+
+<p>Restart postgres service</p>
+
+<pre><code>systemctl restart postgresql-10.service</code></pre>
+
 <p>Check the status of all nodes using below command:</p>
 
-<pre><code>psql -h &lt;db-server-node1&gt; -p &lt;db-server-port&gt; -U postgres -c 'show pool_nodes'</code></pre>
+<pre><code class="language-bash">psql -h &lt;db-server-node1&gt; -p &lt;db-server-port&gt; -U postgres -c 'show pool_nodes'</code></pre>
 
 <p>The status of all the nodes must be "up".&nbsp;</p>
 </div>
@@ -120,12 +135,10 @@ The steps involved are:</div>
 	<li>Log in to the master node, run the following command to turn off suite pods:<br>
 	&nbsp;
 	<pre><code class="language-bash">${K8S_HOME}/scripts/cdfctl.sh -f runlevel set -l DOWN -n &lt;suite-namespace&gt;</code></pre>
-	<br>
 	<tt>Example:</tt>
 
 	<pre><code class="language-bash">${K8S_HOME}/scripts/cdfctl.sh -f runlevel set -l DOWN -n opsbridge-azm6h
 </code></pre>
-	&nbsp;
 
 	<div class="Admonition_Note">This will only shut off Pods of the suite, the Pods of CDF will remain operational (which includes the internal database pod)</div>
 	</li>
@@ -140,6 +153,13 @@ su - postgres
 get_secret defaultdb_user_password
 get_secret defaultdb_cdfidm_user_password</code></pre>
 
+<p>For Embedded postgres in HA, use the below commands to login to the pod</p>
+
+<pre><code class="language-bash">kubectl exect -it -c cdf-pgnode1 -n core itom-postgresql-node1 /bin/bash
+su - postgres
+get_secret defaultdb_user_password
+get_secret defaultdb_cdfidm_user_password</code></pre>
+
 <ul>
 	<li>Note down the passwords for <code>defaultdb_user_password</code> and <code>defaultdb_cdfidm_user_password</code>, you’ll need it later.</li>
 	<li>You can copy and paste all below commands in a shell script and run it as well, from /tmp folder.</li>
@@ -147,18 +167,18 @@ get_secret defaultdb_cdfidm_user_password</code></pre>
 
 <h3>Take database Backup</h3>
 
-<p>From the internal database pod shell, take database dumps of the following databases:</p>
+<p>From the internal database pod shell, take database dumps of the following databases. Make sure to run the statements across the databases which are present as part of the capabilities installed. For example, if the customer has installed BVD capability alone, then they wont have databases related to OBM, which are "Event", "Mgmt" and "RTSM".</p>
 
 <pre><code>mkdir -p /var/log/cdf/dbbackups
 export PGPASSWORD=$(get_secret defaultdb_user_password | cut -d "=" -f2)
 vacuumlo -v  -h default-postgresql-svc  -U  postgres -p 5432 rtsm
 vacuumlo -v  -h default-postgresql-svc  -U  postgres -p 5432 event
-pg_dump -Fc -h default-postgresql-svc -d autopassdb  -p 5432 -U postgres –v  -f /var/log/cdf/dbbackups/autopassdb.dump
-pg_dump -Fc -h default-postgresql-svc -d bvd  -p 5432 -U postgres –v -f /var/log/cdf/dbbackups/bvd.dump
-pg_dump -Fc -h default-postgresql-svc -d defaultdb  -p 5432 -U postgres –v  -f /var/log/cdf/dbbackups/defaultdb.dump
-pg_dump -Fc -h default-postgresql-svc -d event  -p 5432 -U postgres –v  -f /var/log/cdf/dbbackups/event.dump
-pg_dump -Fc -h default-postgresql-svc -d mgmt  -p 5432 -U postgres –v  -f /var/log/cdf/dbbackups/mgmt.dump
-pg_dump -Fc -h default-postgresql-svc -d rtsm  -p 5432 -U postgres –v  -f /var/log/cdf/dbbackups/rtsm.dump
+pg_dump -Fc -h default-postgresql-svc -d autopassdb  -p 5432 -U postgres -v  -f /var/log/cdf/dbbackups/autopassdb.dump
+pg_dump -Fc -h default-postgresql-svc -d bvd  -p 5432 -U postgres -v -f /var/log/cdf/dbbackups/bvd.dump
+pg_dump -Fc -h default-postgresql-svc -d defaultdb  -p 5432 -U postgres -v  -f /var/log/cdf/dbbackups/defaultdb.dump
+pg_dump -Fc -h default-postgresql-svc -d event  -p 5432 -U postgres -v  -f /var/log/cdf/dbbackups/event.dump
+pg_dump -Fc -h default-postgresql-svc -d mgmt  -p 5432 -U postgres -v  -f /var/log/cdf/dbbackups/mgmt.dump
+pg_dump -Fc -h default-postgresql-svc -d rtsm  -p 5432 -U postgres -v  -f /var/log/cdf/dbbackups/rtsm.dump
 </code></pre>
 
 <p>When done, exit the pod shell.</p>
@@ -186,8 +206,7 @@ GRANT cdfidm TO &nbsp;postgres;
 
 <p>Execute the following commands to restore the database dumps:</p>
 
-<div class="Admonition_Note"><span style="color: rgb(51, 51, 51); font-family: Roboto, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 16px;">You can even copy the restoration commands in a shell script and run it as well, but make sure to change directory to /tmp/dbbackups ( cd /tmp/dbbackups)</span></div>
-&nbsp;
+<div class="Admonition_Note"><span style="color: rgb(51, 51, 51); font-family: Roboto, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 16px;">You can even copy the restoration commands in a shell script and run it as well, but make sure to change directory to /tmp/dbbackups ( cd /tmp/dbbackups). Also make sure that the postgres user has permissions to access the folder and contents.</span></div>
 
 <pre><code>cd /tmp/dbbackups
 pg_restore --create -p 5432 -d postgres -U postgres autopassdb.dump
@@ -196,12 +215,10 @@ pg_restore --create -p 5432 -d postgres -U postgres defaultdb.dump
 pg_restore --create -p 5432 -d postgres -U postgres event.dump
 pg_restore --create -p 5432 -d postgres -U postgres mgmt.dump
 pg_restore --create -p 5432 -d postgres -U postgres rtsm.dump</code></pre>
-&nbsp;
 
 <div class="Admonition_Note">All required databases will be created automatically as part of the restore procedure.</div>
 
-<h2><br>
-Update the passwords in external Postgres</h2>
+<h2>Update the passwords in external Postgres</h2>
 
 <p>Change the password of ‘postgres’ user to the value you noted earlier for <code>defaultdb_user_password</code></p>
 
@@ -232,7 +249,7 @@ kubectl edit cm obsuite-config -n &lt;suite-namespace&gt;
 kubectl edit cm bvd-config -n &lt;suite-namespace&gt;
 kubectl edit cm omi-config -n &lt;suite-namespace&gt;</code></pre>
 
-<p></p>
+<p>Again, the presence of Config maps are purely dependent on the capabilities being installed as part of OpsBridge Suite.</p>
 
 <div class="Admonition_Important">You can skip below section "Manual Execution" if you want to do this automatically using the script available <a href="https://marketplace.microfocus.com/itom/content/migrate-embedded-postgresql-to-external-postgresql">here</a></div>
 
@@ -267,9 +284,7 @@ suite.autopass_dbport: &lt;POSTGRES_PORT_OF_EXT_SERVER&gt;</code></pre>
 
 <ol start="2">
 	<li>Edit&nbsp;bvd-config&nbsp;and replace with values as specified:
-	<pre><code>kubectl edit cm bvd-config -n &lt;suite-namespace&gt;
-
-</code></pre>
+	<pre><code>kubectl edit cm bvd-config -n &lt;suite-namespace&gt;</code></pre>
 	</li>
 	<li>Edit&nbsp;omi-config&nbsp;and replace with values as specified:
 	<pre><code>kubectl edit cm omi-config -n &lt;suite-namespace&gt;
@@ -282,7 +297,26 @@ omi.dbport: &lt;POSTGRES_PORT_OF_EXT_SERVER&gt;</code></pre>
 
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <img alt="" border="0" height="243" hspace="0" src="/mediawiki/images/pn_images/pn_image_5ebe1ddbd76525.18210953.png" vspace="0" width="800"></p>
 
-<p></p>
+<p>Edit the deployments from the Primary Master</p>
+
+<pre><code class="language-bash">export opsbNamespace="&lt;opsbridge-namespace&gt;"
+
+kubectl get deployment bvd-controller-deployment -n ${opsbNamespace} -o json &gt; json_bvd-controller-deployment.json
+jq -M '.spec.template.spec.containers[0].env += [{ "name": "BVD_DB_HOST", "valueFrom": { "configMapKeyRef": { "key": "bvd.dbhost", "name": "bvd-config" } } }, { "name": "BVD_DB_PORT", "valueFrom": { "configMapKeyRef": { "key": "bvd.dbport", "name": "bvd-config" } } }] | .spec.template.spec.initContainers[3].env += [{ "name": "BVD_DB_HOST", "valueFrom": { "configMapKeyRef": { "key": "bvd.dbhost", "name": "bvd-config" } } }, { "name": "BVD_DB_PORT", "valueFrom": { "configMapKeyRef": { "key": "bvd.dbport", "name": "bvd-config" } } }]' json_bvd-controller-deployment.json &gt; updated_json_bvd-controller-deployment.json
+kubectl apply -f updated_json_bvd-controller-deployment.json
+ 
+kubectl get deployment bvd-www-deployment -n ${opsbNamespace} -o json &gt; json_bvd-www-deployment.json
+jq -M '.spec.template.spec.containers[0].env += [{ "name": "BVD_DB_HOST", "valueFrom": { "configMapKeyRef": { "key": "bvd.dbhost", "name": "bvd-config" } } }, { "name": "BVD_DB_PORT", "valueFrom": { "configMapKeyRef": { "key": "bvd.dbport", "name": "bvd-config" } } }]' json_bvd-www-deployment.json &gt; updated_json_bvd-www-deployment.json
+kubectl apply -f updated_json_bvd-www-deployment.json
+ 
+kubectl get deployment bvd-receiver-deployment -n ${opsbNamespace} -o json &gt; json_bvd-receiver-deployment.json
+jq -M '.spec.template.spec.containers[0].env += [{ "name": "BVD_DB_HOST", "valueFrom": { "configMapKeyRef": { "key": "bvd.dbhost", "name": "bvd-config" } } }, { "name": "BVD_DB_PORT", "valueFrom": { "configMapKeyRef": { "key": "bvd.dbport", "name": "bvd-config" } } }]' json_bvd-receiver-deployment.json &gt; updated_json_bvd-receiver-deployment.json
+kubectl apply -f updated_json_bvd-receiver-deployment.json
+
+kubectl get deployment bvd-explore-deployment -n ${opsbNamespace} -o json &gt; json_bvd-explore-deployment.json
+jq -M '.spec.template.spec.containers[0].env += [{ "name": "BVD_DB_HOST", "valueFrom": { "configMapKeyRef": { "key": "bvd.dbhost", "name": "bvd-config" } } }, { "name": "BVD_DB_PORT", "valueFrom": { "configMapKeyRef": { "key": "bvd.dbport", "name": "bvd-config" } } }]' json_bvd-explore-deployment.json &gt; updated_json_bvd-explore-deployment.json
+kubectl apply -f updated_json_bvd-explore-deployment.json
+</code></pre>
 
 <h2>Turn on the suite pods using cdfctl utility</h2>
 
