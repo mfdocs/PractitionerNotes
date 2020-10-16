@@ -168,7 +168,12 @@ get_secret defaultdb_cdfidm_user_password
 
 <h3>Take database Backup</h3>
 
-<p>From the internal database pod shell, take database dumps of the following databases. Make sure to run the statements across the databases which are present as part of the capabilities installed. For example, if the customer has installed BVD capability alone, then they wont have databases related to OBM, which are "Event", "Mgmt" and "RTSM".</p>
+<p>From the internal database pod shell, take database dumps of the following databases. On embedded postgres HA environment the script must be executed on the master node where &lt;itom-postgresql-node1&gt; pod is running on. This can be determined by running following command:</p>
+
+<pre><code>[root@h-obm1]# kubectl get pods -n core -o wide | grep itom-postgresql-node1
+itom-postgresql-node1-56f4b343b6-hlsl2         2/2       Running   0          60d       172.xxx.xxx.xxx   master-node1.domain.com     &lt;===</code></pre>
+
+<p>Make sure to run the statements across the databases which are present as part of the capabilities installed. For example, if the customer has installed BVD capability alone, then they wont have databases related to OBM, which are "Event", "Mgmt" and "RTSM".&nbsp;&nbsp;</p>
 
 <pre><code>mkdir -p /var/log/cdf/dbbackups
 export PGPASSWORD=$(get_secret defaultdb_user_password | cut -d "=" -f2)
@@ -184,7 +189,7 @@ pg_dump -Fc -h default-postgresql-svc -d rtsm  -p 5432 -U postgres -v  -f /var/l
 
 <p>When done, exit the pod shell.</p>
 
-<h2>Transport and restore all the suite database dumps into the external Postgres</h2>
+<p>Transport and restore all the suite database dumps into the external Postgres</p>
 
 <h3>Transfer the database dumps:</h3>
 
