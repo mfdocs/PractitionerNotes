@@ -86,8 +86,11 @@ oracle soft nofile 4096
 oracle hard nofile 65536
 oracle soft nproc 2047
 oracle hard nproc 16384
-session required pam_limits.so  
 #Opsware Oracle parameters end
+EOF
+
+cat &gt;&gt; /etc/pam.d/login &lt;&lt;EOF
+session required pam_limits.so
 EOF
 
 systemctl enable nfs
