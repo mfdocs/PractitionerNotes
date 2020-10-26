@@ -495,6 +495,18 @@ To prevent superseded patches from being imported.</p>
 	</tbody>
 </table>
 
+<h3>Thread pool exhaustion</h3>
+
+<p>The Way thread pool when under extreme load can suffer from not having enough threads to drive the work forward this helps to avoid timeouts due to the congestion in the Way itself.</p>
+
+<table>
+	<tbody>
+		<tr>
+			<td><font face="monospace">sa_config_checkfix -k thread_pool_size -v 24 --set&nbsp; &nbsp;(default 16)</font></td>
+		</tr>
+	</tbody>
+</table>
+
 <h3>Way refreshing its cache excessively</h3>
 
 <p>If SA is not being used to provision ESX servers a workaround that causes&nbsp;the Way to force a cache refresh with a Spin call on every command sent to an agent can be disabled.</p>
