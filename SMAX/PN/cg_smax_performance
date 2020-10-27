@@ -1,4 +1,4 @@
-<div>
+<html><div>
 <p><br>
 In order to keep your SMA system running at peak potential, or to correct a slow or unstable system, there are many methods available to track and improve performance. Such methods include:</p>
 
@@ -16,7 +16,7 @@ In order to keep your SMA system running at peak potential, or to correct a slow
 <p>This document examines each method and gives examples and suggestions for maintaining peak application performance.</p>
 
 <div>
-<div>&nbsp;</div>
+<div></div>
 </div>
 
 <h2>Monitoring the Operating System</h2>
@@ -288,27 +288,8 @@ kubectl patch deploy/idm -n itsma1 -p '{"spec":{"template":{"spec":{"containers"
 <p>Increase the resource limit of bo-login pod: 1.5GB -&gt; 4GB</p>
 
 <div>
-<pre>kubectl patch deploy/itom-bo-login-deployment -n itsma1 -p '{"spec":{"template":{"spec":{"containers":[{"name":"itom-bo-login","resources": {"limits": {"memory": "4096M"}}}]}}}}'
-</pre>
+<pre>kubectl patch deploy/itom-bo-login-deployment -n itsma1 -p '{"spec":{"template":{"spec":{"containers":[{"name":"itom-bo-login","resources": {"limits": {"memory": "4096M"}}}]}}}}'</pre>
 </div>
-
-<h4>Rabbitmq pod</h4>
-
-<p>Increase the resource limit of rabbitmq pod: 1.5CPU -&gt; 2CPU, 30GB -&gt; 4GB; and change the replicas to 1</p>
-
-<div>
-<pre>kubectl patch statefulsets/infra-rabbitmq -n itsma1 -p '{"spec":{"template":{"spec":{"containers":[{"name":"itom-xruntime-rabbitmq","resources": {"limits": {"cpu": "2", "memory": "4096M"}}}]}}}}'
-kubectl patch statefulsets/infra-rabbitmq -n itsma1 -p '{"spec":{"replicas": 1}}'
-</pre>
-</div>
-
-<p><br>
-<strong>Note:</strong> The above "kubectl patch" commands are used as an easier way to change the settings, but you can always manually change the deployment settings by using the "kubectl edit ..." command. For example:</p>
-
-<pre>kubectl edit deploy/itom-xruntime-platform -n itsma1
-</pre>
-
-<p>And in the configuration, manually change the RAM from 4096M to 8192M.</p>
 
 <h3>Database tuning</h3>
 
@@ -620,3 +601,4 @@ Transclusion expansion time report (%,ms,calls,template)
 100.00%    0.000      1 -total
 --><!-- Saved in parser cache with key docops_wiki:pcache:idhash:875813-0!canonical and timestamp 20200217094438 and revision id 1732704
  --></div>
+</html>
