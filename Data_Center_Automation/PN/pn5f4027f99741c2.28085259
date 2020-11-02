@@ -660,9 +660,11 @@ Performing this step will cause data loss if the current primary database server
 	<p>Switch the new primary database server (<code>dbnode2</code>) to standby mode:</p>
 
 	<ol type="a">
-		<li>Back up the ⟨PG DATA⟩ folder with a new folder name (for example <code>databackup.001</code>).</li>
-		<li>Back up the PG base to sync data from the original primary server.</li>
-		<li>Copy the <code>databackup.001/recovery.done</code> file to the ⟨PG DATA⟩/recovery.conf folder.</li>
+		<li>Back up the &lt;PG DATA&gt; folder with a new folder name (for example <code>databackup.tar.gz</code>). Use the following commands:<br>
+		systemctl stop pgpool postgresql-10<br>
+		For information on taking backup of &lt;PG DATA&gt; folder, see the "File System and Level Backup" section in <a href="https://www.postgresql.org/docs/10/backup.html">Backup and Restore</a>.</li>
+		<li>Back up the PG base to sync data from the original primary server. You can use the <a href="https://www.postgresql.org/docs/10/app-pgbasebackup.html">pg_basebackup</a> tool to backup the PG base data. For information on taking backup of PG base data, see the "Making a base backup" section in&nbsp;<a href="https://www.postgresql.org/docs/10/backup.html">Backup and Restore</a>.</li>
+		<li>Copy the <code>databackup.tar.gz/recovery.done</code> file to the &lt;PG DATA&gt;/recovery.conf folder.</li>
 		<li>Add the following entry at the end of the <code>postgresql.conf</code> file: &nbsp;
 		<pre><code class="language-apacheconf">hot_standby='on'</code></pre>
 		&nbsp;</li>
