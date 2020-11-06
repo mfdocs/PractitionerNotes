@@ -1,1 +1,135 @@
- 
+<html><p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Micro Focus Operations Orchestration (OO) uses business intelligence available in a content pack to automate certain IT processes. Business intelligence inside a content pack is defined in the form of flows. A flow is the composition of steps and transitions forming a set of actions that are linked by decision-making logic to automate tasks. When a flow is launched in OO, an instance of that flow definition is executed. An OO flow execution may reach one of the following statuses depending on run time circumstances: PAUSED, PENDING, CANCELED, COMPLETED, RUNNING and SYSTEM_FAILURE. An OO flow might pause if that flow requires certain user inputs or if there are no workers in worker group, etc. A long running OO flow might be canceled by the administrator. An OO flow under normal conditions is in “running” status and reaches “completion” status after flow execution is complete. </span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Some of the use cases that can be achieved by retrieving a list of OO flow executions that are in each status are as follows:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">An OO administrator can quickly identify a list of paused and pending OO flows, investigate any underlying issues and resume those paused and pending OO flows.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Identify and cancel OO flow executions that have been running for a long period of time. OO flow executions may run for a longer period due to various reasons such as environmental issues, coding issues, waiting on dependencies, etc. </span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The following options are available in OO to retrieve a list of flow executions by its status:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">OO Central User Interface (UI)</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Database query</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">REST APIs</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>OO Central UI</b></span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Follow the steps below to retrieve a list of OO flow executions by its status:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Login to OO Central UI</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to Run Management -&gt; Run Explorer</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A list of OO flows is displayed.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Use the “status” filter to display OO flow executions in each status</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Use the “Start Time” filter to adjust time periods to retrieve additional OO flow executions in each status. By default, OO does not display all OO flow executions.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img id="Picture_x0020_10" src="/mediawiki/images/pn_images/pn_image_5fa5855c10cfa9.64200222.png" style="width:468.75pt; height:193.5pt"> </span></span></span></p>
+
+<p style="margin-bottom:11px"></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Database query</b></span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">OO flow execution status is stored in the "OO_EXECUTION_SUMMARY" table.</span></span></span></p>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Run the following SQL Query to retrieve flow executions in each status:</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><strong><span style="font-size:10.5pt"><span style="line-height:107%"><span style="font-family:Consolas">select execution_id, execution_name, status</span></span></span></strong><strong> </strong><strong><span style="font-size:10.5pt"><span style="line-height:107%"><span style="font-family:Consolas">from oo_execution_summary where status = 'Replace with one of the valid status values'</span></span></span></strong><strong><span style="font-size:10.5pt"><span style="line-height:107%"><span style="font-family:Consolas"><span style="font-weight:normal"> and </span></span></span></span></strong><strong><span style="font-size:10.5pt"><span style="line-height:107%"><span style="font-family:Consolas">start_time_long</span></span></span></strong><strong><span style="font-size:10.5pt"><span style="line-height:107%"><span style="font-family:Consolas"><span style="font-weight:normal"> &gt;= </span></span></span></span></strong><strong><span style="font-size:10.5pt"><span style="line-height:107%"><span style="font-family:Consolas">&lt;Replace with UNIX GMT epoch time in milliseconds&gt;;</span></span></span></strong></span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The “execution_id” column contains OO flow execution ID. The “execution_name” column contains OO flow execution name. The valid status values are CANCELED, COMPLETED, PAUSED, PENDING, RUNNING and SYSTEM_FAILURE. The "start_time_long" column contains date and time at which flow was started in UNIX GMT epoch time format. The Unix epoch time is the number of seconds that have elapsed since January 1, 1970 midnight UTC. There are websites and tools that allow you to convert human readable date to epoch and vice versa. Use appropriate "start_time_long" values. Try to limit the number of rows returned to a minimum by using UNIX GMT epoch time not older than 30 days. Otherwise, there may be a potential impact to database and OO performance.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The following screenshot shows query results from a sample query. In this sample query, a list of flow executions that are in “PAUSED” status and that were started after Friday, November 6, 2020 3:01:15 AM GMT was retrieved.&nbsp; </span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img id="Picture_x0020_2" src="/mediawiki/images/pn_images/pn_image_5fa5855c47a562.93441206.png" style="width:468pt; height:117pt"> </span></span></span></p>
+
+<p style="margin-bottom:11px"></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>REST APIs</b></span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This article shows a Microsoft PowerShell script that uses REST APIs to </span></span></span></p>
+
+<ul>
+	<li><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Retrieve a list of OO flow executions that are in each status.</span></span></span></li>
+	<li style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Writes retrieved list of OO flow execution data to the supplied CSV file.&nbsp; </span></span></span></li>
+</ul>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Following is the sample CSV output generated by the script:</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img id="Picture_x0020_1" src="/mediawiki/images/pn_images/pn_image_5fa5855c7759f8.04778809.png" style="width:468pt; height:74.25pt"> </span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The generated CSV file contains the following columns:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Flow execution ID: A unique ID assigned by OO for each run of a routine task/OO flow. </span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Flow execution status: Status of OO flow execution.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Flow execution result type: Result type further classifies OO flow execution status. For example, RESOLVED and ERROR are the result types for a flow execution that is in “COMPLETED” status. The “flow execution result type” column may contain no values for certain flow execution statuses such as “PENDING”, “PAUSED”, etc.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Flow execution start time: Date and time in UTC at which flow execution was started.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Flow execution end time: Date and time in UTC at which flow execution was ended. </span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Script caveats:</span></span></span></p>
+
+<ul>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">By default, the script retrieves a list of flow executions that are in a given status and that were started in the last 7 days. Do NOT adjust DAYS_TO_RETRIEVE constant to a very large number, as this might cause performance issues in OO.</span></span></span></li>
+</ul>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This script can be further enhanced to meet your coding style, implement organization specific requirements, perform additional checks required for your environment, to improve performance, to use as a reference to develop it in your preferred programming language, to use as a reference to make other OO REST API calls, etc. </span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">To run this script, follow the steps below:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to a system running a MS Windows operating system featuring MS PowerShell</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Open a text editor. </span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Copy contents of this script to the text editor. Save the file as "OOGetFlowExecutionsByItsStatus.ps1".</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Open MS Windows PowerShell. Navigate to the directory containing this PowerShell script.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Run the "OOGetFlowExecutionsByItsStatus.ps1" PowerShell script as follows: </span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:Consolas">.\OOGetFlowExecutionsByItsStatus.ps1 -OOCentralURL https://&lt;OOCentralHostName&gt;:&lt;Port&gt;/oo -UserName admin -Password &lt;AdminPassword&gt; -FlowExecStatus &lt;OOFlowExecutionStatus&gt; -OutCSVFile &lt;FullPathToCSVFile&gt; -AfterDateUTC "MM-DD-YYYY HH:MI:SS" -BeforeDateUTC "MM-DD-YYYY HH:MI:SS" </span></span></span></span></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Use the "OOCentralURL", "UserName" and "Password" parameters to connect to the OO Central Application. The "OOCentralURL", "UserName" and "Passwd" parameters are mandatory.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Use the "FlowExecStatus" parameter to retrieve flow executions that are in a particular execution status. The "FlowExecStatus" parameter is mandatory. The “FlowExecStatus” parameter must contain one of the following values: CANCELED, COMPLETED, PAUSED, PENDING, RUNNING and SYSTEM_FAILURE. The supplied values in this parameter are case insensitive.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Use the "OutCSVFile" parameter to write retrieved data to a CSV file. Supply absolute path to the CSV file. The "OutCSVFile" parameter is mandatory.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Use the "BeforeDateUTC" and "AfterDateUTC" parameter values to retrieve flow execution instances for a given date range. The "BeforeDateUTC" and "AfterDateUTC" parameters are optional. The "BeforeDateUTC" and "AfterDateUTC" parameters must contain date in the following format: "MM-DD-YYYY HH:MI:SS". If "BeforeDateUTC" and "AfterDateUTC" values are not supplied, the script retrieves a list of flow executions for the past 7 days. You can change "DAYS_TO_RETRIEVE" constant value in the script to change number of days of retrieved flow executions. Do not set "DAYS_TO_RETRIEVE" constant to a large number.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Examples</b>:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">To retrieve flow executions that were started 7 days ago and that are in “COMPLETED” status and to store retrieved data in the "C:\temp\OOFlowExecCompleted.csv" file, run the script as follows:</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:Consolas">.\OOGetFlowExecutionsByItsStatus.ps1 -OOCentralURL https://&lt;OOCentralHostName&gt;:&lt;Port&gt;/oo -UserName admin -Password &lt;AdminPassword&gt; -FlowExecStatus COMPLETED -OutCSVFile C:\temp\OOFlowExecCompleted.csv </span></span></span></span></p>
+
+<p style="margin-left:48px"></p>
+
+<ol start="2">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">To retrieve flow executions that are in “CANCELED” status and for those executions that were started after "01-01-2020 00:00:00 UTC" and before "01-06-2020 00:00:00 UTC" and to store retrieved data in the “C:\temp\OOFlowExecCanceled.csv” file, run the script as follows:</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:Consolas">.\OOGetFlowExecutionsByItsStatus.ps1 -OOCentralURL https://&lt;OOCentralHostName&gt;:&lt;Port&gt;/oo -UserName admin -Password &lt;AdminPassword&gt; -FlowExecStatus CANCELED -OutCSVFile C:\temp\OOFlowExecCanceled.csv –AfterDateUTC "01-01-2020 00:00:00" –BeforeDateUTC "01-06-2020 00:00:00"</span></span></span></span></p>
+
+<p style="margin-left:48px"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">To retrieve flow executions that are in “RUNNING” status and for those executions that were started 7 days before "01-06-2020 00:00:00 UTC" and to store retrieved data in the “C:\temp\OOFlowExecRunningLong.csv” file, run the script as follows:</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"></p>
+<span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:Consolas">.\OOGetFlowExecutionsByItsStatus.ps1 -OOCentralURL https://&lt;OOCentralHostName&gt;:&lt;Port&gt;/oo -UserName admin -Password &lt;AdminPassword&gt; -FlowExecStatus RUNNING -OutCSVFile C:\temp\ OOFlowExecRunningLong.csv –BeforeDateUTC "01-06-2020 00:00:00"</span></span></span></html>
