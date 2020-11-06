@@ -7,8 +7,6 @@
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Identify and cancel OO flow executions that have been running for a long period of time. OO flow executions may run for a longer period due to various reasons such as environmental issues, coding issues, waiting on dependencies, etc. </span></span></span></li>
 </ol>
 
-<p style="margin-bottom:11px; margin-left:48px"></p>
-
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The following options are available in OO to retrieve a list of flow executions by its status:</span></span></span></p>
 
 <ol>
@@ -29,9 +27,7 @@
 	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Use the “Start Time” filter to adjust time periods to retrieve additional OO flow executions in each status. By default, OO does not display all OO flow executions.</span></span></span></li>
 </ol>
 
-<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img id="Picture_x0020_10" src="/mediawiki/images/pn_images/pn_image_5fa5855c10cfa9.64200222.png" style="width:468.75pt; height:193.5pt"> </span></span></span></p>
-
-<p style="margin-bottom:11px"></p>
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/8/88/OO-RetrieveFlowExecutionsByItsStatus.PNG" height="407" hspace="0" src="/mediawiki/images/pn_images/pn_image_5fa586958a4ff5.01529552.png" style="width: 800px; height: 407px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Database query</b></span></span></span></p>
 
@@ -41,15 +37,13 @@
 	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Run the following SQL Query to retrieve flow executions in each status:</span></span></span></li>
 </ol>
 
-<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><strong><span style="font-size:10.5pt"><span style="line-height:107%"><span style="font-family:Consolas">select execution_id, execution_name, status</span></span></span></strong><strong> </strong><strong><span style="font-size:10.5pt"><span style="line-height:107%"><span style="font-family:Consolas">from oo_execution_summary where status = 'Replace with one of the valid status values'</span></span></span></strong><strong><span style="font-size:10.5pt"><span style="line-height:107%"><span style="font-family:Consolas"><span style="font-weight:normal"> and </span></span></span></span></strong><strong><span style="font-size:10.5pt"><span style="line-height:107%"><span style="font-family:Consolas">start_time_long</span></span></span></strong><strong><span style="font-size:10.5pt"><span style="line-height:107%"><span style="font-family:Consolas"><span style="font-weight:normal"> &gt;= </span></span></span></span></strong><strong><span style="font-size:10.5pt"><span style="line-height:107%"><span style="font-family:Consolas">&lt;Replace with UNIX GMT epoch time in milliseconds&gt;;</span></span></span></strong></span></span></span></p>
+<pre><code class="language-sql">select execution_id, execution_name, status from oo_execution_summary where status = 'Replace with one of the valid status values' and start_time_long &gt;= &lt;Replace with UNIX GMT epoch time in milliseconds&gt;;</code></pre>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The “execution_id” column contains OO flow execution ID. The “execution_name” column contains OO flow execution name. The valid status values are CANCELED, COMPLETED, PAUSED, PENDING, RUNNING and SYSTEM_FAILURE. The "start_time_long" column contains date and time at which flow was started in UNIX GMT epoch time format. The Unix epoch time is the number of seconds that have elapsed since January 1, 1970 midnight UTC. There are websites and tools that allow you to convert human readable date to epoch and vice versa. Use appropriate "start_time_long" values. Try to limit the number of rows returned to a minimum by using UNIX GMT epoch time not older than 30 days. Otherwise, there may be a potential impact to database and OO performance.</span></span></span></p>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The following screenshot shows query results from a sample query. In this sample query, a list of flow executions that are in “PAUSED” status and that were started after Friday, November 6, 2020 3:01:15 AM GMT was retrieved.&nbsp; </span></span></span></p>
 
-<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img id="Picture_x0020_2" src="/mediawiki/images/pn_images/pn_image_5fa5855c47a562.93441206.png" style="width:468pt; height:117pt"> </span></span></span></p>
-
-<p style="margin-bottom:11px"></p>
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/54/OO-RetrieveFlowExecutionsByItsStatus-SQLQuery.PNG" height="200" hspace="0" src="/mediawiki/images/pn_images/pn_image_5fa58695e3ea84.48139424.png" style="width: 800px; height: 200px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>REST APIs</b></span></span></span></p>
 
