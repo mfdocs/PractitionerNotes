@@ -381,6 +381,20 @@ To prevent superseded patches from being imported.</p>
 	</tbody>
 </table>
 
+<p>Low entropy on the server can lead to SSL connections into the Twist stalling due to Java using /dev/random, which is a blocking device.&nbsp; This problem is most noticeable when integrating&nbsp;OO with SA as it can make many thousands of connection quickly&nbsp;each requiring an SSL handshake.</p>
+
+<p>The corrective action requires the startup file <strong>/opt/opsware/twist/twist.sh</strong>&nbsp;edited.<br>
+Locate the following line in the<strong> twist.sh</strong> file.</p>
+
+<p>JAVA_OPTS="$JAVA_OPTS -Dtwist.apps.path=$TWIST_APPS_HOME -Dorg.jboss.server.bootstrap.maxThreads=8<br>
+-Dquartz.enabled=true ${JRMICOOPT} -Dorg.quartz.properties=$TWIST_CONFIG_HOME/twist.conf<br>
+-Dsun.lang.ClassLoader.allowArraySyntax=true -Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.Jdk14Logger -Dpython.options.internalTablesImpl=weak -Duser.timezone=UTC -Dtwist.port=$ADMIN_PORT -Dtwist.ssl_port=$SSL_PORT -Dtwist.hostname=`uname -n` -Dtwist.mid=$TWIST_MID -Dtwist.install.home=$TWIST_INSTALL_HOME -Dtwist.runtime.home=$TWIST_RUNTIME_HOME -Dtwist.config.home=$TWIST_CONFIG_HOME -Dtwist.log.home=$TWIST_LOG_HOME -Dtwist.crypto.home=$TWIST_CRYPTO_HOME -Dspoke.stream.dir=$TWIST_RUNTIME_HOME/spoke_stream_cache -Djava.protocol.handler.pkgs=com.opsware.rmi -Djava.rmi.server.RMIClassLoaderSpi=com.opsware.rmi.SpokeRMIClassLoaderSpi -Djava.util.logging.config.file=$TWIST_CONFIG_HOME/twist.conf"</p>
+
+<p>After the above line append the following&nbsp;(and yes that "." in between is correct and required).</p>
+
+<pre># Stop using /dev/random as it can block SSL connections.
+JAVA_OPTS="${JAVA_OPTS} -Djava.security.egd=file:/dev/./urandom"</pre>
+
 <h2>Hub</h2>
 
 <p>APX / OGFS Script concurrency</p>
