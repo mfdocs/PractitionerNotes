@@ -37,7 +37,7 @@
 	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Run the following SQL Query to retrieve flow executions in each status:</span></span></span></li>
 </ol>
 
-<pre><code class="language-sql">select execution_id, execution_name, status from oo_execution_summary where status = 'Replace with one of the valid status values' and start_time_long &gt;= &lt;Replace with UNIX GMT epoch time in milliseconds&gt;;</code></pre>
+<pre><code>select execution_id, execution_name, status from oo_execution_summary where status = 'Replace with one of the valid status values' and start_time_long &gt;= &lt;Replace with UNIX GMT epoch time in milliseconds&gt;;</code></pre>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The “execution_id” column contains OO flow execution ID. The “execution_name” column contains OO flow execution name. The valid status values are CANCELED, COMPLETED, PAUSED, PENDING, RUNNING and SYSTEM_FAILURE. The "start_time_long" column contains date and time at which flow was started in UNIX GMT epoch time format. The Unix epoch time is the number of seconds that have elapsed since January 1, 1970 midnight UTC. There are websites and tools that allow you to convert human readable date to epoch and vice versa. Use appropriate "start_time_long" values. Try to limit the number of rows returned to a minimum by using UNIX GMT epoch time not older than 30 days. Otherwise, there may be a potential impact to database and OO performance.</span></span></span></p>
 
