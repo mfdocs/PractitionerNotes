@@ -618,6 +618,8 @@
 
 <div></div>
 
+<div></div>
+
 <div><span style="background-color: transparent;">Caused by: org.opensaml.saml2.metadata.provider.FilterException: <b>Signature trust establishment failed for metadata entry</b></span></div>
 
 <div>org.opensaml.saml2.metadata.provider.SignatureValidationFilter.verifySignature(SignatureValidationFilter.java:327)</div>
@@ -656,6 +658,8 @@
 <blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;">
 <div>
 <div>2. If the URL of the ADFS metadata was not set correctly or the communication ADFS and OO Central is interrupted, you will see the following error:</div>
+
+<div></div>
 </div>
 
 <div></div>
@@ -690,6 +694,8 @@
 
 <div></div>
 
+<div></div>
+
 <div>3. If attributes are not defined properly or if the ADFS claims does not correspond with our best practices, you will notice the below error in the <b>server.log</b> file&nbsp;</div>
 
 <div></div>
@@ -712,6 +718,42 @@
 
 <div>Double check if the <b>User and Group attribute</b> from OO SAML Configuration page corresponds with the <b>Outgoing claim types</b> defined in the ADFS like above.</div>
 
+<div></div>
+
+<div>4.&nbsp; If there are time differences between the OO Central and the ADFS, you will notice an <strong>error </strong>into the wrapper.logs which says that the time is not syncronized and the SAML messages cannot be interpret.</div>
+
+<div></div>
+
+<div><b><i>Solution</i></b>:</div>
+
+<div></div>
+
+<div>Increase the timeout in which OO Central is wating for the SAML message to occur, before throwing the above error. In order to do this, you need to add the <strong>below </strong>parameter into the central-wrapper.conf, then <strong>restart </strong>the OO Central.</div>
+
+<div></div>
+
+<div><span style="font-size:10.5pt"><span style="font-family:&quot;Segoe UI&quot;,sans-serif">wrapper.java.additional.XX=-Dsaml.response.skew.seconds=&lt;the_time_difference_between_Central_and_ADFS_in_seconds&gt;</span></span></div>
+
+<div></div>
+
+<div>5. By default, the data sent through SAML messages is encrypted and you cannot see anything because it is not human readable.</div>
+
+<div></div>
+
+<div><b><i>Solution</i></b>:</div>
+
+<div></div>
+
+<div>If you want&nbsp;to check&nbsp;what exactly data is sent back from the ADFS (what groups are sent by ADFS, what username, email, etc), we recommand you to use a "SAML tracer" extension that you can add it into your browser, and <strong>delete the encryption certificate</strong> from your Relying Party Trust configuration&nbsp;from ADFS. It is not something we recommand, but if you think it is safe for you, and you want to do it in order to&nbsp;debug your env, you can.</div>
+
+<div><strong>Note</strong>: Backup your encryption certificate to be able to add it back after troubleshooting session.</div>
+</blockquote>
+
+<div></div>
+
+<div></div>
+
+<blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;">
 <div></div>
 </blockquote>
 </html>
