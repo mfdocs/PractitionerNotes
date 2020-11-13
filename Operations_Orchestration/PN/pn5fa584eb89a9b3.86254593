@@ -1,4 +1,4 @@
-<html><p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Micro Focus Operations Orchestration (OO) uses business intelligence available in a content pack to automate certain IT processes. Business intelligence inside a content pack is defined in the form of flows. A flow is the composition of steps and transitions forming a set of actions that are linked by decision-making logic to automate tasks. When a flow is launched in OO, an instance of that flow definition is executed. An OO flow execution may reach one of the following statuses depending on run time circumstances: PAUSED, PENDING, CANCELED, COMPLETED, RUNNING and SYSTEM_FAILURE. An OO flow might pause if that flow requires certain user inputs or if there are no workers in worker group, etc. A long running OO flow might be canceled by the administrator. An OO flow under normal conditions is in “running” status and reaches “completion” status after flow execution is complete. </span></span></span></p>
+<html><p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Micro Focus Operations Orchestration (OO) uses business intelligence available in a content pack to automate certain IT processes. Business intelligence inside a content pack is defined in the form of flows. A flow is the composition of steps and transitions forming a set of actions that are linked by decision-making logic to automate tasks. When a flow is launched in OO, an instance of that flow definition is executed.&nbsp;</span></span></span></p>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Some of the use cases that can be achieved by retrieving a list of OO flow executions that are in each status are as follows:</span></span></span></p>
 
@@ -6,6 +6,17 @@
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">An OO administrator can quickly identify a list of paused and pending OO flows, investigate any underlying issues and resume those paused and pending OO flows.</span></span></span></li>
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Identify and cancel OO flow executions that have been running for a long period of time. OO flow executions may run for a longer period due to various reasons such as environmental issues, coding issues, waiting on dependencies, etc. </span></span></span></li>
 </ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">An OO flow execution may reach one of the following statuses depending on run time circumstances: </span></span></span></p>
+
+<ul>
+	<li style="margin-left:8px">PAUSED: When an OO flow execution requires certain user inputs or if there are no workers in worker group, that OO flow execution reaches “PAUSED” status.</li>
+	<li style="margin-left:8px">PENDING: When a pause or cancel request is submitted to an OO flow execution, that OO flow execution reaches “PENDING” status. OO flow execution remains in “PENDING” status until that pause or cancel request is completed.</li>
+	<li style="margin-left:8px">CANCELED: When a long running OO flow is canceled by an administrator or OO system cancels an OO flow execution due to timeout settings or due to other reasons, that OO flow execution reaches “CANCELED” status.</li>
+	<li style="margin-left:8px">COMPLETED: When an OO flow execution has completed its run, that OO flow execution reaches “COMPLETED” status.</li>
+	<li style="margin-left:8px">RUNNING: When an OO flow execution run is in progress that OO flow execution is in “RUNNING” status.</li>
+	<li style="margin-left:8px">SYSTEM_FAILURE: When there are unexpected system failures, an OO flow execution reaches “SYSTEM_FAILURE” status.</li>
+</ul>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The following options are available in OO to retrieve a list of flow executions by its status:</span></span></span></p>
 
