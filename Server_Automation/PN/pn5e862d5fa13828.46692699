@@ -167,6 +167,7 @@ rule: ((device_agent_status IN ('UNREACHABLE', 'OK')))</pre>
 
 <pre>upper(device_custom_attr.custom_attr_key) like '%BUILD_W2K8R2%' </pre>
 
-<p>If this value does not a wildcard as it's an exact match for the custom attribute key then you should use the EQUALS_TO operator as it's faster.<br>
+<p>If this rule does not require a wildcard using EQUALS will be much&nbsp;faster.&nbsp; &nbsp;Could the rule be written as&nbsp;&nbsp;"<tt>Custom&nbsp;Attribute&nbsp;Name(local) EQUALS_TO "BUILD_W2K8R2"?</tt><br>
+<br>
 <code>LIKE</code>&nbsp;filters can only use the characters&nbsp;<em>before the first wild card</em>&nbsp;during tree traversal.&nbsp;The remaining characters are just filter predicates that do not narrow the scanned index range. A single&nbsp;<code>LIKE</code>&nbsp;expression can therefore contain two predicate types: (1) the part before the first wild card as an access predicate; (2) the other characters as a filter predicate.&nbsp;&nbsp;The more selective the prefix before the first wild card is, the smaller the scanned index range becomes. That, in turn, makes the index lookup faster and hence makes the DDG recalculation faster.</p>
 </html>
