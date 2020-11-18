@@ -1,15 +1,62 @@
-<h1>Device group tuning</h1>
+<html><h1>Device group tuning</h1>
 
-<p>Dynamic device groups tuning is not as simple as tweaking a configuration parameter.&nbsp;The reporting threshold for long running dynamic device group calculations is 10 seconds and any taking longer than this will be reported in the twist <strong>server.log</strong> file.&nbsp; &nbsp;Concentrating on those taking minutes would be prudent.&nbsp; Having said that you can also suffer a death by a thousand little cuts. From the twist logs.</p>
+<p>Dynamic device group tuning is not as simple as tweaking a configuration parameter.&nbsp;The reporting threshold for long-running dynamic device group calculations is 10 seconds and any taking longer than this will be reported in the twist <strong>server.log</strong> file.&nbsp; &nbsp;Concentrating on those taking minutes would be prudent.&nbsp; Having said that you can also suffer a death by a thousand little cuts. From the twist logs.</p>
 
 <pre>2018-06-21 00:59:16,111 WARNING Thread-26 [com.opsware.twist.utils.SQLHelper] [checkForElapsedTimeWarning] SQL elapsed time (114.945 seconds) exceeds warning threshold (10 seconds)
 java.sql.SQLException: SQL was successful but the elapsed time threshold was exceeded</pre>
 
 <p>Some device groups take longer than others to compute due to their complexity. Resolving DDG issues is not an exact science, it a black art, and some guidance is necessary.</p>
 
-<p>There are some thing you can do:</p>
+<p>There is something you can do:</p>
 
-<h2>Delete DDG’s that are orphaned and not being reference by any policy</h2>
+<h2>Locating long-running Device Group SQL</h2>
+
+<p>As a WARNING is emitted into the twist/server.log file all we need to do is parse those logs and produce a report.&nbsp; This code will help us with that task</p>
+
+<pre><code>#!/opt/opsware/bin/python
+# Slurp twist server.log files and produce a report sorted by time for average execution time of a DDG.
+import sys,re,operator
+from collections import defaultdict</code>
+
+<code>THREAD_RE = re.compile('Thread-([\d]+)')
+RECALC_RE = re.compile('Recalc.\d+.([\d]+)')
+ELAPSED_RE = re.compile('([\d\.]+) seconds')</code>
+
+<code>def readFile(filename):
+    dig = 0
+    secs_tid = 0
+    with open(filename,'r') as fd:
+        for line in fd.readlines():
+            if '[checkForElapsedTimeWarning]' in line:
+                tid = THREAD_RE.search(line).group(1)
+                m = ELAPSED_RE.search(line)
+                if m:
+                    secs = float(m.group(1))
+                    secs_tid = tid
+                else:
+                    m = RECALC_RE.search(line)
+                    if m:
+                        dig = m.group(1)
+                if dig and tid == secs_tid:
+                    yield dig, secs
+                    dig = 0</code>
+
+<code>d=defaultdict(list)
+for filename in sys.argv[1:]:
+    for dig, secs in readFile(filename):
+        d[dig].append(secs)</code>
+
+<code># Output: Device Group ID, Time to recalc (secs)
+d = {k: sum(v)/len(v) for k,v in d.items()}
+for k,v in sorted(d.items(),key=operator.itemgetter(1)):
+    print "%s %.2f" % (k, v)</code>
+</pre>
+
+<p>It&nbsp;can be used by running in <tt>/var/log/opsware/twist</tt> directory like this</p>
+
+<pre>./dgRecalc.py server.log*</pre>
+
+<h2>Delete DDG’s that are orphaned and not being referred by any policy</h2>
 
 <p>These are being recalculated unnecessarily and are performing no purpose in the system except to chew up CPU and I/O time.</p>
 
@@ -21,7 +68,7 @@ java.sql.SQLException: SQL was successful but the elapsed time threshold was exc
        A device group that only contains servers and it’s not referenced is marked
        as an ORPHAN otherwise its marked as USED.</pre>
 
-<p>For the full man page source the support tools setup and use “man” like you would any other UNIX tool.</p>
+<p>For the full man page source the support tools set up and use “man” like you would any other UNIX tool.</p>
 
 <pre># . /opt/opsware/support/setup.sh
 # man dgUsage</pre>
@@ -37,28 +84,28 @@ Public/OEL Servers - USED
 Public/Restricted Access - USED
 Public/Fake Servers - ORPHAN</pre>
 
-<p>those orphaned can be examined closer before deciding to remove them. Delete can be an individual</p>
+<p>those orphaned can be examined closely before deciding to remove them. Delete can be an individual</p>
 
 <pre># dgUsage --remove "Public/Fake Servers"</pre>
 
-<p>or en-mass by supplying a root folder.&nbsp; It does not have to be top level root folder Public this is just an example,&nbsp;</p>
+<p>or en-mass by supplying a root folder.&nbsp; It does not have to be top-level root folder Public this is just an example,&nbsp;</p>
 
 <pre># dgUsage --remove Public</pre>
 
-<h2>Locate the long running (high cost) dynamic device groups</h2>
+<h2>Locate the long-running (high cost), dynamic device groups</h2>
 
 <p>There are a couple of ways you can do this:</p>
 
 <ul>
 	<li>
-	<p>The debug logging shows how long each membership calculation took and the SQL used. This helps identify the most time consuming group calculation and condition for that group. To turn on this logging, add the two lines below to&nbsp;<tt>/etc/opt/opsware/twist/twist_custom.conf</tt>.</p>
+	<p>The debug logging shows how long each membership calculation took and the SQL used. This helps identify the most time-consuming group calculation and condition for that group. To turn on this logging, add the two lines below to&nbsp;<tt>/etc/opt/opsware/twist/twist_custom.conf</tt>.</p>
 	</li>
 </ul>
 
 <pre>recalc.debugTiming=true
 com.opsware.device.impl.level=FINER</pre>
 
-<p>You can see the output in&nbsp;<tt>/var/log/opsware/twist/server.log.&lt;0-9&gt;</tt>. The following script finds most time consuming group calculation.</p>
+<p>You can see the output in&nbsp;<tt>/var/log/opsware/twist/server.log.&lt;0-9&gt;</tt>. The following script finds the most time-consuming group calculation.</p>
 
 <pre>cd /var/log/opsware/twist
 egrep 'Ending pullAndRecalcAnEvent' `ls -1tr server.log.?` | sed -e 's/FINE.* //' -e 's/\]//' | sort -n | awk '$NF &gt; 30000 { print }' &gt; /tmp/bad-times.input</pre>
@@ -88,26 +135,38 @@ modified_dt: : 20131125T01:58:02
 parent_role_class_id: 3390001
 rule: ((device_agent_status IN ('UNREACHABLE', 'OK')))</pre>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Tune the DDG query</h2>
 
 <ul>
-	<li>Minimize the usage of the keyword operators; IN, BEGINS_WITH, CONTAINS and NOT_IN and always prefer EQUALS.</li>
-	<li>Do not duplicate high cost sub-rules.</li>
+	<li>Minimize the usage of the keyword operators; IN, BEGINS_WITH, CONTAINS, and NOT_IN and always prefer EQUALS.</li>
+	<li>Do not duplicate high-cost sub-rules.</li>
 </ul>
 
-<p>If the same high cost sub-rule is present in multiple device groups it will be executed on the DB multiple times when its recalc event is processed. Isolating the high cost rules into their separate device groups is the recommended approach.</p>
+<h3>Nesting</h3>
+
+<p>If the same high-cost sub-rule is present in multiple device groups it will be executed on the DB multiple times when its recalc event is processed. Isolating the high-cost rules into their separate device groups is the recommended approach.</p>
 
 <p>Consider these two device group both with an expensive CONTAINS clause:</p>
 
 <pre>            group_1: (Facility Name Equals "SA10A") &amp; (Installed Software CONTAINS "HP")
             group_2: (Facility Name Equals "SA10B") &amp; (Installed Software CONTAINS "HP")</pre>
 
-<p>The&nbsp;<tt>CONTAINS&nbsp;"HP"</tt>&nbsp;high cost query is executed twice for group_1 and group_2.</p>
+<p>The&nbsp;<tt>CONTAINS&nbsp;"HP"</tt>&nbsp;high-cost query is executed twice for group_1 and group_2.</p>
 
 <p>This would be better. We have isolated this to its own device group and then referenced it from the others.</p>
 
 <pre>            group_HP: (Installed Software CONTAINS "HP")
             group_1: (Facility Name Equals "SA10A") &amp; (Device Group Is "group_HP")
             group_2: (Facility Name Equals "SA10B") &amp; (Device Group Is "group_HP")</pre>
+
+<h3>Contains</h3>
+
+<p>Expression such as&nbsp;<tt>"Custom&nbsp;Attribute&nbsp;Name(local)&nbsp;CONTAINS&nbsp;"BUILD_W2K8R2"</tt>&nbsp;translates into the following badly performing SQL.</p>
+
+<pre>upper(device_custom_attr.custom_attr_key) like '%BUILD_W2K8R2%' </pre>
+
+<p>If this value does not a wildcard as it's an exact match for the custom attribute key then you should use the EQUALS_TO operator as it's faster.<br>
+<code>LIKE</code>&nbsp;filters can only use the characters&nbsp;<em>before the first wild card</em>&nbsp;during tree traversal.&nbsp;The remaining characters are just filter predicates that do not narrow the scanned index range. A single&nbsp;<code>LIKE</code>&nbsp;expression can therefore contain two predicate types: (1) the part before the first wild card as an access predicate; (2) the other characters as a filter predicate.&nbsp;&nbsp;The more selective the prefix before the first wild card is, the smaller the scanned index range becomes. That, in turn, makes the index lookup faster and hence makes the DDG recalculation faster.</p>
+</html>
