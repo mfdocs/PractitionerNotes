@@ -54,7 +54,18 @@ for k,v in sorted(d.items(),key=operator.itemgetter(1)):
 
 <p>It&nbsp;can be used by running in <tt>/var/log/opsware/twist</tt> directory like this</p>
 
-<pre>./dgRecalc.py server.log*</pre>
+<pre>[root@dc1 twist]# ./dgRecalc.py server.log*
+161760001 14.26
+235620001 78.60
+235630001 78.84
+235640001 78.70
+235650001 77.86
+[root@dc1 twist]#
+</pre>
+
+<p>You can get more information about each DDG by using the dgDump support tool</p>
+
+<pre>/opt/opsware/support/bin/dgDump &lt;id&gt;</pre>
 
 <h2>Delete DDG’s that are orphaned and not being referred by any policy</h2>
 
