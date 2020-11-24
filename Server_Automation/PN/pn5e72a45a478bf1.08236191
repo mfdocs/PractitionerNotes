@@ -790,4 +790,24 @@ JAVA_OPTS="${JAVA_OPTS} -Djava.security.egd=file:/dev/./urandom"</pre>
 <ul>
 	<li>OCTCR19L728183 Scalability issue around on-demand batchbot configuration query, spin's ident based authentication, and lack of egress gw load balancing.</li>
 </ul>
+
+<h2>Entropy</h2>
+
+<p>Starvation of the random number pool&nbsp;available in /dev/random will cause components that require randomness for SSL key generation to stall, as SA is a highly secure system making use of cryptographic communication it&nbsp;important a steady supply of randomness is available.&nbsp; /dev/random will block when it runs dry causing those using it to wait.</p>
+
+<p>These notes are for RHEL7. Install EPEL and the <u>haveged </u>package.</p>
+
+<pre>yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+yum -y install haveged</pre>
+
+<p>Adjust the entropy from 1024 to 3072; <tt>/usr/lib/systemd/system/haveged.service</tt></p>
+
+<pre>ExecStart=/usr/sbin/haveged -w 3072 -v 1 --Foreground</pre>
+
+<p>Start it up</p>
+
+<pre>systemctl enable haveged
+systemctl start haveged</pre>
+
+<p>&nbsp;</p>
 </html>
