@@ -800,7 +800,8 @@ JAVA_OPTS="${JAVA_OPTS} -Djava.security.egd=file:/dev/./urandom"</pre>
 <pre>yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 yum -y install haveged</pre>
 
-<p>Adjust the entropy from 1024 to 3072; <tt>/usr/lib/systemd/system/haveged.service</tt></p>
+<p>Adjust the entropy from 1024 to 3072; <tt>/usr/lib/systemd/system/haveged.service</tt><br>
+3072 is an optimal value going above this will have a detrimental effect on the system.</p>
 
 <pre>ExecStart=/usr/sbin/haveged -w 3072 -v 1 --Foreground</pre>
 
