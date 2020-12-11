@@ -37,34 +37,89 @@ The script will perform the following operations:<span id="cke_bm_1685C" style="
 <pre><code>################ Script Begin&nbsp;################&nbsp;
 
 #!/bin/bash
-# This script is used to change PV IP address (keep path) for an installed SMAX
-# This script will:
+# This script is used to change NFS Server or NFS directory path for for an installed SMAX cluster, CDF is included.
+# Note: SMAX should be shut down when running this script
+# Note: This scrit will NOT move data from old server to new server
+# Run the following command to copy the data from the volume you have configured for installation to the newly exported volume:
+# cp -rfp &lt;old_NFS_folder&gt;* &lt;new_NFS_folder&gt;
+# This script will: 
 # * Backup current PV for Kubernetes cluster under /tmp/Persistentvolume/pv/{namespace}/old folder
 # * Create new PV yaml file in the new folder /tmp/Persistentvolume/pv/{namespace}/new
 # * Backup current PVC for Kubernetes cluster under /tmp/Persistentvolume/pvc/{namespace}/old folder
 # * Create new PVC yaml file in the new folder /tmp/Persistentvolume/pvc/{namespace}/new
 # * Create new PVC with updated PVC yaml.
 # * Create new PV with updated PV yaml.
+# Update date: 2020-12-11
 
-#set -x
+debug=N
+dry_run=Y
+while [[ ! -z $1 ]] ; do
+    case "$1" in
+        -OS|--old-server)
+        case "$2" in
+            *)  if [[ -z $2 ]] ; then echo "-OS|--old-server requires a value. " ; exit 1 ; fi ; oldpv1=$2 ; shift 2 ;;
+        esac ;;
+        -NS|--new-server)
+        case "$2" in
+            *)  if [[ -z $2 ]] ; then echo "-NS|--new-server requires a value. " ; exit 1 ; fi ; newpv1=$2 ; shift 2 ;;
+        esac ;;
+        -OP|--old-path)
+        case "$2" in
+            *)  if [[ -z $2 ]] ; then echo "-OP|--old-path requires a value. " ; exit 1 ; fi ; oldpv2=$2 ; shift 2 ;;
+        esac ;;
+        -NP|--new-path)
+        case "$2" in
+            *)  if [[ -z $2 ]] ; then echo "-NP|--new-path requires a value. " ; exit 1 ; fi ; newpv2=$2 ; shift 2 ;;
+        esac ;;
+        --debug)
+        case "$2" in
+            *) debug=Y ; shift 1 ;;
+        esac ;;
+        --dry-run)
+        case "$2" in
+            *)  if [[ -z $2 ]] ; then echo "--dry-run requires a value. " ; exit 1 ; fi ; dry_run=$2 ; shift 2 ;;
+        esac ;;
+        *|-*|-h|--help|/?|help) echo "Usage: $0 "
+            echo "       -OS|--old-server   Old NFS server name or IP, should be same value of you current system"
+            echo "       -NS|--new-server   New NFS server name or IP, cannot be empty if old server value is set"
+            echo "       -OP|--old-path     Old NFS path of share folder"
+            echo "       -NP|--new-path     New NFS path of share folder, cannot be empty if old path value is set"
+            echo "       --dry-run          Dry run enable,  default is Y, set to N for changing cluster value"
+            echo "       --debug            Enable debug mode"
+            echo "       -h|--help          Show help." ; exit 1 ;;
+    esac
+done
 
-if [ $# -lt 2 ]; then
-&nbsp; &nbsp; echo "Usage: $0 &lt;old_value&gt; &lt;new_value&gt; &lt;old_value&gt; &lt;new_value&gt;"
-&nbsp; &nbsp; exit 1
-elif [ $# -eq 2 ]; then
-&nbsp; oldpv1=$1
-&nbsp; newpv1=$2
-elif [ $# -eq 3 ]; then
-&nbsp; echo " 3 prameter is not available, Usage: $0 &lt;old_value&gt; &lt;new_value&gt; &lt;old_value&gt; &lt;new_value&gt;"
-&nbsp; exit 1
-elif [ $# -eq 4 ]; then
-&nbsp; oldpv1=$1
-&nbsp; newpv1=$2
-&nbsp; oldpv2=$3
-&nbsp; newpv2=$4
-else
-&nbsp; echo "prameter number is not available, should be 2 or 4, Usage: $0 &lt;old_value&gt; &lt;new_value&gt; &lt;old_value&gt; &lt;new_value&gt;"
-&nbsp; exit 1
+#enable debug mode
+if [[ $debug == Y ]]; then
+    set -x
+fi
+
+#must be set one parameter
+if [[ -z $oldpv1 ]] &amp;&amp; [[ -z $oldpv2 ]]; then
+  echo ERROR: at least one paprameter is necessary!
+  $0 -h
+  exit 1
+fi
+
+# should set old server and new server at same time. 
+if [[ ! -z $oldpv1  &amp;&amp; -z $newpv1 ]] ||  [[ -z $oldpv1 &amp;&amp;  ! -z $newpv1 ]] ; then 
+  echo ERROR: one of old server and new server is empty! set parameters by -OS and -NS
+  $0 -h
+  exit 1
+fi
+
+# should set old path and new path at same time. 
+if [[ ! -z $oldpv2  &amp;&amp; -z $newpv2 ]] ||  [[ -z $oldpv2 &amp;&amp;  ! -z $newpv2 ]] ; then 
+  echo ERROR: one of old server and new server path is empty! set parameters by -OP and -NP
+  $0 -h
+  exit 1
+fi
+
+nfs_server=`kubectl get pv itom-vol -o yaml  |grep -v f: |grep server: | awk 'BEGIN{FS=":"}{print $2}' |sed 's/ //g'`
+if [[ ! -z $oldpv1 &amp;&amp; $oldpv1 != $nfs_server ]]; then
+  echo Warning: Provided old server $oldpv1 is not match with real server $nfs_server, please doulbe check and try again!
+  exit 1
 fi
 
 oldpv1=`echo $oldpv1 | sed 's/\//XXXXX/g'`
@@ -76,10 +131,10 @@ file_date=`date "+%Y%m%d%H%M%S"`
 
 
 if [ -d /tmp/Persistentvolume/pv ]; then
-&nbsp; mv /tmp/Persistentvolume/pv /tmp/Persistentvolume/pv.bak.${file_date}
+  mv /tmp/Persistentvolume/pv /tmp/Persistentvolume/pv.bak.${file_date}
 fi
 if [ -d /tmp/Persistentvolume/pvc ]; then
-&nbsp; mv /tmp/Persistentvolume/pvc /tmp/Persistentvolume/pvc.bak.${file_date}
+  mv /tmp/Persistentvolume/pvc /tmp/Persistentvolume/pvc.bak.${file_date}
 fi
 
 create_folder(){
@@ -90,91 +145,91 @@ mkdir -p /tmp/Persistentvolume/pv/$ns/new
 }
 
 change_pv() {
-&nbsp; file=$1
-&nbsp; sed -i '/annotations/d' $file
-&nbsp; sed -i '/kubernetes.io/d' $file
-&nbsp; sed -i '/creatiofileTimestamp/d' $file
-&nbsp; sed -i '/deletionGrfilecePeriodSeconds/d' $file
-&nbsp; sed -i '/finalizers/d' $file
-&nbsp; sed -i '/selfLink/d' $file
-&nbsp; sed -i '/resourceVersion/d' $file
-&nbsp; sed -i '/uid/d' $file
-&nbsp; sed -i'/status/d' $file
-&nbsp; sed -i '/fileessage/d' $file
-&nbsp; sed -i '/phase:/d' $file
+  file=$1
+  sed -i '/annotations/d' $file
+  sed -i '/kubernetes.io/d' $file
+  sed -i '/creatiofileTimestamp/d' $file
+  sed -i '/deletionGrfilecePeriodSeconds/d' $file
+  sed -i '/finalizers/d' $file
+  sed -i '/selfLink/d' $file
+  sed -i '/resourceVersion/d' $file
+  sed -i '/uid/d' $file
+  sed -i'/status/d' $file
+  sed -i '/fileessage/d' $file
+  sed -i '/phase:/d' $file 
 }
 
 change_pvc() {
-&nbsp; file=$1
-&nbsp; sed -i '/annotations/d' $file
-&nbsp; sed -i '/kubernetes.io/d' $file
-&nbsp; sed -i '/creationTimestamp/d' $file
-&nbsp; sed -i '/deletionGracePeriodSeconds/d' $file
-&nbsp; sed -i '/selfLink/d' $file
-&nbsp; sed -i '/resourceVersion/d' $file
-&nbsp; sed -i '/finalizers:/d' $file
-&nbsp; sed -i '/uid/d' $file
-&nbsp; sed -i '/message/d' $file
-&nbsp; sed -i '/^status/,/^\phase/{/^status/!{/^\phase/!d}}' &nbsp;$file
-&nbsp; sed -i '/status:/d' $file
+  file=$1
+  sed -i '/annotations/d' $file
+  sed -i '/kubernetes.io/d' $file
+  sed -i '/creationTimestamp/d' $file
+  sed -i '/deletionGracePeriodSeconds/d' $file
+  sed -i '/selfLink/d' $file
+  sed -i '/resourceVersion/d' $file
+  sed -i '/finalizers:/d' $file
+  sed -i '/uid/d' $file
+  sed -i '/message/d' $file
+  sed -i '/^status/,/^\phase/{/^status/!{/^\phase/!d}}'  $file
+  sed -i '/status:/d' $file 
 }
 
 save_pvc() {
-&nbsp; for i in `kubectl get pvc -n $ns | grep -v NAME | cut -f1 -d " "`
-&nbsp; do
-&nbsp; &nbsp; echo "save pvc: $i"
-&nbsp; &nbsp; kubectl get pvc $i -n $ns -o yaml &nbsp;&gt; /tmp/Persistentvolume/pvc/$ns/old/${i}_pvc.yaml
-&nbsp; &nbsp; kubectl get pvc $i -n $ns -o yaml &gt; /tmp/Persistentvolume/pvc/$ns/new/${i}_pvc.yaml
-&nbsp; &nbsp; change_pvc /tmp/Persistentvolume/pvc/$ns/new/${i}_pvc.yaml
-&nbsp; done
+  for i in `kubectl get pvc -n $ns | grep -v NAME | cut -f1 -d " "`
+  do
+    echo "save pvc: $i"
+    kubectl get pvc $i -n $ns -o yaml  &gt; /tmp/Persistentvolume/pvc/$ns/old/${i}_pvc.yaml
+    kubectl get pvc $i -n $ns -o yaml &gt; /tmp/Persistentvolume/pvc/$ns/new/${i}_pvc.yaml
+    change_pvc /tmp/Persistentvolume/pvc/$ns/new/${i}_pvc.yaml
+  done
 }
 
 delete_pvc() {
-&nbsp; for i in `kubectl get pvc -n $ns | grep -v NAME | cut -f1 -d " "`
-&nbsp; do
-&nbsp; &nbsp; echo "delete pvc: $i"
-&nbsp; &nbsp; kubectl patch pvc $i -n $ns -p '{"metadata":{"finalizers": []}}' --type=merge
-&nbsp; &nbsp; kubectl delete pvc $i -n $ns --force --grace-period=0
-&nbsp; done
+  for i in `kubectl get pvc -n $ns | grep -v NAME | cut -f1 -d " "`
+  do
+    echo "delete pvc: $i"
+    kubectl patch pvc $i -n $ns -p '{"metadata":{"finalizers": []}}' --type=merge
+    kubectl delete pvc $i -n $ns --force --grace-period=0
+  done
 }
 
 save_pv() {
-&nbsp; for i in `kubectl get pvc -n $ns | grep -v NAME &nbsp;| awk '{print $3}'`
-&nbsp; do
-&nbsp; &nbsp; echo "save pv: $i"
-&nbsp; &nbsp; kubectl get pv $i -o yaml &nbsp;&gt; /tmp/Persistentvolume/pv/$ns/old/${i}_pv.yaml
-&nbsp; &nbsp; kubectl get pv $i -o yaml | sed 's/\//XXXXX/g' &nbsp;&gt; /tmp/Persistentvolume/pv/$ns/new/${i}_pv.yaml
-&nbsp; &nbsp; sed -i -e &nbsp;"s/${oldpv1}/${newpv1}/g" /tmp/Persistentvolume/pv/$ns/new/${i}_pv.yaml
-&nbsp; &nbsp; sed -i -e &nbsp;"s/${oldpv2}/${newpv2}/g" /tmp/Persistentvolume/pv/$ns/new/${i}_pv.yaml
-&nbsp; &nbsp; sed -i -e 's/XXXXX/\//g' /tmp/Persistentvolume/pv/$ns/new/${i}_pv.yaml
-&nbsp; &nbsp; change_pvc /tmp/Persistentvolume/pv/$ns/new/${i}_pv.yaml
-&nbsp; done
-&nbsp; kubectl get pvc -n $ns | grep -v NAME &nbsp;| awk '{print $3}' &gt; /tmp/pv.list
+  for i in `kubectl get pvc -n $ns | grep -v NAME  | awk '{print $3}'`
+  do
+    echo "save pv: $i"
+    kubectl get pv $i -o yaml  &gt; /tmp/Persistentvolume/pv/$ns/old/${i}_pv.yaml
+    kubectl get pv $i -o yaml | sed 's/\//XXXXX/g'  &gt; /tmp/Persistentvolume/pv/$ns/new/${i}_pv.yaml
+    sed -i -e  "s/${oldpv1}/${newpv1}/g" /tmp/Persistentvolume/pv/$ns/new/${i}_pv.yaml
+    sed -i -e  "s/${oldpv2}/${newpv2}/g" /tmp/Persistentvolume/pv/$ns/new/${i}_pv.yaml
+    sed -i -e 's/XXXXX/\//g' /tmp/Persistentvolume/pv/$ns/new/${i}_pv.yaml
+    change_pvc /tmp/Persistentvolume/pv/$ns/new/${i}_pv.yaml
+  done
+  kubectl get pvc -n $ns | grep -v NAME  | awk '{print $3}' &gt; /tmp/pv.list
 }
 
 delete_pv() {
-&nbsp; for i in `cat /tmp/pv.list`
-&nbsp; do
-&nbsp; &nbsp; echo "delete pv: $i"
-&nbsp; &nbsp; kubectl delete pv $i --force --grace-period=0
-&nbsp; done
-&nbsp; rm -rf /tmp/pv.list
+  for i in `cat /tmp/pv.list`
+  do
+    echo "delete pv: $i"
+    kubectl delete pv $i --force --grace-period=0
+  done
+  rm -rf /tmp/pv.list
 }
 
 create_pv() {
-&nbsp; for i in `find /tmp/Persistentvolume/pv/$ns/new -type f`
-&nbsp; do
-&nbsp; &nbsp; echo "create pv： $i"
-&nbsp; &nbsp; kubectl create -f $i
-&nbsp; done
+  for i in `find /tmp/Persistentvolume/pv/$ns/new -type f`
+  do
+    echo "create pv： $i"
+    kubectl create -f $i
+  done
 }
 
 create_pvc() {
-&nbsp; for i in `find /tmp/Persistentvolume/pvc/$ns/new -type f`
-&nbsp; do
-&nbsp; &nbsp; echo "create pvc： $i"
-&nbsp; &nbsp; kubectl create -f $i
-&nbsp; done
+  for i in `find /tmp/Persistentvolume/pvc/$ns/new -type f`
+  do
+    echo "create pvc： $i"
+    kubectl create -f $i
+  done
 }
 
 function check_pod(){
@@ -182,31 +237,46 @@ pod_name=$1
 echo checking pod status for ${pod_name}
 number=`kubectl get pods -n $ns -o wide |grep -v controller |grep ${pod_name} | awk -F " *|/" '($3!=$4 || $5!="Running") &amp;&amp; $5!="Completed" {print $0}' |wc -l`
 if [ $number -gt 0 ]; then
-&nbsp; echo "Error: pod ($pod_name) is running, please make sure SMAX($ns) is stopped first."
-&nbsp; exit 1
+  echo "Error: pod ($pod_name) is running, please make sure SMAX($ns) is stopped first."
+  exit 1
 fi
 }
 
 ns=`kubectl get namespace |grep itsma | cut -f1 -d " "`
 itsma_ns=`kubectl get namespace |grep itsma | cut -f1 -d " "`
-create_folder
-check_pod rabbitmq
-check_pod platform
-check_pod idm
-save_pv
-save_pvc
-delete_pvc
-delete_pv
-create_pv
-create_pvc
-ns=core
-create_folder
-save_pv
-save_pvc
-delete_pvc
-delete_pv
-create_pv
-create_pvc
+if [[ $dry_run !=  N ]]; then
+  create_folder
+  check_pod rabbitmq
+  check_pod platform
+  check_pod idm
+  save_pv
+  save_pvc
+  ns=core
+  create_folder
+  save_pv
+  save_pvc
+  echo Dry Run done, please check /tmp/Persistentvolume/pv/${itsma_ns}/new to review the result, if the result is okay,then run the command again with "--dry-run N"
+else
+  create_folder
+  check_pod rabbitmq
+  check_pod platform
+  check_pod idm
+  save_pv
+  save_pvc
+  delete_pvc
+  delete_pv
+  create_pv
+  create_pvc
+  ns=core
+  create_folder
+  save_pv
+  save_pvc
+  delete_pvc
+  delete_pv
+  create_pv
+  create_pvc
+fi  
+
 
 ################ Script End&nbsp;################&nbsp;</code></pre>
 
