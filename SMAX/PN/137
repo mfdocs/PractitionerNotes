@@ -17,9 +17,6 @@ kubectl patch daemonset fluentd -n core -p '{"spec": {"template": {"spec": {"nod
 $K8S_HOME/scripts/cdfctl.sh runlevel set -l UP
 #start up fluentd 
 kubectl patch daemonset fluentd -n core --type json -p '[{"op": "remove", "path": "/spec/template/spec/nodeSelector/non-existing"}]'</code></pre>
-
-	<pre>
-</pre>
 	</li>
 </ol>
 
