@@ -1,9 +1,9 @@
 <html><!--StartFragment-->
-<p>After SMA is installed, you may need to switch SMA to a new NFS server for some reasons. For example,the existing NFS server requires maintenance, is not stable, or has performance issues.</p>
+<p>After SMA is installed, you may need to switch SMA to a new NFS server for some reason. For example, the existing NFS server requires maintenance, is not stable, or has performance issues.</p>
 
 <p>The following describes the process of switching SMA from one NFS server to another.</p>
 
-<p>Note: during this process, SMA will experience downtime. For this reason, perform this operation only in a scheduled maintenance window.</p>
+<p><strong>Note</strong>: during this process, SMA will experience downtime. For this reason, perform this operation only in a scheduled maintenance window.</p>
 
 <ol>
 	<li>Stop SMAX and CDF:
@@ -11,8 +11,8 @@
 kubectl patch daemonset fluentd -n core -p '{"spec": {"template": {"spec": {"nodeSelector": {"non-existing": "true"}}}}}'</code></pre>
 	</li>
 	<li>Run the script provided on this page on one master node or the bastion node.</li>
-	<li>Check that all PVs are set up correctly, go to /tmp/Persistentvolume/pv/{namespace}/new, and check the content.</li>
-	<li>Restart the Kubernetes cluster as described in the "Restart the SMA Suite" topic.
+	<li>Check that all PVs are set up correctly. To do this, go to /tmp/Persistentvolume/pv/{namespace}/new, and check the content.</li>
+	<li>Restart the Kubernetes cluster as described in the "Restart the SMA Suite" topic.&nbsp;
 	<pre><code>#start up CDF and SMAX cdfctl.sh runlevel set -l UP
 $K8S_HOME/scripts/cdfctl.sh runlevel set -l UP
 #start up fluentd 
@@ -21,14 +21,12 @@ kubectl patch daemonset fluentd -n core --type json -p '[{"op": "remove", "path"
 </ol>
 
 <h2>Script</h2>
-The script will perform the following operations:<span id="cke_bm_1685C" style="display: none;">&nbsp;</span>
-
-<p></p>
+The script will perform the following operations:&nbsp;
 
 <ul>
-	<li>Back up the current PV for the Kubernetes cluster in the /tmp/Persistentvolume/pv/{namespace}old folder</li>
+	<li>Back up the current PV&nbsp;for the Kubernetes cluster in the /tmp/Persistentvolume/pv/{namespace}old folder.</li>
 	<li>Create a new PV yaml file in the new folder /tmp/Persistentvolume/pv/{namespace}/new.</li>
-	<li>Back up the current PVC for the Kubernetes cluster in the /tmp/Persistentvolume/pvc/{namespace}/old folder.</li>
+	<li>Back up the current PVC&nbsp;for the Kubernetes cluster in the /tmp/Persistentvolume/pvc/{namespace}/old folder.</li>
 	<li>Create a new PVC yaml file in the new folder /tmp/Persistentvolume/pvc/{namespace}/new.</li>
 	<li>Create a new PVC with the updated PVC yaml.</li>
 	<li>Create a new PV with the updated PV yaml.</li>
