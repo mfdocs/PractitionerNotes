@@ -39,11 +39,202 @@
 	</li>
 </ol>
 
-<p></p>
+<h2>Install Velero on a control plane node</h2>
+
+<p>Perform the following steps to install Velero on a control plane node (formerly known as a "master node").</p>
+
+<h3>Step 1. Download the minio&nbsp;image</h3>
+
+<p>If your control plane node has Internet access, download the image from the node; otherwise, download the image from another Linux machine that has Internet access and then transfer the image to the control plane node.</p>
 
 <p></p>
 
-<p></p>
+<h3>Step 2. Install Velero</h3>
 
-<p></p>
+<ol>
+	<li>Download the tarball of the latest Velero release to a temporary directory on the control plane node. The download URL is&nbsp;https://github.com/vmware-tanzu/velero/releases/.</li>
+	<li>Extract the package:
+	<pre><code>tar -xvf &lt;release-tarball-name&gt;.tar.gz</code></pre>
+
+	<p>The directory you extracted is called the “Velero directory” in subsequent steps.&nbsp;</p>
+	</li>
+	<li>Move the Velero binary from the Velero directory to somewhere in your&nbsp;PATH. For example:
+	<pre><code>cp velero /usr/local/bin/</code></pre>
+
+	<p></p>
+	</li>
+	<li>Create a Velero-specific credentials file in your local directory. For example, in the Velero directory:
+	<pre><code>cat &lt;&lt;ENDFILE &gt; ./credentials-velero
+[default]
+aws_access_key_id = minio
+aws_secret_access_key = minio123
+ENDFILE
+</code></pre>
+
+	<p></p>
+	</li>
+	<li>Add PVs/PVCs to the 00-minio-deployment.yaml file located in the Velero directory:
+	<pre><code>apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: minio-pv-claim
+  namespace: velero
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: /var/vols/itom/itsma/minio
+    server: shc-sma-cd66.hpeswlab.net
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: minio-pv-claim
+  namespace: velero
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  volumeName: minio-pv-claim
+</code></pre>
+
+	<p></p>
+	</li>
+	<li>Change volumes in deployment:
+	<pre><code>
+//Old:
+volumes:
+      - name: storage
+        emptyDir: {}
+      - name: config
+        emptyDir: {}
+ 
+//New:
+volumes:
+      - name: storage
+        persistentVolumeClaim:
+          claimName: minio-pv-claim
+</code></pre>
+
+	<p></p>
+	</li>
+	<li>Start the server and the local storage service. In the Velero directory, run the following command:
+	<pre><code>kubectl apply -f examples/minio/00-minio-deployment.yaml</code></pre>
+
+	<p></p>
+	</li>
+	<li>Run the following command:
+	<pre><code>velero install \
+    --provider aws \
+    --plugins velero/velero-plugin-for-aws:v1.0.0 \
+    --bucket velero \
+    --secret-file ./credentials-velero \
+    --use-volume-snapshots=false \
+    --backup-location-config region=minio,s3ForcePathStyle="true",s3Url=http://minio.velero.svc:9000</code></pre>
+
+	<p></p>
+	</li>
+</ol>
+
+<h2>Back up and restore Kubernestes objects for the suite</h2>
+
+<h3>Back up&nbsp;</h3>
+
+<p>On the control plane node on which Velero is installed, run the following command:</p>
+
+<pre><code>velero backup create &lt;suite backup name&gt; --include-namespaces &lt;suite namespace&gt; --wait</code></pre>
+
+<p>The following is an&nbsp;example:</p>
+
+<pre><code>velero backup create itsma-backup --include-namespaces itsma-hidfg--wait</code></pre>
+
+<h3>Restore</h3>
+
+<p>In this example, we'll delete the suite namespace first, and then restore the k8s objects for the suite:&nbsp;</p>
+
+<ol>
+	<li>Delete the suite namespace:
+	<pre><code>kubectl delete ns &lt;suite namespace&gt;</code></pre>
+
+	<p></p>
+	</li>
+	<li>Deleting the suite namespace also deletes the PVCs of the suite namespace. As a result, the PVs associated with the PVCs are in released state. Before attempting the restore, you must delete the PVs in released state; otherwise, the pods will be pending and errors will occur. To delete the PVs in released state, run the following command:
+	<pre><code>kubectl get pv  |grep -i release | awk '{print $1}' | xargs kubectl delete pv</code></pre>
+
+	<p></p>
+	</li>
+	<li>Restore the k8s objects for the suite (replace&nbsp;&lt;itsma-backup&gt; with the backup name that specified):
+	<pre><code>velero restore create --from-backup &lt;itsma-backup&gt; --wait</code></pre>
+
+	<p>For example:</p>
+
+	<pre><code>velero restore create --from-backup itsma-backup --wait</code></pre>
+
+	<p></p>
+	</li>
+	<li>Update the nodePort value for the suite to 443 (it was changed to a random port). First, run the following command:
+	<pre><code>kubectl edit svc itom-nginx-ingress-svc -n &lt;suite namespace&gt;</code></pre>
+
+	<p>Then, update the nodePort value to 443, as shown below:</p>
+
+	<pre><code>- name: https-port
+    nodePort: 443
+    port: 443
+    protocol: TCP
+    targetPort: 443</code></pre>
+
+	<p></p>
+	</li>
+	<li>Verify that the suite is working correctly.</li>
+</ol>
+
+<h2>Back up and restore Kubernestes objects for CDF</h2>
+
+<h3>Back up</h3>
+
+<p>To back up the core namespace:</p>
+
+<pre><code>velero backup create &lt;core backup name&gt; --include-namespaces core --wait</code></pre>
+
+<p>For example:</p>
+
+<pre><code>velero backup create core-backup --include-namespaces core --wait</code></pre>
+
+<p><strong>Note</strong>: you can also use the following command to back up all Kubernetes objects:</p>
+
+<pre><code>velero backup create backup.all.01 --wait</code></pre>
+
+<h3>Restore</h3>
+
+<p>In this example, we'll delete the core namespace first, and then restore the k8s objects.</p>
+
+<ol>
+	<li>Delete the core namespace:
+	<pre><code>kubectl delete ns core</code></pre>
+
+	<p></p>
+	</li>
+	<li>Delete the PVs:
+	<pre><code>kubectl delete pv db-single itom-logging itom-vol</code></pre>
+
+	<p></p>
+	</li>
+	<li>Restore the k8s objects for core:
+	<pre><code>velero restore create --from-backup core-backup –wait</code></pre>
+
+	<p></p>
+	</li>
+</ol>
+
+<h2></h2>
+
+<h2></h2>
+
+<h2></h2>
 </html>
