@@ -47,7 +47,19 @@
 
 <p>If your control plane node has Internet access, download the image from the node; otherwise, download the image from another Linux machine that has Internet access and then transfer the image to the control plane node.</p>
 
-<p></p>
+<p>Run the following command on the download machine:&nbsp;docker pull minio/minio:latest&nbsp;</p>
+
+<p lang="en-US">Transfer&nbsp;the image to a master node, if the download machine is not a master node.</p>
+
+<p lang="en-US">Log in to Docker: docker login -u registry-admin -p &lt;registry-admin password&gt;</p>
+
+<p lang="en-US">Tag the image:&nbsp;</p>
+
+<p lang="en-US">Push the image to the local registry or your external registry:</p>
+
+<p lang="en-US"></p>
+
+<p lang="en-US"></p>
 
 <h3>Step 2. Install Velero</h3>
 
@@ -73,7 +85,8 @@ ENDFILE
 
 	<p></p>
 	</li>
-	<li>Add PVs/PVCs to the 00-minio-deployment.yaml file located in the Velero directory:
+	<li>Navigate to the Velero directory, and create a backup copy of the&nbsp;examples/minio/00-minio-deployment.yaml file.&nbsp;</li>
+	<li>Add PVs/PVCs to the 00-minio-deployment.yaml file by appending the following code lines to the end of the file:
 	<pre><code>apiVersion: v1
 kind: PersistentVolume
 metadata:
