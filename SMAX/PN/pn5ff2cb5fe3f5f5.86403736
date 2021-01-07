@@ -9,33 +9,21 @@
 <ol>
 	<li>Create one directory under the base directory. For example, if your existing NFS directories share the base directory /var/vols/itom, run the following command:
 	<pre><code>mkdir -p  /var/vols/itom/minio</code></pre>
-
-	<p></p>
 	</li>
 	<li>Change the permission of the directory:
 	<pre><code>chmod -R 755 /var/vols/itom/minio</code></pre>
-
-	<p></p>
 	</li>
 	<li>Change the ownership of the directory (change 1999:1999 to your own UID:GID if you use custom values):
 	<pre><code>chown -R 1999:1999 /var/vols/itom/minio</code></pre>
-
-	<p></p>
 	</li>
 	<li><span style="font-size:12.0pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">In the /etc/exports file, export the NFS directory by adding one line&nbsp;</span></span>(change 1999 to your own UID or GID if you use a custom value for them):&nbsp;
 	<pre><code>/var/vols/itom/minio *(rw,sync,anonuid=1999,anongid=1999,root_squash)</code></pre>
-
-	<p></p>
 	</li>
 	<li>Run the following command:
 	<pre><code>exportfs -ra</code></pre>
-
-	<p></p>
 	</li>
 	<li>Run the following command to check that the directory is exported:
 	<pre><code>showmount -e | grep minio</code></pre>
-
-	<p></p>
 	</li>
 </ol>
 
@@ -98,7 +86,7 @@ docker push localhost:5000/hpeswitom/mc:test</code></pre>
 
 <h2>Install Velero on a control plane node</h2>
 
-<p>Perform the following steps to install Velero on the control plane node (formerly known as a "master node").</p>
+<p>Perform the following steps to install Velero on the control plane node.</p>
 
 <ol>
 	<li>Download the tarball of the latest Velero release to a temporary directory on the control plane node. The download URL is&nbsp;https://github.com/vmware-tanzu/velero/releases/.</li>
@@ -109,8 +97,6 @@ docker push localhost:5000/hpeswitom/mc:test</code></pre>
 	</li>
 	<li>Move the Velero binary from the Velero directory to somewhere in your&nbsp;PATH. For example:
 	<pre><code>cp velero /usr/local/bin/</code></pre>
-
-	<p></p>
 	</li>
 	<li>Create a Velero-specific credentials file in your local directory. For example, in the Velero directory:
 	<pre><code>cat &lt;&lt;ENDFILE &gt; ./credentials-velero
@@ -119,13 +105,11 @@ aws_access_key_id = minio
 aws_secret_access_key = minio123
 ENDFILE
 </code></pre>
-
-	<p></p>
 	</li>
 	<li>Navigate to the Velero directory, and create a backup copy of the&nbsp;examples/minio/00-minio-deployment.yaml file. This is because in the next steps, you will need to edit this file.&nbsp;</li>
 	<li>Edit the 00-minio-deployment.yaml file as follows:
 	<ol start="1" style="list-style-type: lower-alpha;">
-		<li>Add PVs/PVCs to the 00-minio-deployment.yaml file by appending the following code lines to the end of the file:
+		<li>Add PVs/PVCs to the 00-minio-deployment.yaml file by appending the following code lines to the end of the file (replace $minio-NFS-path and $NFS-server-FQDN with the exported NFS folder path and hostname of the NFS server):
 		<pre><code>apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -139,8 +123,9 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    path: /var/vols/itom/itsma/minio
-    server: shc-sma-cd66.hpeswlab.net
+    path: $minio-NFS-path
+    server: $NFS-server-FQDN
+   
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -173,8 +158,6 @@ spec:
         persistentVolumeClaim:
           claimName: minio-pv-claim
 </code></pre>
-
-		<p></p>
 		</li>
 		<li>Remove the last two lines in the Deployment section below:
 		<pre><code>apiVersion: apps/v1
@@ -220,10 +203,94 @@ spec:
           mountPath: "/storage"
         - name: config
           mountPath: "/config"</code></pre>
+		</li>
+		<li>Replace the image values in the following lines with the images in your image registry:
+		<pre><code>image: minio/minio:latest 
+image: minio/mc:latest </code></pre>
+		For example, change them as shown below (this example uses an external registry):
 
-		<p></p>
+		<pre><code>image: myregistry.azurecr.io/sandbox/minio:test 
+image: myregistry.azurecr.io/sandbox/mc:test</code></pre>
 		</li>
 	</ol>
+	</li>
+	<li>Run the following commands:
+	<pre><code>kubectl apply -f examples/minio/00-minio-deployment.yaml
+velero install \
+    --provider aws \
+    --plugins velero/velero-plugin-for-aws:v1.0.0 \
+    --bucket velero \
+    --secret-file ./credentials-velero \
+    --use-volume-snapshots=false \
+    --backup-location-config region=minio,s3ForcePathStyle="true",s3Url=http://minio.velero.svc:9000
+</code></pre>
+	</li>
+</ol>
+
+<h2>Back up and restore k8s objects</h2>
+
+<p>Perform the following steps by using Velero.</p>
+
+<h3>Backup</h3>
+
+<p>To back up objects, run the following command on the control plane node on which Velero is installed:</p>
+
+<pre><code>velero backup create &lt;backup name&gt; --include-namespaces &lt;namespace&gt; --wait</code></pre>
+
+<p>The following are examples to back up objects for the suite and CDF, respectively:</p>
+
+<pre><code>velero backup create itsma-backup --include-namespaces itsma-fghnd --wait
+velero backup create core-backup --include-namespaces core --wait
+</code></pre>
+
+<h3>Restore</h3>
+
+<p>The following procedures assume that you have removed the suite namespace or the CDF core namespace. To test the procedure, you can run&nbsp;<strong>kubectl delete ns &lt;namespace&gt;</strong> to delete a namespace.</p>
+
+<h4>Restore the objects for the suite</h4>
+
+<p>Perform the following steps:</p>
+
+<ol>
+	<li>Once the suite namespace is deleted, the associated PVs are released. Before the restore, delete the released PVs by running the following command on the control plane node:
+	<pre><code>kubectl get pv |grep -i release | awk '{print $1}' | xargs kubectl delete pv</code></pre>
+	</li>
+	<li>Run the following command to restore:
+	<pre><code>velero restore create --from-backup &lt;suite backup name&gt; --wait</code></pre>
+
+	<p>For example:</p>
+
+	<pre><code>velero restore create --from-backup itsma-backup --wait</code></pre>
+	</li>
+	<li>Change the nodePort in&nbsp;itom-nginx-ingress-svc to 443:
+	<ol start="1" style="list-style-type: lower-alpha;">
+		<li>Run the following command:
+		<pre><code>kubectl edit svc itom-nginx-ingress-svc -n &lt;suite namespace&gt;</code></pre>
+		</li>
+		<li>Change nodePort to 443 as shown below:
+		<pre><code>- name: https-port
+    nodePort: 443
+    port: 443
+    protocol: TCP
+    targetPort: 443
+</code></pre>
+		</li>
+	</ol>
+	</li>
+</ol>
+
+<h4>Restore the objects for CDF</h4>
+
+<ol>
+	<li>Delete the PVs associated with the core namespace:
+	<pre><code>kubectl delete pv db-single itom-logging itom-vol</code></pre>
+	</li>
+	<li>Restore with Velero:
+	<pre><code>velero restore create --from-backup &lt;core backup&gt; –wait</code></pre>
+
+	<p>For example:</p>
+
+	<pre><code>velero restore create --from-backup core-backup –wait</code></pre>
 	</li>
 </ol>
 </html>
