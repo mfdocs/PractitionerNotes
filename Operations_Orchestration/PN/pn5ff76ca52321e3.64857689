@@ -22,5 +22,18 @@ Commands:
   dump         Request a Java thread dump if running.
 </code></pre>
 
+<p>Setting OO to automatically start on reboot</p>
+
+<pre><code># ./central install
+Detected RHEL or Fedora:
+Installing the Micro Focus Operations Orchestration Central daemon..
+</code></pre>
+
+<p>This creates the following symlink even on a RedHat 7 instead of using the native SystemD process.</p>
+
+<pre><code># ls -l /etc/init.d/MICROFOCUSOOCentral
+lrwxrwxrwx 1 root root 40 Jan  7 20:11 /etc/init.d/MICROFOCUSOOCentral -&gt; /opt/microfocus/oo/central/bin/./central
+</code></pre>
+
 <p></p>
 </html>
