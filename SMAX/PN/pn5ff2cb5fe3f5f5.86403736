@@ -49,72 +49,77 @@
 ocker pull  minio/mc:latest</code></pre>
 	</li>
 	<li lang="en-US">If the control plane node has no Internet access, transfer&nbsp;the images to the control plane node.&nbsp;</li>
-	<li lang="en-US">Tag the images:&nbsp;
-	<h2>Install Velero on a control plane node</h2>
-
-	<p>Perform the following steps to install Velero on the control plane node (formerly known as a "master node").</p>
-
-	<h2></h2>
-
-	<ol>
-		<li>Run the following command to show the image IDs:&nbsp;
+	<li lang="en-US">Obtain the image IDs.
+	<ol start="1" style="list-style-type: lower-alpha;">
+		<li>Run the following command:&nbsp;
 		<pre><code>docker images |grep minio</code></pre>
 		</li>
-		<li>In the output, find the&nbsp;ID of the first image. In the following example, it's&nbsp;8dbf9ff992d5.
+		<li>In the output, find the&nbsp;IDs of the&nbsp;images. In the following example, it's&nbsp;8dbf9ff992d5.
 		<pre><code>docker.io/minio/minio latest 8dbf9ff992d5 30 hours ago 183 MB</code></pre>
 		</li>
-		<li lang="en-US">Run the following command to tag one image:
-		<pre><code>docker tag &lt;image ID&gt; &lt;image registry URL&gt;/&lt;organization name&gt;/minio:&lt;tag&gt;</code></pre>
-		The following are two examples:
+	</ol>
+	</li>
+	<li lang="en-US">Run the following command to tag one&nbsp;image:
+	<pre><code>docker tag &lt;image ID&gt; &lt;image registry URL&gt;/&lt;organization name&gt;/minio:&lt;tag&gt;</code></pre>
 
-		<p></p>
+	<p>The following are two examples:</p>
 
-		<pre><code>docker tag 8dbf9ff992d5 myregistry.azurecr.io/sandbox/minio:test
+	<pre><code>docker tag 8dbf9ff992d5 myregistry.azurecr.io/sandbox/minio:test
 docker tag 8dbf9ff992d5 localhost:5000/hpeswitom/minio:test</code></pre>
 
-		<ul>
-			<li>
-			<p>&lt;image ID&gt;: the image ID you obtained in the previous step.</p>
-			</li>
-			<li>
-			<p>&lt;image registry URL&gt;/&lt;organizaition name&gt;: your image registry URL/organization name. If using the local registry, it's localhost:5000/hpeswitom; if using an external registry, ask your registry administrator for it.</p>
-			</li>
-			<li>&lt;tag&gt;: specify any value you like.&nbsp;</li>
-		</ul>
+	<ul>
+		<li>
+		<p>&lt;image ID&gt;: the image ID you obtained in the previous step.</p>
 		</li>
-		<li lang="en-US">Push the image to your image registry:
-		<pre><code>docker push &lt;image registry URL&gt;/&lt;organization name&gt;/minio:&lt;tag&gt;</code></pre>
+		<li>
+		<p>&lt;image registry URL&gt;/&lt;organizaition name&gt;: your image registry URL/organization name. If using the local registry, it's localhost:5000/hpeswitom; if using an external registry, ask your registry administrator for it.</p>
+		</li>
+		<li>&lt;tag&gt;: specify any value you like.&nbsp;</li>
+	</ul>
+	</li>
+	<li lang="en-US">Repeat the step above&nbsp;to tag the other image (minio/mc:latest) into your image registry.&nbsp;</li>
+	<li lang="en-US">Push the images into your image registry:
+	<pre><code>docker push &lt;image registry URL&gt;/&lt;organization name&gt;/minio:&lt;tag&gt;
+docker push &lt;image registry URL&gt;/&lt;organization name&gt;/mc:&lt;tag&gt;</code></pre>
 
-		<p>The following are two examples:</p>
+	<p>The following are two examples:</p>
 
-		<pre><code>docker push myregistry.azurecr.io/sandbox/minio:test
+	<pre><code>docker push myregistry.azurecr.io/sandbox/minio:test
 docker push localhost:5000/hpeswitom/minio:test</code></pre>
-		</li>
-		<li>Repeat the steps to tag the other image (minio/mc:latest) and push it to your image registry.</li>
-		<li>Download the tarball of the latest Velero release to a temporary directory on the control plane node. The download URL is&nbsp;https://github.com/vmware-tanzu/velero/releases/.</li>
-		<li>Extract the package:
-		<pre><code>tar -xvf &lt;release-tarball-name&gt;.tar.gz</code></pre>
+	</li>
+</ol>
 
-		<p>The directory you extracted is called the “Velero directory” in subsequent steps.&nbsp;</p>
-		</li>
-		<li>Move the Velero binary from the Velero directory to somewhere in your&nbsp;PATH. For example:
-		<pre><code>cp velero /usr/local/bin/</code></pre>
+<p></p>
 
-		<p></p>
-		</li>
-		<li>Create a Velero-specific credentials file in your local directory. For example, in the Velero directory:
-		<pre><code>cat &lt;&lt;ENDFILE &gt; ./credentials-velero
+<h2>Install Velero on a control plane node</h2>
+
+<p>Perform the following steps to install Velero on the control plane node (formerly known as a "master node").</p>
+
+<ol>
+	<li>Download the tarball of the latest Velero release to a temporary directory on the control plane node. The download URL is&nbsp;https://github.com/vmware-tanzu/velero/releases/.</li>
+	<li>Extract the package:
+	<pre><code>tar -xvf &lt;release-tarball-name&gt;.tar.gz</code></pre>
+
+	<p>The directory you extracted is called the “Velero directory” in subsequent steps.&nbsp;</p>
+	</li>
+	<li>Move the Velero binary from the Velero directory to somewhere in your&nbsp;PATH. For example:
+	<pre><code>cp velero /usr/local/bin/</code></pre>
+
+	<p></p>
+	</li>
+	<li>Create a Velero-specific credentials file in your local directory. For example, in the Velero directory:
+	<pre><code>cat &lt;&lt;ENDFILE &gt; ./credentials-velero
 [default]
 aws_access_key_id = minio
 aws_secret_access_key = minio123
 ENDFILE
 </code></pre>
 
-		<p></p>
-		</li>
-		<li>Navigate to the Velero directory, and create a backup copy of the&nbsp;examples/minio/00-minio-deployment.yaml file. This is because in the next steps, you will need to edit this file.&nbsp;</li>
-		<li>Add PVs/PVCs to the 00-minio-deployment.yaml file by appending the following code lines to the end of the file:
-		<pre><code>apiVersion: v1
+	<p></p>
+	</li>
+	<li>Navigate to the Velero directory, and create a backup copy of the&nbsp;examples/minio/00-minio-deployment.yaml file. This is because in the next steps, you will need to edit this file.&nbsp;</li>
+	<li>Add PVs/PVCs to the 00-minio-deployment.yaml file by appending the following code lines to the end of the file:
+	<pre><code>apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: minio-pv-claim
@@ -128,4 +133,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs:
     path: /var/vols/itom/itsma/minio
-    serv
+    serv</code></pre>
+	</li>
+</ol>
+</html>
