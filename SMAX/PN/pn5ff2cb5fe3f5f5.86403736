@@ -123,8 +123,12 @@ ENDFILE
 	<p></p>
 	</li>
 	<li>Navigate to the Velero directory, and create a backup copy of the&nbsp;examples/minio/00-minio-deployment.yaml file. This is because in the next steps, you will need to edit this file.&nbsp;</li>
-	<li>Add PVs/PVCs to the 00-minio-deployment.yaml file by appending the following code lines to the end of the file:
-	<pre><code>apiVersion: v1
+	<li>Edit the 00-minio-deployment.yaml file as follows:
+	<p>To:</p>
+
+	<ol>
+		<li>Add PVs/PVCs to the 00-minio-deployment.yaml file by appending the following code lines to the end of the file:
+		<pre><code>apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: minio-pv-claim
@@ -138,7 +142,90 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs:
     path: /var/vols/itom/itsma/minio
-    serv</code></pre>
+    server: shc-sma-cd66.hpeswlab.net
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: minio-pv-claim
+  namespace: velero
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  volumeName: minio-pv-claim
+</code></pre>
+		</li>
+		<li>In the Deployment section, make the following change:
+		<p>From:</p>
+
+		<pre><code>volumes:
+      - name: storage
+        emptyDir: {}
+      - name: config
+        emptyDir: {}
+</code></pre>
+
+		<p>To:</p>
+
+		<pre><code>volumes:
+      - name: storage
+        persistentVolumeClaim:
+          claimName: minio-pv-claim
+</code></pre>
+
+		<p></p>
+		</li>
+		<li>Remove the last two lines in the Deployment section below:
+		<pre><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: velero
+  name: minio
+  labels:
+    component: minio
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      component: minio
+  template:
+    metadata:
+      labels:
+        component: minio
+    spec:
+      volumes:
+      - name: storage
+        emptyDir: {}
+      - name: config
+        emptyDir: {}
+      containers:
+      - name: minio
+        image: minio/minio:latest
+        imagePullPolicy: IfNotPresent
+        args:
+        - server
+        - /storage
+        - --config-dir=/config
+        env:
+        - name: MINIO_ACCESS_KEY
+          value: "minio"
+        - name: MINIO_SECRET_KEY
+          value: "minio123"
+        ports:
+        - containerPort: 9000
+        volumeMounts:
+        - name: storage
+          mountPath: "/storage"
+        - name: config
+          mountPath: "/config"</code></pre>
+
+		<p></p>
+		</li>
+	</ol>
 	</li>
 </ol>
 </html>
