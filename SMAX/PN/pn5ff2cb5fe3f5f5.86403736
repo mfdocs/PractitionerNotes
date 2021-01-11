@@ -4,28 +4,9 @@
 
 <h2>Export an NFS directory</h2>
 
-<p>On your&nbsp;NFS server, export one NFS directory.</p>
+<p>On your&nbsp;NFS server, export one NFS directory for minio. For example:&nbsp;/var/vols/itom/minio. For detailed steps, see the "Configure NFS volumes" topic.&nbsp;</p>
 
-<ol>
-	<li>Create one directory under the base directory. For example, if your existing NFS directories share the base directory /var/vols/itom, run the following command:
-	<pre><code>mkdir -p  /var/vols/itom/minio</code></pre>
-	</li>
-	<li>Change the permission of the directory:
-	<pre><code>chmod -R 755 /var/vols/itom/minio</code></pre>
-	</li>
-	<li>Change the ownership of the directory (change 1999:1999 to your own UID:GID if you use custom values):
-	<pre><code>chown -R 1999:1999 /var/vols/itom/minio</code></pre>
-	</li>
-	<li><span style="font-size:12.0pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">In the /etc/exports file, export the NFS directory by adding one line&nbsp;</span></span>(change 1999 to your own UID or GID if you use a custom value for them):&nbsp;
-	<pre><code>/var/vols/itom/minio *(rw,sync,anonuid=1999,anongid=1999,root_squash)</code></pre>
-	</li>
-	<li>Run the following command:
-	<pre><code>exportfs -ra</code></pre>
-	</li>
-	<li>Run the following command to check that the directory is exported:
-	<pre><code>showmount -e | grep minio</code></pre>
-	</li>
-</ol>
+<p>You will need to configure the FQDN of the NFS server and this NFS directory in a later step ($NFS-server-FQDN and $minio-NFS-path).&nbsp;</p>
 
 <h2>Download the minio&nbsp;images</h2>
 
