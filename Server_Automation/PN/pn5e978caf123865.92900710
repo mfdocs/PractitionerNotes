@@ -272,6 +272,8 @@ Details:   An internal exception of type java.net.NoRouteToHostException with me
 	</li>
 </ul>
 
-<pre>&gt;&gt;&gt; spin.multimaster.getCentralSpinURL()
-'https://192.168.4.98:1004/'</pre>
+<pre># /opt/opsware/bin/python -c "from coglib import spinwrapper,certmaster;
+ print spinwrapper.SpinWrapper(ctx=certmaster.getContextByName('spin','spin.srv','opsware-ca.crt')).multimaster.getCentralSpinURL()"
+
+https://192.168.4.98:1004/</pre>
 </html>
