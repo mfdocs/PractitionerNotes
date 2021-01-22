@@ -1,1 +1,65 @@
- 
+<html><p>Flash has been removed from the SA product.&nbsp; This article shows which functional areas where affected.</p>
+
+<p>The announcement:&nbsp;<a href="https://www.adobe.com/products/flashplayer/enterprise-end-of-life.html">https://www.adobe.com/products/flashplayer/enterprise-end-of-life.html</a></p>
+
+<p>Defects</p>
+
+<ul>
+	<li>OCTCR19L772183 - Remove the flash based WAPXs from SA</li>
+	<li>OCTCR19L788411 - Update the Add iLO functionality to work without Flash code</li>
+</ul>
+
+<h2>OCTCR19L772183 : Remove the flash based WAPXs from SA</h2>
+
+<p>Remove the following APXs from SA:</p>
+
+<ul>
+	<li>com.hp.sa.hpux_mgmt.virtualization_manager</li>
+	<li>com.hp.sa.hpuxprov_web</li>
+	<li>com.hp.osprov.hpuxconfig</li>
+	<li>osprov.run_os_build_plan_wapx</li>
+	<li>
+	<p>Verification that these APX are present in SA</p>
+
+	<pre># /opt/opsware/bin/apxtool query | grep -e com.hp.sa.hpux_mgmt.virtualization_manager -e com.hp.sa.hpuxprov_web -e com.hp.osprov.hpuxconfig -e osprov.run_os_build_plan_wapx
+      380001 (webapp): com.hp.osprov.hpuxconfig           HP-UX Custom Config Editor
+      370001 (webapp): com.hp.sa.hpuxprov_web             HP-UX Provisioning
+      360001 (webapp): com.hp.sa.hpux_mgmt.virtualization_managerHP-UX Virtualization Manager
+      330001 (webapp): osprov.run_os_build_plan_wapx      Run OS Build Plan</pre>
+
+	<p>Screenshots of those interfaces:</p>
+	</li>
+</ul>
+
+<p>com.hp.osprov.hpuxconfig</p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/0/06/hpux-custom.png" height="505" hspace="0" src="/mediawiki/images/pn_images/pn_image_600aec326230a7.36861732.png" style="width: 800px; height: 505px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p>com.hp.sa.hpuxprov_web</p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/7/7f/hpux-flash.png" height="531" hspace="0" src="/mediawiki/images/pn_images/pn_image_600aec32c6b849.46230448.png" style="width: 800px; height: 531px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p>com.hp.sa.hpux_mgmt.virtualization_manager</p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/3/3a/hpux-virt.png" height="556" hspace="0" src="/mediawiki/images/pn_images/pn_image_600aec33381764.90156052.png" style="width: 800px; height: 556px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p>osprov.run_os_build_plan_wapx</p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/d/d9/osbp_apx.png" height="490" hspace="0" src="/mediawiki/images/pn_images/pn_image_600aec33b13991.18192289.png" style="width: 800px; height: 490px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<h2 id="OCTCR19L788411_:_Update_the_Add_iLO_functionality_to_work_without_Flash_code">OCTCR19L788411 : Update the Add iLO functionality to work without Flash code</h2>
+
+<p>This functionality has been rewritten to be non-flash based. Verification that its still flash based requires launching the APX.</p>
+
+<p>Launching the flash interface</p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/b/b2/SA_10.70_add_ilo_device_start.png" height="624" hspace="0" src="/mediawiki/images/pn_images/pn_image_600aec342900d5.39322574.png" style="width: 800px; height: 624px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p>Flash interface</p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/f/f6/SA_10.70_add_ilo_device_input.png" height="603" hspace="0" src="https://docs.microfocus.com/mediawiki/images/f/f6/SA_10.70_add_ilo_device_input.png" style="width:681px;height:603px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="681"></p>
+
+<p>Non Flash based interface rewrite</p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/7/77/Screenshot_2021-01-22_100217.png" height="640" hspace="0" src="/mediawiki/images/pn_images/pn_image_600aec347cfc43.16537106.png" style="width: 800px; height: 640px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+</html>
