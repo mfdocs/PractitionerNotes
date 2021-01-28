@@ -1,1 +1,166 @@
- 
+<html><div id="mwpage">
+<p>This article is an explanation about Server Automation versioning, Major releases, CORD releases, Rollup patches and nomenclature used.</p>
+
+<p>Like any product, SA has a release cycle of major and minor releases. For example; 9.00 is a major release, 10.00 is a major release</p>
+
+<p>What is unusual is that major releases can also be designated by the first digit after the decimal place, 9.10, 10.20 and 10.50 are major releases too.</p>
+
+<ul>
+	<li>For all graphs below the following color coding will be used</li>
+	<li>BLUE - major releases</li>
+	<li>ORANGE - minor CORD releases</li>
+	<li>BLACK - rollup patches</li>
+</ul>
+
+<p>Some major releases support upgrading directly to other major releases.</p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/2/27/graphviz-G-72c25f0491ea21d3a7b7aa78920aec36a2620f5e.png" height="152" hspace="0" src="/mediawiki/images/pn_images/pn_image_6012dff3633553.11786112.png" style="width: 800px; height: 152px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p><strong>Minor patch</strong>&nbsp;release is the second minor digit of the version number. For example for version 10.21 the 1 would be the minor release revision. Generically the minor release takes the form NN.Nx where x is the minor release.</p>
+
+<p>Minor releases are cumulative that is you may upgrade from a major to any CORD release for that major without stepping through intermediate minor releases.</p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/61/graphviz-G-e334832e5e5a503c0bceccbeb71dfd1577c641e4.png" height="134" hspace="0" src="https://docs.microfocus.com/mediawiki/images/6/61/graphviz-G-e334832e5e5a503c0bceccbeb71dfd1577c641e4.png" style="width:550px;height:134px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="550"></p>
+
+<p>The minor releases are often referred to as CORD releases. CORD's are developed by the R&amp;D team and go through an official release cycle. The practice of releases CORD ended after the release of SA 10.60 and was replaced with Rollups that will explained later. A CORD release is a patch to the major release.</p>
+
+<p>One of the problems with CORD releases is that once applied it prevents you from doing a major upgrade until its removed. Recall from earlier a major upgrade is only possible from another major release.</p>
+
+<p>With the release of SA 2020.11 upgrades from CORDs directly is possible.</p>
+
+<p></p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/9/91/graphviz-G-045b594159e10135fb29dc20cfd7264f08da375c.png" height="124" hspace="0" src="/mediawiki/images/pn_images/pn_image_6012dff3944c48.37118361.png" style="width: 800px; height: 124px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p><strong>Rollup releases</strong>: These are cumulative patches to either a Major or Minor (CORD) release of SA. Although not shown on the diagram you can step from any rollup to any other rollup for that SA Major or Minor release you are on.</p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/c/c2/graphviz-G-949600cdbc41471773714590d735b161c35d7f6f.png" height="323" hspace="0" src="/mediawiki/images/pn_images/pn_image_6012dff3d743a1.90247072.png" style="width: 800px; height: 323px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p>When examining the upgrade documentation any rollup version can be ignored when choosing SA upgrade paths. Consider the rollup invisible. Unlike a CORD pre 2020.11 it does not need to be removed.</p>
+
+<p>What happens if you have a rollup patch applied to CORD release on a 10.2x release stream and need to perform a major upgrade?</p>
+
+<ul>
+	<li>The removal of a CORD will also take any rollup patch applied.</li>
+</ul>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/6c/graphviz-G-325f41239d9d4b48cf993b97c033b08a68a51d3a.png" height="213" hspace="0" src="/mediawiki/images/pn_images/pn_image_6012dff41ef8a0.25332511.png" style="width: 800px; height: 213px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p></p>
+
+<h2 id="SA_Version_number_change">SA Version number change</h2>
+
+<p>In 2018 Microfocus unified the versioning of all products to follow the industry standard of naming after the year and month of release. What was to be SA 10.70, the next major release, became SA 2018.08. Internally practitioners may still refer to SA release using the older major version naming standard</p>
+
+<ul>
+	<li>10.60</li>
+	<li>10.70 renamed 2018.08</li>
+	<li>10.80 renamed 2020.11</li>
+</ul>
+
+<p></p>
+
+<h2 id="What_version_is_running">What version is running</h2>
+
+<p>From the GUI client, you can access the&nbsp;<tt>Help&nbsp;-&gt;&nbsp;About</tt>&nbsp;menu option and a dialogue box will be displayed. This will show you the MAJOR and MINOR version. It will give no information about what Rollup's have applied.</p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/a/a9/Screenshot_2021-01-28_095034.png" height="488" hspace="0" src="https://docs.microfocus.com/mediawiki/images/a/a9/Screenshot_2021-01-28_095034.png" style="width:452px;height:488px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="452"></p>
+
+<p>On this screen you will also see another version number this is an internal build release number and it will appear in various places, such as agent versioning, gateway versioning and inside various installation manifest files.</p>
+
+<p></p>
+
+<form action="http://wiki.local/BrettEngland/2021-01-28" method="GET" name="dbw.form">
+<table id="dbw.table">
+	<tbody>
+		<tr>
+			<td><strong>Internal Version</strong></td>
+			<td><strong>SA Release</strong></td>
+		</tr>
+		<tr>
+			<td abbr="45.x">45.x</td>
+			<td abbr="9.1x">9.1x</td>
+		</tr>
+		<tr>
+			<td abbr="50.x">50.x</td>
+			<td abbr="10.0x">10.0x</td>
+		</tr>
+		<tr>
+			<td abbr="55.x">55.x</td>
+			<td abbr="10.1x">10.1x</td>
+		</tr>
+		<tr>
+			<td abbr="60.x">60.x</td>
+			<td abbr="10.2x">10.2x</td>
+		</tr>
+		<tr>
+			<td abbr="65.x">65.x</td>
+			<td abbr="10.5x">10.5x</td>
+		</tr>
+		<tr>
+			<td abbr="70.x">70.x</td>
+			<td abbr="10.6x">10.6x</td>
+		</tr>
+		<tr>
+			<td abbr="75.x">75.x</td>
+			<td abbr="2018.08">2018.08</td>
+		</tr>
+		<tr>
+			<td abbr="80.x">80.x</td>
+			<td abbr="2020.11">2020.11</td>
+		</tr>
+	</tbody>
+</table>
+</form>
+
+<p>Agent versions follow the internal versioning standard.</p>
+
+<pre># ls /var/opt/opsware/agent_installers/*linux-7SERVER*
+/var/opt/opsware/agent_installers/opsware-agent-80.0.86701.0-linux-7SERVER-PPC64
+/var/opt/opsware/agent_installers/opsware-agent-80.0.86701.0-linux-7SERVER-PPC64LE
+/var/opt/opsware/agent_installers/opsware-agent-80.0.86701.0-linux-7SERVER-S390X
+/var/opt/opsware/agent_installers/opsware-agent-80.0.86701.0-linux-7SERVER-X86_64
+/var/opt/opsware/agent_installers/osprov_ogfs_agent_linux-80.0.86701.0-linux-7SERVER-X86_64.zip
+#</pre>
+
+<p>Gateway versioning uses the internal version standard.</p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/7/72/Screenshot_2021-01-28_100439.png" height="253" hspace="0" src="/mediawiki/images/pn_images/pn_image_6012dff4632e59.44506017.png" style="width: 800px; height: 253px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p>Rollup patches can be detected by running the&nbsp;<tt>lspatch</tt>&nbsp;tool shipped in the OPSWtools RPM with each rollup. If you don't have this tool you don't have any rollups installed.</p>
+
+<pre># /opt/opsware/support/bin/lspatch
+2018.08
+  2018.08.008_85575 - 146248, 193736, 205112, 207418, 209175, 218366, 220110,
+                      220984, 228610, 233109, 237875, 238914, 243110, 243157,
+                      243615, 245622, 245909, 246365, 246433, 246494, 246676,
+                      246888, 247050, 248851, 249282, 249324, 249326, 249366,
+                      249412, 249437, 249458, 249598, 249599, 249761, 249783,
+                      249812, 249834, 249875, 249926, 249932, 249959, 249966,
+                      249971, 249993, 250163, 250190, 250254, 250329, 250402,
+                      250466, 250482, 250669, 250707, 250730, 251140, 251307,
+                      251319, 251322, 251340, 251349, 251395, 251432, 251526,
+                      251570, 251667, 251679, 251765, 251826, 251835, 251884,
+                      251899, 251999, 252027, 252038, 252101, 252246, 252264,
+                      252270, 252289, 252332, 252389, 252426, 252666, 252830,
+                      252846, 252860, 252867, 252972, 252991, 253002, 253029,
+                      253036, 253081, 253106, 253108, 253109, 253157, 253186,
+                      253302, 253322, 253331, 253339, 253366, 253419, 253447,
+                      253456, 253482, 280037, 287906, 288998, 290726, 290811,
+                      291351, 291504, 291572, 291573, 292141, 292349, 308634,
+                      317270, 318295, 318681, 318838, 319215, 333539, 336842,
+                      338033, 356422, 356656, 371782, 372049, 38334, 513379,
+                      535442, 581578, 582043, 584313, 592027, 594665, 624158,
+                      652847, 654096, 658226, 688825, 693482, 697286, 699326,
+                      700878, 702587, 721800, 725053, 726227, 735452, 761797,
+                      762820, 766059, 766718, 772183, 776221, 779029, 780037,
+                      781230, 781494, 782248, 786660, 787801, 788411, 793112,
+                      806103, 813491, 816122, 816138, 825661, 828741, 829999,
+                      838880, 848675, 857306, 859149, 860189, 860346, 862262,
+                      866712, 867076
+  2018.08.009_86507 - 1022574, 1054194, 1060065, 1060066, 1060184, 1063287,
+                      1063290, 291574, 594665, 699326, 768184, 769009, 794065,
+                      829999, 862249, 867201, 902688, 902717, 943201, 944301,
+                      971161, 971326, 972428, 996885</pre>
+</div>
+</html>
