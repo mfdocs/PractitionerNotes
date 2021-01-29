@@ -1,66 +1,50 @@
 <html><div id="mwpage">
-<p>This article is an explanation about Server Automation versioning, Major releases, CORD releases, Rollup patches and nomenclature used.</p>
+<p>his article is about Server Automation versioning, Major releases, Minor release, Service Packs, Rollup patches and nomenclature used.</p>
 
-<p>Like any product, SA has a release cycle of major and minor releases. For example; 9.00 is a major release, 10.00 is a major release</p>
+<p>Like any product, SA has a release cycle of major and minor releases.</p>
 
-<p>What is unusual is that major releases can also be designated by the first digit after the decimal place, 9.10, 10.20 and 10.50 are major releases too.</p>
-
-<p>For all graphs below the following&nbsp;colour-coding will be used</p>
+<p>What is unusual is that 10.20 is major release but 10.50 is a minor release. This is when Microfocus versioning realignment occurred.</p>
 
 <ul>
-	<li><strong><span style="color:#3498db;">BLUE</span></strong><span style="color:#2980b9;"> </span>- major releases</li>
-	<li><strong><span style="color:#e67e22;">ORANGE </span></strong>- minor CORD releases</li>
+	<li><strong><span style="color:#3498db;">BLUE</span></strong><span style="color:#2980b9;"> </span>- major release</li>
+	<li><span style="color:#27ae60;">GREEN </span>- a minor release</li>
+	<li><strong><span style="color:#e67e22;">ORANGE </span></strong>- Service Pack CORD release</li>
 	<li><strong>BLACK </strong>- rollup patches</li>
 </ul>
 
-<p>Some major releases support upgrading directly to other major releases.</p>
+<p>Upgrade paths shown for various SA releases</p>
 
-<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/2/27/graphviz-G-72c25f0491ea21d3a7b7aa78920aec36a2620f5e.png" height="152" hspace="0" src="/mediawiki/images/pn_images/pn_image_6012dff3633553.11786112.png" style="width: 800px; height: 152px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/b/be/graphviz-G-835e43d3699b9ee555f352791cbe4aa6b029b2f4.png" height="197" hspace="0" src="https://docs.microfocus.com/mediawiki/images/b/be/graphviz-G-835e43d3699b9ee555f352791cbe4aa6b029b2f4.png" style="width:759px;height:197px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="759"></p>
 
-<p><strong>Minor patch</strong>&nbsp;release is the second minor digit of the version number. For example, for version 10.23&nbsp;the 3&nbsp;would be the minor release revision. Generically the minor release takes the form NN.Nx where x is the minor release.</p>
+<p><strong>Service pack</strong>&nbsp;release is the second minor digit of the version number. For example, for version 10.23&nbsp;the 3&nbsp;would be the service pack release revision. Generically the release takes the form NN.Nx where x is patch number. Service pack releases are cumulative.</p>
 
-<p>Minor releases are cumulative that is you may upgrade from a major to any CORD release for that major without stepping through intermediate minor releases.</p>
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/d/d6/graphviz-G-5ba0489e8c34ccf6d7bc7fd84a5e96e6c95afe17.png" height="201" hspace="0" src="https://docs.microfocus.com/mediawiki/images/d/d6/graphviz-G-5ba0489e8c34ccf6d7bc7fd84a5e96e6c95afe17.png" style="width:550px;height:201px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="550"></p>
 
-<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/61/graphviz-G-e334832e5e5a503c0bceccbeb71dfd1577c641e4.png" height="134" hspace="0" src="https://docs.microfocus.com/mediawiki/images/6/61/graphviz-G-e334832e5e5a503c0bceccbeb71dfd1577c641e4.png" style="width:550px;height:134px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="550"></p>
+<p>The Service pack releases are often referred to as CORD releases. CORD's are developed by the R&amp;D team and go through an official release cycle. The practice of releases CORD ended after the release of SA 10.60 and was replaced with Rollups that will be explained later. A CORD release is a patch release.&nbsp; One of the problems with CORD releases is that once applied it prevented&nbsp;you from doing an upgrade until it&nbsp;was removed</p>
 
-<p>The minor releases are often referred to as CORD releases. CORD's are developed by the R&amp;D team and go through an official release cycle.&nbsp; A CORD release is a patch to the major release.&nbsp; The practice of releasing&nbsp;CORD's ended with 10.60 and was replaced with Rollups that will be explained later.</p>
+<p>If upgrading 10.2x or 10.5x to a version of SA before&nbsp;2020.11 you must remove the CORD.&nbsp; &nbsp;The removal of a CORD will also take any rollup patch applied to that CORD.</p>
 
-<p>One of the problems with CORD releases is that once applied it prevents you from doing a major upgrade until it's removed adding extra complexity to the upgrade process. Recall from earlier an upgrade is only possible from one major release to another.</p>
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/15/graphviz-G-5c927fd4c34cfd32198609d3d435e441ed4dd0f6.png" height="267" hspace="0" src="/mediawiki/images/pn_images/pn_image_60141f12e02120.98571845.png" style="width: 800px; height: 267px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
-<p>This all changed with&nbsp;the release of SA 2020.11 as it allows upgrades from CORDs directly.&nbsp; Major releases before this version don't support major upgrades from CORDS.</p>
+<p>This issue was resolved with the release of&nbsp;SA 2020.11 that supports upgrading&nbsp;from multiple versions directly.</p>
 
-<p></p>
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/1c/graphviz-G-0c79d6b05403c046fdf4fecd963ba5f21cdab4bf.png" height="124" hspace="0" src="/mediawiki/images/pn_images/pn_image_60141f1325a670.24576244.png" style="width: 800px; height: 124px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
-<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/9/91/graphviz-G-045b594159e10135fb29dc20cfd7264f08da375c.png" height="124" hspace="0" src="/mediawiki/images/pn_images/pn_image_6012dff3944c48.37118361.png" style="width: 800px; height: 124px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+<p><strong>Rollup releases</strong>: These are cumulative patches to a&nbsp;release of SA. Although not shown in the diagram you can upgrade from any rollup to any other rollup for the same SA base release.</p>
 
-<p><strong>Rollup releases</strong>: These are cumulative patches to either a Major or Minor (CORD) release of SA. Although not shown on the diagram you can step from any rollup to any other rollup for that SA Major or Minor release you are on.</p>
-
-<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/c/c2/graphviz-G-949600cdbc41471773714590d735b161c35d7f6f.png" height="323" hspace="0" src="/mediawiki/images/pn_images/pn_image_6012dff3d743a1.90247072.png" style="width: 800px; height: 323px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/d/df/graphviz-G-a7be5c347a13c157d21b5b3206161fddfdfcedef.png" height="323" hspace="0" src="/mediawiki/images/pn_images/pn_image_60141f137f5162.83600303.png" style="width: 800px; height: 323px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
 <p>When examining the upgrade documentation any rollup version can be ignored when choosing SA upgrade paths. Consider the rollup invisible.&nbsp; A rollup does&nbsp;not need to be removed before an upgrade.</p>
 
-<p>What happens if you have a rollup patch applied to a CORD release on a 10.2x release stream and need to perform a major upgrade?</p>
-
-<ul>
-	<li>If upgrading 10.2x to a version of SA before&nbsp;2020.11 you must remove the CORD.<br>
-	The removal of a CORD will also take any rollup patch applied to that CORD.</li>
-</ul>
-
-<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/6c/graphviz-G-325f41239d9d4b48cf993b97c033b08a68a51d3a.png" height="213" hspace="0" src="/mediawiki/images/pn_images/pn_image_6012dff41ef8a0.25332511.png" style="width: 800px; height: 213px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
-
-<p></p>
-
 <h2 id="SA_Version_number_change">SA Version number change</h2>
 
-<p>In 2018 Microfocus unified the versioning of all products to follow the industry standard of naming after the year and month of release. What was to be SA 10.70, the next major release, became SA 2018.08. Practitioners may refer to these newer SA releases using the older major version naming standard.</p>
+<p>In 2018 Microfocus unified the versioning of all products to follow the industry standard of naming after the year and month of release. What was to be SA 10.70, the next release, became SA 2018.08. Practitioners may refer to these newer SA releases using the older version naming standard.</p>
 
 <ul>
 	<li>10.60</li>
 	<li>10.70 renamed 2018.08</li>
 	<li>10.80 renamed 2020.11</li>
 </ul>
-
-<p>The new <strong>year.month</strong> based versioning scheme contains no information about what constitutes a major or minor product release in the old nomenclature.</p>
 
 <h2 id="What_version_is_running">What version is running</h2>
 
