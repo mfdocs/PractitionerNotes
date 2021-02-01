@@ -1,4 +1,6 @@
 <html><div class="mw-parser-output">
+<div class="Admonition_Note">This document is applicable only to on-premises deployments.</div>
+
 <p>By default, the suite system supports the TLS 1.2 protocol.&nbsp;If you want the suite to additionally support TLS 1.3, run the following command on a control plane node:</p>
 
 <pre><code>kubectl patch configmap/itom-nginx-ingress-configmap -n &lt;suite namespace&gt; -p '{​​​​​​"data":{​​​​​​"ssl-protocols":"TLSv1.2 TLSv1.3"}​​​​​​}​​​​​​'</code></pre>
