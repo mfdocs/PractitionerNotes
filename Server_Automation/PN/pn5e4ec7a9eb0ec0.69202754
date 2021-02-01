@@ -73,6 +73,10 @@ This defect will occur using SA 2018.08&nbsp;and SA 10.60 satellites.</p>
 <p>Once the recertification (Phase 8) is complete the parameter should be reduced back to 100 with Spin restarts appropriately.&nbsp;The cached PEM files may be deleted and the Spin will simply repopulate it to the current highwater setting.&nbsp; Failure to do this will result in Spin performance issues later on during normal usage as the directory of agent certificates is being scanned once every second to detect usage and population.&nbsp;<br>
 &nbsp;</p>
 
+<p>A change in the job handing behaviour in 10.22 when the <strong>Job Split-Brain</strong> problem was addressed introduced an issue for Phase 8 that can cause it to hang. The default setting of -1 will make Phase 8 wait indefinitely for a response instead of failing with a timeout if an agent does not restart and report back after recertification.</p>
+
+<pre># sa_config_checkfix -k way.command_shutdown_grace_period -v 0 --set</pre>
+
 <p></p>
 
 <h2>Phase 9 : Recert user permission omission</h2>
@@ -86,8 +90,6 @@ This defect will occur using SA 2018.08&nbsp;and SA 10.60 satellites.</p>
 	<p><a href="https://docs.microfocus.com/itom/Server_Automation:2018.08/admin_guide/sa_security/CoreRecertificationUsers">https://docs.microfocus.com/itom/Server_Automation:2018.08/admin_guide/sa_security/CoreRecertificationUsers</a></p>
 	</li>
 </ul>
-
-<p></p>
 
 <h2>Phase 11 : Truth resigning issues</h2>
 
