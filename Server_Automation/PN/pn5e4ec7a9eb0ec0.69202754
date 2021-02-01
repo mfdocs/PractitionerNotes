@@ -77,7 +77,11 @@ This defect will occur using SA 2018.08&nbsp;and SA 10.60 satellites.</p>
 
 <pre># sa_config_checkfix -k way.command_shutdown_grace_period -v 0 --set</pre>
 
-<p></p>
+<p>As the job never finishes&nbsp;this leads to this secondary problem&nbsp;as the 1hr timeout duration set earlier is not honoured.</p>
+
+<ul>
+	<li>QCCR1D252070 - Core Recert Phases 4, 8 and 12 will DoS the Spin/Way when only unreachable servers remain</li>
+</ul>
 
 <h2>Phase 9 : Recert user permission omission</h2>
 
