@@ -1,1 +1,214 @@
- 
+<html><div id="mwpage">
+<h1 id="Marketplace_Connector.28MpC.29_and_SA">Marketplace Connector(MpC) and SA</h1>
+
+<p>The Marketplace Connector provides audit policy content to ensure that servers are compliant against a variety of standards such as; PCI, CIS, SOX and HIPAA to name a few.</p>
+
+<p>The provided documentation is not prescriptive enough to enable a successful install as there are several omissions.</p>
+
+<p>Obtaining the connector from the portal:&nbsp;<a href="https://marketplace.microfocus.com/itom/content/marketplace-connector-mpc">https://marketplace.microfocus.com/itom/content/marketplace-connector-mpc</a>&nbsp;this can be downloaded on a windows system as it contains the Mpc Software and the Documentation inside.</p>
+
+<p>At the time of writing the package downloaded was; Marketplace Connector 1.0.070.zip</p>
+
+<pre># unzip -l Marketplace\ Connector\ 1.0.070.zip
+Archive:  Marketplace Connector 1.0.070.zip
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+ 15412127  04-09-2020 14:08   marketplace-connector-1.0.070.zip
+  1096868  04-09-2020 14:08   Marketplace_Connector_Guide_v2.pdf
+---------                     -------
+ 16508995                     2 files</pre>
+
+<p>The MpC software is not required to be installed into the&nbsp;<strong>/opt/opsware</strong>&nbsp;directory structure. Before it was named MpC it was called LNC (Live Network Connector) and it was located at&nbsp;<strong>/opt/opsware/lnc</strong>. The installation will proceed with it being installed into&nbsp;<strong>/opt</strong></p>
+
+<p>The package&nbsp;<strong>marketplace-connector-1.0.070.zip</strong>&nbsp;will need to be copied to a single SA server. Its recommended that you copy this to the Primary core infrastructure slice. Copy this package to&nbsp;<strong>/opt</strong>&nbsp;on the MMCENTRAL server and decompress.</p>
+
+<pre># cd /opt
+# unzip marketplace-connector-1.0.070.zip
+# cd marketplace-connector</pre>
+
+<p>The contents of the ZIP package being installed</p>
+
+<pre>[root@sa1080ct8c1 opt]# unzip -l marketplace-connector-1.0.070.zip
+Archive:  marketplace-connector-1.0.070.zip
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+        0  03-06-2020 05:06   marketplace-connector/
+        0  03-06-2020 05:06   marketplace-connector/lib/
+        0  03-06-2020 05:05   marketplace-connector/config/
+        0  03-06-2020 05:05   marketplace-connector/cert/
+   747794  03-06-2020 05:06   marketplace-connector/lib/httpclient-4.5.3.jar
+   305001  03-06-2020 05:06   marketplace-connector/lib/commons-httpclient-3.1.jar
+    57264  03-06-2020 05:06   marketplace-connector/lib/json.jar
+   323824  03-06-2020 05:06   marketplace-connector/lib/httpcore-4.4.6.jar
+    60686  03-06-2020 05:06   marketplace-connector/lib/commons-logging-1.1.1.jar
+   263965  03-06-2020 05:06   marketplace-connector/lib/commons-codec-1.9.jar
+   489884  03-06-2020 05:06   marketplace-connector/lib/log4j-1.2.17.jar
+     9748  03-06-2020 05:06   marketplace-connector/lib/slf4j-log4j12-1.6.4.jar
+    87776  03-06-2020 05:06   marketplace-connector/lib/commons-io-1.3.2.jar
+  7649836  03-06-2020 05:06   marketplace-connector/lib/na-10g-axis2-jar-10.51.002.jar
+  1037555  03-06-2020 05:06   marketplace-connector/lib/axis2-kernel-1.7.9.jar
+   656632  03-06-2020 05:06   marketplace-connector/lib/axis2-adb-1.7.9.jar
+   716717  03-06-2020 05:06   marketplace-connector/lib/axiom-dom-1.2.22.jar
+   426012  03-06-2020 05:06   marketplace-connector/lib/axiom-api-1.2.22.jar
+   573622  03-06-2020 05:06   marketplace-connector/lib/axiom-impl-1.2.22.jar
+   186758  03-06-2020 05:06   marketplace-connector/lib/wsdl4j-1.6.3.jar
+   148829  03-06-2020 05:06   marketplace-connector/lib/XmlSchema-1.4.7.jar
+    74282  03-06-2020 05:06   marketplace-connector/lib/neethi-3.1.1.jar
+   388864  03-06-2020 05:06   marketplace-connector/lib/mail-1.4.jar
+    93417  03-06-2020 05:06   marketplace-connector/lib/axis2-saaj-1.7.9.jar
+    17433  03-06-2020 05:06   marketplace-connector/lib/axis2-transport-local-1.7.9.jar
+   178174  03-06-2020 05:06   marketplace-connector/lib/axis2-transport-http-1.7.9.jar
+   150102  03-06-2020 05:06   marketplace-connector/lib/woden-api-1.0M9.jar
+   754655  03-06-2020 05:06   marketplace-connector/lib/axis2-jaxws-1.7.9.jar
+   362679  03-06-2020 05:06   marketplace-connector/lib/commons-configuration-1.10.jar
+   588337  03-06-2020 05:06   marketplace-connector/lib/commons-collections-3.2.2.jar
+   284220  03-06-2020 05:06   marketplace-connector/lib/commons-lang-2.6.jar
+     1463  03-06-2020 05:05   marketplace-connector/config/stream-contenthandler.properties
+      748  03-06-2020 05:05   marketplace-connector/config/log4j.properties
+     3803  03-06-2020 05:05   marketplace-connector/cert/cacerts
+     3150  03-06-2020 05:06   marketplace-connector/marketplace-connector.bat
+     3718  03-06-2020 05:06   marketplace-connector/marketplace-connector.sh
+    70861  03-06-2020 05:06   marketplace-connector/lib/marketplace-connector.jar
+---------                     -------
+ 16717809                     37 files</pre>
+
+<p>There are several pieces of information that are going to be required for the installation</p>
+
+<ul>
+	<li>SA Username / Password</li>
+	<li>MpC Username / Password</li>
+</ul>
+
+<p>The configuration of MpC should be done via the marketplace-connector.sh script, to save time we can setup the following file with this content and then supply the credentials as a secondary step.</p>
+
+<p>config/user-prefs.conf</p>
+
+<pre>cbtpath=/opt/opsware/cbt/bin/cbt
+cbtconfpath=/opt/marketplace-connector/config/cbt.conf
+product=sas
+productdir=/opt/opsware
+stream=cc_library_py3,ec_cis_rhel
+service=security
+productuser=admin
+url=https\://marketplace.microfocus.com</pre>
+
+<p>If you want to setup this file the documented way you would need to run the following</p>
+
+<pre>./marketplace-connector.sh write-config --setting=cbtpath=/opt/opsware/cbt/bin/cbt
+./marketplace-connector.sh write-config --setting=cbtconfpath=/opt/marketplace-connector/config/cbt.conf
+./marketplace-connector.sh write-config --setting=product=sas
+./marketplace-connector.sh write-config --setting=productdir=/opt/opsware
+./marketplace-connector.sh write-config --url=https://marketplace.microfocus.com
+./marketplace-connector.sh write-config --setting=security.cc_library_py3
+./marketplace-connector.sh write-config --setting=security.ec_cis_rhel</pre>
+
+<p><img alt="/!\" height="16" src="http://wiki.local/moin_static1910/modernized/img/alert.png" title="/!\" width="16">&nbsp;It's very important that&nbsp;<tt>cc_library_py3</tt>&nbsp;appear first as there are dependencies on this stream and it must be imported before others.</p>
+
+<p>It's advisable that you start with only 1 stream to ensure that all credentials are correct and the process is working before adding more streams.</p>
+
+<p>Setting up the credentials will encrypt the passwords. The first configuration is to authenticate against the marketplace to download content.</p>
+
+<pre>[root@sa1080ct8c1 marketplace-connector]# ./marketplace-connector.sh write-config --username=BrettEngland
+Please enter password for user BrettEngland :</pre>
+
+<p>The second authentication is to allow MpC to login to SA for the purpose of creating Audit Policy objects. Its recommended that you use the admin username. The password for this user can be found like this:</p>
+
+<pre>[root@sa1080ct8c1 marketplace-connector]# fgrep -A1 detuser /var/opt/opsware/install_opsware/resp/resp_globals
+%truth.detuserpwd
+opsware_admin</pre>
+
+<p>Setup SA authentication</p>
+
+<pre>[root@sa1080ct8c1 marketplace-connector]# ./marketplace-connector.sh write-config --setting=productuser=admin
+Please enter password for user admin :</pre>
+
+<p>The content is downloaded from MpC and imported using CBT this requires that we set up a configuration file with the same admin user credentials</p>
+
+<pre># cat &lt;&lt;EOF &gt;/opt/marketplace-connector/config/cbt.conf
+twist.password=opsware_admin
+spike.password=opsware_admin
+cbt.security.obfuscatePasswords=true
+EOF</pre>
+
+<p>The cleartext passwords in this file will be encrypted when accessed.</p>
+
+<p>Downloading and importing of content can proceed</p>
+
+<pre>./marketplace-connector.sh</pre>
+
+<p>There are many ways in which this can fail</p>
+
+<ul>
+	<li>MpC authenticate was incorrect</li>
+	<li>SA user credentials are incorrect</li>
+	<li>CBT Credentials are incorrect</li>
+</ul>
+
+<p>If any of these events occur it's not enough to correct the credentials and restart the process as MpC remembers what it has done. In these circumstances, you must perform a reset</p>
+
+<pre>rm -rf /opt/marketplace-connector/cache
+rm /opt/marketplace-connector/config/downloadStatus.csv</pre>
+
+<p>If the import was a success you can proceed to include additional streams</p>
+
+<pre>./marketplace-connector.sh list-streams</pre>
+
+<p>Make choices and include them for downloading</p>
+
+<pre>./marketplace-connector.sh write-config --setting=security.cc_pci_unix</pre>
+
+<p></p>
+
+<h2 id="About_Python_3">About Python 3</h2>
+
+<p>The audit content is now being delivered as Python 3 code.</p>
+
+<p>The version of python used by the Agents varies by SA release.</p>
+
+<ul>
+	<li>SA 2020.11 - Python 3.8.5</li>
+	<li>All other SA releases - Python 2.7.10</li>
+</ul>
+
+<p>This will require SA agents using Python 2 to have the SIX compatibility module. This module allows the execution of Python 3 code with a Python 2 interpreter. This was only introduced in later SA agents versions and may require an Agent upgrade for it to be available.</p>
+
+<p>Minimum agent version</p>
+
+<ul>
+	<li>
+	<p>2018.08 : Agents &gt; internal build 80417</p>
+	</li>
+	<li>
+	<p>SA 10.60 : Agents &gt; internal build 80560</p>
+	</li>
+	<li>
+	<p>SA 10.50 : Agents &gt; internal build 81122</p>
+	</li>
+	<li>
+	<p>SA 10.23 : Agents &gt; internal build 81536</p>
+	</li>
+</ul>
+
+<p>The minimum agent packs for py3 compatibility</p>
+
+<ul>
+	<li>
+	<p><a href="https://community.microfocus.com/t5/Server-Automation-User/Python-2-amp-3-compatibility/m-p/1769921">https://community.microfocus.com/t5/Server-Automation-User/Python-2-amp-3-compatibility/m-p/1769921</a></p>
+	</li>
+</ul>
+
+<p>Those build numbers are the SVN check-in points when the PY3 six-module was merged to those branches.</p>
+
+<p>For example for 2018.08. The below does not have the SIX module</p>
+
+<ul>
+	<li>opsware-agent-75.0.79005.0-linux-7SERVER-X86_64</li>
+</ul>
+
+<p>This will work:</p>
+
+<ul>
+	<li>opsware-agent-75.0.85351.0-linux-7SERVER-X86_64</li>
+</ul>
+</div>
+</html>
