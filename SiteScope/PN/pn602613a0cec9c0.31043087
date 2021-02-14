@@ -1,4 +1,29 @@
 <html><p><strong>Troubleshooting:</strong></p>
 
+<p>When connecting a SiteScope server in OBM 2020.05 connected servers section, you may come across this error.</p>
+
+<p><strong>Error from opr-webapp.log :</strong></p>
+
+<p>Internal server error. Details: org/apache/commons/httpclient/HttpConnectionManager.&nbsp;&nbsp;</p>
+
+<p>java.lang.NoClassDefFoundError: org/apache/commons/httpclient/HttpConnectionManager</p>
+
+<p>at java.lang.Class.forName0(Native Method)</p>
+
+<p>at java.lang.Class.forName(Class.java:264)</p>
+
+<p>at com.freshwater.api.sitescope.SiteScopeManagerFactory.createSiteScopeManager795(SiteScopeManagerFactory.java:145)</p>
+
+<p>at com.freshwater.api.sitescope.SiteScopeManagerFactory.createSiteScopeManager(SiteScopeManagerFactory.java:71)</p>
+
+<p></p>
+
+<p><strong>Recommended Steps when this error occurs:</strong></p>
+
+<ul>
+	<li>This Error only occurs in OBM version 2020.05. This Error is misleading, but&nbsp;most probably when this happens it is beacause the connection properties between sitescope and OBM 2020.05 are not correct.</li>
+	<li>Please check all the connection properties between OBM 2020.05 and sitescope and make sure all the certificate exchange has been&nbsp;correctly done.</li>
+</ul>
+
 <p></p>
 </html>
