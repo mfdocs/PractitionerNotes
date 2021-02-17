@@ -127,4 +127,42 @@ Opsware/Tools/Solaris Patching/Solaris IPS Package Acquisition Tools - 0
 Opsware/Tools/Windows PowerShell Connector/Windows PowerShell Connector - 0
 Opsware/Tools/Chef-12.8.1/chef-solo-12.8.1 - 0
 </pre>
+
+<h2>Augment a Software Policy's OS applicability</h2>
+
+<p>When you use the pluggable platform installer to add a new platform to SA existing policies won't be associated with it.&nbsp; This script will find all Software Policies that are not built-in and are associated with the Window 2016 platform and will add Windows 2019 to them.</p>
+
+<pre>#!/opt/opsware/bin/python
+from pytwist import twistserver
+import sys
+ts = twistserver.TwistServer()
+ts.authenticate('user','password')
+SS = ts.search.SearchService
+SPS = ts.swmgmt.SoftwarePolicyService
+
+def getPlatform(name):
+    refs = SS.findObjRefs('platform_name = "%s"' % name, 'platform')
+    if len(refs) == 0:
+        print "%s Not found" % name
+        sys.exit(1)
+    return refs[0]
+
+win2019 = getPlatform("Windows Server 2019 x64")
+win2016 = getPlatform("Windows 2016 x64")
+for swPolicyRef in SS.findObjRefs( '(software_policy_platform_id = %s)&amp;'
+                                   '(software_policy_platform_id != %s)&amp;'
+                                   '(SoftwarePolicyVO.createdBy != "Opsware")' % (win2016.id,win2019.id),
+                                   'software_policy'):
+    print "Adding win2019 to %s" % swPolicyRef
+    vo = SPS.getSoftwarePolicyVO(swPolicyRef)
+    platformRefs = list(vo.getPlatforms()) + [win2019]
+    vo.setPlatforms(platformRefs)
+    SPS.update(swPolicyRef, vo, False, False)
+</pre>
+Execution
+
+<pre># ./addWindows2019.py
+Adding win2019 to New Software Policy (SoftwarePolicyRef:220001)
+#
+</pre>
 </html>
