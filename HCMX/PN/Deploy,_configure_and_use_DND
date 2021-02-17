@@ -1,0 +1,1095 @@
+<html><p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Micro Focus Hybrid Cloud Management X (HCMX) simplifies the delivery, consumption, and governance of IT services and resources. HCMX is delivered as part of a single converged solution that provides the capabilities of HCMX and Service Management Automation X (SMAX) integrated Configuration Management System (CMS) and Operations Orchestration (OO) solution. HCMX offers the following cloud management capabilities:</span></span></span></p>
+
+<ul>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Design and Deploy (DND)</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Cost governance and resource optimization (CGRO)</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Image aggregation</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">IT process orchestration</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Service portal</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Content Store</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Universal CMDB</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">CMS UI</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Mobile application</span></span></span></li>
+</ul>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">HCMX DND capability enables customers to create service designs,&nbsp;offerings, and&nbsp;automate the provisioning and management of hybrid and multi-cloud resources.&nbsp;This practitioner note describes steps involved in deploying DND capability, configuring DND and using DND capability with a sample use case of provisioning and managing a virtual machine from end user self-service portal. This practitioner note assumes that the DND capability was installed during HCMX installation. This practitioner note contains the following sections:</span></span></span></p>
+
+<ul>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Deploy DND capability to a tenant</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure DND</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Use DND</span></span></span></li>
+</ul>
+
+<h2>Deploy DND capability to a tenant</h2>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">SMAX is a multi-tenant service management solution that allows service providers to host and manage environments for multiple customers within a single installation. After installation of HCMX, a new tenant must be created to use HCMX functionalities. Deploying DND capability to a tenant involves the following tasks:</span></span></span></p>
+
+<ul>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure Email service</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create customer</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create account</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create and activate tenant admin, DND admin, OO admin and DND transport user accounts</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create license pool</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create licenses </span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Associate licenses to the license pool</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create tenant</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Deploy tenant</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Deploy <strong>Design and deploy</strong>&nbsp;capability to the tenant</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Get tenant end user portal URL and derive agent interface URL</span></span></span></li>
+</ul>
+
+<h3>Configure Email service</h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Email service configuration is required to activate user accounts and to reset account passwords. Follow the steps below to configure Email service:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the suite administration portal as user <strong>suite-admin</strong>&nbsp;at the following URL: <span class="MsoHyperlink" style="color:#0563c1"><span style="text-decoration:underline">https://&lt;HCMX-Server-FQDN&gt;/bo</span></span></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/b/b5/01-SuiteLogin.png" src="https://docs.microfocus.com/mediawiki/images/b/b5/01-SuiteLogin.png" style="width:278px;height:214px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="278" vspace="0" hspace="0" height="214" border="0"></p>
+
+<ol start="2">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to <strong>Configurations</strong>&nbsp;-&gt; <strong>Email service</strong>. Enter email service details specific to your environment.&nbsp; Click <strong>TEST CONNECTION</strong>. If test connection results are successful, click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/d/d9/02.png" src="https://docs.microfocus.com/mediawiki/images/d/d9/02.png" style="width:624px;height:231px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="624" vspace="0" hspace="0" height="231" border="0"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>Save email service settings</strong>&nbsp;window, click <strong>CONTINUE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/9/9a/03.png" src="https://docs.microfocus.com/mediawiki/images/9/9a/03.png" style="width:421px;height:167px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="421" vspace="0" hspace="0" height="167" border="0"></p>
+
+<ol start="4">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Kubernetes PODS are restarted after <strong>CONTINUE</strong>&nbsp;button is pressed. Wait for 5 to 10 minutes before continuing to next steps.</span></span></span></li>
+</ol>
+
+<h3>Create Customer</h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A customer record in HCMX is used to group accounts.</span></span></span>&nbsp;<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A customer record may have multiple accounts associated with it.</span></span></span></p>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>CUSTOMERS</strong>. Click <strong>New</strong>. In the <strong>New customer</strong>&nbsp;window, fill in the information as shown in the screenshot below. Click <strong>SAVE</strong>.</span></span></span><br>
+	<img alt="" file="https://docs.microfocus.com/mediawiki/images/9/96/04.png" src="https://docs.microfocus.com/mediawiki/images/9/96/04.png" style="width:624px;height:225px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="624" vspace="0" hspace="0" height="225" border="0"></li>
+</ol>
+
+<h3>Create Account</h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">An account record in HCMX identifies different customers of a managed services provider OR identifies different type of environments a customer might have OR a combination of customers and their environments. A customer may have multiple accounts associated with it. But an account can be related to a single customer.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>ACCOUNTS</strong>. Click <strong>New</strong>. In the <strong>New account</strong>&nbsp;window, fill in the information as shown in the screenshot below. Click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/7/79/05.png" src="https://docs.microfocus.com/mediawiki/images/7/79/05.png" style="width:624px;height:267px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="624" vspace="0" hspace="0" height="267" border="0"></p>
+
+<p style="margin-bottom:11px"></p>
+
+<h3>Create and activate tenant admin, DND admin, OO admin and DND transport user accounts</h3>
+
+<h4>Create and activate tenant admin user account</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A tenant administrator account has full control and access to the tenant. A tenant administrator account is required to deploy a new tenant and to administer the tenant.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>USERS</strong>. Click <strong>New</strong>.<br>
+	<img alt="" file="https://docs.microfocus.com/mediawiki/images/5/5f/06.png" src="https://docs.microfocus.com/mediawiki/images/5/5f/06.png" style="width:624px;height:122px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="624" vspace="0" hspace="0" height="122" border="0"></span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>New user</strong>&nbsp;window, fill in the information as shown in the screenshot below. Note that login name does not have to be <strong>tenantAdmin</strong>. Click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/a/af/07.png" src="https://docs.microfocus.com/mediawiki/images/a/af/07.png" style="width:437px;height:513px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="437" vspace="0" hspace="0" height="513" border="0"></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A user account activation email is sent by HCMX to the email address specified in the <strong>tenantAdmin</strong>&nbsp;user record. Click on the user activation link in that email. User activation web page is launched in a web browser. Type in a new password in the user activation web page and click <strong>SUBMIT</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/0/08/08-PwdReset.png" src="https://docs.microfocus.com/mediawiki/images/0/08/08-PwdReset.png" style="width:490px;height:326px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="490" vspace="0" hspace="0" height="326" border="0"></p>
+
+<h4>Create and activate DND admin user account</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A DND admin user account has login capability to the end user portal and agent interface. A DND admin user account is an account with DND and OO administration privileges. A DND administrator account is required to deploy the DND capability to a tenant.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>USERS</strong>. Click <strong>New</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/5/5f/06.png" src="https://docs.microfocus.com/mediawiki/images/5/5f/06.png" style="width:624px;height:122px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="624" vspace="0" hspace="0" height="122" border="0"></p>
+
+<ol start="2">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>New user</strong>&nbsp;window, fill in the information as shown in the screenshot below. Note that login name does not have to be <strong>dndAdmin</strong>. Click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/0/09/09-DNDAdmin.png" src="https://docs.microfocus.com/mediawiki/images/0/09/09-DNDAdmin.png" style="width:374px;height:443px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="374" vspace="0" hspace="0" height="443" border="0"></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A user account activation email is sent by HCMX to the email address specified in the <strong>dndAdmin</strong>&nbsp;user record. Click on the user activation link in that email. User activation web page is launched in a web browser. Type in new password in the user activation web page and click <strong>SUBMIT</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/0/08/08-PwdReset.png" src="https://docs.microfocus.com/mediawiki/images/0/08/08-PwdReset.png" style="width:490px;height:326px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="490" vspace="0" hspace="0" height="326" border="0"></p>
+
+<h4>Create and activate OO admin user account</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">An OO admin user account has login capability to the end user portal and agent interface. An OO admin user account is an account with OO administrator privileges. An OO administrator account does not have privileges to administer DND. OO admin account can administer OO only. An OO administrator account is required to deploy the DND capability to a tenant.</span></span></span></p>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>USERS</strong>. Click <strong>New</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/5/5f/06.png" src="https://docs.microfocus.com/mediawiki/images/5/5f/06.png" style="width:624px;height:122px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="624" vspace="0" hspace="0" height="122" border="0"></p>
+
+<ol start="2">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>New user</strong>&nbsp;window, fill in the information as shown in the screenshot below. Note that login name does not have to be <strong>ooAdmin</strong>. Click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/6/6d/10-OOAdmin.png" src="https://docs.microfocus.com/mediawiki/images/6/6d/10-OOAdmin.png" style="width:602px;height:710px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="602" vspace="0" hspace="0" height="710" border="0"></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A user account activation email is sent by HCMX to the email address specified in the <strong>ooAdmin</strong>&nbsp;user record. Click on the user activation link in that email. User activation web page is launched in a web browser. &nbsp;Type in new password in the user activation web page and click <strong>SUBMIT</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/0/08/08-PwdReset.png" src="https://docs.microfocus.com/mediawiki/images/0/08/08-PwdReset.png" style="width:490px;height:326px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="490" vspace="0" hspace="0" height="326" border="0"></p>
+
+<h4>Create and activate DND Transport user</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The DND transport user is an integration account and does not have capability to login to the service portal and agent interface UI. The DND transport user account is used for the communication from SMAX and OO &nbsp;to DND. A DND transport account is required to deploy the DND capability to a tenant.</span></span></span></p>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>USERS</strong>. Click <strong>New</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/5/5f/06.png" src="https://docs.microfocus.com/mediawiki/images/5/5f/06.png" style="width:624px;height:122px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="624" vspace="0" hspace="0" height="122" border="0"></p>
+
+<ol start="2">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>New user</strong>&nbsp;window, fill in the information as shown in the screenshot below. Note that login name does not have to be <strong>dndTransport</strong>. Click <strong>Save</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/d/db/11-DNDTransport.png" src="https://docs.microfocus.com/mediawiki/images/d/db/11-DNDTransport.png" style="width:609px;height:716px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="609" vspace="0" hspace="0" height="716" border="0"></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A user account activation email is sent by HCMX to the email address specified in the <strong>dndTransport</strong>&nbsp;user record. Click on the user activation link in that email. User activation web page is launched in a web browser. Type in new password in the user activation web page and click <strong>SUBMIT</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/0/08/08-PwdReset.png" src="https://docs.microfocus.com/mediawiki/images/0/08/08-PwdReset.png" style="width:490px;height:326px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="490" vspace="0" hspace="0" height="326" border="0"></p>
+
+<h3>Create license pool</h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A license pool contains one or more licenses. A license is assigned to the tenant using the licenses in a license pool.</span></span></span></p>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>LICENSE-POOLS</strong>. Click <strong>New</strong>. In the <strong>New license pool</strong>&nbsp;window, fill in the information as shown in the screenshot below. Click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/c/ca/12-NewLicensePool.png" src="https://docs.microfocus.com/mediawiki/images/c/ca/12-NewLicensePool.png" style="width:624px;height:197px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="624" vspace="0" hspace="0" height="197" border="0"></p>
+
+<h3>Create licenses</h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">License management enables you to manage license records. The following license editions are supported:</span></span></span></p>
+
+<ul>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">SMAX Express: SMAX Express license provide access to a limited set of SMAX solution capabilities. Refer to the SMAX documentation for more details on the capabilities that are available in SMAX express edition.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">SMAX Premium: SMAX Premium license provide full access to SMAX solution capabilities.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">HCMX: The HCMX (cloud management) license must be deployed to use DND and CGRO capabilities. The HCMX license enables the cloud management capability which offers the following:</span></span></span></li>
+</ul>
+
+<ul>
+	<li style="list-style-type:none">
+	<ul style="list-style-type:circle">
+		<li style="margin-left:16px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Design and Deploy (DND): With DND capability, cloud service offerings based on published service designs can be made available to consumers, which facilitates your organization's cloud infrastructure management.</span></span></span></li>
+		<li style="margin-left:16px; margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Cost Governance and Resource Optimization (CGRO): CGRO enables you to optimize your cloud spending and simplify configuration with various cloud providers.</span></span></span></li>
+	</ul>
+	</li>
+</ul>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Modes of License</b></span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">There are four modes of license:</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Production</b>: The official license key is issued by Micro Focus, redeemed and installed by AutoPass License Server (APLS). Suite Administration syncs the license information from APLS. A production license must be assigned to a production tenant.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Trial</b>: This license can be created manually in Suite Administration portal, the duration and capacity are limited. A trial license can be assigned to either a trial tenant or a development tenant. </span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Evaluation</b>: The official license key is issued by Micro Focus, redeemed and installed by APLS. Suite Administration syncs the license information from APLS. Evaluation license can be assigned to an internal tenant.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Non-Production</b>: The official license key is issued by Micro Focus, redeemed and installed by AutoPass License Server (APLS). Suite Administration syncs the license information from APLS. Non-production licenses can only be assigned to a development tenant.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This practitioner notes describes steps to create trial licenses. If you are deploying HCMX using official license keys issued by Micro Focus, use “upload licenses” option in the suite administration portal.</span></span></span></p>
+
+<h4>HCMX (Cloud Management) License</h4>
+
+<ol>
+	<li style="margin-bottom: 11px;"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>LICENSES</strong>. Click <strong>New</strong>. In the <strong>New Trial License</strong>&nbsp;window, fill in the information as shown in the screenshot below. Click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/c/ce/13-HCMXLicense.png" src="https://docs.microfocus.com/mediawiki/images/c/ce/13-HCMXLicense.png" style="width:624px;height:318px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="624" vspace="0" hspace="0" height="318" border="0"></p>
+
+<h4>SMAX license</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">SMAX license is optional for HCMX deployment. If you are also deploying SMAX solution capabilities along with HCMX, deploy SMAX license. </span></span></span></p>
+
+<ol>
+	<li style="margin-bottom: 11px;"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>LICENSES</strong>. Click <strong>New</strong>. In the <strong>New Trial License</strong>&nbsp;window, fill in the information as shown in the screenshot below. Click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/6/69/14-SMAXLicense.png" src="https://docs.microfocus.com/mediawiki/images/6/69/14-SMAXLicense.png" style="width:624px;height:317px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="624" vspace="0" hspace="0" height="317" border="0"></p>
+
+<h3>Associate licenses to the license pool</h3>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>LICENSES</strong>. A list of previously created licenses is shown.&nbsp;Click HCMX Cloud Management license ID.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/1/10/15-Licenses.png" src="https://docs.microfocus.com/mediawiki/images/1/10/15-Licenses.png" style="width:624px;height:169px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="624" vspace="0" hspace="0" height="169" border="0"></p>
+
+<ol start="2">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">License details page appears. Select previously created license pool as the license pool. Click <strong>Save</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/9/92/16-HCMXLicDetails.png" src="https://docs.microfocus.com/mediawiki/images/9/92/16-HCMXLicDetails.png" style="width:624px;height:260px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="624" vspace="0" hspace="0" height="260" border="0"></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>LICENSES</strong>. A list of previously created licenses is shown.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/1/10/15-Licenses.png" src="https://docs.microfocus.com/mediawiki/images/1/10/15-Licenses.png" style="width:624px;height:169px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="624" vspace="0" hspace="0" height="169" border="0"></p>
+
+<ol start="4">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click SMAX license ID. License details page appears. Select previously created license pool as the license pool. Click <strong>Save</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/e/ea/17-SMAXLicDetails.png" src="https://docs.microfocus.com/mediawiki/images/e/ea/17-SMAXLicDetails.png" style="width:624px;height:265px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="624" vspace="0" hspace="0" height="265" border="0"></p>
+
+<p style="margin-bottom:11px"></p>
+
+<h3>Create Tenant</h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">SMAX is a multi-tenant service management solution that allows service providers to host and manage environments for multiple customers within a single installation. After installation of HCMX, a new tenant must be created and deployed to use HCMX functionalities. </span></span></span></p>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>TENANTS</strong>. Click <strong>New</strong>. In the <strong>New tenant</strong>&nbsp;window, fill in the information as shown in the screenshot below. Click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018241e7138d8.89908992.png" style="width:624px; height:221px"></span></span></span></p>
+
+<ol start="2">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the tenant general page, set <strong>Tenant admin</strong>&nbsp;and <strong>Owner</strong>&nbsp;to the previously created tenant admin user. Click <strong>Save</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/3/3c/19-TenantGeneral.png" src="https://docs.microfocus.com/mediawiki/images/3/3c/19-TenantGeneral.png" style="width:624px;height:273px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="624" vspace="0" hspace="0" height="273" border="0"></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <strong>Licenses</strong>&nbsp;page. Click <strong>Add</strong>. Select previously created license pool. Select <strong>Cloud management</strong>&nbsp;license. Click <strong>ASSIGN</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/6/67/20-Tenantlichcmx.png" src="https://docs.microfocus.com/mediawiki/images/6/67/20-Tenantlichcmx.png" style="width:624px;height:303px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="624" vspace="0" hspace="0" height="303" border="0"></p>
+
+<ol start="4">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Skip this step if you do not intend to assign SMAX license. Click <strong>Licenses</strong>&nbsp;page. Click <strong>Add</strong>. Select previously created license pool. Select <strong>Premium</strong>&nbsp;license. Enter capacity. Click <strong>ASSIGN</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018241f1cc7c6.69964912.png" style="width:624px; height:301px"></span></span></span></p>
+
+<ol start="5">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <strong>Save</strong>&nbsp;to save the tenant.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018241f4db698.24172944.png" style="width:624px; height:338px"></span></span></span></p>
+
+<h3>Deploy tenant</h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">After creation of a new tenant, it must be deployed to use HCMX functionalities.</span></span></span></p>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <strong>Deploy</strong>&nbsp;to deploy the tenant.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018241f7f7636.36425436.png" style="width:624px; height:338px"></span></span></span></p>
+
+<ol start="2">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>Deploy tenant</strong>&nbsp;window, click <strong>DEPLOY</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018241fa6ccd4.30680296.png" style="width:606px; height:311px"></span></span></span></p>
+
+<p style="margin-bottom:11px"></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>TENANTS</strong>. Click <strong>Refresh</strong>&nbsp;until status of tenant changes to <strong>Active</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018241fda5114.51179660.png" style="width:625px; height:109px"></span></span></span></p>
+
+<h3>Deploy “Design and Deploy” capability to the tenant</h3>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>TENANTS</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242017dd97.84990605.png" style="width:625px; height:109px"></span></span></span></p>
+
+<ol start="2">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click tenant ID link to open tenant details. Navigate to <strong>Capability settings</strong>&nbsp;page. Click <strong>Deploy new capability</strong>. In the <strong>Deploy new capability</strong>&nbsp;window, select <strong>Design and Deploy</strong>&nbsp;capability. Click <strong>NEXT</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242051c9a1.13149892.png" style="width:624px; height:317px"></span></span></span></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>Deploy new capability</strong>&nbsp;window, fill in the information as shown in the screenshot below. Click <strong>DEPLOY</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_601824207be946.73217605.png" style="width:607px; height:616px"></span></span></span></p>
+
+<ol start="4">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The following message is shown at the bottom of <strong>Deploy new capability</strong>&nbsp;window: <strong>Started to deploy. Please check logs in operation history for details.</strong>&nbsp;Click <strong>CLOSE</strong>. DND capability deployment may take up-to an hour.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182420af4ed1.10257508.png" style="width:604px; height:659px"></span></span></span></p>
+
+<p style="margin-bottom:11px"></p>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to the tenant <strong>Capability settings</strong>&nbsp;page. Observe <strong>Deploy status</strong>. &nbsp;<br>
+	<img src="/mediawiki/images/pn_images/pn_image_60182420e83f30.43995290.png" style="width:623px; height:283px"></span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <strong>Refresh</strong>&nbsp;every 5 to 10 minutes to see latest <strong>Deploy status</strong>. The <strong>Deploy status</strong>&nbsp;changes to <strong>Done</strong> after <strong>Design and deploy</strong>&nbsp;capability was successfully deployed to the tenant. </span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182421285291.41281880.png" style="width:624px; height:310px"></span></span></span></p>
+
+<ol start="7">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the Capability settings page, toggle <strong>Enable capability</strong>&nbsp;button. &nbsp;Click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_601824215ff2f3.48748801.png" style="width:624px; height:318px"></span></span></span></p>
+
+<ol start="8">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>Confirmation</strong>&nbsp;window, click <strong>CONFIRM</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182421816e18.03174166.png" style="width:418px; height:262px"></span></span></span></p>
+
+<p style="margin-bottom:11px"></p>
+
+<h3>Get Tenant end user portal URL and construct agent interface URL</h3>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to the previously created tenant’s <strong>General</strong> page. Bookmark the tenant end user portal URL displayed in the <strong>URL</strong>&nbsp;field on the general page. Construct agent interface URL as below: <a href="https://HCMXFullyQualifiedDomainName/dashboard?TENANTID=%3cReplace" style="color:#0563c1; text-decoration:underline">https://HCMXFullyQualifiedDomainName/ess?TENANTID=&lt;Replace with tenant ID value shown on general page&gt;.</a> Bookmark agent interface URL.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182421bd0e41.45982265.png" style="width:624px; height:405px"></span></span></span></p>
+
+<p style="margin-bottom:11px"></p>
+
+<h2>Configure DND</h2>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configuration of DND creates necessary foundation which enables usage of DND functionalities. Configuration of DND includes the following steps:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure application settings</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create aggregation provider for DND</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create deployment provider</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Sync deployment provider resources</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Publish service design to deploy virtual machines</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Build service catalog and expose VM deployment offering to end users</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure authorization for DND</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"></p>
+
+<h3>Configure application settings</h3>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the tenant end user portal as tenant admin user. Click <strong>NEXT</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242211d2e5.99766767.png" style="width:372px; height:247px"></span></span></span></p>
+
+<ol start="2">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Enter password. Click <strong>LOGIN</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242273ff45.33460797.png" style="width:371px; height:283px"></span></span></span></p>
+
+<p style="margin-bottom:11px"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Profile settings wizard is displayed when a user logs in for the first time to the service portal. Optionally, upload your profile picture. Click <strong>NEXT</strong>.<br>
+	<img src="/mediawiki/images/pn_images/pn_image_601824237fe365.75164106.png" style="width:492px; height:258px"></span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Answer optional questions on the <strong>SET SKILLS</strong>&nbsp;page. Click <strong>Done</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182424881ef5.81733168.png" style="width:623px; height:440px"></span></span></span></p>
+
+<ol start="5">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <strong>Service Portal</strong>&nbsp;dropdown. Navigate to the <strong>Agent Interface</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_601824250d2046.00448394.png" style="width:624px; height:125px"></span></span></span></p>
+
+<ol start="6">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The SMAX Agent interface is displayed.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242541bfc7.66019191.png" style="width:625px; height:217px"></span></span></span></p>
+
+<ol start="7">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the mega menu, navigate to <strong>Administration</strong>&nbsp;-&gt; <strong>Configuration</strong>&nbsp;-&gt; <strong>Application Settings</strong></span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_601824256c96d4.79077791.png" style="width:624px; height:253px"></span></span></span></p>
+
+<ol start="8">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>APPLICATION SETTINGS</strong>&nbsp;page, turn on <strong>enable aggregation</strong>. Aggregation must be turned on to expose DND service designs as offerings in SMAX end user portal.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182425a3eaa6.33788765.png" style="width:624px; height:447px"></span></span></span></p>
+
+<ol start="9">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>APPLICATION SETTINGS</strong>&nbsp;page, click <strong>Create key chain</strong>. In the <strong>Create tenant key chain</strong>&nbsp;window, type in and confirm the passcode. Click <strong>OK</strong>. A tenant key chain is required to support encrypted fields in the tenant.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182425d20ff8.25299245.png" style="width:624px; height:298px"></span></span></span></p>
+
+<ol start="10">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>APPLICATION SETTINGS</strong>&nbsp;page, click <strong>Save</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182426098716.95485527.png" style="width:624px; height:121px"></span></span></span></p>
+
+<p style="margin-bottom:11px"></p>
+
+<h3>Create Aggregation Provider for DND</h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">An aggregation provider consists of an end-point system and its properties to enable integration with the SMAX. Aggregation provider for DND allows to publish service designs of DND as offerings in service catalog.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Construct aggregation provider URL as follows:</span></span></span></li>
+</ol>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Logon to one of the Kubernetes nodes hosting the HCMX solution.</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Run the following command as shown in the screenshot below: <strong>kubectl get svc --all-namespaces | grep -i dnd</strong><br>
+	<img src="/mediawiki/images/pn_images/pn_image_601824263c9557.53187727.png" style="width:592px; height:148px"></span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Construct aggregation provider URL as follows: <span class="MsoHyperlink" style="color:#0563c1"><a>https://&lt;Replace</a></span><a> with itom-dnd-controller service name&gt;:&lt;Replace with itom-dnd-controller port number&gt;/&lt;Replace with your tenant ID&gt;/dnd</a></span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Based on the output from the screenshot above, aggregation provider URL is https://itom-dnd-controller-192661264-svc:8444/192661264/dnd</span></span></span></li>
+</ul>
+
+<ol start="2">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the mega menu, navigate to <strong>Administration</strong>&nbsp;<span style="font-family:Wingdings">à</span> <strong>Utilities</strong>&nbsp;<span style="font-family:Wingdings">à</span> <strong>Providers</strong></span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242674cfa7.76697086.png" style="width:624px; height:253px"></span></span></span></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <strong>AGGREGATION PROVIDERS</strong>. Click <strong>New</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_601824269fb277.57474892.png" style="width:623px; height:139px"></span></span></span></p>
+
+<p style="margin-bottom:11px"></p>
+
+<ol start="4">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>New Provider</strong>&nbsp;window, fill in the information as shown in the screenshot below. Click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182426ceeb77.92015183.png" style="width:624px; height:519px"></span></span></span></p>
+
+<ol start="5">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Newly created aggregation provider is displayed.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_601824270c7620.74890038.png" style="width:625px; height:148px"></span></span></span></p>
+
+<h3 style="margin-top: 3px;"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal">Create deployment resource provider</span></span></span></span></span></h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Deployment resource providers are management platforms that offer centralized control over the infrastructure and resources used in a cloud computing environment. For example, VMWare vCenter, Azure, AWS, HyperV, etc are deployment resource providers. HCMX provides ability to deploy and manage resources on multiple deployment resource providers using a single easy to use interface.</span></span></span></p>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">On the <strong>providers</strong> menu, Click <strong>DEPLOYMENT RESOURCE PROVIDERS</strong>. A list of providers is shown. Configure any provider that is applicable to your environment. In this practitioner notes, VMware vCenter provider is used as an example. Click <strong>VMWare vCenter</strong>&nbsp;provider.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242755a955.25206623.png" style="width:474px; height:256px"></span></span></span></p>
+
+<ol start="2">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>VMWare vCenter</strong>&nbsp;provider page, click <strong>gear</strong> icon. Click <strong>Edit</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242791cf35.42442062.png" style="width:625px; height:209px"></span></span></span></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>Edit Resource Provider</strong>&nbsp;window, fill in the information specific to your vCenter environment. Select <strong>Enabled</strong>&nbsp;checkbox. Click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182427bb0ba1.56576864.png" style="width:609px; height:741px"></span></span></span></p>
+
+<ol start="4">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>Provider Validation Failed</strong>&nbsp;window, click <strong>YES</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182427ed92b3.19212809.png" style="width:605px; height:255px"></span></span></span></p>
+
+<h3>Sync deployment provider resources</h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A deployment provider has many resources that needs to be synchronized with HCMX. Some of the example resources of a VMWare vCenter resource provider are datacenter, templates, etc. These synchronized resources are then displayed while deploying resources from end user portal.</span></span></span></p>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to the <strong>RESOURCE POOLS</strong>&nbsp;tab. Click <strong>Create Resource Pool</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_601824282a93b9.53203804.png" style="width:624px; height:170px"></span></span></span></p>
+
+<ol start="2">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>Create Resource Pool</strong>&nbsp;window, fill in the information as shown in the screenshot below. Click <strong>CREATE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_601824285b03f0.43924676.png" style="width:609px; height:604px"></span></span></span></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the newly created <strong>vCenter</strong>&nbsp;resource pool page, click <strong>gear</strong> icon. Click <strong>Synchronize</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242898de91.75067180.png" style="width:625px; height:165px"></span></span></span></p>
+
+<ol start="4">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>Synchronize Action Scheduled</strong>&nbsp;window, click <strong>CLOSE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182428be5994.18433281.png" style="width:602px; height:257px"></span></span></span></p>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <strong>gear</strong>&nbsp;icon. Click <strong>Refresh</strong>&nbsp;to see latest synchronization state. After resource synchronization has successfully completed, synchronization state changes to <strong>Completed</strong>&nbsp;as shown in the screenshot below. <img src="/mediawiki/images/pn_images/pn_image_6018242905d376.51179235.png" style="width:624px; height:188px"></span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the mega menu, navigate to <strong>Run</strong>&nbsp;-&gt; <strong>Deployment Operations</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182429380391.22123647.png" style="width:623px; height:272px"></span></span></span></p>
+
+<ol start="7">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to <strong>Orchestration Management</strong>&nbsp;-&gt; <strong>Run Management</strong>&nbsp;-&gt; <strong>RUN EXPLORER</strong>. Observe that <strong>vCenter Resource Sync</strong>&nbsp;OO flow has been successfully completed.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242969afc6.77313922.png" style="width:623px; height:206px"></span></span></span></p>
+
+<h3>Publish service design to deploy virtual machines</h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Service design defines how a service should be built. There are out of the box service designs and new service designs can be created. Service design defines components of a service and their relationships. In this practitioner notes, an out of the box service design is published to expose deployment of virtual machines as an offering to the end users.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the mega menu, navigate to <strong>Build</strong>&nbsp;-&gt; <strong>Design</strong>.<br>
+	<img src="/mediawiki/images/pn_images/pn_image_601824299b41f3.16254969.png" style="width:624px; height:278px"></span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A list of out of the box service designs are shown. Click release number of <strong>vCenter Compute – Deploy VM from template</strong>&nbsp;service design. </span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182429dbb9a4.83530284.png" style="width:453px; height:356px"></span></span></span></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The <strong>vCenter Compute – Deploy VM from Template</strong>&nbsp;service design details screen appears. Click <strong>gear</strong> icon. Click <strong>Publish</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242a23c5d9.26616874.png" style="width:623px; height:175px"></span></span></span></p>
+
+<ol start="4">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>Confirmation Required</strong>&nbsp;window, click <strong>YES</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242a4d8d24.92203175.png" style="width:605px; height:256px"></span></span></span></p>
+
+<ol start="5">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Validate that the status of service design changes to <strong>Published</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242ab171d3.23177587.png" style="width:624px; height:65px"></span></span></span></p>
+
+<h3>Build service catalog and expose VM deployment offering to end users</h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The service catalog allows end users to discover and navigate available services offered by their organization. A service catalog is defined using the following objects:</span></span></span></p>
+
+<ul>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Service Category: A service category contains a group of similar services.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Service definition: A service such as email or compute.</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Offerings: Offerings of a service includes tasks related to a service such as upgrading mailbox quota, resolving an email issue, etc.</span></span></span></li>
+</ul>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the <strong>mega menu</strong>, navigate to <strong>Plan</strong>&nbsp;-&gt; <strong>Service Catalog</strong>.<br>
+	<img src="/mediawiki/images/pn_images/pn_image_6018242aead681.15497861.png" style="width:625px; height:273px"></span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Existing catalog is shown. In a new system, existing catalog has zero offerings exposed to the end users. Click <strong>Add</strong>&nbsp;under <strong>Category</strong>&nbsp;section. </span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242b2049f2.25353320.png" style="width:624px; height:99px"></span></span></span></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>New Category</strong>&nbsp;window, fill in the information as shown in the screenshot below. Click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242b523612.33770701.png" style="width:624px; height:495px"></span></span></span></p>
+
+<ol start="4">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Select the newly created category. The <strong>Service Definition</strong>&nbsp;screen appears. Click <strong>Add</strong>&nbsp;in the <strong>service definition</strong>&nbsp;section.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242b83eb91.64455469.png" style="width:624px; height:127px"></span></span></span></p>
+
+<ol start="5">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>New Service Definition</strong>&nbsp;window, fill in the information as shown in the screen below. Click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242bb62f06.16431826.png" style="width:624px; height:304px"></span></span></span></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Select the newly created service definition. Click <strong>Edit</strong>.<br>
+	<img src="/mediawiki/images/pn_images/pn_image_6018242be84665.28510279.png" style="width:625px; height:150px"></span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the service definition detail page, click <strong>BUILD</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/4/42/21-ServiceDefBuild.png" src="https://docs.microfocus.com/mediawiki/images/4/42/21-ServiceDefBuild.png" style="width:624px;height:109px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="624" vspace="0" hspace="0" height="109" border="0"></p>
+
+<ol start="8">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the service definition detail page, click <strong>Save</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242c592d82.73208101.png" style="width:625px; height:107px"></span></span></span></p>
+
+<ol start="9">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the service definition detail page, click <strong>OPERATE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242c913306.67691273.png" style="width:623px; height:133px"></span></span></span></p>
+
+<ol start="10">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the service definition detail page, click <strong>Save</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242cc49836.42426566.png" style="width:624px; height:127px"></span></span></span></p>
+
+<ol start="11">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Verify that service definition is in <strong>Operation</strong>&nbsp;phase. Select the service definition. In the offering section, click <strong>Add</strong>&nbsp;dropdown and select <strong>Add an aggregated offering</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242ceee292.35643735.png" style="width:624px; height:103px"></span></span></span></p>
+
+<ol start="12">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>New Aggregated Offering</strong>&nbsp;window, select <strong>HCMX DND</strong>&nbsp;provider. A list of published service designs appears. Select the service design that you would like to make it available for end users. Click <strong>NEXT</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242d2e88c5.20493071.png" style="width:515px; height:457px"></span></span></span></p>
+
+<ol start="13">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>Edit the display label of offering</strong>&nbsp;page, type in a meaningful name for the offering. Click <strong>SAVE &amp; EDIT</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242d5ee841.53493746.png" style="width:624px; height:552px"></span></span></span></p>
+
+<ol start="14">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>offering </strong>details window, navigate to <strong>Default values</strong>&nbsp;page. Set <strong>Owner</strong>&nbsp;field to the request owner. In the screenshot below, it is set to <strong>tenant admin</strong>&nbsp;account. But work with your IT service management process experts to identify request owners for each offering and set it appropriately. The <strong>owner</strong> field is a required field for provisioning of requests. If the <strong>Owner</strong> field is not set on the offering, a request created from the offering through end user portal pauses in the <strong>Log</strong>&nbsp;phase. To fully automate provisioning of services, set a default value for the owner field. </span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242d9829e6.20479609.png" style="width:625px; height:183px"></span></span></span></p>
+
+<ol start="15">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>Offering </strong>details&nbsp;window, navigate to <strong>General</strong>&nbsp;page. Set <strong>status</strong>&nbsp;field to <strong>Active</strong>. Click <strong>Save</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242dca3af8.70108546.png" style="width:624px; height:188px"></span></span></span></p>
+
+<ol start="16">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>offering </strong>details&nbsp;window, <strong>General</strong>&nbsp;page, scroll down till <strong>Audience</strong>&nbsp;section is seen. By default, offerings are visible to all end users. If you would like to limit visibility of certain offerings to a few individuals, define entitlement rules and add in the Audience section. Entitlement rules can be added to service definition and category objects. For more details, refer to the SMAX documentation.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242e003e16.94250923.png" style="width:623px; height:256px"></span></span></span></p>
+
+<ol start="17">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The following screenshot shows a sample service catalog structure that was created using the above steps. Note that the service definition must be in <strong>Operation</strong>&nbsp;phase. This service catalog structure is presented to the end users when they log in to the end user portal.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242e389bf2.72924699.png" style="width:625px; height:138px"></span></span></span></p>
+
+<p style="margin-bottom:11px"></p>
+
+<h3>Configure authorization for DND</h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">By default, the tenant admin user has access to the data and menu items of Design and Deploy (DND) functionality. Configuring authorization for other users such as service designers and OO administrators involves the following steps:</span></span></span></p>
+
+<ul>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure authorization in Identity Management (IDM)</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure authorization in SMAX</span></span></span></li>
+</ul>
+
+<h4>Configure authorization in IDM</h4>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the <strong>IDM administration portal</strong> as user <strong>suite-admin</strong>&nbsp;at the following URL: <span class="MsoHyperlink" style="color:#0563c1"><span style="text-decoration:underline">https://&lt;HCMXServerFQDN/idm-admin</span></span> </span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242e9e66c7.93833581.png" style="width:351px; height:275px"></span></span></span></p>
+
+<ol start="2">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A list of organizations is displayed. Click on the <strong>organization tile</strong> that corresponds to the tenant that was created in earlier steps. In this example, it is the organization with number <strong>192661264</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242ed0d629.65487043.png" style="width:624px; height:198px"></span></span></span></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The organization details page is shown. Click <strong>Groups</strong>&nbsp;page.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242f0cd174.01304549.png" style="width:510px; height:313px"></span></span></span></p>
+
+<ol start="4">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Following is the list of available DND groups and their privileges.</span></span></span></li>
+</ol>
+
+<table class="Table" style="background:white; border-collapse:collapse; margin-left:9px; margin-right:9px" width="105%" align="left">
+	<tbody>
+		<tr>
+			<td style="border-bottom:1px solid #bdbec0; width:28%; padding:2px 4px 4px 4px; height:27px; background-color:white; border-top:1px solid #bdbec0; border-right:1px solid #bdbec0; border-left:1px solid #bdbec0">
+			<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Group</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid #bdbec0; width:38%; padding:2px 4px 4px 4px; height:27px; background-color:white; border-top:1px solid #bdbec0; border-right:1px solid #bdbec0; border-left:none">
+			<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b><span style="color:black">Role</span></b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid #bdbec0; width:33%; padding:2px 4px 4px 4px; height:27px; background-color:white; border-top:1px solid #bdbec0; border-right:1px solid #bdbec0; border-left:none">
+			<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b><span style="color:black">Description</span></b></span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid #bdbec0; width:28%; padding:2px 4px 4px 4px; height:97px; background-color:white; border-top:none; border-right:1px solid #bdbec0; border-left:1px solid #bdbec0">
+			<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:black">DND_ADMINISTRATORS</span></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid #bdbec0; width:38%; padding:2px 4px 4px 4px; height:97px; background-color:white; border-top:none; border-right:1px solid #bdbec0; border-left:none">
+			<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:black">DND_WORKFLOW_DESIGNER</span></span></span></span></p>
+
+			<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:black">DND_ADMINISTRATOR</span></span></span></span></p>
+
+			<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:black">DND_RESOURCE_SUPPLY_MANAGER</span></span></span></span></p>
+
+			<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:black">DND_SERVICE_OPERATIONS_MANAGER</span></span></span></span></p>
+
+			<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:black">DND_SERVICE_DESIGNER</span></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid #bdbec0; width:33%; padding:2px 4px 4px 4px; height:97px; background-color:white; border-top:none; border-right:1px solid #bdbec0; border-left:none">
+			<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:black">Users in this group are administrators for all operations in DND. It is recommended that you also add the DND administrators to the OO_ADMINISTRATORS group to provide administration capabilities in Orchestration Management.</span></span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid #bdbec0; width:28%; padding:2px 4px 4px 4px; height:97px; background-color:white; border-top:none; border-right:1px solid #bdbec0; border-left:1px solid #bdbec0">
+			<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:black">DND_EVERYONE</span></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid #bdbec0; width:38%; padding:2px 4px 4px 4px; height:97px; background-color:white; border-top:none; border-right:1px solid #bdbec0; border-left:none">
+			<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:black">DND_PROVISIONING</span></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid #bdbec0; width:33%; padding:2px 4px 4px 4px; height:97px; background-color:white; border-top:none; border-right:1px solid #bdbec0; border-left:none">
+			<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:black">Users in this group can provision resources in DND for cloud-based subscriptions in Service Portal.</span></span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid #bdbec0; width:28%; padding:2px 4px 4px 4px; height:97px; background-color:white; border-top:none; border-right:1px solid #bdbec0; border-left:1px solid #bdbec0">
+			<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:black">DND_OPERATORS</span></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid #bdbec0; width:38%; padding:2px 4px 4px 4px; height:97px; background-color:white; border-top:none; border-right:1px solid #bdbec0; border-left:none">
+			<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:black">DND_SERVICE_OPERATIONS_MANAGER</span></span></span></span></p>
+
+			<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:black">OO_OPERATORS</span></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid #bdbec0; width:33%; padding:2px 4px 4px 4px; height:97px; background-color:white; border-top:none; border-right:1px solid #bdbec0; border-left:none">
+			<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:black">Users in this group can access Deployment Operations and Orchestration Management flows.</span></span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid #bdbec0; width:28%; padding:2px 4px 4px 4px; height:97px; background-color:white; border-top:none; border-right:1px solid #bdbec0; border-left:1px solid #bdbec0">
+			<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:black">DND_RESOURCE_SUPPLY_MANAGERS</span></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid #bdbec0; width:38%; padding:2px 4px 4px 4px; height:97px; background-color:white; border-top:none; border-right:1px solid #bdbec0; border-left:none">
+			<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:black">DND_RESOURCE_SUPPLY_MANAGER</span></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid #bdbec0; width:33%; padding:2px 4px 4px 4px; height:97px; background-color:white; border-top:none; border-right:1px solid #bdbec0; border-left:none">
+			<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:black">Users in this group can create Resource Providers in DND.</span></span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid #bdbec0; width:28%; padding:2px 4px 4px 4px; height:97px; background-color:white; border-top:none; border-right:1px solid #bdbec0; border-left:1px solid #bdbec0">
+			<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:black">DND_SERVICE_DESIGNERS</span></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid #bdbec0; width:38%; padding:2px 4px 4px 4px; height:97px; background-color:white; border-top:none; border-right:1px solid #bdbec0; border-left:none">
+			<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:black">DND_SERVICE_DESIGNER</span></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid #bdbec0; width:33%; padding:2px 4px 4px 4px; height:97px; background-color:white; border-top:none; border-right:1px solid #bdbec0; border-left:none">
+			<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:black">Users in this group are service designers who create designs and have privileges for associated capabilities such as Resource Offerings, Orchestration Designer, and Service Components in DND.</span></span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid #bdbec0; width:28%; padding:2px 4px 4px 4px; height:97px; background-color:white; border-top:none; border-right:1px solid #bdbec0; border-left:1px solid #bdbec0">
+			<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:black">OO_ADMINISTRATORS</span></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid #bdbec0; width:38%; padding:2px 4px 4px 4px; height:97px; background-color:white; border-top:none; border-right:1px solid #bdbec0; border-left:none">
+			<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:black">OO_ADMINISTRATORS</span></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid #bdbec0; width:33%; padding:2px 4px 4px 4px; height:97px; background-color:white; border-top:none; border-right:1px solid #bdbec0; border-left:none">
+			<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:black">Users in this group can perform all operations in Orchestration Management flows</span></span></span></span></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Select the&nbsp;<strong>DND_Administrators</strong>&nbsp;group. Click the&nbsp;<strong>edit</strong> icon.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242f3f6f11.41465325.png" style="width:476px; height:280px"></span></span></span></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">If you are using LDAP or SAML, skip this step. In the <strong>Group settings</strong>&nbsp;window, Click <strong>Associated users</strong>&nbsp;drop down list and select new users. Click <strong>SAVE</strong>. </span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242f749304.97281521.png" style="width:625px; height:296px"></span></span></span></p>
+
+<ol start="7">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">If you are using LDAP or SAML, in the <strong>Group Settings</strong>&nbsp;window, Click <strong>+</strong>&nbsp;in the <strong>Associated Group Rules</strong>&nbsp;section.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242f9b7f88.51219003.png" style="width:499px; height:407px"></span></span></span></p>
+
+<ol start="8">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>Add Group Rule</strong>&nbsp;window, type a display name, select <strong>LDAP Group</strong>&nbsp;as the rule type, type in group DN and select LDAP configuration. Click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018242fcd9082.92544482.png" style="width:625px; height:163px"></span></span></span></p>
+
+<ol start="9">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <strong>Save</strong>&nbsp;in the <strong>Group settings</strong>&nbsp;page.</span></span></span></li>
+</ol>
+
+<h4>Configure authorization in SMAX</h4>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the <strong>SMAX agent interface</strong> as tenant admin user.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the <strong>mega menu</strong>, navigate to <strong>Administration</strong> -&gt; <strong>Master Data</strong> -&gt; <strong>People</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182430137967.53499835.png" style="width:624px; height:255px"></span></span></span></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to <strong>Roles</strong> -&gt; <strong>CMP Agent</strong>. The CMP Agent role is an out of the box role that provides access to the cloud management menu items. The CMP Agent role has sufficient rights for OO administrators. For DND administrators, additional rights are required. Click <strong>Add</strong>&nbsp;to create a new role.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182430477859.79473735.png" style="width:625px; height:432px"></span></span></span></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>New role</strong>&nbsp;window, name the new role as <strong>DND Admin</strong>. Click <strong>OK</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_601824306cb2b4.27201016.png" style="width:364px; height:156px"></span></span></span></p>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>DND Admin</strong>&nbsp;role, select <strong>Access to application administration modules</strong>. Scroll down to the <strong>Record type</strong>&nbsp;section. In the <strong>Record type</strong>&nbsp;section, click <strong>Add</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182430ae2095.86032185.png" style="width:624px; height:484px"></span></span></span></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>Add permission</strong>&nbsp;window, select <strong>Provider</strong>&nbsp;as the record type and select <strong>create</strong>, <strong>view</strong>, <strong>update</strong> and <strong>delete</strong> permissions. Click <strong>OK</strong>.&nbsp; </span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182430e95e78.87667386.png" style="width:364px; height:350px"></span></span></span></p>
+
+<ol start="7">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Provider record permissions appear in the <strong>Record Type</strong>&nbsp;section.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_601824312799b5.56829892.png" style="width:624px; height:69px"></span></span></span></p>
+
+<ol start="8">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Scroll to the top of the <strong>role</strong>&nbsp;details page. Click <strong>Save</strong></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182431644be8.93905667.png" style="width:385px; height:284px"></span></span></span></p>
+
+<p style="margin-left:48px"></p>
+
+<ol start="9">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <strong>PEOPLE</strong>&nbsp;tab. Click <strong>DND Admin user’s id</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_601824318ce7f2.56059300.png" style="width:624px; height:315px"></span></span></span></p>
+
+<ol start="10">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the DND Admin user’s <strong>General</strong> page, <strong>system use definitions</strong>&nbsp;section, select <strong>CMP Agent</strong>&nbsp;and <strong>DND Admin</strong>&nbsp;roles. Click <strong>Save</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182431bf37e0.07919573.png" style="width:477px; height:447px"></span></span></span></p>
+
+<ol start="11">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <strong>PEOPLE</strong>&nbsp;tab. Click <strong>OO Admin user’s ID</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182432009a69.89063967.png" style="width:474px; height:280px"></span></span></span></p>
+
+<ol start="12">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the OO Admin user’s <strong>General</strong> page, <strong>system use definitions</strong>&nbsp;section, select <strong>CMP Agent</strong>&nbsp;role. Click <strong>Save</strong>. OO administrators have fewer privileges than DND administrators. The DND administrators have full rights to service designs, providers and Operations Orchestration. OO admins have access to Operations Orchestration functionality only.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182432362b24.03079397.png" style="width:416px; height:371px"></span></span></span></p>
+
+<h2>Use DND</h2>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this practitioner notes, the following use cases are described:</span></span></span></p>
+
+<ul>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Provision a virtual machine (VM) from tenant end user portal</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Manage deployed virtual machine from tenant end user portal</span></span></span></li>
+</ul>
+
+<h3>Provision a VM from tenant end user portal</h3>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Logon to the <strong>tenant end user portal</strong>. The <strong>Service Portal</strong>&nbsp;home page is displayed with the service catalog category that was created in earlier steps.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_601824334c2c16.41124634.png" style="width:624px; height:217px"></span></span></span></p>
+
+<ol start="2">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <strong>IT INFRASTRUCTURE SERVICES</strong>&nbsp;category to list available service offerings. The <strong>vCenter Compute – Deploy VM from template</strong>&nbsp;offering is shown. Click <strong>REQUEST SERVICE</strong>. </span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182434358ad3.23381939.png" style="width:624px; height:249px"></span></span></span></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>SERVICE OFFERING</strong>&nbsp;screen, fill in the information as shown in the following screenshots. Select resource names such as datacenter, etc that are specific to your environment. Click <strong>SUBMIT</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182437822f82.41609375.png" style="width:624px; height:372px"></span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182437aa0db2.90886377.png" style="width:624px; height:463px"></span></span></span></p>
+
+<p style="margin-bottom:11px"></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182437dbede6.05658923.png" style="width:624px; height:440px"></span></span></span></p>
+
+<p style="margin-bottom:11px"></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018243824e283.83881816.png" style="width:624px; height:586px"></span></span></span></p>
+
+<ol start="4">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The <strong>Request created successfully</strong>&nbsp;screen is shown.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018243905ab74.76257517.png" style="width:624px; height:129px"></span></span></span></p>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <strong>Your requests</strong>&nbsp;to track submitted request. &nbsp;Request moves from <strong>Classification</strong> phase to <strong>Fulfillment</strong> phase.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_601824394fc6c0.86312882.png" style="width:237px; height:80px"></span></span></span></p>
+
+<ol start="6">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Once a VM has been successfully provisioned, request moves from <strong>Fulfillment</strong> phase to <strong>Validation</strong>&nbsp;phase as shown in the screenshot below.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018243a23cfb4.26752474.png" style="width:624px; height:252px"></span></span></span></p>
+
+<h3>Manage deployed VM from tenant end user portal</h3>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the tenant end user portal, navigate to top right <strong>mega menu</strong> (<strong>Three horizontal lines</strong> icon). Select <strong>Services and Assets</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018243b46de93.11954689.png" style="width:624px; height:215px"></span></span></span></p>
+
+<ol start="2">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>YOUR SERVICES AND ASSETS</strong>&nbsp;page, click the newly created subscription.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018243c7e87c8.06921194.png" style="width:624px; height:377px"></span></span></span></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the subscription details page, select <strong>Actions</strong>&nbsp;-&gt; <strong>Manage service instance</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018243d946ff8.19933069.png" style="width:624px; height:404px"></span></span></span></p>
+
+<ol start="4">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>SERVICE INSTANCE</strong>&nbsp;page, click <strong>ACTIONS</strong>&nbsp;dropdown next to the <strong>server</strong>&nbsp;component. A list of VM actions are displayed. </span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018243ec59c15.06142813.png" style="width:625px; height:389px"></span></span></span></p>
+
+<ol start="5">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Select <strong>Stop Server</strong>&nbsp;VM action.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_601824400a0307.95350523.png" style="width:624px; height:395px"></span></span></span></p>
+
+<ol start="6">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>Stop Server</strong>&nbsp;window, click <strong>EXECUTE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_601824404223c7.26917312.png" style="width:546px; height:185px"></span></span></span></p>
+
+<ol start="7">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>SERVICE INSTANCE</strong>&nbsp;page, <strong>SERVER</strong>&nbsp;section, click <strong>vCenter Server Advanced Template 18.1.0</strong>&nbsp;component. Server component property window appears.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182441417273.30428313.png" style="width:624px; height:370px"></span></span></span></p>
+
+<ol start="8">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>SERVER</strong>&nbsp;property window, observe that <strong>Power state</strong>&nbsp;property has changed to <strong>Powered OFF</strong>&nbsp;state.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_601824424ff677.29288136.png" style="width:624px; height:463px"></span></span></span></p>
+
+<ol start="9">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>SERVER</strong>&nbsp;property window, select <strong>Actions</strong> -&gt; <strong>Start server</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_601824433dcad4.61579422.png" style="width:624px; height:554px"></span></span></span></p>
+
+<ol start="10">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>Start Server</strong>&nbsp;window, click <strong>EXECUTE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_601824436f19a6.04786411.png" style="width:544px; height:187px"></span></span></span></p>
+
+<ol start="11">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>SERVER</strong>&nbsp;property window, observe that <strong>Power State</strong>&nbsp;property value has changed to <strong>Powered On</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_601824446a6a80.97241005.png" style="width:624px; height:457px"></span></span></span></p>
+
+<ol start="12">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to <strong>Your requests</strong>&nbsp;page. Click the request to bring <strong>request details</strong> page.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182445502747.85913013.png" style="width:624px; height:255px"></span></span></span></p>
+
+<ol start="13">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">As VM was successfully provisioned and user can run actions on the deployed VM, click&nbsp;<br>
+	<strong>ACCEPT</strong>&nbsp;to accept the solution and close the request.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018244645c842.00628631.png" style="width:624px; height:435px"></span></span></span></p>
+
+<ol start="14">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The request to deploy VM gets closed.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018244703d2f8.96451130.png" style="width:624px; height:301px"></span></span></span></p>
+
+<p style="margin-bottom:11px"></p>
+
+<p style="margin-bottom:11px"></p>
+
+<p style="margin-bottom:11px"></p>
+
+<p style="margin-bottom:11px"></p>
+
+<p style="margin-bottom:11px"></p>
+
+<p style="margin-bottom:11px"></p>
+
+<p style="margin-bottom:11px"></p>
+
+<p style="margin-bottom:11px"></p>
+</html>
