@@ -1,10 +1,10 @@
-<p>Device groups are containers for device references. Device groups enable end users to categorize devices, to perform the same operation on multiple devices, and to control device access with security permissions.</p>
+<html><p>Device groups are containers for device references. Device groups enable end users to categorize devices, to perform the same operation on multiple devices, and to control device access with security permissions.</p>
 
 <p>Device groups are hierarchical: A device group can contain other device groups. Also, a device can belong to more than one device group. Device groups are either public or private. Public device groups are arranged hierarchically, starting at the top with the public device group root. Likewise, private device groups are under the private device group root.</p>
 
 <p>Device groups are static or dynamic. To change the membership of a static device group, you indicate specific devices with the&nbsp;<tt>addDevice</tt>&nbsp;or&nbsp;<tt>removeDevice</tt>&nbsp;methods. The membership of a dynamic device group depends on its rule, which is similar to a search expression. You specify a rule with the&nbsp;<tt>setDynamicRule</tt>&nbsp;method.</p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Exploring a device group structure</h2>
 
@@ -60,7 +60,7 @@ Environments
  +- PreProduction
  +- Production</pre>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>List full device group paths a server is a member of</h2>
 
@@ -88,7 +88,7 @@ for devgrp in ts.server.ServerService.getDeviceGroups(hostref):
 Device Groups/Public/Opsware/Operating Systems/All Linux/All Linux CentOS/CentOS 6 X86_64
 Device Groups/Public/10.x.x.x</pre>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Creating and populating a static device group</h2>
 
@@ -142,7 +142,7 @@ DGS.addDevices(newVO.ref, [ServerRef(1192001),
 
 <p>However as it performs more round trips to the Twist it's less efficient when adding multiple servers to the same device group. This is an important point. There often are complimentary calls in other services that may be more/less efficient at performing the same task. Always try to perform the work in the minimum number of calls.</p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Creating a dynamic device group for unreachable servers</h2>
 
@@ -173,7 +173,7 @@ except UniqueNameException:
     print "Device group '%s' already exists" % vo.shortName
 </pre>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Next dynamic device group recalculation event time</h2>
 
@@ -189,7 +189,7 @@ t = FS.getCustAttr(coreRef,'__OPSW_next_device_group_recalc_time',False)
 print "Next recalc event: %s " % time.ctime(float(t))
 </pre>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Refreshing dynamic device groups</h2>
 
@@ -216,3 +216,20 @@ if dgRefs:
         if vo.dynamic == True and vo.deviceAttachmentAllowed == True:
             print "Group: %s" % vo.fullName
             DGS.refreshMembership(ref,True)</pre>
+<h2>Delete all servers in a device group</h2>
+<p>Demonstrates the iteration of servers in a device group with each being decomissioned and deleted.</p>
+<pre>#!/opt/opsware/bin/python
+from pytwist import twistserver
+ts = twistserver.TwistServer()
+dgrefs = ts.search.SearchService.findObjRefs('DeviceGroupVO.shortName = "Old Servers"','device_group')
+for deviceRef in ts.device.DeviceGroupService.getDevices(dgrefs):
+    print "Deleting server %s" % deviceRef
+    ts.server.ServerService.decommission(deviceRef)
+    ts.server.ServerService.remove(deviceRef)
+</pre>
+Execution
+<pre># ./delDGServers.py
+Deleting server 0b5c6eaf0124 (ServerRef:5070001)
+Deleting server 0a28805509d9 (ServerRef:5400001)
+# cat delDGServers.py
+</pre></html>
