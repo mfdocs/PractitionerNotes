@@ -216,8 +216,11 @@ if dgRefs:
         if vo.dynamic == True and vo.deviceAttachmentAllowed == True:
             print "Group: %s" % vo.fullName
             DGS.refreshMembership(ref,True)</pre>
+
 <h2>Delete all servers in a device group</h2>
+
 <p>Demonstrates the iteration of servers in a device group with each being decomissioned and deleted.</p>
+
 <pre>#!/opt/opsware/bin/python
 from pytwist import twistserver
 ts = twistserver.TwistServer()
@@ -228,8 +231,10 @@ for deviceRef in ts.device.DeviceGroupService.getDevices(dgrefs):
     ts.server.ServerService.remove(deviceRef)
 </pre>
 Execution
+
 <pre># ./delDGServers.py
 Deleting server 0b5c6eaf0124 (ServerRef:5070001)
 Deleting server 0a28805509d9 (ServerRef:5400001)
-# cat delDGServers.py
-</pre></html>
+#
+</pre>
+</html>
