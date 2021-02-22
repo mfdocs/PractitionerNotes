@@ -315,9 +315,13 @@ To prevent superseded patches from being imported.</p>
 	<li>QCCR1D238526 - Ignore OO users aaa_user.most_recent_login updates to avoid conflicts from automation's&nbsp;&nbsp;</li>
 </ul>
 
-<p>Increase the database connection pool&nbsp;&nbsp;</p>
+<h3>Database connections</h3>
 
-<p>For Wildfly &gt;= 10.50 the default values:&nbsp;</p>
+<p>Increase the database connection pool.&nbsp; &nbsp;The Twist is JAVA EJB application and as such need to run on an EJB container platform.&nbsp; The version being used by SA changed from Weblogic to Wildfly.&nbsp; This means the instruction for tuning SA are different depending on the version you are using.</p>
+
+<h4>Wildfly</h4>
+
+<p>For all modern supported versions of SA, that is &gt;= version 10.50</p>
 
 <table border="0" cellpadding="0" cellspacing="0">
 	<tbody>
@@ -347,7 +351,9 @@ To prevent superseded patches from being imported.</p>
 	</tbody>
 </table>
 
-<p>For WebLogic &lt;= 10.23 the default values:&nbsp;</p>
+<h4>Weblogic</h4>
+
+<p>The versions of SA that still use Weblogic are out of support.&nbsp; Tuning appears for completeness sake.</p>
 
 <table border="0" cellpadding="0" cellspacing="0">
 	<tbody>
@@ -380,6 +386,8 @@ To prevent superseded patches from being imported.</p>
 		</tr>
 	</tbody>
 </table>
+
+<h3>Entropy</h3>
 
 <p>Low entropy on the server can lead to SSL connections into the Twist stalling due to Java using /dev/random, which is a blocking device.&nbsp; This problem is most noticeable when integrating&nbsp;OO with SA as it can make many thousands of connection quickly&nbsp;each requiring an SSL handshake.</p>
 
