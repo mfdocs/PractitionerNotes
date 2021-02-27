@@ -44,8 +44,9 @@
 <ol>
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Derive agent interface URL</span></span></span></li>
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure application settings</span></span></span></li>
-	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Verify that CGRO menu options are visible</span></span></span></li>
-	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure authorization for CGRO</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure authorization for CGRO</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Verify CGRO menu options visibility</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure cloud cost data providers</span></span></span></li>
 </ol>
 
 <h3>Derive agent interface URL</h3>
@@ -335,11 +336,61 @@
 </ol>
 
 <h3>Verify CGRO menu options visibility</h3>
+
 <ol start="1">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Logon to the HCMX tenant agent interface as CGRO&nbsp;admin user. HCMX tenant dashboard is displayed.</span></span></span></li>
 </ol>
+
 <ol start="2">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the mega menu,&nbsp;<span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">observe that following menu options are visible under <b>Run</b> submenu: <strong>Cost Governance</strong> and <strong>Insights</strong></span></span></span></span></span></span></li>
 </ol>
+
 <p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/2/22/CGRO-Verify-Menu.PNG" height="264" hspace="0" src="/mediawiki/images/pn_images/pn_image_6039b82c37d6b9.85147082.png" style="width: 800px; height: 264px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<h3>Configure cloud cost data providers</h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">HCMX CGRO capability collects cost data from the following public cloud providers: AWS and Microsoft Azure. HCMX CGRO capability displays cost data via reports, generates cost saving insights and recommendations and provides email alerts for cost limit compliance violations. HCMX CGRO capability requires connection details to bring cost data from AWS and Azure. The following pre-requisite setups must be performed in AWS and Azure before configuring AWS and Azure cloud cost data providers in HCMX.</span></span></span></p>
+
+<h4 style="margin-bottom: 11px;">AWS pre-requisite steps</h4>
+
+<p><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">The following pre-requisite steps must be performed in AWS to allow the HCMX CGRO module to retrieve cloud cost data from AWS:</span></span></span></p>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create an Identity and Access Management (IAM) user, access key ID and secret access key</span></span></span></li>
+</ol>
+
+<p><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Create a cost usage report (CUR)</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">AWS IAM enables you to manage access to AWS services and resources securely. Using IAM, you can create and manage AWS users and groups, and use permissions to allow and deny their access to AWS resources. </span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will create an IAM user with permissions to access CUR data. This IAM user’s access key ID and secret key access will be used by HCMX CGRO capability to retrieve AWS cloud cost data.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the AWS management console.</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to <b>Identity and Access Management (IAM)</b> service</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/e/eb/23-AWS_IAMService.PNG" height="173" hspace="0" src="/mediawiki/images/pn_images/pn_image_603a68e84c0489.92098643.png" style="width: 800px; height: 173px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The<b> IAM dashboard</b> is displayed.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/c/c1/24-AWS_IAMDashboardUsers-1.PNG" height="524" hspace="0" src="/mediawiki/images/pn_images/pn_image_603a68e8d926e2.68095670.png" style="width: 800px; height: 524px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>IAM dashboard</b>, navigate to <b>Users</b> page.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">On the <b>Users</b> page, click <b>Add user. Add user</b> wizard is displayed.</span></span></span></p>
+
+<p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/4e/25_AWS_IAM_Users_AddUser.PNG" height="191" hspace="0" src="https://docs.microfocus.com/mediawiki/images/4/4e/25_AWS_IAM_Users_AddUser.PNG" style="width:604px;height:191px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="604"></span></span></span></p>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Add user</b> wizard, <b>Set user details</b> screen, enter a user name, enable <b>Programmatic access</b> access type. Click <b>Next: Permissions</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/3/34/26_AWS_IAM_Users_AddUser_Details.PNG" height="689" hspace="0" src="/mediawiki/images/pn_images/pn_image_603a68e9293a77.15458631.png" style="width: 800px; height: 689px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
+
+<p style="margin-bottom:11px; margin-left:8px"></p>
 </html>
