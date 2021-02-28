@@ -439,22 +439,24 @@
 
 <p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/7/7f/31_AWS_IAM_Users_AddUser_Success_SecretAccessKey-1.PNG" height="382" hspace="0" src="/mediawiki/images/pn_images/pn_image_603a79f72d52c5.04140878.png" style="width: 800px; height: 382px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
 
-<h5 style="margin-bottom: 11px; margin-left: 8px;">Create a cost usage report</h5>
+<h5>Create a cost usage report</h5>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The AWS Cost and Usage Reports contain the most comprehensive set of cost and usage data available. After setting up a Cost and Usage Report, the current month’s billing data will be delivered to an Amazon S3 bucket that you designate during set-up. You can receive hourly, daily or monthly reports that break out your costs by product or resource and by tags that you define yourself. AWS updates the report in your bucket at least once per day. After setting up a Cost and Usage Report, you will receive the current month’s billing data and daily updates in the same Amazon S3 bucket. </span></span></span></p>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will create a cost usage report with an S3 bucket and a report path prefix where AWS updates the report. This S3 bucket and report path prefix will be used by HCMX CGRO capability to retrieve AWS cloud cost data.</span></span></span></p>
 
-<ol>
-	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the AWS management console.</span></span></span></li>
+<ol start="1">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the AWS management console.</span></span></span></li>
 </ol>
 
-<p><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Navigate to the <b>Billing</b> service.</span></span></span></p>
+<ol start="2">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to the <b>Billing</b> service.</span></span></span></li>
+</ol>
 
 <p><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/0/0c/32_AWS_Billing.PNG" height="174" hspace="0" src="/mediawiki/images/pn_images/pn_image_603aee7ba6b065.50627767.png" style="width: 800px; height: 174px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
 
-<ol>
-	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the billing home page, Navigate to <b>Cost &amp; Usage Reports</b></span></span></span></li>
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the billing home page, Navigate to <b>Cost &amp; Usage Reports</b></span></span></span></li>
 </ol>
 
 <p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/3/35/33_AWS_BillingCUR.PNG" height="274" hspace="0" src="/mediawiki/images/pn_images/pn_image_603aee7c145a86.45942626.png" style="width: 800px; height: 274px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></b></span></span></span></p>
@@ -501,7 +503,7 @@
 
 <p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/d/d9/41_AWS_CUR_CreateReport_Success.PNG" height="483" hspace="0" src="/mediawiki/images/pn_images/pn_image_603af18443f002.06831758.png" style="width: 800px; height: 483px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
 
-<p><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">As noted earlier, cost usage report dump by AWS is not instantaneous. Wait for at-least 24 to 48 hours before performing this step. &nbsp;In the AWS console, navigate to <b>S3</b> service. Navigate to the CUR report’s S3 bucket/cost usage report name/date-range folder/DateTimestampZ/ directory. In this example, it is hcmxcgro/hcmx/masterCur/20210201-20210301/20210214T032634Z directory. Observe that there is a *.csv.gz compressed file. This *.csv.gz file contains AWS cloud cost data.</span></span></span></p>
+<p><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">As noted earlier, cost usage report dump by AWS is not instantaneous. Wait for at-least 24 to 48 hours before performing this step. &nbsp;In the AWS console, navigate to <b>S3</b> service. Navigate to the CUR report’s S3 bucket/cost usage report name/date-range folder/DateTimestampZ/ directory. In this example, it is hcmxcgro/hcmx/masterCur/20210201-20210301/20210214T032634Z directory. Observe that there is a *.csv.gz compressed file. This *.csv.gz file contains AWS cloud cost data. Once the CUR data is visible, configuration of CUR report in AWS is complete and you can proceed to add AWS as a cloud cost data provider in HCMX.</span></span></span></p>
 
 <p><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/1f/68_AWS_CUR_Data.PNG" height="416" hspace="0" src="/mediawiki/images/pn_images/pn_image_603af184a18f82.95730721.png" style="width: 800px; height: 416px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
 </html>
