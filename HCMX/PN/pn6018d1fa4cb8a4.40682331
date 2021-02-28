@@ -564,5 +564,111 @@
 
 <p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/57/ea-create-generate-or-retrieve-the-api-key.png" height="261" hspace="0" src="/mediawiki/images/pn_images/pn_image_603b0fe751e640.83710854.png" style="width: 800px; height: 261px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
-<p></p>
+<h4>Configure AWS cloud cost provider in HCMX</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">HCMX CGRO capability needs AWS login details, AWS cost usage report’s S3 bucket name and cost usage report’s prefix to collect cost data from AWS. </span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will create a connection to AWS in HCMX to retrieve cloud cost data from AWS.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the tenant agent interface portal as DND admin user. Note that the DND Administrator group has been assigned CGRO administrator role. &nbsp;</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Using the <b>mega menu</b>, navigate to <b>Administration</b> -&gt; <b>Utilities</b> -&gt; <b>Providers</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/a/a8/20-MegaMenuProviders.PNG" height="306" hspace="0" src="/mediawiki/images/pn_images/pn_image_603b194f90fa03.00477042.png" style="width: 800px; height: 306px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to <b>CLOUD COST DATA PROVIDERS</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/7/7c/21-CloudCostDataProviders.PNG" height="160" hspace="0" src="/mediawiki/images/pn_images/pn_image_603b194fd88e53.75793588.png" style="width: 800px; height: 160px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <b>+ </b>icon on the top right corner to add a new cloud cost data provider.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Cost Reporting Provider Type</b> window, select <b>Amazon AWS</b>. Click <b>NEXT.</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/8/8c/22-CostReportingAWS.PNG" height="455" hspace="0" src="https://docs.microfocus.com/mediawiki/images/8/8c/22-CostReportingAWS.PNG" style="width:603px;height:455px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="603"></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Cost Reporting Connection</b> screen, enter the connection information that were noted in earlier steps in the <b>AWS pre-requisite</b> section. If a web proxy is needed to reach internet, supply proxy related information.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/8/8f/42_CGRO_COSTReportConnection_AWS-1.PNG" height="800" hspace="0" src="/mediawiki/images/pn_images/pn_image_603b195045cdd0.29830530.png" style="width: 551.253px; height: 800px; margin: 0px; border: 0px solid black;" vspace="0" width="551.25284738041"></p>
+
+<ol start="7">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Cost Reporting Collection Details</b> screen, enter collection history cut-off date. History cut-off date is optional. If left empty, there will be no cut-off and all available cloud cost data would be retrieved from AWS. Tags are optional. Tags can be used to filter cost data collected from AWS. Up-to 10 tags can be entered<a name="_Hlk64365174">. In AWS, tags are key-value pairs. HCMX needs key part of the tags that you have defined for resources in AWS. </a>HCMX CGRO capability retrieves cost data for all resources that have one of the tag keys defined in this screen. Enter tags that are used in identifying resources in your AWS setup. If no tags are specified, all available cloud cost data is retrieved. Click <b>FINISH</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/5a/44_CGRO_COSTReportConnection_AWS_CollectionCutoff.PNG" height="550" hspace="0" src="https://docs.microfocus.com/mediawiki/images/5/5a/44_CGRO_COSTReportConnection_AWS_CollectionCutoff.PNG" style="width:605px;height:550px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="605"></p>
+
+<p style="margin-left:48px"></p>
+
+<ol start="8">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The<b> AWS cost reporting integration</b> is created. CGRO starts collecting data from AWS. Wait for collection to complete.&nbsp;Time taken to complete collection of cloud cost data depends on amount of data to collect, network bandwidth and other factors.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/59/45_CGRO_CloudCost_AWS_Coll_Start.PNG" height="133" hspace="0" src="/mediawiki/images/pn_images/pn_image_603b1950931e31.92807824.png" style="width: 800px; height: 133px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="9">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">After AWS cloud cost data collection is completed successfully, the <b>last status</b> column displays <b>Success.</b> </span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/b/b7/46_CGRO_CloudCost_AWS_Coll_End.PNG" height="143" hspace="0" src="/mediawiki/images/pn_images/pn_image_603b1950df9ba6.65958352.png" style="width: 800px; height: 143px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<h4>Configure Microsoft Azure cloud cost provider in HCMX</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">HCMX CGRO capability needs Azure enrollment number and report API access key to collect cost data from Microsoft Azure. </span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will create a connection to Microsoft Azure in HCMX to retrieve cloud cost data from Azure.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the tenant agent interface portal as DND admin user. Note that the DND Administrator group has been assigned CGRO administrator role. &nbsp;</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Using the mega menu, navigate to <b>Administration</b> -&gt; <b>Utilities</b> -&gt; <b>Providers</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/a/a8/20-MegaMenuProviders.PNG" height="306" hspace="0" src="/mediawiki/images/pn_images/pn_image_603b1951425bb8.51947641.png" style="width: 800px; height: 306px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to <b>CLOUD COST DATA PROVIDERS</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/7/7c/21-CloudCostDataProviders.PNG" height="160" hspace="0" src="/mediawiki/images/pn_images/pn_image_603b19519dd828.52980404.png" style="width: 800px; height: 160px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <b>+ </b>icon on the top right corner to add a new cloud cost data provider.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Cost Reporting Provider Type</b> window, select <b>Microsoft Azure</b>. Click <b>NEXT.</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/c/c1/48_CGRO_CloudCost_Azure_AddInteg_ProviderType.PNG" height="435" hspace="0" src="https://docs.microfocus.com/mediawiki/images/c/c1/48_CGRO_CloudCost_Azure_AddInteg_ProviderType.PNG" style="width:604px;height:435px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="604"></p>
+
+<p style="margin-left:48px"></p>
+
+<ol start="6">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Cost Reporting Connection</b> screen, enter the connection information that were noted in earlier steps in the <b>Microsoft Azure pre-requisite</b> section. Note that the report api access key that was obtained in Azure pre-requisite section is the <b>Azure bearer token</b>. Click <b>NEXT</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/f/ff/49_CGRO_CloudCost_Azure_AddInteg_ConnectionInformation.PNG" height="775" hspace="0" src="https://docs.microfocus.com/mediawiki/images/f/ff/49_CGRO_CloudCost_Azure_AddInteg_ConnectionInformation.PNG" style="width:606px;height:775px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="606"></p>
+
+<ol start="7">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Cost Reporting Collection Details</b> screen, enter collection history cut-off date. History cut-off date is optional. If left empty, there will be no cut-off and all available cloud cost data would be retrieved from Microsoft Azure. Tags are optional. Tags can be used to filter cost data collected from Microsoft Azure. Up-to 10 tags can be entered. In Microsoft Azure, tags are key-value pairs. HCMX needs key part of the tags that you have defined for resources in Microsoft Azure. HCMX CGRO capability retrieves cost data for all resources that have one of the tag keys defined in this screen.&nbsp; Enter tags that are used in identifying resources in your Microsoft Azure setup. If no tags are specified, all available cloud cost data is retrieved. Click <b>FINISH</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/9/9e/50_CGRO_CloudCost_Azure_AddInteg_CollDetails.PNG" height="549" hspace="0" src="https://docs.microfocus.com/mediawiki/images/9/9e/50_CGRO_CloudCost_Azure_AddInteg_CollDetails.PNG" style="width:603px;height:549px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="603"></p>
+
+<ol start="8">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The<b> Microsoft Azure cost reporting integration</b> is created. CGRO starts collecting data from Microsoft Azure. Wait for collection to complete.&nbsp;Time taken to complete collection of cloud cost data depends on amount of data to collect, network bandwidth and other factors.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/a/a7/51_CGRO_CloudCost_Azure_Coll_Start.PNG" height="208" hspace="0" src="/mediawiki/images/pn_images/pn_image_603b1951e0b524.31309478.png" style="width: 800px; height: 208px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="9">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">After Microsoft Azure cloud cost data collection is completed successfully, the <b>last status</b> column displays <b>Success.</b> </span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/c/cc/52_CGRO_CloudCost_Azure_Coll_End.PNG" height="210" hspace="0" src="/mediawiki/images/pn_images/pn_image_603b195240b258.96657306.png" style="width: 800px; height: 210px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p style="margin-left:48px"></p>
+
+<p style="margin-bottom:11px; margin-left:48px"></p>
 </html>
