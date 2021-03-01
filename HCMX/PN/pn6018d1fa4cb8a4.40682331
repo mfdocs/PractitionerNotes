@@ -42,12 +42,272 @@
 <p><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">The Configuration of CGRO creates the necessary foundation for using CGRO functionalities and it includes the following steps:</span></span></span></p>
 
 <ol>
-	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Derive agent interface URL</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Deploy tenant</span></span></span></li>
+    <li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Derive agent interface URL</span></span></span></li>
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure application settings</span></span></span></li>
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure authorization for CGRO</span></span></span></li>
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Verify CGRO menu options visibility</span></span></span></li>
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure cloud cost data providers</span></span></span></li>
 </ol>
+
+<h3>Deploy tenant</h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">SMAX is a multi-tenant service management solution that allows service providers to host and manage environments for multiple customers within a single installation. After installation of HCMX/SMAX, a new tenant must be created to use HCMX functionalities. Deploying a tenant involves the following tasks:</span></span></span></p>
+
+<ul>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure Email service</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create customer</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create account</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create and activate tenant admin account</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create license pool</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create licenses </span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Associate licenses to the license pool</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create tenant</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Deploy tenant</span></span></span></li>
+</ul>
+
+<h4>Configure Email service</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Email service configuration is required to activate user accounts and to reset account passwords. Follow the steps below to configure Email service:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the suite administration portal as user <strong>suite-admin</strong>&nbsp;at the following URL: <span class="MsoHyperlink" style="color:#0563c1"><span style="text-decoration:underline">https://&lt;HCMX-Server-FQDN&gt;/bo</span></span></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/0/01/BO-Login.PNG" height="477" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f3a585ce2d3.88245717.png" style="width: 800px; height: 477px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="2">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to <strong>Configurations</strong>&nbsp;-&gt; <strong>Email service</strong>. Enter email service details specific to your environment.&nbsp; Click <strong>TEST CONNECTION</strong>. If test connection results are successful, click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/f/f7/EmailConfig.PNG" height="367" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f10a5805703.84541663.png" style="width: 800px; height: 367px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>Save email service settings</strong>&nbsp;window, click <strong>CONTINUE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/9/9a/03.png" height="167" hspace="0" src="https://docs.microfocus.com/mediawiki/images/9/9a/03.png" style="width:421px;height:167px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="421"></p>
+
+<ol start="4">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Kubernetes PODS are restarted after <strong>CONTINUE</strong>&nbsp;button is pressed. Wait for 5 to 10 minutes before continuing to next steps.</span></span></span></li>
+</ol>
+
+<h4>Create Customer</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A customer record in HCMX is used to group accounts.</span></span></span>&nbsp;<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A customer record may have multiple accounts associated with it.</span></span></span></p>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>CUSTOMERS</strong>. Click <strong>New</strong>. </span></span></span><br>
+	<img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/7/79/BO-Customers.PNG" height="123" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f3ae5bc9c04.64806648.png" style="width: 800px; height: 123px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>New customer</strong>&nbsp;window, fill in the information as shown in the screenshot below. Click <strong>SAVE</strong>.<br>
+	<img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/8/84/BO-NewCustomer.PNG" height="542" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f3bc3eed213.06509073.png" style="width: 800px; height: 542px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></li>
+</ol>
+
+<h4>Create Account</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">An account record in HCMX identifies different customers of a managed services provider OR identifies different type of environments a customer might have OR a combination of customers and their environments. A customer may have multiple accounts associated with it. But an account can be related to a single customer.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>ACCOUNTS</strong>. Click <strong>New</strong>. In the <strong>New account</strong>&nbsp;window, fill in the information as shown in the screenshot below. Click <strong>SAVE</strong>.</span></span></span><br>
+	<img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/2/22/BO-Accounts.PNG" height="124" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f3bc4296e88.68925245.png" style="width: 800px; height: 124px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>New account</strong>&nbsp;window, fill in the information as shown in the screenshot below. Click <strong>SAVE</strong>.</span></span></span><br>
+	<img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/40/BO-NewAccount.PNG" height="677" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f3d1fec7f75.84102869.png" style="width: 800px; height: 677px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></li>
+</ol>
+
+<p style="margin-bottom:11px"></p>
+
+<h4>Create and activate tenant admin user account</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A tenant administrator account has full control and access to the tenant. A tenant administrator account is required to deploy a new tenant and to administer the tenant.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>USERS</strong>. Click <strong>New</strong>.<br>
+	<img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/5f/06.png" height="122" hspace="0" src="https://docs.microfocus.com/mediawiki/images/5/5f/06.png" style="width:624px;height:122px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="624"></span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>New user</strong>&nbsp;window, fill in the information as shown in the screenshot below. Note that login name does not have to be <strong>tenantAdmin</strong>. Click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/40/BO-TenantAdminUser.PNG" height="800" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f40517eeac8.68153846.png" style="width: 676.78px; height: 800px; margin: 0px; border: 0px solid black;" vspace="0" width="676.779463243874"></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A user account activation email is sent by HCMX to the email address specified in the <strong>tenantAdmin</strong>&nbsp;user record. Click on the user activation link in that email. User activation web page is launched in a web browser. Type in a new password and confirm the new password in the user activation web page. Note that the <strong>SUBMIT</strong>&nbsp;button does not show up until entered passwords match and they satisfy password complexity policy as defined in the IDM portal.&nbsp;Click&nbsp;<strong>SUBMIT</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/0/08/08-PwdReset.png" height="326" hspace="0" src="https://docs.microfocus.com/mediawiki/images/0/08/08-PwdReset.png" style="width:490px;height:326px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="490"></p>
+
+<h4>Create license pool</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A license pool contains one or more licenses. A license is assigned to the tenant using the licenses in a license pool.</span></span></span></p>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>LICENSE-POOLS</strong>. Click <strong>New</strong>. </span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/2/2d/BO-LicensePools.PNG" height="123" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f413ea98953.07379185.png" style="width: 800px; height: 123px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="2">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>New license pool</strong>&nbsp;window, fill in the information as shown in the screenshot below. Click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/50/BO-HCMXLicensePool.PNG" height="476" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f44156f1e67.96669658.png" style="width: 800px; height: 476px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p style="margin-bottom:11px"></p>
+
+<h4>Create licenses</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">License management enables you to manage license records. The following license editions are supported:</span></span></span></p>
+
+<ul>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">SMAX Express: SMAX Express license provide access to a limited set of SMAX solution capabilities. Refer to the SMAX documentation for more details on the capabilities that are available in SMAX express edition.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">SMAX Premium: SMAX Premium license provide full access to SMAX solution capabilities.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">HCMX: The HCMX (cloud management) license must be deployed to use DND and CGRO capabilities. The HCMX license enables the cloud management capability which offers the following:</span></span></span></li>
+</ul>
+
+<ul>
+	<li style="list-style-type:none">
+	<ul style="list-style-type:circle">
+		<li style="margin-left:16px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Design and Deploy (DND): With DND capability, cloud service offerings based on published service designs can be made available to consumers, which facilitates your organization's cloud infrastructure management.</span></span></span></li>
+		<li style="margin-left:16px; margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Cost Governance and Resource Optimization (CGRO): CGRO enables you to optimize your cloud spending and simplify configuration with various cloud providers.</span></span></span></li>
+	</ul>
+	</li>
+</ul>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Modes of License</b></span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">There are four modes of license:</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Production</b>: The official license key is issued by Micro Focus, redeemed and installed by AutoPass License Server (APLS). Suite Administration syncs the license information from APLS. A production license must be assigned to a production tenant.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Trial</b>: This license can be created manually in Suite Administration portal, the duration and capacity are limited. A trial license can be assigned to either a trial tenant or a development tenant. </span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Evaluation</b>: The official license key is issued by Micro Focus, redeemed and installed by APLS. Suite Administration syncs the license information from APLS. Evaluation license can be assigned to an internal tenant.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Non-Production</b>: The official license key is issued by Micro Focus, redeemed and installed by AutoPass License Server (APLS). Suite Administration syncs the license information from APLS. Non-production licenses can only be assigned to a development tenant.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">For more details on licensing, refer to the HCMX product documentation at the following URL:<a href="http://docs.microfocus.com">Micro Focus Documentation Portal</a></span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This practitioner notes describes steps to create trial licenses. If you are deploying HCMX using official license keys issued by Micro Focus, use <strong>upload licenses</strong>&nbsp;option in the suite administration portal. <strong>The official license keys must be used for non-trial implementations.&nbsp;</strong></span></span></span></p>
+
+<h5>HCMX (Cloud Management) License</h5>
+
+<ol>
+	<li style="margin-bottom: 11px;"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>LICENSES</strong>. Click <strong>New</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/17/BO-Licenses.PNG" height="103" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f45c89a01a5.35566148.png" style="width: 800px; height: 103px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="2">
+	<li style="margin-bottom: 11px;"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>New Trial License</strong>&nbsp;window, fill in the information as shown in the screenshot below. Click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/0/02/BO-HCMXCloudMgmtTrialLic.PNG" height="800" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f45c8d34307.56334511.png" style="width: 791.247px; height: 800px; margin: 0px; border: 0px solid black;" vspace="0" width="791.2472647702407"></p>
+
+<h5>SMAX license</h5>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">SMAX license is optional for HCMX deployment. If you are also deploying SMAX solution capabilities along with HCMX, deploy SMAX license. </span></span></span></p>
+
+<ol>
+	<li style="margin-bottom: 11px;"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>LICENSES</strong>. Click <strong>New</strong>. </span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/17/BO-Licenses.PNG" height="103" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f4743366892.17541104.png" style="width: 800px; height: 103px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="2">
+	<li style="margin-bottom: 11px;"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>New Trial License</strong>&nbsp;window, fill in the information as shown in the screenshot below. Click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/3/3c/BO-SMAXLicense.PNG" height="800" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f474388a898.12854105.png" style="width: 793.86px; height: 800px; margin: 0px; border: 0px solid black;" vspace="0" width="793.859649122807"></p>
+
+<h4>Associate licenses to the license pool</h4>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>LICENSES</strong>. A list of previously created licenses is shown.&nbsp;Click HCMX Cloud Management license ID.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/57/BO-ListofLicenses.PNG" height="216" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f482128a663.14934076.png" style="width: 800px; height: 216px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="2">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">License details page appears. Select previously created license pool as the license pool. Click <strong>Save</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/47/BO-HCMXLicAssWithPool.PNG" height="346" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f48f3ed4015.67732993.png" style="width: 800px; height: 346px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>LICENSES</strong>. A list of previously created licenses is shown.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/57/BO-ListofLicenses.PNG" height="216" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f4a2ecf5e19.23314188.png" style="width: 800px; height: 216px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="4">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click SMAX license ID. License details page appears. Select previously created license pool as the license pool. Click <strong>Save</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/f/fe/BO-SMAXLicAssPool.PNG" height="382" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f4a2f0650b7.92761867.png" style="width: 800px; height: 382px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p style="margin-bottom:11px"></p>
+
+<h4>Create Tenant</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">SMAX is a multi-tenant service management solution that allows service providers to host and manage environments for multiple customers within a single installation. After installation of HCMX, a new tenant must be created and deployed to use HCMX functionalities. </span></span></span></p>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>TENANTS</strong>. Click <strong>New</strong>. </span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/12/BO-Tenants.PNG" height="128" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f4d96a32e60.76571319.png" style="width: 800px; height: 128px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="2">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>New tenant</strong>&nbsp;window, fill in the information as shown in the screenshot below. Click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/1b/BO-TenantNew.PNG" height="451" hspace="0" src="https://docs.microfocus.com/mediawiki/images/1/1b/BO-TenantNew.PNG" style="width:660px;height:451px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="660"></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the tenant <strong>General</strong> page, set <strong>Tenant admin</strong>&nbsp;and <strong>Owner</strong>&nbsp;to the previously created tenant admin user. Click <strong>Save</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/b/ba/BO-TenantDetails.PNG" height="360" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f4d96d77999.31020687.png" style="width: 800px; height: 360px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="4">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <strong>Licenses</strong>&nbsp;page. Click <strong>Add</strong>. Select previously created license pool. Select <strong>Cloud management</strong>&nbsp;license. Click <strong>ASSIGN</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/67/20-Tenantlichcmx.png" height="303" hspace="0" src="https://docs.microfocus.com/mediawiki/images/6/67/20-Tenantlichcmx.png" style="width:624px;height:303px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="624"></p>
+
+<ol start="5">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Skip this step if you do not intend to assign SMAX license. Click <strong>Licenses</strong>&nbsp;page. Click <strong>Add</strong>. Select previously created license pool. Select <strong>Premium</strong>&nbsp;license. Enter capacity. Click <strong>ASSIGN</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/9/96/BO-TenantAssignSMAXLic.png" height="301" hspace="0" src="https://docs.microfocus.com/mediawiki/images/9/96/BO-TenantAssignSMAXLic.png" style="width:624px;height:301px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="624"></p>
+
+<ol start="6">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <strong>Save</strong>&nbsp;to save the tenant.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/e/ef/BO-TenantDeploy.png" height="338" hspace="0" src="https://docs.microfocus.com/mediawiki/images/e/ef/BO-TenantDeploy.png" style="width:624px;height:338px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="624"></p>
+
+<h4>Deploy tenant</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">After creation of a new tenant, it must be deployed to use HCMX functionalities.</span></span></span></p>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <strong>Deploy</strong>&nbsp;to deploy the tenant.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/e/ef/BO-TenantDeploy.png" height="338" hspace="0" src="https://docs.microfocus.com/mediawiki/images/e/ef/BO-TenantDeploy.png" style="width:624px;height:338px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="624"></p>
+
+<ol start="2">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>Deploy tenant</strong>&nbsp;window, click <strong>DEPLOY</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018241fa6ccd4.30680296.png" style="width:606px; height:311px"></span></span></span></p>
+
+<p style="margin-bottom:11px"></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>TENANTS</strong>. Click <strong>Refresh</strong>&nbsp;until status of tenant changes to <strong>Active</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/6e/BO-TenantStatusActive.PNG" height="190" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f5083f32717.28308721.png" style="width: 800px; height: 190px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
 <h3>Derive agent interface URL</h3>
 
