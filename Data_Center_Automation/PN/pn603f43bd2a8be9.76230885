@@ -42,9 +42,7 @@
 	<li>LINUX OS: CentOS 7.x</li>
 </ul>
 
-<p>&nbsp;</p>
-
-<div class="Admonition_Note">CentOS 7 Releases<br>
+<div class="Admonition_Note"><span class="autonumber">CentOS 7 Releases</span><br>
 The CentOS community provides security and maintenance patches to the latest minor release. Please make sure you are installing PostgreSQL on the latest supported minor release.</div>
 
 <p></p>
@@ -240,7 +238,7 @@ pip install ansible</code></pre>
 	<li>Download the ITOM PostgreSQL HA package (ITOM_External_PG_HA.zip) from&nbsp;<a href="https://marketplace.microfocus.com/itom/content/postgresql-ha-setup" rel="nofollow" target="1">Marketplace</a>.</li>
 	<li>Extract the content of the package, then copy the&nbsp;<code>pgha-deploy-master</code>&nbsp;folder to the&nbsp;<code>/tmp</code>&nbsp;folder on the dpnode.</li>
 	<li>Prepare&nbsp;<code>"pgha"</code>&nbsp;user on the dpnode, dbnode1, and dbnode2. To do this:
-	<ol>
+	<ol start="1" style="list-style-type: lower-alpha;">
 		<li>Run the following commands as a root user on dpnode, dbnode1, and dbnode2 to create a&nbsp;<code>"pgha"</code>&nbsp;user. The&nbsp;<b>passwd pgha</b>&nbsp;command prompts you to provide a password for the&nbsp;<b>pgha</b>&nbsp;user. &nbsp;
 		<pre><code>groupadd pgha
 useradd pgha -g pgha
@@ -255,7 +253,7 @@ passwd pgha</code></pre>
 	</ol>
 	</li>
 	<li>Deploy PGHA with two PostgreSQL servers and two Pgpools. To do this:
-	<ol>
+	<ol start="1" style="list-style-type: lower-alpha;">
 		<li>Verify the network connectivity. To do this, run the following commands to establish an SSH connection from the dpnode (acting as the Ansible Management Node) to dbnode1 and dbnode2:
 		<pre><code>su - pgha #Enter the password provided in step 3a above
 ssh-keygen -t rsa -f ~/.ssh/id_rsa
@@ -306,7 +304,7 @@ dbnode1 | SUCCESS =&gt; {
 }</samp></pre>
 		</li>
 		<li>Set the Ethernet interface name in group&nbsp;<code>vars</code>&nbsp;on the dpnode. To do this:
-		<ol type="a">
+		<ol start="1" style="list-style-type: lower-roman;" type="a">
 			<li>Run the following command as a root user on dbnode1 and dbnode2 to get the Ethernet interface name: &nbsp;
 			<pre><code>ifconfig –a</code></pre>
 			&nbsp;</li>
@@ -324,8 +322,9 @@ yum install -y rsync</code></pre>
 		<pre><code>chown -R pgha:pgha /home/pgha/pgha-deploy-master</code></pre>
 		&nbsp;
 
-		<p>Important</p>
-		Change the default credentials and implement security best practices required by your organization for the configuration of haproxy.</li>
+		<div class="Admonition_Important"><span class="autonumber">Important</span><br>
+		Change the default credentials and implement security best practices required by your organization for the configuration of haproxy.</div>
+		</li>
 		<li>Run the PGHA deployment (ansible-playbook) script as the&nbsp;<code>"pgha"</code>&nbsp;user on the dpnode: &nbsp;
 		<pre><code>cd /home/pgha/pgha-deploy-master
 ansible -m setup dp
@@ -364,7 +363,6 @@ node_id | hostname | port | status | lb_weight |  role   | select_cnt | load_bal
 		&nbsp;
 
 		<p>For example:</p>
-		&nbsp;
 
 		<pre><code>pcp_attach_node -h dbnode1 -p 9898 -U postgres -n 1</code></pre>
 		</li>
@@ -373,7 +371,6 @@ node_id | hostname | port | status | lb_weight |  role   | select_cnt | load_bal
 		&nbsp;
 
 		<p>For example:</p>
-		&nbsp;
 
 		<pre><samp>sent_lsn | replay_lsn
 ---------------+-----------------
@@ -408,8 +405,9 @@ node_id | hostname | port | status | lb_weight |  role   | select_cnt | load_bal
 	<pre><code>yum install -y haproxy</code></pre>
 	&nbsp;
 
-	<p>Important</p>
-	Change the default credentials and implement security best practices required by your organization for the configuration of haproxy.</li>
+	<div class="Admonition_Important"><span class="autonumber">Important</span><br>
+	Change the default credentials and implement security best practices required by your organization for the configuration of haproxy.</div>
+	</li>
 	<li>Run the following command to check if haproxy is installed on the system to be used as a load balancer:
 	<pre><code>haproxy –v</code></pre>
 	</li>
@@ -526,7 +524,7 @@ backend pgsql
 
 <ol>
 	<li>On the new primary node (dbnode2):
-	<ol>
+	<ol start="1" style="list-style-type: lower-alpha;">
 		<li>
 		<p>Add a replication user entry for dbnode1 in file&nbsp;<code>/var/lib/pgsql/10/data/pg_hba.conf</code>:</p>
 		&nbsp;
@@ -548,7 +546,7 @@ backend pgsql
 	</ol>
 	</li>
 	<li>On the original primary node (dbnode1):
-	<ol>
+	<ol start="1" style="list-style-type: lower-alpha;">
 		<li>Stop the&nbsp;<code>postgresql-10</code>&nbsp;and&nbsp;<code>pgpool</code>&nbsp;systemd services. &nbsp;
 		<pre><code>systemctl stop pgpool.service
 systemctl stop postgresql-10.service</code></pre>
