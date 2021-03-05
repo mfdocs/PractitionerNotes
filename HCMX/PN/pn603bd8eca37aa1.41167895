@@ -291,17 +291,23 @@
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">To change the default behavior of content store to allow installation of unsigned capsules and capsules that are not signed by trusted CAs, follow the steps below: </span></span></span></p>
 
 <ol>
-	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Open the file &lt;NFS core volume&gt;/suite-install/itsma/output/&lt;MajorReleaseNumber&gt;/itom-dnd-&lt;MajorReleaseNumber.MinorReleaseNumber&gt;/yamls/itom-content-store-backend-&lt;TenantID&gt;-deployment.yaml in an editor. For example, full path to this file on HCMX 2021.02 release with core volume mounted at /var/vols/itom/core, and with a tenant ID of 616409711 is /var/vols/itom/core/suite-install/itsma/output/2021.02/itom-dnd-2021.02.002/yamls/itom-content-store-backend-616409711-deployment.yaml</span></span></span></li>
-	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Set the CS_ITOM-CONTENT-STORE_CONTENT_MANAGEMENT_SIGNATURE_LEVEL parameter to one of the following values:</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Open the file <strong>&lt;NFS core volume&gt;/suite-install/itsma/output/&lt;MajorReleaseNumber&gt;/itom-dnd-&lt;MajorReleaseNumber.MinorReleaseNumber&gt;/yamls/itom-content-store-backend-&lt;TenantID&gt;-deployment.yaml</strong> in an editor. For example, full path to this file on HCMX 2021.02 release with core volume mounted at /var/vols/itom/core, and with a tenant ID of 616409711 is</span></span></span><br>
+	&nbsp;
+	<pre><code>/var/vols/itom/core/suite-install/itsma/output/2021.02/itom-dnd-2021.02.002/yamls/itom-content-store-backend-616409711-deployment.yaml</code></pre>
+	</li>
 </ol>
 
-<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>ALLOW_TRUSTED</b> (recommended): This will allow content store to install capsules&nbsp;only if that capsule&nbsp;has a digital certificate and that certificate’s signature is present in the Content Store trust store (Trust store contains a list of trusted CA certificates). This value provides the highest level of security as it allows only trusted content to install.</span></span></span></p>
+<ol start="2">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Set the <strong>CS_ITOM-CONTENT-STORE_CONTENT_MANAGEMENT_SIGNATURE_LEVEL</strong> parameter to one of the following values:</span></span></span>
 
-<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>ALLOW_SIGNED</b>: This will allow content store to install any&nbsp;capsule having a digital certificate signature.</span></span></span><br>
-&nbsp;</p>
-
-<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>ALLOW_NOT_SIGNED</b>:&nbsp;This will allow content store to install unsigned&nbsp;capsules. This value provides the lowest security level for capsule installation.</span></span></span><br>
-&nbsp;</p>
+	<ul>
+		<li style="margin-bottom: 11px;"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>ALLOW_TRUSTED</b> (recommended): This will allow content store to install capsules&nbsp;only if that capsule&nbsp;has a digital certificate and that certificate’s signature is present in the Content Store trust store (Trust store contains a list of trusted CA certificates). This value provides the highest level of security as it allows only trusted content to install.</span></span></span></li>
+		<li style="margin-bottom: 11px;"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>ALLOW_SIGNED</b>: This will allow content store to install any&nbsp;capsule having a digital certificate signature.</span></span></span></li>
+		<li style="margin-bottom: 11px;"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>ALLOW_NOT_SIGNED</b>:&nbsp;This will allow content store to install unsigned&nbsp;capsules. This value provides the lowest security level for capsule installation.</span></span></span><br>
+		&nbsp;</li>
+	</ul>
+	</li>
+</ol>
 
 <h3>Add capsule’s CA certificate to Content Store Truststore</h3>
 
@@ -312,23 +318,19 @@
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Run the following command to stop the Content Store backend service:</span></span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">kubectl scale deployment itom-content-store-backend-&lt;tenant ID&gt; --replicas=0 -n &lt;namespace&gt;</span></span></span></p>
+<pre><code>kubectl scale deployment itom-content-store-backend-&lt;tenant ID&gt; --replicas=0 -n &lt;namespace&gt;</code></pre>
 
 <ol start="3">
-	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Place the CA certificate that was used to sign custom capsule in the following directory:</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Place the CA certificate that was used to sign custom capsule in the following directory:&nbsp;</span></span></span><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><strong>&lt;NFS global-volume&gt;/certificate/dnd/&lt;tenant ID&gt;/source.</strong> For example, full path to this directory with global volume mounted at <b>/var/vols/itom/global-volume</b> and for the tenant with ID <b>616409711</b> is </span></span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">&lt;NFS global-volume&gt;/certificate/dnd/&lt;tenant ID&gt;/source. For example, full path to this directory with global volume mounted at <b>/var/vols/itom/global-volume</b> and for the tenant with ID <b>616409711</b> is </span></span></span></p>
-
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">/var/vols/itom/global-volume/certificate/dnd/616409711/source</span></span></span></p>
+<pre><code>/var/vols/itom/global-volume/certificate/dnd/616409711/source</code></pre>
 
 <ol start="4">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Run the following command to start the Content Store backend service:</span></span></span></li>
 </ol>
 
-<p style="margin-bottom:11px; margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">kubectl scale deployment itom-content-store-backend-&lt;tenant ID&gt; --replicas=1 -n &lt;namespace&gt;</span></span></span></p>
-
-<p style="margin-bottom:11px; margin-left:48px"></p>
+<pre><code>kubectl scale deployment itom-content-store-backend-&lt;tenant ID&gt; --replicas=1 -n &lt;namespace&gt;</code></pre>
 
 <h2>Use Content Store</h2>
 
@@ -343,8 +345,8 @@
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The installation of a capsule includes the following steps:</span></span></span></p>
 
 <ol>
-	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Download desired capsule from the Micro Focus ITOM Marketplace portal</span></span></span></li>
-	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Install capsule in HCMX content store</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Download capsule from the Micro Focus ITOM Marketplace portal</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Install downloaded capsule in HCMX content store</span></span></span></li>
 </ol>
 
 <h4>Download capsule from the Micro Focus ITOM Marketplace portal</h4>
@@ -356,7 +358,7 @@
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>ITOM marketplace portal</b> navigate to <b>Categories. </b>Click <b>Hybrid Cloud Management X</b>.</span></span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_604297d37988f7.05877330.png" style="width:623px; height:389px"></span></span></span></p>
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/b/b3/UseCS-ITOMMktPlcCategories.PNG" height="500" hspace="0" src="/mediawiki/images/pn_images/pn_image_6042a358974e59.27377190.png" style="width: 800px; height: 500px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
 <ol start="5">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A list of items in <b>Hybrid Cloud Management X</b> category is shown. This view shows a list of items that includes capsules and other artifacts. The tiles with the title staring with Capsule are the capsules. Click <b>on any tile that starts with Capsule</b>.</span></span></span></li>
@@ -364,17 +366,13 @@
 
 <p style="margin-left:48px"></p>
 
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application
-
-Description automatically generated" src="/mediawiki/images/pn_images/pn_image_604297d3d96674.05809507.png" style="width:624px; height:463px"></span></span></span></p>
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/8/84/UseCS-ITOMMktPlcHCMXItems.PNG" height="594" hspace="0" src="/mediawiki/images/pn_images/pn_image_6042a358f23952.55814763.png" style="width: 800px; height: 594px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
 <ol start="6">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Capsule </b>page, click <b>Download </b>to download and save the capsule to a directory on your local system<b>.</b></span></span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
-
-Description automatically generated" src="/mediawiki/images/pn_images/pn_image_604297d42b0315.09109521.png" style="width:624px; height:306px"></span></span></span></p>
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/a/ae/UseCS-SAPProvisioningCapsule.PNG" height="392" hspace="0" src="/mediawiki/images/pn_images/pn_image_6042a3592fd710.48151254.png" style="width: 800px; height: 392px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
 <p style="margin-bottom:11px; margin-left:48px"></p>
 
@@ -385,43 +383,33 @@ Description automatically generated" src="/mediawiki/images/pn_images/pn_image_6
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to the extracted directory. The extracted directory consists of the capsule in a zip file format and an associated document that describes how to install and use the capsule.</span></span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application
-
-Description automatically generated" src="/mediawiki/images/pn_images/pn_image_604297d4605d09.88361815.png" style="width:624px; height:147px"></span></span></span></p>
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/d/d3/CapsuleBundleContents.PNG" height="152" hspace="0" src="https://docs.microfocus.com/mediawiki/images/d/d3/CapsuleBundleContents.PNG" style="width:644px;height:152px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="644"></p>
 
 <ol start="3">
-	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Read the associated document.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Read the associated capsule document.</span></span></span></li>
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the HCMX tenant agent interface portal as a DND admin user. </span></span></span></li>
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the <b>mega menu,</b> navigate to <b>Build</b> -&gt; <b>Design</b>.</span></span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application, Word
-
-Description automatically generated" src="/mediawiki/images/pn_images/pn_image_604297d49acbf1.30840735.png" style="width:625px; height:279px"></span></span></span></p>
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/d/d7/Megamenu-Design.PNG" height="358" hspace="0" src="/mediawiki/images/pn_images/pn_image_6042a3595ece84.28559682.png" style="width: 800px; height: 358px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
 <ol start="6">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the <b>Design</b> menu, navigate to <b>CONTENT MANAGEMENT</b>. Click <b>+ </b>icon.</span></span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application, Word
-
-Description automatically generated" src="/mediawiki/images/pn_images/pn_image_604297d4c42347.12606148.png" style="width:625px; height:95px"></span></span></span></p>
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/c/cb/ContentManagement.PNG" height="122" hspace="0" src="/mediawiki/images/pn_images/pn_image_6042a35987a933.87956489.png" style="width: 800px; height: 122px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
 <ol start="7">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>select file </b>window, navigate and select the capsule zip file. Click <b>Open</b></span></span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application, Word
-
-Description automatically generated" src="/mediawiki/images/pn_images/pn_image_604297d5035505.64727034.png" style="width:624px; height:410px">&nbsp;</span></span></span></p>
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/d/d8/CapsuleZipFile.PNG" height="525" hspace="0" src="/mediawiki/images/pn_images/pn_image_6042a359bcad80.53218106.png" style="width: 800px; height: 525px; margin: 0px; border: 0px solid black;" vspace="0" width="800">&nbsp;</span></span></span></p>
 
 <ol start="8">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The capsule installation starts. After completion of capsule installation, capsule tile displays installation date. Note that capsules cannot be deleted once they are added through content store.</span></span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application, Word
-
-Description automatically generated" src="/mediawiki/images/pn_images/pn_image_604297d533a944.38616026.png" style="width:624px; height:205px"></span></span></span></p>
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/8/8d/CapsuleInstallStatusDone.PNG" height="263" hspace="0" src="/mediawiki/images/pn_images/pn_image_6042a359ed32a4.42433539.png" style="width: 800px; height: 263px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
 <ol start="9">
 	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Capsule deploys artifacts such as service designs, resource offerings, OO flows, etc that enables administrators to provision and manage resources from the new provider. In the above example, capsule for SAP provisioning was deployed. This SAP capsule enables administrators to provision and manage SAP resources. Read capsule documentation to understand capabilities that are provided by the capsule to manage SAP resources.</span></span></span></li>
