@@ -61,7 +61,7 @@
 <p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/d/da/CS-CF-AgIntURL-TenantList.PNG" height="151" hspace="0" src="/mediawiki/images/pn_images/pn_image_60429992dc7e52.29737256.png" style="width: 800px; height: 151px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
 <ol start="4">
-	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Note down the tenant ID and URL field values. Each tenant exposes two portals: Tenant end user portal and Tenant agent interface portal. The tenant end user portal is the portal where the users submit support requests and request for services. The tenant agent interface portal is the portal which allows administrators to configure HCMX, agents to fulfill requests submitted by the end users, etc. The URL field contains URL to the tenant end user portal. The tenant agent interface URL is required for configuration and usage of CGRO. Construct the tenant agent interface URL as follows: https://HCMXFullyQualifiedDomainName/saw?TENANTID=&lt;Replace with tenant ID value shown on general page&gt;. Bookmark agent interface URL. Each tenant has an admin account associated with it. This admin account is called as tenant admin account. The tenant admin account has full administration privileges for the tenant. Click the <b>number</b> in the <b>Tenant admin</b> field on the <b>General</b> page.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Note down the tenant ID and URL field values. Each tenant exposes two portals: Tenant end user portal and Tenant agent interface portal. The tenant end user portal is the portal where the users submit support requests and request for services. The tenant agent interface portal is the portal which allows administrators to configure HCMX, agents to fulfill requests submitted by the end users, etc. The URL field contains URL to the tenant end user portal. The tenant agent interface URL is required for configuration and usage of CGRO. Construct the tenant agent interface URL as follows: <a>https://HCMXFullyQualifiedDomainName/saw?TENANTID=&lt;Replace with tenant ID value shown on general page&gt;</a>. Bookmark agent interface URL. Each tenant has an admin account associated with it. This admin account is called as tenant admin account. The tenant admin account has full administration privileges for the tenant. Click the <b>number</b> in the <b>Tenant admin</b> field on the <b>General</b> page.</span></span></span></li>
 </ol>
 
 <p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/1f/CS-CF-AgIntURL-TenantGeneral.PNG" height="400" hspace="0" src="/mediawiki/images/pn_images/pn_image_60429b18b99e88.18684348.png" style="width: 800px; height: 400px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
@@ -100,7 +100,7 @@
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">User authorization must be configured in both Identity Management (IDM) and in HCMX tenant. To configure content store authorization for users, follow the steps below:</span></span></span></p>
 
-<h4 style="margin-top:3px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal"><span style="font-style:italic"><a name="_Toc65826721">Configure authorization in Identity Management</a></span></span></span></span></span></span></h4>
+<h4>Configure authorization in Identity Management</h4>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The following are the list of out of the box groups, roles and permissions that are available to configure content store authorization for users in IDM.&nbsp; </span></span></span></p>
 
@@ -127,8 +127,6 @@
 	</tbody>
 </table>
 
-<p style="margin-bottom:11px"></p>
-
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Content store roles</b></span></span></span></p>
 
 <table class="MsoTableGrid" style="margin-left:-1px; border-collapse:collapse; border:none">
@@ -151,8 +149,6 @@
 		</tr>
 	</tbody>
 </table>
-
-<p style="margin-bottom:11px"></p>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Content store permissions</b></span></span></span></p>
 
@@ -217,8 +213,6 @@
 	</tbody>
 </table>
 
-<p style="margin-bottom:11px"></p>
-
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In most organizations, the DND administrators also perform content store administration. Hence, this section walks you through steps in assigning content store administration role to the <b>DND_ADMINISTRATORS</b> group. If there is a need to restrict users to perform just the content store administration, assign those set of users to the <b>CS_ADMINISTRATOR</b> group. For further refinement of content store permission assignment to the users, refer to the tables above for content store groups, roles and permissions.</span></span></span></p>
 
 <ol>
@@ -226,17 +220,13 @@
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A list of organizations is displayed. Click on the organization tile that corresponds to the tenant ID that was noted in earlier steps. In this example, it is the organization with tenant ID <b>616409711</b>.</span></span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application
-
-Description automatically generated" src="/mediawiki/images/pn_images/pn_image_604297d18ca1d7.73418006.png" style="width:623px; height:297px"></span></span></span></p>
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/0/0b/CS-CF-ConfAuthIDM-Orgs.PNG" height="382" hspace="0" src="/mediawiki/images/pn_images/pn_image_60429c70167312.93415531.png" style="width: 800px; height: 382px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
 <ol start="3">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>ORGANIZATION</b> menu, Click <b>Groups</b> page. A list of existing groups is displayed. Select <b>DND_ADMINISTRATORS</b> group. Click <b>Edit</b> icon.</span></span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
-
-Description automatically generated" src="/mediawiki/images/pn_images/pn_image_604297d1bf49a1.84940255.png" style="width:625px; height:514px"></span></span></span></p>
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/8/85/CS-CF-ConfAuthIDM-Groups.PNG" height="659" hspace="0" src="/mediawiki/images/pn_images/pn_image_60429c706c9bc2.09427101.png" style="width: 800px; height: 659px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
 <p style="margin-left:48px"></p>
 
@@ -244,9 +234,7 @@ Description automatically generated" src="/mediawiki/images/pn_images/pn_image_6
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the DND_ADMINISTRATORS <b>Group Settings</b> screen, associate <b>CS_ADMINISTRATOR </b>role. Associate any new DND administrator users. Any new users associated in IDM must also be assigned <b>DND Admin</b> role in HCMX tenant. Click <b>SAVE.</b></span></span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
-
-Description automatically generated" src="/mediawiki/images/pn_images/pn_image_604297d1eb1450.61565989.png" style="width:624px; height:346px"></span></span></span></p>
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/6c/CS-CF-ConfAuthIDM-DNDAdminGroup.PNG" height="444" hspace="0" src="/mediawiki/images/pn_images/pn_image_60429c709c23d8.98164416.png" style="width: 800px; height: 444px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
 <p style="margin-left:48px"></p>
 
