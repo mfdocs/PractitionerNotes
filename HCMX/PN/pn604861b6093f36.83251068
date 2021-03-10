@@ -1,7 +1,57 @@
 <html><div id="mwpage">
 <h3>Objective</h3>
 
-<p>Currently in HCMX &nbsp;once a design is attached to an offering, the design cannot be unpublished and deleted. Hence its recommended to take care while publishing designs and create offering especially in a production environment please make sure that only tested designs from the Development environment are carried over to production. However if a user wishes to un-publish and delete the designs which already has an offering associated with it, he can follow the below steps to accomplish this via the API.</p>
+<p>Currently in HCMX &nbsp;once a design is attached to an offering, the design cannot be unpublished and deleted. Hence its recommended to take care while publishing designs and create offering especially in a production environment please make sure that only tested designs from the Development environment are carried over to production. However if a Tenant Admin wishes to un-publish and delete the designs which already has an offering associated with it, he can follow the below steps to accomplish this via the API.</p>
+
+<p></p>
+
+<h3>Remove Service Offering Reference from HCMX Design</h3>
+
+<p>Login to the swagger-ui of DND as Tenant Administrator&nbsp;</p>
+
+<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:#1f497d"><a href="https://kishore-master.swinfra.net/502964597/dnd/swagger-ui.html" style="color:#0563c1; text-decoration:underline">https://&lt;&lt;host&gt;&gt;/&lt;&lt;tenant_id&gt;&gt;/dnd/swagger-ui.html</a></span></span></span></p>
+
+<p>Then look for below API.</p>
+
+<p><img src="/mediawiki/images/pn_images/pn_image_6048636c70a4e3.88993557.jpeg"></p>
+
+<p>Parameters for this API</p>
+
+<ol>
+	<li>
+	<h4>designName</h4>
+	</li>
+</ol>
+
+<p>The design name for the API is actually an UUID. You can obtain this by invoking the list published design api in swagger</p>
+
+<p><img src="/mediawiki/images/pn_images/pn_image_6048636ce8d307.01269155.png"></p>
+
+<p>In the response obtain the “name” for the displayName and version of the design that you want to delete or unpublish.</p>
+
+<p><img src="/mediawiki/images/pn_images/pn_image_6048636d599ac8.19482389.png"></p>
+
+<p>In the above response JSON the name can be obtained for “vCenter Compute With Basic Options 18.3.0”.</p>
+
+<p></p>
+
+<ol start="2">
+	<li>
+	<h4>Id : Id of remote Reference</h4>
+	</li>
+</ol>
+
+<p>This is the ID of the Offering and can be obtained from UI. Please navigate to the Offering that has been created for the Design. The URL when you select the Offering will be of form</p>
+
+<p><a href="https://host:port/saw/Offering/10554/general?TENANTID=xxxxxxxx">https://host:port/saw/Offering/10554/general?TENANTID=xxxxxxxx</a></p>
+
+<p>Here 10554 is the offering ID.</p>
+
+<p>Specify both the inputs obtained and execute the Swagger API . If the API response is successful, you can now un-publish the design and later delete it.</p>
+
+<p></p>
+
+<h3>Inactive and Deprecate Service Offering</h3>
 
 <p></p>
 </div>
