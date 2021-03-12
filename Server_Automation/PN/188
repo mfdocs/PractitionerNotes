@@ -1,6 +1,4 @@
-<p>ServerService provides access to the servers managed by Server Automation.</p>
-
-<p>&nbsp;</p>
+<html><p>ServerService provides access to the servers managed by Server Automation.</p>
 
 <h2>Updating a server property</h2>
 
@@ -78,7 +76,7 @@ if foundServers:
 
 <p>Of course you could just risk it and not bother with the exception handling but if you are trying to build robust production code its something that should be taken into consideration especially if there is a long period between the read and update where the data could mutate. Also note that not all attributes of the VO are mutable. The Java doc manage page for the update method in the&nbsp;<tt>ServerService</tt>&nbsp;lists those that may be updated.</p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Decommission</h2>
 
@@ -126,7 +124,7 @@ Server 91190001 not found</pre>
 
 <p>This could easily be modified to use the&nbsp;<tt>findServerRefs()</tt>&nbsp;method and a&nbsp;<tt>Filter</tt>&nbsp;to find a server by its name, ip address or some other attribute to obtain the&nbsp;<tt>ServerRef</tt>.</p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Update custom attributes</h2>
 
@@ -143,7 +141,7 @@ ref = ServerRef(10001)
 ts.server.ServerService.setCustAttrs(ref, CAMap)
 </pre>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Fetch custom attributes</h2>
 
@@ -162,22 +160,22 @@ print ts.server.ServerService.getCustAttrs(ref, None, False)
 <pre>[root@dc1 ServerService]# ./fetchCustAttr.py
 {'hello': 'world', 'AGENT_STAGE_STATUS': '70.0.76793.1', 'foo': 'bar', '__OPSW_reachability_time': '1571140803.85'}</pre>
 
-<p>&nbsp;</p>
+<p></p>
 
 <p><img src="./mediawiki/images/PN/ServerCustomAttributes.png"></p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <p>Those custom attributes beginning with&nbsp;<tt>__OPSW</tt>&nbsp;are private and should not be tampered with.</p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <pre>&gt;&gt;&gt; from pytwist.com.opsware.custattr import CustomAttribute
 &gt;&gt;&gt; CustomAttribute.OPSWARE_PRIVATE_KEY_PREFIX
 '__OPSW'
 </pre>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Encrypted custom attributes</h2>
 
@@ -212,7 +210,7 @@ ts.server.ServerService.setCustAttr(ref,nsName,'password','its a secret')
 print ts.server.ServerService.getCustAttr(ref,nsName,'password',False)
 </pre>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Running a communication test</h2>
 
@@ -233,7 +231,7 @@ print "Created comm test job %s" % jobRef
 <pre>[root@dc1 ServerService]# ./commsTest.py
 Created comm test job Communication Test (JobRef:143700001)</pre>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Display communication test results</h2>
 
@@ -278,11 +276,11 @@ Failures: 2</pre>
 
 <p><img src="./mediawiki/images/PN/CommTestResult.png"></p>
 
-<p>&nbsp;</p>
+<p></p>
 
-<p>&nbsp;</p>
+<p></p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Rebooting a server</h2>
 
@@ -304,7 +302,7 @@ print jobRef
 
 <pre>Reboot Servers (JobRef:143820001)</pre>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Assign a customer</h2>
 
@@ -321,3 +319,4 @@ customerRefs = findObjRefs ('CustomerVO.displayName = "Mr Red"','customer')
 if serverRefs and customerRefs:
     for serverRef in serverRefs:
         ts.server.ServerService.setCustomer(serverRef, customerRefs[0])</pre>
+</html>
