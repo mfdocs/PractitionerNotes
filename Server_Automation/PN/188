@@ -233,48 +233,7 @@ Created comm test job Communication Test (JobRef:143700001)</pre>
 
 <p></p>
 
-<h2>Display communication test results</h2>
-
-<p>Textual representation of what is displayed in the GUI interface</p>
-
-<pre>#!/opt/opsware/bin/python
-from pytwist import twistserver
-from pytwist.com.opsware.job import JobRef
-from pytwist.com.opsware.server import CommTestJobResult
-ts = twistserver.TwistServer()
-jobRef = JobRef(143700001)
-jr = ts.job.JobService.getResult(jobRef)
-if isinstance(jr,CommTestJobResult):
-    print "%s of %s completed" % (jr.totalCompleted,jr.totalDvcs)
-    print "%30s AGT CRP  CE DAE SWR  MD" % " "
-    for je in jr.elemResultInfo:
-        agt = je.agentReachable # AGenT
-        crp = je.cryptoOk       # CRyPto
-        ce = je.wayReachable    # Command Engine
-        dae = je.spinReachable  # Data Access Engine
-        swr = je.wordReachable  # SoftWare Repository
-        md = je.midOk           # Machine iD
-        result = map(lambda i: {'None':'-','0':'O'}.get(i,'X'),
-                     [agt,crp,ce,dae,swr,md])
-        print "%30s  %s" % (je.name,'   '.join(result))
-    print "Failures: %s" % jr.totalFailed
-</pre>
-
-<p>Execution</p>
-
-<pre>[root@dc1 ServerService]# ./commTestResults.py
-5 of 5 completed
-                               AGT CRP  CE DAE SWR  MD
-                dc1.blue.local  O   O   O   O   O   O
-               sat1.blue.local  O   O   O   O   O   O
-               dc1.green.local  X   -   -   -   -   -
-            zuludb.green.local  X   -   -   -   -   -
-            charlie.pink.local  O   O   O   O   O   O
-Failures: 2</pre>
-
-<p>Note the order is different as the GUI is sorted by hostname.</p>
-
-<p><img src="./mediawiki/images/PN/CommTestResult.png"></p>
+<h2></h2>
 
 <p></p>
 
@@ -302,7 +261,7 @@ print jobRef
 
 <pre>Reboot Servers (JobRef:143820001)</pre>
 
-<p></p>
+<p>To see the output of the comm test job see the <strong>JobService</strong></p>
 
 <h2>Assign a customer</h2>
 
