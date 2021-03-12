@@ -11,6 +11,7 @@ from pytwist import twistserver
 from pytwist.com.opsware.job import JobRef
 from pytwist.com.opsware.server import CommTestJobResult
 ts = twistserver.TwistServer()
+ts.authenticate('user','password') # Job access requires a valid SA user
 jobRef = JobRef(143700001)
 jr = ts.job.JobService.getResult(jobRef)
 if isinstance(jr,CommTestJobResult):
