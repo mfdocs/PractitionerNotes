@@ -167,5 +167,208 @@ Description automatically generated" id="Picture_x0020_147" src="/mediawiki/imag
 
 <p style="margin-bottom:11px; margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">kubectl delete pod &lt;Replace with itom-dnd-image-catalog full POD name&gt; -n &lt;Replace with namespace&gt;</span></span></span></p>
 
+<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc66713433">Configure authorization for image aggregation</a></span></span></span></span></span></h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">User authorization must be configured in both Identity Management (IDM) and in HCMX tenant. User authorization allows users capability to manage and administer image aggregation functionality. To configure image aggregation authorization for users, follow the steps below:</span></span></span></p>
+
+<h4 style="margin-top:3px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal"><span style="font-style:italic"><a name="_Toc66713434">Configure authorization in Identity Management</a></span></span></span></span></span></span></h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The following are the list of out of the box groups, roles and permissions that are available to configure image aggregation authorization for users in IDM.&nbsp; </span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Image aggregation groups</b></span></span></span></p>
+
+<table class="MsoTableGrid" style="margin-left:-1px; border-collapse:collapse; border:none">
+	<tbody>
+		<tr>
+			<td style="border-bottom:1px solid black; width:246px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Group name</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:378px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Purpose</b></span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:246px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">DND_ADMINISTRATOR</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:378px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Users in this group are administrators for all operations in Image Aggregation.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:246px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">DND_RESOURCE_SUPPLY_MANAGER</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:378px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Users in this group can create resource providers in Image Aggregation.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:246px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">DND_SERVICE_DESIGNER</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:378px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Users in this group are service designers who create designs and have privileges for associated capabilities such as Resource Offerings, Orchestration Designer, and Service Components in Image Aggregation.</span></span></span></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p style="margin-bottom:11px"></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Image aggregation roles</b></span></span></span></p>
+
+<table class="MsoTableGrid" style="margin-left:-1px; border-collapse:collapse; border:none">
+	<tbody>
+		<tr>
+			<td style="border-bottom:1px solid black; width:246px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Role name</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:378px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Purpose</b></span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:246px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">DND_ADMINISTRATOR</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:378px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Users with this role are administrators for all operations in Image Aggregation.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:246px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">DND_RESOURCE_SUPPLY_MANAGER</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:378px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Users with this role can create resource providers in Image Aggregation.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:246px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">DND_SERVICE_DESIGNER</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:378px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Users with this role are service designers who create service designs and have privileges for associated capabilities such as Resource Offerings, Orchestration Designer, and Service Components in Image Aggregation.</span></span></span></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p style="margin-bottom:11px"></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Image aggregation permissions</b></span></span></span></p>
+
+<table class="MsoTableGrid" style="border-collapse:collapse; border:none">
+	<tbody>
+		<tr>
+			<td style="border-bottom:1px solid black; width:273px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Permission name</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:350px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Purpose</b></span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:273px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">CMP_ACCOUNTS_TENANT_ADMIN</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:350px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">This permission provides capability to access the integration accounts data in the tenant. However, this permission alone does not allow a user to access and view the integration accounts data from the user interface. Assign the CMP_INTEGRATION_GATEWAY_USER permission in addition to the CMP_ACCOUNTS_TENANT_ADMIN permission to a user to be able to access and make changes to the integration accounts data in the user interface.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:273px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">CMP_INTEGRATION_GATEWAY_USER</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:350px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">This permission provides capability to view the integration accounts data in the user interface. However, this permission alone does not allow a user to access and view the integration accounts data from the user interface. Assign the CMP_ACCOUNTS_TENANT_ADMIN permission in addition to the CMP_INTEGRATION_GATEWAY_USER permission to a user to be able to access and make changes to the integration accounts data in the user interface.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:273px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">DND_IMAGE_CATALOG_GATEWAY_ADMIN</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:350px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">This permission provides capability to view the image catalog data in the user interface. However, this permission alone does not allow a user to access and view the image catalog data from the user interface. Assign the DND_IMAGE_CATALOG_INTEGRATION permission in addition to the DND_IMAGE_CATALOG_GATEWAY_ADMIN permission to a user to be able to access and make changes to the image catalog data in the user interface.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:273px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">DND_IMAGE_CATALOG_INTEGRATION</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:350px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">This permission provides capability to access the image catalog data in the tenant. However, this permission alone does not allow a user to access and view the image catalog data from the user interface. Assign the DND_IMAGE_CATALOG_GATEWAY_ADMIN permission in addition to the DND_IMAGE_CATALOG_INTEGRATION permission to a user to be able to access and make changes to the image catalog data in the user interface.</span></span></span></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p style="margin-bottom:11px"></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In most organizations, the DND administrators also perform image aggregation administration. Hence, this section walks you through steps in assigning a user to the <b>DND_ADMINISTRATORS</b> group. For further refinement of image aggregation permission assignment to the users, refer to the tables above for image aggregation groups, roles and permissions.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the IDM administration portal as user <b>suite-admin</b> at the following URL: <span class="MsoHyperlink" style="color:#0563c1"><span style="text-decoration:underline">https://&lt;HCMXServerFQDN/idm-admin</span></span></span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A list of organizations is displayed. Click on the organization tile that corresponds to the tenant ID that was noted in earlier steps. In this example, it is the organization with tenant ID <b>616409711</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application
+
+Description automatically generated" id="Picture_x0020_12" src="/mediawiki/images/pn_images/pn_image_604fce3ff04950.43922711.png" style="width:467.25pt; height:222.75pt"> </span></span></span></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>ORGANIZATION</b> menu, Click <b>Groups</b> page. A list of existing groups is displayed. Select <b>DND_ADMINISTRATORS</b> group. Click <b>Edit</b> icon.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_13" src="/mediawiki/images/pn_images/pn_image_604fce402e3682.07702803.png" style="width:468.75pt; height:385.5pt"> </span></span></span></p>
+
+<p style="margin-left:48px"></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the DND_ADMINISTRATORS <b>Group Settings</b> screen, associate any new DND administrator users. Any new users associated in IDM must also be assigned <b>DND Admin</b> role in HCMX tenant. Click <b>SAVE.</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_1" src="/mediawiki/images/pn_images/pn_image_604fce40565b68.38501422.png" style="width:468pt; height:443.25pt"> </span></span></span></p>
+
+<p style="margin-left:48px"></p>
+
+<ol start="5">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log out of IDM administration portal.</span></span></span></li>
+</ol>
+
+<h4 style="margin-top:3px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal"><span style="font-style:italic"><a name="_Toc66713435">Configure authorization in HCMX tenant agent interface</a></span></span></span></span></span></span></h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This practitioner note assumes that the <b>DND Admin </b>role has been created as described in the <b>Deploy, configure and use DND</b> practitioner notes. To assign additional users with DND Admin role, follow the steps below:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the HCMX tenant agent interface portal as a tenant admin user. The HCMX tenant agent interface URL was noted in earlier steps.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the <b>mega menu</b> (<b>Three horizontal lines</b> icon), navigate to <b>Administration</b> -&gt; <b>Master Data</b> -&gt; <b>People</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application, Word
+
+Description automatically generated" id="Picture_x0020_16" src="/mediawiki/images/pn_images/pn_image_604fce40962ab2.11523919.png" style="width:468pt; height:204pt"> </span></span></span></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the list of users, click the <b>user’s ID</b> to whom image aggregation authorization must be assigned. Note that in earlier steps in IDM, this user was assigned the DND administration group. The users in DND_ADMINISTRATORS group in IDM have permissions to administer image aggregation functionality. </span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_17" src="/mediawiki/images/pn_images/pn_image_604fce40df3083.53750985.png" style="width:468pt; height:382.5pt"> </span></span></span></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the user’s <b>General</b> page, <b>system use definitions</b> section, select <b>DND Admin</b>, <b>CMP Agent</b> and <b>Self-Service Portal User</b> roles. Click <b>Save</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_18" src="/mediawiki/images/pn_images/pn_image_604fce41261513.21365728.png" style="width:468pt; height:244.5pt"> </span></span></span></p>
+
 <p style="margin-bottom:11px; margin-left:48px"></p>
 </html>
