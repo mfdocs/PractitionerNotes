@@ -32,7 +32,7 @@
 	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Use image aggregation</span></span></span></li>
 </ol>
 
-<h2 style="margin-top:3px"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal"><a name="_Toc66713429">Configure image aggregation</a></span></span></span></span></span></h2>
+<h2>Configure image aggregation</h2>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configuration of image aggregation creates necessary foundation which enables usage of image aggregation functionalities. Configuration of image aggregation includes the following steps:</span></span></span></p>
 
@@ -45,11 +45,11 @@
 	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure image aggregation providers</span></span></span></li>
 </ol>
 
-<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc66713430">Pre-requisites</a></span></span></span></span></span></h3>
+<h3>Pre-requisites</h3>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This practitioner note assumes that the DND capability has been installed, deployed to a tenant and has been configured. If DND has not been configured, follow the steps as described in the following practitioner note: <b>Deploy, configure and use DND</b></span></span></span></p>
 
-<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc66713431">Derive agent interface URL and tenant end user portal URL</a></span></span></span></span></span></h3>
+<h3>Derive agent interface URL and tenant end user portal URL</h3>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will derive the tenant agent interface URL and tenant end user portal URL. Each tenant exposes two portals: Tenant end user portal and Tenant agent interface portal. The tenant end user portal is the portal where the users submit support requests and request for services. The tenant agent interface portal is the portal which allows administrators to configure HCMX, agents to fulfill requests submitted by the end users, etc. You will need these URLs in subsequent sections.</span></span></span></p>
 
@@ -58,51 +58,39 @@
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>suite administration</b> home page, navigate to <b>TENANTS</b>. A list of tenants is displayed.</span></span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
-
-Description automatically generated" id="Picture_x0020_2" src="/mediawiki/images/pn_images/pn_image_604fcdc9a32531.28589419.png" style="width:468pt; height:172.5pt"> </span></span></span></p>
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/c/cf/CGRO-BOHomePage.PNG" height="295" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fd55ae44156.99966211.png" style="width: 800px; height: 295px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
 <ol start="3">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the list of tenants, select the tenant to which DND capability has been deployed previously.</span></span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email, website
-
-Description automatically generated" id="Picture_x0020_4" src="/mediawiki/images/pn_images/pn_image_604fcdc9d43903.86230408.png" style="width:467.25pt; height:88.5pt"> </span></span></span></p>
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/d/da/CS-CF-AgIntURL-TenantList.PNG" height="151" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fd55b2e2ba8.23899269.png" style="width: 800px; height: 151px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
 <ol start="4">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Note down the <b>tenant ID</b> and <b>URL</b> field values. The URL field contains <b>URL to the tenant end user portal</b>. Construct the <b>tenant agent interface URL</b> as follows: https://HCMXFullyQualifiedDomainName/saw?TENANTID=&lt;Replace with tenant ID value shown on general page&gt;. Bookmark agent interface URL. Each tenant has an admin account associated with it. This admin account is called as tenant admin account. The tenant admin account has full administration privileges for the tenant. Click the <b>number</b> in the <b>Tenant admin</b> field on the <b>General</b> page.</span></span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
-
-Description automatically generated" id="Picture_x0020_14" src="/mediawiki/images/pn_images/pn_image_604fcdca3f10c8.45424079.png" style="width:468pt; height:234.75pt"> </span></span></span></p>
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/1f/CS-CF-AgIntURL-TenantGeneral.PNG" height="400" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fd55b778967.86641445.png" style="width: 800px; height: 400px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
 <ol start="5">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the tenant admin user account <b>General</b> page, note down the login name for tenant admin in the <b>Login name</b> field. This practitioner note assumes that you are aware of the tenant admin login credentials.</span></span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
-
-Description automatically generated" id="Picture_x0020_6" src="/mediawiki/images/pn_images/pn_image_604fcdca791d28.93008249.png" style="width:468pt; height:396.75pt"> </span></span></span></p>
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/c/ce/CS-CF-AgIntURL-TenantAdminUser.PNG" height="677" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fd55bbc89b6.57517474.png" style="width: 800px; height: 677px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
 <ol start="6">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <b>Back</b>. In the tenant details window, navigate to <b>Capability settings</b> page. In <b>Design and Deploy </b>capability settings, verify that <b>Deploy status</b> displays <b>Done </b>and <b>Enable capability</b> toggle button is turned on.<b> </b>Click number link next to the <b>DND admin user</b> in the <b>Design and Deploy capability</b> section.</span></span></span></li>
 </ol>
 
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/9/9e/CS-CF-AgIntURL-TenantCapabilitySettings.PNG" height="443" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fd55c289488.22004012.png" style="width: 800px; height: 443px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
 <p style="margin-left:48px"></p>
-
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application, email
-
-Description automatically generated" id="Picture_x0020_8" src="/mediawiki/images/pn_images/pn_image_604fcdcac5cbc4.52149018.png" style="width:468pt; height:258.75pt"> </span></span></span></p>
 
 <ol start="7">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the tenant admin user account <b>General</b> page, note down the login name for DND admin in the <b>Login name</b> field. This practitioner note assumes that you are aware of DND admin login credentials. You can also create a new user account in suite administration portal and assign DND administrator privileges to that new user account in IDM and HCMX tenant agent interface.</span></span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
-
-Description automatically generated" id="Picture_x0020_9" src="/mediawiki/images/pn_images/pn_image_604fcdcb0e35d6.83251246.png" style="width:468pt; height:399.75pt"> </span></span></span></p>
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/61/CS-CF-AgIntURL-DNDAdminUser.PNG" height="684" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fd55c8aec32.71089682.png" style="width: 800px; height: 684px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
 <p style="margin-left:48px"></p>
 
@@ -110,11 +98,9 @@ Description automatically generated" id="Picture_x0020_9" src="/mediawiki/images
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the top right corner, click <b>suite admin user’s</b> drop down. Click <b>Logout</b>.</span></span></span></li>
 </ol>
 
-<p style="margin-left:48px"></p>
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/58/CS-CF-AgIntURL-Logout.PNG" height="101" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fd55cdde6e9.17832720.png" style="width: 800px; height: 101px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
-<p style="margin-bottom:11px; margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application, Teams
-
-Description automatically generated" id="Picture_x0020_10" src="/mediawiki/images/pn_images/pn_image_604fcdcb46db45.45287564.png" style="width:467.25pt; height:59.25pt"> </span></span></span></p>
+<p style="margin-bottom:11px; margin-left:48px"></p>
 
 <h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc66713432">Configure proxy settings for image aggregation providers</a></span></span></span></span></span></h3>
 
