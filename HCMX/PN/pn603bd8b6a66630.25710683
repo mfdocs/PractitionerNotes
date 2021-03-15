@@ -405,5 +405,100 @@ Description automatically generated" id="Picture_x0020_7" src="/mediawiki/images
 
 Description automatically generated" id="Picture_x0020_21" src="/mediawiki/images/pn_images/pn_image_604fce6ae9e071.77452624.png" style="width:468pt; height:83.25pt"> </span></span></span></p>
 
+<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc66713437">Configure image aggregation providers</a></span></span></span></span></span></h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The HCMX image aggregation capability collects image data from the following cloud providers: Amazon Web Services (AWS), Microsoft Azure and VMWare vCenter. The HCMX image aggregation capability displays aggregated list of images from AWS, Azure and vCenter in a single web page. The HCMX image aggregation capability requires connection details to bring list of images from AWS, Azure and vCenter. The following pre-requisite setups must be performed in AWS, Azure and vCenter before configuring AWS, Azure and vCenter image aggregation providers in HCMX.</span></span></span></p>
+
+<h4 style="margin-top:3px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal"><span style="font-style:italic"><a name="_Toc66713438"></a><a name="_Toc64372650">AWS pre-requisites</a></span></span></span></span></span></span></h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">AWS Identity and Access Management (IAM) enables you to manage access to AWS services and resources securely. Using IAM, you can create and manage AWS users and groups, and use permissions to allow and deny their access to AWS resources. </span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will create an IAM user with permissions to collect a list of images from AWS and to provision and manage EC2 instances. For image collection alone, permission to provision images are not necessary. But for ease of maintenance, a single IAM user account will be created with permissions to both collect images and to provision instances using those images.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This IAM user’s access key ID and secret key access will be used by HCMX image aggregation capability to retrieve AWS images.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the AWS management console.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to <b>Identity and Access management (IAM)</b> service</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application
+
+Description automatically generated" id="Picture_x0020_23" src="/mediawiki/images/pn_images/pn_image_604fceba7c5681.47705393.png" style="width:468pt; height:101.25pt"> </span></span></span></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The<b> IAM dashboard</b> is displayed.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_65" src="/mediawiki/images/pn_images/pn_image_604fcebabd4830.57771665.png" style="width:468pt; height:306.75pt"> </span></span></span></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>IAM dashboard</b>, navigate to <b>Users</b> page.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">On the <b>Users</b> page, click <b>Add user. Add user</b> wizard is displayed. </span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface
+
+Description automatically generated" id="Picture_x0020_31" src="/mediawiki/images/pn_images/pn_image_604fcebb035356.72765576.png" style="width:453pt; height:143.25pt"> </span></span></span></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Add user</b> wizard, <b>Set user details</b> screen, enter a user name, enable <b>programmatic access</b> access type. Click <b>Next: Permissions</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_98" src="/mediawiki/images/pn_images/pn_image_604fcebb496ea3.70825149.png" style="width:468pt; height:243.75pt"> </span></span></span></p>
+
+<ol start="7">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Add user</b> wizard, <b>Set permissions</b> screen, select <b>Attach existing policies directly</b>. In the Filter policies search box search for and select each of the following Filter policies, one at a time</span></span></span></li>
+</ol>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">AmazonEC2FullAccess</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">AWSMarketplaceManageSubscriptions</span></span></span></li>
+</ul>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">After all the above policies have been selected, click Next: Tags.</span></span></span></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application
+
+Description automatically generated" id="Picture_x0020_11" src="/mediawiki/images/pn_images/pn_image_604fcebb88fca9.76499201.png" style="width:468pt; height:257.25pt"> </span></span></span></p>
+
+<ol start="8">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the Add user wizard, Add tags screen, enter any meaningful tag key and its value. Tags are optional, however, they are recommended for easier identification of resources. Work with your AWS administrators to identify useful tags to be added. Click <b>Next: Review</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_26" src="/mediawiki/images/pn_images/pn_image_604fcebbb920e0.90712093.png" style="width:468pt; height:243pt"> </span></span></span></p>
+
+<ol start="9">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Add user</b> wizard, <b>Review</b> screen, review user details and permissions. Click <b>Create user</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_109" src="/mediawiki/images/pn_images/pn_image_604fcebc015329.93568616.png" style="width:468pt; height:260.25pt"> </span></span></span></p>
+
+<ol start="10">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Add user</b> wizard, <b>Success</b> page, click <b>Show</b> under Secret access key column</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_110" src="/mediawiki/images/pn_images/pn_image_604fcebc37e550.89040390.png" style="width:468pt; height:3in"> </span></span></span></p>
+
+<ol start="11">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Note down the <b>Access Key ID</b> and <b>Secret access key</b> values which will be needed during AWS connection configuration in HCMX.&nbsp; Click <b>Download.csv</b> button to download access key ID and secret access key value to a file on your desktop. Access Key ID and Secret access key value is confidential information, use caution if you are sharing this information with others.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_111" src="/mediawiki/images/pn_images/pn_image_604fcebc86c5d5.23740999.png" style="width:468pt; height:213pt"> </span></span></span></p>
+
 <p style="margin-bottom:11px; margin-left:48px"></p>
 </html>
