@@ -500,5 +500,156 @@ Description automatically generated" id="Picture_x0020_110" src="/mediawiki/imag
 
 Description automatically generated" id="Picture_x0020_111" src="/mediawiki/images/pn_images/pn_image_604fcebc86c5d5.23740999.png" style="width:468pt; height:213pt"> </span></span></span></p>
 
+<h4 style="margin-top:3px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal"><span style="font-style:italic"><a name="_Toc66713439">Microsoft Azure pre-requisites</a></span></span></span></span></span></span></h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><a name="_Hlk66700652">In this section, you will register a new application in Microsoft Azure with permissions to collect a list of images from Azure and to provision and manage EC2 instances. For image collection alone, permission to provision images are not necessary. But for ease of maintenance, a single application will be created with permissions to both collect images and to provision instances using those images.</a></span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to Microsoft Azure portal.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">On the top right corner, click your account. Select the directory in which you would like to register your application. Note down the <b>tenant ID</b> of your Azure Active Directory.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application
+
+Description automatically generated" id="Picture_x0020_64" src="/mediawiki/images/pn_images/pn_image_604fcf07ce90b1.27486687.png" style="width:380.25pt; height:9in"> </span></span></span></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the Azure home page, navigate to <b>Azure Active Directory</b> services.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application
+
+Description automatically generated" id="Picture_x0020_15" src="/mediawiki/images/pn_images/pn_image_604fcf080e9d92.44284184.png" style="width:468pt; height:156pt"> </span></span></span></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Azure Active Directory </b>page, click <b>App registrations</b> blade. Click <b>New registration </b>in App registration blade.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_19" src="/mediawiki/images/pn_images/pn_image_604fcf08622430.31925036.png" style="width:468pt; height:268.5pt"> &nbsp;</span></span></span></p>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Register an application, </b>enter a name for the application. Select <b>Accounts in this organizational directory only</b> as the supported account types. Click <b>Register</b>. The application gets created and you are redirected to the application panel.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_68" src="/mediawiki/images/pn_images/pn_image_604fcf08a063c1.68205469.png" style="width:467.25pt; height:301.5pt"> </span></span></span></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the application overview blade, note down the <b>application id (client id)</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application
+
+Description automatically generated" id="Picture_x0020_69" src="/mediawiki/images/pn_images/pn_image_604fcf09000693.56669355.png" style="width:468pt; height:390pt"> </span></span></span></p>
+
+<p style="margin-left:48px"></p>
+
+<ol start="7">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the application page, navigate to <b>Certificates &amp; secrets</b> blade. Click <b>New client secret</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_70" src="/mediawiki/images/pn_images/pn_image_604fcf0952e7e2.34273617.png" style="width:468pt; height:378.75pt"> </span></span></span></p>
+
+<ol start="8">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Add a client secret </b>screen, enter description for the new client secret and expiration for the client secret. Click <b>Add</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_71" src="/mediawiki/images/pn_images/pn_image_604fcf0993edb4.97092146.png" style="width:468pt; height:260.25pt"> </span></span></span></p>
+
+<ol start="9">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">New client secret is added. Click <b>Copy</b> icon under the value column. Note down the <b>client secret value</b>.&nbsp; </span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application
+
+Description automatically generated" id="Picture_x0020_72" src="/mediawiki/images/pn_images/pn_image_604fcf09dc2499.78161989.png" style="width:467.25pt; height:177pt"> </span></span></span></p>
+
+<ol start="10">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>application</b> page, navigate to <b>API permissions</b> blade. Click <b>Add a permission</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_73" src="/mediawiki/images/pn_images/pn_image_604fcf0a3c8460.17490339.png" style="width:467.25pt; height:183.75pt"> </span></span></span></p>
+
+<ol start="11">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Request API permissions </b>screen, select <b>Azure Service Management.</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface
+
+Description automatically generated" id="Picture_x0020_75" src="/mediawiki/images/pn_images/pn_image_604fcf0a85dba5.58275180.png" style="width:468pt; height:324pt"> </span></span></span></p>
+
+<ol start="12">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Request API permissions</b> screen for Azure Service Management API, enable <b>user_impersonation</b> permission under <b>Select permissions</b> section. Click <b>Add permissions.</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application
+
+Description automatically generated" id="Picture_x0020_78" src="/mediawiki/images/pn_images/pn_image_604fcf0ace6108.08959014.png" style="width:468pt; height:390pt"> </span></span></span></p>
+
+<ol start="13">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>API Permissions</b> blade of the application, click <b>Add a permission.</b> In the <b>Request API permissions </b>screen, select <b>Azure Storage.</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface
+
+Description automatically generated" id="Picture_x0020_79" src="/mediawiki/images/pn_images/pn_image_604fcf0b16cb66.39730585.png" style="width:468pt; height:393pt"> </span></span></span></p>
+
+<ol start="14">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Request API permissions</b> screen for Azure Storage API, enable <b>user_impersonation</b> permission under <b>Select permissions</b> section. Click <b>Add permissions.</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_80" src="/mediawiki/images/pn_images/pn_image_604fcf0b601659.22647625.png" style="width:468pt; height:389.25pt"> </span></span></span></p>
+
+<ol start="15">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Verify the list of permissions in the <b>Configured permissions</b> list in the <b>API permissions</b> blade of the application.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_81" src="/mediawiki/images/pn_images/pn_image_604fcf0b981203.88638286.png" style="width:468pt; height:249pt"> </span></span></span></p>
+
+<ol start="16">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the Azure portal, navigate to <b>subscriptions</b> service. A list of subscriptions is displayed.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application
+
+Description automatically generated" id="Picture_x0020_82" src="/mediawiki/images/pn_images/pn_image_604fcf0bc58ce2.79304414.png" style="width:468pt; height:234.75pt"> </span></span></span></p>
+
+<ol start="17">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Note down the <b>subscription ID</b> under Subscription ID column for the subscription which would be used by HCMX application. Click <b>subscription name</b> to bring up subscription details page.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_112" src="/mediawiki/images/pn_images/pn_image_604fcf0c0ed7a6.20552166.png" style="width:468.75pt; height:267.75pt"> </span></span></span></p>
+
+<ol start="18">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the subscription details screen, navigate to <b>Access control (IAM)</b> blade. Click <b>Add role assignments</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_84" src="/mediawiki/images/pn_images/pn_image_604fcf0c56f876.63156772.png" style="width:468pt; height:240.75pt"> </span></span></span></p>
+
+<ol start="19">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Add role assignment </b>screen, select <b>Contributor </b>role, select <b>User, group or service principal </b>in the Assign access to dropdown list, select the application name that was created in earlier steps. Click <b>Save</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_85" src="/mediawiki/images/pn_images/pn_image_604fcf0c8dfcc0.36286653.png" style="width:468pt; height:640.5pt"> </span></span></span></p>
+
 <p style="margin-bottom:11px; margin-left:48px"></p>
 </html>
