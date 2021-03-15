@@ -32,6 +32,7 @@
 
 <ul>
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="tab-stops:list .5in"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">On OpsCx system:&nbsp; <i><span style="color:#2f5496">&lt;OvInstallDir&gt;/bin </span></i>should be part of the system PATH setting.</span></span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="tab-stops:list .5in"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">On OpsCx system:&nbsp;<i><span style="color:#2f5496">&lt;OvInstallDir&gt;/HPOprBSMC&nbsp;</span></i>should be part of the system PATH setting.</span></span></span></span></li>
 	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="tab-stops:list .5in"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">On OBM system:&nbsp; <i><span style="color:#2f5496">&lt;TOPAZ_HOME&gt;/opr/bin</span></i> should be part of the system PATH setting<span style="color:#002060">.</span></span></span></span></span></li>
 </ul>
 
@@ -40,23 +41,36 @@
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The first step in the process is to identify the policies that need to be migrated.</span></span></span></p>
 
 <ul>
-	<li style="list-style-type:none"></li>
 	<li><span style="font-size:11pt"><span style="tab-stops:72.55pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The policies that are already deployed from OBM need not be migrated.</span></span></span></span></li>
-	<li style="margin-bottom: 11px;"><span style="font-size:11pt"><span style="tab-stops:72.55pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The policy deployed locally can be identified using the ovpolicy utility, and looking for owner. </span></span></span></span></li>
+	<li style="margin-bottom: 11px;"><span style="font-size:11pt"><span style="tab-stops:72.55pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The policy deployed locally can be identified using the ovpolicy utility, and looking for owner, or using the bsmc-policy.sh command.&nbsp;</span></span></span></span>
+	<ul style="list-style-type: circle;">
+		<li style="margin-bottom: 11px;">
+		<p><small>Policies deployed locally can be listed using command: "bsmc-policy.sh -list"</small></p>
+		</li>
+		<li style="margin-bottom: 11px;">
+		<p><font face="Calibri, sans-serif"><span style="font-size: 14.6667px;">Policies can be activated using the command: "</span></font><small>bsmc-policy.sh -activate -id &lt;policy ID&gt;"</small></p>
+		</li>
+		<li style="margin-bottom: 11px;">
+		<p><small>Policy details can be identified using the command:</small>&nbsp;"<small>ovpolicy –list –level 3". (Note, this command will only list those policies that are active)</small></p>
+		</li>
+	</ul>
+	</li>
 </ul>
 
 <h4 style="margin-top: 3px;"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f4d78"><span style="font-weight:normal"><b>Step 2: Disable policies and Stop Services</b></span></span></span></span></span></h4>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Follow the steps below to stop the relevant agent processes, and disable the policies by name.</span></span></span></p>
 
-<ol>
-	<li style="list-style-type:none"></li>
-</ol>
-
 <ul>
-	<li><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Go to the Operations Connector node.</span></span></span></li>
-	<li><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Run the command <i><span style="color:#2f5496">ovpolicy –disable –polname “policy name”.&nbsp;</span></i>&nbsp; Disable the policies of interest by the policy name.</span></span></span></li>
-	<li><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Run the command ovc –stop.</span></span></span>​​​​​​</li>
+	<li>
+	<p><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Go to the Operations Connector node.&nbsp;</span></span></span></p>
+	</li>
+	<li>
+	<p><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Run the command <i><span style="color:#2f5496">ovpolicy –disable –polname “policy name”.&nbsp;</span></i>&nbsp; Disable the policies of interest by the policy name.</span></span></span></p>
+	</li>
+	<li>
+	<p><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Run the command ovc –stop.</span></span></span>​​​​​​</p>
+	</li>
 </ul>
 
 <p><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This command will stop all the agent necessary operations agent processes.</span></span></span></p>
@@ -64,10 +78,6 @@
 <h4 style="margin-top: 3px;"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f4d78"><span style="font-weight:normal"><b>Step 3: Export policies from OpsCx and Import to OBM</b></span></span></span></span></span></h4>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Follow the steps below to export the necessary policies from Operations Connector System to OBM.&nbsp; </span></span></span></p>
-
-<ol>
-	<li style="list-style-type:none"></li>
-</ol>
 
 <ul>
 	<li><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Identify the policies to be imported to OBM</span></span></span></li>
@@ -110,10 +120,9 @@
 <p style="margin-left: 48px; margin-bottom: 11px;"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">It is possible upload the entire contents of the folder to OBM using a single command as well.</span></span></span></p>
 
 <ul>
-	<li><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Verify if the policies are uploaded</span></span></span></li>
-	<li style="list-style-type:none">
+	<li><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Verify if the policies are uploaded</span></span></span>
+
 	<ul>
-		<li style="list-style-type:none"></li>
 		<li><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Login to OBM.</span></span></span></li>
 		<li><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Go to&nbsp;Administration &gt; Monitoring &gt; Policy Templates</span></span></span></li>
 		<li><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><span style="color:#212121">&nbsp;Verify if you can view the uploaded policies in respective policy type</span></span></span></span></li>
@@ -127,14 +136,13 @@
 
 <p style="list-style-type: none;">- <span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Run the command,&nbsp; <i><span style="color:#2f5496">ovpolicy –remove –polname &lt;policy name&gt;.&nbsp;</span></i></span></span></span><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">&nbsp;Replace the &lt;policy name&gt; with each policy name that you need to remove.</span></span></span></p>
 
-<p style="list-style-type:none">- ​​​​​​​<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Rename or delete the policymanagement/store directory to avoid the possibility of policy re-enablement.</span></span></span></p>
+<p style="list-style-type:none">- <span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Rename or delete the policymanagement/store directory to avoid the possibility of policy re-enablement.</span></span></span></p>
 
 <p><b><i><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Caution</span></span></span></i></b><i><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">: If you are using Service auto-discovery policies (type: svcdisc)</span></span></span><span style="font-size:11.5pt"><span style="background:white"><span style="line-height:107%"><span style="font-family:&quot;Arial&quot;,sans-serif"><span style="letter-spacing:.15pt">,</span></span></span></span></span><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"> you should exercise caution removing it. Removing a Service auto-discovery policy will result in removal of the CI instances discovered by it</span></span></span></i></p>
 
 <h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f4d78"><span style="font-weight:normal"><b>Step 5: Deploy the policies from OBM System</b></span></span></span></span></span></h3>
 
 <ul>
-	<li style="list-style-type:none"></li>
 	<li><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">If the policies are already available on OBM in the form of a Content Pack, you can deploy the policies using the Aspects or MTs available in the Content Pack.</span></span></span></li>
 	<li><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">If a Content Pack is not available for those policies, the policies can be grouped into the logical grouping of Aspects, which makes it simpler to automate deployment.</span></span></span></li>
 </ul>
