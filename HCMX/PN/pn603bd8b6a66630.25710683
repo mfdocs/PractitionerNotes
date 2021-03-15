@@ -1,1 +1,118 @@
- 
+<html><p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Micro Focus Hybrid Cloud Management X (HCMX) simplifies the delivery, consumption, and governance of IT services and resources. HCMX is delivered as part of a single converged solution that provides the capabilities of HCMX and Service Management Automation X (SMAX) integrated Configuration Management System (CMS) and Operations Orchestration (OO) solution. HCMX offers the following cloud management capabilities:</span></span></span></p>
+
+<ul>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Design and Deploy (DND)</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Cost governance and resource optimization (CGRO)</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Image aggregation</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">IT process orchestration</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Service portal</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Content store</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Universal CMDB</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">CMS UI</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Mobile application</span></span></span></li>
+</ul>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The HCMX image aggregation functionality aggregates images from multiple cloud providers and displays those images in a single web page.&nbsp;An administrator selects one of the aggregated images and exposes it to end users as a service offering. Aggregated images include images from Amazon Web Services (AWS) Marketplace, Microsoft Azure Marketplace, Private images from AWS and Azure and VMware vCenter templates. For example, Wordpress image is an image from AWS Marketplace and it can be selected from a list of aggregated images and exposed to end users as a service offering. &nbsp;End users can then order, provision and cancel those service offerings. The HCMX image aggregation functionality provides the following benefits:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Control over list of images available to end users.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Image visibility can be different depending on business needs of their business unit.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Control over the region to which end users can provision those images.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Control over the image instance size that end users can provision.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Ability to pre-select least cost images from among multiple cloud providers and expose to the end users.</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Ability to use approval process before an image is provisioned in the target cloud provider.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This practitioner note describes steps involved in configuring HCMX image aggregation functionality, using image aggregation to expose one of the aggregated images to end users and using one of the exposed images to provision and manage those services.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This practitioner note has the following sections:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure image aggregation</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Use image aggregation</span></span></span></li>
+</ol>
+
+<h2 style="margin-top:3px"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal"><a name="_Toc66713429">Configure image aggregation</a></span></span></span></span></span></h2>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configuration of image aggregation creates necessary foundation which enables usage of image aggregation functionalities. Configuration of image aggregation includes the following steps:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Pre-requisites</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Derive agent interface URL and tenant end user portal URL</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure proxy settings for image aggregation providers</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure authorization for image aggregation</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Verify menu visibility and access to image aggregation</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure image aggregation providers</span></span></span></li>
+</ol>
+
+<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc66713430">Pre-requisites</a></span></span></span></span></span></h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This practitioner note assumes that the DND capability has been installed, deployed to a tenant and has been configured. If DND has not been configured, follow the steps as described in the following practitioner note: <b>Deploy, configure and use DND</b></span></span></span></p>
+
+<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc66713431">Derive agent interface URL and tenant end user portal URL</a></span></span></span></span></span></h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will derive the tenant agent interface URL and tenant end user portal URL. Each tenant exposes two portals: Tenant end user portal and Tenant agent interface portal. The tenant end user portal is the portal where the users submit support requests and request for services. The tenant agent interface portal is the portal which allows administrators to configure HCMX, agents to fulfill requests submitted by the end users, etc. You will need these URLs in subsequent sections.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the suite administration portal as user <b>suite-admin</b> at the following URL: <span class="MsoHyperlink" style="color:#0563c1"><span style="text-decoration:underline">https://&lt;HCMX-Server-FQDN&gt;/bo</span></span></span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>suite administration</b> home page, navigate to <b>TENANTS</b>. A list of tenants is displayed.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_2" src="/mediawiki/images/pn_images/pn_image_604fcdc9a32531.28589419.png" style="width:468pt; height:172.5pt"> </span></span></span></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the list of tenants, select the tenant to which DND capability has been deployed previously.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email, website
+
+Description automatically generated" id="Picture_x0020_4" src="/mediawiki/images/pn_images/pn_image_604fcdc9d43903.86230408.png" style="width:467.25pt; height:88.5pt"> </span></span></span></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Note down the <b>tenant ID</b> and <b>URL</b> field values. The URL field contains <b>URL to the tenant end user portal</b>. Construct the <b>tenant agent interface URL</b> as follows: https://HCMXFullyQualifiedDomainName/saw?TENANTID=&lt;Replace with tenant ID value shown on general page&gt;. Bookmark agent interface URL. Each tenant has an admin account associated with it. This admin account is called as tenant admin account. The tenant admin account has full administration privileges for the tenant. Click the <b>number</b> in the <b>Tenant admin</b> field on the <b>General</b> page.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_14" src="/mediawiki/images/pn_images/pn_image_604fcdca3f10c8.45424079.png" style="width:468pt; height:234.75pt"> </span></span></span></p>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the tenant admin user account <b>General</b> page, note down the login name for tenant admin in the <b>Login name</b> field. This practitioner note assumes that you are aware of the tenant admin login credentials.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_6" src="/mediawiki/images/pn_images/pn_image_604fcdca791d28.93008249.png" style="width:468pt; height:396.75pt"> </span></span></span></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <b>Back</b>. In the tenant details window, navigate to <b>Capability settings</b> page. In <b>Design and Deploy </b>capability settings, verify that <b>Deploy status</b> displays <b>Done </b>and <b>Enable capability</b> toggle button is turned on.<b> </b>Click number link next to the <b>DND admin user</b> in the <b>Design and Deploy capability</b> section.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application, email
+
+Description automatically generated" id="Picture_x0020_8" src="/mediawiki/images/pn_images/pn_image_604fcdcac5cbc4.52149018.png" style="width:468pt; height:258.75pt"> </span></span></span></p>
+
+<ol start="7">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the tenant admin user account <b>General</b> page, note down the login name for DND admin in the <b>Login name</b> field. This practitioner note assumes that you are aware of DND admin login credentials. You can also create a new user account in suite administration portal and assign DND administrator privileges to that new user account in IDM and HCMX tenant agent interface.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_9" src="/mediawiki/images/pn_images/pn_image_604fcdcb0e35d6.83251246.png" style="width:468pt; height:399.75pt"> </span></span></span></p>
+
+<p style="margin-left:48px"></p>
+
+<ol start="8">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the top right corner, click <b>suite admin user’s</b> drop down. Click <b>Logout</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"></p>
+
+<p style="margin-bottom:11px; margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application, Teams
+
+Description automatically generated" id="Picture_x0020_10" src="/mediawiki/images/pn_images/pn_image_604fcdcb46db45.45287564.png" style="width:467.25pt; height:59.25pt"> </span></span></span></p>
+</html>
