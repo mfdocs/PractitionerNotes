@@ -5,13 +5,14 @@
 
 <p>We will explore the AuditResultService by writing code to produce a textual representation of this GUI interface.</p>
 
-<pre>import time
+<pre>#!/opt/opsware/bin/python
+import time
 from pytwist import twistserver
 from pytwist.com.opsware.job import JobRef
 from collections import Counter
  
 ts = twistserver.TwistServer()
-ts.authenticate('brett','opsware')
+ts.authenticate('brett','password')
 AuditResultService = ts.compliance.sco.AuditResultService
  
 auditResultRef = ts.job.JobService.getResult(JobRef(1990001)).result
