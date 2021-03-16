@@ -1,1 +1,1084 @@
- 
+<html><p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Micro Focus Hybrid Cloud Management X (HCMX) simplifies the delivery, consumption, and governance of IT services and resources. HCMX is delivered as part of a single converged solution that provides the capabilities of HCMX and Service Management Automation X (SMAX) integrated Configuration Management System (CMS) and Operations Orchestration (OO) solution. HCMX offers the following cloud management capabilities:</span></span></span></p>
+
+<ul>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Design and Deploy (DND)</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Cost governance and resource optimization (CGRO)</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Image aggregation</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">IT process orchestration</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Service portal</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Content store</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Universal CMDB</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">CMS UI</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Mobile application</span></span></span></li>
+</ul>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The HCMX image aggregation functionality aggregates images from multiple cloud providers and displays those images in a single web page.&nbsp;An administrator selects one of the aggregated images and exposes it to end users as a service offering. Aggregated images include images from Amazon Web Services (AWS) Marketplace, Microsoft Azure Marketplace, Private images from AWS and Azure and VMware vCenter templates. For example, Wordpress image is an image from AWS Marketplace and it can be selected from a list of aggregated images and exposed to end users as a service offering. &nbsp;End users can then order, provision and cancel those service offerings. The HCMX image aggregation functionality provides the following benefits:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Control over list of images available to end users.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Image visibility can be different depending on business needs of their business unit.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Control over the region to which end users can provision those images.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Control over the image instance size that end users can provision.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Ability to pre-select least cost images from among multiple cloud providers and expose to the end users.</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Ability to use approval process before an image is provisioned in the target cloud provider.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This practitioner note describes steps involved in configuring HCMX image aggregation functionality, using image aggregation to expose one of the aggregated images to end users and using one of the exposed images to provision and manage those services.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This practitioner note has the following sections:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure image aggregation</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Use image aggregation</span></span></span></li>
+</ol>
+
+<h2>Configure image aggregation</h2>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configuration of image aggregation creates necessary foundation which enables usage of image aggregation functionalities. Configuration of image aggregation includes the following steps:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Pre-requisites</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Derive agent interface URL and tenant end user portal URL</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure proxy settings for image aggregation providers</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure authorization for image aggregation</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Verify menu visibility and access to image aggregation</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure image aggregation providers</span></span></span></li>
+</ol>
+
+<h3>Pre-requisites</h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This practitioner note assumes that the DND capability has been installed, deployed to a tenant and has been configured. If DND has not been configured, follow the steps as described in the following practitioner note: <b>Deploy, configure and use DND</b></span></span></span></p>
+
+<h3>Derive agent interface URL and tenant end user portal URL</h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will derive the tenant agent interface URL and tenant end user portal URL. Each tenant exposes two portals: Tenant end user portal and Tenant agent interface portal. The tenant end user portal is the portal where the users submit support requests and request for services. The tenant agent interface portal is the portal which allows administrators to configure HCMX, agents to fulfill requests submitted by the end users, etc. You will need these URLs in subsequent sections.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the suite administration portal as user <b>suite-admin</b> at the following URL: <span class="MsoHyperlink" style="color:#0563c1"><span style="text-decoration:underline">https://&lt;HCMX-Server-FQDN&gt;/bo</span></span></span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>suite administration</b> home page, navigate to <b>TENANTS</b>. A list of tenants is displayed.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/c/cf/CGRO-BOHomePage.PNG" height="295" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fd55ae44156.99966211.png" style="width: 800px; height: 295px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the list of tenants, select the tenant to which DND capability has been deployed previously.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/d/da/CS-CF-AgIntURL-TenantList.PNG" height="151" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fd55b2e2ba8.23899269.png" style="width: 800px; height: 151px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Note down the <b>tenant ID</b> and <b>URL</b> field values. The URL field contains <b>URL to the tenant end user portal</b>. Construct the <b>tenant agent interface URL</b> as follows: https://HCMXFullyQualifiedDomainName/saw?TENANTID=&lt;Replace with tenant ID value shown on general page&gt;. Bookmark agent interface URL. Each tenant has an admin account associated with it. This admin account is called as tenant admin account. The tenant admin account has full administration privileges for the tenant. Click the <b>number</b> in the <b>Tenant admin</b> field on the <b>General</b> page.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/1f/CS-CF-AgIntURL-TenantGeneral.PNG" height="400" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fd55b778967.86641445.png" style="width: 800px; height: 400px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the tenant admin user account <b>General</b> page, note down the login name for tenant admin in the <b>Login name</b> field. This practitioner note assumes that you are aware of the tenant admin login credentials.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/c/ce/CS-CF-AgIntURL-TenantAdminUser.PNG" height="677" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fd55bbc89b6.57517474.png" style="width: 800px; height: 677px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <b>Back</b>. In the tenant details window, navigate to <b>Capability settings</b> page. In <b>Design and Deploy </b>capability settings, verify that <b>Deploy status</b> displays <b>Done </b>and <b>Enable capability</b> toggle button is turned on.<b> </b>Click number link next to the <b>DND admin user</b> in the <b>Design and Deploy capability</b> section.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/9/9e/CS-CF-AgIntURL-TenantCapabilitySettings.PNG" height="443" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fd55c289488.22004012.png" style="width: 800px; height: 443px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p style="margin-left:48px"></p>
+
+<ol start="7">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the tenant admin user account <b>General</b> page, note down the login name for DND admin in the <b>Login name</b> field. This practitioner note assumes that you are aware of DND admin login credentials. You can also create a new user account in suite administration portal and assign DND administrator privileges to that new user account in IDM and HCMX tenant agent interface.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/61/CS-CF-AgIntURL-DNDAdminUser.PNG" height="684" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fd55c8aec32.71089682.png" style="width: 800px; height: 684px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p style="margin-left:48px"></p>
+
+<ol start="8">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the top right corner, click <b>suite admin user’s</b> drop down. Click <b>Logout</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/58/CS-CF-AgIntURL-Logout.PNG" height="101" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fd55cdde6e9.17832720.png" style="width: 800px; height: 101px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p style="margin-bottom:11px; margin-left:48px"></p>
+
+<h3>Configure proxy settings for image aggregation providers</h3>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the suite administration portal as user <b>suite-admin</b> at the following URL: <span class="MsoHyperlink" style="color:#0563c1"><span style="text-decoration:underline">https://&lt;HCMX-Server-FQDN&gt;/bo</span></span></span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>suite administration</b> home page, navigate to <b>CONFIGURATIONS</b> -&gt; <b>Proxy Settings</b>. Enter web proxy information if your HCMX system needs a web proxy to reach internet. Certain features of the image aggregation functionality use web proxy information configured in the suite administration portal. Click <b>SAVE</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/11/BO-Proxy.PNG" height="382" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fd61fc402f5.25696004.png" style="width: 800px; height: 382px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log out of the suite administration portal.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to one of the Kubernetes cluster nodes.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Run the following command to identify the SMAX/HCMX namespace.</span></span></span></li>
+</ol>
+
+<pre><code>kubectl get namespace</code></pre>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the sample screenshot below, <b>itsma-s14e6</b> is the namespace in which SMAX/HCMX pods are running.</span></span></span></p>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/1f/KubeGetNamespace.PNG" height="277" hspace="0" src="https://docs.microfocus.com/mediawiki/images/1/1f/KubeGetNamespace.PNG" style="width:482px;height:277px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="482"></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Run the following command to list CMP and DND pods.</span></span></span></li>
+</ol>
+
+<pre><code>kubectl get pods -n &lt;Replace with namespace noted in earlier steps&gt; | grep -e cmp -e dnd</code></pre>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The sample screenshot below shows output from the command to list CMP and DND pods. In this output, 3 pods are highlighted in YELLOW color. These PODS must be restarted for proxy settings configured in suite administration portal to become effective. Note down the full name of the following PODS: itom-cmp-accounts, itom-cmp-integration-gateway, and itom-dnd-image-catalog. In this example below, their full pod names are itom-cmp-accounts-cf6bbfff8-d2csf, itom-cmp-integration-gateway-85786d96f-fnld5 and itom-dnd-image-catalog-87b8d698-wx2wd respectively.</span></span></span></p>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/54/KubeGetCMPDNDPods.PNG" height="283" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fd620244f31.56399747.png" style="width: 800px; height: 283px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p style="margin-left:48px"></p>
+
+<ol start="7">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Restart the itom-cmp-accounts, itom-cmp-integration-gateway, and itom-dnd-image-catalog pods using following commands: </span></span></span></li>
+</ol>
+
+<pre><code>kubectl delete pod &lt;Replace with itom-cmp-accounts full POD name&gt; -n &lt;Replace with namespace&gt;
+
+kubectl delete pod &lt;Replace with itom-cmp-integration-gateway full POD name&gt; -n &lt;Replace with namespace&gt;
+
+kubectl delete pod &lt;Replace with itom-dnd-image-catalog full POD name&gt; -n &lt;Replace with namespace&gt;</code></pre>
+
+<h3>Configure authorization for image aggregation</h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">User authorization must be configured in both Identity Management (IDM) and in HCMX tenant. User authorization allows users capability to manage and administer image aggregation functionality. To configure image aggregation authorization for users, follow the steps below:</span></span></span></p>
+
+<h4>Configure authorization in Identity Management</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The following are the list of out of the box groups, roles and permissions that are available to configure image aggregation authorization for users in IDM.&nbsp; </span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Image aggregation groups</b></span></span></span></p>
+
+<table class="MsoTableGrid" style="margin-left:-1px; border-collapse:collapse; border:none">
+	<tbody>
+		<tr>
+			<td style="border-bottom:1px solid black; width:246px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Group name</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:378px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Purpose</b></span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:246px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">DND_ADMINISTRATOR</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:378px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Users in this group are administrators for all operations in Image Aggregation.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:246px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">DND_RESOURCE_SUPPLY_MANAGER</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:378px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Users in this group can create resource providers in Image Aggregation.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:246px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">DND_SERVICE_DESIGNER</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:378px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Users in this group are service designers who create designs and have privileges for associated capabilities such as Resource Offerings, Orchestration Designer, and Service Components in Image Aggregation.</span></span></span></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p style="margin-bottom:11px"></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Image aggregation roles</b></span></span></span></p>
+
+<table class="MsoTableGrid" style="margin-left:-1px; border-collapse:collapse; border:none">
+	<tbody>
+		<tr>
+			<td style="border-bottom:1px solid black; width:246px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Role name</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:378px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Purpose</b></span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:246px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">DND_ADMINISTRATOR</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:378px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Users with this role are administrators for all operations in Image Aggregation.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:246px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">DND_RESOURCE_SUPPLY_MANAGER</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:378px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Users with this role can create resource providers in Image Aggregation.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:246px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">DND_SERVICE_DESIGNER</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:378px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Users with this role are service designers who create service designs and have privileges for associated capabilities such as Resource Offerings, Orchestration Designer, and Service Components in Image Aggregation.</span></span></span></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p style="margin-bottom:11px"></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Image aggregation permissions</b></span></span></span></p>
+
+<table class="MsoTableGrid" style="border-collapse:collapse; border:none">
+	<tbody>
+		<tr>
+			<td style="border-bottom:1px solid black; width:273px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Permission name</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:350px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Purpose</b></span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:273px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">CMP_ACCOUNTS_TENANT_ADMIN</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:350px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">This permission provides capability to access the integration accounts data in the tenant. However, this permission alone does not allow a user to access and view the integration accounts data from the user interface. Assign the CMP_INTEGRATION_GATEWAY_USER permission in addition to the CMP_ACCOUNTS_TENANT_ADMIN permission to a user to be able to access and make changes to the integration accounts data in the user interface.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:273px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">CMP_INTEGRATION_GATEWAY_USER</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:350px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">This permission provides capability to view the integration accounts data in the user interface. However, this permission alone does not allow a user to access and view the integration accounts data from the user interface. Assign the CMP_ACCOUNTS_TENANT_ADMIN permission in addition to the CMP_INTEGRATION_GATEWAY_USER permission to a user to be able to access and make changes to the integration accounts data in the user interface.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:273px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">DND_IMAGE_CATALOG_GATEWAY_ADMIN</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:350px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">This permission provides capability to view the image catalog data in the user interface. However, this permission alone does not allow a user to access and view the image catalog data from the user interface. Assign the DND_IMAGE_CATALOG_INTEGRATION permission in addition to the DND_IMAGE_CATALOG_GATEWAY_ADMIN permission to a user to be able to access and make changes to the image catalog data in the user interface.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:273px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">DND_IMAGE_CATALOG_INTEGRATION</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:350px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">This permission provides capability to access the image catalog data in the tenant. However, this permission alone does not allow a user to access and view the image catalog data from the user interface. Assign the DND_IMAGE_CATALOG_GATEWAY_ADMIN permission in addition to the DND_IMAGE_CATALOG_INTEGRATION permission to a user to be able to access and make changes to the image catalog data in the user interface.</span></span></span></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p style="margin-bottom:11px"></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In most organizations, the DND administrators also perform image aggregation administration. Hence, this section walks you through steps in assigning a user to the <b>DND_ADMINISTRATORS</b> group. For further refinement of image aggregation permission assignment to the users, refer to the tables above for image aggregation groups, roles and permissions.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the IDM administration portal as user <b>suite-admin</b> at the following URL: <span class="MsoHyperlink" style="color:#0563c1"><span style="text-decoration:underline">https://&lt;HCMXServerFQDN/idm-admin</span></span></span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A list of organizations is displayed. Click on the organization tile that corresponds to the tenant ID that was noted in earlier steps. In this example, it is the organization with tenant ID <b>616409711</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/0/0b/CS-CF-ConfAuthIDM-Orgs.PNG" height="382" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fd76b4f2a80.73218770.png" style="width: 800px; height: 382px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>ORGANIZATION</b> menu, Click <b>Groups</b> page. A list of existing groups is displayed. Select <b>DND_ADMINISTRATORS</b> group. Click <b>Edit</b> icon.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/d/dc/ConfigAuthIDM-DNDGrpSelect.PNG" height="579" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fd76b8c64a0.04379964.png" style="width: 800px; height: 579px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p style="margin-left:48px"></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the DND_ADMINISTRATORS <b>Group Settings</b> screen, associate any new DND administrator users. Any new users associated in IDM must also be assigned <b>DND Admin</b> role in HCMX tenant. Click <b>SAVE.</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/9/92/CfAuthIDM-DNDGroup.PNG" height="758" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fd76bd356d9.91946627.png" style="width: 800px; height: 758px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="5">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log out of IDM administration portal.</span></span></span></li>
+</ol>
+
+<h4>Configure authorization in HCMX tenant agent interface</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This practitioner note assumes that the <b>DND Admin </b>role has been created as described in the <b>Deploy, configure and use DND</b> practitioner notes. To assign additional users with DND Admin role, follow the steps below:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the HCMX tenant agent interface portal as a tenant admin user. The HCMX tenant agent interface URL was noted in earlier steps.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the <b>mega menu</b> (<b>Three horizontal lines</b> icon), navigate to <b>Administration</b> -&gt; <b>Master Data</b> -&gt; <b>People</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/5a/CGRO-MegaMenu-People.PNG" height="494" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fd8df2a3c85.34163797.png" style="width: 800px; height: 494px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the list of users, click the <b>user’s ID</b> to whom image aggregation authorization must be assigned. Note that in earlier steps in IDM, this user was assigned the DND administration group. The users in DND_ADMINISTRATORS group in IDM have permissions to administer image aggregation functionality. </span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/d/d2/CS-CF-ConfAuthHCMX-PeopleSelect.PNG" height="654" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fd8df74b070.49250491.png" style="width: 800px; height: 654px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the user’s <b>General</b> page, <b>system use definitions</b> section, select <b>DND Admin</b>, <b>CMP Agent</b> and <b>Self-Service Portal User</b> roles. Click <b>Save</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/0/03/CS-CF-ConfAuthHCMX-DNDAdminAssign.PNG" height="418" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fd8dfb1d203.56069498.png" style="width: 800px; height: 418px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<h4>Verify menu visibility and access to image aggregation</h4>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the HCMX tenant agent interface portal as a DND admin user. </span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the <b>mega menu,</b> navigate to <b>Build</b> -&gt; <b>Design</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/f/f9/IA-VerifyAuth-MegaMenuDesign.PNG" height="299" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050d2b36a8447.27363717.png" style="width: 800px; height: 299px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to <b>IMAGE AGGREGATION</b>. Verify that the image aggregation page loads.&nbsp;</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/b/b3/IA-VerifyAuth-IAMenu-1.PNG" height="191" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fdac584f613.74478339.png" style="width: 800px; height: 191px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the <b>mega menu,</b> navigate to <b>Administration</b> -&gt; <b>Utilities</b> -&gt; <b>Providers</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/6e/IA-VerifyAuth-MegaMenuProviders.PNG" height="351" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fdac5bd04d3.55633875.png" style="width: 800px; height: 351px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to <b>IMAGE AGGREGATION PROVIDERS</b>. Verify that <b>+ </b>icon is visible.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/55/IA-VerifyAuth-ImageAggProviders-1.PNG" height="142" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fdac5e7bbb9.56483176.png" style="width: 800px; height: 142px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<h3>Configure image aggregation providers</h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The HCMX image aggregation capability collects image data from the following cloud providers: Amazon Web Services (AWS), Microsoft Azure and VMWare vCenter. The HCMX image aggregation capability displays aggregated list of images from AWS, Azure and vCenter in a single web page. The HCMX image aggregation capability requires connection details to bring list of images from AWS, Azure and vCenter. The following pre-requisite setups must be performed in AWS, Azure and vCenter before configuring AWS, Azure and vCenter image aggregation providers in HCMX.</span></span></span></p>
+
+<h4>AWS pre-requisites</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">AWS Identity and Access Management (IAM) enables you to manage access to AWS services and resources securely. Using IAM, you can create and manage AWS users and groups, and use permissions to allow and deny their access to AWS resources. </span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will create an IAM user with permissions to collect a list of images from AWS and to provision and manage EC2 instances. For image collection alone, permission to provision images are not necessary. But for ease of maintenance, a single IAM user account will be created with permissions to both collect images and to provision instances using those images.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This IAM user’s access key ID and secret key access will be used by HCMX image aggregation capability to retrieve AWS images.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the AWS management console.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to <b>Identity and Access management (IAM)</b> service</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application
+
+Description automatically generated" id="Picture_x0020_23" src="/mediawiki/images/pn_images/pn_image_604fceba7c5681.47705393.png" style="width:468pt; height:101.25pt"> </span></span></span></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The<b> IAM dashboard</b> is displayed.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_65" src="/mediawiki/images/pn_images/pn_image_604fcebabd4830.57771665.png" style="width:468pt; height:306.75pt"> </span></span></span></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>IAM dashboard</b>, navigate to <b>Users</b> page.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">On the <b>Users</b> page, click <b>Add user. Add user</b> wizard is displayed. </span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface
+
+Description automatically generated" id="Picture_x0020_31" src="/mediawiki/images/pn_images/pn_image_604fcebb035356.72765576.png" style="width:453pt; height:143.25pt"> </span></span></span></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Add user</b> wizard, <b>Set user details</b> screen, enter a user name, enable <b>programmatic access</b> access type. Click <b>Next: Permissions</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_98" src="/mediawiki/images/pn_images/pn_image_604fcebb496ea3.70825149.png" style="width:468pt; height:243.75pt"> </span></span></span></p>
+
+<ol start="7">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Add user</b> wizard, <b>Set permissions</b> screen, select <b>Attach existing policies directly</b>. In the Filter policies search box search for and select each of the following Filter policies, one at a time</span></span></span></li>
+</ol>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">AmazonEC2FullAccess</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">AWSMarketplaceManageSubscriptions</span></span></span></li>
+</ul>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">After all the above policies have been selected, click Next: Tags.</span></span></span></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application
+
+Description automatically generated" id="Picture_x0020_11" src="/mediawiki/images/pn_images/pn_image_604fcebb88fca9.76499201.png" style="width:468pt; height:257.25pt"> </span></span></span></p>
+
+<ol start="8">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the Add user wizard, Add tags screen, enter any meaningful tag key and its value. Tags are optional, however, they are recommended for easier identification of resources. Work with your AWS administrators to identify useful tags to be added. Click <b>Next: Review</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_26" src="/mediawiki/images/pn_images/pn_image_604fcebbb920e0.90712093.png" style="width:468pt; height:243pt"> </span></span></span></p>
+
+<ol start="9">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Add user</b> wizard, <b>Review</b> screen, review user details and permissions. Click <b>Create user</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_109" src="/mediawiki/images/pn_images/pn_image_604fcebc015329.93568616.png" style="width:468pt; height:260.25pt"> </span></span></span></p>
+
+<ol start="10">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Add user</b> wizard, <b>Success</b> page, click <b>Show</b> under Secret access key column</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_110" src="/mediawiki/images/pn_images/pn_image_604fcebc37e550.89040390.png" style="width:468pt; height:3in"> </span></span></span></p>
+
+<ol start="11">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Note down the <b>Access Key ID</b> and <b>Secret access key</b> values which will be needed during AWS connection configuration in HCMX.&nbsp; Click <b>Download.csv</b> button to download access key ID and secret access key value to a file on your desktop. Access Key ID and Secret access key value is confidential information, use caution if you are sharing this information with others.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_111" src="/mediawiki/images/pn_images/pn_image_604fcebc86c5d5.23740999.png" style="width:468pt; height:213pt"> </span></span></span></p>
+
+<h4>Microsoft Azure pre-requisites</h4>
+
+<p style="margin-bottom:11px">In this section, you will register a new application in Microsoft Azure with permissions to collect a list of images from Azure and to provision and manage EC2 instances. For image collection alone, permission to provision images are not necessary. But for ease of maintenance, a single application will be created with permissions to both collect images and to provision instances using those images.</p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to Microsoft Azure portal.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">On the top right corner, click your account. Select the directory in which you would like to register your application. Note down the <b>tenant ID</b> of your Azure Active Directory.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/a/a8/Iagg-Azure-SwitchDirectory.PNG" height="800" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fdf9d663f04.12624029.png" style="width: 469.091px; height: 800px; margin: 0px; border: 0px solid black;" vspace="0" width="469.09090909090907"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the Azure home page, navigate to <b>Azure Active Directory</b> services.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/c/c7/Iagg-Azure-Homepage.PNG" height="267" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fdf9d9c5cb2.67703650.png" style="width: 800px; height: 267px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Azure Active Directory </b>page, click <b>App registrations</b> blade. Click <b>New registration </b>in App registration blade.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/d/df/Iagg-Azure-ADAppReg.PNG" height="459" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fdf9ddf0971.52075458.png" style="width: 800px; height: 459px; margin: 0px; border: 0px solid black;" vspace="0" width="800">&nbsp;&nbsp;</span></span></span></p>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Register an application, </b>enter a name for the application. Select <b>Accounts in this organizational directory only</b> as the supported account types. Click <b>Register</b>. The application gets created and you are redirected to the application panel.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/d/d6/Iagg-Azure-RegAppName.PNG" height="516" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fdf9e2f61d2.01540816.png" style="width: 800px; height: 516px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the application overview blade, note down the <b>application id (client id)</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/1d/Iagg-Azure-AppClientID.PNG" height="667" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fdf9e9237d7.01729950.png" style="width: 800px; height: 667px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p style="margin-left:48px"></p>
+
+<ol start="7">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the application page, navigate to <b>Certificates &amp; secrets</b> blade. Click <b>New client secret</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/2/2b/Iagg-Azure-AppCertAndSecrets.PNG" height="647" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fdf9ee480b5.67846778.png" style="width: 800px; height: 647px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="8">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Add a client secret </b>screen, enter description for the new client secret and expiration for the client secret. Click <b>Add</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/a/ab/Iagg-Azure-ClientSecretDescription.PNG" height="399" hspace="0" src="https://docs.microfocus.com/mediawiki/images/a/ab/Iagg-Azure-ClientSecretDescription.PNG" style="width:718px;height:399px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="718"></p>
+
+<ol start="9">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">New client secret is added. Click <b>Copy</b> icon under the value column. Note down the <b>client secret value</b>.&nbsp; </span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/d/d2/Iagg-Azure-AppCertAndSecretsGen.PNG" height="303" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fdf9f260750.40021449.png" style="width: 800px; height: 303px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="10">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>application</b> page, navigate to <b>API permissions</b> blade. Click <b>Add a permission</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/c/cb/Iagg-Azure-AppAPIPermissions.PNG" height="314" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fdf9f5b82e1.22919709.png" style="width: 800px; height: 314px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="11">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Request API permissions </b>screen, select <b>Azure Service Management.</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/11/Iagg-Azure-AppAPIPermissions-ReqPerm.PNG" height="554" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fdf9fb13f49.75122143.png" style="width: 800px; height: 554px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="12">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Request API permissions</b> screen for Azure Service Management API, enable <b>user_impersonation</b> permission under <b>Select permissions</b> section. Click <b>Add permissions.</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/b/b0/Iagg-Azure-AppAPIPermissions-ServMgmt.PNG" height="667" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fdfa00085a0.71184520.png" style="width: 800px; height: 667px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="13">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>API Permissions</b> blade of the application, click <b>Add a permission.</b> In the <b>Request API permissions </b>screen, select <b>Azure Storage.</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/7/78/Iagg-Azure-AppAPIPermissions-ReqPerm-Storage.PNG" height="672" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fdfa075f362.64956491.png" style="width: 800px; height: 672px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="14">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Request API permissions</b> screen for Azure Storage API, enable <b>user_impersonation</b> permission under <b>Select permissions</b> section. Click <b>Add permissions.</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/11/Iagg-Azure-AppAPIPermissions-Storage.PNG" height="665" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fdfa0ba9d14.66118110.png" style="width: 800px; height: 665px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="15">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Verify the list of permissions in the <b>Configured permissions</b> list in the <b>API permissions</b> blade of the application.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/b/b1/Iagg-Azure-AppAPIPermissionsList.PNG" height="426" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fdfa1179872.27315328.png" style="width: 800px; height: 426px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="16">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the Azure portal, navigate to <b>subscriptions</b> service. A list of subscriptions is displayed.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/5a/Iagg-Azure-HomeSearchSubscriptions.PNG" height="400" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fdfa15b98a2.28106041.png" style="width: 800px; height: 400px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="17">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Note down the <b>subscription ID</b> under Subscription ID column for the subscription which would be used by HCMX application. Click <b>subscription name</b> to bring up subscription details page.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/3/39/Iagg-Azure-SubscriptionID.PNG" height="458" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fdfa19bf832.65990983.png" style="width: 800px; height: 458px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="18">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the subscription details screen, navigate to <b>Access control (IAM)</b> blade. Click <b>Add role assignments</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/d/d8/Iagg-Azure-Subscription-IAM.PNG" height="411" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fdfa1f2eec4.59926917.png" style="width: 800px; height: 411px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="19">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Add role assignment </b>screen, select <b>Contributor </b>role, select <b>User, group or service principal </b>in the Assign access to dropdown list, select the application name that was created in earlier steps. Click <b>Save</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/e/e4/Iagg-Azure-Subscription-IAM-RoleAssign.PNG" height="800" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fdfa244c381.53619424.png" style="width: 584.332px; height: 800px; margin: 0px; border: 0px solid black;" vspace="0" width="584.331797235023"></p>
+
+<h4>VMware vCenter pre-requisites</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will work with your VMware vCenter administrators to create an account for use by HCMX. For image collection alone, permission to provision virtual machines are not necessary. But for ease of maintenance, a single user account will be created with permissions to both collect images and to provision instances using those images.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Work with your VMWare vCenter administrator to create a new user account with the following privileges:</span></span></span></li>
+</ol>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Virtual Machine: These privileges control tasks like adding, moving, and removing virtual machines.</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">vApp: These privileges control operations related to deploying and configuring a vApp.</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Tasks: These privileges control the ability of extensions to create and update tasks on the vCenter Server. </span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Sessions: These privileges control the ability of extensions to open sessions on the vCenter Server system.</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Resource: These privileges control the creation and management of resource pools, as well as the migration of virtual machines.</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Network: These privileges control tasks related to network management.</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Host: These privileges control tasks like adding hosts to the inventory, adding hosts to clusters, and moving hosts in the inventory.</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Folder: These privileges control the ability to create and manage folders.</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Datastore Cluster: These privileges control the configuration of datastore clusters for Storage DRS.</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Datastore: These privileges control the ability to browse, manage, and allocate space on datastores.</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Datacenter: These privileges control the ability to create and edit data centers in the vSphere Client inventory.</span></span></span></li>
+</ul>
+
+<ol start="2">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Get login credentials for the new account from your vCenter administrator.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Set a new password for the new account.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Get vCenter access URL.</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">If a proxy is needed to reach vCenter from HCMX system, get proxy information.</span></span></span></li>
+</ol>
+
+<h4>Configure AWS image aggregation provider in HCMX</h4>
+
+<p><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The HCMX image aggregation capability needs AWS IAM user’s access key ID and secret access key to collect a list of images from AWS.&nbsp; All this information was obtained in the AWS pre-requisite section.</span></span></span></p>
+
+<p><span style="font-family: Calibri, sans-serif; font-size: 11pt;">In this section, you will create an image aggregation integration with AWS in HCMX to retrieve image data from AWS.</span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the HCMX tenant agent interface portal as a DND admin user. </span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Using the mega menu, navigate to <b>Administration</b> -&gt; <b>Utilities</b> -&gt; <b>Providers</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/6e/IA-VerifyAuth-MegaMenuProviders.PNG" height="351" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fe129613e01.59235667.png" style="width: 800px; height: 351px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to <b>IMAGE AGGREGATION PROVIDERS</b>. Click <b>+</b> icon to create a new image aggregation integration.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/55/IA-VerifyAuth-ImageAggProviders-1.PNG" height="142" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fe129908cc1.85593897.png" style="width: 800px; height: 142px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Image Aggregation Provider Type</b> screen, select <b>Amazon EC2</b>. Click <b>NEXT</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/9/99/Iagg-AWSProviderType.PNG" height="608" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fe129daf144.89862623.png" style="width: 800px; height: 608px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Image Aggregation Connection</b> screen, enter a meaningful connection name, enter AWS access key ID and AWS secret access key that were obtained in AWS pre-requisite section. Enter proxy information if HCMX requires a web-proxy to reach internet. Click <b>NEXT</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/d/db/Iagg-AWSConnection.PNG" height="800" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fe12a24a430.30529381.png" style="width: 622.014px; height: 800px; margin: 0px; border: 0px solid black;" vspace="0" width="622.0140515222482"></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Image Aggregation Region Selection</b> screen, select one or more regions from which you would like to collect images. Click <b>FINISH</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/b/b8/Iagg-AWSRegionSelection.PNG" height="800" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fe12a68f597.66699254.png" style="width: 734.793px; height: 800px; margin: 0px; border: 0px solid black;" vspace="0" width="734.793187347932"></p>
+
+<ol start="7">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Quick Create Fulfillment Provider </b>screen, click YES if you would like to use the same AWS credentials to both retrieve images and to provision and manage instances on AWS. A fulfillment provider is also known as a deployment resource provider. A deployment resource provider is used to provision services based on the offerings requested by the end user. The image aggregation provider is only used to collect a list of available images from the providers.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/b/b4/Iagg-AWSFulfillmentProvider.PNG" height="401" hspace="0" src="https://docs.microfocus.com/mediawiki/images/b/b4/Iagg-AWSFulfillmentProvider.PNG" style="width:754px;height:401px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="754"></p>
+
+<ol start="8">
+	<li style="margin-left:8px"><font face="Calibri, sans-serif"><span style="font-size: 14.6667px;">The image collection from AWS starts. If the image collection fails, check image catalog and image catalog gateway pod log files. If you see an error due to <strong>value too long for column,&nbsp;</strong>there is a new AWS image whose short description text exceeds the column size in the HCMX database table. To resolve this issue, increase the <strong>SHORT_DESCRIPTION</strong> column size in the dnd_imagecatalog.dnd_image table. Restart image collection.</span></font></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/a/af/Iagg-AWSStartCollection.PNG" height="187" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050d73426e7b5.65353273.png" style="width: 800px; height: 187px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="9">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">After image collection from AWS is complete, the <strong>Last Status&nbsp;</strong>header value changes to <strong>Success.</strong></span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/1d/Iagg-AWSEndCollection.PNG" height="187" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050d7345542a1.33978955.png" style="width: 800px; height: 187px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<h4>Configure Azure image aggregation provider in HCMX</h4>
+
+<p><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The HCMX image aggregation capability needs Azure Active Directory tenant ID, subscription ID, client ID and client secret value to collect a list of images from Azure.&nbsp; All this information was obtained in the Azure pre-requisite section.</span></span></span></p>
+
+<p><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will create an image aggregation integration with Azure in HCMX to retrieve image data from Azure.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the HCMX tenant agent interface portal as a DND admin user. </span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Using the mega menu, navigate to <b>Administration</b> -&gt; <b>Utilities</b> -&gt; <b>Providers</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/6e/IA-VerifyAuth-MegaMenuProviders.PNG" height="351" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050be24009216.16885023.png" style="width: 800px; height: 351px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to <b>IMAGE AGGREGATION PROVIDERS</b>. Click <b>+</b> icon to create a new image aggregation integration.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/55/IA-VerifyAuth-ImageAggProviders-1.PNG" height="142" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050be242b52c0.47142512.png" style="width: 800px; height: 142px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Image Aggregation Provider Type</b> screen, select <b>Microsoft Azure</b>. Click <b>NEXT</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/43/Iagg-AzureProviderType.PNG" height="609" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050be24721219.87907941.png" style="width: 800px; height: 609px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Image Aggregation Connection</b> screen, enter a meaningful connection name, enter Azure client ID, Azure client secret value, Azure subscription ID and Azure tenant ID that were obtained in Microsoft Azure pre-requisite section. Enter proxy information if HCMX requires a web-proxy to reach internet. Click <b>NEXT</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/46/Iagg-AzureConnection-Resized.PNG" height="800" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050be24af3705.71125864.png" style="width: 515.869px; height: 800px; margin: 0px; border: 0px solid black;" vspace="0" width="515.8690176322418"></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Image Aggregation Region Selection</b> screen, select one or more regions from which you would like to collect images. Click <b>FINISH</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/e/e8/Iagg-AzureRegionSelection.PNG" height="794" hspace="0" src="https://docs.microfocus.com/mediawiki/images/e/e8/Iagg-AzureRegionSelection.PNG" style="width:756px;height:794px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="756"></p>
+
+<ol start="7">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Quick Create Fulfillment Provider</b> screen, click YES if you would like to use the same Azure credentials to both retrieve images and to provision and manage instances on Azure. A fulfillment provider is also known as a deployment resource provider. A deployment resource provider is used to provision services based on the offerings requested by the end user. The image aggregation provider is only used to collect a list of available images from the providers.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"></p>
+
+<p style="margin-bottom:11px; margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_100" src="/mediawiki/images/pn_images/pn_image_604fd017bced83.20378759.png" style="width:468pt; height:267.75pt"> </span></span></span></p>
+
+<p style="margin-bottom:11px; margin-left:48px"></p>
+
+<ol start="8">
+	<li style="margin-left:8px"><font face="Calibri, sans-serif"><span style="font-size:14.6667px">The image collection from Azure starts. If the image collection fails, check image catalog and image catalog gateway pod log files. If you see an error due to <strong>value too long for column,&nbsp;</strong>there is a new Azure image whose short description text exceeds the column size in the HCMX database table. To resolve this issue, increase the <strong>SHORT_DESCRIPTION</strong> column size in the dnd_imagecatalog.dnd_image table. Restart image collection.</span></font></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/6d/Iagg-AzureStartCollection.PNG" height="290" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050d7348797d6.58996703.png" style="width: 800px; height: 290px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="9">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">After image collection from Azure is complete, the <strong>Last Status&nbsp;</strong>header value changes to <strong>Success.</strong></span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/17/Iagg-AzureEndCollection.PNG" height="250" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050d9b98e5741.33601958.png" style="width: 800px; height: 250px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<h4>Configure VMWARE vCenter image aggregation provider in HCMX</h4>
+
+<p><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The HCMX image aggregation capability needs VMware vCenter access URL, and vCenter login credentials to collect a list of images from vCenter. All this information was obtained in the VMware vCenter pre-requisite section.</span></span></span></p>
+
+<p><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will create an image aggregation integration with VMware vCenter in HCMX to retrieve image data from vCenter.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the HCMX tenant agent interface portal as a DND admin user. </span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Using the mega menu, navigate to <b>Administration</b> -&gt; <b>Utilities</b> -&gt; <b>Providers</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/6e/IA-VerifyAuth-MegaMenuProviders.PNG" height="351" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050bf53f15561.38795440.png" style="width: 800px; height: 351px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to <b>IMAGE AGGREGATION PROVIDERS</b>. Click <b>+</b> icon to create a new image aggregation integration.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/55/IA-VerifyAuth-ImageAggProviders-1.PNG" height="142" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050bf542aa037.40548366.png" style="width: 800px; height: 142px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Image Aggregation Provider Type</b> screen, select <b>VMware vCenter</b>. Click <b>NEXT</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/8/87/Iagg-vCenterProviderType.PNG" height="609" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050bf546e9a74.29397367.png" style="width: 800px; height: 609px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Image Aggregation Connection</b> screen, enter a meaningful connection name, enter vCenter username, password, and vCenter access URL that were obtained in the VMware vCenter pre-requisite section. Enter proxy information if HCMX requires a web-proxy to reach VMware vCenter URL. Click <b>FINISH</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/d/dd/Iagg-vCenterConnection.PNG" height="800" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050bf54ad0f73.02060289.png" style="width: 577.391px; height: 800px; margin: 0px; border: 0px solid black;" vspace="0" width="577.3913043478261"></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the Quick Create Fulfillment Provider screen, click <b>YES</b> if you would like to use the same vCenter credentials to both retrieve images and to provision and manage instances on vCenter. &nbsp;A fulfillment provider is also known as a deployment resource provider. A deployment resource provider is used to provision services based on the offerings requested by the end user. The image aggregation provider is only used to collect a list of available images from the providers.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/d/d7/Iagg-vCenterCreateFulfillmentProvider.PNG" height="457" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050bf54deced5.30861204.png" style="width: 800px; height: 457px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="7">
+	<li style="margin-left:8px"><font face="Calibri, sans-serif"><span style="font-size:14.6667px">The image collection from VMware vCenter starts. If the image collection fails, check image catalog and image catalog gateway pod log files. If you see an error due to <strong>value too long for column,&nbsp;</strong>there is a new VMware vCenter image whose short description text exceeds the column size in the HCMX database table. To resolve this issue, increase the <strong>SHORT_DESCRIPTION</strong> column size in the dnd_imagecatalog.dnd_image table. Restart image collection. After image collection from vCenter is complete,&nbsp;</span></font><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">the <strong>Last Status&nbsp;</strong>header value changes to <strong>Success.</strong></span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/5d/vCenterImageCollectionComplete.PNG" height="343" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050d9b9bf4667.13904413.png" style="width: 800px; height: 343px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="9">
+</ol>
+
+<h2>Use Image Aggregation</h2>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this practitioner notes, the following use cases are described:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Administrator exposes one of the aggregated images as a service offering to end users.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">End user provisions a service using an aggregated image offering.</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">End user cancels provisioned service instance.</span></span></span></li>
+</ol>
+
+<h3>Administrator exposes one of the aggregated images to end users</h3>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the HCMX tenant agent interface portal as a DND admin user.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the mega menu, navigate to <b>Build</b> -&gt; <b>Design</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/f/f9/IA-VerifyAuth-MegaMenuDesign.PNG" height="299" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c3cdc5d547.58902216.png" style="width: 800px; height: 299px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to <b>IMAGE AGGREGATION</b> home page</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/e/e6/IaggUseExp-IaggPage.PNG" height="64" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c3ce0c63b3.00255205.png" style="width: 800px; height: 64px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Image aggregation home page is displayed. A list of aggregated images from the configured image providers is displayed in tiles. In this example, a list of images from AWS, Microsoft Azure and VMWare vCenter are displayed and there is a total of 10374 images available that can be exposed to end users. The following filter options are available to select a desired image and make it available to the end users:</span></span></span></li>
+</ol>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Integration type</b>: Select one or more image aggregation providers to see images only from those providers. In this example, available image aggregation providers are AWS, Azure and vCenter.</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Image category</b>: The following image categories are available: Private images and Marketplace images. Private images are the images that are customized images built by your organization to meet their security, management, and compliance policies. The Marketplace images contain images published by third party vendors. Select private images or Marketplace images or both to view images by the selected image category.</span></span></span></li>
+	<li style="margin-left:56px; margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Search box</b>: Type in an image name. A list of images matching that image name is displayed.</span></span></span></li>
+</ul>
+
+<p style="margin-left:48px; margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Image list can be displayed in large tiles, small tiles and a list with provider name displayed for each image. Click <b>toggle listing mode</b> icon until a list appears with provider name for each listed image.</span></span></span></p>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/2/2a/IaggUseExp-IaggHomePage.PNG" height="406" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c3ce5c3df2.13082032.png" style="width: 800px; height: 406px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Notice that the provider and operating system details are displayed for each image in this listing mode.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/9/98/IaggUseExp-Provider.PNG" height="339" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c3ce9f2033.21844000.png" style="width: 800px; height: 339px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the search box, type in the image name that you would like to make it available to the end users. A list of images matching the searched image is displayed. Click one of the images in the list based on short description of the image, operating system and cloud provider.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"></p>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/0/0a/IaggUseExp-ImgSearchResults.PNG" height="354" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c3ced7ad34.79318886.png" style="width: 800px; height: 354px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p style="margin-left:48px"></p>
+
+<ol start="7">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the image details screen, read full description of the image. In the <b>Design Configuration</b> section, select desired <b>region</b> in which you would like your end users to provision this image. </span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/8/8e/IaggUseExp-ImgRegionReqd.PNG" height="461" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c3cf423542.29869391.png" style="width: 800px; height: 461px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="8">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the image details screen, in the <b>Design Configuration</b> section, click <b>X</b> icon in the default region selected to see full list of available regions. Select a new region. Click <b>X</b> icon in the default instance size text box to see full list of available instance sizes. Select desired instance size.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/63/IaggUseExp-InsSizeFullList.PNG" height="503" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c3cf9ecb62.20220145.png" style="width: 800px; height: 503px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p style="margin-left:48px"></p>
+
+<ol start="9">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <b>View Pricing Details</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/b/b4/IaggUseExp-ImgRegionSizeSelected.PNG" height="513" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c3d0143e71.85411655.png" style="width: 800px; height: 513px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="10">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>pricing detail</b> screen, note down the pricing details for the selected image, region and instance size. Work within your organization to determine if this image pricing is within budget and can be exposed to end users for provisioning of this image. Click <b>CLOSE</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/9/95/IaggUseExp-ImgPrice.PNG" height="280" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c3d0400564.41280004.png" style="width: 800px; height: 280px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="11">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <b>IMPORT</b> in the image details screen.</span></span></span></li>
+</ol>
+
+<ol start="12">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">If <b>Validation Failed </b>screen appears, read <b>message</b> and take appropriate action. In this example, selected image must be subscribed in the AWS Marketplace prior to using it in HCMX. Click the AWS URL displayed in the <b>Validation Failed</b> screen. Do not close this window in HCMX.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/8/89/IaggUseExp-ValidationFailed.PNG" height="543" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c3d087db45.76146656.png" style="width: 800px; height: 543px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="13">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Logon to the AWS Marketplace portal using the account with which a new AWS user account for HCMX was created in the AWS pre-requisite section.</span></span></span></li>
+</ol>
+
+<ol start="14">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Review AWS Marketplace image description. Click <b>Continue to Subscribe</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/57/AWSMarketPlaceSubscribe.PNG" height="353" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c3d0e014c1.97545908.png" style="width: 800px; height: 353px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="15">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the Terms and Conditions section, click <b>Accept Terms</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/b/be/AWSMarketPlaceAcceptTerms.PNG" height="514" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c3d145cf05.19398909.png" style="width: 800px; height: 514px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="16">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate back to <b>Validation Failed</b> screen in HCMX. Click <b>TRY AGAIN.</b> This time validation should succeed as the AWS Marketplace image was subscribed in previous steps.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/8/89/IaggUseExp-ValidationFailed.PNG" height="543" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c3d18a10c7.38147353.png" style="width: 800px; height: 543px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="17">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Import</b> screen, select <b>Create and Publish. </b>Click<b> IMPORT</b>. A new service design for the selected image gets created and published. This service design will be available to expose as an offering in the service catalog used by end users.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/8/8b/IaggUseExp-ImportImg.PNG" height="362" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c3d1c8a757.80008955.png" style="width: 800px; height: 362px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="18">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Image Successfully Imported</b> screen, Click <b>X. </b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/0/01/IaggUseExp-ImportSuccess.PNG" height="521" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c3d21984b1.53282091.png" style="width: 800px; height: 521px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="19">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the image details screen, click <b>CANCEL</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/2/21/IaggUseExp-ImgDetailCancel.PNG" height="516" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c5e1b29592.75465635.png" style="width: 800px; height: 516px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="20">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the mega menu, navigate to <b>Plan</b> -&gt; <b>Service Catalog</b></span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/3/31/IaggUseExp-MegaMenuServiceCat.PNG" height="362" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c5e1ebd859.74965794.png" style="width: 800px; height: 362px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="21">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Select an existing <b>category</b>, select <b>service definition</b>. Click <b>Add an aggregated offering</b>. </span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/66/IaggUseExp-SC-AddAggOffering.PNG" height="226" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c5e2343f10.10169085.png" style="width: 800px; height: 226px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="22">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A list of service designs is displayed. Select the service design that was published in earlier steps. Click <b>Next</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:24px; margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/2/26/IaggUseExp-SC-SelectAggOffering.PNG" height="494" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c5e2647449.19902137.png" style="width: 800px; height: 494px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="23">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Change default label or accept the default label. Click <b>SAVE</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/6d/IaggUseExp-SC-OfferingDisplayLabel.PNG" height="781" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c5e2b27dd7.21029846.png" style="width: 800px; height: 781px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="24">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Observe that the new offering was created.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/3/3b/IaggUseExp-OfferingCreated.PNG" height="248" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c5e2f07f01.06246876.png" style="width: 800px; height: 248px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="25">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Logout as dndAdmin user. Login as a tenant admin user to the HCMX tenant agent interface. Tenant admin rights are required to create a new group.</span></span></span></li>
+</ol>
+
+<ol start="26">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">When a new request is created using an offering from end user portal, that request pauses in the log phase if either of the <b>Owner</b> field or the <b>Service desk group</b> fields do not have a value set. In this use case, we need provisioning of virtual machines to happen without any intervention.&nbsp; To fully automate provisioning of virtual machines without human intervention, set a default value for either the <b>Owner</b> field or the <b>Service desk group</b> field on the offering's request default values. It is recommended to use Service desk group field instead of an individual Owner field for ownership of offerings. From the mega menu, navigate to <b>Administration</b> -&gt; <b>Master Data</b> -&gt; <b>People</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/b/bc/IaggUseExp-MegaMenuPeople.PNG" height="348" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c5e32b8c50.74390553.png" style="width: 800px; height: 348px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="27">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to <b>GROUPS</b>. A list of existing groups is displayed. Determine which group to use from existing groups. If there is a need for a new group, click <b>NEW</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/51/IaggUseExp-GroupList.PNG" height="610" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c5e35ee074.40137831.png" style="width: 800px; height: 610px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="28">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>New group</b> window, enter information as shown in the screenshot below. For each offering, identify the group name that is applicable to your environment.&nbsp; Click <b>SAVE</b>. If you know members of this group, associate them by editing this newly created group.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/14/IaggUseExp-NewGroup.PNG" height="520" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c5e38dec75.90050162.png" style="width: 800px; height: 520px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="29">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Logout as tenant admin user. Log in as a dnd admin user to the HCMX tenant agent interface. </span></span></span></li>
+</ol>
+
+<ol start="30">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the mega menu, navigate to <b>Plan</b> -&gt; <b>Service Catalog</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/3/31/IaggUseExp-MegaMenuServiceCat.PNG" height="362" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c5e3c2e677.40557218.png" style="width: 800px; height: 362px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="31">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The service catalog structure is displayed. Select the category. The Service Definition section is displayed. Select the Service Definition. The Offering section is displayed. Select the offering drop down. Click <b>Edit</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/43/IaggUseExp-OfferingEdit.PNG" height="243" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c5e417eee4.11205557.png" style="width: 800px; height: 243px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="32">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Offering details</b> window, navigate to <b>General</b> page. Set <b>status</b> field to <b>Active</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/c/cc/IaggUseExp-OfferingGeneralActive.PNG" height="511" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c5e473dc02.99924691.png" style="width: 800px; height: 511px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="33">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>offering</b> details window, navigate to the <b>Default values</b> page. Set <b>Service desk group</b> field to the group that was created in earlier steps for this offering. Enable <b>Skip end user acceptance</b>. When <b>Skip end user acceptance</b> option is enabled, user submitted request is closed automatically after provisioning of the request. When <b>Skip end user acceptance</b> option is disabled, either an end user will have to accept the provided solution or certain time has to elapse for the request to close.&nbsp; In the screenshot below, the Service desk group is set to CloudCompute group. But work with your IT service management process experts to identify appropriate groups for each offering and set it appropriately. Click <b>Save</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/2/21/IaggUseExp-OfferingReqDefault.PNG" height="340" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c5e4c1afe1.65569943.png" style="width: 800px; height: 340px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<h3>End user provisions a service using an aggregated image offering</h3>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Logon to the HCMX tenant end user portal.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Profile settings wizard is displayed when a user logs in for the first time to the end user portal. Optionally, upload your profile picture. Click <b>NEXT</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/2/29/Iagg-UseESS-Picture.PNG" height="493" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050cd60975b19.40732390.png" style="width: 800px; height: 493px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Answer optional questions on the <b>SET SKILLS</b> page. Click <b>Done</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/1f/Iagg-UseESS-Skills.PNG" height="749" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050cd60ef7de5.51238359.png" style="width: 800px; height: 749px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The Service catalog category structure is shown. Click the category that contains recently exposed offering. In this example, it is <b>IT INFRASTRUCTURE SERVICES</b> category.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/4f/Iagg-UseESS-Category.PNG" height="384" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050cd61a28430.07240270.png" style="width: 800px; height: 384px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <b>REQUEST SERVICE</b> next to the offering that was published in earlier steps. In this example, it is <b>WORDPRESS WITH MYSQL ON WINDOWS SERVER 2012 R2</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/f/f9/Iagg-UseESS-OffReqService.PNG" height="447" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050cd623c8311.13219249.png" style="width: 800px; height: 447px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>SERVICE OFFERING</b> screen, fill in the information applicable to your environment as shown in the following screenshots. Click <b>SUBMIT</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/41/OfferingSubmit-1.PNG" height="658" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050cd62c1ea61.31640104.png" style="width: 800px; height: 658px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/9/9a/OfferingSubmit-2.PNG" height="644" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050cd631032c8.84782093.png" style="width: 800px; height: 644px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/7/75/OfferingSubmit-3.PNG" height="651" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050cd63421af6.25117973.png" style="width: 800px; height: 651px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/3/38/OfferingSubmit-4.PNG" height="658" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050cd637bb2a1.88800687.png" style="width: 800px; height: 658px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/2/21/OfferingSubmit-5.PNG" height="656" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050cd63b1f9d5.61401689.png" style="width: 800px; height: 656px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/61/OfferingSubmit-6.PNG" height="506" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050cd63e08b04.32418094.png" style="width: 800px; height: 506px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="7">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The <b>Request created successfully</b> screen is shown.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application
+
+Description automatically generated" id="Picture_x0020_142" src="/mediawiki/images/pn_images/pn_image_604fd2aedab656.33970965.png" style="width:468pt; height:219.75pt"> </span></span></span></p>
+
+<ol start="8">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <b>Your requests</b> to track the submitted request.&nbsp; Request moves from <b>Classification</b> phase to <b>Fulfillment</b> phase.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application
+
+Description automatically generated" id="Picture_x0020_143" src="/mediawiki/images/pn_images/pn_image_604fd2b0500674.00371504.png" style="width:468pt; height:315pt"> </span></span></span></p>
+
+<ol start="9">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Once requested offering has been successfully provisioned, request gets closed. You may have to use hard refresh for the request to show up under closed status.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application
+
+Description automatically generated" id="Picture_x0020_144" src="/mediawiki/images/pn_images/pn_image_604fd2b1a8e233.10698450.png" style="width:467.25pt; height:325.5pt"> </span></span></span></p>
+
+<ol start="10">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This step is optional. Log on to the cloud provider’s portal. Verify that the requested offering has been provisioned. In this example, cloud provider was AWS.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/b/b6/Iagg-UseESS-AWSEC2Instance.PNG" height="152" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050cd642bd4a1.31399648.png" style="width: 800px; height: 152px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<h3>End user cancels provisioned service instance</h3>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the HCMX tenant end user portal.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Using the mega menu at the top right corner, navigate to <b>Services and Assets</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/4a/Iagg-UseESS-MenuServicesAndAssets.PNG" height="393" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050cef1a8c537.53355013.png" style="width: 800px; height: 393px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>YOUR SERVICES AND ASSETS </b>page, click previously created subscription.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/9/96/Iagg-UseESS-YourservicesandAssets.PNG" height="574" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050cef2106bf2.21282024.png" style="width: 800px; height: 574px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the subscription details page, click <b>Actions</b> -&gt; <b>Cancel Subscription </b>to terminate instance on cloud provider.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/8/80/Iagg-UseESS-CancelSubscription.PNG" height="620" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050cef2905194.21897476.png" style="width: 800px; height: 620px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Cancel subscription</b> window, click <b>OK</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/18/Iagg-UseESS-CancelSubscriptionConfirmation.PNG" height="260" hspace="0" src="https://docs.microfocus.com/mediawiki/images/1/18/Iagg-UseESS-CancelSubscriptionConfirmation.PNG" style="width:605px;height:260px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="605"></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This step is optional. Log on to the cloud provider’s portal. Verify that the instance has been terminated. In this example, cloud provider was AWS.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/2/2d/Iagg-UseESS-AWSInstanceTerminated.PNG" height="152" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050cef2c91c58.20012032.png" style="width: 800px; height: 152px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p style="margin-bottom:11px; margin-left:48px"></p>
+
+</html>
