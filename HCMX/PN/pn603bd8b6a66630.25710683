@@ -117,9 +117,7 @@
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Run the following command to identify the SMAX/HCMX namespace.</span></span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">kubectl get namespace</span></span></span></p>
-
-<p style="margin-left:48px"></p>
+<pre><code>kubectl get namespace</code></pre>
 
 <p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the sample screenshot below, <b>itsma-s14e6</b> is the namespace in which SMAX/HCMX pods are running.</span></span></span></p>
 
@@ -129,9 +127,7 @@
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Run the following command to list CMP and DND pods.</span></span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">kubectl get pods -n &lt;Replace with namespace noted in earlier steps&gt; | grep -e cmp -e dnd</span></span></span></p>
-
-<p style="margin-left:48px"></p>
+<pre><code>kubectl get pods -n &lt;Replace with namespace noted in earlier steps&gt; | grep -e cmp -e dnd</code></pre>
 
 <p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The sample screenshot below shows output from the command to list CMP and DND pods. In this output, 3 pods are highlighted in YELLOW color. These PODS must be restarted for proxy settings configured in suite administration portal to become effective. Note down the full name of the following PODS: itom-cmp-accounts, itom-cmp-integration-gateway, and itom-dnd-image-catalog. In this example below, their full pod names are itom-cmp-accounts-cf6bbfff8-d2csf, itom-cmp-integration-gateway-85786d96f-fnld5 and itom-dnd-image-catalog-87b8d698-wx2wd respectively.</span></span></span></p>
 
@@ -143,11 +139,11 @@
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Restart the itom-cmp-accounts, itom-cmp-integration-gateway, and itom-dnd-image-catalog pods using following commands: </span></span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">kubectl delete pod &lt;Replace with itom-cmp-accounts full POD name&gt; -n &lt;Replace with namespace&gt;</span></span></span></p>
+<pre><code>kubectl delete pod &lt;Replace with itom-cmp-accounts full POD name&gt; -n &lt;Replace with namespace&gt;
 
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">kubectl delete pod &lt;Replace with itom-cmp-integration-gateway full POD name&gt; -n &lt;Replace with namespace&gt;</span></span></span></p>
+kubectl delete pod &lt;Replace with itom-cmp-integration-gateway full POD name&gt; -n &lt;Replace with namespace&gt;
 
-<p style="margin-bottom:11px; margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">kubectl delete pod &lt;Replace with itom-dnd-image-catalog full POD name&gt; -n &lt;Replace with namespace&gt;</span></span></span></p>
+kubectl delete pod &lt;Replace with itom-dnd-image-catalog full POD name&gt; -n &lt;Replace with namespace&gt;</code></pre>
 
 <h3>Configure authorization for image aggregation</h3>
 
@@ -311,8 +307,6 @@
 
 <p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/9/92/CfAuthIDM-DNDGroup.PNG" height="758" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fd76bd356d9.91946627.png" style="width: 800px; height: 758px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
-<p style="margin-left:48px"></p>
-
 <ol start="5">
 	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log out of IDM administration portal.</span></span></span></li>
 </ol>
@@ -347,7 +341,7 @@
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the <b>mega menu,</b> navigate to <b>Build</b> -&gt; <b>Design</b>.</span></span></span></li>
 </ol>
 
-<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/c/cf/IaggUseExp-MegamenuDesign.PNG" height="298" hspace="0" src="/mediawiki/images/pn_images/pn_image_604fdac55b65d6.92670714.png" style="width: 800px; height: 298px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/f/f9/IA-VerifyAuth-MegaMenuDesign.PNG" height="299" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050d2b36a8447.27363717.png" style="width: 800px; height: 299px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
 <ol start="3">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to <b>IMAGE AGGREGATION</b>. Verify that the image aggregation page loads.&nbsp;</span></span></span></li>
@@ -816,117 +810,129 @@ Description automatically generated" id="Picture_x0020_100" src="/mediawiki/imag
 
 <ol start="11">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <b>IMPORT</b> in the image details screen.</span></span></span></li>
+</ol>
+
+<ol start="12">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">If <b>Validation Failed </b>screen appears, read <b>message</b> and take appropriate action. In this example, selected image must be subscribed in the AWS Marketplace prior to using it in HCMX. Click the AWS URL displayed in the <b>Validation Failed</b> screen. Do not close this window in HCMX.</span></span></span></li>
 </ol>
 
 <p style="margin-bottom:11px; margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/8/89/IaggUseExp-ValidationFailed.PNG" height="543" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c3d087db45.76146656.png" style="width: 800px; height: 543px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
-<ol>
+<ol start="13">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Logon to the AWS Marketplace portal using the account with which a new AWS user account for HCMX was created in the AWS pre-requisite section.</span></span></span></li>
+</ol>
+
+<ol start="14">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Review AWS Marketplace image description. Click <b>Continue to Subscribe</b>.</span></span></span></li>
 </ol>
 
 <p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/57/AWSMarketPlaceSubscribe.PNG" height="353" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c3d0e014c1.97545908.png" style="width: 800px; height: 353px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
-<ol start="3">
+<ol start="15">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the Terms and Conditions section, click <b>Accept Terms</b></span></span></span></li>
 </ol>
 
 <p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/b/be/AWSMarketPlaceAcceptTerms.PNG" height="514" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c3d145cf05.19398909.png" style="width: 800px; height: 514px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
-<ol start="4">
+<ol start="16">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate back to <b>Validation Failed</b> screen in HCMX. Click <b>TRY AGAIN.</b> This time validation should succeed as the AWS Marketplace image was subscribed in previous steps.</span></span></span></li>
 </ol>
 
 <p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/8/89/IaggUseExp-ValidationFailed.PNG" height="543" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c3d18a10c7.38147353.png" style="width: 800px; height: 543px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
-<ol start="5">
+<ol start="17">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Import</b> screen, select <b>Create and Publish. </b>Click<b> IMPORT</b>. A new service design for the selected image gets created and published. This service design will be available to expose as an offering in the service catalog used by end users.</span></span></span></li>
 </ol>
 
 <p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/8/8b/IaggUseExp-ImportImg.PNG" height="362" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c3d1c8a757.80008955.png" style="width: 800px; height: 362px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
-<ol start="6">
+<ol start="18">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Image Successfully Imported</b> screen, Click <b>X. </b></span></span></span></li>
 </ol>
 
 <p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/0/01/IaggUseExp-ImportSuccess.PNG" height="521" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c3d21984b1.53282091.png" style="width: 800px; height: 521px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
-<ol start="7">
+<ol start="19">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the image details screen, click <b>CANCEL</b>.</span></span></span></li>
 </ol>
 
 <p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/2/21/IaggUseExp-ImgDetailCancel.PNG" height="516" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c5e1b29592.75465635.png" style="width: 800px; height: 516px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
-<ol start="8">
+<ol start="20">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the mega menu, navigate to <b>Plan</b> -&gt; <b>Service Catalog</b></span></span></span></li>
 </ol>
 
 <p style="margin-bottom:11px; margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/3/31/IaggUseExp-MegaMenuServiceCat.PNG" height="362" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c5e1ebd859.74965794.png" style="width: 800px; height: 362px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
-<ol>
+<ol start="21">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Select an existing <b>category</b>, select <b>service definition</b>. Click <b>Add an aggregated offering</b>. </span></span></span></li>
 </ol>
 
 <p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/66/IaggUseExp-SC-AddAggOffering.PNG" height="226" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c5e2343f10.10169085.png" style="width: 800px; height: 226px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
-<ol start="2">
+<ol start="22">
 	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A list of service designs is displayed. Select the service design that was published in earlier steps. Click <b>Next</b></span></span></span></li>
 </ol>
 
 <p style="margin-left:24px; margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/2/26/IaggUseExp-SC-SelectAggOffering.PNG" height="494" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c5e2647449.19902137.png" style="width: 800px; height: 494px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
-<ol start="3">
+<ol start="23">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Change default label or accept the default label. Click <b>SAVE</b>.</span></span></span></li>
 </ol>
 
 <p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/6d/IaggUseExp-SC-OfferingDisplayLabel.PNG" height="781" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c5e2b27dd7.21029846.png" style="width: 800px; height: 781px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
-<ol start="4">
+<ol start="24">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Observe that the new offering was created.</span></span></span></li>
 </ol>
 
 <p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/3/3b/IaggUseExp-OfferingCreated.PNG" height="248" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c5e2f07f01.06246876.png" style="width: 800px; height: 248px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
-<ol start="5">
+<ol start="25">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Logout as dndAdmin user. Login as a tenant admin user to the HCMX tenant agent interface. Tenant admin rights are required to create a new group.</span></span></span></li>
+</ol>
+
+<ol start="26">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">When a new request is created using an offering from end user portal, that request pauses in the log phase if either of the <b>Owner</b> field or the <b>Service desk group</b> fields do not have a value set. In this use case, we need provisioning of virtual machines to happen without any intervention.&nbsp; To fully automate provisioning of virtual machines without human intervention, set a default value for either the <b>Owner</b> field or the <b>Service desk group</b> field on the offering's request default values. It is recommended to use Service desk group field instead of an individual Owner field for ownership of offerings. From the mega menu, navigate to <b>Administration</b> -&gt; <b>Master Data</b> -&gt; <b>People</b></span></span></span></li>
 </ol>
 
 <p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/b/bc/IaggUseExp-MegaMenuPeople.PNG" height="348" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c5e32b8c50.74390553.png" style="width: 800px; height: 348px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
-<ol start="7">
+<ol start="27">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to <b>GROUPS</b>. A list of existing groups is displayed. Determine which group to use from existing groups. If there is a need for a new group, click <b>NEW</b>.</span></span></span></li>
 </ol>
 
 <p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/51/IaggUseExp-GroupList.PNG" height="610" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c5e35ee074.40137831.png" style="width: 800px; height: 610px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
-<ol start="8">
+<ol start="28">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>New group</b> window, enter information as shown in the screenshot below. For each offering, identify the group name that is applicable to your environment.&nbsp; Click <b>SAVE</b>. If you know members of this group, associate them by editing this newly created group.</span></span></span></li>
 </ol>
 
 <p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/14/IaggUseExp-NewGroup.PNG" height="520" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c5e38dec75.90050162.png" style="width: 800px; height: 520px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
-<ol start="9">
+<ol start="29">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Logout as tenant admin user. Log in as a dnd admin user to the HCMX tenant agent interface. </span></span></span></li>
+</ol>
+
+<ol start="30">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the mega menu, navigate to <b>Plan</b> -&gt; <b>Service Catalog</b>.</span></span></span></li>
 </ol>
 
 <p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/3/31/IaggUseExp-MegaMenuServiceCat.PNG" height="362" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c5e3c2e677.40557218.png" style="width: 800px; height: 362px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
-<ol start="11">
+<ol start="31">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The service catalog structure is displayed. Select the category. The Service Definition section is displayed. Select the Service Definition. The Offering section is displayed. Select the offering drop down. Click <b>Edit</b>.</span></span></span></li>
 </ol>
 
 <p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/43/IaggUseExp-OfferingEdit.PNG" height="243" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c5e417eee4.11205557.png" style="width: 800px; height: 243px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
-<ol start="12">
+<ol start="32">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Offering details</b> window, navigate to <b>General</b> page. Set <b>status</b> field to <b>Active</b>.</span></span></span></li>
 </ol>
 
 <p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/c/cc/IaggUseExp-OfferingGeneralActive.PNG" height="511" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050c5e473dc02.99924691.png" style="width: 800px; height: 511px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
-<ol start="13">
+<ol start="33">
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>offering</b> details window, navigate to the <b>Default values</b> page. Set <b>Service desk group</b> field to the group that was created in earlier steps for this offering. Enable <b>Skip end user acceptance</b>. When <b>Skip end user acceptance</b> option is enabled, user submitted request is closed automatically after provisioning of the request. When <b>Skip end user acceptance</b> option is disabled, either an end user will have to accept the provided solution or certain time has to elapse for the request to close.&nbsp; In the screenshot below, the Service desk group is set to CloudCompute group. But work with your IT service management process experts to identify appropriate groups for each offering and set it appropriately. Click <b>Save</b>.</span></span></span></li>
 </ol>
 
