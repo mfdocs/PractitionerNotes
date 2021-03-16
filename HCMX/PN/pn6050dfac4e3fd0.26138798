@@ -1,1 +1,1155 @@
- 
+<html><p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Micro Focus Hybrid Cloud Management X (HCMX) simplifies the delivery, consumption, and governance of IT services and resources. HCMX is delivered as part of a single converged solution that provides the capabilities of HCMX and Service Management Automation X (SMAX) integrated Configuration Management System (CMS) and Operations Orchestration (OO) solution. HCMX offers the following cloud management capabilities:</span></span></span></p>
+
+<ul>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Design and Deploy (DND)</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Cost governance and resource optimization (CGRO)</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Image aggregation</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">IT process orchestration</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Service portal</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Content store</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Universal CMDB</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">CMS UI</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Mobile application</span></span></span></li>
+</ul>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">HCMX CGRO capability enables customers to optimize cloud spending with various cloud providers such as Amazon Web Services (AWS) and Microsoft Azure. HCMX CGRO capability provides the following functionalities:</span></span></span></p>
+
+<ul>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Cost governance: Cost governance reports help visualize public cloud spending. These reports enable you to review your public cloud costs, your cloud activity and your usage of public cloud resources.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Cloud insights: Cloud insights are cost-saving recommendations calculated by HCMX CGRO functionality. Cloud insights help you understand how you might reduce and optimize your cloud spend.</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Cloud cost limits: A cloud cost limit allows you to specify a threshold for a cloud spend group, view a spend group's spend compared to the threshold, and receive email notifications when that threshold is exceeded.</span></span></span></li>
+</ul>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This practitioner note describes steps involved in configuring CGRO capability, and using CGRO capability with the following use cases:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Understand public cloud spending.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Identify opportunities for cost savings.</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Identify out of compliance spend groups.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This practitioner note assumes that the&nbsp;<span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">DND and CGRO capabilities were installed during HCMX installation.&nbsp;</span></span></span>If CGRO and/or DND has not been installed, add the DND and CGRO capability to an existing installation of HCMX/SMAX.&nbsp;The CGRO capability can be used in multiple tenants of HCMX/SMAX. CGRO has a pre-requisite of DND installation but it does not require that DND be deployed to a&nbsp;tenant. CGRO can be used with a tenant that does not have DND capability deployed to it.&nbsp;</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This practitioner note has the following sections:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure CGRO</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Use CGRO</span></span></span></li>
+</ol>
+
+<h2>Configure CGRO</h2>
+
+<p><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">The Configuration of CGRO creates the necessary foundation for using CGRO functionalities and it includes the following steps:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Deploy a tenant to use HCMX functionalities</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Derive agent interface URL</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure application settings</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure authorization for CGRO</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Verify CGRO menu options visibility</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure cloud cost data providers</span></span></span></li>
+</ol>
+
+<h3>Deploy a tenant to use HCMX functionalities</h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">SMAX is a multi-tenant service management solution that allows service providers to host and manage environments for multiple customers within a single installation. After installation of HCMX, a new tenant must be created to use HCMX functionalities. Deploying DND capability to a tenant involves the following tasks:</span></span></span></p>
+
+<ul>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Configure Email service</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create customer</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create account</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create and activate tenant admin, DND admin, OO admin and DND transport user accounts</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create license pool</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create licenses </span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Associate licenses to the license pool</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create tenant</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Deploy tenant</span></span></span></li>
+</ul>
+
+<h4>Configure Email service</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Email service configuration is required to activate user accounts and to reset account passwords. Follow the steps below to configure Email service:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the suite administration portal as user <strong>suite-admin</strong>&nbsp;at the following URL: <span class="MsoHyperlink" style="color:#0563c1"><span style="text-decoration:underline">https://&lt;HCMX-Server-FQDN&gt;/bo</span></span></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/0/01/BO-Login.PNG" height="477" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f3a585ce2d3.88245717.png" style="width: 800px; height: 477px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="2">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to <strong>Configurations</strong>&nbsp;-&gt; <strong>Email service</strong>. Enter email service details specific to your environment.&nbsp; Click <strong>TEST CONNECTION</strong>. If test connection results are successful, click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/f/f7/EmailConfig.PNG" height="367" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f10a5805703.84541663.png" style="width: 800px; height: 367px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>Save email service settings</strong>&nbsp;window, click <strong>CONTINUE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/9/9a/03.png" height="167" hspace="0" src="https://docs.microfocus.com/mediawiki/images/9/9a/03.png" style="width:421px;height:167px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="421"></p>
+
+<ol start="4">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Kubernetes PODS are restarted after <strong>CONTINUE</strong>&nbsp;button is pressed. Wait for 5 to 10 minutes before continuing to next steps.</span></span></span></li>
+</ol>
+
+<h4>Create Customer</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A customer record in HCMX is used to group accounts.</span></span></span>&nbsp;<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A customer record may have multiple accounts associated with it.</span></span></span></p>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>CUSTOMERS</strong>. Click <strong>New</strong>. </span></span></span><br>
+	<img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/7/79/BO-Customers.PNG" height="123" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f3ae5bc9c04.64806648.png" style="width: 800px; height: 123px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>New customer</strong>&nbsp;window, fill in the information as shown in the screenshot below. Click <strong>SAVE</strong>.<br>
+	<img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/8/84/BO-NewCustomer.PNG" height="542" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f3bc3eed213.06509073.png" style="width: 800px; height: 542px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></li>
+</ol>
+
+<h4>Create Account</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">An account record in HCMX identifies different customers of a managed services provider OR identifies different type of environments a customer might have OR a combination of customers and their environments. A customer may have multiple accounts associated with it. But an account can be related to a single customer.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>ACCOUNTS</strong>. Click <strong>New</strong>. In the <strong>New account</strong>&nbsp;window, fill in the information as shown in the screenshot below. Click <strong>SAVE</strong>.</span></span></span><br>
+	<img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/2/22/BO-Accounts.PNG" height="124" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f3bc4296e88.68925245.png" style="width: 800px; height: 124px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>New account</strong>&nbsp;window, fill in the information as shown in the screenshot below. Click <strong>SAVE</strong>.</span></span></span><br>
+	<img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/40/BO-NewAccount.PNG" height="677" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f3d1fec7f75.84102869.png" style="width: 800px; height: 677px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></li>
+</ol>
+
+<p style="margin-bottom:11px"></p>
+
+<h4>Create and activate tenant admin user account</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A tenant administrator account has full control and access to the tenant. A tenant administrator account is required to deploy a new tenant and to administer the tenant.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>USERS</strong>. Click <strong>New</strong>.<br>
+	<img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/5f/06.png" height="122" hspace="0" src="https://docs.microfocus.com/mediawiki/images/5/5f/06.png" style="width:624px;height:122px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="624"></span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>New user</strong>&nbsp;window, fill in the information as shown in the screenshot below. Note that login name does not have to be <strong>tenantAdmin</strong>. Click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/40/BO-TenantAdminUser.PNG" height="800" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f40517eeac8.68153846.png" style="width: 676.78px; height: 800px; margin: 0px; border: 0px solid black;" vspace="0" width="676.779463243874"></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A user account activation email is sent by HCMX to the email address specified in the <strong>tenantAdmin</strong>&nbsp;user record. Click on the user activation link in that email. User activation web page is launched in a web browser. Type in a new password and confirm the new password in the user activation web page. Note that the <strong>SUBMIT</strong>&nbsp;button does not show up until entered passwords match and they satisfy password complexity policy as defined in the IDM portal.&nbsp;Click&nbsp;<strong>SUBMIT</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/0/08/08-PwdReset.png" height="326" hspace="0" src="https://docs.microfocus.com/mediawiki/images/0/08/08-PwdReset.png" style="width:490px;height:326px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="490"></p>
+
+<h4>Create license pool</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A license pool contains one or more licenses. A license is assigned to the tenant using the licenses in a license pool.</span></span></span></p>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>LICENSE-POOLS</strong>. Click <strong>New</strong>. </span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/2/2d/BO-LicensePools.PNG" height="123" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f413ea98953.07379185.png" style="width: 800px; height: 123px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="2">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>New license pool</strong>&nbsp;window, fill in the information as shown in the screenshot below. Click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/50/BO-HCMXLicensePool.PNG" height="476" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f44156f1e67.96669658.png" style="width: 800px; height: 476px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p style="margin-bottom:11px"></p>
+
+<h4>Create licenses</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">License management enables you to manage license records. The following license editions are supported:</span></span></span></p>
+
+<ul>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">SMAX Express: SMAX Express license provide access to a limited set of SMAX solution capabilities. Refer to the SMAX documentation for more details on the capabilities that are available in SMAX express edition.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">SMAX Premium: SMAX Premium license provide full access to SMAX solution capabilities.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">HCMX: The HCMX (cloud management) license must be deployed to use DND and CGRO capabilities. The HCMX license enables the cloud management capability which offers the following:</span></span></span></li>
+</ul>
+
+<ul>
+	<li style="list-style-type:none">
+	<ul style="list-style-type:circle">
+		<li style="margin-left:16px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Design and Deploy (DND): With DND capability, cloud service offerings based on published service designs can be made available to consumers, which facilitates your organization's cloud infrastructure management.</span></span></span></li>
+		<li style="margin-left:16px; margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Cost Governance and Resource Optimization (CGRO): CGRO enables you to optimize your cloud spending and simplify configuration with various cloud providers.</span></span></span></li>
+	</ul>
+	</li>
+</ul>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Modes of License</b></span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">There are four modes of license:</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Production</b>: The official license key is issued by Micro Focus, redeemed and installed by AutoPass License Server (APLS). Suite Administration syncs the license information from APLS. A production license must be assigned to a production tenant.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Trial</b>: This license can be created manually in Suite Administration portal, the duration and capacity are limited. A trial license can be assigned to either a trial tenant or a development tenant. </span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Evaluation</b>: The official license key is issued by Micro Focus, redeemed and installed by APLS. Suite Administration syncs the license information from APLS. Evaluation license can be assigned to an internal tenant.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Non-Production</b>: The official license key is issued by Micro Focus, redeemed and installed by AutoPass License Server (APLS). Suite Administration syncs the license information from APLS. Non-production licenses can only be assigned to a development tenant.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">For more details on licensing, refer to the HCMX product documentation at the following URL:<a href="http://docs.microfocus.com">Micro Focus Documentation Portal</a></span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This practitioner notes describes steps to create trial licenses. If you are deploying HCMX using official license keys issued by Micro Focus, use <strong>upload licenses</strong>&nbsp;option in the suite administration portal. <strong>The official license keys must be used for non-trial implementations.&nbsp;</strong></span></span></span></p>
+
+<h5>HCMX (Cloud Management) License</h5>
+
+<ol>
+	<li style="margin-bottom: 11px;"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>LICENSES</strong>. Click <strong>New</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/17/BO-Licenses.PNG" height="103" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f45c89a01a5.35566148.png" style="width: 800px; height: 103px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="2">
+	<li style="margin-bottom: 11px;"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>New Trial License</strong>&nbsp;window, fill in the information as shown in the screenshot below. Click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/0/02/BO-HCMXCloudMgmtTrialLic.PNG" height="800" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f45c8d34307.56334511.png" style="width: 791.247px; height: 800px; margin: 0px; border: 0px solid black;" vspace="0" width="791.2472647702407"></p>
+
+<h5>SMAX license</h5>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">SMAX license is optional for HCMX deployment. If you are also deploying SMAX solution capabilities along with HCMX, deploy SMAX license. </span></span></span></p>
+
+<ol>
+	<li style="margin-bottom: 11px;"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>LICENSES</strong>. Click <strong>New</strong>. </span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/17/BO-Licenses.PNG" height="103" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f4743366892.17541104.png" style="width: 800px; height: 103px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="2">
+	<li style="margin-bottom: 11px;"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>New Trial License</strong>&nbsp;window, fill in the information as shown in the screenshot below. Click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/3/3c/BO-SMAXLicense.PNG" height="800" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f474388a898.12854105.png" style="width: 793.86px; height: 800px; margin: 0px; border: 0px solid black;" vspace="0" width="793.859649122807"></p>
+
+<h4>Associate licenses to the license pool</h4>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>LICENSES</strong>. A list of previously created licenses is shown.&nbsp;Click HCMX Cloud Management license ID.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/57/BO-ListofLicenses.PNG" height="216" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f482128a663.14934076.png" style="width: 800px; height: 216px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="2">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">License details page appears. Select previously created license pool as the license pool. Click <strong>Save</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/47/BO-HCMXLicAssWithPool.PNG" height="346" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f48f3ed4015.67732993.png" style="width: 800px; height: 346px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>LICENSES</strong>. A list of previously created licenses is shown.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/57/BO-ListofLicenses.PNG" height="216" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f4a2ecf5e19.23314188.png" style="width: 800px; height: 216px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="4">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click SMAX license ID. License details page appears. Select previously created license pool as the license pool. Click <strong>Save</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/f/fe/BO-SMAXLicAssPool.PNG" height="382" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f4a2f0650b7.92761867.png" style="width: 800px; height: 382px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p style="margin-bottom:11px"></p>
+
+<h4>Create Tenant</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">SMAX is a multi-tenant service management solution that allows service providers to host and manage environments for multiple customers within a single installation. After installation of HCMX, a new tenant must be created and deployed to use HCMX functionalities. </span></span></span></p>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>TENANTS</strong>. Click <strong>New</strong>. </span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/12/BO-Tenants.PNG" height="128" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f4d96a32e60.76571319.png" style="width: 800px; height: 128px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="2">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>New tenant</strong>&nbsp;window, fill in the information as shown in the screenshot below. Click <strong>SAVE</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/1b/BO-TenantNew.PNG" height="451" hspace="0" src="https://docs.microfocus.com/mediawiki/images/1/1b/BO-TenantNew.PNG" style="width:660px;height:451px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="660"></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the tenant <strong>General</strong> page, set <strong>Tenant admin</strong>&nbsp;and <strong>Owner</strong>&nbsp;to the previously created tenant admin user. Click <strong>Save</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/b/ba/BO-TenantDetails.PNG" height="360" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f4d96d77999.31020687.png" style="width: 800px; height: 360px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="4">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <strong>Licenses</strong>&nbsp;page. Click <strong>Add</strong>. Select previously created license pool. Select <strong>Cloud management</strong>&nbsp;license. Click <strong>ASSIGN</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/67/20-Tenantlichcmx.png" height="303" hspace="0" src="https://docs.microfocus.com/mediawiki/images/6/67/20-Tenantlichcmx.png" style="width:624px;height:303px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="624"></p>
+
+<ol start="5">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Skip this step if you do not intend to assign SMAX license. Click <strong>Licenses</strong>&nbsp;page. Click <strong>Add</strong>. Select previously created license pool. Select <strong>Premium</strong>&nbsp;license. Enter capacity. Click <strong>ASSIGN</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/9/96/BO-TenantAssignSMAXLic.png" height="301" hspace="0" src="https://docs.microfocus.com/mediawiki/images/9/96/BO-TenantAssignSMAXLic.png" style="width:624px;height:301px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="624"></p>
+
+<ol start="6">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <strong>Save</strong>&nbsp;to save the tenant.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/e/ef/BO-TenantDeploy.png" height="338" hspace="0" src="https://docs.microfocus.com/mediawiki/images/e/ef/BO-TenantDeploy.png" style="width:624px;height:338px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="624"></p>
+
+<h4>Deploy tenant</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">After creation of a new tenant, it must be deployed to use HCMX functionalities.</span></span></span></p>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <strong>Deploy</strong>&nbsp;to deploy the tenant.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/e/ef/BO-TenantDeploy.png" height="338" hspace="0" src="https://docs.microfocus.com/mediawiki/images/e/ef/BO-TenantDeploy.png" style="width:624px;height:338px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="624"></p>
+
+<ol start="2">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>Deploy tenant</strong>&nbsp;window, click <strong>DEPLOY</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6018241fa6ccd4.30680296.png" style="width:606px; height:311px"></span></span></span></p>
+
+<p style="margin-bottom:11px"></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the suite administration portal, navigate to <strong>TENANTS</strong>. Click <strong>Refresh</strong>&nbsp;until status of tenant changes to <strong>Active</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/6e/BO-TenantStatusActive.PNG" height="190" hspace="0" src="/mediawiki/images/pn_images/pn_image_602f5083f32717.28308721.png" style="width: 800px; height: 190px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<h3>Derive agent interface URL</h3>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the suite administration portal as user <b>suite-admin</b> at the following URL: <span class="MsoHyperlink" style="color:#0563c1"><span style="text-decoration:underline">https://&lt;HCMX-Server-FQDN&gt;/bo</span></span></span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span class="MsoHyperlink" style="color:#0563c1"><span style="text-decoration:underline"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/c/c9/01-CGRO-SuiteLogin.PNG" height="572" hspace="0" src="https://docs.microfocus.com/mediawiki/images/c/c9/01-CGRO-SuiteLogin.PNG" style="width:716px;height:572px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="716"></span></span></span></span></span></p>
+
+<p style="margin-bottom: 11px; margin-left: 8px;"></p>
+
+<ol start="2">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>suite administration</b> home page, navigate to <b>TENANTS</b>. A list of tenants is displayed.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/c/cf/CGRO-BOHomePage.PNG" height="295" hspace="0" src="/mediawiki/images/pn_images/pn_image_6036cce7ab5d53.38899721.png" style="width: 800px; height: 295px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the list of tenants, click the <strong>number</strong> under the ID column for the tenant in which you would like to use CGRO functionality.&nbsp; Note down the <strong>Account</strong> associated with the tenant which will be used in later sections to create a new user.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/69/CGRO-TenantList-1.PNG" height="213" hspace="0" src="/mediawiki/images/pn_images/pn_image_6036cdcd18d3f8.12906430.png" style="width: 800px; height: 213px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
+
+<ol start="4">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Note down the tenant<strong> ID and</strong>&nbsp;<strong>URL</strong>&nbsp;field values. Each tenant exposes two portals: Tenant end user portal and Tenant agent interface portal. The tenant end user portal is the portal where the users submit support requests and request for services. The tenant agent interface portal is the portal which allows administrators to configure HCMX, agents to fulfill requests submitted by the end users, etc. The URL field contains URL to the tenant end user portal. The tenant agent interface URL is required for configuration and usage of CGRO.&nbsp;Construct the tenant agent interface URL as follows: <a>https://HCMXFullyQualifiedDomainName/saw?TENANTID=&lt;Replace with tenant ID value shown on general page&gt;<replace general="" id="" on="" page="" shown="" tenant="" value="" with="">.</replace></a> Bookmark agent interface URL. Each tenant has an admin account associated with it. This admin account is called as tenant admin account. The tenant admin account has full administration privileges for the tenant. Click the number in the <strong>Tenant admin</strong> field on the <strong>General</strong> page.</span></span></span></li>
+</ol>
+
+<p><br>
+<img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/3/39/CGRO-TenantGeneral.PNG" height="550" hspace="0" src="/mediawiki/images/pn_images/pn_image_603943fccb5446.12244108.png" style="width: 800px; height: 550px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="5">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the tenant admin&nbsp;user account <strong>General&nbsp;</strong>page, note down the login name for tenant admin in the <strong>Login name</strong> field. This practitioner note assumes that you are aware of tenant admin credentials.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/7/75/CGRO-TenantAdminUser.PNG" height="510" hspace="0" src="/mediawiki/images/pn_images/pn_image_60395927e514b4.05038001.png" style="width: 800px; height: 510px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
+
+<ol start="6">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the top right corner, click <b>suite admin user’s</b> drop down. Click <b>Logout</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/8/8c/CGRO-BOLogout.PNG" height="601" hspace="0" src="/mediawiki/images/pn_images/pn_image_603945d5a19475.67022222.png" style="width: 800px; height: 601px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
+
+<h3>Configure application settings</h3>
+
+<ol>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the tenant agent interface&nbsp;as <b>tenant admin</b> user. The tenant agent interface URL was derived in earlier steps.</span></span></span></li>
+</ol>
+
+<ol start="2">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Tenant dashboard is displayed. The dashboard is the default homepage for every user, but it is configurable and can be changed.</span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/b/bb/CGRO-DashboardHomepage.PNG" height="427" hspace="0" src="/mediawiki/images/pn_images/pn_image_60395a97015bd1.23330465.png" style="width: 800px; height: 427px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the <b>mega menu</b> (<b>Three horizontal lines</b> icon), navigate to <b>Administration</b> -&gt; <b>Configuration</b> -&gt; <b>Application Settings</b></span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/4e/CGRO-MegaAdminAppSettings.PNG" height="324" hspace="0" src="/mediawiki/images/pn_images/pn_image_60395b3f0d17a0.34259267.png" style="width: 800px; height: 324px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="4">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>APPLICATION SETTINGS</b> screen, turn on the <b>Enable Cost Governance and Resource Optimization</b> setting.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/7/71/CGRO-AppSettingsCGRO.PNG" height="764" hspace="0" src="/mediawiki/images/pn_images/pn_image_60395c797680c1.60199996.png" style="width: 800px; height: 764px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
+
+<ol start="5">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Scroll to the top of the <b>APPLICATION SETTINGS</b> screen. In the <strong>Tenant key chain</strong>&nbsp;section, if <strong>Create Key Chain</strong> option is still available, click&nbsp;&nbsp;<strong>Create Key Chain.&nbsp;</strong>In the <strong>Create tenant key chain</strong>&nbsp;window, type in and confirm the passcode. Click <strong>OK</strong>. A tenant key chain is required to support encrypted fields in the tenant.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/a/a7/CGRO-CreateTenantKeyChain.png" height="298" hspace="0" src="https://docs.microfocus.com/mediawiki/images/a/a7/CGRO-CreateTenantKeyChain.png" style="width:624px;height:298px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="624"></span></span></span></p>
+
+<ol start="6">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Scroll to the top of the <b>APPLICATION SETTINGS</b> screen. Click <strong>Save.</strong></span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><strong><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/4e/CGRO-AppSettingsSave.PNG" height="511" hspace="0" src="/mediawiki/images/pn_images/pn_image_60395ea2032d32.09702179.png" style="width: 800px; height: 511px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></strong></p>
+
+<h3>Configure authorization for CGRO</h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">By default, the tenant admin account has visibility and access to CGRO functionalities. To configure CGRO authorization for other users, follow the steps below:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create a CGRO administration user account in the suite administration portal.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Setup&nbsp;CGRO&nbsp;administration role,&nbsp;group and CGRO admin account in the IDM portal.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create CGRO&nbsp;role&nbsp;and associate CGRO admin account in the HCMX tenant agent interface.</span></span></span></li>
+</ol>
+
+<h4>Create a CGRO administration user account in suite administration portal</h4>
+
+<ol start="1">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the suite administration portal as user <b>suite-admin</b> at the following URL: <span class="MsoHyperlink" style="color:#0563c1"><span style="text-decoration:underline">https://&lt;HCMX-Server-FQDN&gt;/bo</span></span></span></span></span></li>
+</ol>
+
+<ol start="2">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>suite administration</b> home page, navigate to <b>USERS</b>. Click <strong>New</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/8/89/CGRO-BO-UsersHome.PNG" height="155" hspace="0" src="/mediawiki/images/pn_images/pn_image_60398d5e9af469.05437938.png" style="width: 800px; height: 155px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the&nbsp;<strong>New user</strong>&nbsp;window, select the <strong>account&nbsp;</strong>associated with the tenant in which CGRO capability was enabled in earlier steps. Fill in the remaining information as shown in the screenshot below. Note that login name does not have to be&nbsp;<strong>cgroAdmin</strong>. Click&nbsp;<strong>SAVE</strong>. This new user account will be used to administer and use CGRO functionalities.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/c/c8/CGRO-BO-cgroAdminNewUser.PNG" height="800" hspace="0" src="/mediawiki/images/pn_images/pn_image_60398d5ef2faa0.88839640.png" style="width: 679.157px; height: 800px; margin: 0px; border: 0px solid black;" vspace="0" width="679.1569086651054"></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A user account activation email is sent by HCMX to the email address specified in the&nbsp;<strong>cgroAdmin</strong>&nbsp;user record. Click on the user activation link in that email. User activation web page is launched in a web browser. Type in a new password and confirm the new password in the user activation web page. Note that the&nbsp;<strong>SUBMIT</strong>&nbsp;button does not show up until entered passwords match and they satisfy password complexity policy as defined in the IDM portal.&nbsp;Click&nbsp;<strong>SUBMIT</strong>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/0/08/08-PwdReset.png" height="326" hspace="0" src="https://docs.microfocus.com/mediawiki/images/0/08/08-PwdReset.png" style="width:490px;height:326px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="490"></p>
+
+<h4>Setup CGRO administration role, group and CGRO admin account in the IDM portal</h4>
+
+<ol start="1">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the IDM administration portal as user <b>suite-admin</b> at the following URL: <a href="https://%3cHCMXServerFQDN%3e/idm-admin" style="color:#0563c1; text-decoration:underline">https://&lt;HCMXServerFQDN&gt;/idm-admin</a></span></span></span></li>
+</ol>
+
+<ol start="2">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A list of organizations is displayed. Click on the organization that corresponds to the tenant id that was noted in earlier steps. In this example, it is the organization with tenant number <b>192661264</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/63/CGRO-IDMOrgs-1.PNG" height="351" hspace="0" src="/mediawiki/images/pn_images/pn_image_603993e23154b9.03881075.png" style="width: 800px; height: 351px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>ORGANIZATION</b> menu, Click <b>Roles</b> page. A list of existing roles is displayed. Create <b>+</b> icon to create a new role for CGRO functionality.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/e/ee/CGRO-IDM-Roles.PNG" height="602" hspace="0" src="/mediawiki/images/pn_images/pn_image_603993e2881706.71901449.png" style="width: 800px; height: 602px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>ADD ROLE</b> screen, associate the following permissions:&nbsp;</span></span><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">CMP_ACCOUNTS_TENANT_ADMIN,&nbsp;CMP_INTEGRATION_GATEWAY_USER,&nbsp;CGRO_SHOWBACK_TENANT_ADMIN,&nbsp;CGRO_SHOWBACK_GATEWAY_USER,&nbsp;CGRO_INSIGHTS_TENANT_ADMIN and CGRO_INSIGHTS_GATEWAY_USER.&nbsp;Type CGROAdmin as&nbsp;</span></span><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">&nbsp;the <strong>role name</strong>,&nbsp; CGRO Administrator as the <strong>display name</strong>. Click <b>SAVE.</b></span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/f/f9/IDM-CGROAdminRoleAdd.PNG" height="394" hspace="0" src="/mediawiki/images/pn_images/pn_image_603993e2bfbcd9.48387655.png" style="width: 800px; height: 394px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this example, required CGRO permissions have been assigned to a single role called as <b>CGROAdmin</b>. If there is a need to further divide this role into multiple roles, refer to the table below for each of the CGRO permissions and their purpose. </span></span></span></p>
+
+<table class="MsoTableGrid" style="border-collapse:collapse; border:none">
+	<tbody>
+		<tr>
+			<td style="border-bottom:1px solid black; width:246px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Permission name</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:378px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Purpose</b></span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:246px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">CMP_ACCOUNTS_TENANT_ADMIN</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:378px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">This permission provides capability to access the integration accounts data in the tenant. However, this permission alone does not allow a user to access and view the integration accounts data from the user interface. Assign the CMP_INTEGRATION_GATEWAY_USER permission in addition to the CMP_ACCOUNTS_TENANT_ADMIN permission to a user to be able to access and make changes to the integration accounts data in the user interface. </span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:246px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">CMP_INTEGRATION_GATEWAY_USER</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:378px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">This permission provides capability to view the integration accounts data in the user interface. However, this permission alone does not allow a user to access and view the integration accounts data from the user interface. Assign the CMP_ACCOUNTS_TENANT_ADMIN permission in addition to the CMP_INTEGRATION_GATEWAY_USER permission to a user to be able to access and make changes to the integration accounts data in the user interface.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:246px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">CGRO_SHOWBACK_TENANT_ADMIN</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:378px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">This permission provides capability to access the cloud governance data in the tenant. However, this permission alone does not allow a user to access and view the cloud governance data from the user interface. Assign the CGRO_SHOWBACK_GATEWAY_USER permission in addition to the CGRO_SHOWBACK_TENANT_ADMIN permission to a user to be able to access and view the cloud governance data in the user interface. </span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:246px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">CGRO_SHOWBACK_GATEWAY_USER</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:378px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">This permission provides capability to view the cloud governance data in the user interface. However, this permission alone does not allow a user to access and view the cloud governance data from the user interface. Assign the CGRO_SHOWBACK_TENANT_ADMIN permission in addition to the CGRO_SHOWBACK_GATEWAY_USER permission to a user to be able to access and view the cloud governance data in the user interface.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:246px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">CGRO_INSIGHTS_TENANT_ADMIN</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:378px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">This permission provides capability to access the cloud insight data in the tenant. However, this permission alone does not allow a user to access and view the cloud insight data from the user interface. Assign the CGRO_INSIGHTS_GATEWAY_USER permission in addition to the CGRO_INSIGHTS_TENANT_ADMIN permission to a user to be able to access and view the cloud insight data in the user interface. </span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:246px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">CGRO_INSIGHTS_GATEWAY_USER</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:378px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">This permission provides capability to view the cloud insight data in the UI. However, this permission alone does not allow a user to access and view the cloud insight data from the user interface. Assign the CGRO_INSIGHTS_TENANT_ADMIN permission in addition to the CGRO_INSIGHTS_GATEWAY_USER permission to a user to be able to access and view the cloud insight data in the user interface.</span></span></span></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <b>Groups </b>page. A list of groups is displayed.&nbsp;</span></span></span>Click <strong>+&nbsp;</strong>icon in the group menu.</li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/6f/15-IDM-Groups.PNG" height="512" hspace="0" src="/mediawiki/images/pn_images/pn_image_603996964a8b07.34949642.png" style="width: 800px; height: 512px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
+
+<p style="margin-bottom:11px; margin-left:8px"></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>GROUP SETTINGS</strong> screen, type name, display name, associate <strong>CGROAdmin</strong> role, and associate all users that will be using CGRO functionalities. In this example, it is <strong>cgroAdmin</strong></span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/a/a5/CGRO-CGROAdminGroupCreate.PNG" height="419" hspace="0" src="/mediawiki/images/pn_images/pn_image_60399696847001.43064530.png" style="width: 800px; height: 419px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="7">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log out of the IDM administration portal.</span></span></span></li>
+</ol>
+
+<h4>Create CGRO role and associate CGRO admin account in the HCMX tenant agent interface</h4>
+
+<ol start="1">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Logon to the HCMX tenant agent interface as tenant admin user. HCMX tenant dashboard is displayed.</span></span></span></li>
+</ol>
+
+<ol start="2">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the <b>mega menu</b> (<b>Three horizontal lines</b> icon), navigate to <b>Administration</b> -&gt; <b>Master Data&nbsp;</b>-&gt; <b>People</b></span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/5a/CGRO-MegaMenu-People.PNG" height="494" hspace="0" src="/mediawiki/images/pn_images/pn_image_60399ce99eba25.70344616.png" style="width: 800px; height: 494px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to&nbsp;<strong>Roles</strong>. A list of roles&nbsp;is displayed. Click&nbsp;<strong>Add</strong>&nbsp;to create a new role.</span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/68/CGRO-ROlesHomepage.PNG" height="362" hspace="0" src="/mediawiki/images/pn_images/pn_image_6039a2ba6d2305.58271254.png" style="width: 800px; height: 362px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the&nbsp;<strong>New role</strong>&nbsp;window, name the new role as <strong>CGRO&nbsp;Admin</strong>. Click&nbsp;<strong>OK</strong>.</span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/d/da/CGRO-CGROAdminRoleNewWindow.PNG" height="262" hspace="0" src="https://docs.microfocus.com/mediawiki/images/d/da/CGRO-CGROAdminRoleNewWindow.PNG" style="width:605px;height:262px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="605"></p>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <strong>CGRO</strong>&nbsp;<strong>Admin</strong>&nbsp;role, select permissions in the <strong>General</strong> and <strong>Reports &amp; Views</strong> sections as shown in the following screenshot. Scroll down to <strong>Record type</strong> section.</span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/43/CGRO-RoleCGROAdmin-GeneralReportViews.PNG" height="766" hspace="0" src="/mediawiki/images/pn_images/pn_image_6039ae3a899224.35340115.png" style="width: 800px; height: 766px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Record type&nbsp;</b>&nbsp;section, add record types and their corresponding permissions as shown in the following screenshots.</span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/f/f3/CGRO-RoleCGROAdmin-RecordType-01.PNG" height="495" hspace="0" src="/mediawiki/images/pn_images/pn_image_6039ae3acfbbf8.45057898.png" style="width: 800px; height: 495px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/9/9b/CGRO-RoleCGROAdmin-RecordType-02.PNG" height="431" hspace="0" src="/mediawiki/images/pn_images/pn_image_6039ae3b0ebf37.02442234.png" style="width: 800px; height: 431px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="7">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Select permissions in the&nbsp;<strong>Approval&nbsp;</strong>section as shown in the following screenshot.</span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/4d/CGRO-RoleCGROAdmin-Approvals.PNG" height="446" hspace="0" src="https://docs.microfocus.com/mediawiki/images/4/4d/CGRO-RoleCGROAdmin-Approvals.PNG" style="width:589px;height:446px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="589"></p>
+
+<ol start="8">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Select permissions in the&nbsp;<strong>Tasks&nbsp;</strong>section as shown in the following screenshot.</span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/0/0e/CGRO-RoleCGROAdmin-Tasks.PNG" height="206" hspace="0" src="https://docs.microfocus.com/mediawiki/images/0/0e/CGRO-RoleCGROAdmin-Tasks.PNG" style="width:416px;height:206px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="416"></p>
+
+<ol start="8">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Scroll to the top of the&nbsp;<strong>role</strong>&nbsp;details page. Click&nbsp;<strong>Save.</strong></span></span></span></li>
+</ol>
+
+<ol start="9">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click&nbsp;<strong>PEOPLE</strong>&nbsp;tab. Click&nbsp;<strong>CGRO Admin user’s id</strong>.</span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/f/f0/CGRO-PeopleCGROAdmin.PNG" height="344" hspace="0" src="/mediawiki/images/pn_images/pn_image_6039b4380a5389.86970870.png" style="width: 800px; height: 344px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="10">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the CGRO Admin user’s&nbsp;<strong>General</strong>&nbsp;page,&nbsp;<strong>system use definitions</strong>&nbsp;section, select <strong>Self-Service Portal User </strong>and<strong> CGRO&nbsp;Admin&nbsp;</strong>roles. Click&nbsp;<strong>Save</strong>.</span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/b/ba/CGRO-CGROAdminROleAssign.PNG" height="508" hspace="0" src="/mediawiki/images/pn_images/pn_image_6039b43848aa64.03673591.png" style="width: 800px; height: 508px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="11">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Logout of HCMX tenant agent interface.</span></span></span></li>
+</ol>
+
+<h3>Verify CGRO menu options visibility</h3>
+
+<ol start="1">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Logon to the HCMX tenant agent interface as CGRO&nbsp;admin user. HCMX tenant dashboard is displayed.</span></span></span></li>
+</ol>
+
+<ol start="2">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the mega menu,&nbsp;<span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">observe that following menu options are visible under <b>Run</b> submenu: <strong>Cost Governance</strong> and <strong>Insights</strong></span></span></span></span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/2/22/CGRO-Verify-Menu.PNG" height="264" hspace="0" src="/mediawiki/images/pn_images/pn_image_6039b82c37d6b9.85147082.png" style="width: 800px; height: 264px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the mega menu,&nbsp;<span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">observe that following menu options are visible under <b>Administration -&gt; Utilities</b>: <b>Providers</b></span></span></span></span></span></span></li>
+</ol>
+
+<p><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/a/a8/20-MegaMenuProviders.PNG" height="306" hspace="0" src="/mediawiki/images/pn_images/pn_image_603bc113c823e6.75542978.png" style="width: 800px; height: 306px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></b></span></span></span></span></span></span></p>
+
+<h3>Configure cloud cost data providers</h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">HCMX CGRO capability collects cost data from the following public cloud providers: AWS and Microsoft Azure. HCMX CGRO capability displays cost data via reports, generates cost saving insights and recommendations and provides email alerts for cost limit compliance violations. HCMX CGRO capability requires connection details to bring cost data from AWS and Azure. The following pre-requisite setups must be performed in AWS and Azure before configuring AWS and Azure cloud cost data providers in HCMX.</span></span></span></p>
+
+<h4>AWS pre-requisite steps</h4>
+
+<p><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">The following pre-requisite steps must be performed in AWS to allow the HCMX CGRO module to retrieve cloud cost data from AWS:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create an Identity and Access Management (IAM) user, access key ID and secret access key</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create a cost usage report (CUR)</span></span></span></li>
+</ol>
+
+<h5>Create an Identity and Access Management (IAM) user, access key ID and secret access key</h5>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">AWS IAM enables you to manage access to AWS services and resources securely. Using IAM, you can create and manage AWS users and groups, and use permissions to allow and deny their access to AWS resources.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will create an IAM user with permissions to access CUR data. This IAM user’s access key ID and secret key access will be used by HCMX CGRO capability to retrieve AWS cloud cost data.</span></span></span></p>
+
+<ol start="1">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the AWS management console.</span></span></span></li>
+</ol>
+
+<ol start="2">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to <b>Identity and Access Management (IAM)</b> service.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/e/eb/23-AWS_IAMService.PNG" height="173" hspace="0" src="/mediawiki/images/pn_images/pn_image_603a68e84c0489.92098643.png" style="width: 800px; height: 173px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The<b> IAM dashboard</b> is displayed.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/c/c1/24-AWS_IAMDashboardUsers-1.PNG" height="524" hspace="0" src="/mediawiki/images/pn_images/pn_image_603a68e8d926e2.68095670.png" style="width: 800px; height: 524px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>IAM dashboard</b>, navigate to <b>Users</b> page.</span></span></span></li>
+</ol>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">On the <b>Users</b> page, click <b>Add user. Add user</b> wizard is displayed.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/4e/25_AWS_IAM_Users_AddUser.PNG" height="191" hspace="0" src="https://docs.microfocus.com/mediawiki/images/4/4e/25_AWS_IAM_Users_AddUser.PNG" style="width:604px;height:191px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="604"></span></span></span></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Add user</b> wizard, in the&nbsp;<b>Set user details</b> section, enter a user name, enable <b>Programmatic access</b> access type. Click <b>Next: Permissions</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/3/34/26_AWS_IAM_Users_AddUser_Details.PNG" height="689" hspace="0" src="/mediawiki/images/pn_images/pn_image_603a68e9293a77.15458631.png" style="width: 800px; height: 689px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
+
+<ol start="7">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Add user</b> wizard, <b>Set permissions</b> screen, select <b>Attach existing policies directly</b>.<b> </b>In the <b>Filter policies</b> search box search for and select each of the following <b>Filter policies</b>, one at a time</span></span></span></li>
+</ol>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">AWSPriceListServiceFullAccess</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">AmazonEC2ReadOnlyAccess</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">AmazonS3ReadOnlyAccess</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">AWSOrganizationsReadOnlyAccess</span></span></span></li>
+</ul>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">After all the above policies have been selected, click <b>Next: Tags</b>. </span></span></span></p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/68/26_AWS_IAM_Users_AddUser_SetPermissions.PNG" height="684" hspace="0" src="/mediawiki/images/pn_images/pn_image_603a6a1baa41f2.31666536.png" style="width: 800px; height: 684px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="8">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Add user</b> wizard, <b>Add tags</b> screen, enter any meaningful tag key and its value. Tags are optional, however, they are recommended for easier identification of resources. Work with your AWS administrators to identify useful tags to be added.&nbsp;Click <b>Next: Review</b></span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/b/b7/28_AWS_IAM_Users_AddUser_Tags.PNG" height="684" hspace="0" src="/mediawiki/images/pn_images/pn_image_603a6ca7b97ff9.78239368.png" style="width: 800px; height: 684px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
+
+<ol start="9">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Add user</b> wizard, <b>Review</b> screen, review user details and permissions. Click <b>Create user</b></span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"></p>
+
+<p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/3/38/29_AWS_IAM_Users_AddUser_Review.PNG" height="695" hspace="0" src="/mediawiki/images/pn_images/pn_image_603a6ca82429c6.45684981.png" style="width: 800px; height: 695px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
+
+<ol start="10">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Add user</b> wizard, <b>Success </b>page, click <b>Show</b> under <b>Secret access key</b> column</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/19/30_AWS_IAM_Users_AddUser_Success-3.PNG" height="370" hspace="0" src="/mediawiki/images/pn_images/pn_image_603ae9d2eb5075.63588256.png" style="width: 800px; height: 370px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="11">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Note down the <b>Access Key ID</b> and <b>Secret access key</b> values which will be needed during AWS connection configuration in HCMX.&nbsp; Click <b>Download.csv</b> button to download access key ID and secret access key value to a file on your desktop. Access Key ID and Secret access key value is confidential information,&nbsp;use caution if you are sharing this information with others.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/7/7f/31_AWS_IAM_Users_AddUser_Success_SecretAccessKey-1.PNG" height="382" hspace="0" src="/mediawiki/images/pn_images/pn_image_603a79f72d52c5.04140878.png" style="width: 800px; height: 382px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
+
+<h5>Create a cost usage report</h5>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The AWS Cost and Usage Reports contain the most comprehensive set of cost and usage data available. After setting up a Cost and Usage Report, the current month’s billing data will be delivered to an Amazon S3 bucket that you designate during set-up. You can receive hourly, daily or monthly reports that break out your costs by product or resource and by tags that you define yourself. AWS updates the report in your bucket at least once per day. After setting up a Cost and Usage Report, you will receive the current month’s billing data and daily updates in the same Amazon S3 bucket. </span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will create a cost usage report with an S3 bucket and a report path prefix where AWS updates the report. This S3 bucket and report path prefix will be used by HCMX CGRO capability to retrieve AWS cloud cost data.</span></span></span></p>
+
+<ol start="1">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the AWS management console.</span></span></span></li>
+</ol>
+
+<ol start="2">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to the <b>Billing</b> service.</span></span></span></li>
+</ol>
+
+<p><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/0/0c/32_AWS_Billing.PNG" height="174" hspace="0" src="/mediawiki/images/pn_images/pn_image_603aee7ba6b065.50627767.png" style="width: 800px; height: 174px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the billing home page, Navigate to <b>Cost &amp; Usage Reports</b></span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/3/35/33_AWS_BillingCUR.PNG" height="274" hspace="0" src="/mediawiki/images/pn_images/pn_image_603aee7c145a86.45942626.png" style="width: 800px; height: 274px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></b></span></span></span></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">On the <b>AWS Cost and Usage Reports</b> page, click <b>Create Report</b></span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/b/be/34_AWS_CUR_CreateReport.PNG" height="526" hspace="0" src="/mediawiki/images/pn_images/pn_image_603aee7c8b0f94.90187451.png" style="width: 800px; height: 526px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></b></span></span></span></p>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Create report</b> wizard, <b>Report content</b> page, type in a meaningful report name, select <b>Include resource IDs</b> checkbox. Click <b>Next</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/d/d1/35_AWS_CUR_CreateReport_ReportContent.PNG" height="545" hspace="0" src="/mediawiki/images/pn_images/pn_image_603af180f3d381.63751146.png" style="width: 800px; height: 545px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Create report</b> wizard, <b>Delivery options</b> page, click <b>Configure </b>under <b>S3 bucket</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/7/7d/36_AWS_CUR_CreateReport_DelOptions.PNG" height="598" hspace="0" src="/mediawiki/images/pn_images/pn_image_603af181d880c8.66660769.png" style="width: 800px; height: 598px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
+
+<ol start="7">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Create report</b> wizard, <b>Delivery options</b> page, <b>Configure S3 Bucket wizard</b> page, enter a new S3 bucket name and select a region. Note down the bucket name which will be needed during AWS connection configuration in HCMX.&nbsp; Click <b>Next</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/44/37_AWS_CUR_CreateReport_DelOptions_ConfigureS3Bucket.PNG" height="600" hspace="0" src="/mediawiki/images/pn_images/pn_image_603af182622f69.96431667.png" style="width: 800px; height: 600px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
+
+<ol start="8">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Configure S3 bucket</b> wizard, <b>Verify policy</b> page, select <b>I have confirmed that this policy is correct</b> checkbox. Click <b>Save</b>.</span></span></span></li>
+</ol>
+
+<p><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/2/21/38_AWS_CUR_CreateReport_DelOptions_ConfigureS3Bucket-2.PNG" height="599" hspace="0" src="/mediawiki/images/pn_images/pn_image_603af182ce8cc3.32688066.png" style="width: 800px; height: 599px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
+
+<ol start="9">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Enter <b>Report path prefix</b>.&nbsp; Select remaining options as shown in the screenshot below. Click <b>Next</b>.</span></span></span></li>
+</ol>
+
+<p><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/a/a4/39_AWS_CUR_CreateReport_DelOptions-2_.PNG" height="634" hspace="0" src="/mediawiki/images/pn_images/pn_image_603af183564cc2.97076290.png" style="width: 800px; height: 634px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
+
+<ol start="10">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Create report</b> wizard, <b>Review</b> page, note down the <b>Report path prefix</b> value excluding the /<b>date-range/</b> value which will be needed during AWS connection configuration in HCMX. In this example, note down the <b>report path prefix</b> value as <b>hcmx/masterCur</b>. Click <b>Review and Complete</b>. </span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/5b/40_AWS_CUR_CreateReport_Review.PNG" height="800" hspace="0" src="/mediawiki/images/pn_images/pn_image_603af183c9b391.04919223.png" style="width: 760.93px; height: 800px; margin: 0px; border: 0px solid black;" vspace="0" width="760.9302325581396"></p>
+
+<ol start="11">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The cost and usage report gets created successfully. Note that report data population is not immediate. It may take longer than&nbsp;24 hours. </span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:8px"><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/d/d9/41_AWS_CUR_CreateReport_Success.PNG" height="483" hspace="0" src="/mediawiki/images/pn_images/pn_image_603af18443f002.06831758.png" style="width: 800px; height: 483px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
+
+<ol start="12">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">As noted earlier, cost usage report dump by AWS is not instantaneous. Wait for at-least 24 to 48 hours before performing this step. &nbsp;In the AWS console, navigate to <b>S3</b> service. Navigate to the CUR report’s S3 bucket/cost usage report name/date-range folder/DateTimestampZ/ directory. In this example, it is hcmxcgro/hcmx/masterCur/20210201-20210301/20210214T032634Z directory. Observe that there is a *.csv.gz compressed file. This *.csv.gz file contains AWS cloud cost data. Once the CUR data is visible, configuration of CUR report in AWS is complete and you can proceed to add AWS as a cloud cost data provider in HCMX. </span></span></span></li>
+</ol>
+
+<p><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/1f/68_AWS_CUR_Data.PNG" height="416" hspace="0" src="/mediawiki/images/pn_images/pn_image_603af184a18f82.95730721.png" style="width: 800px; height: 416px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></span></span></p>
+
+<h4>Microsoft Azure Pre-requisites</h4>
+
+<p><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">The following pre-requisite steps must be performed in Microsoft Azure to allow the HCMX CGRO module to retrieve cloud cost data from Azure:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><font face="Calibri, sans-serif"><span style="font-size: 14.6667px;">Get Microsoft Azure Enterprise Agreement Enrollment&nbsp;number</span></font></li>
+	<li style="margin-left:8px"><font face="Calibri, sans-serif"><span style="font-size: 14.6667px;">Generate Microsoft Azure Enterprise Agreement API Access key</span></font></li>
+</ol>
+
+<h5>Get Microsoft Azure Enterprise Agreement Enrollment number</h5>
+
+<ol start="1">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the Microsoft Azure enterprise agreement portal at the following URL: <a href="https://ea.azure.com">https://ea.azure.com</a>. If you do not have access to the&nbsp;Microsoft Azure enterprise agreement portal, work with your initial Azure enterprise administrator to provide you access to the enterprise agreement portal or to share with you the Microsoft Azure enterprise agreement enrollment number. An initial Microsoft Azure enterprise administrator is the one who has logged into&nbsp;Microsoft Azure enterprise agreement portal&nbsp;&nbsp;using an invitation email sent by Microsoft.</span></span></span></li>
+</ol>
+
+<ol start="2">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <strong>Manage</strong> menu on the left. Note down the enrollment number.</span></span></span></li>
+</ol>
+
+<p style="margin-left:8px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/63/azureEANumber-1.png" height="395" hspace="0" src="https://docs.microfocus.com/mediawiki/images/6/63/azureEANumber-1.png" style="width:467px;height:395px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="467"></p>
+
+<h5>Generate Microsoft Azure Enterprise Agreement API Access key</h5>
+
+<ol start="1">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the Microsoft Azure enterprise agreement portal at the following URL: <a href="http://ea.azure.com">https://ea.azure.com</a>.</span></span></span></li>
+</ol>
+
+<ol start="2">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click&nbsp;<strong>Reports</strong>&nbsp;from the left-hand menu.</span></span></span></li>
+</ol>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click&nbsp;<strong>Download Usage.&nbsp; </strong>Click<strong> API Access Key.</strong></span></span></span></li>
+</ol>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Under&nbsp;<strong>Enrollment Access Keys</strong>, select the generate key symbol to generate either a primary or secondary key.</span></span></span></li>
+</ol>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Select&nbsp;<strong>Expand Key</strong>&nbsp;to view the entire generated API access key.</span></span></span></li>
+</ol>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Select&nbsp;<strong>Copy</strong>&nbsp;to get the Microsoft Azure Enterprise Agreement API access key. Ensure that you get the entire API access key.</span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/57/ea-create-generate-or-retrieve-the-api-key.png" height="261" hspace="0" src="/mediawiki/images/pn_images/pn_image_603b0fe751e640.83710854.png" style="width: 800px; height: 261px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<h4>Configure AWS cloud cost provider in HCMX</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">HCMX CGRO capability needs AWS login details, AWS cost usage report’s S3 bucket name and cost usage report’s prefix to collect&nbsp;cost data from AWS.&nbsp; All of this information was obtained in the AWS pre-requisite section.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will create a cost reporting integration with&nbsp;AWS in HCMX to retrieve cloud cost data from AWS.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the HCMX tenant agent interface portal as CGRO admin user.&nbsp;</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Using the <b>mega menu</b>, navigate to <b>Administration</b> -&gt; <b>Utilities</b> -&gt; <b>Providers</b></span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/a/a8/20-MegaMenuProviders.PNG" height="306" hspace="0" src="/mediawiki/images/pn_images/pn_image_603b194f90fa03.00477042.png" style="width: 800px; height: 306px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to <b>CLOUD COST DATA PROVIDERS</b>.</span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/7/7c/21-CloudCostDataProviders.PNG" height="160" hspace="0" src="/mediawiki/images/pn_images/pn_image_603b194fd88e53.75793588.png" style="width: 800px; height: 160px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <b>+ </b>icon on the top right corner to add a new cloud cost data provider.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Cost Reporting Provider Type</b> window, select <b>Amazon AWS</b>. Click <b>NEXT.</b></span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/8/8c/22-CostReportingAWS.PNG" height="455" hspace="0" src="https://docs.microfocus.com/mediawiki/images/8/8c/22-CostReportingAWS.PNG" style="width:603px;height:455px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="603"></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Cost Reporting Connection</b> screen, enter the connection information that were noted in earlier steps in the <b>AWS pre-requisite</b> section. If a web proxy is needed to reach internet, supply proxy related information.</span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/57/42_CGRO_COSTReportConnection_AWS-2.PNG" height="800" hspace="0" src="/mediawiki/images/pn_images/pn_image_603d5c97b8e201.28740101.png" style="width: 551.253px; height: 800px; margin: 0px; border: 0px solid black;" vspace="0" width="551.25284738041"></p>
+
+<ol start="7">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The <b>Cost Reporting Collection Details</b> screen has two optional sections. The first section, <b>Collection Details</b>, allows for the specification of an optional history cut-off date. Specifying this value will limit the cost reporting data retrieved from AWS, only gathering historical data starting at the date specified and continuing to the current date, while leaving the field empty will retrieve all available historical data. The second section of this step, entitled <b>Cloud Tags</b>, allows for configuring of 0 to 10 custom tags that can be used to filter data after collection. Regardless of whether cloud tags are provided or not, all cost reporting information will be retrieved for the given date range as configured in <strong>collection history cut off date</strong>.&nbsp; Cloud tags are composed of two parts. The first part, the <b>Display Name</b>, is what will be visible to the user during filtering in reports, whereas the second part, the <b>Key</b>, is the case-sensitive text that matches to the <strong>key</strong> part of the <strong>tag</strong> created in AWS. In AWS, tags are defined as key-value pairs.&nbsp; Once these steps are configured, click <b>Finish</b> to create the integration.</span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/5a/44_CGRO_COSTReportConnection_AWS_CollectionCutoff.PNG" height="550" hspace="0" src="https://docs.microfocus.com/mediawiki/images/5/5a/44_CGRO_COSTReportConnection_AWS_CollectionCutoff.PNG" style="width:605px;height:550px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="605"></p>
+
+<p style="margin-left:48px"></p>
+
+<ol start="8">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The<b> AWS cost reporting integration</b> is created.&nbsp;CGRO begins collecting cost reporting data from AWS. The stage of the process is displayed under the <b>Last Status </b>heading of the integration. The length of the collection process will depend on several factors such as the amount of data being retrieved and the network bandwidth. As such, it may take several days to complete.</span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/43/45_CGRO_CloudCost_AWS_Coll_Start-2.PNG" height="189" hspace="0" src="/mediawiki/images/pn_images/pn_image_603d5c9801fde0.15799759.png" style="width: 800px; height: 189px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="9">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">After AWS cloud cost data collection is completed successfully, the <b>Last status</b> column displays <b>Success.</b> </span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/8/87/46_CGRO_CloudCost_AWS_Coll_End-2.PNG" height="189" hspace="0" src="/mediawiki/images/pn_images/pn_image_603d5c9833dab0.66756286.png" style="width: 800px; height: 189px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<h4>Configure Microsoft Azure cloud cost provider in HCMX</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">HCMX CGRO capability needs </span></span></span><font face="Calibri, sans-serif"><span style="font-size:14.6667px">Microsoft Azure enterprise agreement enrollment&nbsp;number&nbsp;</span></font><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">and Microsoft Azure enterprise agreement API access key to collect cost data from Microsoft Azure. </span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will create a cost reporting integration with Microsoft Azure in HCMX to retrieve cloud cost data from Azure.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the HCMX tenant agent interface portal as CGRO admin user.&nbsp;&nbsp;</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Using the mega menu, navigate to <b>Administration</b> -&gt; <b>Utilities</b> -&gt; <b>Providers</b></span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/a/a8/20-MegaMenuProviders.PNG" height="306" hspace="0" src="/mediawiki/images/pn_images/pn_image_603b1951425bb8.51947641.png" style="width: 800px; height: 306px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to <b>CLOUD COST DATA PROVIDERS</b>.</span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/7/7c/21-CloudCostDataProviders.PNG" height="160" hspace="0" src="/mediawiki/images/pn_images/pn_image_603b19519dd828.52980404.png" style="width: 800px; height: 160px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <b>+ </b>icon on the top right corner to add a new cloud cost data provider.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Cost Reporting Provider Type</b> window, select <b>Microsoft Azure</b>. Click <b>NEXT.</b></span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/c/c1/48_CGRO_CloudCost_Azure_AddInteg_ProviderType.PNG" height="435" hspace="0" src="https://docs.microfocus.com/mediawiki/images/c/c1/48_CGRO_CloudCost_Azure_AddInteg_ProviderType.PNG" style="width:604px;height:435px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="604"></p>
+
+<p style="margin-left:48px"></p>
+
+<ol start="6">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Cost Reporting Connection</b> screen, enter Microsoft Azure enterprise agreement enrollment number,&nbsp;enter <strong>Microsoft Azure enterprise agreement API access key</strong> that was obtained in Azure pre-requisite section as the Azure bearer token, provide a meaningful connection name. Enter proxy related information if HCMX systems need proxy to reach internent. Click <b>NEXT</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/f/ff/49_CGRO_CloudCost_Azure_AddInteg_ConnectionInformation.PNG" height="775" hspace="0" src="https://docs.microfocus.com/mediawiki/images/f/ff/49_CGRO_CloudCost_Azure_AddInteg_ConnectionInformation.PNG" style="width:606px;height:775px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="606"></p>
+
+<ol start="7">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The <b>Cost Reporting Collection Details</b> screen has two optional sections. The first section, <b>Collection Details</b>, allows for the specification of an optional history cut-off date. Specifying this value will limit the cost reporting data retrieved from Azure, only gathering historical data starting at the date specified and continuing to the current date, while leaving the field empty will retrieve all available historical data. The second section of this step, entitled <b>Cloud Tags</b>, allows for configuring of 0 to 10 custom tags that can be used to filter data after collection. Regardless of whether cloud tags are provided or not, all cost reporting information will be retrieved for the given date range as configured in <strong>collection history cut off date</strong>.&nbsp; Cloud tags are composed of two parts. The first part, the <b>Display Name</b>, is what will be visible to the user during filtering in reports, whereas the second part, the <b>Key</b>, is the case-sensitive text that matches to the <strong>key</strong> part of the <strong>tag</strong> created in Azure. In Azure, tags are defined as key-value pairs.&nbsp; Once these steps are configured, click <b>Finish</b> to create the integration.</span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/9/9e/50_CGRO_CloudCost_Azure_AddInteg_CollDetails.PNG" height="549" hspace="0" src="https://docs.microfocus.com/mediawiki/images/9/9e/50_CGRO_CloudCost_Azure_AddInteg_CollDetails.PNG" style="width:603px;height:549px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="603"></p>
+
+<ol start="8">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The<b> Microsoft Azure cost reporting integration</b> is created. CGRO begins collecting cost reporting data from Azure. The stage of the process is displayed under the <b>Last Status </b>heading of the integration. The length of the collection process will depend on several factors such as the amount of data being retrieved and the network bandwidth. As such, it may take several days to complete.</span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/b/b9/51_CGRO_CloudCost_Azure_Coll_Start-1.PNG" height="301" hspace="0" src="/mediawiki/images/pn_images/pn_image_603d5f6b529502.98645396.png" style="width: 800px; height: 301px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="9">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">After Microsoft Azure cloud cost data collection is completed successfully, the <b>last status</b> column&nbsp;displays <b>Success.</b> </span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/50/52_CGRO_CloudCost_Azure_Coll_End-1.PNG" height="289" hspace="0" src="/mediawiki/images/pn_images/pn_image_603d5f6b8d1a66.37534674.png" style="width: 800px; height: 289px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<h2>Use CGRO</h2>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this practitioner notes, the following use cases are described:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Understand public cloud spending.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Identify opportunities for cost savings.</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Identify out of compliance spend groups.</span></span></span></li>
+</ol>
+
+<h4>Understand public cloud spending</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">It is common for an enterprise to have cloud services from multiple cloud providers such as AWS and Microsoft Azure. HCMX CGRO functionality allows you to understand cloud spending across various public cloud providers from a single dashboard. Cost governance reports help visualize public cloud spending. These reports enable you to review your public cloud costs, cloud activity and usage of public cloud resources. </span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will view and explore various cost governance reports, create a new report view, and understand cost data.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the HCMX Agent Interface portal as a user with CGRO administration privileges.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the homepage, using <b>mega menu</b>, navigate to <b>Run</b> -&gt; <b>Cost Governance</b> </span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/10/53_CGRO_Reports.PNG" height="281" hspace="0" src="/mediawiki/images/pn_images/pn_image_603bb0008319b4.58610683.png" style="width: 800px; height: 281px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The cloud cost reports page is displayed. The HCMX CGRO functionality includes several AWS and Microsoft Azure reports out of the box. &nbsp;Reports are grouped under <b>AWS Reports and Azure Reports</b>. Explore various reports to understand public cloud cost and usage. The HCMX CGRO functionality stores cloud cost data in the Vertica database. Business intelligence tools can be used to develop additional reports by connecting to the Vertica database. </span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the sample screenshot below, the <b>AWS spend by product</b> report is displayed. By default, report is drawn using bar charts. Chart type can be changed to an <b>Area</b> chart. Default interval for the charts&nbsp;is <b>monthly</b>. Default interval&nbsp; of charts can be changed to a daily, monthly, quarterly and yearly intervals. The chart is displayed in the top section of the report. In the middle section, report data is displayed. In the bottom section, total spend for the selected interval is displayed.</span></span></span></p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/a/ae/54_CGRO_Reports_MainReport.PNG" height="428" hspace="0" src="/mediawiki/images/pn_images/pn_image_603bb000c837a0.16713595.png" style="width: 800px; height: 428px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p style="margin-left:48px"></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Reports can be saved graphically in a png image file&nbsp;or report data can be exported to a csv file using the icons in the top right corner of the screen. </span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Various filters can be applied to display specific cost usage data. After filters are applied, those filter settings can be saved as a view for use next time. This practitioner note describes the steps to create a view for the AWS product spend in <b>us-east-1</b> region.&nbsp; Click <b>FILTERS</b> dropdown, select <b>Region</b>. Select <b>us-east-1.</b> Click <b>CLOSE.</b></span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/53/55_CGRO_Reports_MainReport_Filter.PNG" height="426" hspace="0" src="/mediawiki/images/pn_images/pn_image_603bb7fea2b2f3.16624685.png" style="width: 800px; height: 426px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p style="margin-left:48px"></p>
+
+<ol start="5">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <b>VIEWS: DEFAULT </b>dropdown list. Select <b>Save view as…</b></span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/16/56_CGRO_Reports_MainReport_SaveView.PNG" height="429" hspace="0" src="/mediawiki/images/pn_images/pn_image_603bb7ff037d75.02572003.png" style="width: 800px; height: 429px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Save View</b> screen, enter a meaningful view name. Click <b>SAVE</b>.</span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/8/85/57_CGRO_Reports_MainReport_ViewName.PNG" height="226" hspace="0" src="https://docs.microfocus.com/mediawiki/images/8/85/57_CGRO_Reports_MainReport_ViewName.PNG" style="width:548px;height:226px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="548"></p>
+
+<h3>Identify opportunities for cost savings</h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">After collection of cloud cost data, the HCMX CGRO Insights module runs in the background and displays potential opportunities for cost savings in a dashboard.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">This section describes how to view and interpret CGRO insights to identify potential opportunities for cloud cost savings.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the HCMX Agent Interface portal as a user with CGRO administration privileges.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the homepage, using <b>mega menu</b>, navigate to <b>Run</b> -&gt; <b>Insights</b></span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/7/71/58_CGRO_Menu_CloudInsights.PNG" height="275" hspace="0" src="/mediawiki/images/pn_images/pn_image_603bb7ff36f3a8.05228510.png" style="width: 800px; height: 275px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The <b>CLOUD INSIGHTS OVERVIEW</b> page is displayed. The cloud insights overview page displays the following sections:</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Reserved instances</b></span></span></span></p>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Cloud optimization summary score</b>: A summary score that helps to quickly gauge current cloud cost optimization status. If the summary score is low, then cloud cost optimization is not up to the mark.&nbsp; If the summary score is high, then cloud cost optimization is good, but there may still be opportunities for further optimizations.</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Potential yearly savings</b>: Potential yearly savings that can be achieved from the configured public cloud providers. Currently, only AWS and Azure are supported.</span></span></span></li>
+	<li style="margin-left:56px; margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Top recommendations</b>: A quick summary of the greatest opportunities for cost savings through reserved instances.</span></span></span></li>
+</ul>
+
+<p style="margin-left:48px; margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Reservation coverage</b></span></span></span></p>
+
+<ul>
+	<li style="margin-left:56px; margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Reservation coverage chart</b>: Indicates how much of spending lacks the potential benefit of reserved capacity discounts.&nbsp;Indicates the percentage of eligible computation power that that is reserved verses on demand as well as the predicted target value for this ratio.</span></span></span></li>
+</ul>
+
+<p style="text-indent:.5in; margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Expiring reservations</b></span></span></span></p>
+
+<p style="margin-left:24px; text-indent:.5in; margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Displays upcoming reservation expirations. </span></span></span></p>
+
+<p style="text-indent:.5in; margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Insights configuration status</b>: </span></span></span></p>
+
+<p style="margin-left:48px; margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Last time the&nbsp;insights recommendations were updated and the next insights recommendation update schedule.</span></span></span></p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/18/59_CGRO_CloudInsights_Homepage.PNG" height="448" hspace="0" src="/mediawiki/images/pn_images/pn_image_603bbc8032aea1.30623515.png" style="width: 800px; height: 448px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <b>SEE ALL RECOMMENDATIONS</b> link under the <b>TOP RECOMMENDATIONS </b>section to see all reservation cost saving recommendations. Filters can be applied to show recommendations for a specific cloud provider such as AWS or Microsoft Azure. By default, recommendations are shown for all configured public cloud providers. For each recommendation, <strong>potential savings</strong>, <strong>total pay as you go cost</strong> and <strong>total reservation cost</strong> is displayed.</span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/7/74/60_CGRO_CloudInsights_AllRecommendations.PNG" height="431" hspace="0" src="/mediawiki/images/pn_images/pn_image_603bbc80771218.83495918.png" style="width: 800px; height: 431px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="5">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Based on the recommendations, work within your organization to evaluate and apply the suggested reservation opportunities.</span></span></span></li>
+</ol>
+
+<h3>Identify out of compliance spend groups</h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In an enterprise, when multiple business units and departments start to use public cloud, public cloud costs balloon. The management and control of cloud cost becomes critical. HCMX CGRO capability help you define cloud cost limits and identify which spend groups are exceeding those cost limits.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">This section walks through how to define cloud cost limits, associate spend groups to those limits and monitor these limits to identify spend groups that exceed defined spending thresholds.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the HCMX Agent Interface portal as a user with CGRO administration privileges.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the homepage, using <b>mega menu</b>, navigate to <b>Run</b> -&gt; <b>Cost Governance</b> </span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/c/c1/11-CostGovernanceInsightsMenu.PNG" height="339" hspace="0" src="/mediawiki/images/pn_images/pn_image_603bb7ffc3a294.28037927.png" style="width: 800px; height: 339px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The <b>CLOUD COST REPORTS</b> page is displayed. Navigate to&nbsp;<b>CLOUD COST LIMITS</b> page.</span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/a/ae/54_CGRO_Reports_MainReport.PNG" height="428" hspace="0" src="/mediawiki/images/pn_images/pn_image_603bb800195895.59748879.png" style="width: 800px; height: 428px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The<b> CLOUD COST LIMITS</b> home page is displayed. Click <b>+ </b>icon to add a new cloud cost limit. </span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/59/61_CGRO_CloudCostLimits_Homepage.PNG" height="243" hspace="0" src="/mediawiki/images/pn_images/pn_image_603bb800596a05.62510321.png" style="width: 800px; height: 243px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Create A New Cloud Cost Limit</b> screen, enter the required information. The email address field allows for one or more email addresses to be configured to be notified upon any violation the limit specifications. To enable notifications for multiple emails, enter a list of email addresses separated by either a comma, newline, space or semicolon.&nbsp;Click <b>ADD</b></span></span></span></li>
+</ol>
+
+<p><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" src="/mediawiki/images/pn_images/pn_image_603bb003e16000.46365558.png" style="width:604px; height:857px"></span></span></span></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>SPEND GROUPS</b> screen for the newly created cloud cost limit, click <b>+ </b>icon.</span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/2/29/63_CGRO_CloudCostLimits_SpendGroup.PNG" height="186" hspace="0" src="/mediawiki/images/pn_images/pn_image_603bb8007e60e4.14077507.png" style="width: 800px; height: 186px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="7">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Select one or more of the spend groups from the list to add them to cost consideration within the cost limit.&nbsp;Click <b>ADD</b>.</span></span></span></li>
+</ol>
+
+<p><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application
+
+Description automatically generated" src="/mediawiki/images/pn_images/pn_image_603bb00459a2f5.05498767.png" style="width:605px; height:765px"></span></span></span></p>
+
+<ol start="8">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">To observe current compliance of defined cloud cost limits, from the home page, using mega menu, navigate to <b>Run</b> -&gt; <b>Cost Governance -&gt; CLOUD COST LIMITS </b>page. Observe that compliance summary icon displays number <b>2 </b>in red color for the <b>HR spend limit – monthly</b> cost limit. Compliance summary icon and number of spend groups is displayed in red color when any one of the spend groups is out of compliance. Compliance summary icon and number of spend groups is displayed in green color when all spend groups are in compliance.</span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/42/65_CGRO_CloudCostLimits_WithStatus-1.PNG" height="117" hspace="0" src="/mediawiki/images/pn_images/pn_image_603bb800b0feb1.09734426.png" style="width: 800px; height: 117px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="9">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Hover over the <b>compliance summary</b> icon to see a pie chart of how many spend groups are complying and are out of compliance.</span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/8/87/66_CGRO_CloudCostLimits_PieChart.PNG" height="188" hspace="0" src="/mediawiki/images/pn_images/pn_image_603bb800ef9161.58039710.png" style="width: 800px; height: 188px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="10">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <b>HR spend limit – monthly</b> cost limit to display spend group compliance details. In the following sample screenshot, one of the spend groups complies with the defined cost limit, whereas the other one is out of compliance with the defined cost limit. </span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/b/bc/67_CGRO_CloudCostLimits_SpendGroupDetails.PNG" height="207" hspace="0" src="/mediawiki/images/pn_images/pn_image_603bb801243793.55398122.png" style="width: 800px; height: 207px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<ol start="11">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">When a spend group exceeds the configured cost limit, an email is sent to the email addresses configured in cost limit. A sample email message body is shown below.</span></span></span></li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/8/81/EmailAlert-CostLimit.PNG" height="724" hspace="0" src="https://docs.microfocus.com/mediawiki/images/8/81/EmailAlert-CostLimit.PNG" style="width:618px;height:724px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="618"></p>
+
+<ol start="12">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Armed with this information, appropriate actions can be taken with those out of compliant spend groups to bring down cloud costs.</span></span></span></li>
+</ol>
+
+<h2>References</h2>
+
+<ol start="1">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">AWS Billing and Cost Management:</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-what-is.html" style="color:#0563c1; text-decoration:underline">https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-what-is.html</a></span></span></span></p>
+
+<ol start="2">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">AWS Cost and Usage Reports:</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><a href="https://docs.aws.amazon.com/cur/latest/userguide/what-is-cur.html" style="color:#0563c1; text-decoration:underline">https://docs.aws.amazon.com/cur/latest/userguide/what-is-cur.html</a></span></span></span></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">AWS Identity and Access Management:</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><a href="https://docs.amazonaws.cn/en_us/IAM/latest/UserGuide/introduction.html" style="color:#0563c1; text-decoration:underline">https://docs.amazonaws.cn/en_us/IAM/latest/UserGuide/introduction.html</a></span></span></span></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Azure Cost Management and Billing:</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><a href="https://docs.microsoft.com/en-us/azure/cost-management-billing/" style="color:#0563c1; text-decoration:underline">https://docs.microsoft.com/en-us/azure/cost-management-billing/</a></span></span></span></p>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Getting started with Azure enterprise portal:</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><a href="https://docs.microsoft.com/en-us/azure/cost-management-billing/manage/ea-portal-get-started" style="color:#0563c1; text-decoration:underline">https://docs.microsoft.com/en-us/azure/cost-management-billing/manage/ea-portal-get-started</a></span></span></span></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Azure enterprise portal: </span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><a href="https://ea.azure.com" style="color:#0563c1; text-decoration:underline">https://ea.azure.com</a></span></span></span></p>
+
+</html>
