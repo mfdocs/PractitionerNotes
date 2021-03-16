@@ -68,4 +68,43 @@ sa1080ct8c1          | NON_COMPLIANT  |               0 |                 310 | 
 <p></p>
 
 <p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/c/cd/image2021-3-16_13-44-9.png" height="314" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050fdbc953cf6.31908906.png" style="width: 800px; height: 314px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<h2>Remediate Audit Findings</h2>
+
+<p>Remediates all the remediable audit check rules that need fixing on a server. &nbsp;One rule per job.</p>
+
+<pre>#!/opt/opsware/bin/python
+from pytwist import twistserver
+from pytwist.com.opsware.compliance.sco import *
+from pytwist.com.opsware.job import JobRef
+
+def getRemediateJobArgs(auditResultRef, serverRefs):
+    for serverRef in serverRefs:
+        keyLists = AuditResultService.getRemediatableObjects(auditResultRef,serverRef)
+        for keyList in keyLists:
+            for key in keyList.keys:
+                argKeyList = SCORemediationKeyList()
+                argKeyList.typeIdentifier = keyList.typeIdentifier
+                argKeyList.keys = [key]
+
+                serverArg = SCORemediationServerArg()
+                serverArg.server = serverRef
+                serverArg.keyLists = keyLists
+
+                jobArg = SCORemediateJobArg()
+                jobArg.serverArgs = [serverArg]
+                yield serverRef, jobArg
+
+ts = twistserver.TwistServer()
+ts.authenticate('brett','password')
+JobService = ts.job.JobService
+AuditResultService = ts.compliance.sco.AuditResultService
+
+auditResultRef = ts.job.JobService.getResult(JobRef(2400001)).result
+arVO = AuditResultService.getAuditResultVO(auditResultRef)
+
+for serverRef, jobArg in getRemediateJobArgs(auditResultRef, arVO.targets):
+    jobRef = AuditResultService.startRemediateJob(auditResultRef,jobArg, "ticket", None, None)
+    print "Remediate job id: %d for server %s" % (jobRef.id, serverRef)
+</pre>
 </html>
