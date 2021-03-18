@@ -1,11 +1,19 @@
 <html><div class="mw-parser-output">
 <p></p>
 
-<p>When a user successfully logs into SMA user interfaces (such as the Suite Administration Portal, Service Portal or Agent interface) the backend services produce two tokens which are stored in the client browser's cookies. Any requests from the SMA user interfaces to backend services need to carry the two tokens and both tokens must be valid.</p>
+<p>When a user successfully logs into SMA user interfaces (such as the Suite Administration Portal, Service Portal, or Agent interface) the backend services produce two tokens stored in the client browser's cookies. Any requests from the SMA user interfaces to backend services need to carry the two tokens.</p>
 
-<p>After a certain amount of time, these tokens will expire and become invalid. Users must login to SMA user interfaces again for new tokens in order to continue operating on the system. The amount of time the two tokens are valid before they expire is controlled by specific timeout parameters. You can change the value of those parameters to extend or shorten the period that a session lives.</p>
+<p>These two tokens are the LWSSO token and the SMAX_AUTH_TOKEN token.</p>
 
-<p>This document contains information about the tokens, related parameters, and how to configure them.</p>
+<p>Please be aware that SMAX will use the LWSSO token once you integrate with other Micro Focus products based on lightweight SSO or you are using SMA mixed mode.&nbsp; If only SMAX in the scope, this LWSSO token will be useless.</p>
+
+<p>If the LWSSO token becomes invalid after a certain amount of time, the integration part will not work well. For example, the 3rd party data or page will not be retrieved or displayed successfully. In SMA mixed mode, the data will not be retrieved successfully from SM if the LWSSO token expired.</p>
+
+<p>If the SMAX_AUTH_TOKEN becomes invalid, users must log in to SMA user interfaces again for new tokens to continue operating on the system.</p>
+
+<p>The amount of time the two tokens are valid before they expire is controlled by specific timeout parameters. You can change the value of those parameters to extend or shorten the period that a session lives.</p>
+
+<p>This document contains information about the tokens, related parameters, and how to configure them. We always suggest you configure the value through the GUI. Change the value from the configmap only if something wrong, and you cannot save the value from the GUI.</p>
 
 <p>Below are two tokens required by SMA user sessions and the timeout parameters affect them.</p>
 
@@ -13,112 +21,74 @@
 
 <ul>
 	<li>Cookie name: LWSSO_COOKIE_KEY</li>
-	<li>Timeout parameters: hpssoConfig.creation.tokenIdleTimeout and hpssoConfig.creation.tokenGlobalTimeout</li>
+	<li>Timeout parameters: lwssoConfig.expirationPeriod</li>
 </ul>
 
-<h2 class="mw-headline" id="IDM_X-AUTH_token">IDM X-AUTH token</h2>
+<h2 class="mw-headline" id="IDM_X-AUTH_token">SMAX AUTH TOKEN</h2>
 
 <ul>
-	<li>Cookie name: _IDM_X_AUTH_TOKEN_</li>
+	<li>Cookie name: SMAX_AUTH_TOKEN</li>
 	<li>Timeout parameters: idm.token.lifetime.minutes</li>
 </ul>
 
-<p>In the SMA system, there are a number of timeout settings for various services. The three parameters described below have impact on session timeout for suite users.</p>
+<p></p>
 
-<h2 id="hpssoConfig.creation.tokenIdleTimeout(in_minutes)"><span class="mw-headline" id="hpssoConfig.creation.tokenIdleTimeout.28in_minutes.29">hpssoConfig.creation.tokenIdleTimeout(in minutes)</span></h2>
+<p>In the SMA system, there are a number of timeout settings for various services. The parameters described below have impact on session timeout for suite users.</p>
 
-<h3 class="mw-headline" id="Usage">Usage</h3>
+<h2>lwssoConfig.expirationPeriod(in minutes)</h2>
 
-<p>This parameter controls the idle timeout for the LWSSO token. For end users, if they have not operated for the period of time specified by this parameter, their session is timed out and they have to re-login before they can continue operating on the system.</p>
+<h3>Usage</h3>
 
-<h3 class="mw-headline" id="How_to_change_it_in_UI">How to change it in UI</h3>
+<p>This parameter controls the idle timeout for the LWSSO token on SMA mixed-mode or SMAX has integration with other MicroFocus products based on lightweight SSO. If the token expired, the integration will not work well, for example, not retrieving the data from the 3rd product.</p>
 
-<p>You can change the value of this parameter in <b>SMAX Suite &gt; Administration portal &gt; CONFIGURATIONS &gt; Security &gt; Lightweight SSO configuration &gt; Token expiration period (minutes)</b>. After saving the change, the backend IDM service is restarted automatically to make the new value take effect. <a class="image" onclick="javascript:loadingImage(this);"><img alt="cfg timeout.png" data-file-height="233" data-file-width="949" height="233" src="/mediawiki/images/e/e7/cfg_timeout.png" width="949"></a></p>
+<h3>How to change it in UI</h3>
 
-<h3 class="mw-headline" id="Data_in_ConfigMap">Data in ConfigMap</h3>
+<p>You can change the value of this parameter in&nbsp;SMAX Suite &gt; Administration portal &gt; CONFIGURATIONS &gt; Security &gt; Lightweight SSO configuration &gt; Token expiration period (minutes). After saving the change, the system will automatically restart the related backend services to make the new value take effect.&nbsp; <img id="Picture_x0020_2" src="/mediawiki/images/pn_images/pn_image_6053c24462ec86.83538126.png"></p>
 
-<p>The value of the parameter is stored in the <b>lwsso_expirationperiod</b> key (the time unit is minute) of the ConfigMap 'lwsso-configmap'. If you want to change the value through ConfigMap, you need to restart the IDM pod (i.e. idm-&lt;pod id&gt;) to let IDM service update the value in the database with the new value from ConfigMap.</p>
+<h3>Data in ConfigMap</h3>
 
-<h3 class="mw-headline" id="Data_in_IDM_database">Data in IDM database</h3>
+<p>The value of the parameter is stored in the&nbsp;lwsso_expirationperiod&nbsp;key (the time unit is minute) of the ConfigMap 'lwsso-configmap'. If you want to change the value through ConfigMap, you need to restart the suite IDM pod and bo-login pod to let the changes take effect.</p>
 
-<p>In the IDM database, the value of the parameter is stored in the <b>system_resource_config</b> table (the time unit is minute). You can query the table to get the default value and effective value by running the following SQL command.</p>
+<h2></h2>
 
-<pre>SELECT value FROM system_resource_config WHERE name = 'hpssoConfig.creation.tokenIdleTimeout' 
+<h2>idm.token.lifetime.minutes (in minutes)</h2>
 
-</pre>
+<h3>Usage</h3>
 
-<p><b>Note</b>: The out of box value is set to 60 (1 hour)</p>
+<p>For end-users, if they have not operated for the period specified by this parameter, their session is timed out, and they have to re-login before they can continue operating on the system.</p>
 
-<h2 id="hpssoConfig.creation.tokenGlobalTimeout(in_minutes)"><span class="mw-headline" id="hpssoConfig.creation.tokenGlobalTimeout.28in_minutes.29">hpssoConfig.creation.tokenGlobalTimeout(in minutes)</span></h2>
+<h3>How to change it in UI</h3>
 
-<h3 class="mw-headline" id="Usage_2">Usage</h3>
+<p>You can change the value of this parameter in&nbsp;SMAX Suite &gt; Administration portal &gt; CONFIGURATIONS &gt; Security &gt; Access Token configuration &gt; Token expiration period (minutes). After saving the change, the system will automatically restart the related backend to make the new value take effect.&nbsp;<br>
+<img id="Picture_x0020_3" src="/mediawiki/images/pn_images/pn_image_6053c244b51861.06606791.png"></p>
 
-<p>This parameter controls the validity period of a LWSSO token. It enforces a LWSSO token to expire after it is produced for a given amount of time. For an active user session, a re-login is still required after the session has lasted for the time defined by this parameter.</p>
+<h3>Data in ConfigMap</h3>
 
-<h3 class="mw-headline" id="How_to_change_it_in_UI_2">How to change it in UI</h3>
+<p>The value of the parameter is stored in the&nbsp;TokenExpirationPeriod&nbsp;key (the time unit is second) of the ConfigMap 'idm-config'. Similarly, you need to restart IDM pod if you change the value in ConfigMap.</p>
 
-<p>SMA does not provide user interface to change this parameter.</p>
+<p></p>
 
-<h3 class="mw-headline" id="Data_in_ConfigMap_2">Data in ConfigMap</h3>
+<h3>Recommended Configuration</h3>
 
-<p>The value of the parameter is stored in the <b>TokenGlobalTimeout</b> key (the time unit is second) of the ConfigMap 'idm-config'. Similarly, you need to restart IDM pod if you change the value in ConfigMap.</p>
+<p>It is recommended to set the&nbsp;lwssoConfig.expirationPeriod and&nbsp;idm.token.lifetime.minutes&nbsp;parameters to the same value to avoid confusion.</p>
 
-<h3 class="mw-headline" id="Data_in_IDM_database_2">Data in IDM database</h3>
+<h3>Example</h3>
 
-<p>It is also stored in the <b>system_resource_config</b> table in the IDM database. You can query the values by name 'hpssoConfig.creation.tokenGlobalTimeout' (the time unit is minute)</p>
-
-<p>Note: Out of the box value: 1440 (24 hours)</p>
-
-<h2 id="idm.token.lifetime.minutes_(in_minutes)"><span class="mw-headline" id="idm.token.lifetime.minutes_.28in_minutes.29">idm.token.lifetime.minutes (in minutes)</span></h2>
-
-<h3 class="mw-headline" id="Usage_3">Usage</h3>
-
-<p>Some Service Management services need to use IDM X-AUTH token to call IDM-authenticated APIs in other services. This parameter controls the idle timeout of the IDM X-AUTH token. If no requests with the token to services for a given amount of time, the IDM X-AUTH token times out so that users have to log in to the SMA systems again to get a new token for further operation.</p>
-
-<h3 class="mw-headline" id="How_to_change_it_in_UI_3">How to change it in UI</h3>
-
-<p>SMA does not provide user interface to change this parameter.</p>
-
-<h3 class="mw-headline" id="Data_in_ConfigMap_3">Data in ConfigMap</h3>
-
-<p>The value of the parameter is stored in the <b>TokenExpirationPeriod</b> key (the time unit is second) of the ConfigMap 'idm-config'. Similarly, you need to restart IDM pod if you change the value in ConfigMap.</p>
-
-<h3 class="mw-headline" id="Data_in_IDM_database_3">Data in IDM database</h3>
-
-<p>It is also stored in the <b>system_resource_config</b> table in the IDM database. You can query the values by name 'idm.token.lifetime.minutes' (the time unit is minute)</p>
-
-<p>Note: Out of the box value: 60 (1 hour)</p>
-
-<h2 class="mw-headline" id="Recommended_Configuration">Recommended Configuration</h2>
-
-<p>It is recommended to set the <b>hpssoConfig.creation.tokenIdleTimeout</b> and <b>idm.token.lifetime.minutes</b> parameters to the same value to avoid confusion.</p>
-
-<h2 class="mw-headline" id="Example">Example</h2>
-
-<p>In this example, we will walk through the steps to extend the session timeout to 4 hours. Note that it is not required to change the value of tokenGlobalTimeout property because the OOTB value of 24 hours is longer enough than 4 hours. Note: in the example, we assume the SMA suite namespace is itsma1. You need to replace it with the namespace in your environment.</p>
+<p>In this example, we will walk through the steps to extend the session timeout to 4 hours.</p>
 
 <ul>
-	<li>Run the following command in one of the cluster nodes to edit the idm-config ConfigMap.</li>
+	<li>Go to&nbsp;SMAX Suite &gt; Administration portal &gt; CONFIGURATIONS &gt; Security &gt; Lightweight SSO configuration. Change the value of&nbsp;Token expiration period (minutes)&nbsp;to 240.</li>
+	<li>Go to&nbsp;SMAX Suite &gt; Administration portal &gt; CONFIGURATIONS &gt; Security &gt; Access Token configuration. Change the value of&nbsp;Token expiration period (minutes)&nbsp;to 240.</li>
+	<li>Click the save button. After related pods are up and running, the new settings take effect.</li>
 </ul>
 
-<pre>kubectl edit cm -n itsma1 idm-config
-</pre>
+<h2></h2>
 
-<ul>
-	<li>Change the value of the TokenExpirationPeriod property to 14400. Save the change.</li>
-	<li>Go to <b>SMAX Suite &gt; Administration portal &gt; CONFIGURATIONS &gt; Security &gt; Lightweight SSO configuration</b>. Change the value of <b>Token expiration period (minutes)</b> to 240.</li>
-	<li>After IDM pods are up and running, the new settings take effective.</li>
-</ul>
+<h2>Tips and Tricks</h2>
 
-<h2 class="mw-headline" id="Tips_and_Tricks">Tips and Tricks</h2>
+<p>The IDM SMAX_AUTH_TOKEN &nbsp;token is renewed when 35% defined by idm.token.lifetime.minutes has passed. Due to the less frequent renew mechanism, the actual session timeout is shorter than what is expected. In extreme cases, users may experience session timeout right after half of the desired time. For example, assume the parameter is set to 1 hour. User A logs in to SMAX at 2:00. She operates on the UI till 2:20 and goes away. When she comes back to the system at 3:01, she will find the session times out. To her, it seems the system kicks out the session which is only idle for 40 minutes instead of 1 hour. Let's walk through the story again to see what happens. When the user A logs in to the system, an SMAX_AUTH_TOKEN &nbsp;token is produced. In each request to backend services, it checks how long the token is to expire. Since the token will not expire in 21 minutes, it is not renewed. From 2:21 to 3:00, since there is no requests from the client, no chance to renew the token. At 3:01, when a request comes from the client, the token exceeds its expiration period (i.e. 1 hour) so that the session is timed out.</p>
 
-<p>The IDM X-AUTH token is renewed when half of the time defined by idm.token.lifetime.minutes has passed. Due to the less frequent renew mechanism, the actual session timeout is shorter than what is expected. In extreme cases, users may experience session timeout right after half of the desired time. For example, assume the parameter is set to 1 hour. User A logs in to SMAX at 2:00. She operates on the UI till 2:29 and goes away. When she comes back to the system at 3:01, she will find the session times out. To her, it seems the system kicks out the session which is only idle for 30 minutes instead of 1 hour. Let's walk through the story again to see what happens. When the user A logs in to the system, an IDM X-AUTH token is produced. In each request to backend services, it checks how long the token is to expire. Since the token will not expire in 30 minutes, it is not renewed. From 2:29 to 3:00, since there is no requests from the client, no chance to renew the token. At 3:01, when a request comes from the client, the token exceeds its expiration period (i.e. 1 hour) so that the session is timed out.</p>
-
-<p>Note: The following two parameters in the idm-config ConfigMap are useless for user session timeout.</p>
-
-<pre>   ConnectionTimeout: "180"
-   SessionTimeout: "1800"
-</pre>
+<p>So in case you want to make sure it always more than one hour in the situation mentioned above, you can set the SMAX_AUTH_TOKEN &nbsp;to 92(60/0.65). And the side effect will the session will be expired after 92 minutes in some cases.</p>
 <!-- 
 NewPP limit report
 Cached time: 20200217094548
