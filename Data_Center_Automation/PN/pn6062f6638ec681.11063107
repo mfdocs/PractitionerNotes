@@ -1,11 +1,13 @@
 <html><p>DCA 2020.11.P2 enables you to perform patch scan and remediation on&nbsp;Red Hat Enterprise Linux 8 (RHEL 8) resources.&nbsp;</p>
 
+<h2>What's new</h2>
+
 <p>Before getting started please be aware that:&nbsp;</p>
 
-<ul>
+<ol>
 	<li>patch scan and remediation on&nbsp;Red Hat Enterprise Linux 8 (RHEL 8) resources requires&nbsp;at least <em>dnf-4.2.17-6.el8&nbsp; installed ont he target server,&nbsp;</em>which is the default version for Red Hat Enterprise Linux 8.2..</li>
 	<li>for Red Hat Enterprise Linux 8 (RHEL 8) the <em>rhsmBaseURL</em> field format has been changed in <em>redhatPatchMetadata.conf</em>&nbsp;:</li>
-</ul>
+</ol>
 
 <p><a href="https://cdn.redhat.com/content/dist/$release/$releasever/$basearch$repository/os/repodata/">https://cdn.redhat.com/content/dist/$release/$releasever/$basearch$repository/os/repodata/</a></p>
 
@@ -37,9 +39,9 @@
 
 <p>You can still use the old format for the JSON file but as a consequence there will be no support for RHEL 8.</p>
 
-<ul>
+<ol start="3">
 	<li>the format for <em>applicableScope.json</em> has been changed in order to ensure compatibility with the new url format for Red Hat Enterprise Linux 8 repositories.</li>
-</ul>
+</ol>
 
 <p>Here are some examples for Red Hat 6 and Red Hat 8:<br>
 <a onclick="javascript:loadingImage(this);"><img alt="RHELrepo1.png" data-file-height="136" data-file-width="597" height="136" src="https://docs.microfocus.com/mediawiki/images/f/ff/RHELrepo1.png" width="597"></a><br>
@@ -134,7 +136,96 @@ The sample output of the JSON file for the above images is as follows:</p>
 	<li><code>repository</code>&nbsp;is the Redhat OS repository which is optional</li>
 </ul>
 
-<p>To get started, please follow the instructions below.&nbsp;</p>
+<ol start="4">
+	<li>A new Resource type&nbsp;is available in DCA:</li>
+</ol>
+
+<ul>
+	<li>Any
+	<ul>
+		<li>Platform
+		<ul>
+			<li>Microsoft (MS) Windows
+			<ul>
+				<li>MS Windows Server 2012</li>
+				<li>MS Windows Server 2012 R2</li>
+				<li>MS Windows Server 2016</li>
+				<li>MS Windows Server 2019</li>
+			</ul>
+			</li>
+			<li>Unix
+			<ul>
+				<li>Linux
+				<ul>
+					<li>RHEL Compatibles
+					<ul>
+						<li>RHEL 6 Compatibles
+						<ul>
+							<li>CentOS 6</li>
+							<li>OEL 6</li>
+							<li>RHEL 6</li>
+						</ul>
+						</li>
+						<li>RHEL 7 Compatibles
+						<ul>
+							<li>CentOS 7</li>
+							<li>OEL 7</li>
+							<li>RHEL 7</li>
+						</ul>
+						</li>
+						<li>RHEL 8 Compatibles
+						<ul>
+							<li>RHEL 8</li>
+						</ul>
+						</li>
+					</ul>
+					</li>
+					<li>SUSE Compatibles
+					<ul>
+						<li>SUSE Linux Enterprise Server (SLES)
+						<ul>
+							<li>SLES 11</li>
+							<li>SLES 12</li>
+							<li>SLES 15</li>
+						</ul>
+						</li>
+					</ul>
+					</li>
+					<li>Ubuntu Compatibles
+					<ul>
+						<li>Ubuntu
+						<ul>
+							<li>Ubuntu 12.04 LTS</li>
+							<li>Ubuntu 14.04 LTS</li>
+							<li>Ubuntu 16.04 LTS</li>
+						</ul>
+						</li>
+					</ul>
+					</li>
+				</ul>
+				</li>
+			</ul>
+			</li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+	<li>Unknown</li>
+</ul>
+
+<ol start="5">
+	<li>A new out-of-the-box&nbsp;patch bundle&nbsp;is&nbsp;available in DCA:</li>
+</ol>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Vendor Recommended Patches for RHEL 8</p>
+
+<h2>Getting started</h2>
+
+<p>To get started, please follow the instructions provided under&nbsp;<a href="https://docs.microfocus.com/itom/Data_Center_Automation:2020.11/ImportPatchMetadata">RHEL and Oracle patch metadata</a>&nbsp;and <a href="https://docs.microfocus.com/itom/Data_Center_Automation:2020.11/ViewPatchBundles">Author patch bundles</a>.</p>
+
+<h3></h3>
+
+<p></p>
 
 <p></p>
 </html>
