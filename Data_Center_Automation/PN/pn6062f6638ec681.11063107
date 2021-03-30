@@ -1,12 +1,138 @@
 <html><p>DCA 2020.11.P2 enables you to perform patch scan and remediation on&nbsp;Red Hat Enterprise Linux 8 (RHEL 8) resources.&nbsp;</p>
 
-<p>Before getting started please be aware that in&nbsp;<em>redhatPatchMetadata.conf</em><span style="font-size:11pt"><span style="background:white"><span style="line-height:18.0pt"><span style="font-family:Calibri,sans-serif"><span lang="EN-US" style="font-size:11.5pt"><span style="background:white"><span style="font-family:&quot;Arial&quot;,sans-serif"><span style="color:black"><span style="letter-spacing:.15pt"> </span></span></span></span></span></span></span></span></span>the <em>rhsmBaseURL</em> field format has been changed:</p>
+<p>Before getting started please be aware that:&nbsp;</p>
+
+<ul>
+	<li>patch scan and remediation on&nbsp;Red Hat Enterprise Linux 8 (RHEL 8) resources requires&nbsp;at least <em>dnf-4.2.17-6.el8&nbsp; installed ont he target server,&nbsp;</em>which is the default version for Red Hat Enterprise Linux 8.2..</li>
+	<li>for Red Hat Enterprise Linux 8 (RHEL 8) the <em>rhsmBaseURL</em> field format has been changed in <em>redhatPatchMetadata.conf</em>&nbsp;:</li>
+</ul>
 
 <p><a href="https://cdn.redhat.com/content/dist/$release/$releasever/$basearch$repository/os/repodata/">https://cdn.redhat.com/content/dist/$release/$releasever/$basearch$repository/os/repodata/</a></p>
 
-<p>The old format can still be used but lacks support for Red Hat Enterprise Linux 8 repositories. Also the format for applicableScope.json has been changed in order to ensure compatibility with the new url format for Red Hat Enterprise Linux 8 repositories.</p>
+<p>The sample output fields of the&nbsp;JSON file are as listed below:</p>
 
-<p></p>
+<pre>{ &nbsp;
+&nbsp; &nbsp;"patchMetadataInputs":{ &nbsp;
+&nbsp; &nbsp; &nbsp; "redHat":{ &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"certificateName":"server-CA.crt",
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"certificatePath":"/tmp",
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"hostName":"satellite.domain.com",
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"organizationName":"myOrganizationName",
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"proxyFQDN":"proxy.domain.com",
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"proxyPort":"8080",
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"repositoryName":[
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;"Red Hat Enterprise Linux 8 for x86_64 – BaseOS RPMs 8",
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;"Red Hat Enterprise Linux 8 for x86_64 – AppStream RPMs 8",
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Red Hat Enterprise Linux 7 Server RPMs x86_64 7Server",
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Red Hat Enterprise Linux 6 Server RPMs x86_64 6Server"
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;],
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"requireProxyCredentials":"N",
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"rhsmBaseURL":"https://cdn.redhat.com/content/dist/$release/$releasever/$basearch$repository/os/repodata/",
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"rhsmEnabled":"False",
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"sslEnabled":"True"
+&nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp;}
+}
+</pre>
+
+<p>You can still use the old format for the JSON file but as a consequence there will be no support for RHEL 8.</p>
+
+<ul>
+	<li>the format for <em>applicableScope.json</em> has been changed in order to ensure compatibility with the new url format for Red Hat Enterprise Linux 8 repositories.</li>
+</ul>
+
+<p>Here are some examples for Red Hat 6 and Red Hat 8:<br>
+<a onclick="javascript:loadingImage(this);"><img alt="RHELrepo1.png" data-file-height="136" data-file-width="597" height="136" src="https://docs.microfocus.com/mediawiki/images/f/ff/RHELrepo1.png" width="597"></a><br>
+<a onclick="javascript:loadingImage(this);"><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/56/RHEL8.png" height="146" hspace="0" src="https://docs.microfocus.com/mediawiki/images/5/56/RHEL8.png" vspace="0" width="597"></a><br>
+<br>
+The sample output of the JSON file for the above images is as follows:</p>
+
+<pre>{
+&nbsp;&nbsp; &nbsp;"Red Hat Enterprise Linux 6 Server RPMs x86_64 6Server": {
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "release": "rhel/server/6",
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "releasever": "6Server",
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "basearch": "x86_64"
+&nbsp; },
+
+&nbsp; &nbsp; "Red Hat Enterprise Linux 8 for x86_64 – BaseOS RPMs 8": {
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "release": "rhel8",
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "releasever": "8",
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "basearch": "x86_64",
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "repository": "baseos"
+&nbsp; }
+}</pre>
+
+<h4 id="Sample">The sample output fields of the&nbsp;JSON file are as listed below:</h4>
+
+<pre>{
+&nbsp; "applicableScopes": {
+&nbsp; &nbsp; "RHEL 7": {
+&nbsp; &nbsp; &nbsp; "Red Hat Enterprise Linux 7 Server RPMs x86_64 7Server": {
+&nbsp; &nbsp; &nbsp; &nbsp; "release": "rhel/server/7",
+&nbsp; &nbsp; &nbsp; &nbsp; "releasever": "7Server",
+&nbsp; &nbsp; &nbsp; &nbsp; "basearch": "x86_64"
+&nbsp; &nbsp; &nbsp; },
+&nbsp; &nbsp; &nbsp; "Red Hat Enterprise Linux 7 Server RPMs x86_64 7.5": {
+&nbsp; &nbsp; &nbsp; &nbsp; "release": "rhel/server/7",
+&nbsp; &nbsp; &nbsp; &nbsp; "releasever": "7.5",
+&nbsp; &nbsp; &nbsp; &nbsp; "basearch": "x86_64"
+&nbsp; &nbsp; &nbsp; },
+&nbsp; &nbsp; &nbsp; "Red Hat Enterprise Linux 7 Server - Optional RPMs x86_64 7Server": {
+&nbsp; &nbsp; &nbsp; "release": " rhel/server/7",
+&nbsp; &nbsp; &nbsp; "releasever": "7Server",
+&nbsp; &nbsp; &nbsp; "basearch": "x86_64"
+&nbsp; &nbsp; },
+&nbsp; &nbsp; "RHEL 6": {
+&nbsp; &nbsp; &nbsp; "Red Hat Enterprise Linux 6 Server RPMs x86_64 6Server": {
+&nbsp; &nbsp; &nbsp; &nbsp; "release": "rhel/server/6",
+&nbsp; &nbsp; &nbsp; &nbsp; "releasever": "6Server",
+&nbsp; &nbsp; &nbsp; &nbsp; "basearch": "x86_64"
+&nbsp; &nbsp; &nbsp; },
+&nbsp; &nbsp; &nbsp; "Red Hat Enterprise Linux 6 Server RPMs x86_64 6.12": {
+&nbsp; &nbsp; &nbsp; &nbsp; "release": "rhel/server/6",
+&nbsp; &nbsp; &nbsp; &nbsp; "releasever": "6.12",
+&nbsp; &nbsp; &nbsp; &nbsp; "basearch": "x86_64"
+&nbsp; &nbsp; &nbsp; },
+&nbsp; &nbsp; &nbsp; "My Custom Repo With patches for both RHEL 6": {
+&nbsp; &nbsp; &nbsp; &nbsp; "release": "rhel/server/6",
+&nbsp; &nbsp; &nbsp; &nbsp; "releasever": "6Server",
+&nbsp; &nbsp; &nbsp; &nbsp; "basearch": "x86_64"
+&nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; },
+&nbsp; &nbsp; "RHEL 8": {
+&nbsp; &nbsp; &nbsp; "Red Hat Enterprise Linux 8 for x86_64 - BaseOS RPMs 8": {
+&nbsp; &nbsp; &nbsp; &nbsp; "release": "rhel8",
+&nbsp; &nbsp; &nbsp; &nbsp; "releasever": "8",
+&nbsp; &nbsp; &nbsp; &nbsp; "basearch": "x86_64",
+&nbsp; &nbsp; &nbsp; &nbsp; "repository": "baseos"
+&nbsp; &nbsp; &nbsp; },
+&nbsp; &nbsp; &nbsp; "Red Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8": {
+&nbsp; &nbsp; &nbsp; &nbsp; "release": "rhel8",
+&nbsp; &nbsp; &nbsp; &nbsp; "releasever": "8",
+&nbsp; &nbsp; &nbsp; &nbsp; "basearch": "x86_64",
+&nbsp; &nbsp; &nbsp; &nbsp; "repository": "appstream"
+&nbsp; &nbsp; &nbsp; },
+&nbsp; &nbsp; &nbsp; "Red Hat Enterprise Linux 8 for x86_64 - Supplementary RPMs 8": {
+&nbsp; &nbsp; &nbsp; &nbsp; "release": "rhel8",
+&nbsp; &nbsp; &nbsp; &nbsp; "releasever": "8",
+&nbsp; &nbsp; &nbsp; &nbsp; "basearch": "x86_64",
+&nbsp; &nbsp; &nbsp; &nbsp; "repository": "supplementary"
+&nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp;}
+&nbsp;}
+}
+</pre>
+
+<p>Where, the following is the description for one entry from the&nbsp;<code>applicableScope.json</code>&nbsp;file:</p>
+
+<ul>
+	<li><b>RHEL 8</b>&nbsp;is the DCA applicable scope name.</li>
+	<li><b>Red Hat Enterprise Linux 8 for&nbsp;x86_64&nbsp;</b><strong>- BaseOS RPMs 8</strong>&nbsp;is the Redhat repository name.</li>
+	<li><code>release</code>&nbsp;is the Redhat OS release.</li>
+	<li><code>releasever</code>&nbsp;is the Redhat OS release version.</li>
+	<li><code>basearch</code>&nbsp;is the Redhat OS architecture.</li>
+	<li><code>repository</code>&nbsp;is the Redhat OS repository which is optional</li>
+</ul>
 
 <p>To get started, please follow the instructions below.&nbsp;</p>
 
