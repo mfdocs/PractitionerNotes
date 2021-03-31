@@ -61,5 +61,31 @@
 	</li>
 </ol>
 
+<p><strong>Step 3 - Run the CLI “nnmsetofficialfqdn.ovpl” on the new NNMi server</strong></p>
+
+<p>/opt/OV/bin/nnmsetofficialfqdn.ovpl<br>
+<br>
+The command will generate a new certificate and put it in the new nnm keystore and trust store. &nbsp;</p>
+
+<p>Restart NNMi (ovstop, ovstart)</p>
+
+<p><strong>Step 4&nbsp;- Obtain and apply the new NNMi license to the new NNMi server</strong></p>
+
+<p>The NNMi license is tied to the IP address. &nbsp;Obtain a new NNMi license for the new VM, then run the following CLI:</p>
+
+<p>/opt/OV/bin/nnmlicense.ovpl NNM -f &lt;new license file&gt;</p>
+
+<p>That’s it. &nbsp;After completing this procedure, you should see the same configurations and data in the new NNMi, as shown in the following example:</p>
+
+<p>My old NNMi:</p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/6/68/g-7.png" height="481" hspace="0" src="https://docs.microfocus.com/mediawiki/images/6/68/g-7.png" style="width:541px;height:481px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="541"></p>
+
+<p>My new NNMi:</p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/47/g-8.png" height="488" hspace="0" src="https://docs.microfocus.com/mediawiki/images/4/47/g-8.png" style="width:541px;height:488px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="541"></p>
+
+<p></p>
+
 <p></p>
 </html>
