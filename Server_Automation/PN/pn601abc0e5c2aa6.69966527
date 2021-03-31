@@ -140,6 +140,16 @@ EOF</pre>
 
 <pre>./marketplace-connector.sh</pre>
 
+<p>If the import was a success you can proceed to include additional streams</p>
+
+<pre>./marketplace-connector.sh list-streams</pre>
+
+<p>Make choices and include them for downloading</p>
+
+<pre>./marketplace-connector.sh write-config --setting=security.cc_pci_unix</pre>
+
+<h2>Reset on failure</h2>
+
 <p>There are many ways in which this can fail</p>
 
 <ul>
@@ -151,17 +161,8 @@ EOF</pre>
 <p>If any of these events occur it's not enough to correct the credentials and restart the process as MpC remembers what it has done. In these circumstances, you must perform a reset</p>
 
 <pre>rm -rf /opt/marketplace-connector/cache
-rm /opt/marketplace-connector/config/downloadStatus.csv</pre>
-
-<p>If the import was a success you can proceed to include additional streams</p>
-
-<pre>./marketplace-connector.sh list-streams</pre>
-
-<p>Make choices and include them for downloading</p>
-
-<pre>./marketplace-connector.sh write-config --setting=security.cc_pci_unix</pre>
-
-<p></p>
+rm /opt/marketplace-connector/config/downloadStatus.csv
+</pre>
 
 <h2 id="About_Python_3">About Python 3</h2>
 
