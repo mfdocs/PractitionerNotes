@@ -2,20 +2,19 @@
 
 <div class="Admonition_Important"><span class="autonumber">Note</span> This tool does not back up database data and NFS data.&nbsp;</div>
 
-<h2>Export an NFS directory</h2>
+<p>Perform the following steps to set up Velero on OpenShift.&nbsp;</p>
 
-<p>On your&nbsp;NFS server, export one NFS directory for minio. For example:&nbsp;/var/vols/itom/minio. For detailed steps, see the "Configure NFS volumes" topic in the on-premises installation guide for the suite.&nbsp;</p>
+<h2>Set up Velero</h2>
 
-<p>You will need to configure the FQDN of the NFS server and this NFS directory in a later step ($NFS-server-FQDN and $minio-NFS-path).&nbsp;</p>
+<p>Perform the following steps to set up Velero in your environment.</p>
 
-<h2>Download the minio&nbsp;images</h2>
+<h3>Download a&nbsp;minio&nbsp;image</h3>
 
-<p>If your control plane nodes (formerly known as "master nodes") have Internet access, download the image from a control plane&nbsp;node; otherwise, download the image from another Linux machine that has Internet access and then transfer the image to the control plane node.</p>
+<p>If your control plane node has Internet access, download the image from the bastion&nbsp;node; otherwise, download the image from another Linux machine that has Internet access and then transfer the image to the control plane node.</p>
 
 <ol>
 	<li>On the download machine, navigate to a directory where you want to download the images, and then run the following commands&nbsp;:
-	<pre><code>docker pull minio/minio:latest&nbsp;
-docker pull  minio/mc:latest</code></pre>
+	<pre><code>docker pull minio/minio:latest&nbsp;</code></pre>
 	</li>
 	<li lang="en-US">If the control plane node has no Internet access, transfer&nbsp;the images to the control plane node.&nbsp;</li>
 	<li lang="en-US">Obtain the image IDs.
@@ -31,10 +30,9 @@ docker pull  minio/mc:latest</code></pre>
 	<li lang="en-US">Run the following command to tag one&nbsp;image:
 	<pre><code>docker tag &lt;image ID&gt; &lt;image registry URL&gt;/&lt;organization name&gt;/minio:&lt;tag&gt;</code></pre>
 
-	<p>The following are two examples:</p>
+	<p>The following is an example:</p>
 
-	<pre><code>docker tag 8dbf9ff992d5 myregistry.azurecr.io/sandbox/minio:test
-docker tag 8dbf9ff992d5 localhost:5000/hpeswitom/minio:test</code></pre>
+	<pre><code>docker tag 8dbf9ff992d5 myregistry.azurecr.io/sandbox/minio:test</code></pre>
 
 	<ul>
 		<li>
@@ -46,165 +44,336 @@ docker tag 8dbf9ff992d5 localhost:5000/hpeswitom/minio:test</code></pre>
 		<li>&lt;tag&gt;: specify any value you like.&nbsp;</li>
 	</ul>
 	</li>
-	<li lang="en-US">Repeat the step above&nbsp;to tag the other image (minio/mc:latest) into your image registry.&nbsp;</li>
-	<li lang="en-US">Push the images into your image registry:
-	<pre><code>docker push &lt;image registry URL&gt;/&lt;organization name&gt;/minio:&lt;tag&gt;
-docker push &lt;image registry URL&gt;/&lt;organization name&gt;/mc:&lt;tag&gt;</code></pre>
+	<li lang="en-US">Push the image&nbsp;into your image registry:
+	<pre><code>docker push &lt;image registry URL&gt;/&lt;organization name&gt;/minio:&lt;tag&gt;</code></pre>
 
 	<p>Example 1:</p>
 
-	<pre><code>docker push myregistry.azurecr.io/sandbox/minio:test
-docker push myregistry.azurecr.io/sandbox/mc:test
-
-</code></pre>
+	<pre><code>docker push myregistry.azurecr.io/sandbox/minio:test</code></pre>
 
 	<p>Example 2:</p>
 
-	<pre><code>docker push localhost:5000/hpeswitom/minio:test
-docker push localhost:5000/hpeswitom/mc:test</code></pre>
+	<pre><code>docker push localhost:5000/hpeswitom/minio:test</code></pre>
 	</li>
 </ol>
 
-<h2>Install Velero on a control plane node</h2>
-
-<p>Perform the following steps to install Velero on the control plane node.</p>
+<h3>Create an NFS volume for Minio</h3>
 
 <ol>
-	<li>Download the tarball of the latest Velero release to a temporary directory on the control plane node. The download URL is&nbsp;https://github.com/vmware-tanzu/velero/releases/.</li>
-	<li>Extract the package:
-	<pre><code>tar -xvf &lt;release-tarball-name&gt;.tar.gz</code></pre>
-
-	<p>The directory you extracted is called the “Velero directory” in subsequent steps.&nbsp;</p>
+	<li>On the NFS server, create a directory for Minio. For example:
+	<pre><code>sudo mkdir -p /var/vols/itom/itsma/minio</code></pre>
 	</li>
-	<li>Move the Velero binary from the Velero directory to somewhere in your&nbsp;PATH. For example:
-	<pre><code>cp velero /usr/local/bin/</code></pre>
+	<li>Change the ownership of the directory:
+	<pre><code>sudo&nbsp;chown&nbsp;-R&nbsp;$uid:$gid&nbsp;/var/vols/itom/itsma/minio&nbsp;</code></pre>
 	</li>
-	<li>Create a Velero-specific credentials file in your local directory. For example, in the Velero directory:
-	<pre><code>cat &lt;&lt;ENDFILE &gt; ./credentials-velero
-[default]
-aws_access_key_id = minio
-aws_secret_access_key = minio123
-ENDFILE
-</code></pre>
+	<li>If your NFS configuration used no_root_squash, run two more commands:
+	<pre><code>sudo&nbsp;chmod&nbsp;g+w&nbsp;/var/vols/itom/itsma/minio&nbsp;
+sudo&nbsp;chmod&nbsp;g+s&nbsp;/var/vols/itom/itsma/minio</code></pre>
 	</li>
-	<li>Navigate to the Velero directory, and create a backup copy of the&nbsp;examples/minio/00-minio-deployment.yaml file. This is because in the next steps, you will need to edit this file.&nbsp;</li>
-	<li>Edit the 00-minio-deployment.yaml file as follows:
-	<ol start="1" style="list-style-type: lower-alpha;">
-		<li>Add PVs/PVCs to the 00-minio-deployment.yaml file by appending the following code lines to the end of the file (replace $minio-NFS-path and $NFS-server-FQDN with the exported NFS folder path and hostname of the NFS server):
-		<pre><code>apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: minio-pv-claim
-  namespace: velero
-spec:
-  capacity:
-    storage: 10Gi
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteMany
-  persistentVolumeReclaimPolicy: Retain
-  nfs:
-    path: $minio-NFS-path
-    server: $NFS-server-FQDN
-   
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: minio-pv-claim
-  namespace: velero
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 10Gi
-  volumeName: minio-pv-claim
-</code></pre>
-		</li>
-		<li>In the Deployment section, make the following change:
-		<p>From:</p>
+</ol>
 
-		<pre><code>volumes:
-      - name: storage
-        emptyDir: {}
-      - name: config
-        emptyDir: {}
-</code></pre>
+<h3 paraeid="{47265f47-a254-414e-9f16-6d5e2ff3447b}{160}" paraid="1310021110">Install Minio</h3>
 
-		<p>To:</p>
+<p>Perform the following steps on the control plane node.</p>
 
-		<pre><code>volumes:
-      - name: storage
-        persistentVolumeClaim:
-          claimName: minio-pv-claim
-</code></pre>
-		</li>
-		<li>Remove the last two lines in the Deployment section below:
-		<pre><code>apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: velero
-  name: minio
-  labels:
-    component: minio
-spec:
-  strategy:
-    type: Recreate
-  selector:
-    matchLabels:
-      component: minio
-  template:
-    metadata:
-      labels:
-        component: minio
-    spec:
-      volumes:
-      - name: storage
-        emptyDir: {}
-      - name: config
-        emptyDir: {}
-      containers:
-      - name: minio
-        image: minio/minio:latest
-        imagePullPolicy: IfNotPresent
-        args:
-        - server
-        - /storage
-        - --config-dir=/config
-        env:
-        - name: MINIO_ACCESS_KEY
-          value: "minio"
-        - name: MINIO_SECRET_KEY
-          value: "minio123"
-        ports:
-        - containerPort: 9000
-        volumeMounts:
-        - name: storage
-          mountPath: "/storage"
-        - name: config
-          mountPath: "/config"</code></pre>
-		</li>
-		<li>Replace the image values in the following lines with the images in your image registry:
-		<pre><code>image: minio/minio:latest 
-image: minio/mc:latest </code></pre>
-		For example, change them as shown below (this example uses an external registry):
-
-		<pre><code>image: myregistry.azurecr.io/sandbox/minio:test 
-image: myregistry.azurecr.io/sandbox/mc:test</code></pre>
-		</li>
-	</ol>
+<ol>
+	<li>Create a&nbsp;minio.yaml file with the content below.&nbsp;</li>
+	<li>Search the file for the following comments and make the required changes to the file:
+	<ul>
+		<li>#change &lt;GID&gt; to your GID when configuring NFS volumes</li>
+		<li>#change &lt;UID&gt; to your UID when configuring NFS volumes</li>
+		<li># Update the path to your minio NFS volume path</li>
+		<li># Update &lt;NFS server host&gt; to your NFS server FQDN or IP address</li>
+		<li># Change {username} to a username you want to use</li>
+		<li># Change {password} &nbsp;to a password you want to use for the user</li>
+		<li># Replace {GID} with your GID&nbsp;</li>
+		<li># Replace {UID} with your UID</li>
+	</ul>
 	</li>
-	<li>Run the following commands:
-	<pre><code>kubectl apply -f examples/minio/00-minio-deployment.yaml
-velero install \
+	<li>Install Minio:&nbsp;
+	<pre><code>kubectl create -f minio.yaml</code></pre>
+	</li>
+	<li>Wait until all pods are running:
+	<pre><code>kubectl get pods -n velero</code></pre>
+	</li>
+</ol>
+
+<p>The following is the content of the&nbsp;minio.yaml file.&nbsp;</p>
+
+<pre><code>--- 
+
+apiVersion: v1 
+
+kind: Namespace 
+
+metadata: 
+
+  annotations: 
+
+   openshift.io/sa.scc.mcs: s0:c25,c20 
+
+    openshift.io/sa.scc.supplemental-groups: &lt;GID&gt;/10000               #change &lt;GID&gt; to your GID when configuring NFS volumes
+
+    openshift.io/sa.scc.uid-range: &lt;UID&gt;/10000                                 #change &lt;UID&gt; to your UID when configuring NFS volumes
+
+  name: velero 
+
+--- 
+
+apiVersion: v1 
+
+kind: PersistentVolume 
+
+metadata: 
+
+  name: minio-pv 
+
+  namespace: velero 
+
+spec: 
+
+  capacity: 
+
+    storage: 2Gi                                                                         
+
+  volumeMode: Filesystem 
+
+  accessModes: 
+
+    - ReadWriteMany 
+
+  persistentVolumeReclaimPolicy: Retain 
+
+  nfs: 
+
+    path: /var/vols/itom/itsma/minio                                          # Update the path to your minio NFS volume path
+
+    server: &lt;NFS server host&gt;         # Update &lt;NFS server host&gt; to your NFS server FQDN or IP address
+
+  storageClassName: cdf-default 
+
+  
+
+--- 
+
+apiVersion: v1 
+
+kind: PersistentVolumeClaim 
+
+metadata: 
+
+  name: minio-pvc 
+
+  namespace: velero 
+
+spec: 
+
+  accessModes: 
+
+    - ReadWriteMany 
+
+  resources: 
+
+    requests: 
+
+      storage: 2Gi                                                                                  
+
+  volumeName: minio-pv 
+
+  storageClassName: cdf-default 
+
+  
+
+--- 
+
+apiVersion: v1 
+
+kind: Secret 
+
+metadata: 
+
+  name: secret-minio 
+
+type: Opaque 
+
+stringData: 
+
+  username: {minio username}                # Change {minio username} to a username you want to use. You will use this user to install Velero.
+
+  password: {minio password}                # Change {minio password}  to a password you want to use for the user
+
+  
+
+--- 
+
+apiVersion: apps/v1 
+
+kind: Deployment 
+
+metadata: 
+
+  namespace: velero 
+
+  name: minio 
+
+  labels: 
+
+    component: minio 
+
+spec: 
+
+  strategy: 
+
+    type: Recreate 
+
+  selector: 
+
+    matchLabels: 
+
+      component: minio 
+
+  template: 
+
+    metadata: 
+
+      labels: 
+
+        component: minio 
+
+    spec: 
+
+      securityContext: 
+
+        runAsGroup: {GID}           # Replace {GID} with your GID 
+
+        runAsUser: {UID}           # Replace {UID} with your UID 
+
+      seLinuxOptions: 
+
+            level: s0:c25,c20 
+
+      volumes: 
+
+      - name: storage 
+
+        persistentVolumeClaim: 
+
+          claimName: minio-pvc 
+
+      containers: 
+
+      - name: minio 
+
+        image: minio/minio:latest 
+
+        imagePullPolicy: IfNotPresent 
+
+        args: 
+
+        - server 
+
+        - /storage 
+
+        - --config-dir=/config 
+
+        env: 
+
+      - name: MINIO_ACCESS_KEY                     
+
+            valueFrom: 
+
+              secretKeyRef: 
+
+                name: secret-minio 
+
+                key: username 
+
+          - name: MINIO_SECRET_KEY 
+
+            valueFrom: 
+
+              secretKeyRef: 
+
+                name: secret-minio
+
+                key: password                                
+
+        ports: 
+
+        - containerPort: 9000 
+
+        volumeMounts: 
+
+        - name: storage 
+
+          mountPath: "/storage" 
+
+--- 
+
+apiVersion: v1 
+
+kind: Service 
+
+metadata: 
+
+  namespace: velero 
+
+  name: minio 
+
+  labels: 
+
+    component: minio 
+
+spec: 
+
+  # ClusterIP is recommended for production environments. 
+
+  # Change to NodePort if needed per documentation, 
+
+  # but only if you run Minio in a test/trial environment, for example with Minikube. 
+
+  type: ClusterIP 
+
+  ports: 
+
+    - port: 9000 
+
+      targetPort: 9000 
+
+      protocol: TCP 
+
+  selector: 
+
+    component: minio 
+
+--- </code></pre>
+
+<h3>Install Velero</h3>
+
+<ol>
+	<li>Download Velero v1.4 from the <a href="https://github.com/vmware-tanzu/velero/releases">Velero download site</a>&nbsp;to a temporary directory on the control plane node. For example: <strong>/tmp/velero</strong>. Note that the installation package&nbsp;contains the velero command-line client.</li>
+	<li>Extract the installation package:
+	<pre><code>tar -xvf &lt;RELEASE-TARBALL-NAME&gt;.tar.gz -C /tmp/velero</code></pre>
+	</li>
+	<li>Copy the <strong>velero</strong> file in the package to the <strong>/usr/local/bin/</strong>&nbsp;folder.&nbsp;</li>
+	<li>Create a Velero-specific credentials file (<strong>credentials-velero</strong>) in the&nbsp;<strong>/usr/local/bin/</strong>&nbsp;directory:
+	<pre><code>[default]
+aws_access_key_id = &lt;minio username&gt;
+aws_secret_access_key = &lt;minio password&gt;</code></pre>
+
+	<p>Where: &lt;minio username&gt; and &lt;minio password&gt; are the minio credentials that you have specified&nbsp;in the minio.yaml file.&nbsp;</p>
+	</li>
+	<li>Install Velero:
+	<pre><code>velero install \
     --provider aws \
     --plugins velero/velero-plugin-for-aws:v1.0.0 \
     --bucket velero \
     --secret-file ./credentials-velero \
     --use-volume-snapshots=false \
-    --backup-location-config region=minio,s3ForcePathStyle="true",s3Url=http://minio.velero.svc:9000
-</code></pre>
+    --backup-location-config region=minio,s3ForcePathStyle="true",s3Url=http://minio.velero.svc:9000</code></pre>
+	</li>
+	<li>Check to see that both the Velero deployment&nbsp;has been&nbsp;successfully created:
+	<pre><code>kubectl get deployments -l component=velero --namespace=velero</code></pre>
 	</li>
 </ol>
 
