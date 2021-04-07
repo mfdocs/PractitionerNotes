@@ -1,55 +1,54 @@
-<html><pre><span style="white-space:pre-wrap"><samp><strong>When setroubleshoot Causes Install to Hang 
-</strong></samp>
-<samp>When you install CDF and a suite, you are required to set selinux to <em>targeted</em> mode in the file /etc/sysconfig/selinux. 
-This enables medium-level security settings for the operating system.  
-</samp>
-<samp>If your ITOM installation hangs or runs into time-outs, start by running the “top” command.
-</samp>
-<img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/1b/top.png" height="195" hspace="0" src="/mediawiki/images/pn_images/pn_image_606d20c8525631.54842557.png" style="width: 800px; height: 195px; margin: 0px; border: 0px solid black;" vspace="0" width="800">
+<html><h3><span style="white-space:pre-wrap"><samp><strong>When setroubleshoot Causes Install to Hang </strong></samp><br>
+<br>
+<samp>When you install CDF and a suite, you are required to set selinux to <em>targeted</em> mode in the file /etc/sysconfig/selinux.<br>
+This enables medium-level security settings for the operating system.&nbsp; </samp><br>
+<br>
+<samp>If your ITOM installation hangs or runs into time-outs, start by running the “top” command.</samp><br>
+<br>
+<img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/1b/top.png" height="195" hspace="0" src="/mediawiki/images/pn_images/pn_image_606d20c8525631.54842557.png" style="width: 800px; height: 195px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></span></h3>
 
-<samp>If you see the process “<em>Setroubleshoot</em>” or “<em>setroubleshootd</em>” at the top of the output, then the corresponding selinux daemon is having issues.  
-You may also see that the setroubleshoot daemon's use of resources is causing the <em>fluentd</em>&nbsp;(Docker error logging) service to fail.  Fluentd can then generate an extremely large Ruby proccess, leading to even more failures (such as installation time-outs).
+<h3><samp>If you see the process “<em>Setroubleshoot</em>” or “<em>setroubleshootd</em>” at the top of the output, then the corresponding selinux daemon is having issues.&nbsp;<br>
+You may also see that the setroubleshoot daemon's use of resources is causing the <em>fluentd</em>&nbsp;(Docker error logging) service to fail.&nbsp; Fluentd can then generate an extremely large Ruby proccess, leading to even more failures (such as installation time-outs).</samp></h3>
 
-Under some conditions, selinux can go into a loop that consumes large amounts of memory and CPU.  The author has seen 98% of a CPU consumed by a runaway setroubleshoot process.
-</samp>
-<samp>If you want some insight into what the daemon is doing, you can do a low-level trace using its Process ID (PID).  You may want to direct the output to a file as shown below:
-</samp>
-# strace -f -p&nbsp; 144232 -s 255 &gt; /tmp/se_trace
+<h3>Under some conditions, selinux can go into a loop that consumes large amounts of memory and CPU.&nbsp; The author has seen 98% of a CPU consumed by a runaway setroubleshoot process.<br>
+<br>
+<samp>If you want some insight into what the daemon is doing, you can do a low-level trace using its Process ID (PID).&nbsp; You may want to direct the output to a file as shown below:</samp><br>
+<br>
+# strace -f -p&nbsp; 144232 -s 255 &gt; /tmp/se_trace</h3>
 
-.....
-[pid 144232] restart_syscall(&lt;... resuming interrupted poll ...&gt;strace: [ Process PID=144232 runs in 64 bit mode. ]
- &lt;unfinished ...&gt;
-[pid 144232] read(12, "", 8192)         = 0
-[pid 144232] close(12)                  = 0
-[pid 144232] lstat("/var/lib/selinux/<wbr>targeted/active/modules/100/<wbr>openvswitch", {st_mode=S_IFDIR|0700, st_size=44, ...}) = 0
-[pid 144232] openat(AT_FDCWD, "/var/lib/selinux/targeted/<wbr>active/modules/100/<wbr>openvswitch", O_RDONLY|O_NONBLOCK|O_CLOEXEC|<wbr>O_DIRECTORY) = 12
-[pid 144232] fstat(12, {st_mode=S_IFDIR|0700, st_size=44, ...}) = 0
-[pid 144232] getdents64(12, /* 5 entries */, 32768) = 128
-[pid 144232] getdents64(12, /* 0 entries */, 32768) = 0
-[pid 144232] close(12)                  = 0
-[pid 144232] openat(AT_FDCWD, "/var/lib/selinux/targeted/<wbr>active/modules/100/<wbr>openvswitch/cil", O_RDONLY|O_CLOEXEC) = 12
-[pid 144232] fstat(12, {st_mode=S_IFREG|0600, st_size=2799, ...}) = 0
-</span></pre>
+<h3>.....<br>
+[pid 144232] restart_syscall(&lt;... resuming interrupted poll ...&gt;strace: [ Process PID=144232 runs in 64 bit mode. ]<br>
+&lt;unfinished ...&gt;<br>
+[pid 144232] read(12, "", 8192)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0<br>
+[pid 144232] close(12)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0<br>
+[pid 144232] lstat("/var/lib/selinux/<wbr>targeted/active/modules/100/<wbr>openvswitch", {st_mode=S_IFDIR|0700, st_size=44, ...}) = 0<br>
+[pid 144232] openat(AT_FDCWD, "/var/lib/selinux/targeted/<wbr>active/modules/100/<wbr>openvswitch", O_RDONLY|O_NONBLOCK|O_CLOEXEC|<wbr>O_DIRECTORY) = 12<br>
+[pid 144232] fstat(12, {st_mode=S_IFDIR|0700, st_size=44, ...}) = 0<br>
+[pid 144232] getdents64(12, /* 5 entries */, 32768) = 128<br>
+[pid 144232] getdents64(12, /* 0 entries */, 32768) = 0<br>
+[pid 144232] close(12)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0<br>
+[pid 144232] openat(AT_FDCWD, "/var/lib/selinux/targeted/<wbr>active/modules/100/<wbr>openvswitch/cil", O_RDONLY|O_CLOEXEC) = 12<br>
+[pid 144232] fstat(12, {st_mode=S_IFREG|0600, st_size=2799, ...}) = 0</h3>
 
 <p><samp>In this case, the daemon is rapidly opening files throughout the entire file system, with no obvious objective.</samp></p>
 
 <p></p>
 
-<h2><samp>Some Basic Diagnostics</samp></h2>
+<h3><samp>Some Basic Diagnostics</samp></h3>
 
-<h3>dmesg</h3>
+<h4>dmesg</h4>
 
 <p><samp>The&nbsp;<em>dmesg</em>&nbsp;command prints out messages from the kernel, including boot and driver messages.&nbsp; Sometimes high-level commands hide information that can be found with low-level commands like this.&nbsp; You may find low-level information such as read/write errors from a failing hard drive</samp></p>
 
 <p></p>
 
-<h3><samp>tail -f /var/log/messages</samp></h3>
+<h4><samp>tail -f /var/log/messages</samp></h4>
 
 <p><font face="monospace">Global system messages go to the file&nbsp;<em>/var/log/messages.&nbsp;&nbsp;</em>Start<wbr>up, cron, authorization, and other messages go here.</font></p>
 
-<p></p>
+<h4></h4>
 
-<h3><samp>df -h</samp></h3>
+<h4><samp>df -h</samp></h4>
 
 <p><samp>When you work&nbsp;with systems based on Docker &amp; Kubernetes, there will be a lot of local and nfs-mounted drives.&nbsp; There is often trouble if any drive becomes full or unavailabe.&nbsp; Some log files grow quickly during the download or upload of Docker images.</samp></p>
 
