@@ -1,1 +1,489 @@
- 
+<html><p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Micro Focus Hybrid Cloud Management X (HCMX) simplifies the delivery, consumption, and governance of IT services and resources. HCMX is delivered as part of a single converged solution that provides the capabilities of HCMX and Service Management Automation X (SMAX) integrated Configuration Management System (CMS) and Operations Orchestration (OO) solution. HCMX and SMAX acronyms are used interchangeably throughout this document. HCMX offers the following cloud management capabilities:</span></span></span></p>
+
+<ul>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Design and Deploy (DND)</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Cost governance and resource optimization (CGRO)</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Image aggregation</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">IT process orchestration</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Service portal</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Content Store</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Universal CMDB</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">CMS UI</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Mobile application</span></span></span></li>
+</ul>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">HCMX DND capability enables customers to create service designs,&nbsp;offerings, and&nbsp;automate the provisioning and management of hybrid and multi-cloud resources.&nbsp;Some of the examples of service offerings exposed to end users are:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">A Microsoft Azure marketplace image such as ElasticSearch</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">An Amazon Web Services (AWS) marketplace image such as Wordpress</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">A virtual machine on Google Cloud</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">A database on VMware vCenter</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">A WebServer on OpenStack, etc.&nbsp; </span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Offerings that users order may have a one-time cost, a recurring cost and additional cost per option that users select. In HCMX, cost can be assigned to an offering based on end user location and a default cost can also be assigned to an offering if an end user does not belong to any one of the location specific cost assignment in the offering. There can be more than one end user location specific cost assignment in an offering but there can be only one default cost assignment for an offering. Default cost of an offering is displayed to end users who do not belong to any one of the location specific cost assignment in the offering. If an end user belongs to one of the locations defined in the offering, location specific cost is displayed to that end user. Both default cost and location specific cost assignment to an offering is optional. An organization that is geographically distributed might use location specific cost assignment in an offering. Both default cost assignment and location specific cost assignment contains cost assignment for basic pricing and additional pricing per option selected by the end users. In HCMX, total cost of a service offering is calculated by adding sum of costs defined in basic pricing and pricing per user option of an offering. </span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Basic pricing</b>: The basic pricing of a service offering contains the following cost information: Base price, cost currency, recurring cost and recurring period. Recurring period can be weekly, monthly or yearly. The basic pricing <b>fields</b> of a service offering remains the same across all service offerings. </span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Additional pricing added per user option</b>: User options available for a service offering naturally varies from one offering to another offering. For example, user options available for a laptop offering could be an external monitor, an external keyboard and an external mouse, whereas options available for a new virtual machine (VM) offering could be VM size such as small, medium, large and extra-large. As user options vary from one service offerings to another, <b>fields</b> of user options that contain cost information also vary from one service offering to another.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The cost of an offering can be updated using one of the following methods:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">HCMX Tenant Agent Interface</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Using HCMX tenant agent interface both default and location specific cost of an offering can be entered, updated and maintained.</span></span></span></p>
+
+<p style="margin-left:48px"></p>
+
+<ol start="2">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Integrate with an external cost repository</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"></p>
+
+<p style="margin-bottom:11px; margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Some organizations maintain an external cost repository with pricing information for their service offerings exposed to end users. These organizations synchronize external cost data with the Information Technology (IT) service catalog service offering cost data at regular intervals. HCMX REST APIs can be used to integrate external cost repository with HCMX to automatically update cost data of an offering in HCMX. <b>As the basic pricing fields remain the same across all service offerings, update only the following fields of an HCMX offering through REST API integration: Base price, cost currency, recurring cost and recurring period</b></span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">HCMX/SMAX Tenant Agent Interface</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">To update cost of an offering in HCMX tenant agent interface, follow the steps below:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Logon to the HCMX tenant agent interface portal as a tenant administrator or a user with catalog administration privileges.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><a name="_Hlk68864665"> From the <b>mega menu (Three horizontal lines icon)</b>, navigate to <b>Plan</b> -&gt; <b>Service Catalog</b> </a></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application, email
+
+Description automatically generated" src="/mediawiki/images/pn_images/pn_image_6070a4b7a833d1.92969684.png" style="width:624px; height:283px"></span></span></span></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the service catalog screen, select <b>category</b>, <b>service definition</b> and the <b>offering</b>. Click <b>Edit</b> on the offering for which cost information must be updated. </span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application
+
+Description automatically generated" src="/mediawiki/images/pn_images/pn_image_6070a4b80e6f10.26522532.png" style="width:624px; height:213px"></span></span></span></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>offering</b> screen, navigate to the <b>Price</b> menu. In the <b>Default</b> tab enter pricing information in the <b>basic pricing</b> and <b>Additional price added per user option</b> section. Select the <b>Visible to Self-Service portal</b> checkbox to display cost information for this offering to end users in self-service portal. In the <b>Basic pricing</b> section, enter currency, base price for the offering in the price field, any recurring price and its associated recurring period. In the <b>Additional price added per user option </b>section enter price information for options that cost in addition to the price in the <b>Basic pricing</b> section. For example, selection of a monitor option when ordering a laptop would have an additional cost. Click <b>Save</b>. Pricing information entered in the <b>Default</b> tab is the default pricing that would be applicable to all end users. If your organization is geographically distributed and you would like to enter pricing information based on location of end users, click <b>Advanced </b>tab.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface
+
+Description automatically generated" src="/mediawiki/images/pn_images/pn_image_6070a4b85dd066.63886919.png" style="width:625px; height:421px"></span></span></span></p>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Advanced</b> tab, click <b>Add Location</b>. Select a location for which you would like to enter cost information in that location’s currency. A location can be a region, country, city, etc. Refer to the SMAX documentation for more details about location. </span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" src="/mediawiki/images/pn_images/pn_image_6070a4b8a8c7a8.59834365.png" style="width:624px; height:394px"></span></span></span></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">For the selected location, enter basic and additional pricing details in the currency specific to that location. Click <b>Save</b>.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" src="/mediawiki/images/pn_images/pn_image_6070a4b902fcb0.08357310.png" style="width:625px; height:328px"></span></span></span></p>
+
+<p style="margin-left:48px"></p>
+
+<ol start="7">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Add additional location-based pricing information if necessary.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Integrate with external cost repository</b></span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">To integrate cost repository with HCMX to update cost data on service catalog offerings using REST APIs, follow the steps below:</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Get offering ID for the offering to be updated in HCMX</b></span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Logon to the HCMX tenant agent interface portal as a tenant administrator or a user with catalog administration privileges.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the <b>mega menu</b>, navigate to <b>Plan</b> -&gt; <b>Service Catalog. </b></span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the Service Catalog Management screen, navigate to <b>OFFERINGS</b>. A list of offerings is displayed with their IDs. Note down the ID of the offering for which cost information must be updated through REST APIs.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application
+
+Description automatically generated" src="/mediawiki/images/pn_images/pn_image_6070a4b9537ea2.18065031.png" style="width:624px; height:203px"></span></span></span></p>
+
+<ol start="4">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">You can also use HCMX REST APIs to retrieve IDs of an offering. Refer to SMAX REST API documentation for more details.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Get location ID in HCMX</b></span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Logon to the HCMX tenant agent interface portal as a tenant administrator or a user with privileges to view location records.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the <b>mega menu</b>, navigate to <b>Administration</b> -&gt; <b>Master data -&gt; Locations. </b></span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A list of locations is displayed with their IDs. Note down the location ID for which location specific cost information must be updated for offerings through REST APIs.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="A picture containing funnel chart
+
+Description automatically generated" src="/mediawiki/images/pn_images/pn_image_6070a4b9aa09e2.22095044.png" style="width:624px; height:450px"></span></span></span></p>
+
+<p style="margin-left:48px"></p>
+
+<ol start="4">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">You can also use HCMX REST APIs to retrieve location IDs. Refer to SMAX REST API documentation for more details.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Get SMAX Authentication (Auth) Token</b></span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">To get SMAX auth token, run the following HCMX REST API call. &nbsp;The SMAX auth token is required to make subsequent operations on SMAX objects.</span></span></span></p>
+
+<p style="margin-left:48px"></p>
+
+<table class="MsoTableGrid" style="margin-left:-1px; border-collapse:collapse; border:none">
+	<tbody>
+		<tr>
+			<td style="border-bottom:1px solid black; width:78px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Method</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:498px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">POST</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:78px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Endpoint</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:498px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">https://<span style="color:red">&lt;HCMXExternalAccessHostname&gt;</span>/auth/authentication-endpoint/authenticate/token?TENANTID=<span style="color:red">&lt;HCMXTenantID&gt;</span></span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:78px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Headers</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:498px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">None</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:78px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Body</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:498px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">{"login":"<span style="color:red">&lt;UserName&gt;</span>","password":"<span style="color:red">&lt;Password&gt;</span>"}</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:78px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Response</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:498px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">SMAX Auth Token</span></span></span></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p style="margin-left:48px"></p>
+
+<p><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the above REST API call, replace elements in red color font with the values applicable to your environment. In the body, provide a login name and password for the user with privileges to update service catalog offerings. A sample screenshot getting a SMAX Auth token using the above REST API call is as shown below:</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" src="/mediawiki/images/pn_images/pn_image_6070a4b9f37a30.84246380.png" style="width:624px; height:264px"></span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Update default cost information of an offering</b></span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">To update default cost information of an offering, run the following HCMX REST API call. </span></span></span></p>
+
+<table class="MsoTableGrid" style="width:630px; margin-left:-1px; border-collapse:collapse; border:none" width="630">
+	<tbody>
+		<tr>
+			<td style="border-bottom:1px solid black; width:78px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Method</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:552px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">POST</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:78px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Endpoint</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:552px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">https://<span style="color:red">&lt;HCMXExternalAccessHostname&gt;</span>/rest/<span style="color:red">&lt;HCMXTenantID&gt;</span>/ems/bulk</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:78px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Headers</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:552px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Cookie: TENANTID=<span style="color:red">&lt;HCMXTenantID&gt;</span>;SMAX_AUTH_TOKEN=<span style="color:red">&lt;SMAXAuthTokenFromEarlierSteps&gt;</span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">User-Agent: Apache-HttpClient/4.1</span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Content-Type: application/json</span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Accept: application/json</span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Accept: text/plain</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:78px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Body</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:552px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="color:black">{</span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="color:black">&nbsp; "entities": [</span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="color:black">&nbsp;&nbsp;&nbsp; {</span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "entity_type": "Offering",</span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "properties": {</span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "Id": "</span><span style="color:red">&lt;HCMX Offering ID to be updated&gt;</span><span style="color:black">",&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "Cost": </span><span style="color:red">&lt;Number&gt;</span><span style="color:black">,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "CostCurrency": "</span><span style="color:red">&lt;Currency such as USD, EUR, INR, etc&gt;</span><span style="color:black">",</span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "RecurringCost": </span><span style="color:red">&lt;Number&gt;</span><span style="color:black">,</span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "RecurringPeriod": "</span><span style="color:red">&lt;WEEKLY, MONTHLY or YEARLY&gt;</span><span style="color:black">"</span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="color:black">&nbsp;&nbsp;&nbsp; }</span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="color:black">&nbsp; ],</span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="color:black">&nbsp; "operation": "UPDATE"</span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="color:black">}</span></span></span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:78px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Response</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:552px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">JSON body containing completion status of the request.</span></span></span></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p style="margin-bottom:11px"></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the above REST API call, replace elements in red color font with the values applicable to your environment.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A sample screenshot updating default cost information of an offering using the above REST API call is as shown below:</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" src="/mediawiki/images/pn_images/pn_image_6070a4ba549640.79261480.png" style="width:624px; height:256px"></span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Update location specific cost information of an offering</b></span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">To update location specific cost information of an offering, run the following HCMX REST API call.</span></span></span></p>
+
+<table class="MsoTableGrid" style="border-collapse:collapse; border:none">
+	<tbody>
+		<tr>
+			<td style="border-bottom:1px solid black; width:72px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Method</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:552px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">POST</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:72px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Endpoint</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:552px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">https://<span style="color:red">&lt;HCMXExternalAccessHostname&gt;</span>/rest/<span style="color:red">&lt;HCMXTenantID&gt;</span>/ems/bulk</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:72px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Headers</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:552px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Cookie: TENANTID=<span style="color:red">&lt;HCMXTenantID&gt;</span>;SMAX_AUTH_TOKEN=<span style="color:red">&lt;SMAXAuthTokenFromEarlierSteps&gt;</span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">User-Agent: Apache-HttpClient/4.1</span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Content-Type: application/json</span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Accept: application/json</span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Accept: text/plain</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:72px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Body</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:552px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">{</span></span></span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">&nbsp; "entities": [</span></span></span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">&nbsp;&nbsp;&nbsp; {</span></span></span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "entity_type": "Offering",</span></span></span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "properties": {</span></span></span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "Id": "</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:red">&lt;HCMX Offering ID to be updated&gt;</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">",&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "Price": "{\"priceComplexType\":[{\"CostCurrency\":\"</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:red">&lt;Currency such as USD, EUR, INR, etc&gt;</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">\",\"BasePrice\":true,\"Group\":null,\"Type\":\"Location\",\"RecurringPeriod\":\"</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:red">&lt;WEEKLY, MONTHLY or YEARLY&gt;</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">\",\"RecurringCost\":\"</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:red">&lt;Number&gt;</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">\",\"OptionValue\":null,\"Cost\":\"</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:red">&lt;Number&gt;</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">\",\"OptionName\":null,\"Location\":\"</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:red">&lt;HCMXLocationID&gt;</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">\"},{\"CostCurrency\":\"</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:red">&lt;Currency such as USD, EUR, INR, etc&gt;</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">\",\"BasePrice\":true,\"Group\":null,\"Type\":\"Location\",\"RecurringPeriod\":\"</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:red">&lt;WEEKLY, MONTHLY or YEARLY&gt;</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">\",\"RecurringCost\":\"</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:red">&lt;Number&gt;</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">\",\"OptionValue\":null,\"Cost\":\"</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:red">&lt;Number&gt;</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">\",\"OptionName\":null,\"Location\":\"</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:red">&lt;HCMXLocationID&gt;</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">\"}]}"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></span></span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">&nbsp;&nbsp;&nbsp; }</span></span></span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">&nbsp; ],</span></span></span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">&nbsp; "operation": "UPDATE"</span></span></span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">}</span></span></span></span></span></span></span></p>
+
+			<p></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:72px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Response</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:552px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">JSON body containing completion status of the request.</span></span></span></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p style="margin-bottom:11px"></p>
+
+<p><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A sample screenshot updating location specific cost information of an offering using the above REST API call is as shown below:</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" src="/mediawiki/images/pn_images/pn_image_6070a4ba9c8655.85264979.png" style="width:623px; height:246px"></span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Update both default and location specific cost of an offering</b></span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">To update both default and location specific cost information of an offering, run the following HCMX REST API call.</span></span></span></p>
+
+<table class="MsoTableGrid" style="border-collapse:collapse; border:none">
+	<tbody>
+		<tr>
+			<td style="border-bottom:1px solid black; width:72px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Method</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:552px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">POST</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:72px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Endpoint</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:552px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">https://<span style="color:red">&lt;HCMXExternalAccessHostname&gt;</span>/rest/<span style="color:red">&lt;HCMXTenantID&gt;</span>/ems/bulk</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:72px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Headers</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:552px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Cookie: TENANTID=<span style="color:red">&lt;HCMXTenantID&gt;</span>;SMAX_AUTH_TOKEN=<span style="color:red">&lt;SMAXAuthTokenFromEarlierSteps&gt;</span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">User-Agent: Apache-HttpClient/4.1</span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Content-Type: application/json</span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Accept: application/json</span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Accept: text/plain</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:72px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Body</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:552px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">{</span></span></span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">&nbsp; "entities": [</span></span></span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">&nbsp;&nbsp;&nbsp; {</span></span></span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "entity_type": "Offering",</span></span></span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "properties": {</span></span></span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "Id": "</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:red">&lt;HCMX Offering ID to be updated&gt;</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">",&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "Price": "{\"priceComplexType\":[{\"CostCurrency\":\"</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:red">&lt;Currency such as USD, EUR, INR, etc&gt;</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">\",\"BasePrice\":true,\"Group\":null,\"Type\":\"Location\",\"RecurringPeriod\":\"</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:red">&lt;WEEKLY, MONTHLY or YEARLY&gt;</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">\",\"RecurringCost\":\"</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:red">&lt;Number&gt;</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">\",\"OptionValue\":null,\"Cost\":\"</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:red">&lt;Number&gt;</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">\",\"OptionName\":null,\"Location\":\"</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:red">&lt;HCMXLocationID&gt;</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">\"},{\"CostCurrency\":\"</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:red">&lt;Currency such as USD, EUR, INR, etc&gt;</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">\",\"BasePrice\":true,\"Group\":null,\"Type\":\"Location\",\"RecurringPeriod\":\"</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:red">&lt;WEEKLY, MONTHLY or YEARLY&gt;</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">\",\"RecurringCost\":\"</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:red">&lt;Number&gt;</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">\",\"OptionValue\":null,\"Cost\":\"</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:red">&lt;Number&gt;</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">\",\"OptionName\":null,\"Location\":\"</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:red">&lt;HCMXLocationID&gt;</span></span></span><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">\"}]}",&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:black">"Cost": </span><span style="color:red">&lt;Number&gt;</span><span style="color:black">,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "CostCurrency": "</span><span style="color:red">&lt;Currency such as USD, EUR, INR, etc&gt;</span><span style="color:black">",</span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "RecurringCost": </span><span style="color:red">&lt;Number&gt;</span><span style="color:black">,</span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "RecurringPeriod": "</span><span style="color:red">&lt;WEEKLY, MONTHLY or YEARLY&gt;</span><span style="color:black">"</span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></span></span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">&nbsp;&nbsp;&nbsp; }</span></span></span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">&nbsp; ],</span></span></span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">&nbsp; "operation": "UPDATE"</span></span></span></span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:Calibri,sans-serif"><span style="font-size:9.0pt"><span style="font-family:Consolas"><span style="color:black">}</span></span></span></span></span></span></span></p>
+
+			<p></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:72px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Response</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:552px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">JSON body containing completion status of the request.</span></span></span></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p style="margin-bottom:11px"></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A sample screenshot updating both default and location specific cost information of an offering using the above REST API call is as shown below:</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" src="/mediawiki/images/pn_images/pn_image_6070a4baf404d1.34958200.png" style="width:624px; height:284px"></b></span></span></span></p>
+
+<p style="margin-bottom:11px"></p>
+
+<p style="margin-left:48px"></p>
+
+<p style="margin-left:48px"></p>
+
+<p style="margin-bottom:11px; margin-left:48px"></p>
+
+<p style="margin-bottom:11px"></p>
+</html>
