@@ -114,7 +114,7 @@ metadata:
 apiVersion: v1 
 kind: PersistentVolume 
 metadata: 
-  name: minio-pv 
+  name: itom-dr-minio-pv 
   namespace: velero 
 spec: 
   capacity: 
@@ -132,7 +132,7 @@ spec:
 apiVersion: v1 
 kind: PersistentVolumeClaim 
 metadata: 
-  name: minio-pvc 
+  name: itom-dr-minio-pvc 
   namespace: velero 
 spec: 
   accessModes: 
@@ -140,7 +140,7 @@ spec:
   resources: 
     requests: 
       storage: 2Gi                                                                                  
-  volumeName: minio-pv 
+  volumeName: itom-dr-minio-pv 
   storageClassName: cdf-default 
 
   --- 
@@ -148,7 +148,7 @@ spec:
 apiVersion: v1 
 kind: Secret 
 metadata: 
-  name: secret-minio 
+  name: itom-dr-secret-minio
 type: Opaque 
 stringData: 
   username: {minio username}                # Change {minio username} to a username you want to use. You will use this user to install Velero.
@@ -185,7 +185,7 @@ spec:
           claimName: minio-pvc 
       containers: 
       - name: minio 
-        image: minio/minio:latest 
+        image: minio/minio:&lt;tag&gt;   # change &lt;tag&gt; to the &lt;tag&gt; value you specify in the "Download a&nbsp;minio&nbsp;image" step
         imagePullPolicy: IfNotPresent 
         args: 
         - server 
