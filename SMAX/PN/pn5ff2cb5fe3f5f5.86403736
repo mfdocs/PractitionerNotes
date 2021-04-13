@@ -103,247 +103,130 @@ sudo&nbsp;chmod&nbsp;g+s&nbsp;/var/vols/itom/itsma/minio</code></pre>
 <pre><code>--- 
 
 apiVersion: v1 
-
 kind: Namespace 
-
 metadata: 
-
   annotations: 
-
    openshift.io/sa.scc.mcs: s0:c25,c20 
-
-    openshift.io/sa.scc.supplemental-groups: &lt;GID&gt;/10000               #change &lt;GID&gt; to your GID when configuring NFS volumes
-
-    openshift.io/sa.scc.uid-range: &lt;UID&gt;/10000                                 #change &lt;UID&gt; to your UID when configuring NFS volumes
-
+   openshift.io/sa.scc.supplemental-groups: &lt;GID&gt;/10000               #change &lt;GID&gt; to your GID when configuring NFS volumes
+   openshift.io/sa.scc.uid-range: &lt;UID&gt;/10000                                 #change &lt;UID&gt; to your UID when configuring NFS volumes
   name: velero 
-
 --- 
-
 apiVersion: v1 
-
 kind: PersistentVolume 
-
 metadata: 
-
   name: minio-pv 
-
   namespace: velero 
-
 spec: 
-
   capacity: 
-
     storage: 2Gi                                                                         
-
   volumeMode: Filesystem 
-
   accessModes: 
-
     - ReadWriteMany 
-
   persistentVolumeReclaimPolicy: Retain 
-
   nfs: 
-
     path: /var/vols/itom/itsma/minio                                          # Update the path to your minio NFS volume path
-
     server: &lt;NFS server host&gt;         # Update &lt;NFS server host&gt; to your NFS server FQDN or IP address
-
   storageClassName: cdf-default 
 
-  
-
 --- 
-
 apiVersion: v1 
-
 kind: PersistentVolumeClaim 
-
 metadata: 
-
   name: minio-pvc 
-
   namespace: velero 
-
 spec: 
-
   accessModes: 
-
     - ReadWriteMany 
-
   resources: 
-
     requests: 
-
       storage: 2Gi                                                                                  
-
   volumeName: minio-pv 
-
   storageClassName: cdf-default 
 
-  
-
---- 
+  --- 
 
 apiVersion: v1 
-
 kind: Secret 
-
 metadata: 
-
   name: secret-minio 
-
 type: Opaque 
-
 stringData: 
-
   username: {minio username}                # Change {minio username} to a username you want to use. You will use this user to install Velero.
-
   password: {minio password}                # Change {minio password}  to a password you want to use for the user
 
-  
-
---- 
+  --- 
 
 apiVersion: apps/v1 
-
 kind: Deployment 
-
 metadata: 
-
   namespace: velero 
-
   name: minio 
-
   labels: 
-
     component: minio 
-
 spec: 
-
   strategy: 
-
     type: Recreate 
-
   selector: 
-
     matchLabels: 
-
       component: minio 
-
   template: 
-
     metadata: 
-
       labels: 
-
         component: minio 
-
     spec: 
-
       securityContext: 
-
         runAsGroup: {GID}           # Replace {GID} with your GID 
-
         runAsUser: {UID}           # Replace {UID} with your UID 
-
       seLinuxOptions: 
-
             level: s0:c25,c20 
-
       volumes: 
-
       - name: storage 
-
         persistentVolumeClaim: 
-
           claimName: minio-pvc 
-
       containers: 
-
       - name: minio 
-
         image: minio/minio:latest 
-
         imagePullPolicy: IfNotPresent 
-
         args: 
-
         - server 
-
         - /storage 
-
         - --config-dir=/config 
-
         env: 
-
-      - name: MINIO_ACCESS_KEY                     
-
-            valueFrom: 
-
-              secretKeyRef: 
-
-                name: secret-minio 
-
-                key: username 
-
-          - name: MINIO_SECRET_KEY 
-
-            valueFrom: 
-
-              secretKeyRef: 
-
-                name: secret-minio
-
-                key: password                                
-
+        - name: MINIO_ACCESS_KEY                     
+          valueFrom: 
+            secretKeyRef: 
+              name: secret-minio 
+              key: username 
+        - name: MINIO_SECRET_KEY 
+          valueFrom: 
+            secretKeyRef: 
+              name: secret-minio
+              key: password                                
         ports: 
-
         - containerPort: 9000 
-
         volumeMounts: 
-
         - name: storage 
-
           mountPath: "/storage" 
 
 --- 
 
 apiVersion: v1 
-
 kind: Service 
-
 metadata: 
-
   namespace: velero 
-
   name: minio 
-
   labels: 
-
     component: minio 
-
 spec: 
-
   # ClusterIP is recommended for production environments. 
-
   # Change to NodePort if needed per documentation, 
-
   # but only if you run Minio in a test/trial environment, for example with Minikube. 
-
   type: ClusterIP 
-
   ports: 
-
     - port: 9000 
-
       targetPort: 9000 
-
       protocol: TCP 
-
   selector: 
-
     component: minio 
 
 --- </code></pre>
