@@ -4,7 +4,7 @@
 
 <p>The Oracle integration needs to be configured for the database in Data Protector and at least one backup spec must be configured to use an available backup device. It is recommended to test the backup spec. Please see the available documentation for configuration details.</p>
 
-<p>If you don't want to allocate the Data Protector SBT library with each script, you can configure the RMAN defaults.</p>
+<p>If you don't want to allocate the Data Protector SBT library with each script, you can configure the RMAN defaults. This is especially useful for RMAN restore and maintenance operations.</p>
 
 <pre>CONFIGURE DEFAULT DEVICE TYPE TO 'SBT_TAPE';
 CONFIGURE CHANNEL DEVICE TYPE 'SBT_TAPE' PARMS 'SBT_LIBRARY=C:/PROGRA~1/OmniBack/bin/orasbt.dll';&nbsp;
@@ -21,10 +21,10 @@ Oracle Password: <code>password</code><br>
 Oracle Backup Spec: <code>ORASRV_SID_Full</code><br>
 Oracle SBT library:&nbsp;<code>C:/PROGRA~1/OmniBack/bin/orasbt.dll</code></div>
 
-<p><span style="background-color: transparent;">The path to the Oracle SBT library is different on Linux</span><span style="background-color: transparent;">&nbsp;</span><span style="background-color: transparent;">and UNIX. Oracle database on a 64 bit Linux, HP-UX and Solaris&nbsp;is using&nbsp;<code>/opt/omni/lib/libob2oracle8_64bit.so</code>. On AIX use&nbsp;<code>/usr/omni/lib/libob2oracle8_64bit.a</code>. Please refer to the Data Protector session report after running a test backup.</span></p>
+<p><span style="background-color: transparent;">The path to the Oracle SBT library is different on Linux</span><span style="background-color: transparent;">&nbsp;and UNIX. Oracle database on a 64 bit Linux, HP-UX and Solaris&nbsp;is using&nbsp;<code>/opt/omni/lib/libob2oracle8_64bit.so</code>. On AIX use&nbsp;<code>/usr/omni/lib/libob2oracle8_64bit.a</code>. Please refer to the Data Protector session report after running a test backup. For RMAN backup operations it is mandatory to allocate the Data Protector SBT library with the appropriate parameters.</span></p>
 
 <div style="">
-<h3>Backup the Oracle Controlfile</h3>
+<h3>Backup the Oracle Control File</h3>
 
 <pre>connect target sys/password@SID
 run {
@@ -37,7 +37,7 @@ backup
 }
 </pre>
 
-<h3 style="text-transform: none;">Validate the Backup of the Oracle Controlfile</h3>
+<h3 style="text-transform: none;">Validate the Backup of the Oracle Control File</h3>
 
 <pre>connect target sys/password@SID
 run {
@@ -48,7 +48,7 @@ restore controlfile validate;
 }
 </pre>
 
-<h3 style="text-transform: none;">Restore the Oracle Controlfile</h3>
+<h3 style="text-transform: none;">Restore the Oracle Control File</h3>
 
 <pre>connect target sys/password@SID
 run {
