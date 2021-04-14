@@ -59,28 +59,26 @@ restore controlfile to 'C:\Temp\control_file';
 }
 </pre>
 
-<h3 style="text-transform: none;">Perform a Backup Crosscheck</h3>
+<h3 style="text-transform: none;">Perform a Sync of RMAN Metadata in Control File</h3>
 
 <pre>connect target sys/password@SID
 run {
-allocate channel 'dev_0' type 'sbt_tape'
- parms 'SBT_LIBRARY=C:/PROGRA~1/OmniBack/bin/orasbt.dll
- ENV=(OB2BARTYPE=Oracle8,OB2APPNAME=SID,OB2BARLIST=ORASRV_SID_Full)';
+allocate channel for maintenance type 'sbt_tape'
+ parms 'SBT_LIBRARY=C:/PROGRA~1/OmniBack/bin/orasbt.dll ENV=(OB2MAINTENANCE=1)';
 crosscheck backup;
-crosscheck archivelog all;
-}
-</pre>
-
-<h3 style="text-transform: none;">Delete Expired Backups</h3>
-
-<pre>connect target sys/password@SID
-run {
-allocate channel 'dev_0' type 'sbt_tape'
- parms 'SBT_LIBRARY=C:/PROGRA~1/OmniBack/bin/orasbt.dll
- ENV=(OB2BARTYPE=Oracle8,OB2APPNAME=SID,OB2BARLIST=ORASRV_SID_Full)';
 delete noprompt expired backup;
 }
 </pre>
+
+<h3 style="text-transform: none;">Perform a Sync of RMAN Metadata in Recovery Catalog</h3>
+
+<pre>connect target sys/password@SID catalog rman/password@RCAT
+run {
+allocate channel for maintenance type 'sbt_tape'
+ parms 'SBT_LIBRARY=C:/PROGRA~1/OmniBack/bin/orasbt.dll ENV=(OB2MAINTENANCE=1)';
+crosscheck backup;
+delete noprompt expired backup;
+}</pre>
 
 <h2>Execute Scripts from RMAN</h2>
 
