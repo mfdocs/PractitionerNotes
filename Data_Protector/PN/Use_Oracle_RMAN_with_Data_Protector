@@ -1,8 +1,14 @@
 <html><p>While Data Protector is usually using Recovery Manager (RMAN) to perform efficient backups and restores of Oracle Databases the process can be reversed to match the needs of more advanced Oracle DBAs. This means RMAN can be used to control Data Protector to perform backups, restores or validate backups. Data Protector will act as the media manager software leveraging the Media Management Layer (MML).</p>
 
-<h2>Prerequsite</h2>
+<h2>Prerequsites</h2>
 
 <p>The Oracle integration needs to be configured for the database in Data Protector and at least one backup spec must be configured to use an available backup device. It is recommended to test the backup spec. Please see the available documentation for configuration details.</p>
+
+<p>If you don't want to allocate the Data Protector SBT library with each script, you can configure the RMAN defaults.</p>
+
+<pre>CONFIGURE DEFAULT DEVICE TYPE TO 'SBT_TAPE';
+CONFIGURE CHANNEL DEVICE TYPE 'SBT_TAPE' PARMS 'SBT_LIBRARY=C:/PROGRA~1/OmniBack/bin/orasbt.dll';&nbsp;
+</pre>
 
 <h2>Sample RMAN Scripts</h2>
 
@@ -15,7 +21,7 @@ Oracle Password: <code>password</code><br>
 Oracle Backup Spec: <code>ORASRV_SID_Full</code><br>
 Oracle SBT library:&nbsp;<code>C:/PROGRA~1/OmniBack/bin/orasbt.dll</code></div>
 
-<p><span style="background-color: transparent;">The path to the Oracle SBT library is different on Linux</span><span style="background-color: transparent;">&nbsp;</span><span style="background-color: transparent;">and UNIX. Oracle on a 64 bit Linux is using&nbsp;</span><span style="background-color: transparent;"><code>/opt/omni/lib/libob2oracle8_64bit.so</code>.&nbsp;</span><span style="background-color: transparent;">Please refer to the Data Protector session report after running a test backup.</span></p>
+<p><span style="background-color: transparent;">The path to the Oracle SBT library is different on Linux</span><span style="background-color: transparent;">&nbsp;</span><span style="background-color: transparent;">and UNIX. Oracle database on a 64 bit Linux, HP-UX and Solaris&nbsp;is using&nbsp;<code>/opt/omni/lib/libob2oracle8_64bit.so</code>. On AIX use&nbsp;<code>/usr/omni/lib/libob2oracle8_64bit.a</code>. Please refer to the Data Protector session report after running a test backup.</span></p>
 
 <div style="">
 <h3>Backup the Oracle Controlfile</h3>
