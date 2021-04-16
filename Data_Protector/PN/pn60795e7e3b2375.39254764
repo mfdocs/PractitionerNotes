@@ -77,7 +77,7 @@
 
 <h3>Fullfill the Installation Requirements</h3>
 
-<p><strong>Name resolution for the Cell Manager</strong></p>
+<p><strong>Name Resolution on the Cell Manager</strong></p>
 
 <p>Data Protector requires a properly configured name resolution. The preferred choice for name resolution is DNS with <code>nameserver</code>, <code>domain</code> and <code>search</code>&nbsp;options configured in <code>/etc/resolv.conf</code>. To ensure the Cell Manager is also fully operational in case DNS becomes unavailable, there should be also an apropriate entry in <code>/etc/hosts</code> for the Cell Manager system.</p>
 
@@ -88,29 +88,29 @@
 
 <p>Verify the result using the&nbsp;<code>hostname</code> and&nbsp;<code>dnsdomainname</code> c<code>ommands</code>. Both should return expected results even if DNS is not responding. Please verify if forward and reverse DNS is properly configured for the Cell Manager.</p>
 
-<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# <strong>hostname</strong>
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# hostname
 lejcm08
-[root@linux ~]# <strong>dnsdomainname</strong>
+[root@linux ~]# dnsdomainname
 mfdemo.local
-[root@linux ~]# <strong>host lejcm08.mfdemo.local</strong>
+[root@linux ~]# host lejcm08.mfdemo.local
 lejcm08.mfdemo.local has address 172.25.1.42
-[root@linux ~]# <strong>host 172.25.1.42</strong>
-42.1.25.172.in-addr.arpa domain name pointer lejcm08.mfdemo.local.
-</pre>
+[root@linux ~]# host 172.25.1.42
+42.1.25.172.in-addr.arpa domain name pointer lejcm08.mfdemo.local.</pre>
 
 <p>Enable <code>nscd</code> to cache DNS requests on the Cell Manager.</p>
 
-<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# <strong>systemctl enable nscd</strong>
-[root@linux ~]# <strong>systemctl start nscd</strong>
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# systemctl enable nscd
+[root@linux ~]# systemctl start nscd
 </pre>
 
-<p><strong>Create the user running Data Protector services</strong></p>
+<p><strong>Create the User Running Data Protector Services</strong></p>
 
 <p>The <code>AppServer</code> is executed as an unpriviledged user <code>hpdp</code>&nbsp;on the Cell Manager. This user must be created and have a existing home directory. It does not need to have a password.</p>
 
-<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# </pre>
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# useradd -m hpdp
+</pre>
 
-<p><strong>Increase the&nbsp;open file limit</strong></p>
+<p><strong>Adjust the Open File Limit</strong></p>
 
 <p>Edit the&nbsp;<code>/etc/security/limits.conf</code> and add the following lines to the end of the file. There are two entries for&nbsp;<code>root</code> and the&nbsp;<code>hpdp</code> user each.</p>
 
