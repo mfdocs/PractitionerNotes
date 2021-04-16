@@ -124,7 +124,7 @@ root            hard    nofile          16384
 hpdp            soft    nofile          8192
 hpdp            hard    nofile          16384</pre>
 
-<div class="Admonition_Note"><strong>Note:</strong> After adding this you need to logout and login to make the changes active for root.</div>
+<div class="Admonition_Note"><strong>Note:</strong> After adding this you need to logout and login to make the changes active.</div>
 
 <h3></h3>
 
@@ -152,7 +152,7 @@ uid=0(root) gid=0(root) groups=0(root) context=unconfined_u:unconfined_r:unconfi
 [root@linux ~]# mkdir /tmp/1091
 [root@linux ~]# tar zxf Micro_Focus_DP_10.91_Linux_DP_A1091_GPLx86_64.tar.gz -C /tmp/1091
 [root@linux ~]# cd /tmp/1091/LOCAL_INSTALL/
-[root@lejcm08 LOCAL_INSTALL]# ./omnisetup.sh -CM -IS -inetport 5565
+[root@linux LOCAL_INSTALL]# ./omnisetup.sh -CM -IS -inetport 5565
 
 [...]
 
@@ -212,7 +212,7 @@ pausing quartz scheduler...ok
 Migration of Template(s) completed successfully.
 
 &nbsp; Installation/upgrade session finished.
-[root@lejcm08 LOCAL_INSTALL]# 
+[root@linux LOCAL_INSTALL]# 
 </pre>
 
 <p></p>
@@ -226,10 +226,10 @@ Migration of Template(s) completed successfully.
 <p>Create a file&nbsp;<code>/etc/profile.d/omni.sh</code> and add the following content.</p>
 
 <pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;"># Search path extension for Micro Focus Data Protector
-PATH=\$PATH:/opt/omni/bin:/opt/omni/lbin:/opt/omni/sbin
+PATH=$PATH:/opt/omni/bin:/opt/omni/lbin:/opt/omni/sbin
 export PATH</pre>
 
-<div class="Admonition_Note"><strong>Note:</strong> After adding this you need to logout and login to make the changes active for root.</div>
+<div class="Admonition_Note"><strong>Note:</strong> After adding this you need to logout and login to make the changes active or run the command&nbsp;<code>source /etc/profile.d/omni.sh</code>.</div>
 
 <p class="Admonition_Note"><strong>Check the Cell Manager Services</strong></p>
 
@@ -248,7 +248,17 @@ export PATH
 
 <p>Powershell test-netconnect</p>
 
-<div class="Admonition_Important"><strong>Important:</strong> If the Windows client is not able to to resolve the Cell Manager name using DNS, you must edit&nbsp;<code>C:\Windows\system32\drivers\etc\hosts</code> on the client system and include the Cell Manager system. Also make sure that the client system exists in <code>/etc/hosts</code> of the Cell Manager. This is usally only required for test environments or special management stations.</div>
+<div class="Admonition_Important"><strong>Important:</strong> If the Windows client is not able to to resolve the Cell Manager name using DNS, you must edit&nbsp;<code>C:\Windows\system32\drivers\etc\hosts</code> on the client system and include the Cell Manager system and primary IP. Also make sure that the client system exists in <code>/etc/hosts</code> of the Cell Manager. This is usally only required for test environments or special isolated management stations.</div>
+
+<h3>Configure the GUI for Additional Cell Managers</h3>
+
+<p>If a Windows client should be used to manage more than just one Cell Manager, use the following steps. To establish a connection to a Cell Manager the client system must be authorized accordingly. A membership in the Data Protector cell is not required.</p>
+
+<p>From the Cell Manager execute the following commands.</p>
+
+<div class="Admonition_Note"><strong>Note:</strong> It is highly recommended that the Data Protector GUI version matches the version of the Cell Manager.</div>
+
+<p></p>
 
 <h2>Deploy and Configure a Windows Installation Server</h2>
 </html>
