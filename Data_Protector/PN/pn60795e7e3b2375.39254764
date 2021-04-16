@@ -30,6 +30,12 @@
 	<li>Guest Agents (If the server is a Virtual Machine)</li>
 </ul>
 
+<p>Missing packages that should be installed using yum after the installation has been completed:</p>
+
+<ul>
+	<li>nscd</li>
+</ul>
+
 <p></p>
 
 <p></p>
@@ -59,7 +65,11 @@
 	<li>Software Management</li>
 </ul>
 
-<p>sdfdf</p>
+<p>Missing packages that should be installed using yum after the installation has been completed:</p>
+
+<ul>
+	<li></li>
+</ul>
 
 <h2>Deploy Cell Manager on Linux</h2>
 
@@ -67,11 +77,38 @@
 
 <h3>Fullfill the Installation Requirements</h3>
 
+<p><strong>Name resolution for the Cell Manager</strong></p>
+
+<p>Data Protector requires a properly configured name resolution. The preferred choice for name resolution is DNS with <code>nameserver</code>, <code>domain</code> and <code>search</code> configured in <code>/etc/resolv.conf</code>. To make sure that the Cell Manager is also fully operational in case DNS is not available, there should be also an apropriate entry in <code>/etc/hosts</code> for the Cell Manager system.</p>
+
+<p>Let's assume the command <code>ip addr show</code> returns 172.25.1.42&nbsp;as the primary IP of the Cell Manager <code>lejcm08.mfdemo.local</code>, then the&nbsp;<code>/etc/hosts</code> should contain the following entry.</p>
+
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">172.25.1.42 &nbsp;lejcm08.mfdemo.local lejcm08
+</pre>
+
+<p>Verify the result using the&nbsp;<code>hostname</code> and&nbsp;<code>dnsdomainname</code> c<code>ommands</code>. Both should return expected results even if DNS is not responding. Please verify if forward and reverse DNS is properly configured for the Cell Manager.</p>
+
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# <strong>hostname</strong>
+lejcm08
+[root@linux ~]# <strong>dnsdomainname</strong>
+mfdemo.local
+[root@linux ~]# <strong>host lejcm08.mfdemo.local</strong>
+lejcm08.mfdemo.local has address 172.25.1.42
+[root@linux ~]# <strong>host 172.25.1.42</strong>
+42.1.25.172.in-addr.arpa domain name pointer lejcm08.mfdemo.local.
+</pre>
+
+<p>Enable <code>nscd</code> to cache DNS requests on the Cell Manager.</p>
+
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# <strong>systemctl enable nscd</strong>
+[root@linux ~]# <strong>systemctl start nscd</strong>
+</pre>
+
 <p><strong>Create the user running Data Protector services</strong></p>
 
 <p>The <code>AppServer</code> is executed as an unpriviledged user <code>hpdp</code>&nbsp;on the Cell Manager. This user must be created and have a existing home directory. It does not need to have a password.</p>
 
-<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# useradd -m hpdp</pre>
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# </pre>
 
 <p><strong>Increase the&nbsp;open file limit</strong></p>
 
@@ -95,7 +132,7 @@ hpdp            hard    nofile          16384</pre>
 
 <p></p>
 
-<p>Verify the result of the command <code>hostname</code> and&nbsp;<code>dnsdomainname</code>. Both should return valid results or modification to the network configuration (DNS or <code>/etc/hosts</code>) are required.</p>
+<p></p>
 
 <h3>Perform the Installation</h3>
 
