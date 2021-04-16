@@ -101,9 +101,10 @@ lejcm08.mfdemo.local has address 172.25.1.42
 [root@linux ~]# host 172.25.1.42
 42.1.25.172.in-addr.arpa domain name pointer lejcm08.mfdemo.local.</pre>
 
-<p>Enable <code>nscd</code> to cache DNS requests on the Cell Manager.</p>
+<p>Check and enable <code>nscd</code> to cache DNS requests on the new Cell Manager if the service is not enabled.</p>
 
-<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# systemctl enable nscd
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# systemctl status nscd
+[root@linux ~]# systemctl enable nscd
 [root@linux ~]# systemctl start nscd
 </pre>
 
@@ -229,20 +230,75 @@ Migration of Template(s) completed successfully.
 PATH=$PATH:/opt/omni/bin:/opt/omni/lbin:/opt/omni/sbin
 export PATH</pre>
 
-<div class="Admonition_Note"><strong>Note:</strong> After adding this you need to logout and login to make the changes active or run the command&nbsp;<code>source /etc/profile.d/omni.sh</code>.</div>
+<div class="Admonition_Note"><strong>Note:</strong> After adding this you need to logout and login to make the changes active or execute the command&nbsp;<code>source /etc/profile.d/omni.sh</code>.</div>
 
 <p class="Admonition_Note"><strong>Check the Cell Manager Services</strong></p>
 
-<p>If you do not add Data Protector to the search PATH, you must specify the full path to <code>omnisv</code> command which is <code>/opt/omni/sbin/omnisv</code>.</p>
+<p>If Data Protector was not added to the search PATH, you have to specify the full path to <code>omnisv</code> command which is <code>/opt/omni/sbin/omnisv</code>.</p>
 
-<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;"># Search path extension for Micro Focus Data Protector
-PATH=\$PATH:/opt/omni/bin:/opt/omni/lbin:/opt/omni/sbin
-export PATH
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux LOCAL_INSTALL]# omnisv status
+&nbsp; &nbsp; ProcName &nbsp; &nbsp; &nbsp;Status &nbsp;[PID]
+===============================
+&nbsp; &nbsp; crs &nbsp; &nbsp; &nbsp; &nbsp; : Active &nbsp;[17332]
+&nbsp; &nbsp; mmd &nbsp; &nbsp; &nbsp; &nbsp; : Active &nbsp;[17331]
+&nbsp; &nbsp; kms &nbsp; &nbsp; &nbsp; &nbsp; : Active &nbsp;[17330]
+&nbsp; &nbsp; hpdp-idb &nbsp; &nbsp;: Active &nbsp;[17366]
+&nbsp; &nbsp; hpdp-idb-cp : Active &nbsp;[17393]
+&nbsp; &nbsp; hpdp-as &nbsp; &nbsp; : Active &nbsp;[17417]
+&nbsp; &nbsp; omnitrig &nbsp; &nbsp;: Active
+&nbsp; &nbsp; Sending of traps disabled.
+===============================
+Status: All Cell Server processes/services up and running.
+</pre>
+
+<p class="Admonition_Note"><strong>Open the Firewall on the Cell Manager</strong></p>
+
+<p class="Admonition_Note">If the Linux firewall is enabled, you must open the <a href="/itom/Data_Protector:latest/PortUsage">ports used by Data Protector</a>&nbsp;accordingly.&nbsp;Or disable the firewall entirely, if it is not required in your environment.</p>
+
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# systemctl status firewalld
+[root@linux ~]# systemctl stop firewalld
+[root@linux&nbsp;~]# systemctl disable firewalld
 </pre>
 
 <h2>Deploy the Data Protector GUI on Windows</h2>
 
-<p>Copy the Windows installation package&nbsp;<code>Micro_Focus_DP_10.91_Windows_DP_A1091_Windows_OVMS.zip</code>&nbsp;to the client system. Extract the content to a temporary location and start&nbsp;</p>
+<p>TBD</p>
+
+<h3>Verify Communication with Cell Manager</h3>
+
+<p>Since telnet is no longer installed by default it is recommended to use Test-NetConnection available in&nbsp;PowerShell for testing client communication. Specify the Data Protector INET port (5565 by default) configured during the Cell Manager installation.</p>
+
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">PS C:\&gt; tnc lejcm08.mfdemo.local -Port 5565
+
+ComputerName &nbsp; &nbsp; : lejcm08.mfdemo.local
+RemoteAddress &nbsp; &nbsp;: 172.25.1.42
+RemotePort &nbsp; &nbsp; &nbsp; : 5565
+InterfaceAlias &nbsp; : Ethernet0
+SourceAddress &nbsp; &nbsp;: 172.25.100.201
+TcpTestSucceeded : True
+</pre>
+
+<p>If the port is unreachable, check if the firewall is properly configured on the Cell Manager.</p>
+
+<h3>Perform the Installation</h3>
+
+<p>Copy the Windows installation package&nbsp;<code>Micro_Focus_DP_10.91_Windows_DP_A1091_Windows_OVMS.zip</code>&nbsp;to the client system. Extract the content from the archive to a temporary location and run&nbsp;<code>setup.exe</code> from the folder&nbsp;<code>Windows\x8664</code>&nbsp;as Administrator. Choose a Client installation only.</p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/4c/2021-04-16_18h16_11.png" height="386" hspace="0" src="https://docs.microfocus.com/mediawiki/images/4/4c/2021-04-16_18h16_11.png" style="width:500px;height:386px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="500"></p>
+
+<p>On the next screen specify the FQDN of the Cell Manager and the Data Protector INET port (5565 by default) configured during the Cell Manager installation. Clicking next or using Check response may take a while to complete. If the it times out, navigate back and retry a few times. This will increase the timeout waiting for the Cell Manager to respond. You can also untick <code>Check Cell Manager name</code> and proceed.</p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/40/2021-04-16_18h29_33.png" height="386" hspace="0" src="https://docs.microfocus.com/mediawiki/images/4/40/2021-04-16_18h29_33.png" style="width:500px;height:386px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="500"></p>
+
+<p>On one of the next screens select the <code>User Interface</code> and the <code>Documentation</code> only. This is sufficient for a pure management station. Proceed with the client installation.</p>
+
+<p>If the Cell Manager is responding properly the setup will request to confirm the Cell Manager certificate, which is used to secure the client-server communication.</p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/a/a7/2021-04-16_18h36_01.png" height="386" hspace="0" src="https://docs.microfocus.com/mediawiki/images/a/a7/2021-04-16_18h36_01.png" style="width:500px;height:386px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="500"></p>
+
+<p></p>
+
+<p></p>
 
 <p>Make sure the <a href="/itom/Data_Protector:latest/PortUsage">network ports</a> for the Data Protector GUI are open between the client system and the Cell Manager and both systems are able to resolve each other using DNS. You can test this with the <code>nslookup</code> or <code>ping</code> command.</p>
 
