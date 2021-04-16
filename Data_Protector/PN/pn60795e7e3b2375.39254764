@@ -8,6 +8,8 @@
 
 <p>Revisit the <a href="/itom/Data_Protector:latest/PreInstallTasks">complete list of pre-requesites</a> for Cell Manager deployment in the official documentation</p>
 
+<p>Make sure the <a href="/itom/Data_Protector:latest/PortUsage">network ports</a> between Cell Manager, GUI and clients are open. This includes external firewalls and the firewall on the client or server itself.</p>
+
 <h2>Prepare Linux for the Cell Manager</h2>
 
 <p>The following sections describe general assumptions for the Linux operating system platform. The goal is to prepare the Linux operating system&nbsp;properly for a successful Data Protector Cell Manager deployment. While most of the requirements are identical, there are slight differences for RHEL-based distributions and SLES. Please follow the steps in the apropriate section.</p>
@@ -33,6 +35,7 @@
 <p>Missing packages that should be installed using yum after the installation has been completed:</p>
 
 <ul>
+	<li>libnsl</li>
 	<li>nscd</li>
 </ul>
 
@@ -68,6 +71,7 @@
 <p>Missing packages that should be installed using yum after the installation has been completed:</p>
 
 <ul>
+	<li>bc</li>
 	<li></li>
 </ul>
 
@@ -114,7 +118,7 @@ lejcm08.mfdemo.local has address 172.25.1.42
 
 <p>Edit the&nbsp;<code>/etc/security/limits.conf</code> and add the following lines to the end of the file. There are two entries for&nbsp;<code>root</code> and the&nbsp;<code>hpdp</code> user each.</p>
 
-<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;"># Open file limit for Data Protector Cell Manager
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;"># Open file limit for Micro Focus Data Protector Cell Manager
 root            soft    nofile          8192
 root            hard    nofile          16384
 hpdp            soft    nofile          8192
@@ -136,19 +140,115 @@ hpdp            hard    nofile          16384</pre>
 
 <h3>Perform the Installation</h3>
 
-<p>Perform as root</p>
+<p>Copy the Linux installation package&nbsp;<code>Micro_Focus_DP_10.91_Linux_DP_A1091_GPLx86_64.tar.gz</code> to the server system. You can use SCP or mount a network share from the Linux Server and copy it to a local file system.</p>
 
-<p>unset LANG</p>
+<p>Perform as root and unset LANG to make sure there is no issue related to localization</p>
 
-<p>Copy the installation package&nbsp;Micro_Focus_DP_10.91_Linux_DP_A1091_GPLx86_64.tar.gz to the server system. You can use SCP or mount a network share from the Linux Server and copy it to a local file system.</p>
+<p>The setup process will ask the user to confirm general Obsolescence Information of the current version. This is mandatory to proceed with the installation or upgrade. The options Secure Data Communication and Audit Log as well as&nbsp;Telemetry License Agreement are considered optional.</p>
 
-<p>TBD</p>
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# id
+uid=0(root) gid=0(root) groups=0(root) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+[root@linux ~]# unset LANG
+[root@linux ~]# mkdir /tmp/1091
+[root@linux ~]# tar zxf Micro_Focus_DP_10.91_Linux_DP_A1091_GPLx86_64.tar.gz -C /tmp/1091
+[root@linux ~]# cd /tmp/1091/LOCAL_INSTALL/
+[root@lejcm08 LOCAL_INSTALL]# ./omnisetup.sh -CM -IS -inetport 5565
+
+[...]
+
+&nbsp; No Data Protector software detected on the target system.
+
+&nbsp; Validating System requirements...
+
+&nbsp; Passed: &nbsp; Reporting Server instance not found. Cell Manager can be Installed.
+&nbsp; Passed: &nbsp; The user account "hpdp" will be used for the IDB service.
+&nbsp; Passed: &nbsp; Port number "7112" will be used for the "hpdp-idb" service.
+&nbsp; Passed: &nbsp; Port number "7113" will be used for the "hpdp-idb-cp" service.
+&nbsp; Passed: &nbsp; Port number "7116" will be used for the "hpdp-as" service.
+&nbsp; Passed: &nbsp; Port number "9999" will be used for the "hpdp-as" service.
+&nbsp; Passed: &nbsp; The kernel parameter value: SHMMAX = 18446744073692774399 (17179869183.98 GB).
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; The minimum required parameter value is "2.5 GB".
+&nbsp; Passed: &nbsp; There are "16814817280" bytes (15.66 GB) (approx. 16 GB) of available system memory.
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 16 GB of system memory is required.
+&nbsp; Passed: &nbsp; Requires 3079168 kilobytes (2.93 GB) of free
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; storage space on the "/" filesystem.
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; The filesystem "/" has 23941912 kilobytes (22.83 GB) of free space.
+&nbsp; Passed: &nbsp; Package glibc-2.28-72.el8.x86_64 is installed on the system.
+&nbsp; Passed: &nbsp; Package libnsl-2.28-72.el8.x86_64 is installed on the system.
+&nbsp; Passed: &nbsp; Hostname restrictions verified.
+&nbsp; Passed: &nbsp; Open file limit restriction verified.
+
+&nbsp; Validating system requirements completed successfully.
+
+[...]
+
+Installing OB2-CS packet
+Verifying... &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;################################# [100%]
+Preparing... &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;################################# [100%]
+Updating / installing...
+&nbsp; &nbsp;1:OB2-CS-A.10.91-1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ################################# [100%]
+NOTE: &nbsp; &nbsp;No Data Protector A.10.91 Internal Database found. Initializing...
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Configuring and starting up Internal Database... &nbsp; &nbsp; Done!
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Configuring and starting up Internal Database Connection Pool... &nbsp; &nbsp; Done!
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Initializing Internal Database version A.10.91... &nbsp; &nbsp; Done!
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Configuring and starting up Application Server... &nbsp; &nbsp; Done!
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Starting up Data Protector Services... &nbsp; &nbsp; Done!
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Deploying Application Server Web Services... &nbsp; &nbsp; Done!
+NOTE: &nbsp; &nbsp;Data Protector A.10.91 Internal Database initialized.
+
+[...]
+
+DONE!
+Telemetry details updated successfully.
+Migrating Ldap Configuration to Keycloak ..
+Migrating Users ..
+Log file: /var/opt/omni/server/log/dp_user_migrate.log
+User Migration completed successfully.
+
+pausing quartz scheduler...ok
+
+[...]
+
+Migration of Template(s) completed successfully.
+
+&nbsp; Installation/upgrade session finished.
+[root@lejcm08 LOCAL_INSTALL]# 
+</pre>
+
+<p></p>
+
+<p></p>
 
 <h3>Post-Installation Steps</h3>
 
-<p>Add to $PATH</p>
+<p><strong>Add Data Protector to Search PATH</strong></p>
+
+<p>Create a file&nbsp;<code>/etc/profile.d/omni.sh</code> and add the following content.</p>
+
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;"># Search path extension for Micro Focus Data Protector
+PATH=\$PATH:/opt/omni/bin:/opt/omni/lbin:/opt/omni/sbin
+export PATH</pre>
+
+<div class="Admonition_Note"><strong>Note:</strong> After adding this you need to logout and login to make the changes active for root.</div>
+
+<p class="Admonition_Note"><strong>Check the Cell Manager Services</strong></p>
+
+<p>If you do not add Data Protector to the search PATH, you must specify the full path to <code>omnisv</code> command which is <code>/opt/omni/sbin/omnisv</code>.</p>
+
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;"># Search path extension for Micro Focus Data Protector
+PATH=\$PATH:/opt/omni/bin:/opt/omni/lbin:/opt/omni/sbin
+export PATH
+</pre>
 
 <h2>Deploy the Data Protector GUI on Windows</h2>
+
+<p>Copy the Windows installation package&nbsp;<code>Micro_Focus_DP_10.91_Windows_DP_A1091_Windows_OVMS.zip</code>&nbsp;to the client system. Extract the content to a temporary location and start&nbsp;</p>
+
+<p>Make sure the <a href="/itom/Data_Protector:latest/PortUsage">network ports</a> for the Data Protector GUI are open between the client system and the Cell Manager and both systems are able to resolve each other using DNS. You can test this with the <code>nslookup</code> or <code>ping</code> command.</p>
+
+<p>Powershell test-netconnect</p>
+
+<div class="Admonition_Important"><strong>Important:</strong> If the Windows client is not able to to resolve the Cell Manager name using DNS, you must edit&nbsp;<code>C:\Windows\system32\drivers\etc\hosts</code> on the client system and include the Cell Manager system. Also make sure that the client system exists in <code>/etc/hosts</code> of the Cell Manager. This is usally only required for test environments or special management stations.</div>
 
 <h2>Deploy and Configure a Windows Installation Server</h2>
 </html>
