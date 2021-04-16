@@ -266,7 +266,9 @@ Status: All Cell Server processes/services up and running.
 
 <h3>Verify Communication with Cell Manager</h3>
 
-<p>Since telnet is no longer installed by default it is recommended to use Test-NetConnection available in&nbsp;PowerShell for testing client communication. Specify the Data Protector INET port (5565 by default) configured during the Cell Manager installation.</p>
+<p>Make sure the <a href="/itom/Data_Protector:latest/PortUsage">network ports</a> for the Data Protector GUI are open between the client system and the Cell Manager and both systems are able to resolve each other using DNS. You can test this with the <code>nslookup</code> or <code>ping</code> command.</p>
+
+<p>Since <code>telnet</code> is no longer installed by default, it is recommended to use <code>Test-NetConnection</code> available in&nbsp;PowerShell for testing general client communication. Specify the Data Protector INET port (5565 by default) configured during the Cell Manager installation.</p>
 
 <pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">PS C:\&gt; tnc lejcm08.mfdemo.local -Port 5565
 
@@ -286,11 +288,13 @@ TcpTestSucceeded : True
 
 <p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/4c/2021-04-16_18h16_11.png" height="386" hspace="0" src="https://docs.microfocus.com/mediawiki/images/4/4c/2021-04-16_18h16_11.png" style="width:500px;height:386px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="500"></p>
 
-<p>On the next screen specify the FQDN of the Cell Manager and the Data Protector INET port (5565 by default) configured during the Cell Manager installation. Clicking next or using Check response may take a while to complete. If the it times out, navigate back and retry a few times. This will increase the timeout waiting for the Cell Manager to respond. You can also untick <code>Check Cell Manager name</code> and proceed.</p>
+<p>On the next screen specify the FQDN of the Cell Manager and the Data Protector INET port (5565 by default) configured during the Cell Manager installation. Clicking next or using Check response may take a while to complete. If the it times out, navigate back and retry a few times. This will increase the timeout waiting for the Cell Manager to respond. You can also remove the selection on&nbsp;<code>Check Cell Manager name</code> and proceed.</p>
 
 <p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/40/2021-04-16_18h29_33.png" height="386" hspace="0" src="https://docs.microfocus.com/mediawiki/images/4/40/2021-04-16_18h29_33.png" style="width:500px;height:386px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="500"></p>
 
 <p>On one of the next screens select the <code>User Interface</code> and the <code>Documentation</code> only. This is sufficient for a pure management station. Proceed with the client installation.</p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/0/0a/2021-04-16_18h43_42.png" height="386" hspace="0" src="https://docs.microfocus.com/mediawiki/images/0/0a/2021-04-16_18h43_42.png" style="width:500px;height:386px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="500"></p>
 
 <p>If the Cell Manager is responding properly the setup will request to confirm the Cell Manager certificate, which is used to secure the client-server communication.</p>
 
@@ -300,9 +304,9 @@ TcpTestSucceeded : True
 
 <p></p>
 
-<p>Make sure the <a href="/itom/Data_Protector:latest/PortUsage">network ports</a> for the Data Protector GUI are open between the client system and the Cell Manager and both systems are able to resolve each other using DNS. You can test this with the <code>nslookup</code> or <code>ping</code> command.</p>
+<p></p>
 
-<p>Powershell test-netconnect</p>
+<p></p>
 
 <div class="Admonition_Important"><strong>Important:</strong> If the Windows client is not able to to resolve the Cell Manager name using DNS, you must edit&nbsp;<code>C:\Windows\system32\drivers\etc\hosts</code> on the client system and include the Cell Manager system and primary IP. Also make sure that the client system exists in <code>/etc/hosts</code> of the Cell Manager. This is usally only required for test environments or special isolated management stations.</div>
 
