@@ -69,7 +69,7 @@
 
 <p><strong>Create the user running Data Protector services</strong></p>
 
-<p>The AppServer service is executed as an unpriviledged user <code>hpdp</code>&nbsp;on the Cell Manager. This user must be created and have a existing home directory. It does not need to have a password.</p>
+<p>The <code>AppServer</code> is executed as an unpriviledged user <code>hpdp</code>&nbsp;on the Cell Manager. This user must be created and have a existing home directory. It does not need to have a password.</p>
 
 <pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# useradd -m hpdp</pre>
 
@@ -77,15 +77,19 @@
 
 <p>Edit the&nbsp;<code>/etc/security/limits.conf</code> and add the following lines to the end of the file. There are two entries for&nbsp;<code>root</code> and the&nbsp;<code>hpdp</code> user each.</p>
 
-<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;"># Data Protector Cell Manager open file limit
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;"># Open file limit for Data Protector Cell Manager
 root            soft    nofile          8192
 root            hard    nofile          16384
 hpdp            soft    nofile          8192
 hpdp            hard    nofile          16384</pre>
 
-<p></p>
+<div class="Admonition_Note"><strong>Note:</strong> After adding this you need to logout and login to make the changes active for root.</div>
+
+<h3></h3>
 
 <h3>Pre-flight Checks</h3>
+
+<p>Perform as root</p>
 
 <p>The <code>omnisetup.sh</code> script used for the installation and upgrade of Data Protector comes with a wide range of built-in pre-flight checks. So running the script will inform the user about missing dependencies and possible configuration issues. If a problem is found the installation is aborted and the user can fix the issues and retry.</p>
 
@@ -94,6 +98,10 @@ hpdp            hard    nofile          16384</pre>
 <p>Verify the result of the command <code>hostname</code> and&nbsp;<code>dnsdomainname</code>. Both should return valid results or modification to the network configuration (DNS or <code>/etc/hosts</code>) are required.</p>
 
 <h3>Perform the Installation</h3>
+
+<p>Perform as root</p>
+
+<p>unset LANG</p>
 
 <p>Copy the installation package&nbsp;Micro_Focus_DP_10.91_Linux_DP_A1091_GPLx86_64.tar.gz to the server system. You can use SCP or mount a network share from the Linux Server and copy it to a local file system.</p>
 
