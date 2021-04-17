@@ -264,6 +264,8 @@ Status: All Cell Server processes/services up and running.
 
 <p>TBD</p>
 
+<div class="Admonition_Note"><strong>Note:</strong> It is highly recommended that the Data Protector GUI version matches the version of the Cell Manager.</div>
+
 <h3>Verify Client Communication with Cell Manager</h3>
 
 <p>Make sure the <a href="/itom/Data_Protector:latest/PortUsage">network ports</a> for the Data Protector GUI are open between the client system and the Cell Manager and both systems are able to resolve each other using DNS. You can test this with the <code>nslookup</code> or <code>ping</code> command.</p>
@@ -325,17 +327,50 @@ Import host successful.</pre>
 
 <div class="Admonition_Note"><strong>Note:</strong> The import process will request to confirm the client certificate, which is used to secure the client-server communication. If you want to get the fingerprint of the certificate on the client, run <code>omnicc -secure_comm -get_fingerprint</code> on the GUI client system.</div>
 
-<h3>Add the User to the Cell Manager User Management</h3>
+<h3>Configure the Cell Manager User Management</h3>
 
-<p></p>
+<p>With the client-server certificate being trusted on the Cell Manager and client the Data Protector GUI will be able to connect the Cell Manager. During the first connection attempt, confirm the AppServer certificate. The certificate is is different to the certificate used to secure the client-server communication.</p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/19/2021-04-17_08h13_54.png" height="593" hspace="0" src="https://docs.microfocus.com/mediawiki/images/1/19/2021-04-17_08h13_54.png" style="width:786px;height:593px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="786"></p>
+
+<p>Since there has is no Data Protector user for the client system, a login prompt will be displayed. This is expected at this point. Please close the GUI and continue with the next step.</p>
+
+<div class="Admonition_Caution"><strong>Caution:</strong> The login prompt is only used when the Cell Manager has been&nbsp;configured for&nbsp;<a href="/itom/Data_Protector:latest/LDAP">LDAP authentication</a>.</div>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/3/38/2021-04-17_08h18_01.png" height="593" hspace="0" src="https://docs.microfocus.com/mediawiki/images/3/38/2021-04-17_08h18_01.png" style="width:786px;height:593px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="786"></p>
+
+<p>On the Cell Manager run the <code>omniusers</code> command to add the user logged in to the client system accordingly to the Data Protector user management. This step depends on the environment setup. After this step, the GUI will be able to connect without the login prompt.</p>
+
+<div class="Admonition_Important"><strong>Important:</strong>&nbsp;The password specified in <code>omniusers -setpass</code> is only used internally by the AppServer. Only a user with a password defined will be granted access to the Data Protector GUI.&nbsp;No login prompt will be displayed.&nbsp;The password may be different to the password used by the user used to run the Data Protector GUI.</div>
+
+<div class="Admonition_Note"><strong>Note:</strong>&nbsp;Users without a password are commonly used as part of application integration backup in Data Protector.</div>
+
+<p><strong>Local User on the Client System&nbsp;Example</strong></p>
+
+<p>The local Administrator on the client system LEJWN10, which is identified on the network as lejwn10.mfdemo.local, is added.</p>
+
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# omniusers -add -type W -usergroup admin -name Administrator -group LEJWN10 -client lejwn10.mfdemo.local -setpass
+Enter Password :
+Re-Enter Password :
+
+User 'ADMINISTRATOR' successfully added to 'admin' group.
+</pre>
+
+<p><strong>Domain User on the Client System&nbsp;Example</strong></p>
+
+<p>The domain user MFDEMO\Jane on the client system lejwn10.mfdemo.local&nbsp;is added.</p>
+
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# omniusers -add -type W -usergroup admin -name Jane -group MFDEMO -client lejwn10.mfdemo.local -setpass
+Enter Password :
+Re-Enter Password :
+
+User 'JANE' successfully added to 'admin' group.</pre>
 
 <h2>Configure the GUI for Additional Cell Managers</h2>
 
-<p>If a Windows client should be used to manage more than just one Cell Manager, use the following steps. To establish a connection to a Cell Manager the client system must be authorized accordingly. A membership in the Data Protector cell is not required.</p>
+<p>If a Windows client is used to manage more than one Cell Manager, use the following steps. To establish a connection to a Cell Manager the client system must be authorized accordingly. A membership in the Data Protector cell is not required.</p>
 
 <p>From the Cell Manager execute the following commands.</p>
-
-<div class="Admonition_Note"><strong>Note:</strong> It is highly recommended that the Data Protector GUI version matches the version of the Cell Manager.</div>
 
 <p></p>
 
