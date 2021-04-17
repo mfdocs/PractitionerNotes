@@ -72,7 +72,6 @@
 
 <ul>
 	<li>bc</li>
-	<li></li>
 </ul>
 
 <h2>Deploy Cell Manager on Linux</h2>
@@ -80,6 +79,33 @@
 <p></p>
 
 <h3>Fulfill the Installation Requirements</h3>
+
+<p><strong>Software Downloads</strong></p>
+
+<p>Download the media kit for Windows and Linux from <a href="https://entitlement.microfocus.com">Software Licenses and Downloads</a> the <a href="https://www.microfocus.com/en-us/products/data-protector-backup-recovery-software/download">Evaluation Portal</a>.</p>
+
+<table border="1" cellpadding="1" cellspacing="1">
+	<thead>
+		<tr>
+			<th scope="col">Operating System</th>
+			<th scope="col"><strong>Filename Media Kit</strong></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Linux</td>
+			<td>Micro_Focus_DP_10.91_Linux_DP_A1091_GPLx86_64.tar.gz<br>
+			Micro_Focus_DP_10.91_Linux_Signature_File_DP_A1091_GPLx86_64.tar.gz.sig</td>
+		</tr>
+		<tr>
+			<td>Windows</td>
+			<td>Micro_Focus_DP_10.91_Windows_DP_A1091_Windows_OVMS.zip<br>
+			Micro_Focus_DP_10.91_Windows_Signature_File_DP_A1091_Windows_OVMS.zip.sig</td>
+		</tr>
+	</tbody>
+</table>
+
+<div class="Admonition_Note"><strong>Note:</strong> The file name will adjust when newer versions of Data Protector become available. Always using the&nbsp;latest version for evaluation purposes is highly recommended.</div>
 
 <p><strong>Name Resolution on the Cell Manager</strong></p>
 
@@ -216,9 +242,7 @@ Migration of Template(s) completed successfully.
 [root@linux LOCAL_INSTALL]# 
 </pre>
 
-<p></p>
-
-<p></p>
+<p>Have a look at the setup log and make sure no errors are reported. If no errors are found, proceed with the Post-Installation Steps.</p>
 
 <h3>Post-Installation Steps</h3>
 
@@ -262,7 +286,7 @@ Status: All Cell Server processes/services up and running.
 
 <h2>Deploy the Data Protector GUI on Windows</h2>
 
-<p>TBD</p>
+<p>While parts of Data Protector can be managed from a modern web interface, most of the initial configuration is still done with a Windows-based GUI. After the Cell Manager deployment on Linux, follow&nbsp;this procedure to install and configure a Windows-based management station using the Data Protector GUI.</p>
 
 <div class="Admonition_Note"><strong>Note:</strong> It is highly recommended that the Data Protector GUI version matches the version of the Cell Manager.</div>
 
@@ -453,7 +477,7 @@ Import host successful.
 <pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux&nbsp;~]# omnicc -update_omnirc OB2FWPASSTHRU -value 1 -host lejis19.mfdemo.local
 lejis19.mfdemo.local &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Success</pre>
 
-<p>On the Windows Installation server, run the <code>omniinetpasswd</code> command from an <strong>elevated</strong> command prompt. Add a Windows user account to the Data Protector INET impersonation database, which is able to remotely connect to the <code>OmniBack</code> share on the Installation server. This is necessary for initial remote client deployments of new Windows clients. If not configured you will see&nbsp;Cannot connect to the SCM&nbsp;errors during remote client deployment.</p>
+<p>On the Windows Installation server, run the <code>omniinetpasswd</code> command from an <strong>elevated</strong> command prompt. Add a Windows user account to the Data Protector INET impersonation database, which is able to remotely connect to the <code>OmniBack</code> share on the Installation server. This is necessary for initial remote client deployments of new Windows clients. If not configured you will see&nbsp;<code>[110:1022] Cannot connect to the SCM (Service Control Manager)</code>&nbsp;errors during remote client deployment.</p>
 
 <pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">C:\&gt;omniinetpasswd -add LEJIS19\Administrator
 Please enter password:********
