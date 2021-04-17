@@ -12,71 +12,60 @@
 
 <h2>Prepare Linux for the Cell Manager</h2>
 
-<p>The following sections describe general assumptions for the Linux operating system platform. The goal is to prepare the Linux operating system&nbsp;properly for a successful Data Protector Cell Manager deployment. While most of the requirements are identical, there are slight differences for RHEL-based distributions and SLES. Please follow the steps in the appropriate section.</p>
+<p>The following sections describe general assumptions for the Linux operating system used. The goal is to prepare Linux for a successful Data Protector Cell Manager deployment. While most of the requirements are identical, there are slight differences for RHEL-based distributions and SLES. Please follow the steps in the appropriate section.</p>
+
+<p>Since Data Protector is using a distributed and modular architecture networking and name resolution are important. The system should be&nbsp;configured with a FQDN&nbsp;whenever possible. The short hostname and the FQDN must be resolved using <code>/etc/hosts</code> and/or DNS. Using NTP is highly recommended to allow proper scheduling and being in sync with other systems on the network.</p>
 
 <p>This guide was created with Micro Focus Data Protector A.10.91 on SLES15 SP2 and RHEL8 U1. It is expected that the steps shared will be also valid for more recent versions of Data Protector and the Linux operating system.</p>
 
 <div class="Admonition_Note"><strong>Note: </strong>Using different installation options as described here is supported, but might result in additional steps necessary not covered by this guide.</div>
 
-<h3>Red Hat Linux Server 8.x</h3>
+<h3>Red Hat Linux Server</h3>
 
-<p>This assumes that a Minimal Installation&nbsp;of RHEL 8.x is performed.</p>
+<p>The following assumes a <code>Minimal Installation</code>&nbsp;of Red Hat Linux Server (RHEL) 8.x was performed on a physical or virtual system.</p>
+
+<p>At least the following&nbsp;software components have been selected as part of the installation:</p>
+
+<ul>
+	<li><code>Standard</code></li>
+	<li><code>Headless Management</code></li>
+	<li><code>Guest Agents</code> (If the server is a Virtual Machine)</li>
+</ul>
+
+<p>Packages required by Data Protector that should be installed using <code>yum</code> after the installation has been completed:</p>
+
+<ul>
+	<li><code>libnsl</code></li>
+	<li><code>nscd</code></li>
+</ul>
+
+<p></p>
 
 <div class="Admonition_Note"><strong>Note:</strong>&nbsp;Cell Manager deployments on Oracle Enterprise Linux and CentOS&nbsp;have the same requirements.</div>
 
-<p>Make sure to include at least the following&nbsp;software components as part of the installation process:</p>
+<h3>SUSE Linux Enterprise Server</h3>
+
+<p>The following assumes a <code>Minimal Installation</code>&nbsp;of SUSE Linux Enterprise Server (SLES) 15.x with the&nbsp;<code>Basesystem Module</code> and <code>Server Applications Module</code> enabled&nbsp;was performed on a physical or virtual system.</p>
+
+<p>At least the following&nbsp;software components have been selected as part of the installation:</p>
 
 <ul>
-	<li>Standard</li>
-	<li>Headless Management</li>
-	<li>Guest Agents (If the server is a Virtual Machine)</li>
+	<li><code>Minimal Base System</code></li>
+	<li><code>Enhanced Base System</code></li>
+	<li><code>32-Bit Runtime Environment</code></li>
+	<li><code>YaST System Administration</code></li>
+	<li><code>Software Management</code></li>
 </ul>
 
-<p>Missing packages that should be installed using yum after the installation has been completed:</p>
+<p>Packages required by Data Protector that should be installed using <code>YaST</code> after the installation has been completed:</p>
 
 <ul>
-	<li>libnsl</li>
-	<li>nscd</li>
-</ul>
-
-<p></p>
-
-<p></p>
-
-<ul>
-</ul>
-
-<p>Configure networking and NTP. Make sure that the system is configured with a FQDN. The FQDN must be resolved using /etc/hosts and/or DNS.</p>
-
-<p>Disable the firewall (SLES part of setup, RHEL it is enabled by default and must be disabled/configured later)</p>
-
-<p>enable SSH&nbsp;</p>
-
-<p></p>
-
-<h3>SUSE Linux Enterprise Server 15.x</h3>
-
-<p>This assumes that a Minimal Installation&nbsp;of SLES 15.x is performed while the&nbsp;Basesystem Module and Server Applications Module&nbsp;have been selected.</p>
-
-<p>Make sure to include at least the following&nbsp;software components as part of the installation process:</p>
-
-<ul>
-	<li>Minimal Base System</li>
-	<li>Enhanced Base System</li>
-	<li>32-Bit Runtime Environment</li>
-	<li>YaST System Administration</li>
-	<li>Software Management</li>
-</ul>
-
-<p>Missing packages that should be installed using yum after the installation has been completed:</p>
-
-<ul>
-	<li>bc</li>
+	<li><code>bc</code></li>
 </ul>
 
 <h2>Deploy Cell Manager on Linux</h2>
 
-<p></p>
+<p>This first section is about fulfilling Data Protector-specific installation requirementes.</p>
 
 <h3>Fulfill the Installation Requirements</h3>
 
@@ -153,23 +142,13 @@ hpdp            hard    nofile          16384</pre>
 
 <div class="Admonition_Note"><strong>Note:</strong> After changing this file the user must logout and login to activate the changes.</div>
 
-<h3></h3>
-
-<h3>Pre-flight Checks</h3>
-
-<p>Perform as root</p>
-
-<p>The <code>omnisetup.sh</code> script used for the installation and upgrade of Data Protector comes with a wide range of built-in pre-flight checks. So running the script will inform the user about missing dependencies and possible configuration issues. If a problem is found the installation is aborted and the user can fix the issues and retry.</p>
-
-<p></p>
-
-<p></p>
-
 <h3>Perform the Cell Manager Installation</h3>
 
-<p>Copy the Linux installation package&nbsp;<code>Micro_Focus_DP_10.91_Linux_DP_A1091_GPLx86_64.tar.gz</code> to the server system. Use SCP/SFTP or mount a network share from the Linux Server and copy it to a local file system.</p>
+<p>Copy the Linux installation package&nbsp;<code>Micro_Focus_DP_10.91_Linux_DP_A1091_GPLx86_64.tar.gz</code> to the server system. Use SCP/SFTP or mount a network share from the Linux Server and copy it to a local file system. It is recommended to copy the entire file and extract it locally to ensure no files are missing or damaged.</p>
 
-<p>Perform as root and unset LANG to make sure there is no issue related to localization</p>
+<p>On the Cell Manager login as the&nbsp;<code>root</code>&nbsp;user. If the <code>root</code> user account is unable to login use <code>su - root</code> or <code>sudo bash</code> to gain root level access to the system. It is recommended to run&nbsp;<code>unset LANG</code>&nbsp;before starting the installation or upgrade to ensure there are localization-related issues.</p>
+
+<p>The <code>omnisetup.sh</code> script used for the installation and upgrade of Data Protector comes with a wide range of built-in pre-flight checks. So running the script will inform the user about missing dependencies and possible configuration issues. If a problem is found the installation is aborted and the user can fix the issues and retry. If asked if the previously failed installation should be resumed, always answer with <code>NO</code>.</p>
 
 <p>The setup process will ask the user to confirm general Obsolescence Information of the current version. This is mandatory to proceed with the installation or upgrade. The options Secure Data Communication and Audit Log as well as&nbsp;Telemetry License Agreement are considered optional.</p>
 
