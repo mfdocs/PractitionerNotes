@@ -1,14 +1,11 @@
-<html><p>The following document will assist with the deployment of Micro Focus Data Protector on Linux. While all of this information is available in the general documentation, it serves as a step-by-step guide to assist new users.</p>
+<html><p>The following document will assist with the deployment of Micro Focus Data Protector on Linux, connecting the Data Protector GUI and installation of a Windows Installation Server. While all of this information is available in the general documentation, it serves as a step-by-step guide to assist new users.</p>
 
 <h2>General Preparation</h2>
 
-<p>Check the <a href="/itom/Data_Protector:latest/SystemRequirements">Data Protector Platform and Integration Support Matrix</a> document to learn more about supported operating systems for the Linux Cell Manager and other components.</p>
-
-<p>Refer to <a href="/itom/Data_Protector:latest/Scalability">this link</a> for information on scaleability of the Cell Manager</p>
-
-<p>Revisit the <a href="/itom/Data_Protector:latest/PreInstallTasks">complete list of pre-requesites</a> for Cell Manager deployment in the official documentation</p>
-
-<p>Make sure the <a href="/itom/Data_Protector:latest/PortUsage">network ports</a> between Cell Manager, GUI and clients are open. This includes external firewalls and the firewall on the client or server itself.</p>
+<ul>
+	<li>Check the <a href="/itom/Data_Protector:latest/SystemRequirements">Data Protector Platform and Integration Support Matrix</a> document to learn more about supported operating systems for the Linux Cell Manager and other components</li>
+	<li>Make sure the <a href="/itom/Data_Protector:latest/PortUsage">network ports</a> between Cell Manager, GUI and clients are open. This includes external firewalls and the firewall on the client or server itself.</li>
+</ul>
 
 <h2>Prepare Linux for the Cell Manager</h2>
 
@@ -39,8 +36,6 @@
 	<li><code>nscd</code></li>
 </ul>
 
-<p></p>
-
 <div class="Admonition_Note"><strong>Note:</strong>&nbsp;Cell Manager deployments on Oracle Enterprise Linux and CentOS&nbsp;have the same requirements.</div>
 
 <h3>SUSE Linux Enterprise Server</h3>
@@ -65,7 +60,7 @@
 
 <h2>Deploy Cell Manager on Linux</h2>
 
-<p>This first section is about fulfilling Data Protector-specific installation requirementes.</p>
+<p>This first section is about fulfilling Data Protector-specific installation requirements.</p>
 
 <h3>Fulfill the Installation Requirements</h3>
 
@@ -273,7 +268,7 @@ Status: All Cell Server processes/services up and running.
 
 <p>Ensure the <a href="/itom/Data_Protector:latest/PortUsage">network ports</a> for the Data Protector GUI are open between the client system and the Cell Manager and both systems are able to resolve each other using DNS. The <code>nslookup</code> or <code>ping</code> command may be used.</p>
 
-<p>Since <code>telnet</code> is no longer part of a Windows installation by default, it is recommended to use PowerShell <code>Test-NetConnection &lt;Cell Manager&gt; -Port &lt;InetPort&gt;</code>&nbsp;for testing basic client communication. Specify the Data Protector INET port&nbsp;configured during the Cell Manager installation. The default port number is 5565.</p>
+<p>Since <code>telnet</code> is no longer part of a Windows installation by default, it is recommended to use Power Shell <code>Test-NetConnection &lt;Cell Manager&gt; -Port &lt;InetPort&gt;</code>&nbsp;for testing basic client communication. Specify the Data Protector INET port&nbsp;configured during the Cell Manager installation. The default port number is 5565.</p>
 
 <pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">PS C:\&gt; tnc lejcm08.mfdemo.local -Port 5565
 
@@ -393,7 +388,7 @@ User 'JANE' successfully added to 'admin' group.</pre>
 
 <p>Ensure the <a href="/itom/Data_Protector:latest/PortUsage">network ports</a> for the Installation Server are open between the client system and the Cell Manager and both systems are able to resolve each other using DNS. The <code>nslookup</code> or <code>ping</code> command may be used.</p>
 
-<p>Since <code>telnet</code> is no longer part of a Windows installation by default, it is recommended to use PowerShell <code>Test-NetConnection &lt;Cell Manager&gt; -Port &lt;InetPort&gt;</code>&nbsp;for testing basic client communication. Specify the Data Protector INET port&nbsp;configured during the Cell Manager installation. The default port number is 5565.</p>
+<p>Since <code>telnet</code> is no longer part of a Windows installation by default, it is recommended to use Power Shell <code>Test-NetConnection &lt;Cell Manager&gt; -Port &lt;InetPort&gt;</code>&nbsp;for testing basic client communication. Specify the Data Protector INET port&nbsp;configured during the Cell Manager installation. The default port number is 5565.</p>
 
 <pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">PS C:\&gt; tnc lejcm08.mfdemo.local -Port 5565
 
