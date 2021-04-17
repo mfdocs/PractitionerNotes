@@ -139,7 +139,7 @@ hpdp            hard    nofile          16384</pre>
 
 <p></p>
 
-<h3>Perform the Installation</h3>
+<h3>Perform the Cell Manager Installation</h3>
 
 <p>Copy the Linux installation package&nbsp;<code>Micro_Focus_DP_10.91_Linux_DP_A1091_GPLx86_64.tar.gz</code> to the server system. You can use SCP or mount a network share from the Linux Server and copy it to a local file system.</p>
 
@@ -264,7 +264,7 @@ Status: All Cell Server processes/services up and running.
 
 <p>TBD</p>
 
-<h3>Verify Communication with Cell Manager</h3>
+<h3>Verify Client Communication with Cell Manager</h3>
 
 <p>Make sure the <a href="/itom/Data_Protector:latest/PortUsage">network ports</a> for the Data Protector GUI are open between the client system and the Cell Manager and both systems are able to resolve each other using DNS. You can test this with the <code>nslookup</code> or <code>ping</code> command.</p>
 
@@ -282,15 +282,15 @@ TcpTestSucceeded : True
 
 <p>If the port is unreachable, check if the firewall is properly configured on the Cell Manager before proceeding with the next step.</p>
 
-<h3>Perform the Installation</h3>
+<h3>Perform the GUI Installation</h3>
 
-<p>Copy the Windows installation package&nbsp;<code>Micro_Focus_DP_10.91_Windows_DP_A1091_Windows_OVMS.zip</code>&nbsp;to the client system. Extract the content from the archive to a temporary location and run&nbsp;<code>setup.exe</code> from the folder&nbsp;<code>Windows\x8664</code>&nbsp;as Administrator. Choose a Client installation only.</p>
+<p>Copy the Windows installation package&nbsp;<code>Micro_Focus_DP_10.91_Windows_DP_A1091_Windows_OVMS.zip</code>&nbsp;to the client system. Extract the content from the archive to a temporary location.&nbsp;Run&nbsp;<code>setup.exe</code> from the folder&nbsp;<code>Windows\x8664</code>&nbsp;as Administrator and choose a <code>Client</code> installation.</p>
 
 <p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/4c/2021-04-16_18h16_11.png" height="386" hspace="0" src="https://docs.microfocus.com/mediawiki/images/4/4c/2021-04-16_18h16_11.png" style="width:500px;height:386px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="500"></p>
 
-<p>On the next screen specify the FQDN of the Cell Manager and the Data Protector INET port configured during the Cell Manager installation. The default port number is 5565.</p>
+<p>On one of the next screens specify the FQDN of the Cell Manager and the Data Protector INET port configured during the Cell Manager installation. The default port number is 5565.</p>
 
-<div class="Admonition_Important"><strong>Important:</strong> If the Windows client is not able to to resolve the Cell Manager name using DNS, you have to edit&nbsp;<code>C:\Windows\system32\drivers\etc\hosts</code> on the client system and include the Cell Manager system and primary IP. Also make sure that the client system exists in <code>/etc/hosts</code> of the Cell Manager. This is usually only required for test environments or special isolated management stations.</div>
+<div class="Admonition_Important"><strong>Important:</strong> If the Windows client is not able to to resolve the Cell Manager name using DNS, you must edit&nbsp;<code>C:\Windows\system32\drivers\etc\hosts</code> on the client system and include the Cell Manager system and primary IP. Also make sure that the client system exists in <code>/etc/hosts</code> of the Cell Manager. This is usually only required for test environments or special isolated management stations.</div>
 
 <p>Clicking next or using <code>Check response</code> may take a while to complete. If it times out, navigate back and retry, probably&nbsp;a few times. This will each time increase the timeout waiting for the Cell Manager to respond. This is expected behavior. You can also remove the selection on&nbsp;<code>Check Cell Manager name</code> and proceed.</p>
 
@@ -298,13 +298,38 @@ TcpTestSucceeded : True
 
 <p>On one of the next screens select the <code>User Interface</code> and the <code>Documentation</code> only. This is sufficient for a pure management station. Proceed with the client installation.</p>
 
-<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/0/0a/2021-04-16_18h43_42.png" height="386" hspace="0" src="https://docs.microfocus.com/mediawiki/images/0/0a/2021-04-16_18h43_42.png" style="width:500px;height:386px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="500"></p>
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/7/78/2021-04-17_07h49_51.png" height="386" hspace="0" src="https://docs.microfocus.com/mediawiki/images/0/0a/2021-04-16_18h43_42.png" style="width:500px;height:386px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="500"></p>
 
-<p>If the Cell Manager is responding properly, the setup will request to confirm the Cell Manager certificate, which is used to secure the client-server communication. If you want to get the fingerprint of the client certificate on the Cell Manager, run <code>omnicc -secure_comm -get_fingerprint</code> on the Cell Manager system.</p>
+<p>If the Cell Manager is responding properly, the setup will request to confirm the Cell Manager certificate, which is used to secure the client-server communication.</p>
 
 <p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/a/a7/2021-04-16_18h36_01.png" height="386" hspace="0" src="https://docs.microfocus.com/mediawiki/images/a/a7/2021-04-16_18h36_01.png" style="width:500px;height:386px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="500"></p>
 
-<h3>Configure the GUI for Additional Cell Managers</h3>
+<div class="Admonition_Note"><strong>Note:</strong> If you want to get the fingerprint of the client certificate on the Cell Manager, run <code>omnicc -secure_comm -get_fingerprint</code> on the Cell Manager system.</div>
+
+<h3>Import the Client to the Cell Manager</h3>
+
+<p>This step is optional, but recommended for environments where only a single Cell Manager is used. You can import the client running the Data Protector GUI to the Cell Manager. Importing the client makes it easy to keep track of the installed versions of the GUI on various client systems managing the environment.</p>
+
+<div class="Admonition_Note"><strong>Note:</strong> If the client should not be part of the Data Protector cell, or the client certificate was not accepted as part of the client installation, follow the steps shared in&nbsp;<em>Configure the GUI for Additional Cell Managers</em>.</div>
+
+<p>To import the client from the Cell Manager, run the command <code>omnicc -update_host &lt;Client </code>FQDN&gt; on the Cell Manager system.</p>
+
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# omnicc -update_host lejwn10.mfdemo.local
+&nbsp;- Please use the fingerprint to validate the certificate manually!
+Certificate information:
+&nbsp;- Hostname:lejwn10.mfdemo.local
+&nbsp;- Valid: from Feb 15 07:44:05 2021 GMT until Feb 13 07:44:05 2031 GMT
+&nbsp;- Fingerprint: ca:c2:65:80:d9:ee:58:63:bb:a9:de:bf:43:0d:33:ea:ed:b4:d8:6c:a6:64:f5:ba:68:a2:d6:ba:4e:ab:95:ba
+Do you want to continue (y/n)?y
+Import host successful.</pre>
+
+<div class="Admonition_Note"><strong>Note:</strong> The import process will request to confirm the client certificate, which is used to secure the client-server communication. If you want to get the fingerprint of the certificate on the client, run <code>omnicc -secure_comm -get_fingerprint</code> on the GUI client system.</div>
+
+<h3>Add the User to the Cell Manager User Management</h3>
+
+<p></p>
+
+<h2>Configure the GUI for Additional Cell Managers</h2>
 
 <p>If a Windows client should be used to manage more than just one Cell Manager, use the following steps. To establish a connection to a Cell Manager the client system must be authorized accordingly. A membership in the Data Protector cell is not required.</p>
 
