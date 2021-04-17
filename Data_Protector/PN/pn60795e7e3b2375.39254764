@@ -370,34 +370,21 @@ User 'JANE' successfully added to 'admin' group.</pre>
 
 <h2>Configure the GUI for Additional Cell Managers</h2>
 
-<p>If a Windows client is used to manage more than one Cell Manager, use the following steps. To establish a connection to a Cell Manager the client system must be authorized accordingly. A membership in the Data Protector cell is not required.</p>
+<p>If a Windows GUI client should connect to more than one Cell Manager for management, use the following procedure.</p>
 
-<p>From the Cell Manager execute the following commands.</p>
+<p>To establish a connection to a Cell Manager the client system must be authorized accordingly.</p>
 
-<p></p>
+<div class="Admonition_Note"><strong>Note:</strong> The client must not be imported to the Cell Manager to enable management.</div>
+
+<p>A client can only be part of one Data Protector cell at a time. Run the command <code>omnicc -secure_comm -configure_oeer &lt;Cell Manager FQDN&gt;</code> on the client system before running the command <code>omnicc -secure_comm -configure_peer &lt;Client FQDN&gt;</code> on the Cell Manager system. This is required to properly configure the client-server certificate trust.</p>
+
+<p>Try connecting to the Cell Manager using the Data Protector GUI. If a login prompt is displayed and <a href="/itom/Data_Protector:latest/LDAP">LDAP authentication</a>&nbsp;has not been configured, add the user running the Data Protector GUI according to&nbsp;<a href="#Configure_the_Cell_Manager_User_Management">Configure the Cell Manager User Management</a>&nbsp;with the <code>omniusers</code> command.</p>
 
 <h2>Deploy and Configure a Windows Installation Server</h2>
 
-<p>A installation server is used to deploy</p>
+<p>This step is optional.&nbsp;A Windows Installation Server should be only part of the Data Protector cell to allow remote installation and upgrades of Windows clients. Manual local installations and upgrade are also an option, if the number of clients is small. The&nbsp;Installation sources are made available via SMB on the OmniBack share on the installation server.</p>
 
-<p></p>
-
-<p>A Windows Installation Server must be part of the Data Protector cell to allow Remote Installation and Upgrades of Windows clients<br>
-Installation source available via the OmniBack share on the installation server<br>
-To allow the initial connect to the OmniBack share a user account must be configured on the Installation Server (omniinetpasswd)<br>
-Push installation is now using SMB signing when deploying new clients or during upgrade of 8.1x or 9.x clients<br>
-Data Protector 10.20 re-introduced upgrades over INET. No username/password needed when upgrading clients running&nbsp;10.20&nbsp;and later</p>
-
-<p></p>
-
-<p></p>
-
-<p><br>
-&nbsp;</p>
-
-<p></p>
-
-<p>A Windows Installation server can be used as management station with the Data Protector GUI.&nbsp;</p>
+<div class="Admonition_Note"><strong>Note:</strong> A Windows Installation server can be used as management station with the Data Protector GUI.&nbsp;</div>
 
 <p><strong>Test Client Communication with Cell Manager</strong></p>
 
@@ -421,7 +408,7 @@ TcpTestSucceeded : True
 
 <p>Copy the Windows installation package&nbsp;<code>Micro_Focus_DP_10.91_Windows_DP_A1091_Windows_OVMS.zip</code>&nbsp;to the client system. Extract the content from the archive to a temporary location.&nbsp;Run&nbsp;<code>setup.exe</code> from the folder&nbsp;<code>Windows\x8664</code>&nbsp;as Administrator and choose a <code>Client</code>&nbsp;or <code>Installation Server</code> installation. Using&nbsp;<code>Client</code>&nbsp;allows the installation of the Installation Server and other components such as the Data Protector GUI.</p>
 
-<div class="Admonition_Tip"><strong>Note:</strong> Installing and using the Data Protector GUI directly from the Windows Installation server is recommended especially for initial client deployments.</div>
+<div class="Admonition_Note"><strong>Note:</strong> Installing and using the Data Protector GUI directly from the Windows Installation server is recommended especially for initial client deployments.</div>
 
 <p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/4c/2021-04-16_18h16_11.png" height="386" hspace="0" src="https://docs.microfocus.com/mediawiki/images/4/4c/2021-04-16_18h16_11.png" style="width:500px;height:386px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="500"></p>
 
@@ -459,7 +446,7 @@ Import host successful.
 
 <div class="Admonition_Note"><strong>Note:</strong> The import process will request to confirm the client certificate, which is used to secure the client-server communication. To get the fingerprint of the certificate on the client, run <code>omnicc -secure_comm -get_fingerprint</code> on the Installation Server client system.</div>
 
-<p class="Admonition_Note">An Installation Server can be part of multiple Data Protector cells. To import the newly deployed Installation Server to another Cell Manager, run the command <code>omnicc -secure_comm -configure_oeer &lt;Other Cell Manager FQDN&gt;</code> on the Installation Server system before running the command <code>omnicc -import_is &lt;Client FQDN&gt;</code> on the other Cell Manager system.</p>
+<p class="Admonition_Note">An Installation Server can be part of multiple Data Protector cells. To import an Installation Server to another Cell Manager, run the command <code>omnicc -secure_comm -configure_oeer &lt;Cell Manager FQDN&gt;</code> on the Installation Server system before running the command <code>omnicc -import_is &lt;Client FQDN&gt;</code> on the Cell Manager system. This is required to properly configure the client-server certificate trust.</p>
 
 <h3>Installation Server&nbsp;Configuration</h3>
 
@@ -484,5 +471,5 @@ C:\&gt;omniinetpasswd -list
 (*) &nbsp;Installation Server is using this user's credentials during push installation.
 </pre>
 
-<div class="Admonition_Tip"><strong>Note:</strong> Avoid adding an user account with expiring passwords. Using a service account is highly recommended.</div>
+<div class="Admonition_Note"><strong>Note:</strong> Avoid adding an user account with expiring passwords. Using a service account is highly recommended.</div>
 </html>
