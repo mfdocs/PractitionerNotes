@@ -118,27 +118,27 @@
 
 <p>Verify the result using the&nbsp;<code>hostname</code> and&nbsp;<code>dnsdomainname</code> c<code>ommands</code>. Both should return expected results even if DNS is not responding. Please verify if forward and reverse DNS is properly configured for the Cell Manager.</p>
 
-<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# hostname
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@lejcm08 ~]# hostname
 lejcm08
-[root@linux ~]# dnsdomainname
+[root@lejcm08 ~]# dnsdomainname
 mfdemo.local
-[root@linux ~]# host lejcm08.mfdemo.local
+[root@lejcm08 ~]# host lejcm08.mfdemo.local
 lejcm08.mfdemo.local has address 172.25.1.42
-[root@linux ~]# host 172.25.1.42
+[root@lejcm08 ~]# host 172.25.1.42
 42.1.25.172.in-addr.arpa domain name pointer lejcm08.mfdemo.local.</pre>
 
 <p>Check and enable <code>nscd</code> to cache DNS requests on the new Cell Manager if the service is not enabled.</p>
 
-<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# systemctl status nscd
-[root@linux ~]# systemctl enable nscd
-[root@linux ~]# systemctl start nscd
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@lejcm08 ~]# systemctl status nscd
+[root@lejcm08 ~]# systemctl enable nscd
+[root@lejcm08 ~]# systemctl start nscd
 </pre>
 
 <p><strong>Create the User Running Data Protector Services</strong></p>
 
 <p>The <code>AppServer</code> is executed as an unprivileged user <code>hpdp</code>&nbsp;on the Cell Manager. This user must be created and have a existing home directory. It does not need to have a password.</p>
 
-<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# useradd -m hpdp
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@lejcm08 ~]# useradd -m hpdp
 </pre>
 
 <p><strong>Adjust the Open File Limit</strong></p>
@@ -173,13 +173,13 @@ hpdp            hard    nofile          16384</pre>
 
 <p>The setup process will ask the user to confirm general Obsolescence Information of the current version. This is mandatory to proceed with the installation or upgrade. The options Secure Data Communication and Audit Log as well as&nbsp;Telemetry License Agreement are considered optional.</p>
 
-<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# id
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@lejcm08 ~]# id
 uid=0(root) gid=0(root) groups=0(root) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
-[root@linux ~]# unset LANG
-[root@linux ~]# mkdir /tmp/1091
-[root@linux ~]# tar zxf Micro_Focus_DP_10.91_Linux_DP_A1091_GPLx86_64.tar.gz -C /tmp/1091
-[root@linux ~]# cd /tmp/1091/LOCAL_INSTALL/
-[root@linux LOCAL_INSTALL]# ./omnisetup.sh -CM -IS -inetport 5565
+[root@lejcm08 ~]# unset LANG
+[root@lejcm08 ~]# mkdir /tmp/1091
+[root@lejcm08 ~]# tar zxf Micro_Focus_DP_10.91_Linux_DP_A1091_GPLx86_64.tar.gz -C /tmp/1091
+[root@lejcm08 ~]# cd /tmp/1091/LOCAL_INSTALL/
+[root@lejcm08 LOCAL_INSTALL]# ./omnisetup.sh -CM -IS -inetport 5565
 
 [...]
 
@@ -239,7 +239,7 @@ pausing quartz scheduler...ok
 Migration of Template(s) completed successfully.
 
 &nbsp; Installation/upgrade session finished.
-[root@linux LOCAL_INSTALL]# 
+[root@lejcm08 LOCAL_INSTALL]# 
 </pre>
 
 <p>Have a look at the setup log and make sure no errors are reported. If no errors are found, proceed with the Post-Installation Steps.</p>
@@ -260,7 +260,7 @@ export PATH</pre>
 
 <p>If Data Protector was not added to the search PATH, specify the full path to <code>omnisv</code> command which is <code>/opt/omni/sbin/omnisv</code>.</p>
 
-<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux LOCAL_INSTALL]# omnisv status
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@lejcm08 LOCAL_INSTALL]# omnisv status
 &nbsp; &nbsp; ProcName &nbsp; &nbsp; &nbsp;Status &nbsp;[PID]
 ===============================
 &nbsp; &nbsp; crs &nbsp; &nbsp; &nbsp; &nbsp; : Active &nbsp;[17332]
@@ -279,9 +279,9 @@ Status: All Cell Server processes/services up and running.
 
 <p class="Admonition_Note">If the Linux firewall is enabled, open the <a href="/itom/Data_Protector:latest/PortUsage">ports used by Data Protector</a>&nbsp;accordingly.&nbsp;Or disable the firewall entirely, if it is not required in the environment.</p>
 
-<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# systemctl status firewalld
-[root@linux ~]# systemctl stop firewalld
-[root@linux&nbsp;~]# systemctl disable firewalld
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@lejcm08 ~]# systemctl status firewalld
+[root@lejcm08 ~]# systemctl stop firewalld
+[root@lejcm08&nbsp;~]# systemctl disable firewalld
 </pre>
 
 <h2>Deploy the Data Protector GUI on Windows</h2>
@@ -340,7 +340,7 @@ Clicking next or using <code>Check response</code> may take a while to complete.
 
 <p>To import the client from the Cell Manager, run the command <code>omnicc -update_host &lt;Client </code>FQDN&gt; on the Cell Manager system.</p>
 
-<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# omnicc -update_host lejwn10.mfdemo.local
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@lejcm08 ~]# omnicc -update_host lejwn10.mfdemo.local
 &nbsp;- Please use the fingerprint to validate the certificate manually!
 Certificate information:
 &nbsp;- Hostname:lejwn10.mfdemo.local
@@ -373,7 +373,7 @@ Import host successful.</pre>
 
 <p>The local Administrator on the client system LEJWN10, which is identified on the network as lejwn10.mfdemo.local, is added.</p>
 
-<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# omniusers -add -type W -usergroup admin -name Administrator -group LEJWN10 -client lejwn10.mfdemo.local -setpass
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@lejcm08 ~]# omniusers -add -type W -usergroup admin -name Administrator -group LEJWN10 -client lejwn10.mfdemo.local -setpass
 Enter Password :
 Re-Enter Password :
 
@@ -384,7 +384,7 @@ User 'ADMINISTRATOR' successfully added to 'admin' group.
 
 <p>The domain user MFDEMO\Jane on the client system lejwn10.mfdemo.local&nbsp;is added.</p>
 
-<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# omniusers -add -type W -usergroup admin -name Jane -group MFDEMO -client lejwn10.mfdemo.local -setpass
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@lejcm08 ~]# omniusers -add -type W -usergroup admin -name Jane -group MFDEMO -client lejwn10.mfdemo.local -setpass
 Enter Password :
 Re-Enter Password :
 
@@ -456,7 +456,7 @@ Clicking next or using <code>Check response</code> may take a while to complete.
 
 <p>To import the Windows installation server from the Cell Manager, run the command <code>omnicc -import_is &lt;Client FQDN&gt;</code> on the Cell Manager system.</p>
 
-<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# omnicc -import_is lejis19.mfdemo.local
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@lejcm08 ~]# omnicc -import_is lejis19.mfdemo.local
 &nbsp;- Please use the fingerprint to validate the certificate manually!
 Certificate information:
 &nbsp;- Hostname:lejis19.mfdemo.local
@@ -474,7 +474,7 @@ Import host successful.
 
 <p>On the Cell Manager execute the <code>omnicc -update_omnirc</code> command to configure the Installation Server to smoothly work with the Windows client firewall for newly deployed clients.</p>
 
-<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux&nbsp;~]# omnicc -update_omnirc OB2FWPASSTHRU -value 1 -host lejis19.mfdemo.local
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@lejcm08&nbsp;~]# omnicc -update_omnirc OB2FWPASSTHRU -value 1 -host lejis19.mfdemo.local
 lejis19.mfdemo.local &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Success</pre>
 
 <p>On the Windows Installation server, run the <code>omniinetpasswd</code> command from an <strong>elevated</strong> command prompt. Add a Windows user account to the Data Protector INET impersonation database, which is able to remotely connect to the <code>OmniBack</code> share on the Installation server. This is necessary for initial remote client deployments of new Windows clients. If not configured you will see&nbsp;<code>[110:1022] Cannot connect to the SCM (Service Control Manager)</code>&nbsp;errors during remote client deployment.</p>
