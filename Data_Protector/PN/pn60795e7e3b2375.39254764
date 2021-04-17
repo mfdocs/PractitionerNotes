@@ -370,19 +370,17 @@ User 'JANE' successfully added to 'admin' group.</pre>
 
 <h2>Configure the GUI for Additional Cell Managers</h2>
 
-<p>If a Windows GUI client should connect to more than one Cell Manager for management, use the following procedure.</p>
-
-<p>To establish a connection to a Cell Manager the client system must be authorized accordingly.</p>
+<p>If a Data Protector GUI should connect to more than one Cell Manager for management, use the following procedure.&nbsp;To establish a connection to a Cell Manager the client system must be authorized accordingly.</p>
 
 <div class="Admonition_Note"><strong>Note:</strong> The client must not be imported to the Cell Manager to enable management.</div>
 
 <p>A client can only be part of one Data Protector cell at a time. Run the command <code>omnicc -secure_comm -configure_oeer &lt;Cell Manager FQDN&gt;</code> on the client system before running the command <code>omnicc -secure_comm -configure_peer &lt;Client FQDN&gt;</code> on the Cell Manager system. This is required to properly configure the client-server certificate trust.</p>
 
-<p>Try connecting to the Cell Manager using the Data Protector GUI. If a login prompt is displayed and <a href="/itom/Data_Protector:latest/LDAP">LDAP authentication</a>&nbsp;has not been configured, add the user running the Data Protector GUI according to&nbsp;<a href="#Configure_the_Cell_Manager_User_Management">Configure the Cell Manager User Management</a>&nbsp;with the <code>omniusers</code> command.</p>
+<p>Try connecting to the Cell Manager using the Data Protector GUI. If a login prompt is displayed and <a href="/itom/Data_Protector:latest/LDAP">LDAP authentication</a>&nbsp;has not been configured, add the user running the Data Protector GUI according to&nbsp;<a href="#Configure_the_Cell_Manager_User_Management">Configure the Cell Manager User Management</a>&nbsp;with the <code>omniusers</code> command and try again.</p>
 
 <h2>Deploy and Configure a Windows Installation Server</h2>
 
-<p>This step is optional.&nbsp;A Windows Installation Server should be only part of the Data Protector cell to allow remote installation and upgrades of Windows clients. Manual local installations and upgrade are also an option, if the number of clients is small. The&nbsp;Installation sources are made available via SMB on the OmniBack share on the installation server.</p>
+<p>This step is optional.&nbsp;A Windows Installation Server should be only part of the Data Protector cell to allow remote installation and upgrades of Windows clients. Manual local installations and upgrade are also an option, if the number of clients is small. The&nbsp;Installation sources are made available via SMB on the <code>OmniBack</code> share on the installation server.</p>
 
 <div class="Admonition_Note"><strong>Note:</strong> A Windows Installation server can be used as management station with the Data Protector GUI.&nbsp;</div>
 
