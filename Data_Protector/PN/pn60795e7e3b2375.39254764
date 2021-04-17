@@ -12,17 +12,17 @@
 
 <h2>Prepare Linux for the Cell Manager</h2>
 
-<p>The following sections describe general assumptions for the Linux operating system platform. The goal is to prepare the Linux operating system&nbsp;properly for a successful Data Protector Cell Manager deployment. While most of the requirements are identical, there are slight differences for RHEL-based distributions and SLES. Please follow the steps in the apropriate section.</p>
+<p>The following sections describe general assumptions for the Linux operating system platform. The goal is to prepare the Linux operating system&nbsp;properly for a successful Data Protector Cell Manager deployment. While most of the requirements are identical, there are slight differences for RHEL-based distributions and SLES. Please follow the steps in the appropriate section.</p>
 
 <p>This guide was created with Micro Focus Data Protector A.10.91 on SLES15 SP2 and RHEL8 U1. It is expected that the steps shared will be also valid for more recent versions of Data Protector and the Linux operating system.</p>
 
-<div class="Admonition_Note"><strong>Note: </strong>Using different installation options as described here is supported, but might result in addtional steps neccesary not covered by this guide.</div>
+<div class="Admonition_Note"><strong>Note: </strong>Using different installation options as described here is supported, but might result in additional steps necessary not covered by this guide.</div>
 
 <h3>Red Hat Linux Server 8.x</h3>
 
 <p>This assumes that a Minimal Installation&nbsp;of RHEL 8.x is performed.</p>
 
-<div class="Admonition_Note"><strong>Note:</strong>&nbsp;You can also follow this section for Cell Manager deployments on Oracle Enterprise Linux and CentOS as they share the same requirements.</div>
+<div class="Admonition_Note"><strong>Note:</strong>&nbsp;Cell Manager deployments on Oracle Enterprise Linux and CentOS&nbsp;have the same requirements.</div>
 
 <p>Make sure to include at least the following&nbsp;software components as part of the installation process:</p>
 
@@ -64,7 +64,7 @@
 	<li>Minimal Base System</li>
 	<li>Enhanced Base System</li>
 	<li>32-Bit Runtime Environment</li>
-	<li>YaST System Administraton</li>
+	<li>YaST System Administration</li>
 	<li>Software Management</li>
 </ul>
 
@@ -79,11 +79,11 @@
 
 <p></p>
 
-<h3>Fullfill the Installation Requirements</h3>
+<h3>Fulfill the Installation Requirements</h3>
 
 <p><strong>Name Resolution on the Cell Manager</strong></p>
 
-<p>Data Protector requires a properly configured name resolution. The preferred choice for name resolution is DNS with <code>nameserver</code>, <code>domain</code> and <code>search</code>&nbsp;options configured in <code>/etc/resolv.conf</code>. To ensure the Cell Manager is also fully operational in case DNS becomes unavailable, there should be also an apropriate entry in <code>/etc/hosts</code> for the Cell Manager system.</p>
+<p>Data Protector requires a properly configured name resolution. The preferred choice for name resolution is DNS with <code>nameserver</code>, <code>domain</code> and <code>search</code>&nbsp;options configured in <code>/etc/resolv.conf</code>. To ensure the Cell Manager is also fully operational in case DNS becomes unavailable, there should be also an appropriate entry in <code>/etc/hosts</code> for the Cell Manager system.</p>
 
 <p>Let's assume the the primary IP of the Cell Manager lejcm08.mfdemo.local is 172.25.1.42&nbsp;then the&nbsp;<code>/etc/hosts</code> should contain the following entry.</p>
 
@@ -110,7 +110,7 @@ lejcm08.mfdemo.local has address 172.25.1.42
 
 <p><strong>Create the User Running Data Protector Services</strong></p>
 
-<p>The <code>AppServer</code> is executed as an unpriviledged user <code>hpdp</code>&nbsp;on the Cell Manager. This user must be created and have a existing home directory. It does not need to have a password.</p>
+<p>The <code>AppServer</code> is executed as an unprivileged user <code>hpdp</code>&nbsp;on the Cell Manager. This user must be created and have a existing home directory. It does not need to have a password.</p>
 
 <pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# useradd -m hpdp
 </pre>
@@ -125,7 +125,7 @@ root            hard    nofile          16384
 hpdp            soft    nofile          8192
 hpdp            hard    nofile          16384</pre>
 
-<div class="Admonition_Note"><strong>Note:</strong> After adding this you need to logout and login to make the changes active.</div>
+<div class="Admonition_Note"><strong>Note:</strong> After changing this file the user must logout and login to activate the changes.</div>
 
 <h3></h3>
 
@@ -141,7 +141,7 @@ hpdp            hard    nofile          16384</pre>
 
 <h3>Perform the Cell Manager Installation</h3>
 
-<p>Copy the Linux installation package&nbsp;<code>Micro_Focus_DP_10.91_Linux_DP_A1091_GPLx86_64.tar.gz</code> to the server system. You can use SCP or mount a network share from the Linux Server and copy it to a local file system.</p>
+<p>Copy the Linux installation package&nbsp;<code>Micro_Focus_DP_10.91_Linux_DP_A1091_GPLx86_64.tar.gz</code> to the server system. Use SCP/SFTP or mount a network share from the Linux Server and copy it to a local file system.</p>
 
 <p>Perform as root and unset LANG to make sure there is no issue related to localization</p>
 
@@ -230,11 +230,11 @@ Migration of Template(s) completed successfully.
 PATH=$PATH:/opt/omni/bin:/opt/omni/lbin:/opt/omni/sbin
 export PATH</pre>
 
-<div class="Admonition_Note"><strong>Note:</strong> After adding this you need to logout and login to make the changes active or execute the command&nbsp;<code>source /etc/profile.d/omni.sh</code>.</div>
+<div class="Admonition_Note"><strong>Note:</strong> Logout and login to make the changes active or execute the command&nbsp;<code>source /etc/profile.d/omni.sh</code>.</div>
 
 <p class="Admonition_Note"><strong>Check the Cell Manager Services</strong></p>
 
-<p>If Data Protector was not added to the search PATH, you have to specify the full path to <code>omnisv</code> command which is <code>/opt/omni/sbin/omnisv</code>.</p>
+<p>If Data Protector was not added to the search PATH, specify the full path to <code>omnisv</code> command which is <code>/opt/omni/sbin/omnisv</code>.</p>
 
 <pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux LOCAL_INSTALL]# omnisv status
 &nbsp; &nbsp; ProcName &nbsp; &nbsp; &nbsp;Status &nbsp;[PID]
@@ -253,7 +253,7 @@ Status: All Cell Server processes/services up and running.
 
 <p class="Admonition_Note"><strong>Open the Firewall on the Cell Manager</strong></p>
 
-<p class="Admonition_Note">If the Linux firewall is enabled, you must open the <a href="/itom/Data_Protector:latest/PortUsage">ports used by Data Protector</a>&nbsp;accordingly.&nbsp;Or disable the firewall entirely, if it is not required in your environment.</p>
+<p class="Admonition_Note">If the Linux firewall is enabled, open the <a href="/itom/Data_Protector:latest/PortUsage">ports used by Data Protector</a>&nbsp;accordingly.&nbsp;Or disable the firewall entirely, if it is not required in the environment.</p>
 
 <pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# systemctl status firewalld
 [root@linux ~]# systemctl stop firewalld
@@ -268,7 +268,7 @@ Status: All Cell Server processes/services up and running.
 
 <h3>Verify Client Communication with Cell Manager</h3>
 
-<p>Make sure the <a href="/itom/Data_Protector:latest/PortUsage">network ports</a> for the Data Protector GUI are open between the client system and the Cell Manager and both systems are able to resolve each other using DNS. You can test this with the <code>nslookup</code> or <code>ping</code> command.</p>
+<p>Ensure the <a href="/itom/Data_Protector:latest/PortUsage">network ports</a> for the Data Protector GUI are open between the client system and the Cell Manager and both systems are able to resolve each other using DNS. The <code>nslookup</code> or <code>ping</code> command may be used.</p>
 
 <p>Since <code>telnet</code> is no longer installed by default, it is recommended to use <code>Test-NetConnection &lt;Cell Manager&gt; -Port &lt;InetPort&gt;</code>&nbsp;in&nbsp;PowerShell for testing general client communication. Specify the Data Protector INET port&nbsp;configured during the Cell Manager installation. The default port number is 5565.</p>
 
@@ -292,9 +292,9 @@ TcpTestSucceeded : True
 
 <p>On one of the next screens specify the FQDN of the Cell Manager and the Data Protector INET port configured during the Cell Manager installation. The default port number is 5565.</p>
 
-<div class="Admonition_Important"><strong>Important:</strong> If the Windows client is not able to to resolve the Cell Manager name using DNS, you must edit&nbsp;<code>C:\Windows\system32\drivers\etc\hosts</code> on the client system and include the Cell Manager system and primary IP. Also make sure that the client system exists in <code>/etc/hosts</code> of the Cell Manager. This is usually only required for test environments or special isolated management stations.</div>
+<div class="Admonition_Important"><strong>Important:</strong> If the Windows client is not able to to resolve the Cell Manager name using DNS, edit&nbsp;<code>C:\Windows\system32\drivers\etc\hosts</code> on the client system and include the Cell Manager system and primary IP. Also make sure that the client system exists in <code>/etc/hosts</code> of the Cell Manager. This is usually only required for test environments or special isolated management stations.</div>
 
-<p>Clicking next or using <code>Check response</code> may take a while to complete. If it times out, navigate back and retry, probably&nbsp;a few times. This will each time increase the timeout waiting for the Cell Manager to respond. This is expected behavior. You can also remove the selection on&nbsp;<code>Check Cell Manager name</code> and proceed.</p>
+<p>Clicking next or using <code>Check response</code> may take a while to complete. If it times out, navigate back and retry, probably&nbsp;a few times. This will each time increase the timeout waiting for the Cell Manager to respond. This is expected behavior. Or proceed after removing the checkbox on&nbsp;<code>Check Cell Manager name</code>.</p>
 
 <p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/40/2021-04-16_18h29_33.png" height="386" hspace="0" src="https://docs.microfocus.com/mediawiki/images/4/40/2021-04-16_18h29_33.png" style="width:500px;height:386px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="500"></p>
 
@@ -306,11 +306,11 @@ TcpTestSucceeded : True
 
 <p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/a/a7/2021-04-16_18h36_01.png" height="386" hspace="0" src="https://docs.microfocus.com/mediawiki/images/a/a7/2021-04-16_18h36_01.png" style="width:500px;height:386px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="500"></p>
 
-<div class="Admonition_Note"><strong>Note:</strong> If you want to get the fingerprint of the client certificate on the Cell Manager, run <code>omnicc -secure_comm -get_fingerprint</code> on the Cell Manager system.</div>
+<div class="Admonition_Note"><strong>Note:</strong>&nbsp;To get the fingerprint of the client certificate on the Cell Manager, run <code>omnicc -secure_comm -get_fingerprint</code> on the Cell Manager system.</div>
 
 <h3>Import the Client to the Cell Manager</h3>
 
-<p>This step is optional, but recommended for environments where only a single Cell Manager is used. You can import the client running the Data Protector GUI to the Cell Manager. Importing the client makes it easy to keep track of the installed versions of the GUI on various client systems managing the environment.</p>
+<p>This step is optional, but recommended for environments where only a single Cell Manager is used. Import the client running the Data Protector GUI to the Cell Manager. Importing the client makes it easy to keep track of the installed versions of the GUI on various client systems managing the environment.</p>
 
 <div class="Admonition_Note"><strong>Note:</strong> If the client should not be part of the Data Protector cell, or the client certificate was not accepted as part of the client installation, follow the steps shared in&nbsp;<a href="#Configure_the_GUI_for_Additional_Cell_Managers">Configure the GUI for Additional Cell Managers</a>.</div>
 
@@ -325,7 +325,7 @@ Certificate information:
 Do you want to continue (y/n)?y
 Import host successful.</pre>
 
-<div class="Admonition_Note"><strong>Note:</strong> The import process will request to confirm the client certificate, which is used to secure the client-server communication. If you want to get the fingerprint of the certificate on the client, run <code>omnicc -secure_comm -get_fingerprint</code> on the GUI client system.</div>
+<div class="Admonition_Note"><strong>Note:</strong> The import process will request to confirm the client certificate, which is used to secure the client-server communication. To get the fingerprint of the certificate on the client, run <code>omnicc -secure_comm -get_fingerprint</code> on the GUI client system.</div>
 
 <h3>Configure the Cell Manager User Management</h3>
 
