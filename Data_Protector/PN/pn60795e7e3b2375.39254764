@@ -266,7 +266,7 @@ Status: All Cell Server processes/services up and running.
 
 <div class="Admonition_Note"><strong>Note:</strong> It is highly recommended that the Data Protector GUI version matches the version of the Cell Manager.</div>
 
-<h3>Test Client Communication with Cell Manager</h3>
+<p><strong>Test Client Communication with Cell Manager</strong></p>
 
 <p>Ensure the <a href="/itom/Data_Protector:latest/PortUsage">network ports</a> for the Data Protector GUI are open between the client system and the Cell Manager and both systems are able to resolve each other using DNS. The <code>nslookup</code> or <code>ping</code> command may be used.</p>
 
@@ -298,7 +298,7 @@ Clicking next or using <code>Check response</code> may take a while to complete.
 
 <p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/40/2021-04-16_18h29_33.png" height="386" hspace="0" src="https://docs.microfocus.com/mediawiki/images/4/40/2021-04-16_18h29_33.png" style="width:500px;height:386px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="500"></p>
 
-<p>On one of the next screens select the <code>User Interface</code> and the <code>Documentation</code> only. This is sufficient for a pure management station. Proceed with the client installation.</p>
+<p>On one of the next screens select <code>User Interface</code> and <code>Documentation</code> only. This is sufficient for a pure management station. Proceed with the client installation.</p>
 
 <p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/7/78/2021-04-17_07h49_51.png" height="386" hspace="0" src="https://docs.microfocus.com/mediawiki/images/0/0a/2021-04-16_18h43_42.png" style="width:500px;height:386px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="500"></p>
 
@@ -392,7 +392,7 @@ Data Protector 10.20 re-introduced upgrades over INET. No username/password need
 
 <p>A Windows Installation server can be used as management station with the Data Protector GUI.&nbsp;</p>
 
-<h3>Test Client Communication with Cell Manager</h3>
+<p><strong>Test Client Communication with Cell Manager</strong></p>
 
 <p>Ensure the <a href="/itom/Data_Protector:latest/PortUsage">network ports</a> for the Installation Server are open between the client system and the Cell Manager and both systems are able to resolve each other using DNS. The <code>nslookup</code> or <code>ping</code> command may be used.</p>
 
@@ -426,7 +426,7 @@ Clicking next or using <code>Check response</code> may take a while to complete.
 
 <p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/40/2021-04-16_18h29_33.png" height="386" hspace="0" src="https://docs.microfocus.com/mediawiki/images/4/40/2021-04-16_18h29_33.png" style="width:500px;height:386px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="500"></p>
 
-<p>On one of the next screens select the&nbsp;<code>Installation Server</code>, the&nbsp;&nbsp;<code>User Interface</code> and the <code>Documentation</code> only. This is sufficient for most Windows Installation servers. Proceed with the client installation.</p>
+<p>On one of the next screens select <code>Installation Server</code>, <code>User Interface</code> and <code>Documentation</code> only. This is sufficient for most Windows Installation servers. Proceed with the client installation.</p>
 
 <p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/0/06/2021-04-17_09h04_32.png" height="386" hspace="0" src="https://docs.microfocus.com/mediawiki/images/0/06/2021-04-17_09h04_32.png" style="width:500px;height:386px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="500"></p>
 
@@ -454,12 +454,28 @@ Import host successful.
 
 <div class="Admonition_Note"><strong>Note:</strong> The import process will request to confirm the client certificate, which is used to secure the client-server communication. To get the fingerprint of the certificate on the client, run <code>omnicc -secure_comm -get_fingerprint</code> on the Installation Server client system.</div>
 
-<p>omnirc option OB2FWPASSTHRU=1<br>
-&nbsp;</p>
+<h3>Installation Server&nbsp;Configuration</h3>
 
-<p>User Configuration (Installation Server)<br>
-omniinetpasswd -add DOMAIN\User<br>
-omniinetpasswd -inst_srv_user DOMAIN\User<br>
-omniinetpasswd -list<br>
-&nbsp;</p>
+<p>On the Cell Manager execute the <code>omnicc -update_omnirc</code> command to configure the Installation Server to smoothly work with the Windows client firewall for newly deployed clients.</p>
+
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux&nbsp;~]# omnicc -update_omnirc OB2FWPASSTHRU -value 1 -host lejis19.mfdemo.local
+lejis19.mfdemo.local &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Success</pre>
+
+<p>On the Windows Installation server, run the <code>omniinetpasswd</code> command from an <strong>elevated</strong> command prompt. Add a Windows user account to the Data Protector INET impersonation database, which is able to remotely connect to the <code>OmniBack</code> share on the Installation server. This is necessary for initial remote client deployments of new Windows clients. If not configured you will see&nbsp;Cannot connect to the SCM&nbsp;errors during remote client deployment.</p>
+
+<pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">C:\&gt;omniinetpasswd -add LEJIS19\Administrator
+Please enter password:********
+Please retype password:********
+User 'LEJIS19\Administrator' was successfully added.
+
+C:\&gt;omniinetpasswd -inst_srv_user LEJIS19\Administrator
+User 'LEJIS19\Administrator' is configured to be used by Installation Server.
+
+C:\&gt;omniinetpasswd -list
+&nbsp;* Administrator@LEJIS19
+
+(*) &nbsp;Installation Server is using this user's credentials during push installation.
+</pre>
+
+<div class="Admonition_Tip"><strong>Note:</strong> Avoid adding an user account with expiring passwords. Using a service account is highly recommended.</div>
 </html>
