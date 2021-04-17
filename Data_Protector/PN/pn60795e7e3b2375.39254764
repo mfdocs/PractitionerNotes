@@ -445,7 +445,7 @@ Clicking next or using <code>Check response</code> may take a while to complete.
 
 <p>Import the client running the Windows Installation server to the Cell Manager. This is necessary to remotely deploy new Windows clients or upgrade existing clients.</p>
 
-<p>To import the Windows installation server from the Cell Manager, run the command <code>omnicc </code>-import_is<code> &lt;Client </code>FQDN&gt; on the Cell Manager system.</p>
+<p>To import the Windows installation server from the Cell Manager, run the command <code>omnicc -import_is &lt;Client FQDN&gt;</code> on the Cell Manager system.</p>
 
 <pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@linux ~]# omnicc -import_is lejis19.mfdemo.local
 &nbsp;- Please use the fingerprint to validate the certificate manually!
@@ -458,6 +458,8 @@ Import host successful.
 </pre>
 
 <div class="Admonition_Note"><strong>Note:</strong> The import process will request to confirm the client certificate, which is used to secure the client-server communication. To get the fingerprint of the certificate on the client, run <code>omnicc -secure_comm -get_fingerprint</code> on the Installation Server client system.</div>
+
+<p class="Admonition_Note">An Installation Server can be part of multiple Data Protector cells. To import the newly deployed Installation Server to another Cell Manager, run the command <code>omnicc -secure_comm -configure_oeer &lt;Other Cell Manager FQDN&gt;</code> on the Installation Server system before running the command <code>omnicc -import_is &lt;Client FQDN&gt;</code> on the other Cell Manager system.</p>
 
 <h3>Installation Server&nbsp;Configuration</h3>
 
