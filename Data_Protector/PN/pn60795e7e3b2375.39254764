@@ -9,17 +9,19 @@
 
 <h2>Prepare Linux for the Cell Manager</h2>
 
-<p>The following sections describe general assumptions for the Linux operating system used. The goal is to prepare Linux for a successful Data Protector Cell Manager deployment. While most of the requirements are identical, there are slight differences for RHEL-based distributions and SLES. Please follow the steps in the appropriate section.</p>
+<p>The following section&nbsp;describes general assumptions for the Linux operating system for a successful Data Protector Cell Manager deployment. While most of the requirements are identical, there are small differences for RHEL-based distributions and SLES. Please follow the steps in the appropriate section.</p>
 
-<p>Since Data Protector is using a distributed and modular architecture networking and name resolution are important. The system should be&nbsp;configured with a FQDN&nbsp;whenever possible. The short hostname and the FQDN must be resolved using <code>/etc/hosts</code> and/or DNS. Using NTP is highly recommended to allow proper scheduling and being in sync with other systems on the network.</p>
+<p>Since Data Protector is using a distributed and modular architecture, networking and name resolution are important. The system should be&nbsp;configured with a FQDN&nbsp;whenever possible. The short hostname and the FQDN must be resolved using <code>/etc/hosts</code> and/or DNS. Using NTP is highly recommended to allow proper scheduling and being in sync with other systems on the network.</p>
 
-<p>This guide was created with Micro Focus Data Protector A.10.91 on SLES15 SP2 and RHEL8 U1. It is expected that the steps shared will be also valid for more recent versions of Data Protector and the Linux operating system.</p>
+<p>This guide was created with Micro Focus Data Protector A.10.91 on SLES15 SP2 and RHEL8 U1. It is expected that the steps shared will be also valid for more recent versions of Data Protector and the Linux distribution.</p>
 
-<div class="Admonition_Note"><strong>Note: </strong>Using different installation options as described here is supported, but might require additional steps not covered in this guide.</div>
+<div class="Admonition_Note"><strong>Note: </strong>Using different installation options as described here is supported&nbsp;but might require additional steps not covered in this guide.</div>
+
+<p class="Admonition_Note">A Data Protector Cell Manager should have at least 4 CPU cores and 16 GB of system memory. The requirements for disk space depend&nbsp;on number of files protected. Additional compute ressources are neccesary if the Cell Manager system is also used as Media Agent with deduplication or VEPA backup host for example.</p>
 
 <h3>Red Hat Linux Server</h3>
 
-<p>The following assumes a <code>Minimal Installation</code>&nbsp;of Red Hat Linux Server (RHEL) 8.x was performed on a physical or virtual system.</p>
+<p>The following assumes a <code>Minimal Installation</code>&nbsp;of Red Hat Linux Server (RHEL) 8.x was performed to a physical or virtual system.</p>
 
 <p>At least the following&nbsp;software components have been selected as part of the installation:</p>
 
@@ -29,7 +31,7 @@
 	<li><code>Guest Agents</code> (If the server is a Virtual Machine)</li>
 </ul>
 
-<p>Packages required by Data Protector that should be installed using <code>yum</code> after the installation has been completed:</p>
+<p>Packages required by Data Protector that should be installed using <code>yum install</code>&nbsp;after the installation has been completed:</p>
 
 <ul>
 	<li><code>libnsl</code></li>
@@ -40,7 +42,7 @@
 
 <h3>SUSE Linux Enterprise Server</h3>
 
-<p>The following assumes a <code>Minimal Installation</code>&nbsp;of SUSE Linux Enterprise Server (SLES) 15.x with the&nbsp;<code>Basesystem Module</code> and <code>Server Applications Module</code> enabled&nbsp;was performed on a physical or virtual system.</p>
+<p>The following assumes a <code>Minimal Installation</code>&nbsp;of SUSE Linux Enterprise Server (SLES) 15.x with the&nbsp;<code>Basesystem Module</code> and <code>Server Applications Module</code> enabled&nbsp;was performed to a physical or virtual system.</p>
 
 <p>At least the following&nbsp;software components have been selected as part of the installation:</p>
 
@@ -58,7 +60,7 @@
 	<li><code>bc</code></li>
 </ul>
 
-<h2>Deploy Cell Manager on Linux</h2>
+<h2>Deploy the Cell Manager on Linux</h2>
 
 <p>This first section is about fulfilling Data Protector-specific installation requirements.</p>
 
@@ -99,12 +101,12 @@
 
 <p>Data Protector requires a properly configured name resolution. The preferred choice for name resolution is DNS with <code>nameserver</code>, <code>domain</code> and <code>search</code>&nbsp;options configured in <code>/etc/resolv.conf</code>. To ensure the Cell Manager is also fully operational in case DNS becomes unavailable, there should be also an appropriate entry in <code>/etc/hosts</code> for the Cell Manager system.</p>
 
-<p>Let's assume the the primary IP of the Cell Manager lejcm08.mfdemo.local is 172.25.1.42&nbsp;then the&nbsp;<code>/etc/hosts</code> should contain the following entry.</p>
+<p>Let's assume the the primary IP of the Cell Manager lejcm08.mfdemo.local is 172.25.1.42.&nbsp;Then the&nbsp;<code>/etc/hosts</code> should contain the following entry.</p>
 
 <pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">172.25.1.42 &nbsp;lejcm08.mfdemo.local lejcm08
 </pre>
 
-<p>Verify the output of the&nbsp;<code>hostname</code> and&nbsp;<code>dnsdomainname</code> commands. Both should return expected results, even if DNS is not responding. Please also verify if DNS records for forward and reverse name resolution are properly configured.</p>
+<p>Verify the output of the&nbsp;<code>hostname</code> and&nbsp;<code>dnsdomainname</code> commands. Both should return expected results, even if DNS is not responding. Please also verify if DNS records for forward and reverse name resolution are properly configured. This can be done with the <code>host</code> command.</p>
 
 <pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@lejcm08 ~]# hostname
 lejcm08
@@ -143,13 +145,13 @@ hpdp            hard    nofile          16384</pre>
 
 <h3>Perform the Cell Manager Installation</h3>
 
-<p>Copy the Linux installation package&nbsp;<code>Micro_Focus_DP_10.91_Linux_DP_A1091_GPLx86_64.tar.gz</code> to the server system. Use SCP/SFTP or mount a network share from the Linux Server and copy it to a local file system. It is recommended to copy the entire file and extract it locally to ensure no files are missing or damaged.</p>
+<p>Copy the Linux installation package&nbsp;<code>Micro_Focus_DP_10.91_Linux_DP_A1091_GPLx86_64.tar.gz</code> to the server system. Use SCP/SFTP or mount a CIFS/NFS network share from the Linux Server and copy it to a local file system. It is recommended to copy the entire file and extract it locally to ensure no files are missing or damaged.</p>
 
-<p>On the Cell Manager login as the&nbsp;<code>root</code>&nbsp;user. If the <code>root</code> user account is unable to login use <code>su - root</code> or <code>sudo bash</code> to gain root level access to the system. It is recommended to run&nbsp;<code>unset LANG</code>&nbsp;before starting the installation or upgrade to ensure there are localization-related issues.</p>
+<p>On the Cell Manager login as the&nbsp;<code>root</code>&nbsp;user. If <code>root</code>&nbsp;is unable to login use <code>su - root</code> or <code>sudo bash</code> to gain root level access to the system. It is recommended to run&nbsp;<code>unset LANG</code>&nbsp;before starting the installation or upgrade to ensure there are localization-related issues.</p>
 
-<p>The <code>omnisetup.sh</code> script used for the installation and upgrade of Data Protector comes with a wide range of built-in pre-flight checks. So running the script will inform the user about missing dependencies and possible configuration issues. If a problem is found the installation is aborted and the user can fix the issues and retry. If asked if the previously failed installation should be resumed, always answer with <code>NO</code>.</p>
+<p>The <code>omnisetup.sh</code> script used for the installation and upgrade of Data Protector comes with a wide range of built-in pre-flight checks. So running the script will inform the user about missing dependencies and possible configuration issues. If a problem is found the installation is aborted and the user can fix the issues and retry. When asked, if the previously failed installation should be resumed, always answer with <code>NO</code>.</p>
 
-<p>The setup process will ask the user to confirm general Obsolescence Information of the current version. This is mandatory to proceed with the installation or upgrade. The options Secure Data Communication and Audit Log as well as&nbsp;Telemetry License Agreement are considered optional.</p>
+<p>The setup process will ask the user to confirm general <code>Obsolescence Information</code> of the current version. This is mandatory to proceed with the installation or upgrade. The options <code>Secure Data Communication</code> and <code>Audit Log</code> as well as&nbsp;<code>Telemetry License Agreement</code> are considered optional.</p>
 
 <pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@lejcm08 ~]# id
 uid=0(root) gid=0(root) groups=0(root) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
@@ -222,7 +224,7 @@ Migration of Template(s) completed successfully.
 
 <h3>Post-Installation Steps</h3>
 
-<p>Proceed with the Post-Installation Steps if not error have been found in the setup log.</p>
+<p>Proceed with the Post-Installation steps if not error have been found in the setup process.</p>
 
 <p><strong>Add Data Protector to Search PATH</strong></p>
 
@@ -284,7 +286,7 @@ SourceAddress &nbsp; &nbsp;: 172.25.100.201
 TcpTestSucceeded : True
 </pre>
 
-<p>If the port is unreachable, check if the firewall is properly configured on the Cell Manager before proceeding with the next step.</p>
+<p>If the port is unreachable, check if the firewall is properly configured on the Cell Manager <strong>before</strong> proceeding with the next step.</p>
 
 <h3>Perform the GUI Installation</h3>
 
@@ -333,17 +335,17 @@ Import host successful.</pre>
 
 <h3>Configure the Cell Manager User Management</h3>
 
-<p>With the client-server certificate being trusted on the Cell Manager and client the Data Protector GUI will be able to connect the Cell Manager. During the first connection attempt, confirm the AppServer certificate. The certificate is is different to the certificate used to secure the client-server communication.</p>
+<p>With the client-server certificate being trusted on the Cell Manager and client the Data Protector GUI will be able to connect the Cell Manager. During the first connection attempt, confirm the <code>AppServer</code> certificate. The certificate is is different to the certificate used to secure the client-server communication.</p>
 
 <p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/1/19/2021-04-17_08h13_54.png" height="593" hspace="0" src="https://docs.microfocus.com/mediawiki/images/1/19/2021-04-17_08h13_54.png" style="width:786px;height:593px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="786"></p>
 
 <p>Since there has is no Data Protector user for the client system, a login prompt will be displayed. This is expected at this point. Please close the GUI and continue with the next step.</p>
 
-<div class="Admonition_Note"><strong>Note:</strong> The login prompt is only used when the Cell Manager has been&nbsp;configured for&nbsp;<a href="/itom/Data_Protector:latest/LDAP">LDAP authentication</a>.</div>
+<div class="Admonition_Note"><strong>Note:</strong> The login prompt is only actively used when the Cell Manager has been&nbsp;configured for&nbsp;<a href="/itom/Data_Protector:latest/LDAP">LDAP authentication</a>.</div>
 
 <p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/3/38/2021-04-17_08h18_01.png" height="593" hspace="0" src="https://docs.microfocus.com/mediawiki/images/3/38/2021-04-17_08h18_01.png" style="width:786px;height:593px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="786"></p>
 
-<p>On the Cell Manager run the <code>omniusers</code> command to add the user logged in to the client system accordingly to the Data Protector user management. This step depends on the environment setup. After this step, the GUI will be able to connect without the login prompt.</p>
+<p>On the Cell Manager run the <code>omniusers</code> command to add the Windows user logged in to the client system accordingly to the Data Protector user management. This step depends on the environment setup. After this step, the GUI will be able to connect without the login prompt.</p>
 
 <div class="Admonition_Important"><strong>Important:</strong>&nbsp;The password specified in <code>omniusers -setpass</code> is only used internally by the AppServer. Only a user with a password defined will be granted access to the Data Protector GUI.&nbsp;No login prompt will be displayed.&nbsp;The password may be different to the password used by the user used to run the Data Protector GUI.</div>
 
@@ -351,7 +353,7 @@ Import host successful.</pre>
 
 <p><strong>Local User on the Client System&nbsp;Example</strong></p>
 
-<p>The local Administrator on the client system LEJWN10, which is identified on the network as lejwn10.mfdemo.local, is added.</p>
+<p>The local Administrator on the client system LEJWN10, which is identified on the network as lejwn10.mfdemo.local, is added. This is a Windows user account.</p>
 
 <pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@lejcm08 ~]# omniusers -add -type W -usergroup admin -name Administrator -group LEJWN10 -client lejwn10.mfdemo.local -setpass
 Enter Password :
@@ -362,7 +364,7 @@ User 'ADMINISTRATOR' successfully added to 'admin' group.
 
 <p><strong>Domain User on the Client System&nbsp;Example</strong></p>
 
-<p>The domain user MFDEMO\Jane on the client system lejwn10.mfdemo.local&nbsp;is added.</p>
+<p>The domain user MFDEMO\Jane on the client system lejwn10.mfdemo.local&nbsp;is added. This is a Windows user account.</p>
 
 <pre style="background: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); padding: 5px 10px;">[root@lejcm08 ~]# omniusers -add -type W -usergroup admin -name Jane -group MFDEMO -client lejwn10.mfdemo.local -setpass
 Enter Password :
@@ -374,17 +376,17 @@ User 'JANE' successfully added to 'admin' group.</pre>
 
 <h2>Configure the GUI for Additional Cell Managers</h2>
 
-<p>If a Data Protector GUI should connect to more than one Cell Manager for management, use the following procedure.&nbsp;To establish a connection to a Cell Manager the client system must be authorized accordingly.</p>
+<p>If a Data Protector GUI should manageme more than just one Cell Manager, use the following procedure.&nbsp;To establish a connection to a Cell Manager the client system must be authorized accordingly.</p>
 
 <div class="Admonition_Note"><strong>Note:</strong> The client must not be imported to the Cell Manager to enable management.</div>
 
 <p>A client can only be part of one Data Protector cell at a time. Run the command <code>omnicc -secure_comm -configure_oeer &lt;Cell Manager FQDN&gt;</code> on the client system before running the command <code>omnicc -secure_comm -configure_peer &lt;Client FQDN&gt;</code> on the Cell Manager system. This is required to properly configure the client-server certificate trust.</p>
 
-<p>Try connecting to the Cell Manager using the Data Protector GUI. If a login prompt is displayed and <a href="/itom/Data_Protector:latest/LDAP">LDAP authentication</a>&nbsp;has not been configured, add the user running the Data Protector GUI according to&nbsp;<a href="#Configure_the_Cell_Manager_User_Management">Configure the Cell Manager User Management</a>&nbsp;with the <code>omniusers</code> command and try again.</p>
+<p>Try connecting to the Cell Manager using the Data Protector GUI. If a login prompt is displayed and <a href="/itom/Data_Protector:latest/LDAP">LDAP authentication</a>&nbsp;has not been configured, add the Windows user running the Data Protector GUI according to&nbsp;<a href="#Configure_the_Cell_Manager_User_Management">Configure the Cell Manager User Management</a>&nbsp;with the <code>omniusers</code> command and try again.</p>
 
 <h2>Deploy and Configure a Windows Installation Server</h2>
 
-<p>This step is optional.&nbsp;A Windows Installation Server should be only part of the Data Protector cell to allow remote installation and upgrades of Windows clients. Manual local installations and upgrade are also an option, if the number of clients is small. The&nbsp;Installation sources are made available via SMB on the <code>OmniBack</code> share on the installation server.</p>
+<p>This step is optional.&nbsp;A Windows Installation Server should be part of the Data Protector cell to allow remote installation and upgrades of Windows clients. Manual local installations and upgrade are also an option, if the number of clients is small. The&nbsp;Installation sources are made available via SMB on the <code>OmniBack</code> share on the installation server.</p>
 
 <div class="Admonition_Note"><strong>Note:</strong> A Windows Installation server can be used as management station with the Data Protector GUI.&nbsp;</div>
 
