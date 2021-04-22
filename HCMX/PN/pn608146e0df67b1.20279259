@@ -296,6 +296,125 @@ hcmxmig get subscription --offering b570e54af56641bd9c54f4e092fb427f --orgid 2c9
 
 <p>When you execute the migrate subscription command, it will loop thru the migration tasks and show the status against each of those. In case if you have closed that, you can continue monitoring using this --monitor task parameter, this will continue to monitor the remaining pending and in-progress tasks and show the status against each of them.</p>
 
-<p>hcmxmig get task --monitor<br>
+<p>hcmxmig get task --monitor</p>
+
+<h3>Tool Management</h3>
+
+<p>Use the tool command to configure and manage the tool options.<br>
 &nbsp;</p>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>configure</td>
+			<td>Configure CSA/HCM and HCMX details in the tool configuration file</td>
+		</tr>
+		<tr>
+			<td>configuredb</td>
+			<td>Configure tool database</td>
+		</tr>
+		<tr>
+			<td>install</td>
+			<td>Create keystore and hcmx-migration service to run the jar file as a service</td>
+		</tr>
+		<tr>
+			<td>status</td>
+			<td>hcmx-migration service status</td>
+		</tr>
+		<tr>
+			<td>start</td>
+			<td>Start the hcmx-migration service</td>
+		</tr>
+		<tr>
+			<td>stop</td>
+			<td>Stop&nbsp;the hcmx-migration service</td>
+		</tr>
+		<tr>
+			<td>restart</td>
+			<td>Restart&nbsp;the hcmx-migration service</td>
+		</tr>
+		<tr>
+			<td>login</td>
+			<td>Login to the migration tool. The username and password is saved to future login. Parameters - username, password</td>
+		</tr>
+		<tr>
+			<td>changepassword</td>
+			<td>Change the login password of the migration tool. Parameter - newPassword</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Example:<br>
+hcmxmig tool install<br>
+hcmxmig tool restart<br>
+hcmxmig tool login admin password<br>
+hcmxmig tool changePassword new-password</p>
+
+<p>Configure Options</p>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>--sourceUrl</td>
+			<td>Source CSA or HCM URL ex: https://hostname:port/csa</td>
+		</tr>
+		<tr>
+			<td>--sourceUser</td>
+			<td>Source CSA or HCM admin user. Default: admin</td>
+		</tr>
+		<tr>
+			<td>--sourcePwd&nbsp;</td>
+			<td>Source CSA or HCM admin password</td>
+		</tr>
+		<tr>
+			<td>--targetUrl</td>
+			<td>Target HCMX DND URL with Tenantid ex: https://hostname/&lt;tenantid&gt;/dnd</td>
+		</tr>
+		<tr>
+			<td>--targetUser</td>
+			<td>Target CSA or HCM admin user. Default: dndadmin</td>
+		</tr>
+		<tr>
+			<td>--targetPwd</td>
+			<td>Target CSA or HCM admin password</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Example:<br>
+hcmxmig tool configure --sourceUrl https://hostname:port/csa --sourceUser admin --sourcePwd password --targetUrl https://hostname/&lt;tenantid&gt;/dnd --targetUser dndadmin --targetPwd password</p>
+
+<p>Configure Database Options</p>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>--dbhost</td>
+			<td>Postgres database hostname</td>
+		</tr>
+		<tr>
+			<td>--dbport</td>
+			<td>Postgres database port. Default: 5432</td>
+		</tr>
+		<tr>
+			<td>--dbuser</td>
+			<td>Postgres database username</td>
+		</tr>
+		<tr>
+			<td>--dbpass</td>
+			<td>Postgres database password</td>
+		</tr>
+		<tr>
+			<td>--dbname</td>
+			<td>Postgres database name</td>
+		</tr>
+		<tr>
+			<td>--certpath</td>
+			<td>Optional. Path to the certificate file in case of the SSL connection to database</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Example:<br>
+hcmxmig tool configuredb --dbhost hostname --dbport 5432 --dbname hcmx-migration &nbsp;--dbuser postgres --dbpass password &nbsp;--certpath /home/hcmxpgdb.crt</p>
 </html>
