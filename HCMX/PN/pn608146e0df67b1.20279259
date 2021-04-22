@@ -2,11 +2,13 @@
 
 <p>The HCMX Migration tool provides all the required APIs to migrate CSA/HCM to HCMX. The HCMX Migration CLI allows you to interact with the Migration Tool APIs providing the CLI experience.</p>
 
-<p>The migration tool can be downloaded from the &lt;LINK&gt; Marketplace Portal, and the detailed documentation of the migration&nbsp;process can be found &lt;LINK&gt; here.</p>
+<p>The migration tool can be downloaded from the &lt;LINK&gt; Marketplace Portal, and detailed documentation of the migration process can be found <a href="https://docs.microfocus.com/itom/SMAX:Main/MigrateToHCMX">here</a>.</p>
 
 <p>This document describes the hcmxmig CLI commands and it's usage. The hcmxmig CLI can be downloaded from the marketplace portal &lt;LINK&gt; here.</p>
 
 <h2>Prerequisite</h2>
+
+<p>You have to go through the migration <a href="https://docs.microfocus.com/itom/SMAX:Main/MigrateToHCMX">documentation</a> to understand the overall migration process which you need to consider and follow.</p>
 
 <p>This document assumes that you have installed&nbsp;HCMX and its supporting components (RAS, UCMDB) and have configured all the&nbsp;prerequisite configurations (like tenant, LDAP, users, roles) in HCMX described in the migration tool document, and you have validated the few&nbsp;typical designs in HCMX from the CSA/HCM instance and ensured they are working without any issues. After you have completed these, then you are ready to perform the migration.<br>
 <br>
@@ -15,7 +17,7 @@ jq, awk, grep, sed, column</p>
 
 <h2>Installation steps</h2>
 
-<p>The hcmxmig CLI needs to be copied to the 'script' folder in the migration tool directory, it will run on the same server where the migration tool is executed. The hcmxmig CLI needs a Linux environment, you can either use the CSA/HCM nodes or HCMX nodes or a separate Linux system to deploy the migration tool and CLI script. You would also need a PostgreSQL database for the HCMX Migration tool to run, please check the migration tool documentation for the more details.<br>
+<p>The hcmxmig CLI needs to be copied to the 'script' folder in the migration tool directory, it will run on the same server where the migration tool is executed. The hcmxmig CLI needs a Linux environment, you can either use the CSA/HCM nodes or HCMX nodes or a separate Linux system to deploy the migration tool and CLI script. You would also need a PostgreSQL database for the HCMX Migration tool to run, please check the migration tool documentation for more details.<br>
 <br>
 Extract the migration tool archive to the directory (example: hcmxmig) and create a script sub-directory. It should have the following folder structure;<br>
 <br>
@@ -29,9 +31,10 @@ Add the hcmxmig CLI into the PATH variable, to do this add the following in the 
 
 <h2>HCMX Migration Tool Configuration</h2>
 
-<p>Once the migration tool is extracted, you can use the hcmxmig CLI to install and configure the migration tool. Alternatively, you can also configure the migration tool as per the document.&nbsp;Follow the below steps to configure and start the migration tool using hcmxmig CLI;</p>
+<p>Once the migration tool is extracted, you can use the hcmxmig CLI to install and configure the migration tool. You can refer to the install migration application <a href="https://docs.microfocus.com/itom/SMAX:Main/InstallMigrationTool">section</a> to get more details for some of these steps. Follow the below steps to configure and start the migration tool using hcmxmig CLI;</p>
 
 <ol>
+	<li>Enable the migration APIs in DND by adding the&nbsp;DND_PROP_MIGRATION_ENABLE_CSA_DND in the dnd-controller-deployment.yaml</li>
 	<li>Configure the source, target URL, and its credentials. This will also add the certificates into the java trust store automatically, you might be prompted for the truststore password (default is “changeit”). Example:
 	<p><code>hcmxmig tool configure --sourceUrl https://hostname:port/csa --sourceUser admin --sourcePwd password --targetUrl https://hostname/&lt;tenantid&gt;/dnd --targetUser dndadmin --targetPwd password</code></p>
 	</li>
@@ -46,7 +49,7 @@ Add the hcmxmig CLI into the PATH variable, to do this add the following in the 
 		</li>
 	</ul>
 	</li>
-	<li>Install the migration tool as a Linux service. This command&nbsp;will prompt you for a keystore generation (if not already done) for the migration tool. Example:
+	<li>Install the migration tool as a Linux service. This command&nbsp;will prompt you for a keystore generation (if not already done) for the migration tool. You would also need the <code>idmTransportUser</code> password from CSA/HCM. Example:
 	<p><code>hcmxmig tool install</code></p>
 	</li>
 	<li>Watch the migration tool service status to ensure it's running and there no errors, you should see the swagger URL link which would mean the tool has started. Example:
@@ -59,20 +62,20 @@ Add the hcmxmig CLI into the PATH variable, to do this add the following in the 
 
 <h2>High level migration steps</h2>
 
-<p>Typically the HCMX migration contains the following sequence</p>
+<p>The HCMX migration process contains the following sequence:</p>
 
-<h3>Migrating Design and OO Content</h3>
+<h3>Migrate Service&nbsp;Design and OO Content Pack</h3>
 
 <ol>
 	<li>Import all the OO content packs into HCMX</li>
-	<li>Export/Import the designs and create offerings from CSA/HCM to the HCMX. hcmxmig CLI script provides option to transfer the design and offerings to HCMX. Please check the export/import section for more information.</li>
+	<li>Export/Import the designs from CSA/HCM to the HCMX and create offerings in HCMX. hcmxmig CLI script provides an option to transfer the design and create offerings in HCMX. Please check the export/import section in this document for more information.</li>
 </ol>
 
-<h3>Migrating Resource Providers</h3>
+<h3>Migrate&nbsp;Resource Providers</h3>
 
 <ol>
 	<li>Get the list of resource providers from CSA/HCM
-	<p><code>hcmxmig get provider</code></p>
+	<p><code>hcmxmig get provider --output providers.csv</code></p>
 	</li>
 	<li>Run precheck for the resource providers. Ensure there are no errors in the precheck and fix them if any
 	<p><code>hcmxmig precheck provider &lt;comma-separated-provider-ids&gt;</code></p>
@@ -82,23 +85,39 @@ Add the hcmxmig CLI into the PATH variable, to do this add the following in the 
 	</li>
 </ol>
 
+<div class="Admonition_Tip"><span class="autonumber">Tip</span>&nbsp; Use the following command to get the command-separated provider-ids from the provider.csv output file<br>
+cat providers.csv | awk -F',' 'NR&gt;1 {gsub(/"/, "", $1); print $1}' | tr '\n' ',' | sed '$s/,$//'</div>
+
 <h3>Migrating Subscriptions</h3>
 
-<p>The best way to migrate the subscriptions is to go by each offering. Migrate all the subscriptions of a given offering, then move on to the next offering in that design. Then move on to the next design.</p>
+<p>The recommended process&nbsp;to migrate the subscriptions is to go by each offering in CSA/HCM. Migrate all the subscriptions of that offering, then move on to the next offering in the&nbsp;design, then move on to the next design.</p>
 
 <ol>
-	<li>Get the list of offerings from CSA/HCM - filter them as needed based on organization and offering name. <code>hcmxmig get offering --output offering.csv</code></li>
-	<li>Get the mapping for the designs based on the list of offerings in the CSV. Check and fix the mapping information in the CSV by checking the probable target offerings and set them in the TargetOfferingId. <code>hcmxmig get mapping &lt;design ids&gt;</code></li>
-	<li>Get the subscriptions for an offering and use the mapping information. Check and Fix the subscription list in the CSV, and set the PerformMigration field to 'Y' when you have a valid TargetOfferingId. <code>hcmxmig get subscription --output subscriptions.csv --use-mapping mapping.csv</code></li>
-	<li>Run precheck for the subscription using the subscription CSV. Ensure there are no errors in the precheck and fix them on HCMX if any <code>hcmxmig precheck subscription --input subscriptions.csv</code></li>
-	<li>Run migration for the subscription which passes the precheck <code>hcmxmig migrate subscription --input subscriptions.csv</code></li>
+	<li>Get the list of offerings from CSA/HCM - filter them as needed based on organization and offering name. Pick an offering which you want to migrate.
+	<p><code>hcmxmig get offering --output offering.csv</code></p>
+	</li>
+	<li>Export/Import the design of the selected offering and&nbsp;create the offering in HCMX if its not already.
+	<p><code>hcmxmig design transfer --design &lt;design-id&gt; --preview --import --createoffering --target-service-definition &lt;TARGET_SERVICE_DEFINITION&gt; --designfailure true</code></p>
+	</li>
+	<li>Get the mapping for the design&nbsp;based on the selected offering. Check and fix the mapping information in the CSV by checking the probable target offerings and set them in the TargetOfferingId column.
+	<p><code>hcmxmig get mapping &lt;design-id&gt;&nbsp;--mappingfile mapping-&lt;design-id&gt;.csv</code></p>
+	</li>
+	<li>Get the subscriptions for an offering and use the mapping information. Check and Fix the subscription list in the CSV, and set the PerformMigration field to 'Y' when you have a valid TargetOfferingId.
+	<p><code>hcmxmig get subscription --offering &lt;offering-id&gt; --output sub-&lt;offering-id&gt;.csv --use-mapping mapping-&lt;design-id&gt;.csv</code></p>
+	</li>
+	<li>Run precheck for the subscriptions&nbsp;using the subscription CSV. Ensure there are no errors in the precheck, fix them&nbsp;if any
+	<p><code>hcmxmig precheck subscription --input sub-&lt;offering-id&gt;.csv</code></p>
+	</li>
+	<li>Run migration for the subscription which passes the precheck
+	<p><code>hcmxmig migrate subscription --input sub-&lt;offering-id&gt;.csv</code></p>
+	</li>
 </ol>
 
-<p>Repeat the step 3-5 for all the offerings in that design, repeat the steps for a new design.</p>
+<p>Repeat the step 2-6&nbsp;for all the offerings in that design, repeat the steps for the&nbsp;next design.</p>
 
 <p>Check the CLI usage section for more details on each of these commands and their options.</p>
 
-<p>After the migration, you need to perform the post-migration tasks which are documented in the migration guide &lt;LINK&gt;</p>
+<p>After the migration, you need to perform the post-migration tasks which are documented in the migration guide.</p>
 
 <h2>CLI Usage</h2>
 
