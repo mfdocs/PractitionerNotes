@@ -3,7 +3,6 @@
 <p>The HCMX Migration tool provides all the required APIs to migrate CSA/HCM to HCMX. The HCMX Migration CLI script allows you to interact with the Migration Tool APIs providing the CLI experience.<br>
 <br>
 The HCMX Migration tool needs to be downloaded from the &lt;LINK&gt; Marketplace Portal. Detailed documentation of the migration process can be found &lt;LINK&gt; here. This document describes the CLI tool commands and it's usage.</p>
-&nbsp;
 
 <h2>Prerequisite</h2>
 
@@ -11,7 +10,6 @@ The HCMX Migration tool needs to be downloaded from the &lt;LINK&gt; Marketplace
 <br>
 The CLI script needs the following Linux library tools on the system, ensure they are installed;<br>
 jq, awk, grep, sed, column</p>
-&nbsp;
 
 <h2>Installation steps</h2>
 
@@ -57,8 +55,6 @@ PATH=$PATH:$HOME/bin:&lt;path&gt;/hcmxmig/script</p>
 	</li>
 </ol>
 
-<p></p>
-
 <h2>High level migration steps</h2>
 
 <p>Typically the HCMX migration contains the following sequence</p>
@@ -84,8 +80,7 @@ PATH=$PATH:$HOME/bin:&lt;path&gt;/hcmxmig/script</p>
 	</li>
 </ol>
 
-<h3><br>
-Migrating Subscriptions</h3>
+<h3>Migrating Subscriptions</h3>
 
 <p>The best way to migrate the subscriptions is to go by each offering. Migrate all the subscriptions of a given offering, then move on to the next offering in that design. Then move on to the next design.</p>
 
@@ -112,4 +107,39 @@ Migrating Subscriptions</h3>
 <p>Check the CLI usage section for more details on each of these commands and their options.</p>
 
 <p>After the migration, you need to perform the post-migration tasks which are documented in the migration guide &lt;LINK&gt;</p>
+
+<h2>CLI Usage</h2>
+
+<p>HCMXMig CLI has the following main commands</p>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>get</td>
+			<td>Display the CSA artifacts from the source. Options: provider, provider type, subscription, offering, organization, task, mapping</td>
+		</tr>
+		<tr>
+			<td>precheck</td>
+			<td>Run Prerequisite checks before migration. Options: provider, subscription</td>
+		</tr>
+		<tr>
+			<td>migrate</td>
+			<td>Run the migration. Options: provider, subscription</td>
+		</tr>
+		<tr>
+			<td>design</td>
+			<td>Export/Import the designs from CSA/HCM to HCMX</td>
+		</tr>
+		<tr>
+			<td>offering</td>
+			<td>Create Offerings in HCMX</td>
+		</tr>
+		<tr>
+			<td>tool</td>
+			<td>Configure and manage migration tool: configure, createservice, status, start, restart, stop</td>
+		</tr>
+	</tbody>
+</table>
+
+<p></p>
 </html>
