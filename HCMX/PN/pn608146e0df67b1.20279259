@@ -1,1 +1,31 @@
- 
+<html><h2>HCMX Migration CLI</h2>
+
+<p>The HCMX Migration tool provides all the required APIs to migrate CSA/HCM to HCMX. The HCMX Migration CLI script allows you interact with the Migration Tool APIs providing the CLI experience.<br>
+&nbsp;<br>
+The HCMX Migration tool needs to be downloaded from the &lt;LINK&gt; Marketplace Portal. Detailed documentation of the migration process can be found &lt;LINK&gt; here. This document describes the CLI tool commands and its usage.</p>
+
+<h2><br>
+Prerequisite</h2>
+
+<p>This document assumes that you have installed a working HCMX and its supporting components (RAS, UCMDB). Read the migration document to create all the prerequisite configurations (like tenant, ldap, users, roles) in HCMX, and you have validated the basic set of designs on HCMX from the CSA/HCM instance to ensure they are working without any issues. Once you have completed these, then you are ready to perform the migration.<br>
+&nbsp;<br>
+The CLI script needs following linux library tools on the system, ensure they are installed;<br>
+jq, awk, grep, sed, column</p>
+
+<h2><br>
+Installation steps</h2>
+
+<p><br>
+The CLI script (hcmxmig) needs to be copied to 'script' folder in the migration directory, it will run on the same instance where the migration tool is executed. The CLI script needs any Linux environment for it to be installed, so you can either use the CSA/HCM nodes or HCMX nodes or separate linux system to deploy the migration tool and CLI script. You would also need a PostgreSQL database for the HCMX Migration tool to run, please check the Tool documentation for the details.<br>
+&nbsp;<br>
+Extract the migration tool archive to directory (like hcmxmig) and create a script sub-directory. It should have the following structure;<br>
+&nbsp;<br>
+|- hcmxmig<br>
+|- hcmxmig/hcmx-migration.jar<br>
+|- hcmxmig/config/application.properties<br>
+|- hcmxmig/script/hcmxmig<br>
+&nbsp;<br>
+Optionally you can add the hcmxmig CLI into the PATH variable, to do this add the following in the ~/.bash_profile;<br>
+PATH=$PATH:$HOME/bin:&lt;path&gt;/hcmxmig/script<br>
+&nbsp;</p>
+</html>
