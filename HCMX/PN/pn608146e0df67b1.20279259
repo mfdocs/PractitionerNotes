@@ -70,13 +70,13 @@ PATH=$PATH:$HOME/bin:&lt;path&gt;/hcmxmig/script</p>
 
 <ol>
 	<li>Get the list of resource providers from CSA/HCM
-	<p>hcmxmig get provider</p>
+	<p><code>hcmxmig get provider</code></p>
 	</li>
 	<li>Run precheck for the resource providers. Ensure there are no errors in the precheck and fix them if any
-	<p>hcmxmig precheck provider &lt;comma-separated-provider-ids&gt;</p>
+	<p><code>hcmxmig precheck provider &lt;comma-separated-provider-ids&gt;</code></p>
 	</li>
 	<li>Run migration for the resource providers which pass the precheck
-	<p>hcmxmig migrate provider &lt;comma-separated-provider-ids&gt;</p>
+	<p><code>hcmxmig migrate provider &lt;comma-separated-provider-ids&gt;</code></p>
 	</li>
 </ol>
 
@@ -86,19 +86,19 @@ PATH=$PATH:$HOME/bin:&lt;path&gt;/hcmxmig/script</p>
 
 <ol>
 	<li>Get the list of offerings from CSA/HCM - filter them as needed based on organization and offering name.
-	<p>hcmxmig get offering --output offering.csv</p>
+	<pre>hcmxmig get offering --output offering.csv</pre>
 	</li>
 	<li>Get the mapping for the designs based on the list of offerings in the CSV. Check and fix the mapping information in the CSV by checking the probable target offerings and set them in the TargetOfferingId.
-	<p>hcmxmig get mapping &lt;design ids&gt;</p>
+	<pre>hcmxmig get mapping &lt;design ids&gt;</pre>
 	</li>
 	<li>Get the subscriptions for an offering and use the mapping information. Check and Fix the subscription list in the CSV, and set the PerformMigration field to 'Y' when you have a valid TargetOfferingId.
-	<p>hcmxmig get subscription --output subscriptions.csv --use-mapping mapping.csv</p>
+	<pre>hcmxmig get subscription --output subscriptions.csv --use-mapping mapping.csv</pre>
 	</li>
 	<li>Run precheck for the subscription using the subscription CSV. Ensure there are no errors in the precheck and fix them on HCMX if any
-	<p>hcmxmig precheck subscription --input subscriptions.csv</p>
+	<pre>hcmxmig precheck subscription --input subscriptions.csv</pre>
 	</li>
 	<li>Run migration for the subscription which passes the precheck
-	<p>hcmxmig migrate subscription --input subscriptions.csv</p>
+	<pre>hcmxmig migrate subscription --input subscriptions.csv</pre>
 	</li>
 </ol>
 
