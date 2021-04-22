@@ -21,22 +21,22 @@
 if [[ $1 == "freeze" ]]
 then
 
-    # This section is executed before the Snapshot is created
+&nbsp; &nbsp; echo "This section is executed before the Snapshot is created"
 
 elif [[ $1 == "freezeFail" ]]
 then
 
-    # This section is executed when a problem occurs during snapshot creation and we need to cleanup because thaw will not be executed
+&nbsp; &nbsp; echo "This section is executed when a problem occurs during snapshot creation and we need to cleanup because thaw will not be executed"
 
 elif [[ $1 == "thaw" ]]
 then
 
-    # This section is executed when the Snapshot is removed
+&nbsp; &nbsp; echo "This section is executed when the Snapshot is removed"
 
 else
 
-    echo "Usage: `/bin/basename $0` [ freeze | freezeFail | thaw ]"
-    exit 1
+&nbsp; &nbsp; echo "Usage: `/bin/basename $0` [ freeze | freezeFail | thaw ]"
+&nbsp; &nbsp; exit 1
 
 fi
 </pre>
@@ -45,32 +45,32 @@ fi
 
 <pre>@echo off
 
-if "%~1" == ""         goto USAGE
-if %1    == freeze     goto FREEZE
-if %1    == freezeFail goto FREEZEFAIL
-if %1    == thaw       goto THAW
+if "%~1" == "" &nbsp; &nbsp; &nbsp; &nbsp; goto USAGE
+if %1 &nbsp; &nbsp;== freeze &nbsp; &nbsp; goto FREEZE
+if %1 &nbsp; &nbsp;== freezeFail goto FREEZEFAIL
+if %1 &nbsp; &nbsp;== thaw &nbsp; &nbsp; &nbsp; goto THAW
 
 :USAGE
 
-echo Usage: %~nx0 [ freeze | freezeFail | thaw ]
+echo "Usage: %~nx0 [ freeze | freezeFail | thaw ]"
 
 goto END
 
 :FREEZE
 
-:: This section is executed before the Snapshot is created
+echo "This section is executed before the Snapshot is created"
 
 goto END
 
 :FREEZEFAIL
 
-:: This section is executed when a problem occurs during snapshot creation and we need to cleanup because thaw will not be executed
+echo "This section is executed when a problem occurs during snapshot creation and we need to cleanup because thaw will not be executed"
 
 goto END
 
 :THAW
 
-:: This section is executed when the Snapshot is removed
+echo "This section is executed when the Snapshot is removed"
 
 goto END
 
