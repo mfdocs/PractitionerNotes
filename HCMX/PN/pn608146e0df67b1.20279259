@@ -15,8 +15,7 @@ jq, awk, grep, sed, column</p>
 
 <h2>Installation steps</h2>
 
-<p><br>
-The CLI script (hcmxmig) needs to be copied to the 'script' folder in the migration directory, it will run on the same instance where the migration tool is executed. The CLI script needs any Linux environment for it to be installed, so you can either use the CSA/HCM nodes or HCMX nodes or a separate Linux system to deploy the migration tool and CLI script. You would also need a PostgreSQL database for the HCMX Migration tool to run, please check the Tool documentation for the details.<br>
+<p>The CLI script (hcmxmig) needs to be copied to the 'script' folder in the migration directory, it will run on the same instance where the migration tool is executed. The CLI script needs any Linux environment for it to be installed, so you can either use the CSA/HCM nodes or HCMX nodes or a separate Linux system to deploy the migration tool and CLI script. You would also need a PostgreSQL database for the HCMX Migration tool to run, please check the Tool documentation for the details.<br>
 <br>
 Extract the migration tool archive to the directory (like hcmxmig) and create a script sub-directory. It should have the following structure;<br>
 <br>
@@ -30,16 +29,15 @@ PATH=$PATH:$HOME/bin:&lt;path&gt;/hcmxmig/script</p>
 
 <h2>HCMX Migration Tool Configuration</h2>
 
-<p><br>
-Once the migration tool is extracted, you can use the CLI script to install and configure the migration tool. Refer to the tool configuration section to configure. Follow the steps to configure and start the migration tool;</p>
+<p>Once the migration tool is extracted, you can use the CLI script to install and configure the migration tool. Refer to the tool configuration section to configure. Follow the steps to configure and start the migration tool;</p>
 
 <ol>
-	<li>Configure the source, target URL and its credentials. This will also add the URL certificates into the java trust store automatically, you might be prompted for the truststore password (default is “changeit”). Example:
+	<li>Configure the source, target URL, and its credentials. This will also add the URL certificates into the java trust store automatically, you might be prompted for the truststore password (default is “changeit”). Example:
 	<p>hcmxmig tool configure --sourceUrl https://hostname:port/csa --sourceUser admin --sourcePwd password --targetUrl https://hostname/&lt;tenantid&gt;/dnd --targetUser dndadmin --targetPwd password</p>
 	</li>
-	<li>Configure the Postgresql database for the migration tool, only postgresql is supported. The --certpath is optional and can be used to configure the SSL connection to Postgres.
+	<li>Configure the Postgresql database for the migration tool, only PostgreSQL is supported. The --certpath is optional and can be used to configure the SSL connection to Postgres.
 	<ul>
-		<li>To create the database in the postgres, use the following SQL statement after connecting to postgres
+		<li>To create the database in the PostgreSQL, execute the following SQL statements after connecting to the database server
 		<p>create user hcmxmig login password '2the#moon' inherit;<br>
 		create database hcmxmig with owner=hcmxmig;</p>
 		</li>
@@ -48,14 +46,70 @@ Once the migration tool is extracted, you can use the CLI script to install and 
 		</li>
 	</ul>
 	</li>
-	<li>Install the HCMX Migration service. It will prompt you for a keystore generation (if not already done) for the hcmx-migration tool and creates a keystore, installs the 'hcmx-migration' service and starts it. Example
+	<li>Install the HCMX Migration service. It will prompt you for a keystore generation (if not already done) for the hcmx-migration tool and creates a keystore, installs the 'hcmx-migration' service, and starts it. Example
 	<p>hcmxmig tool install</p>
 	</li>
-	<li>Watch the HCMX Migration service status to ensure its running and there no errors, you should see the swagger URL link which would mean the tool has started. Example
+	<li>Watch the HCMX Migration service status to ensure it's running and there no errors, you should see the swagger URL link which would mean the tool has started. Example
 	<p>hcmxmig tool status</p>
 	</li>
-	<li>Login to the HCMX Migration tool, the default password is 'password'. This will saved into the user profile for future user, a token is automatically generated and used for all further API calls. Example
+	<li>Login to the HCMX Migration tool, the default password is 'password'. This will be saved into the user profile for future use, a token is automatically generated and used for all further API calls. Example
 	<p>hcmxmig tool login admin password</p>
 	</li>
 </ol>
+
+<p></p>
+
+<h2>High level migration steps</h2>
+
+<p>Typically the HCMX migration contains the following sequence</p>
+
+<h3>Migrating Design and OO Content</h3>
+
+<ol>
+	<li>Import all the OO content packs into HCMX</li>
+	<li>Export/Import the designs and create offerings from CSA/HCM to the HCMX. hcmxmig CLI script provides option to transfer the design and offerings to HCMX. Please check the export/import section for more information.</li>
+</ol>
+
+<h3>Migrating Resource Providers</h3>
+
+<ol>
+	<li>Get the list of resource providers from CSA/HCM
+	<p>hcmxmig get provider</p>
+	</li>
+	<li>Run precheck for the resource providers. Ensure there are no errors in the precheck and fix them if any
+	<p>hcmxmig precheck provider &lt;comma-separated-provider-ids&gt;</p>
+	</li>
+	<li>Run migration for the resource providers which pass the precheck
+	<p>hcmxmig migrate provider &lt;comma-separated-provider-ids&gt;</p>
+	</li>
+</ol>
+
+<h3><br>
+Migrating Subscriptions</h3>
+
+<p>The best way to migrate the subscriptions is to go by each offering. Migrate all the subscriptions of a given offering, then move on to the next offering in that design. Then move on to the next design.</p>
+
+<ol>
+	<li>Get the list of offerings from CSA/HCM - filter them as needed based on organization and offering name.
+	<p>hcmxmig get offering --output offering.csv</p>
+	</li>
+	<li>Get the mapping for the designs based on the list of offerings in the CSV. Check and fix the mapping information in the CSV by checking the probable target offerings and set them in the TargetOfferingId.
+	<p>hcmxmig get mapping &lt;design ids&gt;</p>
+	</li>
+	<li>Get the subscriptions for an offering and use the mapping information. Check and Fix the subscription list in the CSV, and set the PerformMigration field to 'Y' when you have a valid TargetOfferingId.
+	<p>hcmxmig get subscription --output subscriptions.csv --use-mapping mapping.csv</p>
+	</li>
+	<li>Run precheck for the subscription using the subscription CSV. Ensure there are no errors in the precheck and fix them on HCMX if any
+	<p>hcmxmig precheck subscription --input subscriptions.csv</p>
+	</li>
+	<li>Run migration for the subscription which passes the precheck
+	<p>hcmxmig migrate subscription --input subscriptions.csv</p>
+	</li>
+</ol>
+
+<p>Repeat the step 3-5 for all the offerings in that design, repeat the steps for a new design.</p>
+
+<p>Check the CLI usage section for more details on each of these commands and their options.</p>
+
+<p>After the migration, you need to perform the post-migration tasks which are documented in the migration guide &lt;LINK&gt;</p>
 </html>
