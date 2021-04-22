@@ -159,10 +159,11 @@ cat providers.csv | awk -F',' 'NR&gt;1 {gsub(/"/, "", $1); print $1}' | tr '\n' 
 
 <h3>Export/Import Designs and Offerings</h3>
 
-<p>The HCMX Migration CLI provides options to export the designs from CSA/HCM and import them to HCMX. For the migration to work, the offerings in HCMX have to be created using a naming convention that includes the offering version, using CLI you can create the offerings in HCMX with the correct naming convention. The offering created in HCMX is only the skeleton required for migration and the rest of the properties like pricing, option set, etc., need to manually configure in the HCMX offering based on the CSA/HCM offering.</p>
+<p>The hcmxmig CLI provides options to export the designs from CSA/HCM and import them into HCMX. For the migration, the offerings in HCMX have to be created using a naming convention that includes the offering version, using hcmxmig CLI you can create the offerings in HCMX with the correct naming convention.</p>
 
-<p><br>
-Use the design export command to export the design from CSA/HCMX, the design-id to export is passed in with --design parameter in the command. The exported design will be saved as the &lt;design-id&gt;.zip file. Example:</p>
+<div class="Admonition_Note"><b>Note</b>&nbsp; &nbsp;The offering created by the hcmxmig CLI in HCMX is with basic offering details and the rest of the offering properties like pricing, option set, etc., need to be manually configured in the HCMX offering based on the CSA/HCM offering</div>
+
+<p>Use the <strong>design export</strong> command to export the design from CSA/HCM, the design-id to export is passed in with --design parameter in the command. The exported design will be saved as the &lt;design-id&gt;.zip file. Example:</p>
 
 <p><code>hcmxmig design export --design 2c90cf9370f7b9b10170f898bbd0187b</code><br>
 <br>
