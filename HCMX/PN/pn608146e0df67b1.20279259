@@ -145,7 +145,9 @@ PATH=$PATH:$HOME/bin:&lt;path&gt;/hcmxmig/script</p>
 
 <h3>Export/Import Designs and Offerings</h3>
 
-<p>The HCMX Migration CLI provides options to export the designs from CSA/HCM and import them to HCMX. For the migration to work, the offerings in HCMX have to be created using a naming convention that includes the offering version, using CLI you can create the offerings in HCMX with the correct naming convention. The offering created in HCMX is only the skeleton required for migration and the rest of the properties like pricing, option set, etc., need to manually configure in the HCMX offering based on the CSA/HCM offering.<br>
+<p>The HCMX Migration CLI provides options to export the designs from CSA/HCM and import them to HCMX. For the migration to work, the offerings in HCMX have to be created using a naming convention that includes the offering version, using CLI you can create the offerings in HCMX with the correct naming convention. The offering created in HCMX is only the skeleton required for migration and the rest of the properties like pricing, option set, etc., need to manually configure in the HCMX offering based on the CSA/HCM offering.</p>
+
+<p><br>
 Use the design export command to export the design from CSA/HCMX, the design-id to export is passed in with --design parameter in the command. The exported design will be saved as the &lt;design-id&gt;.zip file. Example:</p>
 
 <p>hcmxmig design export --design 2c90cf9370f7b9b10170f898bbd0187b<br>
@@ -157,12 +159,66 @@ hcmxmig design import --input 2c90cf9370f7b9b10170f898bbd0187b.zip --preview --i
 <br>
 Use the design transfer command to directly transfer the design from CSA/HCM to HCMX, instead of running two separate commands. With transfer command, you can pass in multiple design-ids at once to transfer the multiple designs in a single command. You can use the --preview, --import, and --designfailure options the same way as in design import. Example</p>
 
-<p>hcmxmig design transfer --design 2c90cf9370f7b9b10170f898bbd0187b,2c90cf9370f7b9b10170f898bbd0187c --preview --import<br>
-While transferring the design, you can optionally create the offering in the same command by passing --createoffering parameter. CLI will create the offering if the import/export is successful. You need to provide the service definition id with parameter --target-service-definition, the service definition id is in the HCMX under which the offering has to be created. Example:</p>
+<p>hcmxmig design transfer --design 2c90cf9370f7b9b10170f898bbd0187b,2c90cf9370f7b9b10170f898bbd0187c --preview --import</p>
 
-<p>hcmxmig design transfer --design 2c90cf9370f7b9b10170f898bbd0187b,2c90cf9370f7b9b10170f898bbd0187c --preview --import --createoffering --target-service-definition 10081 --designfailure true<br>
-Use the offering transfer command to create the offerings in HCMX, use this if you have already imported design into HCMX. You can pass the specific offering-ids in CSA/HCM to be transfer or all the offerings of the design will be transferred when a design-id is passed. Example:<br>
+<p>While transferring the design, you can optionally create the offering in the same command by passing --createoffering parameter. CLI will create the offering if the import/export is successful. You need to provide the service definition id with parameter --target-service-definition, the service definition id is in the HCMX under which the offering has to be created. Example:</p>
+
+<p>hcmxmig design transfer --design 2c90cf9370f7b9b10170f898bbd0187b,2c90cf9370f7b9b10170f898bbd0187c --preview --import --createoffering --target-service-definition 10081 --designfailure true</p>
+
+<p>Use the offering transfer command to create the offerings in HCMX, use this if you have already imported design into HCMX. You can pass the specific offering-ids in CSA/HCM to be transfer or all the offerings of the design will be transferred when a design-id is passed. Example:<br>
 hcmxmig offering transfer --design 2c90c4a577a555dd0177aa612c532d0e --target-service-definition 10202<br>
-hcmxmig offering transfer --offering 2c90cf9370f7b9b10170f898bbd0187b,2c90cf9370f7b9b10170f898bbd0145c --target-service-definition 10202<br>
+hcmxmig offering transfer --offering 2c90cf9370f7b9b10170f898bbd0187b,2c90cf9370f7b9b10170f898bbd0145c --target-service-definition 10202</p>
+
+<p><br>
 Please note: The export/import is not an option provided in the HCMX Migration Tool (jar), and there are no APIs available, it’s only available with CLI.</p>
+
+<h3>Provider Details</h3>
+
+<p>Use the get provider command to get all the providers listed. It has the following optional parameter which you can use to filter the provider list;</p>
+
+<p>Filter by provider_type_id - pass in the provider type id as a parameter to list all the providers of that type. You can get the list of provider types using the "get provider type" command. Example:</p>
+
+<p>hcmxmig get provider 2c90cf9370f7b9b10170f7ea18054963</p>
+
+<p>Filter by migration status - The available statuses are - SUCCESS, FAILED, NOT_STARTED, PENDING, IN_PROGRESS. You can filter the provider list by any of the statuses. Example:</p>
+
+<p>hcmxmig get provider SUCCESS</p>
+
+<p>Search Provider by string - List the provider containing the string. Example:</p>
+
+<p>hcmxmig get provider vcenter</p>
+
+<p>You can save the output to a CSV file using the --output parameter, along with using any of the above filtering options. Example:</p>
+
+<p>hcmxmig get provider vcenter --output vcenter-providers.csv<br>
+&nbsp;</p>
+
+<h3>Precheck Providers</h3>
+
+<p>Use the precheck provider command to precheck the provider before migrating them. You can fix any issue found in precheck before migrating them. This command takes a comma-separated list of Provider Ids. Example:</p>
+
+<p>hcmxmig precheck provider 2c90899071353e740171354d4b9603a0,2c90a895713b4bff01713b7cda812584,2c90a895713b4bff01713b80b7d03b99</p>
+
+<p>You can save the precheck results to a CSV file using the --output parameter.</p>
+
+<p>To get the comma separated list of provider ids, use the following AWK command syntax and use that as input parameter to the precheck;</p>
+
+<p>hcmxmig get provider vcenter --output provider.csv<br>
+cat provider.csv | awk -F',' 'NR&gt;1 {gsub(/"/, "", $1); print $1}' | tr '\n' ',' | sed '$s/,$//'<br>
+&nbsp;</p>
+
+<h3>Migrate Providers</h3>
+
+<p>Use migrate provider command to migrate the providers from CSA/HCM to HCMX. If the provider in the HCMX already exists, then it will be updated. You can use the same precheck command syntax for migration. Use the following command syntax:<br>
+hcmxmig migrate provider 2c90899071353e740171354d4b9603a0,2c90a895713b4bff01713b7cda812584,2c90a895713b4bff01713b80b7d03b99</p>
+
+<p>Once you execute the command, you will be shown a list of migration task which are created to migrate these providers. You can leave the command running, the status against each of these will be automatically updated in an interval of 5 seconds until all the migration tasks are completed.</p>
+
+<h3>Organization Details</h3>
+
+<p>You would need the organization-id to use with subscription commands to filter the org specific subscriptions. Use the get organization command to get all the organizations in CSA/HCM.</p>
+
+<p>hcmxmig get organization<br>
+hcmxmig get subscription --offering b570e54af56641bd9c54f4e092fb427f --orgid 2c90c4a577a555dd0177f9293c9a76bc<br>
+&nbsp;</p>
 </html>
