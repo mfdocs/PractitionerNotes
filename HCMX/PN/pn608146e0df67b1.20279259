@@ -219,6 +219,83 @@ hcmxmig migrate provider 2c90899071353e740171354d4b9603a0,2c90a895713b4bff01713b
 <p>You would need the organization-id to use with subscription commands to filter the org specific subscriptions. Use the get organization command to get all the organizations in CSA/HCM.</p>
 
 <p>hcmxmig get organization<br>
-hcmxmig get subscription --offering b570e54af56641bd9c54f4e092fb427f --orgid 2c90c4a577a555dd0177f9293c9a76bc<br>
+hcmxmig get subscription --offering b570e54af56641bd9c54f4e092fb427f --orgid 2c90c4a577a555dd0177f9293c9a76bc</p>
+
+<h3>Generate commands</h3>
+
+<p>For migrating subscriptions, you have to deal with many different UUIDs, to make it easier you can generate the hcmxmig cli commands to execute, for a design-id or offering-id. The tool generate command would generate all the required commands to migrate the design or offering. For a design, it will generate for all the offerings in that design. You can copy and use the command as-is in the same sequence since it will have all the correct ids required to perform the migration.</p>
+
+<p>hcmxmig tool generate --designid &lt;design-id&gt;<br>
+hcmxmig tool generate --offeringid &lt;offering-id&gt;</p>
+
+<h3>Offering Details</h3>
+
+<p>Use the get offering command to list all the offerings from CSA/HCM. You can filter the offering names by passing in the search text and save the offerings into a CSV using --output parameter. Example:</p>
+
+<p>hcmxmig get offering --output offering.csv<br>
+hcmxmig get offering vCenter --output offering.csv</p>
+
+<p>The offering list also contains the design-id which is used in many other commands as input during the migration.</p>
+
+<h3>Generating Mapping</h3>
+
+<p>In order to migrate subscriptions from CSA/HCM to HCMX, the migration tool needs to know the mapping between source offering to the target offering. You can read more details about this in the migration document.</p>
+
+<p>Use the get mapping command to generate the mapping for the given designs. You can pass the specific comma-separated design-ids for which you need to generate mapping or pass --all to generate for all the designs. By default it will save the mapping information into the "mapping.csv" file, you can specify a different filename using --mappingfile parameter. Example:</p>
+
+<p>hcmxmig get mapping --all<br>
+hcmxmig get mapping 2c90c4a577a555dd0177b4eaf1db64ab,2c90c4a577a555dd0177fd13a8bf5ba3</p>
+
+<p>You can use the mapping file in subsequent commands during the migration. The mapping CSV contains the TargetOfferingId and ProbableOfferingId fields, they are offering-ids from the HCMX which matched against the CSA/HCM offering.</p>
+
+<ol>
+	<li>The offering-id in TargetOfferingId is an exact match to the source by naming convention and it can be used to migrate the subscriptions.</li>
+	<li>The ProbableOfferingId would contain more than one offering-id, and they are the other offerings from the same design. If there is no TargetOfferingId (exact match), then you have manually checked and select one from the ProbableOfferingId and set it under TargetOfferingId.</li>
+</ol>
+
+<h3>Subscription Details</h3>
+
+<p>Use the get subscription command to get the list of subscriptions from CSA/HCM. You can optionally filter the subscription by an organization using --organization parameter and pass the organization-id (from get organization command), and optionally filter by offering using --offering parameter passing the offering-id (from get offering command), if no filter it will list all the subscriptions in a paginated fashion with set PAGE_SIZE, default is 30. You can use the -o wide parameter to show all the id-columns including offering-id, org-id, design-id. Example:<br>
+<br>
+hcmxmig get subscription -o wide --organization 2c90cf9370f7b9b10170f895f5201702 --offering b570e54af56641bd9c54f4e092fb427f&nbsp;<br>
+<br>
+To use the subscription information with precheck and migration, you have to save them to a CSV and use it with precheck and migration commands. To save the subscriptions to CSV use the --output parameter and pass the csv filename. All the filtering options can be applied with the output parameter. During the --output option, it would need the mapping information to map the source subscription to the target. Use the --use-mapping parameter to pass in the mapping file, otherwise, it would generate mapping information during the command execution and this would not let you modify the mapping details. Example:<br>
+<br>
+hcmxmig get subscription --output subscriptions.csv --use-mapping mapping.csv --offering b570e54af56641bd9c54f4e092fb427f --orgid 2c90c4a577a555dd0177f9293c9a76bc<br>
+<br>
+The output CSV contains PerformMigration, TargetOfferingId, ProbableOfferingId fields along with the other subscription details. The PerformMigration against a subscription has to be set to "Y" for the precheck and migration commands to process it. The TargetOfferingId has to set with the correct offering-id which should be used to migrate. The ProbableOfferingId would contain more than one offering-id, and they are the other offerings from the same design available in HCMX. The output CSV file are generated using the mapping file (either generated runtime or passed to the command). The PerformMigration is automatically set to "Y" if there is a matching TargetOfferingId, otherwise its set to "N" by default.</p>
+
+<h4>Listing the migrated subscriptions</h4>
+
+<p>Use the --migrated parameter to list the migrated subscriptions.<br>
+hcmxmig get subscription --offering b570e54af56641bd9c54f4e092fb427f --orgid 2c90c4a577a555dd0177f9293c9a76bc --migrated</p>
+
+<h3>Precheck Subscription</h3>
+
+<p>Use the precheck subscription command to precheck the subscriptions for the migration, this is required before running the migrate command and it will list if any failures which you can fix before running the migration. The --input parameter is required and pass the input csv file is obtained by the "get subscription" command and should have the PerformMigration set to Y with a valid TargetOfferingId against the subscriptions you want to migrate. You can also save the precheck results into a CSV file using the --output parameter. Example:</p>
+
+<p>hcmxmig precheck subscription --input subscriptions.csv --output precheckSub.csv</p>
+
+<h3>Migrate Subscription</h3>
+
+<p>Use the migrate subscription command to migrate the subscriptions, the --input parameter is required, and pass the input CSV file is obtained by the "get subscription" command and should have the PerformMigration set to Y with a valid TargetOfferingId against the subscriptions you want to migrate. Example:</p>
+
+<p>hcmxmig migrate subscription --input subscriptions.csv</p>
+
+<p>Once you execute the command, you will be shown a list of migration task which are created to migrate these subscriptions. You can leave the command running, the status against each of these will be automatically updated in an interval of 5 seconds until all the subscription migration tasks are completed.</p>
+
+<p>You can break this command anytime, the migration will continue in the background and tasks will be updated with the status. You can use the "get task" command to check the status later.</p>
+
+<h3>Migration Task</h3>
+
+<p>Use the get task command to list all the migration tasks, they can be of RESOURCE_PROVIDER or SUBSCRIPTION type. You can check the status of the migration you performed with these task details. You can optionally filter the task by type using the --type parameter, available types are RESOURCE_PROVIDER, SUBSCRIPTION, filter by migration state using the --state parameter and available states are PENDING, IN_PROGRESS, COMPLETED, MIGRATION_IN_PROGRESS, PRECHECK_IN_PROGRESS.</p>
+
+<p>hcmxmig get task --type SUBSCRIPTION --state IN_PROGRESS</p>
+
+<h4>Continue Migration Task Monitor</h4>
+
+<p>When you execute the migrate subscription command, it will loop thru the migration tasks and show the status against each of those. In case if you have closed that, you can continue monitoring using this --monitor task parameter, this will continue to monitor the remaining pending and in-progress tasks and show the status against each of them.</p>
+
+<p>hcmxmig get task --monitor<br>
 &nbsp;</p>
 </html>
