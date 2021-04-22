@@ -1,56 +1,58 @@
 <html><h2>HCMX Migration CLI</h2>
 
-<p>The HCMX Migration tool provides all the required APIs to migrate CSA/HCM to HCMX. The HCMX Migration CLI script allows you to interact with the Migration Tool APIs providing the CLI experience.<br>
-<br>
-The HCMX Migration tool needs to be downloaded from the &lt;LINK&gt; Marketplace Portal. Detailed documentation of the migration process can be found &lt;LINK&gt; here. This document describes the CLI tool commands and it's usage.</p>
+<p>The HCMX Migration tool provides all the required APIs to migrate CSA/HCM to HCMX. The HCMX Migration CLI allows you to interact with the Migration Tool APIs providing the CLI experience.</p>
+
+<p>The migration tool can be downloaded from the &lt;LINK&gt; Marketplace Portal, and the detailed documentation of the migration&nbsp;process can be found &lt;LINK&gt; here.</p>
+
+<p>This document describes the hcmxmig CLI commands and it's usage. The hcmxmig CLI can be downloaded from the marketplace portal &lt;LINK&gt; here.</p>
 
 <h2>Prerequisite</h2>
 
-<p>This document assumes that you have installed a working HCMX and its supporting components (RAS, UCMDB). Read the migration document to create all the prerequisite configurations (like tenant, LDAP, users, roles) in HCMX, and you have validated the basic set of designs on HCMX from the CSA/HCM instance to ensure they are working without any issues. Once you have completed these, then you are ready to perform the migration.<br>
+<p>This document assumes that you have installed&nbsp;HCMX and its supporting components (RAS, UCMDB) and have configured all the&nbsp;prerequisite configurations (like tenant, LDAP, users, roles) in HCMX described in the migration tool document, and you have validated the few&nbsp;typical designs in HCMX from the CSA/HCM instance and ensured they are working without any issues. After you have completed these, then you are ready to perform the migration.<br>
 <br>
-The CLI script needs the following Linux library tools on the system, ensure they are installed;<br>
+The hcmxmig&nbsp;CLI needs the following Linux latest packages&nbsp;installed on the system:<br>
 jq, awk, grep, sed, column</p>
 
 <h2>Installation steps</h2>
 
-<p>The CLI script (hcmxmig) needs to be copied to the 'script' folder in the migration directory, it will run on the same instance where the migration tool is executed. The CLI script needs any Linux environment for it to be installed, so you can either use the CSA/HCM nodes or HCMX nodes or a separate Linux system to deploy the migration tool and CLI script. You would also need a PostgreSQL database for the HCMX Migration tool to run, please check the Tool documentation for the details.<br>
+<p>The hcmxmig CLI needs to be copied to the 'script' folder in the migration tool directory, it will run on the same server where the migration tool is executed. The hcmxmig CLI needs a Linux environment, you can either use the CSA/HCM nodes or HCMX nodes or a separate Linux system to deploy the migration tool and CLI script. You would also need a PostgreSQL database for the HCMX Migration tool to run, please check the migration tool documentation for the more details.<br>
 <br>
-Extract the migration tool archive to the directory (like hcmxmig) and create a script sub-directory. It should have the following structure;<br>
+Extract the migration tool archive to the directory (example: hcmxmig) and create a script sub-directory. It should have the following folder structure;<br>
 <br>
 |- hcmxmig<br>
 |- hcmxmig/hcmx-migration.jar<br>
 |- hcmxmig/config/application.properties<br>
 |- hcmxmig/script/hcmxmig<br>
 <br>
-Optionally you can add the hcmxmig CLI into the PATH variable, to do this add the following in the ~/.bash_profile<br>
-PATH=$PATH:$HOME/bin:&lt;path&gt;/hcmxmig/script</p>
+Add the hcmxmig CLI into the PATH variable, to do this add the following in the <code>~/.bash_profile</code><br>
+<code>PATH=$PATH:$HOME/bin:&lt;path&gt;/hcmxmig/script</code></p>
 
 <h2>HCMX Migration Tool Configuration</h2>
 
-<p>Once the migration tool is extracted, you can use the CLI script to install and configure the migration tool. Refer to the tool configuration section to configure. Follow the steps to configure and start the migration tool;</p>
+<p>Once the migration tool is extracted, you can use the hcmxmig CLI to install and configure the migration tool. Alternatively, you can also configure the migration tool as per the document.&nbsp;Follow the below steps to configure and start the migration tool using hcmxmig CLI;</p>
 
 <ol>
-	<li>Configure the source, target URL, and its credentials. This will also add the URL certificates into the java trust store automatically, you might be prompted for the truststore password (default is “changeit”). Example:
+	<li>Configure the source, target URL, and its credentials. This will also add the certificates into the java trust store automatically, you might be prompted for the truststore password (default is “changeit”). Example:
 	<p><code>hcmxmig tool configure --sourceUrl https://hostname:port/csa --sourceUser admin --sourcePwd password --targetUrl https://hostname/&lt;tenantid&gt;/dnd --targetUser dndadmin --targetPwd password</code></p>
 	</li>
-	<li>Configure the Postgresql database for the migration tool, only PostgreSQL is supported. The --certpath is optional and can be used to configure the SSL connection to Postgres.
+	<li>Create and configure the Postgresql database for the migration tool, only PostgreSQL database is supported. The --certpath is optional and can be used to configure the SSL connection to PostgreSQL.
 	<ul>
-		<li>To create the database in the PostgreSQL, execute the following SQL statements after connecting to the database server
-		<p><code>create user hcmxmig login password '2the#moon' inherit;<br>
+		<li>To create the database in PostgreSQL, execute the following SQL statements after connecting to the database server
+		<p><code>create user hcmxmig login password '&lt;password&gt;' inherit;<br>
 		create database hcmxmig with owner=hcmxmig;</code></p>
 		</li>
-		<li>Configure the migration tool with the database.
+		<li>Configure the migration tool with the database using the CLI.
 		<p><code>hcmxmig tool configuredb --dbhost hostname --dbport 5432 --dbname hcmx-migration --dbuser postgres --dbpass password --certpath /home/hcmxpgdb.crt</code></p>
 		</li>
 	</ul>
 	</li>
-	<li>Install the HCMX Migration service. It will prompt you for a keystore generation (if not already done) for the hcmx-migration tool and creates a keystore, installs the 'hcmx-migration' service, and starts it. Example
+	<li>Install the migration tool as a Linux service. This command&nbsp;will prompt you for a keystore generation (if not already done) for the migration tool. Example:
 	<p><code>hcmxmig tool install</code></p>
 	</li>
-	<li>Watch the HCMX Migration service status to ensure it's running and there no errors, you should see the swagger URL link which would mean the tool has started. Example
+	<li>Watch the migration tool service status to ensure it's running and there no errors, you should see the swagger URL link which would mean the tool has started. Example:
 	<p><code>hcmxmig tool status</code></p>
 	</li>
-	<li>Login to the HCMX Migration tool, the default password is 'password'. This will be saved into the user profile for future use, a token is automatically generated and used for all further API calls. Example
+	<li>Log in to the migration tool, the default password is 'password'. The hcmxmig CLI&nbsp;will save&nbsp;the credentials into the user profile for further commands, a token is automatically generated and used for all further API calls. Example:
 	<p><code>hcmxmig tool login admin password</code></p>
 	</li>
 </ol>
