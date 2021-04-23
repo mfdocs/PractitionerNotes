@@ -29,9 +29,9 @@ Extract the migration tool archive to the directory (example: hcmxmig) and creat
 Add the hcmxmig CLI into the PATH variable, to do this add the following in the <code>~/.bash_profile</code><br>
 <code>PATH=$PATH:$HOME/bin:&lt;path&gt;/hcmxmig/script</code></p>
 
-<h2>HCMX Migration Tool Configuration</h2>
+<h2>HCMX Migration Tool Installation and Configuration</h2>
 
-<p>Once the migration tool is extracted, you can use the hcmxmig CLI to install and configure the migration tool. You can refer to the install migration application <a href="https://docs.microfocus.com/itom/SMAX:Main/InstallMigrationTool">section</a> to get more details for some of these steps. Follow the below steps to configure and start the migration tool using hcmxmig CLI;</p>
+<p>Once the migration tool is extracted, you can use the hcmxmig CLI to install and configure the migration tool. You can refer to the install migration application <a href="https://docs.microfocus.com/itom/SMAX:Main/InstallMigrationTool">section</a> to get more details on some of these steps. Follow the below steps to configure and start the migration tool using hcmxmig CLI;</p>
 
 <ol>
 	<li>Enable the migration APIs in DND by adding the&nbsp;DND_PROP_MIGRATION_ENABLE_CSA_DND in the dnd-controller-deployment.yaml</li>
@@ -49,7 +49,7 @@ Add the hcmxmig CLI into the PATH variable, to do this add the following in the 
 		</li>
 	</ul>
 	</li>
-	<li>Install the migration tool as a Linux service. This command&nbsp;will prompt you for a keystore generation (if not already done) for the migration tool. You would also need the <code>idmTransportUser</code> password from CSA/HCM. Example:
+	<li>Install the migration tool as a Linux service. This command&nbsp;will prompt you for a keystore generation (if not already done) for the migration tool. You would also need the <code>idmTransportUser</code> password from CSA/HCM, check the migration documentation to know how to get them. Example:
 	<p><code>hcmxmig tool install</code></p>
 	</li>
 	<li>Watch the migration tool service status to ensure it's running and there no errors, you should see the swagger URL link which would mean the tool has started. Example:
@@ -590,7 +590,7 @@ hcmxmig tool restart<br>
 hcmxmig tool login admin password<br>
 hcmxmig tool changePassword new-password</code></h5>
 
-<p>Configure Options</p>
+<h4>Configure Options</h4>
 
 <table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
 	<tbody>
@@ -624,7 +624,7 @@ hcmxmig tool changePassword new-password</code></h5>
 <p><strong>Examples</strong><br>
 <code>hcmxmig tool configure --sourceUrl https://hostname:port/csa --sourceUser admin --sourcePwd password --targetUrl https://hostname/&lt;tenantid&gt;/dnd --targetUser dndadmin --targetPwd password</code></p>
 
-<p>Configure Database Options</p>
+<h4>Configure Database Options</h4>
 
 <table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
 	<tbody>
