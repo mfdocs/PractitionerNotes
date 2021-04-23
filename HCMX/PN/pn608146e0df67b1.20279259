@@ -161,17 +161,15 @@ cat providers.csv | awk -F',' 'NR&gt;1 {gsub(/"/, "", $1); print $1}' | tr '\n' 
 
 <p>The hcmxmig CLI provides options to export the designs from CSA/HCM and import them into HCMX. For the migration, the offerings in HCMX have to be created using a naming convention that includes the offering version, using hcmxmig CLI you can create the offerings in HCMX with the correct naming convention.</p>
 
-<div class="Admonition_Note"><b>Note</b>&nbsp; &nbsp;The offering created by the hcmxmig CLI in HCMX is with basic offering details and the rest of the offering properties like pricing, option set, etc., need to be manually configured in the HCMX offering based on the CSA/HCM offering</div>
-
 <h4>design export</h4>
 
-<pre>hcmxmig design export&nbsp;--design &lt;design-id&gt;&nbsp;--output &lt;filename&gt;</pre>
+<pre>hcmxmig design export&nbsp;--design &lt;design-id&gt;&nbsp;[--output &lt;filename&gt;]</pre>
 
 <h5>Parameters</h5>
-<code>--design</code>
+<code><span style="background-color:#dddddd;">--design</span></code>
 
 <p>The design id from CSA/HCM to be exported to the output filename.</p>
-<code>--output</code>
+<code><span style="background-color:#dddddd;">--output</span></code>
 
 <p>Optional. The filename of the exported design archive file. Default: &lt;design-id&gt;.zip</p>
 
@@ -182,29 +180,84 @@ hcmxmig design export --design 2c90cf9370f7b9b10170f898bbd0187b --output myDesig
 
 <h4>design import</h4>
 
-<p>Use the <strong>design export</strong> command to export the design from CSA/HCM, the design-id to export is passed in with --design parameter in the command. The exported design will be saved as the &lt;design-id&gt;.zip file. Example:</p>
+<pre>hcmxmig design import --input filename [--preview] [--import] [--designfailure true|false]</pre>
 
-<p><code>hcmxmig design export --design 2c90cf9370f7b9b10170f898bbd0187b</code><br>
-<br>
-Use the design import command to import the design into HCMX, the design archive file has to pass in with --input parameter in the command. You can only preview instead of importing using the --preview option, you can use --import along with the preview option to import the design if the preview is successful. Use the --designfailure option to control the Failure Handling on the design, set "true" for Pause on Errors or "false" for Fail on Errors on the design. Examples:</p>
+<h5>Parameters</h5>
+<code><span style="background-color:#dddddd;">--input</span></code>
 
-<p><code>hcmxmig design import --input 2c90cf9370f7b9b10170f898bbd0187b.zip</code><br>
-<code>hcmxmig design import --input 2c90cf9370f7b9b10170f898bbd0187b.zip --preview --import --designfailure true</code></p>
+<p>Design filename to import into HCMX</p>
+<code><span style="background-color:#dddddd;">--preview</span></code>
 
-<p>Use the design transfer command to directly transfer the design from CSA/HCM to HCMX, instead of running two separate commands. With transfer command, you can pass in multiple design-ids at once to transfer the multiple designs in a single command. You can use the --preview, --import, and --designfailure options the same way as in design import. Example</p>
+<p>Optional. Preview the design import and view the prospective result before the import, don't import the design.</p>
+<code><span style="background-color:#dddddd;">--import</span></code>
 
-<p><code>hcmxmig design transfer --design 2c90cf9370f7b9b10170f898bbd0187b,2c90cf9370f7b9b10170f898bbd0187c --preview --import</code></p>
+<p>Optional. Used with --preview parameter. Continue to import the design if the preview is successful.</p>
+<code><span style="background-color:#dddddd;">--designfailure</span></code>
 
-<p>While transferring the design, you can optionally create the offering in the same command by passing --createoffering parameter. CLI will create the offering if the import/export is successful. You need to provide the service definition id with parameter --target-service-definition, the service definition id is in the HCMX under which the offering has to be created. Example:</p>
+<p>Optional. Set the Failure Handling flags on the design in HCMX after importing, true to set the Pause on Error or false to set Fail on Error on the design. Default: false</p>
 
-<p><code>hcmxmig design transfer --design 2c90cf9370f7b9b10170f898bbd0187b,2c90cf9370f7b9b10170f898bbd0187c --preview --import --createoffering --target-service-definition 10081 --designfailure true</code></p>
+<h5>Examples</h5>
 
-<p>Use the offering transfer command to create the offerings in HCMX, use this if you have already imported design into HCMX. You can pass the specific offering-ids in CSA/HCM to be transfer or all the offerings of the design will be transferred when a design-id is passed. Example:<br>
-<code>hcmxmig offering transfer --design 2c90c4a577a555dd0177aa612c532d0e --target-service-definition 10202</code><br>
+<p><code>hcmxmig design import --input 2c90cf9370f7b9b10170f898bbd0187b.zip<br>
+hcmxmig design import --input 2c90cf9370f7b9b10170f898bbd0187b.zip --preview --import<br>
+hcmxmig design import --input 2c90cf9370f7b9b10170f898bbd0187b.zip --preview --import --designfailure true</code></p>
+
+<h4>design transfer</h4>
+
+<p>hcmxmig design transfer&nbsp;--design &lt;list-design-ids&gt;&nbsp;[--preview] [--import] [--designfailure true|false] [--createoffering] [--target-service-definition &lt;id&gt;]</p>
+
+<h5>Parameters</h5>
+<code><span style="background-color:#dddddd;">--design</span></code>
+
+<p>Comma-separated list of design ids from CSA/HCM to be transferred to the HCMX</p>
+<code><span style="background-color:#dddddd;">--preview</span></code>
+
+<p>Optional. Preview the design import and view the prospective result before the import, don't import the designs.</p>
+<code><span style="background-color:#dddddd;">--import</span></code>
+
+<p>Optional. Used with --preview parameter. Continue to import the design if the preview is successful.</p>
+<code><span style="background-color:#dddddd;">--designfailure</span></code>
+
+<p>Optional. Set the Failure Handling flags on the design in HCMX after importing, true to set the Pause on Error or false to set Fail on Error on the design. Default: false</p>
+<code><span style="background-color:#dddddd;">--createoffering</span></code>
+
+<p>Optional. Create the offering in HCMX after the design is imported successfully in HCMX.</p>
+<code><span style="background-color:#dddddd;">--target-service-definition</span></code>
+
+<p>Optional. Mandatory with the --createoffering. The service definition id in HCMX under which the new offering has to be created.</p>
+
+<h5>Examples</h5>
+
+<p><code>hcmxmig design transfer --design 2c90cf9370f7b9b10170f898bbd0187b,2c90cf9370f7b9b10170f898bbd0187c --preview --import<br>
+hcmxmig design transfer --design 2c90cf9370f7b9b10170f898bbd0187b,2c90cf9370f7b9b10170f898bbd0187c --preview --import --createoffering --target-service-definition 10081 --designfailure true</code></p>
+
+<h4>offering transfer</h4>
+
+<p>If you have already imported the design into HCMX, then you can use this command to create the equivalent offerings in HCMX&nbsp;based on the offerings in CSA/HCM.</p>
+
+<div class="Admonition_Note"><b>Note</b>&nbsp; &nbsp;The offering created by the hcmxmig CLI in HCMX is with basic offering details and the rest of the offering properties like pricing, option set, etc., need to be manually configured in the HCMX offering based on the CSA/HCM offering</div>
+
+<p>hcmxmig offering transfer&nbsp;--design &lt;designId&gt;&nbsp;--offering &lt;offeringIds&gt; --target-service-definition &lt;id&gt;</p>
+
+<h5>Parameters</h5>
+<code><span style="background-color:#dddddd;">--design</span></code>
+
+<p>Design Id in CSA/HCM, all the offerings in the design are created in the HCMX. You can use either --design or --offering parameters.</p>
+<code><span style="background-color:#dddddd;">--offering</span></code>
+
+<p>Comma-separated list of offering ids from CSA/HCM. You can use either --design or --offering parameters</p>
+<code><span style="background-color:#dddddd;">--target-service-definition</span></code>
+
+<p>The service definition id in HCMX under which the new offering has to be created.</p>
+
+<h5>Example</h5>
+
+<p><code>hcmxmig offering transfer --design 2c90c4a577a555dd0177aa612c532d0e --target-service-definition 10202</code><br>
 <code>hcmxmig offering transfer --offering 2c90cf9370f7b9b10170f898bbd0187b,2c90cf9370f7b9b10170f898bbd0145c --target-service-definition 10202</code></p>
 
-<p><br>
-Please note: The export/import is not an option provided in the HCMX Migration Tool (jar), and there are no APIs available, it’s only available with CLI.</p>
+<div class="Admonition_Note"><b>Note</b>&nbsp; &nbsp;The export/import is not an implementation provided in the HCMX Migration Tool (jar), and there are no APIs available, it’s only available with hcmxmig CLI</div>
+
+<p></p>
 
 <h3>Provider Details</h3>
 
