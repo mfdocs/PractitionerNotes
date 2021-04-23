@@ -204,7 +204,7 @@ hcmxmig design import --input 2c90cf9370f7b9b10170f898bbd0187b.zip --preview --i
 
 <h4>design transfer</h4>
 
-<p>hcmxmig design transfer&nbsp;--design &lt;list-design-ids&gt;&nbsp;[--preview] [--import] [--designfailure true|false] [--createoffering] [--target-service-definition &lt;id&gt;]</p>
+<pre>hcmxmig design transfer --design &lt;list-design-ids&gt; [--preview] [--import] [--designfailure true|false] [--createoffering] [--target-service-definition &lt;id&gt;]</pre>
 
 <h5>Parameters</h5>
 <code><span style="background-color:#dddddd;">--design</span></code>
@@ -237,7 +237,7 @@ hcmxmig design transfer --design 2c90cf9370f7b9b10170f898bbd0187b,2c90cf9370f7b9
 
 <div class="Admonition_Note"><b>Note</b>&nbsp; &nbsp;The offering created by the hcmxmig CLI in HCMX is with basic offering details and the rest of the offering properties like pricing, option set, etc., need to be manually configured in the HCMX offering based on the CSA/HCM offering</div>
 
-<p>hcmxmig offering transfer&nbsp;--design &lt;designId&gt;&nbsp;--offering &lt;offeringIds&gt; --target-service-definition &lt;id&gt;</p>
+<pre>hcmxmig offering transfer --design &lt;design-id&gt; --offering &lt;offering-ids&gt; --target-service-definition &lt;id&gt;</pre>
 
 <h5>Parameters</h5>
 <code><span style="background-color:#dddddd;">--design</span></code>
@@ -250,52 +250,92 @@ hcmxmig design transfer --design 2c90cf9370f7b9b10170f898bbd0187b,2c90cf9370f7b9
 
 <p>The service definition id in HCMX under which the new offering has to be created.</p>
 
-<h5>Example</h5>
+<h5>Examples</h5>
 
 <p><code>hcmxmig offering transfer --design 2c90c4a577a555dd0177aa612c532d0e --target-service-definition 10202</code><br>
 <code>hcmxmig offering transfer --offering 2c90cf9370f7b9b10170f898bbd0187b,2c90cf9370f7b9b10170f898bbd0145c --target-service-definition 10202</code></p>
 
 <div class="Admonition_Note"><b>Note</b>&nbsp; &nbsp;The export/import is not an implementation provided in the HCMX Migration Tool (jar), and there are no APIs available, it’s only available with hcmxmig CLI</div>
 
-<p></p>
-
 <h3>Provider Details</h3>
 
-<p>Use the get provider command to get all the providers listed. It has the following optional parameter which you can use to filter the provider list;</p>
+<h4>get provider type</h4>
+List all the resource provider types from CSA/HCM.
 
-<p>Filter by provider_type_id - pass in the provider type id as a parameter to list all the providers of that type. You can get the list of provider types using the "get provider type" command. Example:</p>
+<pre>hcmxmig get provider type</pre>
 
-<p><code>hcmxmig get provider 2c90cf9370f7b9b10170f7ea18054963</code></p>
+<h5>Examples</h5>
 
-<p>Filter by migration status - The available statuses are - SUCCESS, FAILED, NOT_STARTED, PENDING, IN_PROGRESS. You can filter the provider list by any of the statuses. Example:</p>
+<p><code>hcmxmig get provider type</code></p>
+&nbsp;
 
-<p><code>hcmxmig get provider SUCCESS</code></p>
+<h4>get provider</h4>
 
-<p>Search Provider by string - List the provider containing the string. Example:</p>
+<p>List all the resource providers in the CSA/HCM, use the details to precheck, and migrate the resource providers to HCMX.</p>
 
-<p><code>hcmxmig get provider vcenter</code></p>
+<pre>hcmxmig get provider [provider_type_id|migration_status|search_string] [--output filename]</pre>
 
-<p>You can save the output to a CSV file using the --output parameter, along with using any of the above filtering options. Example:</p>
+<h5>Parameters</h5>
+<code><span style="background-color:#dddddd;">provider_type_id</span></code>
 
-<p><code>hcmxmig get provider vcenter --output vcenter-providers.csv</code></p>
+<p>The resource provider type id to list all the provider of that type</p>
+<code><span style="background-color:#dddddd;">migration_status</span></code>
+
+<p>Filter the resource providers by the migration status. Available statues: SUCCESS, FAILED, NOT_STARTED, PENDING, IN_PROGRESS.</p>
+<code><span style="background-color:#dddddd;">search_string</span></code>
+
+<p>Search Provider by string, list the provider containing the string.</p>
+<code><span style="background-color:#dddddd;">--output</span></code>
+
+<p>Save the list of providers based on the filters to the output CSV file</p>
+
+<h5>Examples</h5>
+
+<p><code>hcmxmig get provider 2c90cf9370f7b9b10170f7ea18054963<br>
+hcmxmig get provider vcenter --output vcenter-providers.csv</code></p>
 
 <h3>Precheck Providers</h3>
 
-<p>Use the precheck provider command to precheck the provider before migrating them. You can fix any issue found in precheck before migrating them. This command takes a comma-separated list of Provider Ids. Example:</p>
+<p>You should precheck the provider before migrating them to HCMX, this will check if all the prerequisites are available for migrating the resource provider.</p>
+
+<h5>precheck provider</h5>
+
+<pre>hcmxmig precheck provider &lt;provider-ids&gt; [--output filename]</pre>
+
+<h5>Parameters</h5>
+<code><span style="background-color:#dddddd;">--provider-ids</span></code>
+
+<p>Comma-separated list of resource provider ids to precheck</p>
+<code><span style="background-color:#dddddd;">--output</span></code>
+
+<p>Save the precheck results to a CSV file</p>
+
+<h5>Examples</h5>
 
 <p><code>hcmxmig precheck provider 2c90899071353e740171354d4b9603a0,2c90a895713b4bff01713b7cda812584,2c90a895713b4bff01713b80b7d03b99</code></p>
 
-<p>You can save the precheck results to a CSV file using the --output parameter.</p>
-
-<p>To get the comma separated list of provider ids, use the following AWK command syntax and use that as input parameter to the precheck;</p>
+<div class="Admonition_Tip"><span class="autonumber">Tip</span>&nbsp; To get the comma-separated list of provider ids, use the following AWK command
 
 <p><code>hcmxmig get provider vcenter --output provider.csv<br>
 cat provider.csv | awk -F',' 'NR&gt;1 {gsub(/"/, "", $1); print $1}' | tr '\n' ',' | sed '$s/,$//'</code></p>
+</div>
 
 <h3>Migrate Providers</h3>
 
-<p>Use migrate provider command to migrate the providers from CSA/HCM to HCMX. If the provider in the HCMX already exists, then it will be updated. You can use the same precheck command syntax for migration. Use the following command syntax:<br>
-<code>hcmxmig migrate provider 2c90899071353e740171354d4b9603a0,2c90a895713b4bff01713b7cda812584,2c90a895713b4bff01713b80b7d03b99</code></p>
+<p>Migrate the resource providers to HCMX, if the provider already exists in HCMX then it will be updated.</p>
+
+<h5>migrate provider</h5>
+
+<pre>hcmxmig migrate provider &lt;provider-ids&gt;</pre>
+
+<h5>Parameters</h5>
+<code><span style="background-color:#dddddd;">--provider-ids</span></code>
+
+<p>Comma-separated list of resource provider ids to migrate</p>
+
+<h5>Examples</h5>
+
+<p><code>hcmxmig migrate provider 2c90899071353e740171354d4b9603a0,2c90a895713b4bff01713b7cda812584,2c90a895713b4bff01713b80b7d03b99</code></p>
 
 <p>Once you execute the command, you will be shown a list of migration task which are created to migrate these providers. You can leave the command running, the status against each of these will be automatically updated in an interval of 5 seconds until all the migration tasks are completed.</p>
 
