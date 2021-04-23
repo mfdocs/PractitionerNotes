@@ -144,12 +144,12 @@ cat provider.csv | awk -F',' 'NR&gt;1 {gsub(/"/, "", $1); print $1}' | tr '\n' '
 			<td>Run the migration. Options: provider, subscription</td>
 		</tr>
 		<tr>
-			<td>design</td>
-			<td>Export/Import the designs from CSA/HCM to HCMX</td>
+			<td>transfer</td>
+			<td>Export/Import the designs and offerings from CSA/HCM to HCMX</td>
 		</tr>
 		<tr>
-			<td>offering</td>
-			<td>Create Offerings in HCMX</td>
+			<td>generate</td>
+			<td>Generate CLI commands for migration</td>
 		</tr>
 		<tr>
 			<td>tool</td>
@@ -289,7 +289,7 @@ List all the resource provider types from CSA/HCM.
 <p>Search Provider by string, list the provider containing the string.</p>
 <code><span style="background-color:#dddddd;">--output</span></code>
 
-<p>Save the list of providers based on the filters to the output CSV file</p>
+<p>Save the list of providers based on the filters to a CSV file</p>
 
 <h5><strong>Examples</strong></h5>
 
@@ -407,7 +407,7 @@ hcmxmig get offering myoffering --output offering.csv</code></p>
 
 <h4>get mapping</h4>
 
-<pre>hcmxmig get mapping  [--all] [&lt;design-ids&gt;] [--mappingfile]</pre>
+<pre>hcmxmig get mapping [--all] [&lt;design-ids&gt;] [--mappingfile]</pre>
 
 <h5><strong>Parameters</strong></h5>
 <code><span style="background-color:#dddddd;">--all</span></code>
