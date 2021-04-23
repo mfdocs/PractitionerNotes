@@ -168,7 +168,7 @@ cat provider.csv | awk -F',' 'NR&gt;1 {gsub(/"/, "", $1); print $1}' | tr '\n' '
 
 <pre>hcmxmig design export&nbsp;--design &lt;design-id&gt;&nbsp;[--output &lt;filename&gt;]</pre>
 
-<h5>Parameters</h5>
+<h5><strong>Parameters</strong></h5>
 <code><span style="background-color:#dddddd;">--design</span></code>
 
 <p>The design id from CSA/HCM to be exported to the output filename.</p>
@@ -176,7 +176,7 @@ cat provider.csv | awk -F',' 'NR&gt;1 {gsub(/"/, "", $1); print $1}' | tr '\n' '
 
 <p>Optional. The filename of the exported design archive file. Default: &lt;design-id&gt;.zip</p>
 
-<h5>Examples</h5>
+<h5><strong>Examples</strong></h5>
 
 <p><code>hcmxmig design export --design 2c90cf9370f7b9b10170f898bbd0187b<br>
 hcmxmig design export --design 2c90cf9370f7b9b10170f898bbd0187b --output myDesign.zip</code></p>
@@ -185,7 +185,7 @@ hcmxmig design export --design 2c90cf9370f7b9b10170f898bbd0187b --output myDesig
 
 <pre>hcmxmig design import --input filename [--preview] [--import] [--designfailure true|false]</pre>
 
-<h5>Parameters</h5>
+<h5><strong>Parameters</strong></h5>
 <code><span style="background-color:#dddddd;">--input</span></code>
 
 <p>Design filename to import into HCMX</p>
@@ -199,7 +199,7 @@ hcmxmig design export --design 2c90cf9370f7b9b10170f898bbd0187b --output myDesig
 
 <p>Optional. Set the Failure Handling flags on the design in HCMX after importing, <em>true </em>to set the Pause on Error or <em>false </em>to set Fail on Error on the design. Default: false</p>
 
-<h5>Examples</h5>
+<h5><strong>Examples</strong></h5>
 
 <p><code>hcmxmig design import --input 2c90cf9370f7b9b10170f898bbd0187b.zip<br>
 hcmxmig design import --input 2c90cf9370f7b9b10170f898bbd0187b.zip --preview --import<br>
@@ -209,7 +209,7 @@ hcmxmig design import --input 2c90cf9370f7b9b10170f898bbd0187b.zip --preview --i
 
 <pre>hcmxmig design transfer --design &lt;list-design-ids&gt; [--preview] [--import] [--designfailure true|false] [--createoffering] [--target-service-definition &lt;id&gt;]</pre>
 
-<h5>Parameters</h5>
+<h5><strong>Parameters</strong></h5>
 <code><span style="background-color:#dddddd;">--design</span></code>
 
 <p>Comma-separated list of design ids from CSA/HCM to be transferred to the HCMX</p>
@@ -229,7 +229,7 @@ hcmxmig design import --input 2c90cf9370f7b9b10170f898bbd0187b.zip --preview --i
 
 <p>Optional. Mandatory with the --createoffering. The service definition id in HCMX under which the new offering has to be created.</p>
 
-<h5>Examples</h5>
+<h5><strong>Examples</strong></h5>
 
 <p><code>hcmxmig design transfer --design 2c90cf9370f7b9b10170f898bbd0187b,2c90cf9370f7b9b10170f898bbd0187c --preview --import<br>
 hcmxmig design transfer --design 2c90cf9370f7b9b10170f898bbd0187b,2c90cf9370f7b9b10170f898bbd0187c --preview --import --createoffering --target-service-definition 10081 --designfailure true</code></p>
@@ -242,7 +242,7 @@ hcmxmig design transfer --design 2c90cf9370f7b9b10170f898bbd0187b,2c90cf9370f7b9
 
 <pre>hcmxmig offering transfer --design &lt;design-id&gt; --offering &lt;offering-ids&gt; --target-service-definition &lt;id&gt;</pre>
 
-<h5>Parameters</h5>
+<h5><strong>Parameters</strong></h5>
 <code><span style="background-color:#dddddd;">--design</span></code>
 
 <p>Design Id in CSA/HCM, all the offerings in the design are created in the HCMX. You can use either --design or --offering parameters.</p>
@@ -253,7 +253,7 @@ hcmxmig design transfer --design 2c90cf9370f7b9b10170f898bbd0187b,2c90cf9370f7b9
 
 <p>The service definition id in HCMX under which the new offering has to be created.</p>
 
-<h5>Examples</h5>
+<h5><strong>Examples</strong></h5>
 
 <p><code>hcmxmig offering transfer --design 2c90c4a577a555dd0177aa612c532d0e --target-service-definition 10202</code><br>
 <code>hcmxmig offering transfer --offering 2c90cf9370f7b9b10170f898bbd0187b,2c90cf9370f7b9b10170f898bbd0145c --target-service-definition 10202</code></p>
@@ -267,7 +267,7 @@ List all the resource provider types from CSA/HCM.
 
 <pre>hcmxmig get provider type</pre>
 
-<h5>Examples</h5>
+<h5><strong>Examples</strong></h5>
 
 <p><code>hcmxmig get provider type</code></p>
 
@@ -277,7 +277,7 @@ List all the resource provider types from CSA/HCM.
 
 <pre>hcmxmig get provider [provider_type_id|migration_status|search_string] [--output filename]</pre>
 
-<h5>Parameters</h5>
+<h5><strong>Parameters</strong></h5>
 <code><span style="background-color:#dddddd;">provider_type_id</span></code>
 
 <p>The resource provider type id to list all the provider of that type</p>
@@ -291,7 +291,7 @@ List all the resource provider types from CSA/HCM.
 
 <p>Save the list of providers based on the filters to the output CSV file</p>
 
-<h5>Examples</h5>
+<h5><strong>Examples</strong></h5>
 
 <p><code>hcmxmig get provider 2c90cf9370f7b9b10170f7ea18054963<br>
 hcmxmig get provider vcenter --output vcenter-providers.csv</code></p>
@@ -304,7 +304,7 @@ hcmxmig get provider vcenter --output vcenter-providers.csv</code></p>
 
 <pre>hcmxmig precheck provider &lt;provider-ids&gt; [--output filename]</pre>
 
-<h5>Parameters</h5>
+<h5><strong>Parameters</strong></h5>
 <code><span style="background-color:#dddddd;">provider-ids</span></code>
 
 <p>Comma-separated list of resource provider ids to precheck</p>
@@ -312,7 +312,7 @@ hcmxmig get provider vcenter --output vcenter-providers.csv</code></p>
 
 <p>Save the precheck results to a CSV file</p>
 
-<h5>Examples</h5>
+<h5><strong>Examples</strong></h5>
 
 <p><code>hcmxmig precheck provider 2c90899071353e740171354d4b9603a0,2c90a895713b4bff01713b7cda812584,2c90a895713b4bff01713b80b7d03b99</code></p>
 
@@ -330,12 +330,12 @@ cat provider.csv | awk -F',' 'NR&gt;1 {gsub(/"/, "", $1); print $1}' | tr '\n' '
 
 <pre>hcmxmig migrate provider &lt;provider-ids&gt;</pre>
 
-<h5>Parameters</h5>
+<h5><strong>Parameters</strong></h5>
 <code><span style="background-color:#dddddd;">provider-ids</span></code>
 
 <p>Comma-separated list of resource provider ids to migrate</p>
 
-<h5>Examples</h5>
+<h5><strong>Examples</strong></h5>
 
 <p><code>hcmxmig migrate provider 2c90899071353e740171354d4b9603a0,2c90a895713b4bff01713b7cda812584,2c90a895713b4bff01713b80b7d03b99</code></p>
 
@@ -349,12 +349,12 @@ cat provider.csv | awk -F',' 'NR&gt;1 {gsub(/"/, "", $1); print $1}' | tr '\n' '
 
 <pre>hcmxmig get organization [search_string]</pre>
 
-<h5>Parameters</h5>
+<h5><strong>Parameters</strong></h5>
 <code><span style="background-color:#dddddd;">search_string</span></code>
 
 <p>Search Organization by string, list the organization containing the string.</p>
 
-<h5>Examples</h5>
+<h5><strong>Examples</strong></h5>
 
 <p><code>hcmxmig get organization<br>
 hcmxmig get organization myorg</code></p>
@@ -367,7 +367,7 @@ hcmxmig get organization myorg</code></p>
 
 <pre>hcmxmig tool generate [--designid design-id] [--offeringid offering-id]</pre>
 
-<h5>Parameters</h5>
+<h5><strong>Parameters</strong></h5>
 <code><span style="background-color:#dddddd;">--designid</span></code>
 
 <p>Generate the required migration commands for the design id, it would contain commands for all offering ids in the design</p>
@@ -375,7 +375,7 @@ hcmxmig get organization myorg</code></p>
 
 <p>Generate the required migration commands for the offering id</p>
 
-<h5>Examples</h5>
+<h5><strong>Examples</strong></h5>
 
 <p><code>hcmxmig tool generate --designid 2c90c4a577a555dd0177fd13a8bf5ba3<br>
 hcmxmig tool generate --offeringid 7eab99afc63744c7b5f4154830c21012</code></p>
@@ -386,7 +386,7 @@ hcmxmig tool generate --offeringid 7eab99afc63744c7b5f4154830c21012</code></p>
 
 <pre>hcmxmig get offering [search-string] [--output filename]</pre>
 
-<h5>Parameters</h5>
+<h5><strong>Parameters</strong></h5>
 <code><span style="background-color:#dddddd;">search-string</span></code>
 
 <p>Search Provider by string, list the provider containing the string.</p>
@@ -394,7 +394,7 @@ hcmxmig tool generate --offeringid 7eab99afc63744c7b5f4154830c21012</code></p>
 
 <p>Save the offering details to a CSV file</p>
 
-<h5>Examples</h5>
+<h5><strong>Examples</strong></h5>
 
 <p><code>hcmxmig get offering --output offering.csv<br>
 hcmxmig get offering myoffering --output offering.csv</code></p>
@@ -409,7 +409,7 @@ hcmxmig get offering myoffering --output offering.csv</code></p>
 
 <pre>hcmxmig get mapping  [--all] [ &lt;design-ids&gt;] [--mappingfile]</pre>
 
-<h5>Parameters</h5>
+<h5><strong>Parameters</strong></h5>
 <code><span style="background-color:#dddddd;">--all</span></code>
 
 <p>Generate mapping for all the designs</p>
@@ -420,7 +420,7 @@ hcmxmig get offering myoffering --output offering.csv</code></p>
 
 <p>Save the mapping information to a CSV file, this can be used in <code>get subscription</code> command as input. Default: mapping.csv</p>
 
-<h5>Examples</h5>
+<h5><strong>Examples</strong></h5>
 
 <p><code>hcmxmig get mapping --all<br>
 hcmxmig get mapping 2c90c4a577a555dd0177fd13a8bf5ba3,2c90c4a577a555dd0177f362d10e69c0 --mappingfile design-mapping.csv</code></p>
@@ -438,7 +438,7 @@ hcmxmig get mapping 2c90c4a577a555dd0177fd13a8bf5ba3,2c90c4a577a555dd0177f362d10
 
 <pre>hcmxmig get subscription [--organization org-id] [--offering offering-id] [-o wide] [--output filename] [--use-mapping filename] [--migrated]</pre>
 
-<h5>Parameters</h5>
+<h5><strong>Parameters</strong></h5>
 <code><span style="background-color:#dddddd;">--organization</span></code>
 
 <p>Filter the subscription listing by the organization</p>
@@ -458,7 +458,7 @@ hcmxmig get mapping 2c90c4a577a555dd0177fd13a8bf5ba3,2c90c4a577a555dd0177f362d10
 
 <p>List all the migrated subscriptions, use along with other filtering options</p>
 
-<h5>Examples</h5>
+<h5><strong>Examples</strong></h5>
 
 <p><code>hcmxmig get subscription --offering accdc645cdae4164880475a15e7f85e7<br>
 hcmxmig get subscription -o wide --organization 2c90cf9370f7b9b10170f895f5201702<br>
@@ -481,7 +481,7 @@ hcmxmig get subscription --offering b2b776cdc95e41b7be419cb094748457 --orgid 2c9
 
 <pre>hcmxmig precheck subscription --input filename [--output filename]</pre>
 
-<h5>Parameters</h5>
+<h5><strong>Parameters</strong></h5>
 <code><span style="background-color:#dddddd;">--input</span></code>
 
 <p>List of subscriptions in the CSV file to precheck. The PerformMigration should be set to Y with a valid TargetOfferingId against the subscriptions you want to migrate.</p>
@@ -489,7 +489,7 @@ hcmxmig get subscription --offering b2b776cdc95e41b7be419cb094748457 --orgid 2c9
 
 <p>Optional. Save the precheck results into a CSV file</p>
 
-<h5>Examples</h5>
+<h5><strong>Examples</strong></h5>
 
 <p><code>hcmxmig precheck subscription --input subscriptions.csv</code></p>
 
@@ -501,12 +501,12 @@ hcmxmig get subscription --offering b2b776cdc95e41b7be419cb094748457 --orgid 2c9
 
 <pre>hcmxmig migrate subscription --input filename</pre>
 
-<h5>Parameters</h5>
+<h5><strong>Parameters</strong></h5>
 <code><span style="background-color:#dddddd;">--input</span></code>
 
 <p>List of subscriptions in the CSV file to migrate. The PerformMigration should be set to Y with a valid TargetOfferingId against the subscriptions you want to migrate.</p>
 
-<h5>Examples</h5>
+<h5><strong>Examples</strong></h5>
 
 <p><code>hcmxmig migrate subscription --input subscriptions.csv</code></p>
 
@@ -522,7 +522,7 @@ hcmxmig get subscription --offering b2b776cdc95e41b7be419cb094748457 --orgid 2c9
 
 <pre>hcmxmig get task [--type type] [--state state] [--monitor]</pre>
 
-<h5>Parameters</h5>
+<h5><strong>Parameters</strong></h5>
 <code><span style="background-color:#dddddd;">--type</span></code>
 
 <p>Filter the task type by the migration artifact type. Available types are RESOURCE_PROVIDER, SUBSCRIPTION</p>
@@ -533,7 +533,7 @@ hcmxmig get subscription --offering b2b776cdc95e41b7be419cb094748457 --orgid 2c9
 
 <p>Continue to monitor the migration status of remaining pending and in-progress tasks, if you have lost the session from the previous migrate command</p>
 
-<h5>Examples</h5>
+<h5><strong>Examples</strong></h5>
 
 <p><code>hcmxmig get task<br>
 hcmxmig get task --type SUBSCRIPTION --state IN_PROGRESS<br>
@@ -584,11 +584,11 @@ hcmxmig get task --monitor</code></p>
 	</tbody>
 </table>
 
-<p>Example:<br>
+<h5><strong>Examples</strong><br>
 <code>hcmxmig tool install<br>
 hcmxmig tool restart<br>
 hcmxmig tool login admin password<br>
-hcmxmig tool changePassword new-password</code></p>
+hcmxmig tool changePassword new-password</code></h5>
 
 <p>Configure Options</p>
 
@@ -621,7 +621,7 @@ hcmxmig tool changePassword new-password</code></p>
 	</tbody>
 </table>
 
-<p>Example:<br>
+<p><strong>Examples</strong><br>
 <code>hcmxmig tool configure --sourceUrl https://hostname:port/csa --sourceUser admin --sourcePwd password --targetUrl https://hostname/&lt;tenantid&gt;/dnd --targetUser dndadmin --targetPwd password</code></p>
 
 <p>Configure Database Options</p>
@@ -655,6 +655,6 @@ hcmxmig tool changePassword new-password</code></p>
 	</tbody>
 </table>
 
-<p>Example:<br>
+<p><strong>Examples</strong><br>
 <code>hcmxmig tool configuredb --dbhost hostname --dbport 5432 --dbname hcmx-migration &nbsp;--dbuser postgres --dbpass password &nbsp;--certpath /home/hcmxpgdb.crt</code></p>
 </html>
