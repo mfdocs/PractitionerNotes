@@ -197,7 +197,7 @@ hcmxmig design export --design 2c90cf9370f7b9b10170f898bbd0187b --output myDesig
 <p>Optional. Used with --preview parameter. Continue to import the design if the preview is successful.</p>
 <code><span style="background-color:#dddddd;">--designfailure</span></code>
 
-<p>Optional. Set the Failure Handling flags on the design in HCMX after importing, true to set the Pause on Error or false to set Fail on Error on the design. Default: false</p>
+<p>Optional. Set the Failure Handling flags on the design in HCMX after importing, <em>true </em>to set the Pause on Error or <em>false </em>to set Fail on Error on the design. Default: false</p>
 
 <h5>Examples</h5>
 
@@ -221,7 +221,7 @@ hcmxmig design import --input 2c90cf9370f7b9b10170f898bbd0187b.zip --preview --i
 <p>Optional. Used with --preview parameter. Continue to import the design if the preview is successful.</p>
 <code><span style="background-color:#dddddd;">--designfailure</span></code>
 
-<p>Optional. Set the Failure Handling flags on the design in HCMX after importing, true to set the Pause on Error or false to set Fail on Error on the design. Default: false</p>
+<p>Optional. Set the Failure Handling flags on the design in HCMX after importing, <em>true </em>to set the Pause on Error or <em>false </em>to set Fail on Error on the design. Default: false</p>
 <code><span style="background-color:#dddddd;">--createoffering</span></code>
 
 <p>Optional. Create the offering in HCMX after the design is imported successfully in HCMX.</p>
@@ -418,14 +418,14 @@ hcmxmig get offering myoffering --output offering.csv</code></p>
 <p>Comma-separated list of design-ids to generate the mapping details</p>
 <code><span style="background-color:#dddddd;">--mappingfile</span></code>
 
-<p>Save the mapping information to a CSV file, this can be used in get subscription command as input. Default: mapping.csv</p>
+<p>Save the mapping information to a CSV file, this can be used in <code>get subscription</code> command as input. Default: mapping.csv</p>
 
 <h5>Examples</h5>
 
 <p><code>hcmxmig get mapping --all<br>
 hcmxmig get mapping 2c90c4a577a555dd0177fd13a8bf5ba3,2c90c4a577a555dd0177f362d10e69c0 --mappingfile design-mapping.csv</code></p>
 
-<p>You can use the mapping file with get subscription command. The mapping CSV contains the TargetOfferingId and ProbableOfferingId fields, they are offering-ids from the HCMX which matched against the CSA/HCM offering.</p>
+<p>You can use the mapping file with <code>get subscription</code> command. The mapping CSV contains the TargetOfferingId and ProbableOfferingId fields, they are offering-ids from the HCMX which matched against the CSA/HCM offering.</p>
 
 <ol>
 	<li>The offering-id in TargetOfferingId is an exact match to the source by naming convention and it can be used to migrate the subscriptions.</li>
@@ -541,7 +541,7 @@ hcmxmig get task --monitor</code></p>
 
 <h3>Tool Management</h3>
 
-<p>Use the tool command to configure and manage the tool options.</p>
+<p>Use the tool command to configure and manage the migration tool.</p>
 
 <table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
 	<tbody>
@@ -555,7 +555,7 @@ hcmxmig get task --monitor</code></p>
 		</tr>
 		<tr>
 			<td>install</td>
-			<td>Create keystore and hcmx-migration service to run the jar file as a service</td>
+			<td>Creates a keystore and hcmx-migration service to run the jar file as a service</td>
 		</tr>
 		<tr>
 			<td>status</td>
@@ -575,7 +575,7 @@ hcmxmig get task --monitor</code></p>
 		</tr>
 		<tr>
 			<td>login</td>
-			<td>Login to the migration tool. The username and password is saved to future login. Parameters - username, password</td>
+			<td>Log in to the migration tool. The username and password are saved for future login. Parameters - username, password</td>
 		</tr>
 		<tr>
 			<td>changepassword</td>
