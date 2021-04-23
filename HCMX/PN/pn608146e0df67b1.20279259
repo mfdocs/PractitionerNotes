@@ -86,13 +86,14 @@ Add the hcmxmig CLI into the PATH variable, to do this add the following in the 
 </ol>
 
 <div class="Admonition_Tip"><span class="autonumber">Tip</span>&nbsp; Use the following command to get the command-separated provider-ids from the provider.csv
+
 <p><code>hcmxmig get provider vcenter --output provider.csv<br>
 cat provider.csv | awk -F',' 'NR&gt;1 {gsub(/"/, "", $1); print $1}' | tr '\n' ',' | sed '$s/,$//'</code></p>
 </div>
 
 <h3>Migrating Subscriptions</h3>
 
-<p>The recommended process&nbsp;to migrate the subscriptions is to go by each offering in CSA/HCM. Migrate all the subscriptions of that offering, then move on to the next offering in the&nbsp;design, then move on to the next design.</p>
+<p>The recommended process&nbsp;to migrate the subscriptions is to go by migrating each offering in CSA/HCM. Once you migrate all the subscriptions of an offering, then move on to the next offering in the&nbsp;design, then move on to the next design.</p>
 
 <ol>
 	<li>Get the list of offerings from CSA/HCM - filter them as needed based on organization and offering name. Pick an offering which you want to migrate.
@@ -316,6 +317,7 @@ hcmxmig get provider vcenter --output vcenter-providers.csv</code></p>
 <p><code>hcmxmig precheck provider 2c90899071353e740171354d4b9603a0,2c90a895713b4bff01713b7cda812584,2c90a895713b4bff01713b80b7d03b99</code></p>
 
 <div class="Admonition_Tip"><span class="autonumber">Tip</span>&nbsp; Use the following command to get the command-separated provider-ids from the provider.csv
+
 <p><code>hcmxmig get provider vcenter --output provider.csv<br>
 cat provider.csv | awk -F',' 'NR&gt;1 {gsub(/"/, "", $1); print $1}' | tr '\n' ',' | sed '$s/,$//'</code></p>
 </div>
