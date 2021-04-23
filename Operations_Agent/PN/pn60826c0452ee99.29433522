@@ -1,1 +1,16 @@
- 
+<html><h2>Summary</h2>
+
+<p>The topics discussed in this document helps to optimize the CPU usage for opctrapi process and to avoid delays while processing the incoming traps.</p>
+
+<h2>Solution</h2>
+
+<ul>
+	<li>Move frequently matched conditions/rules to the top of the condition list inside a policy.</li>
+	<li>&nbsp;Move the Suppression rules to the top of the policy. (so that unwanted traps do not go through the rest of the rules).</li>
+	<li>Name the policies in such a way that the most processed one would be in the first.</li>
+	<li>Check if the unmatched conditions are rightly defined in the policies.</li>
+	<li>Reduce the usage of Complex Regular Expressions in the policies as much as possible.</li>
+	<li>Increase the value of HOSTNAME_CACHE_TIMEOUT to 86400 or more as it helps to cache the hostnames of resolved IP addresses in the traps, for a longer duration thereby saving the time to query the DNS server&nbsp;<br>
+	&nbsp;</li>
+</ul>
+</html>
