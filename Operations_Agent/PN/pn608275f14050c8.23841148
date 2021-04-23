@@ -1,1 +1,24 @@
- 
+<html><h2>Summary</h2>
+
+<p>The topics discussed in this document helps to optimize the CPU usage for opctrapi process and to avoid delays while processing the incoming traps.</p>
+
+<h2>Problem</h2>
+
+<p>The opctrapi process consumes high CPU usage when the incoming trap rate is high or a significant delay is observed while processing the traps and forwarding to the OBM server, because of the large number of trapi type policies and the rules inside those policies.&nbsp;</p>
+
+<h2>Cause</h2>
+
+<p>Every incoming trap to the server will be processed by opctrapi process trying to match against all the rules/conditions inside every trapi type policy. As opctrapi is a single-threaded process it will sequentially go through all the rules in all the policies one after one until a condition is matched thereby taking time. As the number of unmatched or unwanted traps increases or when the most matched conditions are at the bottom of the policies,&nbsp;the more time opctrapi takes to process them as it checks against all the rules inside the policies and eventually resulting in the spike of CPU usage.<br>
+Furthermore, the problem gets aggravated by the complexity of pattern matching regular expressions used in those conditions.</p>
+
+<h2>Solution</h2>
+
+<ul>
+	<li>Move frequently matched conditions/rules to the top of the condition list inside a policy.</li>
+	<li>&nbsp;Move the Suppression rules to the top of the policy. (so that unwanted traps do not go through the rest of the rules).</li>
+	<li>Name the policies in such a way that the most processed one would be in the first.</li>
+	<li>Check if the unmatched conditions are rightly defined in the policies.</li>
+	<li>Reduce the usage of Complex Regular Expressions in the policies as much as possible.</li>
+	<li>Increase the value of HOSTNAME_CACHE_TIMEOUT to 86400 or more as it helps to cache the hostnames of resolved IP addresses in the traps, for a longer duration thereby saving the time to query the DNS server&nbsp;</li>
+</ul>
+</html>
