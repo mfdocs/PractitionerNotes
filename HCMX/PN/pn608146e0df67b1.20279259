@@ -85,8 +85,10 @@ Add the hcmxmig CLI into the PATH variable, to do this add the following in the 
 	</li>
 </ol>
 
-<div class="Admonition_Tip"><span class="autonumber">Tip</span>&nbsp; Use the following command to get the command-separated provider-ids from the provider.csv output file<br>
-cat providers.csv | awk -F',' 'NR&gt;1 {gsub(/"/, "", $1); print $1}' | tr '\n' ',' | sed '$s/,$//'</div>
+<div class="Admonition_Tip"><span class="autonumber">Tip</span>&nbsp; Use the following command to get the command-separated provider-ids from the provider.csv
+<p><code>hcmxmig get provider vcenter --output provider.csv<br>
+cat provider.csv | awk -F',' 'NR&gt;1 {gsub(/"/, "", $1); print $1}' | tr '\n' ',' | sed '$s/,$//'</code></p>
+</div>
 
 <h3>Migrating Subscriptions</h3>
 
@@ -313,8 +315,7 @@ hcmxmig get provider vcenter --output vcenter-providers.csv</code></p>
 
 <p><code>hcmxmig precheck provider 2c90899071353e740171354d4b9603a0,2c90a895713b4bff01713b7cda812584,2c90a895713b4bff01713b80b7d03b99</code></p>
 
-<div class="Admonition_Tip"><span class="autonumber">Tip</span>&nbsp; To get the comma-separated list of provider ids, use the following AWK command
-
+<div class="Admonition_Tip"><span class="autonumber">Tip</span>&nbsp; Use the following command to get the command-separated provider-ids from the provider.csv
 <p><code>hcmxmig get provider vcenter --output provider.csv<br>
 cat provider.csv | awk -F',' 'NR&gt;1 {gsub(/"/, "", $1); print $1}' | tr '\n' ',' | sed '$s/,$//'</code></p>
 </div>
