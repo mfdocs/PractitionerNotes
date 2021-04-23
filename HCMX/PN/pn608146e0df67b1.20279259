@@ -144,8 +144,12 @@ cat provider.csv | awk -F',' 'NR&gt;1 {gsub(/"/, "", $1); print $1}' | tr '\n' '
 			<td>Run the migration. Options: provider, subscription</td>
 		</tr>
 		<tr>
-			<td>transfer</td>
-			<td>Export/Import the designs and offerings from CSA/HCM to HCMX</td>
+			<td>design</td>
+			<td>Export/Import the designs and create offerings from CSA/HCM to HCMX</td>
+		</tr>
+		<tr>
+			<td>offering</td>
+			<td>Create offerings in HCMX based on the CSA/HCM offerings</td>
 		</tr>
 		<tr>
 			<td>generate</td>
@@ -494,8 +498,6 @@ hcmxmig get subscription --offering b2b776cdc95e41b7be419cb094748457 --orgid 2c9
 <p><code>hcmxmig precheck subscription --input subscriptions.csv</code></p>
 
 <h3>Migrate Subscription</h3>
-
-<p></p>
 
 <h5>migrate subscription</h5>
 
