@@ -275,16 +275,16 @@ List all the resource provider types from CSA/HCM.
 
 <p>List all the resource providers in the CSA/HCM, use the details to precheck, and migrate the resource providers to HCMX.</p>
 
-<pre>hcmxmig get provider [provider_type_id|migration_status|search_string] [--output filename]</pre>
+<pre>hcmxmig get provider [provider-type-id|migration-status|search-string] [--output filename]</pre>
 
 <h5><strong>Parameters</strong></h5>
-<code><span style="background-color:#dddddd;">provider_type_id</span></code>
+<code><span style="background-color:#dddddd;">provider-type-id</span></code>
 
 <p>The resource provider type id to list all the provider of that type</p>
-<code><span style="background-color:#dddddd;">migration_status</span></code>
+<code><span style="background-color:#dddddd;">migration-status</span></code>
 
 <p>Filter the resource providers by the migration status. Available statues: SUCCESS, FAILED, NOT_STARTED, PENDING, IN_PROGRESS.</p>
-<code><span style="background-color:#dddddd;">search_string</span></code>
+<code><span style="background-color:#dddddd;">search-string</span></code>
 
 <p>Search Provider by string, list the provider containing the string.</p>
 <code><span style="background-color:#dddddd;">--output</span></code>
@@ -347,10 +347,10 @@ cat provider.csv | awk -F',' 'NR&gt;1 {gsub(/"/, "", $1); print $1}' | tr '\n' '
 
 <h5>get organization</h5>
 
-<pre>hcmxmig get organization [search_string]</pre>
+<pre>hcmxmig get organization [search-string]</pre>
 
 <h5><strong>Parameters</strong></h5>
-<code><span style="background-color:#dddddd;">search_string</span></code>
+<code><span style="background-color:#dddddd;">search-string</span></code>
 
 <p>Search Organization by string, list the organization containing the string.</p>
 
@@ -365,7 +365,7 @@ hcmxmig get organization myorg</code></p>
 
 <h5>command</h5>
 
-<pre>hcmxmig tool generate [--designid design-id] [--offeringid offering-id]</pre>
+<pre>hcmxmig tool generate [--designid &lt;design-id&gt;] [--offeringid &lt;offering-id&gt;]</pre>
 
 <h5><strong>Parameters</strong></h5>
 <code><span style="background-color:#dddddd;">--designid</span></code>
@@ -384,7 +384,7 @@ hcmxmig tool generate --offeringid 7eab99afc63744c7b5f4154830c21012</code></p>
 
 <h5>get offering</h5>
 
-<pre>hcmxmig get offering [search-string] [--output filename]</pre>
+<pre>hcmxmig get offering [search-string] [--output &lt;filename&gt;]</pre>
 
 <h5><strong>Parameters</strong></h5>
 <code><span style="background-color:#dddddd;">search-string</span></code>
@@ -407,7 +407,7 @@ hcmxmig get offering myoffering --output offering.csv</code></p>
 
 <h4>get mapping</h4>
 
-<pre>hcmxmig get mapping  [--all] [ &lt;design-ids&gt;] [--mappingfile]</pre>
+<pre>hcmxmig get mapping  [--all] [&lt;design-ids&gt;] [--mappingfile]</pre>
 
 <h5><strong>Parameters</strong></h5>
 <code><span style="background-color:#dddddd;">--all</span></code>
@@ -436,7 +436,7 @@ hcmxmig get mapping 2c90c4a577a555dd0177fd13a8bf5ba3,2c90c4a577a555dd0177f362d10
 
 <h4>get subscription</h4>
 
-<pre>hcmxmig get subscription [--organization org-id] [--offering offering-id] [-o wide] [--output filename] [--use-mapping filename] [--migrated]</pre>
+<pre>hcmxmig get subscription [--organization &lt;org-id&gt;] [--offering &lt;offering-id&gt;] [-o wide] [--output &lt;filename&gt;] [--use-mapping &lt;filename&gt;] [--migrated]</pre>
 
 <h5><strong>Parameters</strong></h5>
 <code><span style="background-color:#dddddd;">--organization</span></code>
@@ -447,7 +447,7 @@ hcmxmig get mapping 2c90c4a577a555dd0177fd13a8bf5ba3,2c90c4a577a555dd0177f362d10
 <p>Filter the subscription listing by the offering</p>
 <code><span style="background-color:#dddddd;">-o</span></code>
 
-<p>Show all the id-columns including offering-id, org-id, design-id</p>
+<p>Show all the id-columns including offering-id, org-id, design-id. Only <em>wide </em>is supported option with this parameter.</p>
 <code><span style="background-color:#dddddd;">--output</span></code>
 
 <p>Save the subscriptions to a CSV file, this file will be used while subscription precheck and migration. It would need mapping information, if --use-mapping parameter is not passed, a mapping is automatically generated for all designs of the listed subscriptions</p>
@@ -479,7 +479,7 @@ hcmxmig get subscription --offering b2b776cdc95e41b7be419cb094748457 --orgid 2c9
 
 <p>You should precheck the subscription before migrating them, it will check all the prerequisites to migrate the subscription and list the failures if any. You have to fix the precheck failures before performing the migration</p>
 
-<pre>hcmxmig precheck subscription --input filename [--output filename]</pre>
+<pre>hcmxmig precheck subscription --input &lt;filename&gt; [--output &lt;filename&gt;]</pre>
 
 <h5><strong>Parameters</strong></h5>
 <code><span style="background-color:#dddddd;">--input</span></code>
@@ -499,7 +499,7 @@ hcmxmig get subscription --offering b2b776cdc95e41b7be419cb094748457 --orgid 2c9
 
 <h5>migrate subscription</h5>
 
-<pre>hcmxmig migrate subscription --input filename</pre>
+<pre>hcmxmig migrate subscription --input &lt;filename&gt;</pre>
 
 <h5><strong>Parameters</strong></h5>
 <code><span style="background-color:#dddddd;">--input</span></code>
@@ -520,7 +520,7 @@ hcmxmig get subscription --offering b2b776cdc95e41b7be419cb094748457 --orgid 2c9
 
 <h5>get task</h5>
 
-<pre>hcmxmig get task [--type type] [--state state] [--monitor]</pre>
+<pre>hcmxmig get task [--type &lt;type&gt;] [--state &lt;state&gt;] [--monitor]</pre>
 
 <h5><strong>Parameters</strong></h5>
 <code><span style="background-color:#dddddd;">--type</span></code>
