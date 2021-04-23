@@ -163,6 +163,25 @@ cat providers.csv | awk -F',' 'NR&gt;1 {gsub(/"/, "", $1); print $1}' | tr '\n' 
 
 <div class="Admonition_Note"><b>Note</b>&nbsp; &nbsp;The offering created by the hcmxmig CLI in HCMX is with basic offering details and the rest of the offering properties like pricing, option set, etc., need to be manually configured in the HCMX offering based on the CSA/HCM offering</div>
 
+<h4>design export</h4>
+
+<pre>hcmxmig design export&nbsp;--design &lt;design-id&gt;&nbsp;--output &lt;filename&gt;</pre>
+
+<h5>Parameters</h5>
+<code>--design</code>
+
+<p>The design id from CSA/HCM to be exported to the output filename.</p>
+<code>--output</code>
+
+<p>Optional. The filename of the exported design archive file. Default: &lt;design-id&gt;.zip</p>
+
+<h5>Examples</h5>
+
+<p><code>hcmxmig design export --design 2c90cf9370f7b9b10170f898bbd0187b<br>
+hcmxmig design export --design 2c90cf9370f7b9b10170f898bbd0187b --output myDesign.zip</code></p>
+
+<h4>design import</h4>
+
 <p>Use the <strong>design export</strong> command to export the design from CSA/HCM, the design-id to export is passed in with --design parameter in the command. The exported design will be saved as the &lt;design-id&gt;.zip file. Example:</p>
 
 <p><code>hcmxmig design export --design 2c90cf9370f7b9b10170f898bbd0187b</code><br>
