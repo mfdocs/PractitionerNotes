@@ -1,18 +1,18 @@
-<p>PlatformService provides read-only access to the platforms managed by SA. A platform describes the hardware architecture and operating system version of a server. Platforms are created during installations, upgrades or via pluggable platform APX installation. PlatformService provides methods for fetching and searching the pre-configured platform information.</p>
+<html><p>PlatformService provides read-only access to the platforms managed by SA. A platform describes the hardware architecture and operating system version of a server. Platforms are created during installations, upgrades or via pluggable platform APX installation. PlatformService provides methods for fetching and searching the pre-configured platform information.</p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Show available platforms</h2>
 
 <p>If you are trying to figure out the valid platform name for a search expression</p>
 
-<pre>/opt/opsware/bin/python -c "from pytwist import twistserver; ps=twistserver.TwistServer().device.PlatformService; print sorted([x.name for x in ps.getPlatformVOs(ps.findPlatformRefs(None))])"</pre>
+<pre>/opt/opsware/bin/python -c "from pytwist import twistserver; ps=twistserver.TwistServer().device.PlatformService; print sorted([(x.ref.id,x.name) for x in ps.getPlatformVOs(ps.findPlatformRefs(None))])"</pre>
 
-<p>This list is also available from withing the global shell</p>
+<p>This list is also available from within the global shell.&nbsp; Note: The .id virtual file for an OS is the RoleClass, this is not its Platform_id&nbsp;as shown in the above example.</p>
 
 <pre>$ ls /opsw/OS</pre>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Explore the platform family hierarchy</h2>
 
@@ -58,3 +58,4 @@ print '\n'.join(render(root))
  |   +- SOLARIS - All Solaris (8)
  |   +- VMWARE - All VMware (4)
  +- WINDOWS - All Windows (18)</pre>
+</html>
