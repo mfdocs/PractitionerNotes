@@ -1,1 +1,250 @@
+<html><h1 id="Oracle_Database_Recovery">Oracle Database Recovery</h1>
+
+<p>When discussing Database recovery in this document we are talking about an external Oracle database, not that installed with Server Automation. Due to the fact that losing the server hosting both the SA components and the Database is a different recovery problem from just losing the database.</p>
+
+<p>There are many reasons for the recovery of the Database.</p>
+
+<ol type="1">
+	<li>A catastrophic DB server failure</li>
+	<li>The Mesh is so badly out of sync a reset of the DB is faster than trying to manually sync all the tables using the I_T tool suite.</li>
+</ol>
+
+<p>As a rule, you don't recover a database from a backup. Why? Server Automation is a distributed database system and consumed sequences numbers have already propagated to remote databases, reusing the same values will result in unique primary key conflicts.</p>
+
+<ul>
+	<li>
+	<p><strong>Example</strong>&nbsp;- Core A sends transaction 1230001 to Core B. The DB of Core A crashes and it's recovered from yesterday's backup. Now it sends a different transaction 1230001 to Core B, a transaction it already has from before the failure, a transaction it will now reject, a transaction that Core A wants to send but no core will accept. To be clear every table has a primary key sequence and all data is affected not just transaction data.</p>
+	</li>
+</ul>
+
+<p>For these reasons we don't recommend customers use RMAN, DATAGUARD, or FLASHBACKS for a point in time DB recovery. These techniques only work for applications that use a single database, they are not suitable for distributed databases.</p>
+
+<p>A question often asked is "How do I backup the Oracle Database" the answer is "you don't, not directly.". High availability is obtained by running a secondary core that receives real-time database updates. Other Server Automation cores in your mesh are your backups.</p>
+
+<p></p>
+
+<h1 id="The_database_is_lost">The database is lost</h1>
+
+<p>If you lose a DB server for a core, your first action is to initiate fail-over. This is accomplished by shutting down the MGW of the core with the failed DB. Shutting down all the components follows but the first is the MGW as this causes any satellite communicating with the failing core to then failover to their secondary routes. SA will not fail over the satellites when the database stop functioning as the communication between the Gateways is still operational albeit to a broken core - a DB failure does not affect routing decisions.</p>
+
+<p>Then you start on the DB recovery.</p>
+
+<p>Depending on the level of failure you may need to rebuild the OS and the DB following the steps from our documentation as if you were installing SA. The recovery of the failed database requires an export of a cores DB to be performed necessitating that it is not changing whilst this export is happening. For a two core environment, this will result in a mesh outage for the duration of the export period.</p>
+
+<p></p>
+
+<h1 id="Reset_the_secondary_DB_for_a_two-core_mesh">Reset the secondary DB for a two-core mesh</h1>
+
+<div class="Admonition_Important">Two CORE ONLY</div>
+
+<p>You have lost faith in the synchronization of the two cores' databases and you want to rebuild the secondary cores' DB. The high-level steps are as follows.</p>
+
+<p><strong>Prepare Target</strong></p>
+
+<ol type="1">
+	<li>Shutdown core</li>
+	<li>Obtain core-specific table data</li>
+	<li>Drop SA users</li>
+	<li>Purge vault OMB filesystem cache.</li>
+</ol>
+
+<p><strong>Prepare Source</strong></p>
+
+<ol type="1">
+	<li>Clear hidden conflicts</li>
+</ol>
+
+<p><strong>Source</strong></p>
+
+<ol type="1">
+	<li>Shutdown core</li>
+	<li>Clear transaction logs from source DB</li>
+	<li>Purge vault OMB filesystem cache.</li>
+	<li>Export DB</li>
+	<li>Start core</li>
+</ol>
+
+<p><strong>Target</strong></p>
+
+<ol type="1">
+	<li>Import source DB</li>
+	<li>Adjust core-specific table data</li>
+	<li>Reset sequences</li>
+	<li>Start recovered core</li>
+</ol>
+
+<p></p>
+
+<h1 id="Detailed_recovery_steps">Detailed recovery steps</h1>
+
+<p>These steps expand on the high-level workflows of the recovery scenario. They are not to be followed in the sequence listed below but as outlined from the overall plan.</p>
+
+<h2 id="Clear_hidden_conflicts">Clear hidden conflicts</h2>
+
+<p>Before exporting a database for recovery make sure that it has no hidden conflicts. These are issues in the database where no conflicting transaction exists. We don't want to propagate an existing issue to our new database.</p>
+
+<pre>cd /opt/opsware/support/bin/I_T
+./conflicting_checker | ./sync_objects
+</pre>
+
+<h2 id="Clear_transaction_logs">Clear transaction logs</h2>
+
+<p>The full database rebuild means that no transaction will be outstanding. This should ONLY be done with a two-core mesh. With a 3 or more core environment you cannot do this or else the others core databases will lose data.</p>
+
+<p>In this order</p>
+
+<pre>1 DML_VALUES
+2 COMPLIANCE_DETAIL_REPL
+3 APP_POLICY_RIU_REPL
+4 TRANSACTION_DML
+5 TRANSACTIONS
+6 OMB_MESSAGE
+7 OMB_DESTINATION
+8 TRANSACTION_LOGS
+9 TRANSACTION_CONFLICTS</pre>
+
+<p>This is a bit funky sometimes you can use TRUNCATE TABLE but if the table has Foreign constraints you get an error and need to use DELETE with a COMMIT. Alternatively, just use delete for them all, that'll work.</p>
+
+<pre>TRUNCATE TABLE LCREP.&lt;table&gt;;
+or
+DELETE LCREP.&lt;table&gt;; 
+COMMIT;
+</pre>
+
+<h2 id="Export_DB">Export DB</h2>
+
+<p>Create a directory mapping inside Oracle where you have enough disk space for the export.</p>
+
+<pre>SQL&gt; CREATE DIRECTORY DUMP_FILES1 AS '/tmp';
+
+Directory created.
+
+SQL&gt;
+Disconnected from Oracle Database 12c Enterprise Edition Release 12.1.0.2.0 - 64bit Production
+With the Partitioning, OLAP, Advanced Analytics and Real Application Testing options</pre>
+
+<p>If you are using Oracle Enterprise and you have the Oracle Advanced Compression option enabled include&nbsp;<tt>compression=all</tt></p>
+
+<pre>$ expdp system/opsware full=Y directory=DUMP_FILES1 dumpfile=source.dmp logfile=expdpDB.log
+</pre>
+
+<h2 id="Delete_all_data">Delete all data</h2>
+
+<p>Drop the users</p>
+
+<pre>drop user truth cascade;
+drop user spin cascade;
+drop user gcadmin cascade;
+drop user lcrep cascade;
+drop user aaa cascade;
+drop user vault cascade;
+</pre>
+
+<h2 id="Import_to_target_DB">Import to target DB</h2>
+
+<p>Schemas have been deleted the import must recreate those too. It is assumed "CREATE DIRECTORY DUMP_FILES1" has been created and the source.dmp file is located there.</p>
+
+<pre>$ impdp system/opsware full=Y directory=DUMP_FILES1 dumpfile=source.dmp logfile=impdpDB.log
+</pre>
+
+<h2 id="Obtain.2FAdjust_core-specific_table_data">Obtain/Adjust core-specific table data</h2>
+
+<p>Before proceeding it's useful to be aware that there is core-specific data. A single row in the table global_sid_id.</p>
+
+<p>The GLOBAL_ID and possibly the DB_GLOBAL_NAME will differ from database to database.</p>
+
+<pre># sql -a "select * from global_sid_id"
+
+Query #1 on Facility_id 1 (alpha):
+DB_GLOBAL_NAME | GLOBAL_ID | MAX_DML_COUNT | SCHEMA_VERSION | BASELINE_VERSION
+------------------------------------------------------------------------------
+TRUTH          | 1         | 1000000       | 70.0.0.0.0003  | 70.0.74553.0</pre>
+
+<p>Find out the global_name for the database the data was imported into.</p>
+
+<pre># sql "select global_name from global_name"</pre>
+
+<p>The global_id corresponding to the data_center_id of the database being rebuilt</p>
+
+<pre># sql "select data_center_id, data_center_name from data_centers where ontogeny='PROD'"
+
+Query #1 on Facility_id 1 (alpha):
+DATA_CENTER_ID | DATA_CENTER_NAME
+---------------------------------
+1              | alpha
+2              | zulu</pre>
+
+<p>Update the&nbsp;<strong>global_sid_id</strong>&nbsp;to the facility id corresponding to this database, optionally the&nbsp;<strong>db_global_name</strong>&nbsp;if required.</p>
+
+<pre>SQL&gt; update global_sid_id set global_id =2, DB_GLOBAL_NAME='TRUTH.GREEN.LOCAL';
+
+1 row updated.
+
+SQL&gt; commit;
+</pre>
+
+<h2 id="Reset_Sequence_numbers">Reset Sequence numbers</h2>
+
+<p>This PL/SQL script should be executed as the DBA</p>
+
+<pre>$ sqlplus / as sysdba @ reset_seq
+SQL*Plus: Release 12.1.0.2.0 Production on Mon Sep 28 16:10:41 2020
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
  
+Connected to:
+Oracle Database 12c Enterprise Edition Release 12.1.0.2.0 - 64bit Production
+With the Partitioning, OLAP, Advanced Analytics and Real Application Testing options
+Resetting sequences for DC 1
+PL/SQL procedure successfully completed.
+SQL&gt;</pre>
+
+<p><strong>reset_seq.sql</strong></p>
+
+<pre>set serverout on
+ declare
+   curr_value integer;
+   seq_nm varchar2(257);  -- 128+1+128 (owner.name)
+   dc_id integer;
+ begin
+   select global_id into dc_id from global_sid_id;
+   dbms_output.put_line('Resetting sequences for DC '||dc_id);
+  
+   for seq_rec in (
+     select c.owner, s.sequence_name, s.last_number, c.column_name, t.table_name
+        from dba_sequences s,
+             dba_constraints t,
+             dba_cons_columns c,
+             dba_tab_columns tc
+       where t.constraint_type = 'P'
+         and t.table_name not in ('PLATFORMS')
+         and c.position = 1
+         and 1 = (select count(*)
+                    from dba_cons_columns c2
+                   where c2.constraint_name = t.constraint_name)
+         and t.constraint_name = c.constraint_name
+         and c.column_name||'_SEQ' = s.sequence_name
+         and tc.table_name = t.table_name
+         and tc.column_name = c.column_name
+         and tc.data_type = 'NUMBER'
+         and c.owner in ('TRUTH','AAA')
+         and c.owner = s.sequence_owner)
+  
+   loop
+      execute immediate 'select max('||seq_rec.column_name||')/10000 from '
+               ||seq_rec.owner||'.'||seq_rec.table_name||
+               ' where mod('||seq_rec.column_name||',10000) = :1'
+               into curr_value
+               using dc_id;
+      if seq_rec.last_number &lt; curr_value then
+         seq_nm := seq_rec.owner||'.'||seq_rec.sequence_name;
+         dbms_output.put_line('-- Sequence '||seq_nm||' = '||seq_rec.last_number);
+         dbms_output.put_line('-- Table '||seq_rec.table_name||' = '||curr_value);
+         execute immediate 'drop sequence '||seq_nm;
+         execute immediate 'create sequence '||seq_nm||' minvalue '||to_char(curr_value+1,'FM999999999999999');
+         execute immediate 'grant select on '||seq_nm||' to truth_mod,lcrep';
+      end if;
+   end loop;
+ end;
+ .
+/</pre>
+</html>
