@@ -21,7 +21,7 @@
 
 <p></p>
 
-<h1 id="The_database_is_lost">The database is lost</h1>
+<h2 id="The_database_is_lost">The database is lost</h2>
 
 <p>If you lose a DB server for a core, your first action is to initiate fail-over. This is accomplished by shutting down the MGW of the core with the failed DB. Shutting down all the components follows but the first is the MGW as this causes any satellite communicating with the failing core to then failover to their secondary routes. SA will not fail over the satellites when the database stop functioning as the communication between the Gateways is still operational albeit to a broken core - a DB failure does not affect routing decisions.</p>
 
@@ -31,7 +31,7 @@
 
 <p></p>
 
-<h1 id="Reset_the_secondary_DB_for_a_two-core_mesh">Reset the secondary DB for a two-core mesh</h1>
+<h2 id="Reset_the_secondary_DB_for_a_two-core_mesh">Reset the secondary DB for a two-core mesh</h2>
 
 <div class="Admonition_Important">Two CORE ONLY</div>
 
@@ -73,11 +73,11 @@
 
 <p></p>
 
-<h1 id="Detailed_recovery_steps">Detailed recovery steps</h1>
+<h2 id="Detailed_recovery_steps">Detailed recovery steps</h2>
 
 <p>These steps expand on the high-level workflows of the recovery scenario. They are not to be followed in the sequence listed below but as outlined from the overall plan.</p>
 
-<h2 id="Clear_hidden_conflicts">Clear hidden conflicts</h2>
+<h3 id="Clear_hidden_conflicts">Clear hidden conflicts</h3>
 
 <p>Before exporting a database for recovery make sure that it has no hidden conflicts. These are issues in the database where no conflicting transaction exists. We don't want to propagate an existing issue to our new database.</p>
 
@@ -85,7 +85,7 @@
 ./conflicting_checker | ./sync_objects
 </pre>
 
-<h2>Purge vault OMB filesystem cache</h2>
+<h3>Purge vault OMB filesystem cache</h3>
 
 <p>The OMB vault cache contains transactions that have been serialized to disk out of the database awaiting to be sent to another core.</p>
 
@@ -94,7 +94,7 @@ mkdir /var/opt/opsware/vault/omb
 chmod 755 /var/opt/opsware/vault/omb
 </pre>
 
-<h2 id="Clear_transaction_logs">Clear transaction logs</h2>
+<h3 id="Clear_transaction_logs">Clear transaction logs</h3>
 
 <p>The full database rebuild means that no transaction will be outstanding. This should ONLY be done with a two-core mesh. With a 3 or more core environment you cannot do this or else the others core databases will lose data.</p>
 
@@ -118,7 +118,7 @@ DELETE LCREP.&lt;table&gt;;
 COMMIT;
 </pre>
 
-<h2 id="Export_DB">Export DB</h2>
+<h3 id="Export_DB">Export DB</h3>
 
 <p>Create a directory mapping inside Oracle where you have enough disk space for the export.</p>
 
@@ -135,7 +135,7 @@ With the Partitioning, OLAP, Advanced Analytics and Real Application Testing opt
 <pre>$ expdp system/opsware full=Y directory=DUMP_FILES1 dumpfile=source.dmp logfile=expdpDB.log
 </pre>
 
-<h2 id="Delete_all_data">Delete all data</h2>
+<h3 id="Delete_all_data">Delete all data</h3>
 
 <p>Drop the users</p>
 
@@ -147,14 +147,14 @@ drop user aaa cascade;
 drop user vault cascade;
 </pre>
 
-<h2 id="Import_to_target_DB">Import to target DB</h2>
+<h3 id="Import_to_target_DB">Import to target DB</h3>
 
 <p>Schemas have been deleted the import must recreate those too. It is assumed "CREATE DIRECTORY DUMP_FILES1" has been created and the source.dmp file is located there.</p>
 
 <pre>$ impdp system/opsware full=Y directory=DUMP_FILES1 dumpfile=source.dmp logfile=impdpDB.log
 </pre>
 
-<h2 id="Obtain.2FAdjust_core-specific_table_data">Obtain/Adjust core-specific table data</h2>
+<h3 id="Obtain.2FAdjust_core-specific_table_data">Obtain/Adjust core-specific table data</h3>
 
 <p>Before proceeding it's useful to be aware that there is core-specific data. A single row in the table global_sid_id.</p>
 
@@ -190,7 +190,7 @@ DATA_CENTER_ID | DATA_CENTER_NAME
 SQL&gt; commit;
 </pre>
 
-<h2 id="Reset_Sequence_numbers">Reset Sequence numbers</h2>
+<h3 id="Reset_Sequence_numbers">Reset Sequence numbers</h3>
 
 <p>This PL/SQL script should be executed as the DBA</p>
 
