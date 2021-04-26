@@ -87,6 +87,15 @@
 ./conflicting_checker | ./sync_objects
 </pre>
 
+<h2>Purge vault OMB filesystem cache</h2>
+
+<p>The OMB vault cache contains transactions that have been serialized to disk out of the database awaiting to be sent to another core.</p>
+
+<pre>rm -rf /var/opt/opsware/vault/omb
+mkdir /var/opt/opsware/vault/omb
+chmod 755 /var/opt/opsware/vault/omb
+</pre>
+
 <h2 id="Clear_transaction_logs">Clear transaction logs</h2>
 
 <p>The full database rebuild means that no transaction will be outstanding. This should ONLY be done with a two-core mesh. With a 3 or more core environment you cannot do this or else the others core databases will lose data.</p>
