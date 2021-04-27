@@ -8,34 +8,33 @@
 
 <h2>Prerequisite</h2>
 
-<p>You have to go through the migration <a href="https://docs.microfocus.com/itom/SMAX:Main/MigrateToHCMX">documentation</a> to understand the overall migration process which you need to consider and follow.</p>
+<p>You must go&nbsp;through the HCMX migration <a href="https://docs.microfocus.com/itom/SMAX:Main/MigrateToHCMX">documentation</a>&nbsp;and&nbsp;understand the overall migration process which you would consider and follow.</p>
 
-<p>This document assumes that you have installed&nbsp;HCMX and its supporting components (RAS, UCMDB) and have configured all the&nbsp;prerequisite configurations (like tenant, LDAP, users, roles) in HCMX described in the migration tool document, and you have validated the few&nbsp;typical designs in HCMX from the CSA/HCM instance and ensured they are working without any issues. After you have completed these, then you are ready to perform the migration.<br>
+<p>This document assumes that you have installed&nbsp;HCMX and its supporting components (RAS, UCMDB), and have configured all the&nbsp;prerequisite configurations (like tenant, LDAP, users, roles) in HCMX described in the migration tool document. You must validate&nbsp;few&nbsp;typical designs in HCMX from the CSA/HCM and ensure&nbsp;they are working without any issues. After completing all&nbsp;these, you are ready to perform the migration.<br>
 <br>
 The hcmxmig&nbsp;CLI needs the following Linux latest packages&nbsp;installed on the system:<br>
 jq, awk, grep, sed, column</p>
 
 <h2>Installation steps</h2>
 
-<p>The hcmxmig CLI needs to be copied to the 'script' folder in the migration tool directory, it will run on the same server where the migration tool is executed. The hcmxmig CLI needs a Linux environment, you can either use the CSA/HCM nodes or HCMX nodes or a separate Linux system to deploy the migration tool and CLI script. You would also need a PostgreSQL database for the HCMX Migration tool to run, please check the migration tool documentation for more details.<br>
-<br>
-Extract the migration tool archive to the directory (example: hcmxmig) and create a script sub-directory. It should have the following folder structure;<br>
-<br>
-|- hcmxmig<br>
+<p>The hcmxmig CLI needs to be copied to the 'script' folder in the migration tool directory, it will run on the same server where the migration tool is executed. The hcmxmig CLI needs a Linux environment, it is recommended to use a separate Linux server to deploy the migration tool and CLI script. You would also need a PostgreSQL database for the HCMX Migration tool to run, please check the migration tool documentation for more details on the migration tool requirements.</p>
+
+<p>Extract the migration tool archive to the directory (example: hcmxmig) and create a script sub-directory. It should have the following folder structure;</p>
+
+<p>|- hcmxmig<br>
 |- hcmxmig/hcmx-migration.jar<br>
 |- hcmxmig/config/application.properties<br>
-|- hcmxmig/script/hcmxmig<br>
-<br>
+|- hcmxmig/script/hcmxmig</p>
 Add the hcmxmig CLI into the PATH variable, to do this add the following in the <code>~/.bash_profile</code><br>
-<code>PATH=$PATH:$HOME/bin:&lt;path&gt;/hcmxmig/script</code></p>
+<code>PATH=$PATH:$HOME/bin:&lt;path&gt;/hcmxmig/script</code>
 
 <h2>HCMX Migration Tool Installation and Configuration</h2>
 
-<p>Once the migration tool is extracted, you can use the hcmxmig CLI to install and configure the migration tool. You can refer to the install migration application <a href="https://docs.microfocus.com/itom/SMAX:Main/InstallMigrationTool">section</a> to get more details on some of these steps. Follow the below steps to configure and start the migration tool using hcmxmig CLI;</p>
+<p>Once the migration tool is extracted, you can use the hcmxmig CLI to install and configure the migration tool. You can refer to the install migration application <a href="https://docs.microfocus.com/itom/SMAX:Main/InstallMigrationTool">section</a> to get more details on some of these steps. Steps to configure and start the migration tool using hcmxmig CLI;</p>
 
 <ol>
 	<li>Enable the migration APIs in DND by adding the&nbsp;DND_PROP_MIGRATION_ENABLE_CSA_DND in the dnd-controller-deployment.yaml</li>
-	<li>Configure the source, target URL, and its credentials. This will also add the certificates into the java trust store automatically, you might be prompted for the truststore password (default is “changeit”). Example:
+	<li>Configure the source, target URL, and credentials. This will also add the certificates into the java trust store automatically, you will be prompted for the truststore password (default is <code>changeit</code>). Example:
 	<p><code>hcmxmig tool configure --sourceUrl https://hostname:port/csa --sourceUser admin --sourcePwd password --targetUrl https://hostname/&lt;tenantid&gt;/dnd --targetUser dndadmin --targetPwd password</code></p>
 	</li>
 	<li>Create and configure the Postgresql database for the migration tool, only PostgreSQL database is supported. The --certpath is optional and can be used to configure the SSL connection to PostgreSQL.
@@ -166,7 +165,9 @@ cat provider.csv | awk -F',' 'NR&gt;1 {gsub(/"/, "", $1); print $1}' | tr '\n' '
 
 <h3>Export/Import Designs and Offerings</h3>
 
-<p>The hcmxmig CLI provides options to export the designs from CSA/HCM and import them into HCMX. For the migration, the offerings in HCMX have to be created using a naming convention that includes the offering version, using hcmxmig CLI you can create the offerings in HCMX with the correct naming convention.</p>
+<p>The hcmxmig CLI provides options to export the designs from CSA/HCM and import them into HCMX. For the migration, the offerings in HCMX have to be created using a naming convention that includes the offering version, using hcmxmig CLI you can create the offerings in HCMX with the correct naming convention required for migration.</p>
+
+<div class="Admonition_Note"><b>Note</b>&nbsp; &nbsp;The offering created by the hcmxmig CLI in HCMX is with basic offering details and the rest of the offering properties like pricing, option set, etc., need to be manually configured in the HCMX offering based on the CSA/HCM offering</div>
 
 <h4>design export</h4>
 
@@ -240,7 +241,7 @@ hcmxmig design transfer --design 2c90cf9370f7b9b10170f898bbd0187b,2c90cf9370f7b9
 
 <h4>offering transfer</h4>
 
-<p>If you have already imported the design into HCMX, then you can use this command to create the equivalent offerings in HCMX&nbsp;based on the offerings in CSA/HCM.</p>
+<p>If you have already imported the design into HCMX, you can use this command to create the equivalent offerings in HCMX&nbsp;based on the offerings in CSA/HCM.</p>
 
 <div class="Admonition_Note"><b>Note</b>&nbsp; &nbsp;The offering created by the hcmxmig CLI in HCMX is with basic offering details and the rest of the offering properties like pricing, option set, etc., need to be manually configured in the HCMX offering based on the CSA/HCM offering</div>
 
@@ -433,7 +434,7 @@ hcmxmig get mapping 2c90c4a577a555dd0177fd13a8bf5ba3,2c90c4a577a555dd0177f362d10
 
 <ol>
 	<li>The offering-id in TargetOfferingId is an exact match to the source by naming convention and it can be used to migrate the subscriptions.</li>
-	<li>The ProbableOfferingId would contain more than one offering-id, and they are the other offerings from the same design. If there is no TargetOfferingId (exact match), then you have manually checked and select one from the ProbableOfferingId and set it under TargetOfferingId.</li>
+	<li>The ProbableOfferingId would contain more than one offering-id, and they are the other offerings from the same design. If there is no TargetOfferingId (exact match), you have manually checked and select one from the ProbableOfferingId and set it under TargetOfferingId.</li>
 </ol>
 
 <h3>Subscription Details</h3>
@@ -472,7 +473,7 @@ hcmxmig get subscription --offering b2b776cdc95e41b7be419cb094748457 --orgid 2c9
 
 <p>The subscriptions are&nbsp;listed in a paginated fashion with set PAGE_SIZE, default is 30.</p>
 
-<p>The output CSV contains PerformMigration, TargetOfferingId, ProbableOfferingId fields along with the other subscription details. The PerformMigration against a subscription has to be set to "Y" for the precheck and migration commands to process it. The TargetOfferingId has to set with the correct offering-id which should be used to migrate. The ProbableOfferingId would contain more than one offering-id, and they are the other offerings from the same design available in HCMX. The output CSV file is generated using the mapping file (either generated runtime or passed to the command). The PerformMigration is automatically set to "Y" if there is a matching TargetOfferingId, otherwise, it's set to "N" by default.</p>
+<p>The output CSV contains PerformMigration, TargetOfferingId, ProbableOfferingId fields, and&nbsp;other subscription details. The PerformMigration against a subscription has to be set to "Y" for the precheck and migration commands to process it. The TargetOfferingId has to set with the correct offering-id which should be used to migrate. The ProbableOfferingId would contain more than one offering-id, and they are the other offerings from the same design available in HCMX. The output CSV file is generated using the mapping file (either generated runtime or passed to the command). The PerformMigration is automatically set to "Y" if there is a matching TargetOfferingId, otherwise, it's set to "N" by default.</p>
 
 <div class="Admonition_Tip"><span class="autonumber">Tip</span>&nbsp; To change all PerformMigration field&nbsp;from N to Y, use the command:<br>
 <code>sed -i 's/"N",/"Y",/g' subscription.csv</code></div>
