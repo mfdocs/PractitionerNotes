@@ -145,6 +145,17 @@ chown twist /var/opt/opsware/crypto/twist/masterTwist</pre>
 
 <pre>&lt;PublicProperty name="install_type" ttl="3600" dc="2018-04-18T17:08:38Z" encoding="str"&gt;slices_master_custom&lt;/PublicProperty&gt;</pre>
 
+<p>Remove this entry from the cdf.xml file.</p>
+
+<pre>&lt;OpswareParameter name="masterCore.mgw_tunnel_listener_port" value="2001" ttl="3600" dc="&lt;time stamp&gt;" /&gt;
+</pre>
+
+<p>Modify the install.inv this entry should be inserted&nbsp;after&nbsp;%word_store - ensure you use the same BUILD_ID as the %word_store.&nbsp;&nbsp;</p>
+
+<pre>%word_uploads
+build_id: opsware_70.0.74585.0
+state:  incomplete</pre>
+
 <p>We need to create the word_uploads directory along with the missing crypto:</p>
 
 <pre>.../SAS_10.60-70.0.74585.0/T8900-15067-GA/T8900-15067-primary/disk001/opsware_installer/hpsa_install.sh -c /var/opt/opsware/install_opsware/cdf/cdf.xml</pre>
@@ -189,13 +200,8 @@ For more details, please see the following file:
 
 Local log file: /var/tmp/HPSA_INSTALLER/logfiles/install_word_uploads_error/192.168.4.98-install-word_uploads-2019-03-22.15:45:51.verbose.log
 *********************************
-Install of word_uploads failed on 192.168.4.98</pre>
-
-<p>Then modify the install.inv</p>
-
-<pre>%word_uploads
-build_id: opsware_70.0.74585.0
-state:  incomplete</pre>
+Install of word_uploads failed on 192.168.4.98
+</pre>
 
 <p>To mark it as installed:</p>
 
