@@ -67,23 +67,23 @@ docker push localhost:5000/hpeswitom/mc:test</code></pre>
 
 <ol>
 	<li>On the NFS server, create a directory for Minio. For example:
-	<pre><code>sudo mkdir -p /var/vols/itom/itsma/minio</code></pre>
+	<pre><code>mkdir -p /var/vols/itom/itsma/minio</code></pre>
 	</li>
 	<li>Change the ownership of the directory:
-	<pre><code>sudo&nbsp;chown&nbsp;-R&nbsp;$uid:$gid&nbsp;/var/vols/itom/itsma/minio&nbsp;</code></pre>
+	<pre><code>chown&nbsp;-R&nbsp;$uid:$gid&nbsp;/var/vols/itom/itsma/minio&nbsp;</code></pre>
 	</li>
 	<li>If your NFS configuration used no_root_squash, run two more commands:
-	<pre><code>sudo&nbsp;chmod&nbsp;g+w&nbsp;/var/vols/itom/itsma/minio&nbsp;
-sudo&nbsp;chmod&nbsp;g+s&nbsp;/var/vols/itom/itsma/minio</code></pre>
+	<pre><code>chmod&nbsp;g+w&nbsp;/var/vols/itom/itsma/minio&nbsp;
+chmod&nbsp;g+s&nbsp;/var/vols/itom/itsma/minio</code></pre>
 	</li>
 	<li>
 	<p paraeid="{47265f47-a254-414e-9f16-6d5e2ff3447b}{160}" paraid="1310021110">Add the following line to the /etc/exports file:</p>
 
 	<ul>
 		<li>
-		<p paraeid="{47265f47-a254-414e-9f16-6d5e2ff3447b}{160}" paraid="1310021110">If using root_squash:</p>
+		<p paraeid="{47265f47-a254-414e-9f16-6d5e2ff3447b}{160}" paraid="1310021110">If using root_squash (replace &lt;UID&gt; and &lt;GID&gt; with the SYSTEM_USER_ID&nbsp;and SYSTEM_GROUP_ID values&nbsp;that you used to configure NFS volumes)</p>
 
-		<pre><code>/var/vols/itom/itsma/minio *(rw,sync,root_squash)</code></pre>
+		<pre><code>/var/vols/itom/itsma/minio *(rw,sync,anonuid=&lt;UID&gt;,anongid=&lt;GID&gt;,root_squash)</code></pre>
 		</li>
 		<li>
 		<p paraeid="{47265f47-a254-414e-9f16-6d5e2ff3447b}{160}" paraid="1310021110">If using&nbsp;no_root_squash:</p>
