@@ -86,8 +86,6 @@ sudo&nbsp;chmod&nbsp;g+s&nbsp;/var/vols/itom/itsma/minio</code></pre>
 	<li>Create a&nbsp;minio.yaml file with the content below.&nbsp;</li>
 	<li>Search the file for the following comments and make the required changes to the file:
 	<ul>
-		<li>#change &lt;GID&gt; to your GID when configuring NFS volumes</li>
-		<li>#change &lt;UID&gt; to your UID when configuring NFS volumes</li>
 		<li># Update the path to your minio NFS volume path</li>
 		<li># Update &lt;NFS server host&gt; to your NFS server FQDN or IP address</li>
 		<li># Change {username} to a username you want to use</li>
@@ -112,11 +110,7 @@ sudo&nbsp;chmod&nbsp;g+s&nbsp;/var/vols/itom/itsma/minio</code></pre>
 apiVersion: v1 
 kind: Namespace 
 metadata: 
-  annotations: 
-   openshift.io/sa.scc.mcs: s0:c25,c20 
-   openshift.io/sa.scc.supplemental-groups: &lt;GID&gt;/10000               #change &lt;GID&gt; to your GID when configuring NFS volumes
-   openshift.io/sa.scc.uid-range: &lt;UID&gt;/10000                                 #change &lt;UID&gt; to your UID when configuring NFS volumes
-  name: velero 
+   name: velero 
 --- 
 apiVersion: v1 
 kind: PersistentVolume 
@@ -150,18 +144,18 @@ spec:
   volumeName: itom-dr-minio-pv 
   storageClassName: cdf-default 
 
-  --- 
-
+ --- 
 apiVersion: v1 
 kind: Secret 
 metadata: 
   name: itom-dr-secret-minio
+  namespace: velero
 type: Opaque 
 stringData: 
   username: {minio username}                # Change {minio username} to a username you want to use. You will use this user to install Velero.
   password: {minio password}                # Change {minio password}  to a password you want to use for the user
 
-  --- 
+ --- 
 
 apiVersion: apps/v1 
 kind: Deployment 
@@ -189,7 +183,7 @@ spec:
       volumes: 
       - name: storage 
         persistentVolumeClaim: 
-          claimName: minio-pvc 
+          claimName: itom-dr-minio-pvc 
       containers: 
       - name: minio 
         image: minio/minio:&lt;tag&gt;   # change &lt;tag&gt; to the &lt;tag&gt; value you specify in the "Download a&nbsp;minio&nbsp;image" step
@@ -202,12 +196,12 @@ spec:
         - name: MINIO_ACCESS_KEY                     
           valueFrom: 
             secretKeyRef: 
-              name: secret-minio 
+              name: itom-dr-secret-minio 
               key: username 
         - name: MINIO_SECRET_KEY 
           valueFrom: 
             secretKeyRef: 
-              name: secret-minio
+              name: itom-dr-secret-minio
               key: password                                
         ports: 
         - containerPort: 9000 
@@ -236,7 +230,35 @@ spec:
   selector: 
     component: minio 
 
---- </code></pre>
+--- 
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: velero
+  name: minio-setup
+  labels:
+    component: minio
+spec:
+  template:
+    metadata:
+      name: minio-setup
+    spec:
+      restartPolicy: OnFailure
+      volumes:
+      - name: config
+        emptyDir: {}
+      containers:
+      - name: mc
+        image: minio/mc:&lt;tag&gt;   # change &lt;tag&gt; to the &lt;tag&gt; value you specify in the "Download a&nbsp;minio&nbsp;image" step
+        imagePullPolicy: IfNotPresent
+        command:
+        - /bin/sh
+        - -c
+        - "mc --config-dir=/config config host add velero http://minio:9000 minio minio123 &amp;&amp; mc --config-dir=/config mb -p velero/velero"
+        volumeMounts:
+        - name: config
+          mountPath: "/config"
+</code></pre>
 
 <h3>Install Velero</h3>
 
