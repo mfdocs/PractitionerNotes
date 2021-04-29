@@ -13,8 +13,9 @@
 <p>If your control plane node has Internet access, download the image from the control plane&nbsp;node; otherwise, download the image from another Linux machine that has Internet access and then transfer the image to the control plane node.</p>
 
 <ol>
-	<li>On the download machine, navigate to a directory where you want to download the images, and then run the following commands&nbsp;:
-	<pre><code>docker pull minio/minio:latest&nbsp;</code></pre>
+	<li>On the download machine, navigate to a directory where you want to download the images, and then run the following commands:
+	<pre><code>docker pull minio/minio:latest&nbsp;
+docker pull minio/mc:latest&nbsp;</code></pre>
 	</li>
 	<li lang="en-US">If the control plane node has no Internet access, transfer&nbsp;the images to the control plane node.&nbsp;</li>
 	<li lang="en-US">Obtain the image IDs.
@@ -23,26 +24,29 @@
 		<pre><code>docker images |grep minio</code></pre>
 		</li>
 		<li>In the output, find the&nbsp;IDs of the&nbsp;images. In the following example, it's&nbsp;8dbf9ff992d5.
-		<pre><code>docker.io/minio/minio latest 8dbf9ff992d5 30 hours ago 183 MB</code></pre>
+		<pre><code>docker.io/minio/minio latest 8dbf9ff992d5   30 hours ago 183 MB
+docker.io/minio/mc     latest  cb749294c71f  6 days ago     134MB</code></pre>
 		</li>
 	</ol>
 	</li>
-	<li lang="en-US">Run the following command to tag one&nbsp;image:
-	<pre><code>docker tag &lt;image ID&gt; &lt;image registry URL&gt;/&lt;organization name&gt;/minio:&lt;tag&gt;</code></pre>
-
-	<p>The following is an example:</p>
-
-	<pre><code>docker tag 8dbf9ff992d5 myregistry.azurecr.io/sandbox/minio:test</code></pre>
+	<li lang="en-US">Run the following command to tag the&nbsp;images:
+	<pre><code>docker tag &lt;image ID&gt; &lt;image registry URL&gt;/&lt;organization name&gt;/minio:&lt;tag&gt;
+docker tag &lt;image ID&gt; &lt;image registry URL&gt;/&lt;organization name&gt;/mc:&lt;tag&gt;</code></pre>
 
 	<ul>
 		<li>
-		<p>&lt;image ID&gt;: the image ID you obtained in the previous step.</p>
+		<p>&lt;image ID&gt;: the image IDs&nbsp;you obtained in the previous step.</p>
 		</li>
 		<li>
 		<p>&lt;image registry URL&gt;/&lt;organizaition name&gt;: your image registry URL/organization name. If using the local registry, it's localhost:5000/hpeswitom; if using an external registry, ask your registry administrator for it.</p>
 		</li>
 		<li>&lt;tag&gt;: specify any value you like.&nbsp;</li>
 	</ul>
+
+	<p>The following is an example:</p>
+
+	<pre><code>docker tag 8dbf9ff992d5 myregistry.azurecr.io/sandbox/minio:test
+docker tag cb749294c71f myregistry.azurecr.io/sandbox/mc:test</code></pre>
 	</li>
 	<li lang="en-US">Push the image&nbsp;into your image registry:
 	<pre><code>docker push &lt;image registry URL&gt;/&lt;organization name&gt;/minio:&lt;tag&gt;</code></pre>
