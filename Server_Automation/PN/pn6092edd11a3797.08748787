@@ -1,1 +1,252 @@
- 
+<html><p>SA 2020.11 does not ship with any Oracle installer. These are crib notes for installing Oracle 19c</p>
+
+<p>You will require the ZIP of the database software;&nbsp;<a href="https://www.oracle.com/database/technologies/oracle-database-software-downloads.html" rel="nofollow">https://www.oracle.com/database/technologies/oracle-database-software-downloads.html</a></p>
+
+<p>As&nbsp;<strong>root</strong>:</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>groupadd -g 1000 oinstall<br>
+			groupadd -g 1001 dba<br>
+			groupadd -g 1002 dboper<br>
+			useradd</code>&nbsp;<code>-u 1000 -g oinstall -G dba -d&nbsp;</code><code>/u01/app/oracle</code>&nbsp;<code>-M oracle</code></p>
+
+			<p><code>mkdir</code>&nbsp;<code>-p&nbsp;</code><code>/u01/app/oracle/product/19</code><code>.0.0</code><code>/dbhome_1<br>
+			chown</code>&nbsp;<code>-R oracle:dba&nbsp;</code><code>/u01/app/oracle</code></p>
+
+			<p><code>for</code>&nbsp;<code>i&nbsp;</code><code>in</code>&nbsp;<code>u02 u03 u04;&nbsp;</code><code>do<br>
+			mkdir</code>&nbsp;<code>-p /$i</code><code>/oradata/truth<br>
+			chown</code>&nbsp;<code>oracle:dba /$i</code><code>/oradata/truth<br>
+			done</code></p>
+
+			<p><code>mkdir</code>&nbsp;<code>-p&nbsp;</code><code>/var/opt/oracle<br>
+			chown</code>&nbsp;<code>oracle:dba&nbsp;</code><code>/var/opt/oracle</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>The installation of Oracle requires the&nbsp;make&nbsp;tool as the&nbsp;<strong>relink</strong>&nbsp;of the binaries is driven from Makefiles, ensure it's installed, otherwise the&nbsp;<strong>relink</strong>&nbsp;command will silently fail.</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>which make</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>As&nbsp;<strong>Oracle</strong>:</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>su</code>&nbsp;<code>- oracle<br>
+			cd</code>&nbsp;<code>/u01/app/oracle/product/19</code><code>.0.0</code><code>/dbhome_1<br>
+			unzip LINUX.X64_193000_db_home.zip</code><br>
+			<code>echo</code>&nbsp;<code>'export ORACLE_OWNER=oracle'</code>&nbsp;<code>&gt;&gt; ~/.profile<br>
+			echo</code>&nbsp;<code>'export ORACLE_HOME=/u01/app/oracle/product/19.0.0/dbhome_1'</code>&nbsp;<code>&gt;&gt; ~/.profile<br>
+			echo</code>&nbsp;<code>'export ORACLE_SID=truth'</code>&nbsp;<code>&gt;&gt;~/.profile<br>
+			echo</code>&nbsp;<code>'PATH=$PATH:$ORACLE_HOME/bin'</code>&nbsp;<code>&gt;&gt;~/.profile<br>
+			source</code>&nbsp;<code>~/.profile</code></p>
+
+			<p><code>relink</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>The database scripts are shipped in the primary media along this path</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>.../T8900-15070-primary/disk001/opsware_installer/database/oracle/19c/scripts</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Copy the database installation script from the media to the oracle database server</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>mkdir</code>&nbsp;<code>-p&nbsp;</code><code>/u01/app/oracle/admin/truth/scripts<br>
+			cd</code>&nbsp;<code>/u01/app/oracle/admin/truth/scripts<br>
+			cp</code>&nbsp;<code>$script_loc/* .</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>The default oracle home is dbhome_1 our scripts look for db_2 - edit supplied scripts.</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>for</code>&nbsp;<code>i&nbsp;</code><code>in</code>&nbsp;<code>*;&nbsp;</code><code>do</code>&nbsp;<code>sed</code>&nbsp;<code>-i&nbsp;</code><code>'s/db_2/dbhome_1/g'</code>&nbsp;<code>$i;&nbsp;</code><code>done</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Its time to install the database. Its recommended this runs in a <strong>screen/tmux</strong> session. When asked for passwords you will require a minimum complexity level. Alpha, Numeric, and a special - for example, secret123#</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>[oracle@sa1080rh8c2 scripts]$ sh truth.sh</code></p>
+
+			<p><code>+ mkdir -p /u01/app/oracle/admin/truth/adump<br>
+			+ mkdir -p /u01/app/oracle/admin/truth/dpdump<br>
+			+ mkdir -p /u01/app/oracle/admin/truth/pfile<br>
+			+ mkdir -p /u01/app/oracle/cfgtoollogs/dbca/truth<br>
+			+ mkdir -p /u01/app/oracle/flash_recovery_area<br>
+			+ mkdir -p /u01/app/oracle/flash_recovery_area/truth<br>
+			+ ORACLE_SID=truth<br>
+			+ export ORACLE_SID<br>
+			+ ORACLE_HOME=/u01/app/oracle/product/19.0.0/dbhome_1<br>
+			+ export ORACLE_HOME<br>
+			+ PATH=/u01/app/oracle/product/19.0.0/dbhome_1/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/u01/app/oracle/product/19.0.0/dbhome_1/bin<br>
+			+ export PATH<br>
+			+ /u01/app/oracle/product/19.0.0/dbhome_1/bin/sqlplus /nolog @/u01/app/oracle/admin/truth/scripts/truth.sql</code></p>
+
+			<p><code>SQL*Plus: Release 19.0.0.0.0 - Production on Thu Mar 4 21:53:23 2021<br>
+			Version 19.3.0.0.0</code><br>
+			<code>Copyright (c) 1982, 2019, Oracle.&nbsp; All rights reserved.</code></p>
+
+			<p><code>specify a password for sys as parameter 1<br>
+			Enter value for 1: secret123#</code></p>
+
+			<p><code>specify a password for system as parameter 2<br>
+			Enter value for 2: secret123#</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Setting up the TNS connection.&nbsp; Adjust the service name to correspond to that of the core you will install later.&nbsp; In this example, the core has been called c1.&nbsp; This example assumes the Core and DB are co-located.</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>echo&nbsp;</code><code>'truth.c1=(DESCRIPTION=(ADDRESS=(HOST=127.0.0.1)(PORT=1521)(PROTOCOL=tcp))(CONNECT_DATA=(SERVICE_NAME=truth)))'</code>&nbsp;<code>&gt;/var/opt/oracle/tnsnames.ora<br>
+			ln -s /var/opt/oracle/tnsnames.ora $ORACLE_HOME/network/admin</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<h2 id="InstallingOracleDatabase19cforSAUsage-OracleTuning">Oracle Tuning</h2>
+
+<p>The following additional tuning is required</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>SQL&gt; ALTER SYSTEM SET&nbsp;</code><code>"_cursor_obsolete_threshold"</code><code>=</code><code>1024</code>&nbsp;<code>SCOPE=SPFILE;</code></p>
+
+			<p><code>System altered.</code></p>
+
+			<p><code>SQL&gt; ALTER SYSTEM SET&nbsp;</code><code>"_optimizer_adaptive_cursor_sharing"</code><code>=</code><code>false</code>&nbsp;<code>SCOPE=SPFILE;</code></p>
+
+			<p><code>System altered.</code></p>
+
+			<p><code>SQL&gt; ALTER SYSTEM SET&nbsp;</code><code>"_optimizer_extended_cursor_sharing_rel"</code><code>=none SCOPE=SPFILE;</code></p>
+
+			<p><code>System altered.</code></p>
+
+			<p><code>SQL&gt;</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>The database has to be restarted for this tuning to come into effect.&nbsp;</p>
+
+<h2 id="InstallingOracleDatabase19cforSAUsage-Databaseautomaticstartup">Database automatic startup</h2>
+
+<p>There are no scripts installed to automatically start and stop the database with the server.</p>
+
+<p>As&nbsp;<strong>root:</strong><br>
+Allow Oracle's script to manipulate the database just installed, the&nbsp;<strong>Y</strong>&nbsp;indicates to autostart this database.</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>echo&nbsp;</code><code>'truth:/u01/app/oracle/product/19.0.0/dbhome_1:Y'</code>&nbsp;<code>&gt;&gt; /etc/oratab</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Create the following file:</p>
+
+<p><b>/etc/systemd/system/oracle-rdbms.service</b></p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code># /etc/systemd/system/oracle-rdbms.service<br>
+			# Invoking Oracle scripts to start/shutdown Instances defined in /etc/oratab<br>
+			# and starts Listener</code></p>
+
+			<p><code>[Unit]<br>
+			Description=Oracle Database(s) and Listener<br>
+			Requires=network.target</code></p>
+
+			<p><code>[Service]<br>
+			Type=forking<br>
+			Restart=no<br>
+			ExecStart=/u01/app/oracle/product/19.0</code><code>.</code><code>0</code><code>/dbhome_1/bin/dbstart /u01/app/oracle/product/</code><code>19.0</code><code>.</code><code>0</code><code>/dbhome_1<br>
+			ExecStop=/u01/app/oracle/product/19.0</code><code>.</code><code>0</code><code>/dbhome_1/bin/dbshut /u01/app/oracle/product/</code><code>19.0</code><code>.</code><code>0</code><code>/dbhome_1<br>
+			User=oracle</code></p>
+
+			<p><code>[Install]<br>
+			WantedBy=multi-user.target</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Enable this service</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code># systemctl daemon-reload<br>
+			# systemctl enable oracle-rdbms<br>
+			Created symlink /etc/systemd/system/multi-user.target.wants/oracle-rdbms.service â /etc/systemd/system/oracle-rdbms.service.<br>
+			#</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>This is a bit funky.&nbsp; As the database is already running&nbsp;<strong>systemd</strong>&nbsp;is out of sync.&nbsp; We can resolve that by asking systemd to start it, even though it running.</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			<p><code>systemctl start oracle-rdbms.service</code></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+</html>
