@@ -1,1 +1,897 @@
- 
+<html><h2 style="margin-top:3px"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal"><a name="_Toc71213717">Abstract</a></span></span></span></span></span></h2>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This practitioner note describes a solution that uses Micro Focus Hybrid Cloud Management X (HCMX) to provision an ad-hoc test environment to test code changes and to deprovision the test environment after testing is complete in Development and Operations (DevOps) Continuous Integration (CI) and Continuous Delivery or Continuous Deployment (CD) process. </span></span></span></p>
+
+<h2 style="margin-top:3px"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal"><a name="_Toc71213718">Overview</a></span></span></span></span></span></h2>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">CICD stands for continuous integration (CI) and continuous delivery or continuous deployment (CD). With continuous integration, developers frequently commit to a shared repository using a version control system such as Git. Prior to each commit, developers may choose to run local unit tests on their code as an extra verification layer before integrating. A continuous integration service automatically builds and runs unit tests on the new code changes to immediately surface any errors. The key goals of continuous integration are to find and address bugs quicker, improve software quality, and reduce the time it takes to validate and release new software updates.&nbsp; </span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">With continuous delivery, code changes are automatically built, tested, and prepared for a release to the production environment. Continuous delivery expands upon continuous integration by deploying all code changes to a testing environment after the build stage. If testing is successful, code changes are released to the production environment only after approval.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Continuous deployment expands upon continuous delivery by deploying code changes to the production environment without human intervention.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In continuous delivery and continuous deployment phase, a testing environment is required to test the new build. This testing environment can be one of the following:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Always-on testing environment</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Ad-hoc testing environment</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">An always-on testing environment is an environment in which there are dedicated resources running all the time in either the public cloud or private cloud provider. This type of an environment tends to consume resources and increase cloud spending. In this type of an environment, there can be only one CICD pipeline running at the same time as there is only a single always-on test environment.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">An ad-hoc testing environment is an environment in which resources are provisioned as needed during testing cycle of continuous delivery and continuous deployment phase. After testing is complete, these resources are deprovisioned thereby reducing cloud expenses. An ad-hoc testing environment also helps in running parallel CICD pipelines initiated by multiple developers at the same time. </span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Micro Focus Hybrid Cloud Management X (HCMX) assists in provisioning and deprovisioning of resources in an ad-hoc testing environment. HCMX enables customers to create service designs,&nbsp;service offerings, and&nbsp;automate the provisioning and management of hybrid and multi-cloud resources through exposed offerings. Some of the examples of service offerings exposed to end users are:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A Microsoft Azure marketplace image such as ElasticSearch</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">An Amazon Web Services (AWS) marketplace image such as Wordpress</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A virtual machine on Google Cloud</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A database on VMware vCenter</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A WebServer on OpenStack, etc.&nbsp; </span></span></span></li>
+</ol>
+
+<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">An ad-hoc test environment can be built by provisioning any of the exposed cloud service offerings in HCMX.</span></span></span></p>
+
+<p></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This practitioner note describes a solution that uses HCMX to provision virtual machines in VMWare vCenter for the ad-hoc test environment to test code changes and to deprovision the test environment after testing is complete in DevOps CICD process. The solution uses Jenkins to facilitate CICD process and integrates Jenkins with HCMX to provision and deprovision ad-hoc test environment. Jenkins is a self-contained, open source automation server which can be used to automate all sorts of tasks related to building, testing, and delivering or deploying software. Concepts presented in this practitioner note can be extended to integrate HCMX with other applications that facilitate CICD process. Some of the examples of other applications that facilitate CICD process are Microsoft Azure DevOps, CircleCI, etc. This practitioner note includes the following code as part of the sample solution:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>HelloWorld.sh</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">HelloWorld.sh is a simple shell script and it prints <b>Hello World</b>. This script is the entire project that gets built and tested in Jenkins. The <a name="_Hlk71196451"><b>HelloWorld.sh</b> script is available for download in the <b>Appendix</b> section.</a></span></span></span></p>
+
+<p style="margin-left:48px"></p>
+
+<ol start="2">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Jenkinsfile</b></span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The Jenkinsfile is the pipeline script and contains code necessary to automate the entire software development workflow that includes build, test and deploy to production stages. The <a name="_Hlk71199363">Jenkinsfile included in this article contains code required to build HelloWorld.sh application, provision ad-hoc test environment in VMWare vCenter using <b>vCenter Compute – Deploy VM from template </b>service offering in HCMX, copy and test HelloWorld.sh script on the newly provisioned test environment, deprovision ad-hoc test environment through HCMX after testing is complete. The <b>Jenkinsfile</b> pipeline script is available for download in the <b>Appendix</b> section.</a></span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The following are the advantages of this solution:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Provision multiple identical virtual machines in a single Representational State Transfer (REST) Application Programming Interface (API) call to HCMX. Multiple virtual machines may be needed in a test environment to test distributed architecture, client server architecture, etc.</span></span></span></li>
+	<li style="margin-left:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Setup a hybrid cloud test environment with one part of the application in private cloud and another part of application in public cloud.</span></span></span></li>
+	<li style="margin-left:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Setup a multi cloud test environment with Tomcat on AWS and MySQL on Azure for example.</span></span></span></li>
+	<li style="margin-left:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Deprovision test environment after testing of code changes, thereby reducing cloud spend.</span></span></span></li>
+	<li style="margin-left:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Use consistent REST API calls to provision and deprovision resources regardless of target cloud providers such AWS, Azure, Google Cloud, VMWare vCenter, Openstack, etc.</span></span></span></li>
+	<li style="margin-left:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Model your application architecture with HCMX service designs and provision entire application architecture to build ad-hoc test environment.</span></span></span></li>
+	<li style="margin-left:11px; margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Provided solution builds ad-hoc test environment in the test stage. But concepts can be used to build an ad-hoc test environment in the build stage to conduct unit and integration tests.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This solution has the following pre-requisites:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">HCMX</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Jenkins running on a Linux system (Or any other application that facilitates CICD process). Jenkins can be running on a Windows system, but appropriate changes must be made in the Jenkinsfile pipeline script.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Jenkins default set of plugins.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Github repository (Or any other version control system)</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">VMWare vCenter (Or any cloud provider)</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The solution works as follows:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">End user commits a code change to the Github repository.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Jenkins periodically polls for code changes in Github and triggers the Jenkins pipeline if there are code changes. The definition of a Jenkins Pipeline is store in the pipeline script called Jenkinsfile.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The first stage of Jenkins pipeline is the <b>Checkout SCM (Source control management)</b> stage. In the <b>Checkout SCM</b> stage, the project code and Jenkinsfile is checked out from the source control repository.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The second stage of Jenkins pipeline is the <b>Build</b> stage. In the <b>Build</b> stage, code is compiled, dependencies are installed, unit and integration tests are performed. In the solution described in this practitioner note, for illustration purposes, a simple HelloWorld.sh script is built. The build stage can be a maven build, ant build, etc depending on your project requirements.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The third stage of Jenkins pipeline is the <b>Test </b>stage. In the <b>Test</b> stage, an ad-hoc test environment is built by deploying necessary virtual machine(s) (VM) on the fly using HCMX. Build is copied to the virtual machines in ad-hoc test environment for testing. Testing is performed on the virtual machines in ad-hoc test environment. After testing is completed, ad-hoc test environment is deprovisioned and resources are freed up on the cloud provider. <a name="_Hlk69460051">In the solution described in this practitioner note, the HelloWorld.sh script is copied to the deployed virtual machines in ad-hoc test environment and tested.</a></span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The fourth and final stage of Jenkins pipeline is the <b>Deploy</b> stage. In the <b>Deploy</b> stage, new build is pushed to the production environment if <b>Test</b> stage was successful. In the solution described in this practitioner note, the deploy stage is not used.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">To implement this solution to use HCMX to provision and deprovision an ad-hoc testing environment in the CICD process, follow the steps below:</span></span></span></p>
+
+<h2 style="margin-top:3px"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal"><a name="_Toc71213719">Create a user in HCMX</a></span></span></span></span></span></h2>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will create a new user with appropriate roles in HCMX. This new user’s credentials are used by Jenkins to provision and deprovision ad-hoc test environment in HCMX.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the HCMX suite administration portal as user suite-admin.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create a new user such that the user is associated with an <b>Account</b> that has a tenant with Design and Deploy (DND) capability enabled. In the <b>role </b>field, select <b>Account user</b> instead of an <b>integration user</b>. An integration user does not have privileges to login to the HCMX employee self-service (ESS) portal. Using an <b>Account user</b> helps in troubleshooting integration issues as it has access to the HCMX ESS portal.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_7" src="/mediawiki/images/pn_images/pn_image_60947a3844e4e5.03253198.png" style="width:468pt; height:552.75pt"> </span></span></span></p>
+
+<p style="margin-left:48px"></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log out of the HCMX suite administration portal.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">A user account activation email is sent by HCMX to the email address specified in the <b>Integ_Jenkins_HCMX</b> user record. Click on the user activation link in that email. User activation web page is launched in a web browser. Type in a new password and confirm the new password in the user activation web page. Note that the <b>SUBMIT</b> button does not show up until entered passwords match and they satisfy password complexity policy as defined in the IDM portal. Click <b>SUBMIT</b> button.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application
+
+Description automatically generated" id="Picture_x0020_6" src="/mediawiki/images/pn_images/pn_image_60947a38a1ba13.12709862.png" style="width:468pt; height:7in"> </span></span></span></p>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the HCMX tenant agent interface as a user with tenant administration privileges.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">From the <b>mega menu (Three horizontal lines icon)</b>, navigate to <b>Administration</b> -&gt; <b>Master Data</b> -&gt; <b>People</b></span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application
+
+Description automatically generated" id="Picture_x0020_4" src="/mediawiki/images/pn_images/pn_image_60947a390be799.23106631.png" style="width:468pt; height:204.75pt"> </span></span></span></p>
+
+<ol start="7">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <b>Sync </b>to sync the newly created user to the tenant. The user <b>Integ_Jenkins_HCMX</b> appears in the list of people records in the tenant.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text
+
+Description automatically generated" id="Picture_x0020_5" src="/mediawiki/images/pn_images/pn_image_60947a395a2de4.14956185.png" style="width:468.75pt; height:159pt"> </span></span></span></p>
+
+<ol start="8">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Assign <b>CMP Agent </b>and <b>Self-Service portal user</b> roles to the <b>Integ_Jenkins_HCMX</b> user.</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Assign other appropriate roles to the <b>Integ_Jenkins_HCMX</b> user such that all HCMX cloud service offerings are visible to the <b>Integ_Jenkins_HCMX</b> user in HCMX ESS portal.</span></span></span></li>
+</ol>
+
+<h2 style="margin-top:3px"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal"><a name="_Toc71213720">Get CreateRequest payload for the offering from HCMX</a></span></span></span></span></span></h2>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will get <b>CreateRequest</b> payload for the HCMX offering that you would like to deploy to create an ad-hoc test environment using CICD process. The CreateRequest REST API is used to create a new request from one of the exposed HCMX offerings.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the HCMX ESS portal as <b>Integ_Jenkins_HCMX</b> user.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to the list of offerings. An offering in HCMX may allow deployment of virtual machines in a vCenter, Amazon Web Services (AWS), Microsoft Azure, etc. </span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" id="Picture_x0020_1" src="/mediawiki/images/pn_images/pn_image_60947a3ad7fc70.89996224.png" style="width:468pt; height:290.25pt"> </span></span></span></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <b>REQUEST SERVICE</b> for the offering that you would like to use to deploy an ad-hoc test environment from the Jenkins CICD process. Corresponding offering submission page appears.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><b>Change default values in the offering submission page</b>. <b>Enter values for all the fields</b>. <b>Do not leave any field blank.</b></span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Enable <b>Developers tools</b> in your browser to capture the CreateRequest API request payload.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <b>Submit </b>in the offering submission page.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Copy the entire <b>Request Payload</b> source for the <b>CreateRequest</b> REST API call. Paste it into a notepad and save the file as <b>HCMXOffering-RequestPayload.txt</b>. Contents of this file will be used in later sections.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application
+
+Description automatically generated" id="Picture_x0020_2" src="/mediawiki/images/pn_images/pn_image_60947a3b4fda53.65395305.png" style="width:468pt; height:289.5pt"> </span></span></span></p>
+
+<h2 style="margin-top:3px"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal"><a name="_Toc71213721">Configure Jenkinsfile</a></span></span></span></span></span></h2>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will configure the provided Jenkinsfile to suit your project requirements, environment, build requirements, test requirements and deployment requirements. The Jenkinsfile included in this article contains code required to build HelloWorld.sh application, provision ad-hoc test environment in VMWare vCenter using <b>vCenter Compute – Deploy VM from template</b> service offering in HCMX, copy and test HelloWorld.sh script on the newly provisioned test environment, deprovision ad-hoc test environment through HCMX after testing is complete. The Jenkinsfile pipeline script is available for download in the Appendix section. This Jenkinsfile can be further enhanced to perform additional checks required for your environment, to improve performance, to use as a reference to develop it in other CICD applications, etc. Note that this Jenkinsfile is community contributed and not officially supported by Micro Focus. </span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">To configure the Jenkinsfile, follow the steps below:</span></span></span></p>
+
+<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc71213722">Create base Jenkinsfile</a></span></span></span></span></span></h3>
+
+<ol>
+	<li style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Copy contents of the Jenkinsfile from the <b>Appendix</b> section of this practitioner notes to a file.&nbsp; Save the file as Jenkinsfile.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"></p>
+
+<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc71213723">Update global environment variable values</a></span></span></span></span></span></h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will update the Jenkinsfile with global environment variable values that are applicable in your environment.</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Observe that the <b>environment</b> section in the Jenkinsfile has the following two sub-sections: Global environment variables and <a name="_Hlk70425302">HCMX offering specific environment variables</a>. In the <b>Global environment</b> <b>variables</b> section, update the following variable values and save the Jenkinsfile. </span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"></p>
+
+<p style="margin-bottom:11px; margin-left:48px"></p>
+
+<table class="MsoTableGrid" style="margin-left:48px; border-collapse:collapse; border:none">
+	<tbody>
+		<tr>
+			<td style="border-bottom:1px solid black; width:276px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Environment Variable Name</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:300px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Value</b></span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:276px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">HCMX_EXT_ACCESS_HOSTNAME</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:300px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Enter your environment’s HCMX external access hostname. The HCMX external access hostname is the fully qualified domain name portion of the HCMX tenant self-service portal URL. If HCMX tenant self-service URL is <a href="https://server.xyz.com/saw?TENANTID=616409711" style="color:#0563c1; text-decoration:underline">https://server.xyz.com/saw?TENANTID=616409711</a>, then HCMX external access hostname is server.xyz.com. The HCMX_EXT_ACCESS_HOSTNAME variable is a mandatory variable and must contain a value.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:276px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">HCMX_TENANT_ID</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:300px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Enter your environment’s HCMX tenant ID that has DND capability deployed in it. DND capability is required in a tenant to provision and manage VMs. HCMX DND capability will be used to provision VMs for creating an ad-hoc test environment and in which testing of the new build will be performed. After testing is complete, provisioned VMs are deleted so that resource usage on cloud provider is reduced, thereby reducing cloud expenses.&nbsp; If HCMX tenant ESS URL is <a href="https://server.xyz.com/saw?TENANTID=616409711" style="color:#0563c1; text-decoration:underline">https://server.xyz.com/saw?TENANTID=616409711</a>, then HCMX tenant ID is 616409711. The HCMX_TENANT_ID variable is a mandatory variable and must contain a value.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:276px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">USE_PROXY</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:300px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">If Jenkins needs a web proxy to reach HCMX, then set the USE_PROXY variable value to YES. The USE_PROXY variable is a mandatory variable and must contain a value. Possible values are YES and NO.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:276px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">PROXY_HOST</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:300px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Enter fully qualified domain name of web proxy server. If USE_PROXY variable is set to YES, then PROXY_HOST variable is a mandatory variable and must contain a value.</span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">If USE_PROXY variable is set to NO, then PROXY_HOST variable is optional.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:276px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">PROXY_PORT</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:300px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Enter web proxy port number. If USE_PROXY variable is set to YES, then PROXY_PORT variable is a mandatory variable and must contain a value. If USE_PROXY variable is set to NO, then PROXY_PORT variable is optional.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:276px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">PROXY_PROTOCOL</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:300px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Enter web proxy protocol. If USE_PROXY variable is set to YES, then PROXY_PROTOCOL variable is a mandatory variable and must contain a value. </span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">If USE_PROXY variable is set to NO, then PROXY_PROTOCOL variable is optional. Possible values are http and https.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:276px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">PROXY_REQUIRES_CREDENTIALS</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:300px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Enter YES if web proxy requires credentials, otherwise enter NO. If USE_PROXY variable is set to YES, then PROXY_REQUIRES_CREDENTIALS variable is a mandatory variable and must contain a value. If USE_PROXY variable is set to NO, then PROXY_REQUIRES_CREDENTIALS variable is optional. Possible values are YES and NO. </span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:276px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">HCMX_REQ_STATUS_CHK_INTERVAL_SECONDS</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:300px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Enter interval in seconds to check status of HCMX offering (VM or VM with software) deployment request in HCMX. After submission of a new request to deploy an HCMX offering, that offering's deployment may take longer than 5 minutes depending on cloud provider, networking and other constraints. Setting HCMX_REQ_STATUS_CHK_INTERVAL_SECONDS</span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">variable value to a very low value causes Jenkins to check status of offering deployment very frequently. Setting HCMX_REQ_STATUS_CHK_INTERVAL_SECONDS</span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">variable value to a high value causes Jenkins to check status of offering deployment very infrequently and hence longer time to complete the CICD pipeline. &nbsp;Default value is 30 seconds.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:276px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">HCMX_SUB_CANCEL_DELAY_SECONDS</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:300px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Enter time in seconds to wait before canceling the subscription after testing of build is complete. Once a subscription is canceled, the ad-hoc test environment’s virtual machines are deleted, and resources are released on the cloud provider.&nbsp; Set HCMX_SUB_CANCEL_DELAY_SECONDS variable to zero seconds if you are using it in production Jenkins environment. Set HCMX_SUB_CANCEL_DELAY_SECONDS variable to at-least 180 seconds if you are using it in a POC or demo environment so that the &nbsp;deployed ad-hoc test environment VMs are still available to show to the audience.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:276px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">HCMX_REQ_DEPLOY_TIMEOUT_SECONDS</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:300px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Enter time in seconds to wait for HCMX and its target cloud provider to provision the ad-hoc test environment.&nbsp; If HCMX and its target cloud provider takes longer than the timeout specified in HCMX_REQ_DEPLOY_TIMEOUT_SECONDS variable, exit the build.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:276px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">HCMX_REQ_TITLE</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:300px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Enter request title to use for the ad-hoc test environment deployment request in HCMX.</span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">HCMX_REQ_TITLE variable is a mandatory variable and must contain a value.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:276px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">HCMX_REQ_DESCRIPTION</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:300px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Enter request description to use for the ad-hoc test environment deployment request in HCMX. HCMX_REQ_DESCRIPTION variable is a mandatory variable and must contain a value.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:276px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">HCMX_SUB_NAME</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:300px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Enter subscription name to be used for the ad-hoc test environment deployment request in HCMX. A subscription associates’ user and their deployed services and/or assets. A subscription also has a start and end date.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:276px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">HCMX_SUB_DESCRIPTION</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:300px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Enter subscription description to be used for the ad-hoc test environment deployment request in HCMX. </span></span></span></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p style="margin-bottom:11px"></p>
+
+<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc71213724">Update HCMX offering specific environment variables</a></span></span></span></span></span></h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will </span></span></span></p>
+
+<ul>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Identify values from the <b>CreateRequest</b> payload that can be parameterized. </span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create variables in Jenkinsfile for those offering specific values that can be parameterized and generalized.</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Set default values for those HCMX offering specific variables in Jenkinsfile.</span></span></span></li>
+</ul>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">To create HCMX offering specific environment variables and set their default values in Jenkinsfile, follow the steps below:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Refer to the section, <b>Get CreateRequest payload for the offering from HCMX</b>, to derive create request payload for the offering that you would like to deploy to setup ad-hoc test environment. The CreateRequest API is used to submit a new offering deployment request in HCMX. A sample CreateRequest request payload for the <b>vCenter-Deploy VM from template</b> offering is as shown below. This request payload is color coded to group values and attributes based on their characteristic:</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">{</span></span></span></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">&nbsp; "entities": [</span></span></span></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">&nbsp;&nbsp;&nbsp; {</span></span></span></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "entity_type": "Request",</span></span></span></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "properties": {</span></span></span></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "<span style="background:yellow">RequestedForPerson</span>": "10015",</span></span></span></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "<span style="background:yellow">StartDate</span>": 1620068620741,</span></span></span></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "RequestsOffering": "10096",</span></span></span></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "CreationSource": "CreationSourceEss",</span></span></span></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "<span style="background:yellow">RequestedByPerson</span>": "10015",</span></span></span></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "DataDomains": [</span></span></span></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "Public"</span></span></span></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ],</span></span></span></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "UserOptions": "{\"complexTypeProperties\":[{\"properties\":{\"OptionSet0c6eb101a1a178c3c49c3badbc481f05_c\":{\"Option34c8d8d8403ac43361b8b8083004ef4a_c\":true},\"OptionSet2ee4a8f73fcd1606c1337172e8411e2a_c\":{\"Option19cd6cd22067142e0977622ed71ced7d_c\":true},\"OptionSet473C6F2BE6F45DB8381664FC9097BE37_c\":{\"Option2E8493EA9AC2821929DA64FC90978A98_c\":true},\"changedUserOptionsForSimulation\":\"PropertyvmCpuCount19cd6cd22067142e0977622ed71ced7d_c&amp;\",\"PropertyserverCount34c8d8d8403ac43361b8b8083004ef4a_c\":\"<span style="background:fuchsia">2</span>\",\"PropertyproviderId2E8493EA9AC2821929DA64FC90978A98_c\":\"2c908fac77eefca5017822299d726af6\",\"PropertydatacenterName2E8493EA9AC2821929DA64FC90978A98_c\":\"<span style="background:fuchsia">CAT</span>\",\"PropertyvirtualMachine2E8493EA9AC2821929DA64FC90978A98_c\":\"<span style="background:fuchsia">catvmlmdep_t***CentOS 4/5 or later (64-bit)</span>\",\"PropertycustomizationTemplateName2E8493EA9AC2821929DA64FC90978A98_c\":\"<span style="background:fuchsia">(Ts)catvmLinuxDHCP</span>\",\"PropertyvmNamePrefix2E8493EA9AC2821929DA64FC90978A98_c\":\"<span style="background:fuchsia">HelloWorld</span>\",\"Option19cd6cd22067142e0977622ed71ced7d_c\":true,\"Optionad52a8efe1465faa8c389ae92bf90d0c_c\":false,\"PropertyvmMemorySize19cd6cd22067142e0977622ed71ced7d_c\":\"<span style="background:fuchsia">2048</span>\",\"PropertyvmCpuCount19cd6cd22067142e0977622ed71ced7d_c\":\"<span style="background:fuchsia">2</span>\"}}]}",</span></span></span></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"<span style="background:lime">Description</span>": "&lt;p&gt;CICD Process - VMs for building ad-hoc test environment&lt;/p&gt;",</span></span></span></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "<span style="background:lime">RelatedSubscriptionName</span>": "HelloWorld Application",</span></span></span></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "<span style="background:lime">RelatedSubscriptionDescription</span>": "&lt;p&gt;HelloWorld Application VMs&lt;/p&gt;",</span></span></span></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "RequestAttachments": "{\"complexTypeProperties\":[]}",</span></span></span></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "<span style="background:lime">DisplayLabel</span>": "Request: vCenter Compute - Deploy VM from Template"</span></span></span></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></span></span></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">&nbsp;&nbsp;&nbsp; }</span></span></span></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">&nbsp; ],</span></span></span></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">&nbsp; "operation": "CREATE"</span></span></span></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">}</span></span></span></p>
+
+<p style="margin-left:48px"></p>
+
+<ol start="2">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The attribute names that are highlighted in <span style="background:yellow">yellow</span> color remain the same for all HCMX offerings. These attribute names have been already parameterized with variables in the Jenkinsfile. The table below shows the mapping of request payload attribute name and their corresponding variable names.</span></span></span></li>
+</ol>
+
+<table class="MsoTableGrid" style="margin-left:48px; border-collapse:collapse; border:none">
+	<tbody>
+		<tr>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Request payload attribute name</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Variable name</b></span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><span style="background:yellow">RequestedForPerson</span></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">HCMX_PERSON_ID</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><span style="background:yellow">StartDate</span></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">epochMilliSeconds</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><span style="background:yellow">RequestedByPerson</span></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">HCMX_PERSON_ID</span></span></span></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p style="margin-left:48px"></p>
+
+<ol start="3">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The values that are highlighted in <span style="background:fuchsia">pink</span> color are the offering specific values in the sample payload shown above. Identify the offering specific values that can be parameterized in your request payload. Create environment variables for those offering specific values that can be parameterized. Set meaningful default values for the HCMX offering specific environment variables. Note that the supplied Jenkinsfile has environment variables specific to the <b>vCenter – Deploy VM from template</b> HCMX offering. If you are using a different HCMX offering to setup ad-hoc test environment, remove these environment variables and replace with the variables that are specific to your HCMX offering request deployment payload values. The offering specific values are parameterized in the supplied Jenkinsfile with the following variables.</span></span></span></li>
+</ol>
+
+<table class="MsoTableGrid" style="margin-left:48px; border-collapse:collapse; border:none">
+	<tbody>
+		<tr>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Environment Variable Name</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Value</b></span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">HCMX_VCENTER_DATACENTER</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Enter VMWare vCenter data center name in which VM must be deployed.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">HCMX_VCENTER_VM_TEMPLATE</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Enter VMWare vCenter template name to be used for the deployment of VM.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">HCMX_VCENTER_VM_CUSTOMSPEC</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Enter VMWare vCenter custom specification name to be used for the deployment of VM.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">HCMX_VCENTER_VMNAME_PREFIX</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Enter VM name prefix to be used for the deployment of VM.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">HCMX_VCENTER_VM_MEMORY_SIZE_MB</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Enter memory size in MB to be used for the deployment of VM.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">HCMX_VCENTER_VM_NUM_CPU</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Enter number of CPUs to be used for the deployment of VM.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">HCMX_VCENTER_VM_NUM</span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Enter number of identical virtual machines to be deployed for the ad-hoc test environment.</span></span></span></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:white">The </span>attribute names that are highlighted in <span style="background:lime">green</span> color remain the same for all HCMX offerings. These attributes have been already parameterized in the global environment variables section of the Jenkinsfile. The attributes highlighted in green color are mapped to the global environment variables as follows:</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"></p>
+
+<table class="MsoTableGrid" style="margin-left:48px; border-collapse:collapse; border:none">
+	<tbody>
+		<tr>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Request payload attribute name</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Global environment variable name</b></span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><span style="background:lime">DisplayLabel</span></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">HCMX_REQ_TITLE</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><span style="background:lime">Description</span></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">HCMX_REQ_DESCRIPTION</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><span style="background:lime">RelatedSubscriptionName</span></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">HCMX_SUB_NAME</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><span style="background:lime">RelatedSubscriptionDescription</span></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">HCMX_SUB_DESCRIPTION</span></span></span></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<ol start="5">
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:white">The attributes and values that are not highlighted in any color have a constant value or they do </span>not need to be parameterized.</span></span></span></li>
+</ol>
+
+<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc71213725">Update build stage</a></span></span></span></span></span></h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, update Jenkinsfile to compile your code, install dependencies, perform unit test and integration tests. You may use maven, ant, etc to build your project. <a name="_Hlk71012254">In the supplied Jenkinsfile,</a> a simple HelloWorld.sh script is built. This HelloWorld.sh script prints "Hello World" and it is available for download in the <b>Appendix</b> section of this practitioner note. Replace the build stage code with the code specific to your build requirements. For example, you may need to use ant or maven to build your code.</span></span></span></p>
+
+<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc71213726">Update test stage</a></span></span></span></span></span></h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, update Jenkinsfile to perform user acceptance testing in an ad-hoc test environment. In the supplied Jenkinsfile, code necessary to provision and deprovision an ad-hoc test environment is included. The Jenkinsfile also includes code required to copy the HelloWorld.sh script to the ad-hoc test environment VMs and test the HelloWorld.sh script on the test environment VMs. Update test stage section of the Jenkinsfile with the following code changes:</span></span></span></p>
+
+<ul>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Change HCMX offering deployment request payload.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Update <b>Copy build to ad-hoc test environment</b> section to suite your project’s requirements.</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><a name="_Hlk71021249">Update <b>Test build in ad-hoc test environment</b> section</a> to suite your project’s requirements.</span></span></span></li>
+</ul>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><a name="_Toc71213727"><span class="Heading4Char" style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-style:italic">Change HCMX offering deployment request API payload</span></span></span></a></span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The HCMX offering deployment request API payload varies from one offering to another offering. The HCMX offering deployment request API payload also varies from one HCMX environment to another HCMX environment for the same offering. The Jenkinsfile included in this practitioner note has the deployment request API payload for the <b>vCenter compute – Deploy VM from template</b> HCMX offering. This request payload must be changed to reflect your environment and/or your HCMX offering. To change the HCMX offering deployment request payload, follow the steps below:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><a name="_Hlk71015713"> Open the Jenkinsfile in a text editor of your choice.</a></span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The Jenkinsfile has code to deploy ad-hoc test environment below the following commented text DEPLOY_ADHOC_TEST_ENVIRONMENT_REQUEST_USING_HCMX_OFFERING</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Search for the following text: DEPLOY_ADHOC_TEST_ENVIRONMENT_REQUEST_USING_HCMX_OFFERING</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Understand various variables used and structure of the existing deployment request API call in the <b>if</b> block and <b>else</b> block. Note that backspaces are used to escape backspace character in the <b>UserOptions</b> attribute. Refer to the <b>Get CreateRequest payload for the offering from HCMX</b> section to get request payload specific to your offering. Refer to the <b>Global environment variables </b>and <b>HCMX offering specific environment variables </b>sections on how to identify, parameterize and create variables. </span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Replace existing offering deployment request API call with your offering deployment request signature in the <b>if</b> block and <b>else</b> block. Also use appropriate variables for the values that have been parameterized. Use backspace to escape backspaces that are used in the API signature where necessary.&nbsp; </span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Save Jenkinsfile.</span></span></span></li>
+</ol>
+
+<h4 style="margin-top:3px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal"><span style="font-style:italic"><a name="_Toc71213728">Update “Copy build to ad-hoc test environment” section</a></span></span></span></span></span></span></h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The Jenkinsfile included in this practitioner note copies the <b>build</b> directory to /tmp directory on the newly deployed VMs in the ad-hoc test environment. To change what is copied from the Jenkins server, the target directory on the VMs in ad-hoc test environment, and to setup additional dependencies on target VMs, follow the steps below:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><a name="_Hlk71030739"> Open the Jenkinsfile in a text editor of your choice.</a></span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The Jenkinsfile has code to copy build to the ad-hoc test environment below the following commented text COPY_BUILD_TO_ADHOC_TEST_ENVIRONMENT</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Search for the following text: COPY_BUILD_TO_ADHOC_TEST_ENVIRONMENT</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Modify existing code to suite your requirements to copy build to the VMs in ad-hoc test environment. You can also include additional code to setup further dependencies in the target test environment. </span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Save Jenkinsfile.</span></span></span></li>
+</ol>
+
+<h4 style="margin-top:3px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal"><span style="font-style:italic"><a name="_Toc71213729">Update “Test build in ad-hoc test environment” section</a></span></span></span></span></span></span></h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The Jenkinsfile included in this practitioner note tests the HelloWorld.sh script on the newly deployed VM(s) in ad-hoc test environment. To change how testing of your build is done on the deployed VMs in ad-hoc test environment, follow the steps below:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Open the Jenkinsfile in a text editor of your choice.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The Jenkinsfile has the code to test build in the ad-hoc test environment below the following commented text TEST_BUILD_IN_ADHOC_TEST_ENVIRONMENT</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Search for the following text: TEST_BUILD_IN_ADHOC_TEST_ENVIRONMENT</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Modify existing code to suite your testing requirements in the ad-hoc test environment. </span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Save Jenkinsfile.</span></span></span></li>
+</ol>
+
+<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc71213730">Update deploy stage</a></span></span></span></span></span></h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will update Jenkinsfile to deploy tested build to the production environment. The Jenkinsfile included in this practitioner note does not have code to deploy build to the production environment. Use of this deploy stage is optional. If your project has a requirement to deploy code changes without approval to the production environment after code has been built and test, write code that takes the tested build and deploys it into production environment.</span></span></span></p>
+
+<p style="margin-bottom:11px"></p>
+
+<h2 style="margin-top:3px"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal"><a name="_Toc71213731">Prepare VM template to be used to create VMs in ad-hoc test environment</a></span></span></span></span></span></h2>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create a VM with all required software dependencies, network and hardware configuration, etc that are required to test your project and/or application.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the Linux virtual machine running Jenkins server.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Switch user to the account under which Jenkins server is running. Usually, this is <b>jenkins</b> user account.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Run the following command to generate SSH key-pair: <b>ssh-keygen -t rsa</b></span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The command generates a private key in the file named ~/.ssh/id_rsa and a public key in the file named ~/.ssh/id_rsa.pub</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the VM created in step 1 with an operating system (OS) user account that would be used to run application tests in CICD pipeline. </span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Add contents of the public key that was created in step 4 to the ~/.ssh/authorized_keys file in the OS user account that would be used to run tests.</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Convert virtual machine to a template. Name the VM template with your project name for easier identification</span></span></span></li>
+</ol>
+
+<h2 style="margin-top:3px"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal"><a name="_Toc71213732">Setup Git repository</a></span></span></span></span></span></h2>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create a new Git repository or use an existing Git repository.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Upload the following files to the root of Git repository:</span></span></span></li>
+</ol>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">HelloWorld.sh (Included as a sample code in this practitioner note. Replace it with your project’s directory structure and code)</span></span></span></li>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Updated Jenkinsfile from earlier sections</span></span></span></li>
+</ul>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The Git repository for the sample Hello World application use case described in this practitioner note is as shown below:</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px; margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, text, application, email, website
+
+Description automatically generated" id="Picture_x0020_8" src="/mediawiki/images/pn_images/pn_image_60947a3bc0b3f9.62806097.png" style="width:467.25pt; height:277.5pt"> </span></span></span></p>
+
+<h2 style="margin-top:3px"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal"><a name="_Toc71213733">Setup Jenkins</a></span></span></span></span></span></h2>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will configure credentials in Jenkins to provide access to Github repository, HCMX and web-proxy, create a pipeline project to run CICD process and approve script/signatures used in the Jenkinsfile.</span></span></span></p>
+
+<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc71213734">Add credentials in Jenkins to access Git repository</a></span></span></span></span></span></h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The following methods are commonly used to access Git repository from Jenkins:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Username and password: In this method, Git username and password are stored as credentials in Jenkins.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">SSH username and its keys: In this method, SSH key pair is generated. Public key is stored on the Git server. Private key is stored as credentials in Jenkins.</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Personal access token: In this method, a personal access token is generated in Git. This personal access token is then stored as a credential in Jenkins.</span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Based on your organization requirements, select any one of the above methods and create credentials in Jenkins to access Git repository.</span></span></span></p>
+
+<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc71213735">Add credentials in Jenkins to access HCMX</a></span></span></span></span></span></h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Add credentials in Jenkins with the following details:</span></span></span></p>
+
+<table class="MsoTableGrid" style="border-collapse:collapse; border:none">
+	<tbody>
+		<tr>
+			<td style="border-bottom:1px solid black; width:126px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Credential ID</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:498px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">HCMXUser</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:126px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Scope</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:498px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Global (Jenkins, nodes, items, all child items, etc)</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:126px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Credential Type</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:498px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Username with password</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:126px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Username</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:498px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Integ_Jenkins_HCMX (Or other username that you have created in HCMX for integration with Jenkins)</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:126px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Password</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:498px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Password of <b>Integ_Jenkins_HCMX</b> user.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:126px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Description</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:498px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">HCMX User</span></span></span></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p style="margin-bottom:11px"></p>
+
+<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc71213736">Add credentials in Jenkins to access web proxy</a></span></span></span></span></span></h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Add credentials in Jenkins with the following details:</span></span></span></p>
+
+<table class="MsoTableGrid" style="border-collapse:collapse; border:none">
+	<tbody>
+		<tr>
+			<td style="border-bottom:1px solid black; width:126px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Credential ID</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:498px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">ProxyCred</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:126px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Scope</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:498px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Global (Jenkins, nodes, items, all child items, etc)</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:126px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Credential Type</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:498px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Username with password</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:126px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Username</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:498px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">If credentials are required to access web proxy, then type in proxy user name. If credentials are not required to access web proxy, then type <b>anonymous</b>. </span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:126px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Password</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:498px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">If credentials are required to access web proxy, then type in proxy user password. If credentials are not required to access web proxy, then leave it blank.</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:126px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><b>Description</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:498px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Proxy credentials</span></span></span></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p style="margin-bottom:11px"></p>
+
+<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc71213737">Create or update pipeline project</a></span></span></span></span></span></h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create a new pipeline project or modify existing pipeline project to point to the updated Jenkinsfile. You can define pipeline script (Jenkinsfile) right within Jenkins or get pipeline script from SCM for every new build. If you source pipeline script from SCM, select SCM type, provide credentials to access SCM and project repository, and provide path to the Jenkinsfile on the repository. You can configure the pipeline project to periodically poll SCM for any changes and start a new build OR associate a webhook in Git repository to initiate a new build in Jenkins OR manually start a build in Jenkins.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">For the sample Hello World application use case described in this practitioner note, screenshot for the pipeline project configuration in Jenkins is as shown below:</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application
+
+Description automatically generated" id="Picture_x0020_9" src="/mediawiki/images/pn_images/pn_image_60947a3c46eaa7.74280793.png" style="width:468pt; height:300.75pt"> </span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application
+
+Description automatically generated" id="Picture_x0020_10" src="/mediawiki/images/pn_images/pn_image_60947a3cbf2ae8.70144588.png" style="width:468pt; height:221.25pt"> </span></span></span></p>
+
+<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc71213738">Run build</a> </span></span></span></span></span></h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">After the new project has been created or existing project has been updated, run build to test the entire CICD process. Update Jenkinsfile to fix any issues you might experience. Once all issues have been fixed, allow developers to use the Jenkins pipeline to build code, provision ad-hoc test environment, test, de-provision ad-hoc test environment and deploy code to production. </span></span></span></p>
+
+<h4 style="margin-top:3px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal"><span style="font-style:italic"><a name="_Toc71213739">Script approvals</a></span></span></span></span></span></span></h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">When a new build is run, the build will fail until the following scripts/signatures are approved:</span></span></span></p>
+
+<ul>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">method groovy.json.JsonSlurperClassic parseText java.lang.String</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">new groovy.json.JsonSlurperClassic</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">new java.util.ArrayList</span></span></span></li>
+</ul>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">After the above signatures are approved, build will not fail pending script approvals.</span></span></span></p>
+
+<h2 style="margin-top:3px"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal"><a name="_Toc71213740">Use solution</a></span></span></span></span></span></h2>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">This practitioner note includes HelloWorld.sh script and the pipeline script, Jenkinsfile. The Jenkinsfile builds HelloWorld application, provisions an ad-hoc test environment in HCMX, tests HelloWorld application in the newly provisioned ad-hoc test environment and deprovisions the ad-hoc test environment. Prior to using this solution, follow steps described in earlier sections to implement and configure this solution. To use this solution, follow the steps below:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to Jenkins Application.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">For this use case, update the following environment variable values in Jenkinsfile.</span></span></span></li>
+</ol>
+
+<ul>
+	<li style="margin-left:56px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Set HCMX_VCENTER_VM_NUM environment variable value to 2 in Jenkinsfile. This forces HCMX to create 2 identical VMs in ad-hoc test environment. </span></span></span></li>
+	<li style="margin-left:56px; margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Set HCMX_SUB_CANCEL_DELAY_SECONDS to 240 so that there is time to take screenshots of provisioned VMs in ad-hoc test environment. Otherwise, ad-hoc test environment is deprovisioned as soon as testing is complete.</span></span></span></li>
+</ul>
+
+<p style="text-indent:.5in; margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Commit Jenkinsfile to Git repository.</span></span></span></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Click <b>Build Now</b> in the pipeline project. &nbsp;Note that a code change in Git repository can be configured to trigger a build in Jenkins or Jenkins can be configured to periodically poll SCM for code changes and trigger a build.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application
+
+Description automatically generated" id="Picture_x0020_11" src="/mediawiki/images/pn_images/pn_image_60947a3d2be889.42339931.png" style="width:468pt; height:243.75pt"> </span></span></span></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Jenkins retrieves project code including Jenkinsfile from the Git repository. Builds the project. In the test stage, provisions an ad-hoc test environment in vCenter using HCMX to test the code changes.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application
+
+Description automatically generated" id="Picture_x0020_12" src="/mediawiki/images/pn_images/pn_image_60947a3d7568c4.01240589.png" style="width:468pt; height:132.75pt"> </span></span></span></p>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Once ad-hoc test environment in vCenter is built, the following VMs appear in vCenter. Note that 2 identical VMs have been provisioned in ad-hoc test environment. The number of identical VMs needed for an ad-hoc test environment is configurable. Refer to the <b>Update HCMX offering specific environment variables</b> section for more details.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application
+
+Description automatically generated" id="Picture_x0020_13" src="/mediawiki/images/pn_images/pn_image_60947a3db8b8e3.63495891.png" style="width:468pt; height:315pt"> </span></span></span></p>
+
+<ol start="6">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The HCMX ESS portal also displays the 2 new virtual machines that were provisioned for the ad-hoc test environment.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Graphical user interface, application, Word
+
+Description automatically generated" id="Picture_x0020_15" src="/mediawiki/images/pn_images/pn_image_60947a3ee55bc8.82363633.png" style="width:468pt; height:285pt"> </span></span></span></p>
+
+<ol start="7">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">After the ad-hoc test environment is built, Jenkins copies the build to the VMs in ad-hoc test environment. The screenshots below show the HelloWorld build copied to the two virtual machines. Note that the last number in version number matches with the build number.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"></p>
+
+<p style="margin-bottom:11px; margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Text
+
+Description automatically generated" id="Picture_x0020_16" src="/mediawiki/images/pn_images/pn_image_60947a3f45e9f3.33606342.png" style="width:468pt; height:143.25pt"> </span></span></span></p>
+
+<p style="margin-bottom:11px"></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img alt="Text
+
+Description automatically generated" id="Picture_x0020_17" src="/mediawiki/images/pn_images/pn_image_60947a3f9762b0.39066089.png" style="width:468pt; height:129.75pt"> </span></span></span></p>
+
+<ol start="8">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Tests are performed in the ad-hoc test environment. After testing is complete, the ad-hoc test environment is de-provisioned using HCMX and the resources are released to the cloud provider. If testing is successful, pipeline moves to the <b>Deploy </b>stage.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the <b>Deploy</b> stage, the supplied Jenkinsfile does not deploy code changes to the production environment and completes execution of pipeline code. In the screenshot below, the build number 125 took 4 minutes 10 seconds longer in test stage when compared to build number 124. This is due to higher delay seconds set for build number 125 in Jenkinsfile in the following variable: HCMX_SUB_CANCEL_DELAY_SECONDS. A higher delay seconds was set so that screenshots of ad-hoc test environment could be taken for development of this practitioner note before auto deprovisioning of the ad-hoc test environment.</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">&nbsp;</span></span></span></p>
+
+<p style="margin-bottom:11px; margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img id="Picture_x0020_18" src="/mediawiki/images/pn_images/pn_image_60947a4018c9a7.55543403.png" style="width:468.75pt; height:168.75pt"> </span></span></span></p>
+
+<h2 style="margin-top:3px"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal"><a name="_Toc71213741">References</a></span></span></span></span></span></h2>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><a href="https://aws.amazon.com/devops/what-is-devops/" style="color:#0563c1; text-decoration:underline">https://aws.amazon.com/devops/what-is-devops/</a></span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><a href="https://jenkins.io" style="color:#0563c1; text-decoration:underline">https://jenkins.io</a></span></span></span></li>
+</ol>
+
+<p style="margin-bottom:11px"><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Appendix</span></span></span></p>
+</html>
