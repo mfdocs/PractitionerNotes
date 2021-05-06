@@ -83,10 +83,10 @@
 </ol>
 
 <h2>Implement solution</h2>
+
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">To implement this solution to use HCMX to provision and deprovision an ad-hoc testing environment in the CICD process, follow the steps below:</span></span></span></p>
 
-
-<h3 style="margin-top:3px"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal">Create a user in HCMX</span></span></span></span></span></h3>
+<h3>Create a user in HCMX</h3>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will create a new user with appropriate roles in HCMX. This new user’s credentials are used by Jenkins to provision and deprovision ad-hoc test environment in HCMX.</span></span></span></p>
 
@@ -132,7 +132,7 @@ Description automatically generated" id="Picture_x0020_5" src="/mediawiki/images
 	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Assign other appropriate roles to the <b>Integ_Jenkins_HCMX</b> user such that all HCMX cloud service offerings are visible to the <b>Integ_Jenkins_HCMX</b> user in HCMX ESS portal.</span></span></span></li>
 </ol>
 
-<h2 style="margin-top:3px"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal"><a name="_Toc71213720">Get CreateRequest payload for the offering from HCMX</a></span></span></span></span></span></h2>
+<h3>Get CreateRequest payload for the offering from HCMX</h3>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will get <b>CreateRequest</b> payload for the HCMX offering that you would like to deploy to create an ad-hoc test environment using CICD process. The CreateRequest REST API is used to create a new request from one of the exposed HCMX offerings.</span></span></span></p>
 
@@ -157,13 +157,13 @@ Description automatically generated" id="Picture_x0020_1" src="/mediawiki/images
 
 Description automatically generated" id="Picture_x0020_2" src="/mediawiki/images/pn_images/pn_image_60947a3b4fda53.65395305.png" style="width:468pt; height:289.5pt"> </span></span></span></p>
 
-<h2 style="margin-top:3px"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal"><a name="_Toc71213721">Configure Jenkinsfile</a></span></span></span></span></span></h2>
+<h3>Configure Jenkinsfile</h3>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will configure the provided Jenkinsfile to suit your project requirements, environment, build requirements, test requirements and deployment requirements. The Jenkinsfile included in this article contains code required to build HelloWorld.sh application, provision ad-hoc test environment in VMWare vCenter using <b>vCenter Compute – Deploy VM from template</b> service offering in HCMX, copy and test HelloWorld.sh script on the newly provisioned test environment, deprovision ad-hoc test environment through HCMX after testing is complete. The Jenkinsfile pipeline script is available for download in the Appendix section. This Jenkinsfile can be further enhanced to perform additional checks required for your environment, to improve performance, to use as a reference to develop it in other CICD applications, etc. Note that this Jenkinsfile is community contributed and not officially supported by Micro Focus. </span></span></span></p>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">To configure the Jenkinsfile, follow the steps below:</span></span></span></p>
 
-<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc71213722">Create base Jenkinsfile</a></span></span></span></span></span></h3>
+<h4>Create base Jenkinsfile</h4>
 
 <ol>
 	<li style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Copy contents of the Jenkinsfile from the <b>Appendix</b> section of this practitioner notes to a file.&nbsp; Save the file as Jenkinsfile.</span></span></span></li>
@@ -171,7 +171,7 @@ Description automatically generated" id="Picture_x0020_2" src="/mediawiki/images
 
 <p style="margin-bottom:11px"></p>
 
-<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc71213723">Update global environment variable values</a></span></span></span></span></span></h3>
+<h4>Update global environment variable values</h4>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will update the Jenkinsfile with global environment variable values that are applicable in your environment.</span></span></span></p>
 
@@ -320,7 +320,7 @@ Description automatically generated" id="Picture_x0020_2" src="/mediawiki/images
 
 <p style="margin-bottom:11px"></p>
 
-<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc71213724">Update HCMX offering specific environment variables</a></span></span></span></span></span></h3>
+<h4>Update HCMX offering specific environment variables</h4>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will </span></span></span></p>
 
