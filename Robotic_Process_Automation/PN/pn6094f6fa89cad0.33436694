@@ -1,1 +1,249 @@
- 
+<html><div class="mw-parser-output">
+<p>&nbsp;This topic describes the steps to configure SAML authentication using an IDM Admin console in Robotic Process Automation (RPA) Workflow Designer.</p>
+
+<h2 id="Create_an_authentication_type">Create an authentication type</h2>
+
+<ol>
+	<li>From the&nbsp;<strong>ORGANIZATION</strong>&nbsp;menu, select the&nbsp;<strong>Authentication</strong>&nbsp;tab, and then click&nbsp;&nbsp; <img alt="" border="1" file="https://docs.microfocus.com/mediawiki/images/8/8f/RPA_2021.02_addIdMUser.PNG" height="23" hspace="0" src="https://docs.microfocus.com/mediawiki/images/8/8f/RPA_2021.02_addIdMUser.PNG" vspace="0" width="27"> &nbsp;.&nbsp;</li>
+	<li>In the&nbsp;<strong>CREATE AUTHENTICATION</strong>&nbsp;dialog, click the&nbsp;<strong>Select authentication type</strong>&nbsp;drop-down list box and then select <strong>SAML</strong> as the authentication type.</li>
+</ol>
+
+<h2>Set up SAML authentication</h2>
+
+<p>You can enable SAML integration with IdM as a service provider.</p>
+
+<h3 id="Prerequisite">Prerequisites</h3>
+
+<ul>
+	<li>Download IdM SAML metadata</li>
+	<li>Download the&nbsp;IdP SAML metadata or certificate</li>
+	<li>Configure any of the following certified Identity Providers (IdP)
+	<ul>
+		<li>Microsoft ADFS 3.0 or higher</li>
+		<li>Oracle Identity and Access Management 12 or higher</li>
+		<li>Ping Federate 9.1 or higher</li>
+		<li>Shibboleth 3.2 or higher</li>
+	</ul>
+	</li>
+	<li>Configure the SAML server settings in IdM Admin console</li>
+</ul>
+
+<ol start="1">
+</ol>
+
+<h3>Download IdM SAML metadata</h3>
+
+<ol>
+	<li>
+	<p>Open the&nbsp;IdM&nbsp;service URL&nbsp;in a browser</p>
+	</li>
+	<li>
+	<p>Download the IdM SAML metadata as one file by&nbsp;replacing&nbsp;the&nbsp;<code>external_access_host_FQDN</code>&nbsp;with your actual external access host.<br>
+	For example,&nbsp;download the file&nbsp;<code>spring_saml_metadata.xml</code>&nbsp;from&nbsp;<code>https://&lt;external_access_host_FQDN&gt;:&lt;external_access_host_PORT&gt;/idm-service/saml/metadata</code>.</p>
+
+	<div class="Admonition_Note">The FQDN of the download URL of&nbsp;the IdM SAML metadata file shown above must be the FQDN&nbsp;which the user would access in the browser.</div>
+
+	<p>If there is a load balance mechanism or short URL mechanism in your setup, it means IdM is mapped to multiple domains. For example, if both,&nbsp;<code>commonurl.example.com</code>&nbsp;and&nbsp;<code>shorturl.example.com</code>&nbsp;are mapped to the same IdM and can be accessed externally by the user, then you need to download IdM SAML metadata files and import them to IDP Server for all.<br>
+	Here is a&nbsp;<code>spring_saml_metadata.xml</code>&nbsp;file downloaded from&nbsp;<code>https://commonurl.example.com/idm-service/saml/metadata</code>&nbsp;as an example. You can see that the&nbsp;<code>entityID</code>&nbsp;of the content is the file downloading URL, so if you have another URL, for example,&nbsp;<code>https://shorturl.example.com/idm-service/saml/metadata</code>&nbsp;that's also mapped&nbsp;to the same IdM, then you need to download the metadata file and verify that the&nbsp;<code>entityID</code>&nbsp;is same to&nbsp;<code>https://shorturl.example.com/idm-service/saml/metadata</code>&nbsp;and import that to IDP server as well.</p>
+
+	<table>
+		<thead>
+			<tr>
+				<td valign="top">
+				<p><b>Sample content of&nbsp;IdM SAML metadata file (spring_saml_metadata.xml)</b></p>
+				</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td valign="top">
+				<p><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>
+				&lt;md:EntityDescriptor ID="https___<a href="http://commonurl.example.com/">commonurl.example.com</a>_idm-service_saml_metadata" entityID="<a href="https://us2-smax.saas.microfocus.com/idm-service/saml/metadata">https://</a><b><a href="http://commonurl.example.com/">commonurl.example.com</a></b><a href="https://us2-smax.saas.microfocus.com/idm-service/saml/metadata">/idm-service/saml/metadata</a>" xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"&gt;&lt;md:SPSSODescriptor AuthnRequestsSigned="true" WantAssertionsSigned="true" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol"&gt;&lt;md:KeyDescriptor use="signing"&gt;&lt;ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#"&gt;&lt;ds:X509Data&gt;&lt;ds:X509Certificate&gt;MIIDITCCAgmgAwIBAgIJAMeWRG66FpmQMA0GCSqGSIb3DQEBCwUAMCcxJTAjBgNVBAMMHHVzMi1z<br>
+				bWF4LnNhYXMubWljcm9mb2N1cy5jb20wHhcNMTgxMTE0MDkyOTAwWhcNMjgxMTExMDkyOTAwWjAnMSUwIwYDVQQDDBx1czItc21heC5zYWFzLm1pY3JvZm9jdXMuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvzFiqrQ2Wek74eTJq6lqkwJtI5h0Qh/DtmjLBiDtp57potk8A5VcM78p<br>
+				mwd//KZvlbAqn2huc6hP2bixUsZ3gEneNBOMTiYt147sKaMBF0tkn1TyiexfsMjAXP+PdN1EkWvXseUaVNG+aoA3nJ8ET/NmStiGuXEw2H7DrkfmkxaAEJkW2V2unSCGTpsZE428wK2jAu7Y3VMgMMQCjTXh3gZI+X1mFUxJ3QCBe6ute3FtkeZ+mztfkxsMUNRzrMUht/wkW/yb3/iYfKV247ln2AX0ErTq<br>
+				0zC+u4LL5rowu3rDeQ8SLG1NoB/ykaFoPwchz9DRhtAxZECFFo9GaIbdfwIDAQABo1AwTjAdBgNVHQ4EFgQUYcYVPTrmoLmyeD8bGZ/8LFimn10wHwYDVR0jBBgwFoAUYcYVPTrmoLmyeD8bGZ/8LFimn10wDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAMMQ7sZg9qbQ/HJQsP98TDNcEAE2/<br>
+				5zbfN9+cnarc8dioSJ1zHQDN9XsD9OrKucAiIAfE3ZYFVb+OHbBHp+OnAvw7Cf5eGpKXbTKjxwOUx6Nmnq/YS11aABEJCLsBWKWTI3WEXNC3hxzEp6CcWQs3i2GkU8uanfLE93d/sGZK79O3aUo+Mve/p0duW1ldpKIJuBHw/VMc9ZfspC3rRoWbnCwOc4/N/64ppmpNHra8uX4J9tYu+5iCWo6tPewEf1iZ<br>
+				fobannf7WeB94voe1KPBuWrNPa8rovvFUFybPAI7zQOnkcZvdrTHPTCX9nFWgKKJEi+7UdIdaAbbxU6TAThERg==&lt;/ds:X509Certificate&gt;&lt;/ds:X509Data&gt;&lt;/ds:KeyInfo&gt;&lt;/md:KeyDescriptor&gt;&lt;md:KeyDescriptor use="encryption"&gt;&lt;ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#"&gt;&lt;ds:X509Data&gt;&lt;ds:X509Certificate&gt;MIIDITCCAgmgAwIBAgIJAMeWRG66FpmQMA0GCSqGSIb3DQEBCwUAMCcxJTAjBgNVBAMMHHVzMi1zbWF4LnNhYXMubWljcm9mb2N1cy5jb20wHhcNMTgxMTE0MDkyOTAwWhcNMjgxMTExMDkyOTAwWjAnMSUwIwYDVQQDDBx1czItc21heC5zYWFzLm1pY3JvZm9jdXMuY29tMIIBIjANBgkqhkiG9w0BAQEF<br>
+				AAOCAQ8AMIIBCgKCAQEAvzFiqrQ2Wek74eTJq6lqkwJtI5h0Qh/DtmjLBiDtp57potk8A5VcM78pmwd//KZvlbAqn2huc6hP2bixUsZ3gEneNBOMTiYt147sKaMBF0tkn1TyiexfsMjAXP+PdN1EkWvXseUaVNG+aoA3nJ8ET/NmStiGuXEw2H7DrkfmkxaAEJkW2V2unSCGTpsZE428wK2jAu7Y3VMgMMQC<br>
+				jTXh3gZI+X1mFUxJ3QCBe6ute3FtkeZ+mztfkxsMUNRzrMUht/wkW/yb3/iYfKV247ln2AX0ErTq0zC+u4LL5rowu3rDeQ8SLG1NoB/ykaFoPwchz9DRhtAxZECFFo9GaIbdfwIDAQABo1AwTjAdBgNVHQ4EFgQUYcYVPTrmoLmyeD8bGZ/8LFimn10wHwYDVR0jBBgwFoAUYcYVPTrmoLmyeD8bGZ/8LFim<br>
+				n10wDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAMMQ7sZg9qbQ/HJQsP98TDNcEAE2/5zbfN9+cnarc8dioSJ1zHQDN9XsD9OrKucAiIAfE3ZYFVb+OHbBHp+OnAvw7Cf5eGpKXbTKjxwOUx6Nmnq/YS11aABEJCLsBWKWTI3WEXNC3hxzEp6CcWQs3i2GkU8uanfLE93d/sGZK79O3aUo+Mve/<br>
+				p0duW1ldpKIJuBHw/VMc9ZfspC3rRoWbnCwOc4/N/64ppmpNHra8uX4J9tYu+5iCWo6tPewEf1iZfobannf7WeB94voe1KPBuWrNPa8rovvFUFybPAI7zQOnkcZvdrTHPTCX9nFWgKKJEi+7UdIdaAbbxU6TAThERg==&lt;/ds:X509Certificate&gt;&lt;/ds:X509Data&gt;&lt;/ds:KeyInfo&gt;&lt;/md:KeyDescriptor&gt;&lt;md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://<b><a href="http://commonurl.example.com/">commonurl.example.com</a></b>/idm-service/saml/SingleLogout"/&gt;&lt;md:SingleLogoutService&nbsp;Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://<b><a href="http://commonurl.example.com/">commonurl.example.com</a></b>/idm-service/saml/SingleLogout"/&gt;&lt;md:NameIDFormat&gt;urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress&lt;/md:NameIDFormat&gt;&lt;md:NameIDFormat&gt;urn:oasis:names:tc:SAML:2.0:nameid-format:transient&lt;/md:NameIDFormat&gt;&lt;md:NameIDFormat&gt;urn:oasis:names:tc:SAML:2.0:nameid-format:persistent&lt;/md:NameIDFormat&gt;&lt;md:NameIDFormat&gt;urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified&lt;/md:NameIDFormat&gt;&lt;md:NameIDFormat&gt;urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName&lt;/md:NameIDFormat&gt;&lt;md:AssertionConsumerService&nbsp;Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="<a href="https://us2-smax.saas.microfocus.com/idm-service/saml/SSO">https://</a><b><a href="http://commonurl.example.com/">commonurl.example.com</a></b><a href="https://us2-smax.saas.microfocus.com/idm-service/saml/SSO">/idm-service/saml/SSO</a>" index="0" isDefault="true"/&gt;&lt;md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="<a href="https://us2-smax.saas.microfocus.com/idm-service/saml/SSO">https://</a><b><a href="http://commonurl.example.com/">commonurl.example.com</a></b><a href="https://us2-smax.saas.microfocus.com/idm-service/saml/SSO">/idm-service/saml/SSO</a>" index="1"/&gt;&lt;/md:SPSSODescriptor&gt;&lt;/md:EntityDescriptor&gt;</code></p>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	</li>
+	<li>
+	<p>Import the downloaded IdM SAML metadata to IDP server.&nbsp;</p>
+	</li>
+</ol>
+
+<h3>Download&nbsp;the IdP SAML metadata certificate<a id="idpcertificate" name="idpcertificate"></a></h3>
+
+<p>To download the IdP SAML metadata certificate:</p>
+
+<ol>
+	<li>Go to the ADFS console and type in <var>IIS Manager</var>&nbsp;in the <strong>Search Windows</strong>&nbsp;box.</li>
+	<li>Select <strong>Internet Information Services (IIS) Manager</strong> and then expand the&nbsp;<strong>Sites</strong>&nbsp;folder and then right-click&nbsp;<strong>Default Web Site</strong>.</li>
+	<li>In the <strong>Site&nbsp;Bindings window, </strong>select&nbsp;<strong>HTTPS </strong>under <strong>Type </strong>and then <strong>click&nbsp;Edit...</strong> to edit the bindings.</li>
+	<li>In the <strong>Edit Site Binding</strong> window,&nbsp;from the <strong>SSL Certificate</strong> area, click <strong>Select...</strong> to select the certificate.</li>
+	<li>In the <strong>Select Certificate </strong>window, click <strong>View </strong>to view the certificate.</li>
+	<li>In the <strong>Certificate</strong> dialog, click <strong>Details </strong>tab and then click <strong>Copy to file... </strong>to launch the Certificate Export Wizard.</li>
+	<li>In the <strong>Certificate Export Wizard</strong> dialog, leave the default selection <strong>No, do not export the private key</strong> option, and then click <strong>Next.</strong></li>
+	<li>Select the <strong>Base-6 encoded.X.509 (.CER)</strong> format and then click<strong> Next.</strong></li>
+	<li>Specify the <strong>name for the certificate</strong> and click <strong>Browse</strong> to save the certificate with the custom name. The certificate is downloaded to be used during SAML configuration in IdM console.</li>
+</ol>
+
+<h3>Configure the Microsoft ADFS as an Identity Provider</h3>
+
+<p>The following steps use Microsoft ADFS 4.0 as an example for Identity Provider.</p>
+
+<h3>Create a relying party</h3>
+
+<p>To create a relying party:</p>
+
+<ol start="1">
+	<li>
+	<p>Launch the ADFS Management console and then&nbsp;click <strong>Relying Party Trusts.</strong></p>
+	</li>
+	<li>
+	<p>Select&nbsp;<strong>Add Relying Party Trust...</strong>&nbsp;from the right top corner under the&nbsp;<strong>Actions</strong> window. A wizard to add relying party is launched.</p>
+	</li>
+	<li>On the <strong>Add Relying Party Trusts Wizard</strong> dialog, select <strong>Claims Aware</strong> and then click <strong>Start</strong>.</li>
+	<li>On the <strong>Select Data Source</strong> window, select&nbsp;<strong>Import data about the relying party from a file</strong> option<strong>.</strong>
+	<ol start="1" style="list-style-type: lower-alpha;">
+		<li>Click <strong>Browse</strong> to navigate and select the downloaded IdM metadata file from the previous topic and then click&nbsp;<strong>Next</strong>.</li>
+		<li>If the wizard displays a warning message indicating some content in the metadata isn't supported. You may ignore the warning and click&nbsp;<strong>OK</strong>&nbsp;to continue.</li>
+	</ol>
+	</li>
+	<li>On the <strong>Specify Display Name</strong>&nbsp;window, enter the IdM service name with optional notes, if needed, and then click <strong>Next</strong>.<br>
+	For example, <code>RPA_Workflow_Designer</code> for IdM service name.</li>
+	<li>On the <strong>Choose Access Control Policy</strong> window, select&nbsp;<strong>Permit everyone</strong>&nbsp;to grant all users to access this relying party and then&nbsp;click&nbsp;<strong>Next</strong>.</li>
+	<li>On the <strong>Ready to Add Trust</strong> window, click the&nbsp;<strong>Endpoints</strong>&nbsp;tab.
+	<div class="Admonition_Note">Make sure the Endpoints tab contains multiple endpoint values. If not, verify that your metadata was generated via HTTPS protocol URLs.</div>
+	</li>
+	<li>Click&nbsp;<strong>Next</strong>&nbsp;to continue.&nbsp;</li>
+	<li>On the&nbsp;<strong>Finish</strong>&nbsp;page, select&nbsp;<strong>Configure claims issuance policy for this application</strong>&nbsp;and then click&nbsp;<strong>Close</strong>. The Claim Issuance policy window launches.</li>
+</ol>
+
+<h3>Create a new claim</h3>
+
+<p>To create a new claim:</p>
+
+<ol start="1">
+	<li>Right-click the created relying party trust&nbsp;(For example,&nbsp;<code>RPA_Workflow_Designer</code> ) and then select the&nbsp;<strong>Edit Claim Issuance Policy...</strong>&nbsp;option. The <strong>Edit Claim Issuance Policy for &lt;IdM Service&gt;</strong> window opens.</li>
+	<li>Click <strong>Add Rule... </strong>under the <strong>Issuance Transform Rules</strong> tab. The <strong>Add Transform Claim Rule Wizard</strong> is launched.</li>
+	<li>Under the <strong>Select Rule Template&nbsp;</strong>section<strong>, </strong>set&nbsp;<strong>Send LDAP Attributes as Claims</strong> as the rule template and&nbsp;click <strong>Next</strong>.</li>
+	<li>Create 2 rules entering&nbsp;appropriate values for the following fields:
+	<table border="1" cellpadding="1" cellspacing="1">
+		<caption>Create claim rules</caption>
+		<thead>
+			<tr>
+				<th scope="col">Field name</th>
+				<th scope="col">Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><strong>Claim rule name</strong></td>
+				<td>Enter the name of the claim rule. For example, <strong>Rule1</strong> and <strong>Rule2</strong></td>
+			</tr>
+			<tr>
+				<td><strong>Attribute store</strong></td>
+				<td>Select <strong>Active Directory</strong>&nbsp;from the list of <strong>Attribute Store</strong>.</td>
+			</tr>
+			<tr>
+				<td>Mapping of LDAP attributes to outgoing claim types:</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><strong>LDAP Attribute (Select or type to add more)</strong></td>
+				<td>
+				<ul>
+					<li>SAM-Account name</li>
+					<li>Token-Groups - Unqualified Names</li>
+				</ul>
+				</td>
+			</tr>
+			<tr>
+				<td><strong>Outgoing Claim Type (Select or type to add more)</strong></td>
+				<td>
+				<ul>
+					<li>Enter the Name</li>
+					<li>ID&nbsp;Group Name (type)</li>
+				</ul>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	</li>
+	<li>Click&nbsp;<strong>Finish</strong>&nbsp;to apply the claim rules.</li>
+</ol>
+
+<h3>Configure the SAML server settings in IdM Admin console</h3>
+
+<p>The following steps are described using the Microsoft ADFS as an Identity Provider.</p>
+
+<p>To configure SAML server settings:</p>
+
+<ol>
+	<li>From <strong>RPA Workflow Designer</strong>, go to IdM Admin.</li>
+	<li>Under <strong>ORGANIZATION</strong> tab, select RPA Workflow Designer as Provider Organization.</li>
+	<li>Select&nbsp;<strong>Authentication</strong>&nbsp;section&nbsp;and then click&nbsp;&nbsp; <img alt="" border="1" file="https://docs.microfocus.com/mediawiki/images/8/8f/RPA_2021.02_addIdMUser.PNG" height="23" hspace="0" src="https://docs.microfocus.com/mediawiki/images/8/8f/RPA_2021.02_addIdMUser.PNG" vspace="0" width="27"> to create authentication.</li>
+	<li>In the&nbsp;<strong>CREATE AUTHENTICATION</strong>&nbsp;dialog, click the&nbsp;<strong>Select authentication type</strong>&nbsp;drop-down. A list of available authentication types display.</li>
+	<li>Choose&nbsp;<strong>SAML</strong>&nbsp;from the list&nbsp;and then&nbsp;click&nbsp;<strong>CREATE</strong>.</li>
+	<li>From the&nbsp;<strong>SAML Server Settings</strong>&nbsp;area, in the&nbsp;<strong>Display name</strong>&nbsp;field, enter the name for your&nbsp;SAML server.<br>
+	&nbsp;</li>
+	<li>Upload&nbsp;<strong>SAML IDP</strong>&nbsp;metadata using any one of the&nbsp;following methods:
+	<ol start="1" style="list-style-type: lower-alpha;">
+		<li>Using<strong>&nbsp;IDP metadata URL</strong>
+		<ol start="1" style="list-style-type: lower-roman;">
+			<li>Enter the&nbsp;<strong>IDP Metadata URL</strong>. For example,&nbsp;<samp><a href="https://adfs-server.rcqa.com/FederationMetadata/2007-06/FederationMetadata.xml">https://my-adfs-server.com/FederationMetadata/2007-06/FederationMetadata.xml</a></samp></li>
+			<li>Optionally, you can click <strong>Drag or Click to upload</strong> area and then browse to select the downloaded IdP certificate (HTTPS certificate's&nbsp;CA certificate). See&nbsp;<a href="#idpcertificate">Download&nbsp;the IdP SAML metadata certificate</a>&nbsp;for instructions.<br>
+			<samp><img alt="" border="1" file="https://docs.microfocus.com/mediawiki/images/5/52/RPA_2019.11_IdPURL.png" height="331" hspace="0" src="https://docs.microfocus.com/mediawiki/images/5/52/RPA_2019.11_IdPURL.png" vspace="0" width="800"> </samp></li>
+		</ol>
+		</li>
+		<li>(Recommended) Using<strong>&nbsp;IDP Metadata</strong>
+		<ol start="1" style="list-style-type: lower-roman;">
+			<li>Click <strong>Drag or Click to upload</strong> area and then browse to select the IDP metadata content.</li>
+			<li>Click <strong>UPLOAD</strong>&nbsp;to upload the IDP metadata string content, and then click&nbsp;<strong>SAVE</strong>.<br>
+			<img alt="" border="1" file="https://docs.microfocus.com/mediawiki/images/d/de/RPA_2020.02_ADFS_IDP_Metadata.png" height="208" hspace="0" src="https://docs.microfocus.com/mediawiki/images/d/de/RPA_2020.02_ADFS_IDP_Metadata.png" style="width: 800px; height: 208px; margin: 0px; border: 1px solid black;" vspace="0" width="800"></li>
+			<li>SAML configuration is created successfully.</li>
+		</ol>
+		</li>
+		<li>Configure the group rules for the SAML user.
+		<ol start="1" style="list-style-type: upper-roman;">
+			<li>From&nbsp;<strong>RPA Workflow Designer &gt; IdM Admin</strong>, click the organization.</li>
+			<li>Click&nbsp;<strong>Groups &gt; Administrator &gt;</strong>&nbsp; <img alt="but edit.png" border="1" data-file-height="22" data-file-width="22" file="https://docs.microfocus.com/mediawiki/images/d/dc/2018.02/OO_Designer/but_edit.png" height="22" hspace="0" src="/mediawiki/images/d/dc/2018.02/OO_Designer/but_edit.png" vspace="0" width="22"> , click&nbsp; <img alt="" border="1" file="https://docs.microfocus.com/mediawiki/images/8/8f/RPA_2021.02_addIdMUser.PNG" height="23" hspace="0" src="https://docs.microfocus.com/mediawiki/images/8/8f/RPA_2021.02_addIdMUser.PNG" vspace="0" width="27"> <a href="https://docs.microfocus.com/itomw/ITOM_Container_Deployment_Foundation:2020.11/UseSAMLLoginPortal" rel="nofollow">&nbsp;</a>under&nbsp;<strong>Associated Group Rules</strong>&nbsp;to add a group rule.</li>
+			<li>Configure the following for the group rule.
+			<ol start="1" style="list-style-type: lower-roman;">
+				<li>Enter a display name for the group rule.</li>
+				<li>Choose&nbsp;<strong>CALCULATED</strong>&nbsp;as the rule type.</li>
+				<li>Choose&nbsp;<strong>OR</strong>&nbsp;as a combination strategy.</li>
+				<li>In the <strong>Criteria</strong> section, click&nbsp; <img alt="" border="1" file="https://docs.microfocus.com/mediawiki/images/8/8f/RPA_2021.02_addIdMUser.PNG" height="23" hspace="0" src="https://docs.microfocus.com/mediawiki/images/8/8f/RPA_2021.02_addIdMUser.PNG" vspace="0" width="27"> <a href="https://docs.microfocus.com/itomw/ITOM_Container_Deployment_Foundation:2020.11/UseSAMLLoginPortal" rel="nofollow">&nbsp;</a>to add the criteria details.</li>
+				<li>Enter the criteria key, criteria value, and choose&nbsp;<strong>MATCH</strong>. The criteria key and value must be the key and value you created in the SAML server.<br>
+				For example, in the ADFS management console, you have created a claim rule: "Group Name" as the outgoing claim type and "Administrators" as the group. Then you must enter "Group Name" as the criteria key and "Administrators" as the criteria value.</li>
+				<li>Click&nbsp;<strong>SAVE</strong>.<br>
+				<img alt="" border="1" file="https://docs.microfocus.com/mediawiki/images/7/74/OO_2020_02_SAML_Grp_Rule.PNG" height="445" hspace="0" src="https://docs.microfocus.com/mediawiki/images/7/74/OO_2020_02_SAML_Grp_Rule.PNG" vspace="0" width="693"></li>
+			</ol>
+			</li>
+			<li>Click&nbsp;<strong>SAVE&nbsp;</strong>to save the updated group rule.</li>
+			<li>Next, access&nbsp;the management portal of your Identity Provider to use the SAML authentication.</li>
+		</ol>
+		</li>
+	</ol>
+	</li>
+</ol>
+
+<h3 id="Log_in_to_the_management_portal_with_SAML_authentication">Log in to the ADFS management portal with SAML authentication</h3>
+
+<p>To log in using the configured SAML authentication:</p>
+
+<ol>
+	<li>Enter the Management Portal URL into your browser, and you will be redirected to the login page of the SAML IDP login page.</li>
+	<li>Enter your SAML IDP username and password to log in.</li>
+</ol>
+
+<h2></h2>
+</div>
+</html>
