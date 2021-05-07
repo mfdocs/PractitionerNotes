@@ -84,6 +84,21 @@
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">To implement this solution to use HCMX to provision and deprovision an ad-hoc testing environment in the CICD process, follow the steps below:</span></span></span></p>
 
+<p style="margin-bottom:11px"></p>
+
+<h3>Prepare VM template to be used to create VMs in ad-hoc test environment</h3>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create a VM with all required software dependencies, network and hardware configuration, etc that are required to test your project and/or application.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the Linux virtual machine running Jenkins server.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Switch user to the account under which Jenkins server is running. Usually, this is <b>jenkins</b> user account.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Run the following command to generate SSH key-pair: <b>ssh-keygen -t rsa</b></span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The command generates a private key in the file named ~/.ssh/id_rsa and a public key in the file named ~/.ssh/id_rsa.pub</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the VM created in step 1 with an operating system (OS) user account that would be used to run application tests in CICD pipeline. </span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Add contents of the public key that was created in step 4 to the ~/.ssh/authorized_keys file in the OS user account that would be used to run tests.</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Convert virtual machine to a template. Name the VM template with your project name for easier identification</span></span></span></li>
+</ol>
+
 <h3>Create a user in HCMX</h3>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will create a new user with appropriate roles in HCMX. This new user’s credentials are used by Jenkins to provision and deprovision ad-hoc test environment in HCMX.</span></span></span></p>
@@ -159,17 +174,7 @@ Description automatically generated" id="Picture_x0020_2" src="/mediawiki/images
 
 <p style="margin-bottom:11px; margin-left:48px"></p>
 
-<h3>Prepare VM template to be used to create VMs in ad-hoc test environment</h3>
-
 <ol>
-	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create a VM with all required software dependencies, network and hardware configuration, etc that are required to test your project and/or application.</span></span></span></li>
-	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the Linux virtual machine running Jenkins server.</span></span></span></li>
-	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Switch user to the account under which Jenkins server is running. Usually, this is <b>jenkins</b> user account.</span></span></span></li>
-	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Run the following command to generate SSH key-pair: <b>ssh-keygen -t rsa</b></span></span></span></li>
-	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The command generates a private key in the file named ~/.ssh/id_rsa and a public key in the file named ~/.ssh/id_rsa.pub</span></span></span></li>
-	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the VM created in step 1 with an operating system (OS) user account that would be used to run application tests in CICD pipeline. </span></span></span></li>
-	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Add contents of the public key that was created in step 4 to the ~/.ssh/authorized_keys file in the OS user account that would be used to run tests.</span></span></span></li>
-	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Convert virtual machine to a template. Name the VM template with your project name for easier identification</span></span></span></li>
 </ol>
 
 <h3>Configure Jenkinsfile</h3>
@@ -589,7 +594,7 @@ Description automatically generated" id="Picture_x0020_2" src="/mediawiki/images
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The HCMX offering deployment request API payload varies from one offering to another offering. The HCMX offering deployment request API payload also varies from one HCMX environment to another HCMX environment for the same offering. The Jenkinsfile included in this practitioner note has the deployment request API payload for the <b>vCenter compute – Deploy VM from template</b> HCMX offering. This request payload must be changed to reflect your environment and/or your HCMX offering. To change the HCMX offering deployment request payload, follow the steps below:</span></span></span></p>
 
 <ol>
-	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><a name="_Hlk71015713"> Open the Jenkinsfile in a text editor of your choice.</a></span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Open the Jenkinsfile in a text editor of your choice.</span></span></span></li>
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The Jenkinsfile has code to deploy ad-hoc test environment below the following commented text DEPLOY_ADHOC_TEST_ENVIRONMENT_REQUEST_USING_HCMX_OFFERING</span></span></span></li>
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Search for the following text: DEPLOY_ADHOC_TEST_ENVIRONMENT_REQUEST_USING_HCMX_OFFERING</span></span></span></li>
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Understand various variables used and structure of the existing deployment request API call in the <b>if</b> block and <b>else</b> block. Note that backspaces are used to escape backspace character in the <b>UserOptions</b> attribute. Refer to the <b>Get CreateRequest payload for the offering from HCMX</b> section to get request payload specific to your offering. Refer to the <b>Global environment variables </b>and <b>HCMX offering specific environment variables </b>sections on how to identify, parameterize and create variables. </span></span></span></li>
@@ -602,7 +607,7 @@ Description automatically generated" id="Picture_x0020_2" src="/mediawiki/images
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The Jenkinsfile included in this practitioner note copies the <b>build</b> directory to /tmp directory on the newly deployed VMs in the ad-hoc test environment. To change what is copied from the Jenkins server, the target directory on the VMs in ad-hoc test environment, and to setup additional dependencies on target VMs, follow the steps below:</span></span></span></p>
 
 <ol>
-	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><a name="_Hlk71030739"> Open the Jenkinsfile in a text editor of your choice.</a></span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Open the Jenkinsfile in a text editor of your choice.</span></span></span></li>
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The Jenkinsfile has code to copy build to the ad-hoc test environment below the following commented text COPY_BUILD_TO_ADHOC_TEST_ENVIRONMENT</span></span></span></li>
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Search for the following text: COPY_BUILD_TO_ADHOC_TEST_ENVIRONMENT</span></span></span></li>
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Modify existing code to suite your requirements to copy build to the VMs in ad-hoc test environment. You can also include additional code to setup further dependencies in the target test environment. </span></span></span></li>
