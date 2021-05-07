@@ -174,7 +174,7 @@ Description automatically generated" id="Picture_x0020_2" src="/mediawiki/images
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will update the Jenkinsfile with global environment variable values that are applicable in your environment.</span></span></span></p>
 
 <ol>
-	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Observe that the <b>environment</b> section in the Jenkinsfile has the following two sub-sections: Global environment variables and <a name="_Hlk70425302">HCMX offering specific environment variables</a>. In the <b>Global environment</b> <b>variables</b> section, update the following variable values and save the Jenkinsfile. </span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Observe that the <b>environment</b> section in the Jenkinsfile has the following two sub-sections: Global environment variables and HCMX offering specific environment variables. In the <b>Global environment</b> <b>variables</b> section, update the following variable values and save the Jenkinsfile. </span></span></span></li>
 </ol>
 
 <p style="margin-left:48px"></p>
@@ -557,21 +557,21 @@ Description automatically generated" id="Picture_x0020_2" src="/mediawiki/images
 	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="color:white">The attributes and values that are not highlighted in any color have a constant value or they do </span>not need to be parameterized.</span></span></span></li>
 </ol>
 
-<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc71213725">Update build stage</a></span></span></span></span></span></h3>
+<h4>Update build stage</h4>
 
-<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, update Jenkinsfile to compile your code, install dependencies, perform unit test and integration tests. You may use maven, ant, etc to build your project. <a name="_Hlk71012254">In the supplied Jenkinsfile,</a> a simple HelloWorld.sh script is built. This HelloWorld.sh script prints "Hello World" and it is available for download in the <b>Appendix</b> section of this practitioner note. Replace the build stage code with the code specific to your build requirements. For example, you may need to use ant or maven to build your code.</span></span></span></p>
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, update Jenkinsfile to compile your code, install dependencies, perform unit test and integration tests. You may use maven, ant, etc to build your project. In the supplied Jenkinsfile, a simple HelloWorld.sh script is built. This HelloWorld.sh script prints "Hello World" and it is available for download in the <b>Appendix</b> section of this practitioner note. Replace the build stage code with the code specific to your build requirements. For example, you may need to use ant or maven to build your code.</span></span></span></p>
 
-<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc71213726">Update test stage</a></span></span></span></span></span></h3>
+<h4>Update test stage</h4>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, update Jenkinsfile to perform user acceptance testing in an ad-hoc test environment. In the supplied Jenkinsfile, code necessary to provision and deprovision an ad-hoc test environment is included. The Jenkinsfile also includes code required to copy the HelloWorld.sh script to the ad-hoc test environment VMs and test the HelloWorld.sh script on the test environment VMs. Update test stage section of the Jenkinsfile with the following code changes:</span></span></span></p>
 
 <ul>
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Change HCMX offering deployment request payload.</span></span></span></li>
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Update <b>Copy build to ad-hoc test environment</b> section to suite your project’s requirements.</span></span></span></li>
-	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><a name="_Hlk71021249">Update <b>Test build in ad-hoc test environment</b> section</a> to suite your project’s requirements.</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Update <b>Test build in ad-hoc test environment</b> section to suite your project’s requirements.</span></span></span></li>
 </ul>
 
-<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><a name="_Toc71213727"><span class="Heading4Char" style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-style:italic">Change HCMX offering deployment request API payload</span></span></span></a></span></span></span></p>
+<h5>Change HCMX offering deployment request API payload</h5>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The HCMX offering deployment request API payload varies from one offering to another offering. The HCMX offering deployment request API payload also varies from one HCMX environment to another HCMX environment for the same offering. The Jenkinsfile included in this practitioner note has the deployment request API payload for the <b>vCenter compute – Deploy VM from template</b> HCMX offering. This request payload must be changed to reflect your environment and/or your HCMX offering. To change the HCMX offering deployment request payload, follow the steps below:</span></span></span></p>
 
@@ -584,7 +584,7 @@ Description automatically generated" id="Picture_x0020_2" src="/mediawiki/images
 	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Save Jenkinsfile.</span></span></span></li>
 </ol>
 
-<h4 style="margin-top:3px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal"><span style="font-style:italic"><a name="_Toc71213728">Update “Copy build to ad-hoc test environment” section</a></span></span></span></span></span></span></h4>
+<h5>Update “Copy build to ad-hoc test environment” section</h5>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The Jenkinsfile included in this practitioner note copies the <b>build</b> directory to /tmp directory on the newly deployed VMs in the ad-hoc test environment. To change what is copied from the Jenkins server, the target directory on the VMs in ad-hoc test environment, and to setup additional dependencies on target VMs, follow the steps below:</span></span></span></p>
 
@@ -596,7 +596,7 @@ Description automatically generated" id="Picture_x0020_2" src="/mediawiki/images
 	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Save Jenkinsfile.</span></span></span></li>
 </ol>
 
-<h4 style="margin-top:3px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal"><span style="font-style:italic"><a name="_Toc71213729">Update “Test build in ad-hoc test environment” section</a></span></span></span></span></span></span></h4>
+<h5>Update “Test build in ad-hoc test environment” section</h5>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The Jenkinsfile included in this practitioner note tests the HelloWorld.sh script on the newly deployed VM(s) in ad-hoc test environment. To change how testing of your build is done on the deployed VMs in ad-hoc test environment, follow the steps below:</span></span></span></p>
 
@@ -608,7 +608,7 @@ Description automatically generated" id="Picture_x0020_2" src="/mediawiki/images
 	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Save Jenkinsfile.</span></span></span></li>
 </ol>
 
-<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc71213730">Update deploy stage</a></span></span></span></span></span></h3>
+<h4>Update deploy stage</h4>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will update Jenkinsfile to deploy tested build to the production environment. The Jenkinsfile included in this practitioner note does not have code to deploy build to the production environment. Use of this deploy stage is optional. If your project has a requirement to deploy code changes without approval to the production environment after code has been built and test, write code that takes the tested build and deploys it into production environment.</span></span></span></p>
 
@@ -627,7 +627,7 @@ Description automatically generated" id="Picture_x0020_2" src="/mediawiki/images
 	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Convert virtual machine to a template. Name the VM template with your project name for easier identification</span></span></span></li>
 </ol>
 
-<h2 style="margin-top:3px"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal"><a name="_Toc71213732">Setup Git repository</a></span></span></span></span></span></h2>
+<h3>Setup Git repository</h3>
 
 <ol>
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create a new Git repository or use an existing Git repository.</span></span></span></li>
@@ -647,11 +647,11 @@ Description automatically generated" id="Picture_x0020_2" src="/mediawiki/images
 
 Description automatically generated" id="Picture_x0020_8" src="/mediawiki/images/pn_images/pn_image_60947a3bc0b3f9.62806097.png" style="width:467.25pt; height:277.5pt"> </span></span></span></p>
 
-<h2 style="margin-top:3px"><span style="font-size:13pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#2f5496"><span style="font-weight:normal"><a name="_Toc71213733">Setup Jenkins</a></span></span></span></span></span></h2>
+<h3>Setup Jenkins</h3>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will configure credentials in Jenkins to provide access to Github repository, HCMX and web-proxy, create a pipeline project to run CICD process and approve script/signatures used in the Jenkinsfile.</span></span></span></p>
 
-<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc71213734">Add credentials in Jenkins to access Git repository</a></span></span></span></span></span></h3>
+<h4>Add credentials in Jenkins to access Git repository</h4>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The following methods are commonly used to access Git repository from Jenkins:</span></span></span></p>
 
@@ -663,7 +663,7 @@ Description automatically generated" id="Picture_x0020_8" src="/mediawiki/images
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Based on your organization requirements, select any one of the above methods and create credentials in Jenkins to access Git repository.</span></span></span></p>
 
-<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc71213735">Add credentials in Jenkins to access HCMX</a></span></span></span></span></span></h3>
+<h4>Add credentials in Jenkins to access HCMX</h4>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Add credentials in Jenkins with the following details:</span></span></span></p>
 
@@ -722,7 +722,7 @@ Description automatically generated" id="Picture_x0020_8" src="/mediawiki/images
 
 <p style="margin-bottom:11px"></p>
 
-<h3 style="margin-top:3px"><span style="font-size:12pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:#1f3763"><span style="font-weight:normal"><a name="_Toc71213736">Add credentials in Jenkins to access web proxy</a></span></span></span></span></span></h3>
+<h4>Add credentials in Jenkins to access web proxy</h4>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Add credentials in Jenkins with the following details:</span></span></span></p>
 
