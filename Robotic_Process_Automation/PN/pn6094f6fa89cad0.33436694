@@ -192,43 +192,54 @@
 	<li>Select&nbsp;<strong>Authentication</strong>&nbsp;section&nbsp;and then click&nbsp;&nbsp; <img alt="" border="1" file="https://docs.microfocus.com/mediawiki/images/8/8f/RPA_2021.02_addIdMUser.PNG" height="23" hspace="0" src="https://docs.microfocus.com/mediawiki/images/8/8f/RPA_2021.02_addIdMUser.PNG" vspace="0" width="27"> to create authentication.</li>
 	<li>In the&nbsp;<strong>CREATE AUTHENTICATION</strong>&nbsp;dialog, click the&nbsp;<strong>Select authentication type</strong>&nbsp;drop-down. A list of available authentication types display.</li>
 	<li>Choose&nbsp;<strong>SAML</strong>&nbsp;from the list&nbsp;and then&nbsp;click&nbsp;<strong>CREATE</strong>.</li>
-	<li>From the&nbsp;<strong>SAML Server Settings</strong>&nbsp;area, in the&nbsp;<strong>Display name</strong>&nbsp;field, enter the name for your&nbsp;SAML server.<br>
-	&nbsp;</li>
+	<li>From the&nbsp;<strong>SAML Server Settings</strong>&nbsp;area, in the&nbsp;<strong>Display name</strong>&nbsp;field, enter the name for your&nbsp;SAML server.</li>
 	<li>Upload&nbsp;<strong>SAML IDP</strong>&nbsp;metadata using any one of the&nbsp;following methods:
-	<ol start="1" style="list-style-type: lower-alpha;">
+	<ol start="1" style="list-style-type: upper-alpha;">
 		<li>Using<strong>&nbsp;IDP metadata URL</strong>
-		<ol start="1" style="list-style-type: lower-roman;">
+		<ol start="1" style="list-style-type: lower-alpha;">
 			<li>Enter the&nbsp;<strong>IDP Metadata URL</strong>. For example,&nbsp;<samp><a href="https://adfs-server.rcqa.com/FederationMetadata/2007-06/FederationMetadata.xml">https://my-adfs-server.com/FederationMetadata/2007-06/FederationMetadata.xml</a></samp></li>
 			<li>Optionally, you can click <strong>Drag or Click to upload</strong> area and then browse to select the downloaded IdP certificate (HTTPS certificate's&nbsp;CA certificate). See&nbsp;<a href="#idpcertificate">Download&nbsp;the IdP SAML metadata certificate</a>&nbsp;for instructions.<br>
 			<samp><img alt="" border="1" file="https://docs.microfocus.com/mediawiki/images/5/52/RPA_2019.11_IdPURL.png" height="331" hspace="0" src="https://docs.microfocus.com/mediawiki/images/5/52/RPA_2019.11_IdPURL.png" vspace="0" width="800"> </samp></li>
 		</ol>
 		</li>
 		<li>(Recommended) Using<strong>&nbsp;IDP Metadata</strong>
-		<ol start="1" style="list-style-type: lower-roman;">
+		<ol start="1" style="list-style-type: lower-alpha;">
 			<li>Click <strong>Drag or Click to upload</strong> area and then browse to select the IDP metadata content.</li>
 			<li>Click <strong>UPLOAD</strong>&nbsp;to upload the IDP metadata string content, and then click&nbsp;<strong>SAVE</strong>.<br>
 			<img alt="" border="1" file="https://docs.microfocus.com/mediawiki/images/d/de/RPA_2020.02_ADFS_IDP_Metadata.png" height="208" hspace="0" src="https://docs.microfocus.com/mediawiki/images/d/de/RPA_2020.02_ADFS_IDP_Metadata.png" style="width: 800px; height: 208px; margin: 0px; border: 1px solid black;" vspace="0" width="800"></li>
 			<li>SAML configuration is created successfully.</li>
 		</ol>
 		</li>
-		<li>Configure the group rules for the SAML user.
-		<ol start="1" style="list-style-type: upper-roman;">
-			<li>From&nbsp;<strong>RPA Workflow Designer &gt; IdM Admin</strong>, click the organization.</li>
-			<li>Click&nbsp;<strong>Groups &gt; Administrator &gt;</strong>&nbsp; <img alt="but edit.png" border="1" data-file-height="22" data-file-width="22" file="https://docs.microfocus.com/mediawiki/images/d/dc/2018.02/OO_Designer/but_edit.png" height="22" hspace="0" src="/mediawiki/images/d/dc/2018.02/OO_Designer/but_edit.png" vspace="0" width="22"> , click&nbsp; <img alt="" border="1" file="https://docs.microfocus.com/mediawiki/images/8/8f/RPA_2021.02_addIdMUser.PNG" height="23" hspace="0" src="https://docs.microfocus.com/mediawiki/images/8/8f/RPA_2021.02_addIdMUser.PNG" vspace="0" width="27"> <a href="https://docs.microfocus.com/itomw/ITOM_Container_Deployment_Foundation:2020.11/UseSAMLLoginPortal" rel="nofollow">&nbsp;</a>under&nbsp;<strong>Associated Group Rules</strong>&nbsp;to add a group rule.</li>
-			<li>Configure the following for the group rule.
-			<ol start="1" style="list-style-type: lower-roman;">
-				<li>Enter a display name for the group rule.</li>
-				<li>Choose&nbsp;<strong>CALCULATED</strong>&nbsp;as the rule type.</li>
-				<li>Choose&nbsp;<strong>OR</strong>&nbsp;as a combination strategy.</li>
-				<li>In the <strong>Criteria</strong> section, click&nbsp; <img alt="" border="1" file="https://docs.microfocus.com/mediawiki/images/8/8f/RPA_2021.02_addIdMUser.PNG" height="23" hspace="0" src="https://docs.microfocus.com/mediawiki/images/8/8f/RPA_2021.02_addIdMUser.PNG" vspace="0" width="27"> <a href="https://docs.microfocus.com/itomw/ITOM_Container_Deployment_Foundation:2020.11/UseSAMLLoginPortal" rel="nofollow">&nbsp;</a>to add the criteria details.</li>
-				<li>Enter the criteria key, criteria value, and choose&nbsp;<strong>MATCH</strong>. The criteria key and value must be the key and value you created in the SAML server.<br>
-				For example, in the ADFS management console, you have created a claim rule: "Group Name" as the outgoing claim type and "Administrators" as the group. Then you must enter "Group Name" as the criteria key and "Administrators" as the criteria value.</li>
-				<li>Click&nbsp;<strong>SAVE</strong>.<br>
-				<img alt="" border="1" file="https://docs.microfocus.com/mediawiki/images/7/74/OO_2020_02_SAML_Grp_Rule.PNG" height="445" hspace="0" src="https://docs.microfocus.com/mediawiki/images/7/74/OO_2020_02_SAML_Grp_Rule.PNG" vspace="0" width="693"></li>
+		<li>Click <strong>Roles</strong> tab and then click&nbsp; <img alt="" border="1" file="https://docs.microfocus.com/mediawiki/images/8/8f/RPA_2021.02_addIdMUser.PNG" height="23" hspace="0" src="https://docs.microfocus.com/mediawiki/images/8/8f/RPA_2021.02_addIdMUser.PNG" vspace="0" width="27"> &nbsp;add a new role.
+		<ol start="1" style="list-style-type: lower-alpha;">
+			<li>Enter&nbsp;the <strong>Name </strong>and&nbsp;<strong>Display Name&nbsp;</strong>for the group and then click the&nbsp;<strong>Associated Roles</strong>&nbsp;drop-down to choose the relevant permissions.<br>
+			<img alt="" border="1" file="https://docs.microfocus.com/mediawiki/images/0/07/RPA_2020.02_SAML_Role_Permissions.png" height="244" hspace="0" src="https://docs.microfocus.com/mediawiki/images/0/07/RPA_2020.02_SAML_Role_Permissions.png" vspace="0" width="800"></li>
+			<li>Click&nbsp;<b>SAVE.</b>&nbsp;Adding roles to a user helps to manage the permissions assigned to users.</li>
+		</ol>
+		</li>
+		<li>Click <strong>Groups</strong> tab and then click&nbsp; <img alt="" border="1" file="https://docs.microfocus.com/mediawiki/images/8/8f/RPA_2021.02_addIdMUser.PNG" height="23" hspace="0" src="https://docs.microfocus.com/mediawiki/images/8/8f/RPA_2021.02_addIdMUser.PNG" vspace="0" width="27"> &nbsp;add a new group.
+		<ol start="1" style="list-style-type: lower-alpha;">
+			<li>Enter&nbsp;the <strong>Name </strong>and&nbsp;<strong>Display Name&nbsp;</strong>for the role and then click the&nbsp;<strong>Associated Permission</strong>&nbsp;drop-down and&nbsp;choose the role you added in the previous step.<br>
+			<img alt="" border="1" file="https://docs.microfocus.com/mediawiki/images/8/83/RPA_2020.02_SAML_GRP.png" height="215" hspace="0" src="https://docs.microfocus.com/mediawiki/images/8/83/RPA_2020.02_SAML_GRP.png" vspace="0" width="800"></li>
+			<li>Configure the group rules for the SAML user.
+			<ol start="1" style="list-style-type: upper-roman;">
+				<li>Click&nbsp; <img alt="" border="1" file="https://docs.microfocus.com/mediawiki/images/8/8f/RPA_2021.02_addIdMUser.PNG" height="23" hspace="0" src="https://docs.microfocus.com/mediawiki/images/8/8f/RPA_2021.02_addIdMUser.PNG" vspace="0" width="27"> under&nbsp;<strong>Associated Group Rules</strong>&nbsp;to add a group rule.</li>
+				<li>Configure the following for the group rule.
+				<ol start="1" style="list-style-type: lower-roman;">
+					<li>In the <strong>Edit Group Rule</strong> area, enter a display name for the group rule.</li>
+					<li>Choose&nbsp;<strong>CALCULATED</strong>&nbsp;as the rule type.</li>
+					<li>Choose&nbsp;<strong>OR</strong>&nbsp;as a combination strategy.</li>
+					<li>In the <strong>Criteria</strong> section, click&nbsp; <img alt="" border="1" file="https://docs.microfocus.com/mediawiki/images/8/8f/RPA_2021.02_addIdMUser.PNG" height="23" hspace="0" src="https://docs.microfocus.com/mediawiki/images/8/8f/RPA_2021.02_addIdMUser.PNG" vspace="0" width="27"> <a href="https://docs.microfocus.com/itomw/ITOM_Container_Deployment_Foundation:2020.11/UseSAMLLoginPortal" rel="nofollow">&nbsp;</a>to add the criteria details.</li>
+					<li>Enter the criteria key, criteria value, and choose&nbsp;<strong>MATCH</strong>. The criteria key and value must be the key and value you created in the SAML server.<br>
+					For example, if you are using the ADFS management console and&nbsp;have created a claim rule&nbsp;<em>&lt;Group Name&gt;</em>&nbsp;as the outgoing <em>claim type</em> and <em>&lt;Domain Users&gt;</em>&nbsp;as the <em>group</em>. Then you must enter <em>&lt;Group Name&gt;</em>&nbsp;as the <em>criteria key</em> and <em>&lt;Domain Users&gt;</em>&nbsp;as the <em>criteria value</em>.</li>
+					<li>Click&nbsp;<strong>SAVE</strong> to save the&nbsp;group rule criteria values. The final <strong>Group Settings</strong> page should look similar to the following image.<br>
+					<img alt="" border="1" file="https://docs.microfocus.com/mediawiki/images/a/ad/RPA_2020.02_SAML_GRP_RULE.png" height="338" hspace="0" src="https://docs.microfocus.com/mediawiki/images/a/ad/RPA_2020.02_SAML_GRP_RULE.png" vspace="0" width="700"></li>
+				</ol>
+				</li>
+				<li>Click&nbsp;<strong>SAVE</strong> again to save the group settings.</li>
+				<li>Next, access&nbsp;the ADFS management portal of your Identity Provider to use the SAML authentication.</li>
 			</ol>
 			</li>
-			<li>Click&nbsp;<strong>SAVE&nbsp;</strong>to save the updated group rule.</li>
-			<li>Next, access&nbsp;the management portal of your Identity Provider to use the SAML authentication.</li>
 		</ol>
 		</li>
 	</ol>
