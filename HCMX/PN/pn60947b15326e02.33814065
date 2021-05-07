@@ -155,6 +155,23 @@ Description automatically generated" id="Picture_x0020_1" src="/mediawiki/images
 
 Description automatically generated" id="Picture_x0020_2" src="/mediawiki/images/pn_images/pn_image_60947a3b4fda53.65395305.png" style="width:468pt; height:289.5pt"> </span></span></span></p>
 
+<p style="margin-bottom:11px; margin-left:48px"></p>
+
+<p style="margin-bottom:11px; margin-left:48px"></p>
+
+<h3>Prepare VM template to be used to create VMs in ad-hoc test environment</h3>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create a VM with all required software dependencies, network and hardware configuration, etc that are required to test your project and/or application.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the Linux virtual machine running Jenkins server.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Switch user to the account under which Jenkins server is running. Usually, this is <b>jenkins</b> user account.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Run the following command to generate SSH key-pair: <b>ssh-keygen -t rsa</b></span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The command generates a private key in the file named ~/.ssh/id_rsa and a public key in the file named ~/.ssh/id_rsa.pub</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the VM created in step 1 with an operating system (OS) user account that would be used to run application tests in CICD pipeline. </span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Add contents of the public key that was created in step 4 to the ~/.ssh/authorized_keys file in the OS user account that would be used to run tests.</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Convert virtual machine to a template. Name the VM template with your project name for easier identification</span></span></span></li>
+</ol>
+
 <h3>Configure Jenkinsfile</h3>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will configure the provided Jenkinsfile to suit your project requirements, environment, build requirements, test requirements and deployment requirements. The Jenkinsfile included in this article contains code required to build HelloWorld.sh application, provision ad-hoc test environment in VMWare vCenter using <b>vCenter Compute – Deploy VM from template</b> service offering in HCMX, copy and test HelloWorld.sh script on the newly provisioned test environment, deprovision ad-hoc test environment through HCMX after testing is complete. The Jenkinsfile pipeline script is available for download in the Appendix section. This Jenkinsfile can be further enhanced to perform additional checks required for your environment, to improve performance, to use as a reference to develop it in other CICD applications, etc. Note that this Jenkinsfile is community contributed and not officially supported by Micro Focus. </span></span></span></p>
@@ -176,10 +193,6 @@ Description automatically generated" id="Picture_x0020_2" src="/mediawiki/images
 <ol>
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Observe that the <b>environment</b> section in the Jenkinsfile has the following two sub-sections: Global environment variables and HCMX offering specific environment variables. In the <b>Global environment</b> <b>variables</b> section, update the following variable values and save the Jenkinsfile. </span></span></span></li>
 </ol>
-
-<p style="margin-left:48px"></p>
-
-<p style="margin-bottom:11px; margin-left:48px"></p>
 
 <table class="MsoTableGrid" style="margin-left:48px; border-collapse:collapse; border:none">
 	<tbody>
@@ -456,7 +469,7 @@ Description automatically generated" id="Picture_x0020_2" src="/mediawiki/images
 			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">HCMX_VCENTER_VM_TEMPLATE</span></span></span></p>
 			</td>
 			<td style="border-bottom:1px solid black; width:288px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
-			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Enter VMWare vCenter template name to be used for the deployment of VM.</span></span></span></p>
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif">Enter VMWare vCenter template name to be used for the deployment of VM. Use the VM template that was prepared in earlier steps.</span></span></span></p>
 			</td>
 		</tr>
 		<tr>
@@ -614,17 +627,9 @@ Description automatically generated" id="Picture_x0020_2" src="/mediawiki/images
 
 <p style="margin-bottom:11px"></p>
 
-<h3>Prepare VM template to be used to create VMs in ad-hoc test environment</h3>
+<h3></h3>
 
 <ol>
-	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Create a VM with all required software dependencies, network and hardware configuration, etc that are required to test your project and/or application.</span></span></span></li>
-	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the Linux virtual machine running Jenkins server.</span></span></span></li>
-	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Switch user to the account under which Jenkins server is running. Usually, this is <b>jenkins</b> user account.</span></span></span></li>
-	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Run the following command to generate SSH key-pair: <b>ssh-keygen -t rsa</b></span></span></span></li>
-	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The command generates a private key in the file named ~/.ssh/id_rsa and a public key in the file named ~/.ssh/id_rsa.pub</span></span></span></li>
-	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the VM created in step 1 with an operating system (OS) user account that would be used to run application tests in CICD pipeline. </span></span></span></li>
-	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Add contents of the public key that was created in step 4 to the ~/.ssh/authorized_keys file in the OS user account that would be used to run tests.</span></span></span></li>
-	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Convert virtual machine to a template. Name the VM template with your project name for easier identification</span></span></span></li>
 </ol>
 
 <h3>Setup Git repository</h3>
