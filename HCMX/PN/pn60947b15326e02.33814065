@@ -571,6 +571,18 @@
 	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The attributes and values that are not highlighted in any color have a constant value or they do not need to be parameterized.</span></span></span></li>
 </ol>
 
+<h4>Update HCMX offering specific environment variable initialization and validation</h4>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The Jenkinsfile included in this practitioner note uses HCMX deployed offering's server component property,&nbsp;<strong>primary_ip_address</strong>&nbsp;, to get IP address of deployed vritual machines. If your offering's server component property contains IP address in a property other than <strong>primary_ip_address</strong> property, then update Jenkinsfile to use a different property name to retrieve IP address. To change Jenkinsfile to query a non-default server component's IP address property name, follow the steps below:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Open the Jenkinsfile in a text editor of your choice.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The Jenkinsfile has code to query for the IP address property below the following commented text&nbsp;HCMX_QUERY_VM_IP_PROPERTY</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Search for the following text: HCMX_QUERY_VM_IP_PROPERTY</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the if statement below it, change the default <strong>primary_ip_address</strong> to the new property name that has IP address on the server component in HCMX. </span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Save Jenkinsfile.</span></span></span></li>
+</ol>
+
 <h4>Update build stage</h4>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, update Jenkinsfile to compile your code, install dependencies, perform unit test and integration tests. You may use maven, ant, etc to build your project. In the supplied Jenkinsfile, a simple HelloWorld.sh script is built. This HelloWorld.sh script prints "Hello World" and it is available for download in the <b>Appendix</b> section of this practitioner note. Replace the build stage code with the code specific to your build requirements. For example, you may need to use ant or maven to build your code.</span></span></span></p>
