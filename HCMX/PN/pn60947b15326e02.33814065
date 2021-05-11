@@ -581,6 +581,7 @@
 
 <ul>
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Change HCMX offering deployment request payload.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Update IP address property name.</span></span></span></li>
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Update <b>Copy build to ad-hoc test environment</b> section to suite your project’s requirements.</span></span></span></li>
 	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Update <b>Test build in ad-hoc test environment</b> section to suite your project’s requirements.</span></span></span></li>
 </ul>
@@ -596,6 +597,18 @@
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Understand various variables used and structure of the existing deployment request API call in the <b>if</b> block and <b>else</b> block. Note that backspaces are used to escape backspace character in the <b>UserOptions</b> attribute. Refer to the <b>Get CreateRequest payload for the offering from HCMX</b> section to get request payload specific to your offering. Refer to the <b>Global environment variables </b>and <b>HCMX offering specific environment variables </b>sections on how to identify, parameterize and create variables. </span></span></span></li>
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Replace existing offering deployment request API call with your offering deployment request signature in the <b>if</b> block and <b>else</b> block. Also use appropriate variables for the values that have been parameterized. Use backspace to escape backspaces that are used in the API signature where necessary.&nbsp; </span></span></span></li>
 	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Save Jenkinsfile.</span></span></span></li>
+</ol>
+
+<h5>Update IP address property name</h5>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The Jenkinsfile included in this practitioner note uses HCMX deployed offering's server component property,&nbsp;<strong>primary_ip_address</strong>&nbsp;, to get IP address of deployed vritual machines. If your offering's server component property contains IP address in a property other than <strong>primary_ip_address</strong> property, then update Jenkinsfile to use a different property name to retrieve IP address. To change Jenkinsfile to query a non-default server component's IP address property name, follow the steps below:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Open the Jenkinsfile in a text editor of your choice.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">The Jenkinsfile has code to query for the IP address property below the following commented text&nbsp;HCMX_QUERY_VM_IP_PROPERTY</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Search for the following text: HCMX_QUERY_VM_IP_PROPERTY</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In the if statement below it, change the default <strong>primary_ip_address</strong> to the new property name that has IP address on the server component in HCMX. </span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Save Jenkinsfile.</span></span></span></li>
 </ol>
 
 <h5>Update “Copy build to ad-hoc test environment” section</h5>
