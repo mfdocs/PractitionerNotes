@@ -1,4 +1,40 @@
-<html><p>This section contains the most frequently used APIs in HCMX.</p>
+<html><p>This section contains details of the following&nbsp;APIs in HCMX:</p>
+
+<ul>
+	<li>Generate&nbsp;authentication token for all API calls</li>
+	<li>Design and Deploy
+	<ul>
+		<li>Get all DnD resource provider details</li>
+		<li>Create a DnD resource provider details</li>
+	</ul>
+	</li>
+	<li>Service Portal
+	<ul>
+		<li>Offerings
+		<ul>
+			<li>Get all aggregated offerings details</li>
+		</ul>
+		</li>
+		<li>Users
+		<ul>
+			<li>Get the list of all users in TenantID to fetch the UserID</li>
+			<li>Get the a specific user in TenantID to fetch the UserID</li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+	<li>Subscription Management
+	<ul>
+		<li>Create Subscription Request</li>
+		<li>Get the Subscription ID using Request ID</li>
+		<li>Get the Subscription Status</li>
+		<li>Get Service Instance ID from Subscription ID</li>
+		<li>Get Service Node ID for the specific Service Instance ID for Public Actions</li>
+		<li>Execute Public Action on a Specific Service Instance Node for a Subscription</li>
+		<li>Cancel the Subscription</li>
+	</ul>
+	</li>
+</ul>
 
 <h3><span style="font-size:16pt"><span style="font-family:Calibri,sans-serif">Generate authentication token for all API calls</span></span></h3>
 
@@ -10,23 +46,41 @@
 		</tr>
 		<tr>
 			<th scope="row">URL Syntax</th>
-			<td>https://&lt;HCMX URL&gt;:443/auth/authentication-endpoint/authenticate/token?TENANTID=&lt;TENANTID&gt;</td>
+			<td><code>https://&lt;HCMX URL&gt;:443/auth/authentication-endpoint/authenticate/token?TENANTID=&lt;TENANTID&gt;</code></td>
 		</tr>
 		<tr>
-			<th scope="row"></th>
-			<td></td>
+			<th scope="row">DescriptionDescription</th>
+			<td>Replace the URL with the HCMX URL and replace the TenantID with respective TenantID for which information is fetched</td>
 		</tr>
 		<tr>
-			<th scope="row"></th>
-			<td></td>
+			<th scope="row">URL Example</th>
+			<td><code>https://hcmx.mfitom.cloud:443/auth/authentication-endpoint/authenticate/token?TENANTID=454002199</code></td>
 		</tr>
 		<tr>
-			<th scope="row"></th>
-			<td></td>
+			<th scope="row">Headers&nbsp;&nbsp; &nbsp;</th>
+			<td>
+			<ol>
+				<li>Content-Type: <code>application/json</code></li>
+				<li>Accept: <code>application/json</code></li>
+			</ol>
+			</td>
 		</tr>
 		<tr>
-			<th scope="row"></th>
-			<td></td>
+			<th scope="row">Body Syntax</th>
+			<td><code>{"login": "&lt;username&gt;", "password": "&lt;password&gt;"}</code></td>
+		</tr>
+		<tr>
+			<th scope="row">Body Example</th>
+			<td>{"login": "hcmxadmin", "password": "itom@123"}</td>
+		</tr>
+		<tr>
+			<th scope="row">Body Description</th>
+			<td>The login account must be a user who has the permission to access DnD and service portal resources.<br>
+			&nbsp;</td>
+		</tr>
+		<tr>
+			<th scope="row">Sample Response Data</th>
+			<td>eyJ0eXAiOiJKV1MiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyYzkwZDBhMDc3Y2U0YjNmMDE3N2NlNzRkZGYwMDYxNyIsImlzcyI6IklkTSAxLjMxLjIiLCJjb20uaHBlLmlkbTp0cnVzdG9yIjpudWxsLCJleHAiOjE2MTU5NjYxNzIsImNvbS5ocC5jbG91ZDp0ZW5hbnQiOnsiaWQiOiIyYzkwZDBhMDc3Y2U0YjNmMDE3N2NlNzQ3ZmU0MDVjZCIsIm5hbWUiOiI0NTQwMDIxOTkiLCJlbmFibGVkIjp0cnVlfSwicHJuIjoiQW15IiwiaWF0IjoxNjE1OTYyNTcyLCJqdGkiOiIzNmM1MmVmZC04YzA0LTQ0N2UtYmYwYi0wODAzYWUwNWEzYjQifQ.ZL6ily4FmSYLbbDlH1YmE2Ea0qJP1YElCatbqpQl1Ng</td>
 		</tr>
 	</tbody>
 </table>
