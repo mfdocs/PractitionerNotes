@@ -43,7 +43,7 @@
 
 <h3>How to change it in UI</h3>
 
-<p>You can change the value of this parameter in&nbsp;SMAX Suite &gt; Administration portal &gt; CONFIGURATIONS &gt; Security &gt; Lightweight SSO configuration &gt; Token expiration period (minutes). After saving the change, the system will automatically restart the related backend services to make the new value take effect.&nbsp; <img id="Picture_x0020_2" src="/mediawiki/images/pn_images/pn_image_6053c24462ec86.83538126.png"></p>
+<p>You can change the value of this parameter in&nbsp;Suite Administration(BO) &gt; CONFIGURATIONS &gt; Security &gt; Lightweight SSO configuration &gt; Token expiration period (minutes). After saving the change, the system will automatically restart the related backend services to make the new value take effect.&nbsp; <img id="Picture_x0020_2" src="/mediawiki/images/pn_images/pn_image_6053c24462ec86.83538126.png"></p>
 
 <h3>Data in ConfigMap</h3>
 
@@ -59,7 +59,7 @@
 
 <h3>How to change it in UI</h3>
 
-<p>You can change the value of this parameter in&nbsp;SMAX Suite &gt; Administration portal &gt; CONFIGURATIONS &gt; Security &gt; Access Token configuration &gt; Token expiration period (minutes). After saving the change, the system will automatically restart the related backend to make the new value take effect.&nbsp;<br>
+<p>You can change the value of this parameter in&nbsp;Suite Administration(BO) &gt; CONFIGURATIONS &gt; Security &gt; Access Token configuration &gt; Token expiration period (minutes). After saving the change, the system will automatically restart the related backend to make the new value take effect.&nbsp;<br>
 <img id="Picture_x0020_3" src="/mediawiki/images/pn_images/pn_image_6053c244b51861.06606791.png"></p>
 
 <h3>Data in ConfigMap</h3>
@@ -86,7 +86,7 @@
 
 <h2>Tips and Tricks</h2>
 
-<p>The IDM SMAX_AUTH_TOKEN &nbsp;token is renewed when 35% defined by idm.token.lifetime.minutes has passed. Due to the less frequent renew mechanism, the actual session timeout is shorter than what is expected. In extreme cases, users may experience session timeout right after half of the desired time. For example, assume the parameter is set to 1 hour. User A logs in to SMAX at 2:00. She operates on the UI till 2:20 and goes away. When she comes back to the system at 3:01, she will find the session times out. To her, it seems the system kicks out the session which is only idle for 40 minutes instead of 1 hour. Let's walk through the story again to see what happens. When the user A logs in to the system, an SMAX_AUTH_TOKEN &nbsp;token is produced. In each request to backend services, it checks how long the token is to expire. Since the token will not expire in 21 minutes, it is not renewed. From 2:21 to 3:00, since there is no requests from the client, no chance to renew the token. At 3:01, when a request comes from the client, the token exceeds its expiration period (i.e. 1 hour) so that the session is timed out.</p>
+<p>The SMAX_AUTH_TOKEN &nbsp;token is renewed when 35% defined by idm.token.lifetime.minutes has passed. Due to the less frequent renew mechanism, the actual session timeout is shorter than what is expected. In extreme cases, users may experience session timeout right after half of the desired time. For example, assume the parameter is set to 1 hour. User A logs in to SMAX at 2:00. She operates on the UI till 2:20 and goes away. When she comes back to the system at 3:01, she will find the session times out. To her, it seems the system kicks out the session which is only idle for 40 minutes instead of 1 hour. Let's walk through the story again to see what happens. When the user A logs in to the system, an SMAX_AUTH_TOKEN &nbsp;token is produced. In each request to backend services, it checks how long the token is to expire. Since the token will not expire in 21 minutes, it is not renewed. From 2:21 to 3:00, since there is no requests from the client, no chance to renew the token. At 3:01, when a request comes from the client, the token exceeds its expiration period (i.e. 1 hour) so that the session is timed out.</p>
 
 <p>So in case you want to make sure it always more than one hour in the situation mentioned above, you can set the SMAX_AUTH_TOKEN &nbsp;to 92(60/0.65). And the side effect will the session will be expired after 92 minutes in some cases.</p>
 <!-- 
