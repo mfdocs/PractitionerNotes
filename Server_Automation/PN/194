@@ -165,4 +165,52 @@ Execution
 Adding win2019 to New Software Policy (SoftwarePolicyRef:220001)
 #
 </pre>
+
+<h2>Attach a Software Policy to a server and remediate</h2>
+
+<p>There are two kinds of remediations, full remediations, and targetted remediations. This example demonstrates attaching a software policy to the server and then only remediating&nbsp;that which was just attached.</p>
+
+<pre>import sys
+from pytwist import twistserver
+from pytwist.com.opsware.swmgmt import PolicyAttachableMap
+from pytwist.com.opsware.swmgmt import PolicyRemediateJobArgument
+from pytwist.com.opsware.swmgmt import AnalyzeArgument
+from pytwist.com.opsware.swmgmt import StageArgument
+from pytwist.com.opsware.job import JobSchedule
+
+def findRefs(filt, obj):
+    refs = ts.search.SearchService.findObjRefs(filt, obj)
+    if not refs:
+        print "%s not found" % obj
+        sys.exit(1)
+    return refs
+
+ts = twistserver.TwistServer()
+ts.authenticate('brett','opsware')
+SPP = ts.swmgmt.SoftwarePolicyService
+
+serverRefs = findRefs('ServerVO.hostName = ebd93380bc0f','device')
+policyRefs = findRefs('SoftwarePolicyVO.name = "Python Opsware API Access"','software_policy')
+
+SPP.attachToPolicies(policyRefs,serverRefs)
+
+pam = PolicyAttachableMap()
+pam.attached = True  # we've call attachToPolicies already
+pam.policies = policyRefs
+pam.policyAttachables = serverRefs
+
+prja = PolicyRemediateJobArgument()
+prja.policyAttachableMap = [pam]
+prja.analyzePhaseArguments = AnalyzeArgument()
+prja.stagePhaseArguments = StageArgument()
+prja.expandAtRuntime = False
+
+print SPP.startRemediate(prja)
+</pre>
+
+<p>Execution</p>
+
+<pre># ./remediatePolicy.py
+Remediate Policies (JobRef:17140001)
+</pre>
 </html>
