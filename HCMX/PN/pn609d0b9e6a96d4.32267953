@@ -1,1 +1,663 @@
- 
+<html><h2>HCMX Migration CLI</h2>
+
+<p>The HCMX Migration tool provides all the required APIs to migrate CSA/HCM to HCMX. The HCMX Migration CLI allows you to interact with the Migration Tool APIs providing the CLI experience.</p>
+
+<p>The migration tool can be downloaded from the &lt;LINK&gt; Marketplace Portal, and detailed documentation of the migration process can be found <a href="https://docs.microfocus.com/itom/SMAX:Main/MigrateToHCMX">here</a>.</p>
+
+<p>This document describes the hcmxmig CLI commands and it's usage. The hcmxmig CLI can be downloaded from the marketplace portal &lt;LINK&gt; here.</p>
+
+<h2>Prerequisite</h2>
+
+<p>You must go&nbsp;through the HCMX migration <a href="https://docs.microfocus.com/itom/SMAX:Main/MigrateToHCMX">documentation</a>&nbsp;and&nbsp;understand the overall migration process which you would consider and follow.</p>
+
+<p>This document assumes that you have installed&nbsp;HCMX and its supporting components (RAS, UCMDB), and have configured all the&nbsp;prerequisite configurations (like tenant, LDAP, users, roles) in HCMX described in the migration tool document. You must validate&nbsp;few&nbsp;typical designs in HCMX from the CSA/HCM and ensure&nbsp;they are working without any issues. After completing all&nbsp;these, you are ready to perform the migration.<br>
+<br>
+The hcmxmig&nbsp;CLI needs the following Linux latest packages&nbsp;installed on the system:<br>
+jq, awk, grep, sed, column</p>
+
+<h2>Installation steps</h2>
+
+<p>The hcmxmig CLI needs to be copied to the 'script' folder in the migration tool directory, it will run on the same server where the migration tool is executed. The hcmxmig CLI needs a Linux environment, it is recommended to use a separate Linux server to deploy the migration tool and CLI script. You would also need a PostgreSQL database for the HCMX Migration tool to run, please check the migration tool documentation for more details on the migration tool requirements.</p>
+
+<p>Extract the migration tool archive to the directory (example: hcmx-mig-tool) and create a script sub-directory. It should have the following folder structure;</p>
+
+<p>|- hcmx-mig-tool<br>
+|- hcmx-mig-tool/hcmx-migration.jar<br>
+|- hcmx-mig-tool/config/application.properties<br>
+|- hcmx-mig-tool/script/hcmxmig</p>
+Add the hcmxmig CLI into the PATH variable, to do this add the following in the <code>~/.bash_profile</code><br>
+<code>PATH=$PATH:$HOME/bin:&lt;path&gt;/hcmx-mig-tool/script</code>
+
+<h2>HCMX Migration Tool Installation and Configuration</h2>
+
+<p>Once the migration tool is extracted, you can use the hcmxmig CLI to install and configure the migration tool. You can refer to the install migration application <a href="https://docs.microfocus.com/itom/SMAX:Main/InstallMigrationTool">section</a> to get more details on some of these steps. Steps to configure and start the migration tool using hcmxmig CLI;</p>
+
+<ol>
+	<li>Enable the migration APIs in DND by adding the&nbsp;DND_PROP_MIGRATION_ENABLE_CSA_DND in the dnd-controller-deployment.yaml</li>
+	<li>Configure the source, target URL, and credentials. This will also add the certificates into the java trust store automatically, you will be prompted for the truststore password (default is <code>changeit</code>). Example:
+	<p><code>hcmxmig tool configure --sourceUrl https://hostname:port/csa --sourceUser admin --sourcePwd password --targetUrl https://hostname/&lt;tenantid&gt;/dnd --targetUser dndadmin --targetPwd password</code></p>
+	</li>
+	<li>Create and configure the Postgresql database for the migration tool, only PostgreSQL database is supported. The --certpath is optional and can be used to configure the SSL connection to PostgreSQL.
+	<ul>
+		<li>To create the database in PostgreSQL, execute the following SQL statements after connecting to the database server
+		<p><code>create user hcmxmig login password '&lt;password&gt;' inherit;<br>
+		create database hcmxmig with owner=hcmxmig;</code></p>
+		</li>
+		<li>Configure the migration tool with the database using the CLI.
+		<p><code>hcmxmig tool configuredb --dbhost hostname --dbport 5432 --dbname hcmx-migration --dbuser postgres --dbpass password --certpath /home/hcmxpgdb.crt</code></p>
+		</li>
+	</ul>
+	</li>
+	<li>Install the migration tool as a Linux service. This command&nbsp;will prompt you for a keystore generation (if not already done) for the migration tool. You would also need the <code>idmTransportUser</code> password from CSA/HCM, check the migration documentation to know how to get them. Example:
+	<p><code>hcmxmig tool install</code></p>
+	</li>
+	<li>Watch the migration tool service status to ensure it's running and there no errors, you should see the swagger URL link which would mean the tool has started. Example:
+	<p><code>hcmxmig tool status</code></p>
+	</li>
+	<li>Log in to the migration tool, the default password is 'password'. The hcmxmig CLI&nbsp;will save&nbsp;the credentials into the user profile for further commands, a token is automatically generated and used for all further API calls. Example:
+	<p><code>hcmxmig tool login admin password</code></p>
+	</li>
+</ol>
+
+<h2>High level migration steps</h2>
+
+<p>The HCMX migration process contains the following sequence:</p>
+
+<h3>Migrate Service&nbsp;Design and OO Content Pack</h3>
+
+<ol>
+	<li>Import all the OO content packs into HCMX</li>
+	<li>Export/Import the designs from CSA/HCM to the HCMX and create offerings in HCMX. hcmxmig CLI script provides an option to transfer the design and create offerings in HCMX. Please check the export/import section in this document for more information.</li>
+</ol>
+
+<h3>Migrate&nbsp;Resource Providers</h3>
+
+<ol>
+	<li>Get the list of resource providers from CSA/HCM
+	<p><code>hcmxmig get provider --output providers.csv</code></p>
+	</li>
+	<li>Run precheck for the resource providers. Ensure there are no errors in the precheck and fix them if any
+	<p><code>hcmxmig precheck provider &lt;comma-separated-provider-ids&gt;</code></p>
+	</li>
+	<li>Run migration for the resource providers which pass the precheck
+	<p><code>hcmxmig migrate provider &lt;comma-separated-provider-ids&gt;</code></p>
+	</li>
+</ol>
+
+<div class="Admonition_Tip"><span class="autonumber">Tip</span>&nbsp; Use the following command to get the command-separated provider-ids from the provider.csv
+
+<p><code>hcmxmig get provider vcenter --output provider.csv<br>
+cat provider.csv | awk -F',' 'NR&gt;1 {gsub(/"/, "", $1); print $1}' | tr '\n' ',' | sed '$s/,$//'</code></p>
+</div>
+
+<h3>Migrating Subscriptions</h3>
+
+<p>The recommended process&nbsp;to migrate the subscriptions is to go by migrating each offering in CSA/HCM. Once you migrate all the subscriptions of an offering, then move on to the next offering in the&nbsp;design, then move on to the next design.</p>
+
+<ol>
+	<li>Get the list of offerings from CSA/HCM - filter them as needed based on organization and offering name. Pick an offering which you want to migrate.
+	<p><code>hcmxmig get offering --output offering.csv</code></p>
+	</li>
+	<li>Export/Import the design of the selected offering and&nbsp;create the offering in HCMX if its not already.
+	<p><code>hcmxmig design transfer --design &lt;design-id&gt; --preview --import --createoffering --target-service-definition &lt;TARGET_SERVICE_DEFINITION&gt; --designfailure true</code></p>
+	</li>
+	<li>Get the mapping for the design&nbsp;based on the selected offering. Check and fix the mapping information in the CSV by checking the probable target offerings and set them in the TargetOfferingId column.
+	<p><code>hcmxmig get mapping &lt;design-id&gt;&nbsp;--mappingfile mapping-&lt;design-id&gt;.csv</code></p>
+	</li>
+	<li>Get the subscriptions for an offering and use the mapping information. Check and Fix the subscription list in the CSV, and set the PerformMigration field to 'Y' when you have a valid TargetOfferingId.
+	<p><code>hcmxmig get subscription --offering &lt;offering-id&gt; --output sub-&lt;offering-id&gt;.csv --use-mapping mapping-&lt;design-id&gt;.csv</code></p>
+	</li>
+	<li>Run precheck for the subscriptions&nbsp;using the subscription CSV. Ensure there are no errors in the precheck, fix them&nbsp;if any
+	<p><code>hcmxmig precheck subscription --input sub-&lt;offering-id&gt;.csv</code></p>
+	</li>
+	<li>Run migration for the subscription which passes the precheck
+	<p><code>hcmxmig migrate subscription --input sub-&lt;offering-id&gt;.csv</code></p>
+	</li>
+</ol>
+
+<p>Repeat the step 2-6&nbsp;for all the offerings in that design, repeat the steps for the&nbsp;next design.</p>
+
+<div class="Admonition_Tip"><span class="autonumber">Tip</span>&nbsp; Use the <b>tool generate</b> command to get all the list of commands to execute to migrate offering. Example:<br>
+<code>hcmxmig tool generate --offeringid &lt;offering-id&gt;</code></div>
+
+<p>Check the CLI usage section for more details on each of these commands and their options.</p>
+
+<p>After the subscription migration is complete, you need to perform the post-migration tasks which are documented in the migration <span style="background-color:#f1c40f;">guide?</span></p>
+
+<h2>CLI Usage</h2>
+
+<p>hcmxmig CLI has the following main commands</p>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>get</td>
+			<td>Display the CSA artifacts from the source. Options: provider, provider type, subscription, offering, organization, task, mapping</td>
+		</tr>
+		<tr>
+			<td>precheck</td>
+			<td>Run Prerequisite checks before migration. Options: provider, subscription</td>
+		</tr>
+		<tr>
+			<td>migrate</td>
+			<td>Run the migration. Options: provider, subscription</td>
+		</tr>
+		<tr>
+			<td>design</td>
+			<td>Export/Import the designs and create offerings from CSA/HCM to HCMX</td>
+		</tr>
+		<tr>
+			<td>offering</td>
+			<td>Create offerings in HCMX based on the CSA/HCM offerings</td>
+		</tr>
+		<tr>
+			<td>generate</td>
+			<td>Generate CLI commands for migration</td>
+		</tr>
+		<tr>
+			<td>tool</td>
+			<td>Configure and manage migration tool: configure, createservice, status, start, restart, stop</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>To get usage information on any command, execute the command with -h or -help to see the details.</p>
+
+<h3>Export/Import Designs and Offerings</h3>
+
+<p>The hcmxmig CLI provides options to export the designs from CSA/HCM and import them into HCMX. For the migration, the offerings in HCMX have to be created using a naming convention that includes the offering version, using hcmxmig CLI you can create the offerings in HCMX with the correct naming convention required for migration.</p>
+
+<div class="Admonition_Note"><b>Note</b>&nbsp; &nbsp;The offering created by the hcmxmig CLI in HCMX is with basic offering details and the rest of the offering properties like pricing, option set, etc., need to be manually configured in the HCMX offering based on the CSA/HCM offering</div>
+
+<h4>design export</h4>
+
+<pre>hcmxmig design export&nbsp;--design &lt;design-id&gt;&nbsp;[--output &lt;filename&gt;]</pre>
+
+<h5><strong>Parameters</strong></h5>
+<code><span style="background-color:#dddddd;">--design</span></code>
+
+<p>The design id from CSA/HCM to be exported to the output filename.</p>
+<code><span style="background-color:#dddddd;">--output</span></code>
+
+<p>Optional. The filename of the exported design archive file. Default: &lt;design-id&gt;.zip</p>
+
+<h5><strong>Examples</strong></h5>
+
+<p><code>hcmxmig design export --design 2c90cf9370f7b9b10170f898bbd0187b<br>
+hcmxmig design export --design 2c90cf9370f7b9b10170f898bbd0187b --output myDesign.zip</code></p>
+
+<h4>design import</h4>
+
+<pre>hcmxmig design import --input filename [--preview] [--import] [--designfailure true|false]</pre>
+
+<h5><strong>Parameters</strong></h5>
+<code><span style="background-color:#dddddd;">--input</span></code>
+
+<p>Design filename to import into HCMX</p>
+<code><span style="background-color:#dddddd;">--preview</span></code>
+
+<p>Optional. Preview the design import and view the prospective result before the import, don't import the design.</p>
+<code><span style="background-color:#dddddd;">--import</span></code>
+
+<p>Optional. Used with --preview parameter. Continue to import the design if the preview is successful.</p>
+<code><span style="background-color:#dddddd;">--designfailure</span></code>
+
+<p>Optional. Set the Failure Handling flags on the design in HCMX after importing, <em>true </em>to set the Pause on Error or <em>false </em>to set Fail on Error on the design. Default: false</p>
+
+<h5><strong>Examples</strong></h5>
+
+<p><code>hcmxmig design import --input 2c90cf9370f7b9b10170f898bbd0187b.zip<br>
+hcmxmig design import --input 2c90cf9370f7b9b10170f898bbd0187b.zip --preview --import<br>
+hcmxmig design import --input 2c90cf9370f7b9b10170f898bbd0187b.zip --preview --import --designfailure true</code></p>
+
+<h4>design transfer</h4>
+
+<pre>hcmxmig design transfer --design &lt;list-design-ids&gt; [--preview] [--import] [--designfailure true|false] [--createoffering] [--target-service-definition &lt;id&gt;]</pre>
+
+<h5><strong>Parameters</strong></h5>
+<code><span style="background-color:#dddddd;">--design</span></code>
+
+<p>Comma-separated list of design ids from CSA/HCM to be transferred to the HCMX</p>
+<code><span style="background-color:#dddddd;">--preview</span></code>
+
+<p>Optional. Preview the design import and view the prospective result before the import, don't import the designs.</p>
+<code><span style="background-color:#dddddd;">--import</span></code>
+
+<p>Optional. Used with --preview parameter. Continue to import the design if the preview is successful.</p>
+<code><span style="background-color:#dddddd;">--designfailure</span></code>
+
+<p>Optional. Set the Failure Handling flags on the design in HCMX after importing, <em>true </em>to set the Pause on Error or <em>false </em>to set Fail on Error on the design. Default: false</p>
+<code><span style="background-color:#dddddd;">--createoffering</span></code>
+
+<p>Optional. Create the offering in HCMX after the design is imported successfully in HCMX.</p>
+<code><span style="background-color:#dddddd;">--target-service-definition</span></code>
+
+<p>Optional. Mandatory with the --createoffering. The service definition id in HCMX under which the new offering has to be created.</p>
+
+<h5><strong>Examples</strong></h5>
+
+<p><code>hcmxmig design transfer --design 2c90cf9370f7b9b10170f898bbd0187b,2c90cf9370f7b9b10170f898bbd0187c --preview --import<br>
+hcmxmig design transfer --design 2c90cf9370f7b9b10170f898bbd0187b,2c90cf9370f7b9b10170f898bbd0187c --preview --import --createoffering --target-service-definition 10081 --designfailure true</code></p>
+
+<h4>offering transfer</h4>
+
+<p>If you have already imported the design into HCMX, you can use this command to create the equivalent offerings in HCMX&nbsp;based on the offerings in CSA/HCM.</p>
+
+<div class="Admonition_Note"><b>Note</b>&nbsp; &nbsp;The offering created by the hcmxmig CLI in HCMX is with basic offering details and the rest of the offering properties like pricing, option set, etc., need to be manually configured in the HCMX offering based on the CSA/HCM offering</div>
+
+<pre>hcmxmig offering transfer --design &lt;design-id&gt; --offering &lt;offering-ids&gt; --target-service-definition &lt;id&gt;</pre>
+
+<h5><strong>Parameters</strong></h5>
+<code><span style="background-color:#dddddd;">--design</span></code>
+
+<p>Design Id in CSA/HCM, all the offerings in the design are created in the HCMX. You can use either --design or --offering parameters.</p>
+<code><span style="background-color:#dddddd;">--offering</span></code>
+
+<p>Comma-separated list of offering ids from CSA/HCM. You can use either --design or --offering parameters</p>
+<code><span style="background-color:#dddddd;">--target-service-definition</span></code>
+
+<p>The service definition id in HCMX under which the new offering has to be created.</p>
+
+<h5><strong>Examples</strong></h5>
+
+<p><code>hcmxmig offering transfer --design 2c90c4a577a555dd0177aa612c532d0e --target-service-definition 10202</code><br>
+<code>hcmxmig offering transfer --offering 2c90cf9370f7b9b10170f898bbd0187b,2c90cf9370f7b9b10170f898bbd0145c --target-service-definition 10202</code></p>
+
+<div class="Admonition_Note"><b>Note</b>&nbsp; &nbsp;The export/import is not an implementation provided in the HCMX Migration Tool (jar), and there are no APIs available, it’s only available with hcmxmig CLI</div>
+
+<h3>Provider Details</h3>
+
+<h4>get provider type</h4>
+List all the resource provider types from CSA/HCM.
+
+<pre>hcmxmig get provider type</pre>
+
+<h5><strong>Examples</strong></h5>
+
+<p><code>hcmxmig get provider type</code></p>
+
+<h4>get provider</h4>
+
+<p>List all the resource providers in the CSA/HCM, use the details to precheck, and migrate the resource providers to HCMX.</p>
+
+<pre>hcmxmig get provider [provider-type-id|migration-status|search-string] [--output filename]</pre>
+
+<h5><strong>Parameters</strong></h5>
+<code><span style="background-color:#dddddd;">provider-type-id</span></code>
+
+<p>The resource provider type id to list all the provider of that type</p>
+<code><span style="background-color:#dddddd;">migration-status</span></code>
+
+<p>Filter the resource providers by the migration status. Available statues: SUCCESS, FAILED, NOT_STARTED, PENDING, IN_PROGRESS.</p>
+<code><span style="background-color:#dddddd;">search-string</span></code>
+
+<p>Search Provider by string, list the provider containing the string.</p>
+<code><span style="background-color:#dddddd;">--output</span></code>
+
+<p>Save the list of providers based on the filters to a CSV file</p>
+
+<h5><strong>Examples</strong></h5>
+
+<p><code>hcmxmig get provider 2c90cf9370f7b9b10170f7ea18054963<br>
+hcmxmig get provider vcenter --output vcenter-providers.csv</code></p>
+
+<h3>Precheck Providers</h3>
+
+<p>You should precheck the provider before migrating them to HCMX, this will check if all the prerequisites are available for migrating the resource provider.</p>
+
+<h5>precheck provider</h5>
+
+<pre>hcmxmig precheck provider &lt;provider-ids&gt; [--output filename]</pre>
+
+<h5><strong>Parameters</strong></h5>
+<code><span style="background-color:#dddddd;">provider-ids</span></code>
+
+<p>Comma-separated list of resource provider ids to precheck</p>
+<code><span style="background-color:#dddddd;">--output</span></code>
+
+<p>Save the precheck results to a CSV file</p>
+
+<h5><strong>Examples</strong></h5>
+
+<p><code>hcmxmig precheck provider 2c90899071353e740171354d4b9603a0,2c90a895713b4bff01713b7cda812584,2c90a895713b4bff01713b80b7d03b99</code></p>
+
+<div class="Admonition_Tip"><span class="autonumber">Tip</span>&nbsp; Use the following command to get the command-separated provider-ids from the provider.csv
+
+<p><code>hcmxmig get provider vcenter --output provider.csv<br>
+cat provider.csv | awk -F',' 'NR&gt;1 {gsub(/"/, "", $1); print $1}' | tr '\n' ',' | sed '$s/,$//'</code></p>
+</div>
+
+<h3>Migrate Providers</h3>
+
+<p>Migrate the resource providers to HCMX, if the provider already exists in HCMX then it will be updated.</p>
+
+<h5>migrate provider</h5>
+
+<pre>hcmxmig migrate provider &lt;provider-ids&gt;</pre>
+
+<h5><strong>Parameters</strong></h5>
+<code><span style="background-color:#dddddd;">provider-ids</span></code>
+
+<p>Comma-separated list of resource provider ids to migrate</p>
+
+<h5><strong>Examples</strong></h5>
+
+<p><code>hcmxmig migrate provider 2c90899071353e740171354d4b9603a0,2c90a895713b4bff01713b7cda812584,2c90a895713b4bff01713b80b7d03b99</code></p>
+
+<p>Once you execute the command, you will be shown a list of migration task which are created to migrate these providers. You can leave the command running, the status against each of these will be automatically updated in an interval of 5 seconds until all the migration tasks are completed.</p>
+
+<h3>Organization Details</h3>
+
+<p>You would need the organization-id to use with subscription commands to filter the subscriptions to list all the organizations from CSA/HCM.</p>
+
+<h5>get organization</h5>
+
+<pre>hcmxmig get organization [search-string]</pre>
+
+<h5><strong>Parameters</strong></h5>
+<code><span style="background-color:#dddddd;">search-string</span></code>
+
+<p>Search Organization by string, list the organization containing the string.</p>
+
+<h5><strong>Examples</strong></h5>
+
+<p><code>hcmxmig get organization<br>
+hcmxmig get organization myorg</code></p>
+
+<h3>Generate commands</h3>
+
+<p>For migrating subscriptions, you have to deal with many different UUIDs, to make it easier you can generate the hcmxmig CLI commands to execute, for a design-id or offering-id. This command would generate all the required commands to migrate the design or offering. For a design, it will generate for all the offerings in that design. You can copy and use the command as-is in the same sequence since it will have all the required ids to perform the migration.</p>
+
+<h5>command</h5>
+
+<pre>hcmxmig generate commands [--design &lt;design-id&gt;] [--offering &lt;offering-id&gt;]</pre>
+
+<h5><strong>Parameters</strong></h5>
+<code><span style="background-color:#dddddd;">--design</span></code>
+
+<p>Generate the required migration commands for the design-id, it would contain commands for all offering-ids in the design</p>
+<code><span style="background-color:#dddddd;">--offering</span></code>
+
+<p>Generate the required migration commands for the offering-id</p>
+
+<h5><strong>Examples</strong></h5>
+
+<p><code>hcmxmig generate commands --design&nbsp;2c90c4a577a555dd0177fd13a8bf5ba3<br>
+hcmxmig generate commands --offering&nbsp;7eab99afc63744c7b5f4154830c21012</code></p>
+
+<h3>Offering Details</h3>
+
+<h5>get offering</h5>
+
+<pre>hcmxmig get offering [search-string] [--output &lt;filename&gt;]</pre>
+
+<h5><strong>Parameters</strong></h5>
+<code><span style="background-color:#dddddd;">search-string</span></code>
+
+<p>Search Provider by string, list the provider containing the string.</p>
+<code><span style="background-color:#dddddd;">--output</span></code>
+
+<p>Save the offering details to a CSV file</p>
+
+<h5><strong>Examples</strong></h5>
+
+<p><code>hcmxmig get offering --output offering.csv<br>
+hcmxmig get offering myoffering --output offering.csv</code></p>
+
+<p>The offering list contains the design-id which is used in many other commands as input during the migration.</p>
+
+<h3>Generate Mapping</h3>
+
+<p>In order to migrate subscriptions from CSA/HCM to HCMX, the migration tool needs to know the mapping between source offering to the target offering. You can read more details about this in the migration document.</p>
+
+<h4>get mapping</h4>
+
+<pre>hcmxmig get mapping [--all] [&lt;design-ids&gt;] [--mappingfile]</pre>
+
+<h5><strong>Parameters</strong></h5>
+<code><span style="background-color:#dddddd;">--all</span></code>
+
+<p>Generate mapping for all the designs</p>
+<code><span style="background-color:#dddddd;">design-ids</span></code>
+
+<p>Comma-separated list of design-ids to generate the mapping details</p>
+<code><span style="background-color:#dddddd;">--mappingfile</span></code>
+
+<p>Save the mapping information to a CSV file, this can be used in <code>get subscription</code> command as input. Default: mapping.csv</p>
+
+<h5><strong>Examples</strong></h5>
+
+<p><code>hcmxmig get mapping --all<br>
+hcmxmig get mapping 2c90c4a577a555dd0177fd13a8bf5ba3,2c90c4a577a555dd0177f362d10e69c0 --mappingfile design-mapping.csv</code></p>
+
+<p>You can use the mapping file with <code>get subscription</code> command. The mapping CSV contains the TargetOfferingId and ProbableOfferingId fields, they are offering-ids from the HCMX which matched against the CSA/HCM offering.</p>
+
+<ol>
+	<li>The offering-id in TargetOfferingId is an exact match to the source by naming convention and it can be used to migrate the subscriptions.</li>
+	<li>The ProbableOfferingId would contain more than one offering-id, and they are the other offerings from the same design. If there is no TargetOfferingId (exact match), you have manually checked and select one from the ProbableOfferingId and set it under TargetOfferingId.</li>
+</ol>
+
+<h3>Subscription Details</h3>
+
+<h4>get subscription</h4>
+
+<pre>hcmxmig get subscription [--organization &lt;org-id&gt;] [--offering &lt;offering-id&gt;] [-o wide] [--output &lt;filename&gt;] [--use-mapping &lt;filename&gt;] [--migrated]</pre>
+
+<h5><strong>Parameters</strong></h5>
+<code><span style="background-color:#dddddd;">--organization</span></code>
+
+<p>Filter the subscription listing by the organization</p>
+<code><span style="background-color:#dddddd;">--offering</span></code>
+
+<p>Filter the subscription listing by the offering</p>
+<code><span style="background-color:#dddddd;">-o</span></code>
+
+<p>Show all the id-columns including offering-id, org-id, design-id. Only <em>wide </em>is supported option with this parameter.</p>
+<code><span style="background-color:#dddddd;">--output</span></code>
+
+<p>Save the subscriptions to a CSV file, this file will be used while subscription precheck and migration. It would need mapping information, if --use-mapping parameter is not passed, a mapping is automatically generated for all designs of the listed subscriptions</p>
+<code><span style="background-color:#dddddd;">--use-mapping</span></code>
+
+<p>Mapping information file containing the target offering ids for all the offerings of the listed subscription.</p>
+<code><span style="background-color:#dddddd;">--migrated</span></code>
+
+<p>List all the migrated subscriptions, use along with other filtering options</p>
+
+<h5><strong>Examples</strong></h5>
+
+<p><code>hcmxmig get subscription --offering accdc645cdae4164880475a15e7f85e7<br>
+hcmxmig get subscription -o wide --organization 2c90cf9370f7b9b10170f895f5201702<br>
+hcmxmig get subscription --output subscriptions.csv --offering accdc645cdae4164880475a15e7f85e7<br>
+hcmxmig get subscription --output sub-b2b776cdc95e41b7be419cb094748457.csv --use-mapping map-b2b776cdc95e41b7be419cb094748457.csv --offering b2b776cdc95e41b7be419cb094748457<br>
+hcmxmig get subscription --offering b2b776cdc95e41b7be419cb094748457 --orgid 2c90cf9370f7b9b10170f895f5201702 --migrated</code></p>
+
+<p>The subscriptions are&nbsp;listed in a paginated fashion with set PAGE_SIZE, default is 30.</p>
+
+<p>The output CSV contains PerformMigration, TargetOfferingId, ProbableOfferingId fields, and&nbsp;other subscription details. The PerformMigration against a subscription has to be set to "Y" for the precheck and migration commands to process it. The TargetOfferingId has to set with the correct offering-id which should be used to migrate. The ProbableOfferingId would contain more than one offering-id, and they are the other offerings from the same design available in HCMX. The output CSV file is generated using the mapping file (either generated runtime or passed to the command). The PerformMigration is automatically set to "Y" if there is a matching TargetOfferingId, otherwise, it's set to "N" by default.</p>
+
+<div class="Admonition_Tip"><span class="autonumber">Tip</span>&nbsp; To change all PerformMigration field&nbsp;from N to Y, use the command:<br>
+<code>sed -i 's/"N",/"Y",/g' subscription.csv</code></div>
+
+<h3>Precheck Subscription</h3>
+
+<h5>precheck subscription</h5>
+
+<p>You should precheck the subscription before migrating them, it will check all the prerequisites to migrate the subscription and list the failures if any. You have to fix the precheck failures before performing the migration</p>
+
+<pre>hcmxmig precheck subscription --input &lt;filename&gt; [--output &lt;filename&gt;]</pre>
+
+<h5><strong>Parameters</strong></h5>
+<code><span style="background-color:#dddddd;">--input</span></code>
+
+<p>List of subscriptions in the CSV file to precheck. The PerformMigration should be set to Y with a valid TargetOfferingId against the subscriptions you want to migrate.</p>
+<code><span style="background-color:#dddddd;">--output</span></code>
+
+<p>Optional. Save the precheck results into a CSV file</p>
+
+<h5><strong>Examples</strong></h5>
+
+<p><code>hcmxmig precheck subscription --input subscriptions.csv</code></p>
+
+<h3>Migrate Subscription</h3>
+
+<h5>migrate subscription</h5>
+
+<pre>hcmxmig migrate subscription --input &lt;filename&gt;</pre>
+
+<h5><strong>Parameters</strong></h5>
+<code><span style="background-color:#dddddd;">--input</span></code>
+
+<p>List of subscriptions in the CSV file to migrate. The PerformMigration should be set to Y with a valid TargetOfferingId against the subscriptions you want to migrate.</p>
+
+<h5><strong>Examples</strong></h5>
+
+<p><code>hcmxmig migrate subscription --input subscriptions.csv</code></p>
+
+<p>Once you execute the command, you will be shown a list of migration task which are created to migrate these subscriptions. You can leave the command running, the status against each of these will be automatically updated in an interval of 5 seconds until all the subscription migration tasks are completed.</p>
+
+<p>You can break (Ctrl+c) from this command anytime, the migration will continue in the background and tasks will be updated with the status. You can use the "get task" command to check the status later, or use --monitor to continue monitoring the status.</p>
+
+<h3>Migration Task</h3>
+
+<p></p>
+
+<h5>get task</h5>
+
+<pre>hcmxmig get task [--type &lt;type&gt;] [--state &lt;state&gt;] [--monitor]</pre>
+
+<h5><strong>Parameters</strong></h5>
+<code><span style="background-color:#dddddd;">--type</span></code>
+
+<p>Filter the task type by the migration artifact type. Available types are RESOURCE_PROVIDER, SUBSCRIPTION</p>
+<code><span style="background-color:#dddddd;">--state</span></code>
+
+<p>Filter the task type by the migration status. Available statuses are&nbsp;PENDING, IN_PROGRESS, COMPLETED, MIGRATION_IN_PROGRESS, PRECHECK_IN_PROGRESS.</p>
+<code><span style="background-color:#dddddd;">--monitor</span></code>
+
+<p>Continue to monitor the migration status of remaining pending and in-progress tasks, if you have lost the session from the previous migrate command</p>
+
+<h5><strong>Examples</strong></h5>
+
+<p><code>hcmxmig get task<br>
+hcmxmig get task --type SUBSCRIPTION --state IN_PROGRESS<br>
+hcmxmig get task --monitor</code></p>
+
+<h3>Tool Management</h3>
+
+<p>Use the tool command to configure and manage the migration tool.</p>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>configure</td>
+			<td>Configure CSA/HCM and HCMX details in the tool configuration file</td>
+		</tr>
+		<tr>
+			<td>configuredb</td>
+			<td>Configure tool database</td>
+		</tr>
+		<tr>
+			<td>install</td>
+			<td>Creates a keystore and hcmx-migration service to run the jar file as a service</td>
+		</tr>
+		<tr>
+			<td>status</td>
+			<td>hcmx-migration service status</td>
+		</tr>
+		<tr>
+			<td>start</td>
+			<td>Start the hcmx-migration service</td>
+		</tr>
+		<tr>
+			<td>stop</td>
+			<td>Stop&nbsp;the hcmx-migration service</td>
+		</tr>
+		<tr>
+			<td>restart</td>
+			<td>Restart&nbsp;the hcmx-migration service</td>
+		</tr>
+		<tr>
+			<td>login</td>
+			<td>Log in to the migration tool. The username and password are saved for future login. Parameters - username, password</td>
+		</tr>
+		<tr>
+			<td>changepassword</td>
+			<td>Change the login password of the migration tool. Parameter - newPassword</td>
+		</tr>
+	</tbody>
+</table>
+
+<h5><strong>Examples</strong><br>
+<code>hcmxmig tool install<br>
+hcmxmig tool restart<br>
+hcmxmig tool login admin password<br>
+hcmxmig tool changePassword new-password</code></h5>
+
+<h4>Configure Options</h4>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>--sourceUrl</td>
+			<td>Source CSA or HCM URL ex: https://hostname:port/csa</td>
+		</tr>
+		<tr>
+			<td>--sourceUser</td>
+			<td>Source CSA or HCM admin user. Default: admin</td>
+		</tr>
+		<tr>
+			<td>--sourcePwd&nbsp;</td>
+			<td>Source CSA or HCM admin password</td>
+		</tr>
+		<tr>
+			<td>--targetUrl</td>
+			<td>Target HCMX DND URL with Tenantid ex: https://hostname/&lt;tenantid&gt;/dnd</td>
+		</tr>
+		<tr>
+			<td>--targetUser</td>
+			<td>Target CSA or HCM admin user. Default: dndadmin</td>
+		</tr>
+		<tr>
+			<td>--targetPwd</td>
+			<td>Target CSA or HCM admin password</td>
+		</tr>
+	</tbody>
+</table>
+
+<p><strong>Examples</strong><br>
+<code>hcmxmig tool configure --sourceUrl https://hostname:port/csa --sourceUser admin --sourcePwd password --targetUrl https://hostname/&lt;tenantid&gt;/dnd --targetUser dndadmin --targetPwd password</code></p>
+
+<h4>Configure Database Options</h4>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>--dbhost</td>
+			<td>Postgres database hostname</td>
+		</tr>
+		<tr>
+			<td>--dbport</td>
+			<td>Postgres database port. Default: 5432</td>
+		</tr>
+		<tr>
+			<td>--dbuser</td>
+			<td>Postgres database username</td>
+		</tr>
+		<tr>
+			<td>--dbpass</td>
+			<td>Postgres database password</td>
+		</tr>
+		<tr>
+			<td>--dbname</td>
+			<td>Postgres database name</td>
+		</tr>
+		<tr>
+			<td>--certpath</td>
+			<td>Optional. Path to the certificate file in case of the SSL connection to database</td>
+		</tr>
+	</tbody>
+</table>
+
+<p><strong>Examples</strong><br>
+<code>hcmxmig tool configuredb --dbhost hostname --dbport 5432 --dbname hcmx-migration &nbsp;--dbuser postgres --dbpass password &nbsp;--certpath /home/hcmxpgdb.crt</code></p>
+</html>
