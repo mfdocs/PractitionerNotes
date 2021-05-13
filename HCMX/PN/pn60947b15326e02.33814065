@@ -132,8 +132,20 @@
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Assign <b>CMP Agent </b>and <b>Self-Service portal user</b> roles to the <b>Integ_Jenkins_HCMX</b> user.</span></span></span></li>
 	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Assign other appropriate roles to the <b>Integ_Jenkins_HCMX</b> user such that all HCMX cloud service offerings are visible to the <b>Integ_Jenkins_HCMX</b> user in HCMX ESS portal.</span></span></span></li>
 </ol>
-<h3>Set default values for the offering in HCMX</h3>
-<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will set default values for the HCMX offering that you would like to deploy to create an ad-hoc test environment using CICD process. If default values are not </span></span></span></p>
+
+<h3>Configure offering's request deployment and closure without human intervention</h3>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">In this section, you will configure&nbsp;the HCMX offering such that its request deployment and closure happens without human intervention. The deployment of an offering's request pauses in the log phase if either the <strong>owner</strong> field or the <strong>service desk group</strong> field is not set a default value on the offering. The closure of an offering's deployed request pauses in the validation phase if <strong>Skip end user acceptance</strong> is not enabled on the offering. To configure offering's request deployment and closure without human intervention, follow the steps below:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Log on to the HCMX tenant agent interface&nbsp;as&nbsp;a<b>&nbsp;</b>user with catalog administration privileges.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Navigate to the list of offerings.&nbsp;Open the offering that you would like to use to deploy an ad-hoc test environment from Jenkins.</span></span></span></li>
+	<li style="margin-left:8px">In the offering details window, navigate to the <strong>Default values</strong> page.</li>
+	<li style="margin-left:8px">Set value for the <strong>Service desk group</strong> field.</li>
+	<li style="margin-left:8px">Enable <strong>Skip end user acceptance</strong> checkbox.</li>
+	<li style="margin-left:8px">Ensure that there are no approvals are set on the offering.</li>
+	<li style="margin-left:8px">Click <strong>Save</strong>.</li>
+</ol>
 
 <h3>Get CreateRequest payload for the offering from HCMX</h3>
 
