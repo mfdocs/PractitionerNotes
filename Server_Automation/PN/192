@@ -175,4 +175,46 @@ for dirpath, _, _ in os.walk("root", topdown=True):
 
 <pre>fnode = ts.folder.FolderService.getFNode(['root'])
 ts.folder.FolderService.bulkRemove([fnode])</pre>
+
+<h2>Viewing folder properties</h2>
+
+<p>The internal strings and workflow exposed in the GUI interface do not map 1:1 with the UAPI call that exposes Folder ACLs. The GUI implies additional permissions when presenting Folder permissions.</p>
+
+<p><img alt="Folder Properties" border="0" file="https://docs.microfocus.com/mediawiki/images/a/ac/Screenshot_2021-05-14_122633.jpg" height="466" hspace="0" src="https://docs.microfocus.com/mediawiki/images/a/ac/Screenshot_2021-05-14_122633.jpg" style="width:492px;height:466px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="492"></p>
+
+<pre>from pytwist import twistserver
+from collections import defaultdict
+
+ts = twistserver.TwistServer()
+FS = ts.folder.FolderService
+path="Development/Testing"
+folderRef = FS.getFolderRef(path.split('/'))
+d = defaultdict(set)
+for acl in FS.getFolderACLs([folderRef]):
+    # Tuple to sort in same order as GUI
+    perm = {"L":(0,"List"),
+            "READ":(1,"Read"),
+            "WRITE":(2,"Write"),
+            "X":(3,"Execute"),
+            "PM":(4,"Edit"),  # aka Permission Management
+    }.get(acl.accessLevel,"?")
+    # Some permissions imply others
+    if perm[0] == 2: # write implies read
+        d[acl.role.name].add((1,'Read'))
+    if perm[0]: # any other permission implies List
+        d[acl.role.name].add((0,'List'))
+    d[acl.role.name].add(perm)
+
+for k,v in sorted(d.items()):
+    print "%30s: %s" % (k, ', '.join(x[1] for x in sorted(v)))
+</pre>
+Execution
+
+<pre>                         ADMIN: List, Edit
+     Compliance Policy Setters: List, Read
+             OS Policy Setters: List, Read, Write
+          Patch Policy Setters: List, Read, Write
+       Software Policy Setters: List, Read, Write
+                    Superusers: List, Read, Write, Execute
+</pre>
 </html>
