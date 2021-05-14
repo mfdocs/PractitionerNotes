@@ -197,7 +197,7 @@ for acl in FS.getFolderACLs([folderRef]):
             "WRITE":(2,"Write"),
             "X":(3,"Execute"),
             "PM":(4,"Edit"),  # aka Permission Management
-    }.get(acl.accessLevel,"?")
+           }[acl.accessLevel]
     # Some permissions imply others
     if perm[0] == 2: # write implies read
         d[acl.role.name].add((1,'Read'))
