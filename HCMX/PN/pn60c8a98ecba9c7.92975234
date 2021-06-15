@@ -44,8 +44,11 @@
 <p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Note down the full POD name starting with itom-dnd-controller. In the sample screenshot shown above, the full POD name for itom dnd controller POD is itom-dnd-controller-390675614-7d8455d77-t9c7g.</span></span></span></p>
 
 <ol start="4">
-	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Run the following command to exec into the itom-dnd-controller container: kubectl exec -it &lt;itom dnd controller pod name noted in step 3&gt; -n &lt;HCMX namespace noted in step 2&gt; -c itom-dnd-controller -- sh</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Run the following command to exec into the itom-dnd-controller container: </span></span></span></li>
 </ol>
+
+<pre>kubectl exec -it &lt;itom dnd controller pod name noted in step 3&gt; -n &lt;HCMX namespace noted in step 2&gt; -c itom-dnd-controller -- sh
+</pre>
 
 <p style="margin-left:48px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/e/ea/hcmxDebugJS_ExecContainer.PNG" src="/mediawiki/images/pn_images/pn_image_60c91b829cca04.35558670.png" style="width: 800px; height: 67px; margin: 0px; border: 0px solid black;" width="800" vspace="0" hspace="0" height="67" border="0"></p>
 
@@ -53,9 +56,7 @@
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Inside the itom-dnd-controller container, run the following command to retrieve password for the dndReportingUser_&lt;TenantID&gt; user:</span></span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">get_secret dnd_reporting_password_secret_key dnd_app_role_&lt;TenantID&gt;</span></span></span></p>
-
-<p style="margin-left:48px"></p>
+<pre><code>get_secret dnd_reporting_password_secret_key dnd_app_role_&lt;TenantID&gt;</code></pre>
 
 <p style="margin-left:48px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/2/29/hcmxDebugJS_GetSecret.PNG" src="/mediawiki/images/pn_images/pn_image_60c91b82d6bec7.59557300.png" style="width: 800px; height: 71px; margin: 0px; border: 0px solid black;" width="800" vspace="0" hspace="0" height="71" border="0"></p>
 
