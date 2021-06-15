@@ -5,7 +5,7 @@ After you have installed the SMA suite with a single-node external PostgreSQL da
 <div class="Admonition_Note"><b>Note</b><br>
 For production setup we highly recommend setting up PG-HA. The following documentation is to aid you in configuring PG HA and highlight relevant settings that may be needed to work with SMAX; however, it is not intended to replace the PostgreSQL documentation or best practices or any policies or procedures that you have within your organization.</div>
 
-<h2 class="mw-headline" id="Overview">Overview&nbsp;</h2>
+<h2 class="mw-headline" id="Overview">Overview</h2>
 
 <p>The following diagram illustrates the architecture of this PGHA setup, which uses two PostgreSQL servers as the master and standby nodes and uses one load balancer in front of the two nodes.<br>
 <img alt="SMA 202005 external PGHA.png" data-file-height="731" data-file-width="1111" height="731" src="/mediawiki/images/e/eb/SMA_202005_external_PGHA.png" width="1111"></p>
@@ -678,6 +678,15 @@ psql -c 'SELECT pg_reload_conf();'
 <p>On dbnode1, do the following:</p>
 
 <ol>
+	<li>Run the following command on dbnode1&nbsp;to stop the Pgpool service:
+	<pre>systemctl stop pgpool </pre>
+
+	<p>If the service cannot be stopped, continue to run the following commands:&nbsp;</p>
+
+	<pre>ps -ef|grep pgpool|awk -F' ' '{ print $2 }'|xargs kill -9 
+rm -f /tmp/.*.9999  
+rm -f /tmp/.*.9898</pre>
+	</li>
 	<li>Before you perform a PG sync from the current primary node, create a backup of the current PGDATA folder.
 	<p><b>NOTE</b>: The following commands are provided based on an assumption that the default PGDATA directory (/var/lib/pgsql/10/data) is used. If you are using a different PGDATA directory, adjust these commands according to your PGDATA directory.</p>
 
@@ -700,6 +709,11 @@ vi recovery.conf
 	<li>In the primary_conninfo line, change the host name to the new primary host name and primary_slot_name&nbsp;to&nbsp;&lt;replication_slot_name&gt;.</li>
 	<li>Run the following command to start Postgres:
 	<pre>systemctl start postgresql-10.service</pre>
+	</li>
+	<li>Start the&nbsp;Pgpool&nbsp;service:
+	<pre><code>systemctl start pgpool</code></pre>
+
+	<p></p>
 	</li>
 	<li>Run the following command to verify the replication:
 	<pre>psql -h &lt;dbnode hostname&gt; -p 9999 -U postgres -c 'select sent_lsn,replay_lsn from pg_stat_replication' </pre>
