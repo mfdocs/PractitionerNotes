@@ -18,20 +18,18 @@
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">To view DND service design JavaScript’s debug output, follow the steps below:</span></span></span></p>
 
-<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Retrieve dndReportingUser_&lt;HCMXTenantID&gt; user’s password</span></span></span></p>
+<h2>Retrieve dndReportingUser_&lt;HCMXTenantID&gt; user’s password</h2>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">The dndReportingUser_&lt;HCMXTenantID&gt; user has the privileges to view the JavaScript debug output. The dndReportingUser_&lt;HCMXTenantID&gt; user is created by HCMX during deployment of DND capability to the tenant. As the dndReportingUser_&lt;HCMXTenantID&gt; user is created by HCMX, password for that user is not known and have to be retrieved from the vault. Retrieval of dndReportingUser_&lt;HCMXTenantID&gt; user’s password is a one-time task unless password is forgotten, or the password has changed for some reason. To retrieve the dndReportingUser_&lt;HCMXTenantID&gt; user’s password, follow the steps below:</span></span></span></p>
 
 <ol>
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Log on to one of the Kubernetes cluster nodes.</span></span></span></li>
-	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Run the following command to get a list of namespaces in the Kubernetes cluster: kubectl get namespaces</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Run the following command to get a list of namespaces in the Kubernetes cluster: </span></span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="Text
+<pre><code>kubectl get namespaces</code></pre>
 
-Description automatically generated" src="/mediawiki/images/pn_images/pn_image_60c918fea18c37.38573161.png" style="width:624px; height:272px"></span></span></span></p>
-
-<p style="margin-left:48px"></p>
+<p style="margin-left:48px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/b/b1/hcmxDebugJS_GetNamespace.PNG" src="https://docs.microfocus.com/mediawiki/images/b/b1/hcmxDebugJS_GetNamespace.PNG" style="width:676px;height:295px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" width="676" vspace="0" hspace="0" height="295" border="0"></p>
 
 <p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">In the list of namespaces, the name beginning with itsma is the namespace in which HCMX has been installed. Note down the HCMX namespace name which will be used in subsequent commands.</span></span></span></p>
 
@@ -39,13 +37,9 @@ Description automatically generated" src="/mediawiki/images/pn_images/pn_image_6
 	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Run the following command to get itom dnd controller POD name: </span></span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">kubectl get pods -n &lt;HCMX Namespace noted in step 2&gt; | grep -i dnd</span></span></span></p>
+<pre><code>kubectl get pods -n &lt;HCMX Namespace noted in step 2&gt; | grep -i dnd</code></pre>
 
-<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="Text
-
-Description automatically generated" src="/mediawiki/images/pn_images/pn_image_60c918feeba6e4.55434619.png" style="width:624px; height:153px"></span></span></span></p>
-
-<p style="margin-left:48px"></p>
+<p style="margin-left:48px"><img alt="" file="https://docs.microfocus.com/mediawiki/images/c/c7/hcmxDebugJS_GetPODs.PNG" src="/mediawiki/images/pn_images/pn_image_60c91ab043ed37.34441736.png" style="width: 800px; height: 197px; margin: 0px; border: 0px solid black;" width="800" vspace="0" hspace="0" height="197" border="0"></p>
 
 <p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Note down the full POD name starting with itom-dnd-controller. In the sample screenshot shown above, the full POD name for itom dnd controller POD is itom-dnd-controller-390675614-7d8455d77-t9c7g.</span></span></span></p>
 
