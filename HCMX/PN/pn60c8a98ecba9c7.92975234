@@ -1,1 +1,215 @@
- 
+<html><p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Micro Focus Hybrid Cloud Management X (HCMX) simplifies the delivery, consumption, and governance of IT services and resources. HCMX is delivered as part of a single converged solution that provides the capabilities of HCMX and Service Management Automation X (SMAX) integrated Configuration Management System (CMS) and Operations Orchestration (OO) solution. HCMX and SMAX acronyms are used interchangeably throughout this document. HCMX offers the following cloud management capabilities:</span></span></span></p>
+
+<ul>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Design and Deploy (DND)</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Cost governance and resource optimization (CGRO)</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Image aggregation</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">IT process orchestration</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Service portal</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Content Store</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Universal CMDB</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Configuration Management System (CMS) user interface (UI)</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Mobile application</span></span></span></li>
+</ul>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">The HCMX DND capability enables customers to create service designs,&nbsp;offerings, and&nbsp;automate the provisioning and management of hybrid and multi-cloud resources.&nbsp;JavaScript is used in service designs to validate input formats on fields, create dynamic lists in the drop-down list presented to end users, etc. The HCMX DND capability allows service design developers to debug JavaScript using the <b>debug</b> function. The debug function outputs all arguments which describes value and methods that are available to invoke on each object. When invoked without arguments, the debug() function outputs information about variables in current scope (includes all functions and objects). The JavaScript editor in the service designer UI does not show the debug output. The JavaScript debug output can be seen by making a REST API call to the corresponding JavaScript endpoint under propertysources object. </span></span></span></p>
+
+<div class="Admonition_Important" style="margin-bottom: 11px;"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Using debug functions is recommended only during development and troubleshooting of JavaScripts. The debug functions may slow down scripts significantly. Remove debug functions after development and testing of JavaScripts and service design is complete.</span></span></span></div>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">To view DND service design JavaScript’s debug output, follow the steps below:</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Retrieve dndReportingUser_&lt;HCMXTenantID&gt; user’s password</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">The dndReportingUser_&lt;HCMXTenantID&gt; user has the privileges to view the JavaScript debug output. The dndReportingUser_&lt;HCMXTenantID&gt; user is created by HCMX during deployment of DND capability to the tenant. As the dndReportingUser_&lt;HCMXTenantID&gt; user is created by HCMX, password for that user is not known and have to be retrieved from the vault. Retrieval of dndReportingUser_&lt;HCMXTenantID&gt; user’s password is a one-time task unless password is forgotten, or the password has changed for some reason. To retrieve the dndReportingUser_&lt;HCMXTenantID&gt; user’s password, follow the steps below:</span></span></span></p>
+
+<ol>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Log on to one of the Kubernetes cluster nodes.</span></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Run the following command to get a list of namespaces in the Kubernetes cluster: kubectl get namespaces</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="Text
+
+Description automatically generated" src="/mediawiki/images/pn_images/pn_image_60c918fea18c37.38573161.png" style="width:624px; height:272px"></span></span></span></p>
+
+<p style="margin-left:48px"></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">In the list of namespaces, the name beginning with itsma is the namespace in which HCMX has been installed. Note down the HCMX namespace name which will be used in subsequent commands.</span></span></span></p>
+
+<ol start="3">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Run the following command to get itom dnd controller POD name: </span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">kubectl get pods -n &lt;HCMX Namespace noted in step 2&gt; | grep -i dnd</span></span></span></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="Text
+
+Description automatically generated" src="/mediawiki/images/pn_images/pn_image_60c918feeba6e4.55434619.png" style="width:624px; height:153px"></span></span></span></p>
+
+<p style="margin-left:48px"></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Note down the full POD name starting with itom-dnd-controller. In the sample screenshot shown above, the full POD name for itom dnd controller POD is itom-dnd-controller-390675614-7d8455d77-t9c7g.</span></span></span></p>
+
+<ol start="4">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Run the following command to exec into the itom-dnd-controller container: kubectl exec -it &lt;itom dnd controller pod name noted in step 3&gt; -n &lt;HCMX namespace noted in step 2&gt; -c itom-dnd-controller -- sh</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60c918ff42ba51.58977828.png" style="width:624px; height:52px"></span></span></span></p>
+
+<ol start="5">
+	<li style="margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Inside the itom-dnd-controller container, run the following command to retrieve password for the dndReportingUser_&lt;TenantID&gt; user:</span></span></span></li>
+</ol>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">get_secret dnd_reporting_password_secret_key dnd_app_role_&lt;TenantID&gt;</span></span></span></p>
+
+<p style="margin-left:48px"></p>
+
+<p style="margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60c918ffa05da8.62729123.png" style="width:624px; height:55px"></span></span></span></p>
+
+<p style="margin-bottom:11px; margin-left:48px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Note down the dndReportingUser_TenantID user’s password. This password will be used in subsequent steps to retrieve JavaScript debug output.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Execute the JavaScript</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Use debug function in appropriate statements within the JavaScript. Execute the JavaScript in Service Designer’s JavaScript editor. To execute the JavaScript in JavaScript editor, click the <b>refresh</b> button in the JavaScript editor. In the sample screenshot below, the js-example-debug.js script has been modified to include debug functions.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="Graphical user interface, text, application
+
+Description automatically generated" src="/mediawiki/images/pn_images/pn_image_60c918ffec5194.61588569.png" style="width:625px; height:370px"></span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Make REST API calls to view JavaScript debug output</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">You may use any REST API clients such as Postman, Insomnia, etc. to make REST API calls to HCMX. To view JavaScript’s debug output, follow the steps below:</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Get SMAX Authentication (Auth) Token</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">To get SMAX auth token, run the following HCMX REST API call. &nbsp;Note down the SMAX auth token from the response. The SMAX auth token is required to make subsequent operations on SMAX objects.</span></span></span></p>
+
+<p style="margin-left:48px"></p>
+
+<table class="MsoTableGrid" style="border-collapse:collapse; border:none">
+	<tbody>
+		<tr>
+			<td style="border-bottom:1px solid black; width:78px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>Method</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:498px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:&quot;Calibri&quot;,sans-serif">POST</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:78px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>Endpoint</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:498px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:&quot;Calibri&quot;,sans-serif">https://<span style="color:red">&lt;HCMXExternalAccessHostname&gt;</span>/auth/authentication-endpoint/authenticate/token?TENANTID=<span style="color:red">&lt;HCMXTenantID&gt;</span></span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:78px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>Headers</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:498px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:&quot;Calibri&quot;,sans-serif">None</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:78px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>Body</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:498px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:&quot;Calibri&quot;,sans-serif">{"login":"&lt;<span style="color:red">dndReportingUser_HCMXTenantID&gt;</span>","password":"<span style="color:red">&lt;</span> <span style="color:red">dndReportingUser_HCMXTenantID user’s password&gt;</span>"}</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:78px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>Response</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:498px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:&quot;Calibri&quot;,sans-serif">SMAX Auth Token</span></span></span></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p style="margin-left:48px"></p>
+
+<p><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">In the above REST API call, replace elements in red color font with the values applicable to your environment. A sample screenshot getting a SMAX Auth token using the above REST API call is as shown below:</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" src="/mediawiki/images/pn_images/pn_image_60c9190043bf96.10176144.png" style="width:624px; height:343px"></span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>View JavaScript debug output</b></span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">To view debug output of a recently run JavaScript, run the following HCMX REST API call. </span></span></span></p>
+
+<table class="MsoTableGrid" style="width:733px; border-collapse:collapse; border:none" width="733">
+	<tbody>
+		<tr>
+			<td style="border-bottom:1px solid black; width:72px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>Method</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:661px; padding:0in 7px 0in 7px; border-top:1px solid black; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:&quot;Calibri&quot;,sans-serif">POST</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:72px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>Endpoint</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:661px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:&quot;Calibri&quot;,sans-serif">https://<span style="color:red">&lt;HCMXExternalAccessHostname&gt;</span>/<span style="color:red">&lt;HCMXTenantID&gt;</span>/dnd/propertysources/&lt;JavaScriptName.js&gt;</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:72px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>Headers</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:661px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:&quot;Calibri&quot;,sans-serif">Cookie: TENANTID=<span style="color:red">&lt;HCMXTenantID&gt;</span>;SMAX_AUTH_TOKEN=<span style="color:red">&lt;SMAXAuthTokenFromEarlierSteps&gt;</span></span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:&quot;Calibri&quot;,sans-serif">User-Agent: Apache-HttpClient/4.1</span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:&quot;Calibri&quot;,sans-serif">Content-Type: application/json</span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:&quot;Calibri&quot;,sans-serif">Accept: application/xml</span></span></span></p>
+
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:&quot;Calibri&quot;,sans-serif">Accept: text/plain</span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:72px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>Authorization</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:661px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><span style="color:black">Basic Auth with username and password for the dndReportingUser_TenantID user.</span></span></span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:72px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>Body</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:661px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="background:#fffffe"><span style="line-height:13.5pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><span style="color:black">Empty or None</span></span></span></span></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:1px solid black; width:72px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:1px solid black" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>Response</b></span></span></span></p>
+			</td>
+			<td style="border-bottom:1px solid black; width:661px; padding:0in 7px 0in 7px; border-top:none; border-right:1px solid black; border-left:none" valign="top">
+			<p><span style="font-size:11pt"><span style="line-height:normal"><span style="font-family:&quot;Calibri&quot;,sans-serif">Debug output (if present) is at the start of the response enclosed in the XML-style comment section.</span></span></span></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p style="margin-bottom:11px"></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">In the above REST API call, replace elements in red color font with the values applicable to your environment.</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">A sample screenshot retrieving the JavaScript debug function output using the above REST API call is as shown below:</span></span></span></p>
+
+<p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="Graphical user interface, text, application, email
+
+Description automatically generated" src="/mediawiki/images/pn_images/pn_image_60c91900a4f648.65523603.png" style="width:624px; height:402px"></span></span></span></p>
+</html>
