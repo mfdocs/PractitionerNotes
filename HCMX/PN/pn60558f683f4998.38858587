@@ -19,7 +19,6 @@
 		</li>
 		<li>Users:
 		<ul>
-			<li><a href="#Get the list of all users in TenantID to fetch the UserID">Get the list of all users in TenantID to fetch the UserID</a></li>
 			<li><a href="#Get the specific user in TenantID to fetch the UserID">Get the specific user in TenantID to fetch the UserID</a></li>
 		</ul>
 		</li>
@@ -27,8 +26,6 @@
 		<ul>
 			<li><a href="#Create a Subscription Request">Create a Subscription Request</a></li>
 			<li><a href="#Get the Subscription ID using Request ID">Get the Subscription ID using Request ID</a></li>
-			<li><a href="#Get the Subscription Status">Get the Subscription Status</a></li>
-			<li><a href="#Get Service Instance ID from Subscription ID">Get Service Instance ID from Subscription ID</a></li>
 			<li><a href="#Get Service Node ID for the specific Service Instance ID for Public Actions (also Instance Details)">Get Service Node ID for the specific Service Instance ID for Public Actions</a></li>
 			<li><a href="#Execute Public Action on a Specific Service Instance Node for a Subscription">Execute Public Action on a Specific Service Instance Node for a Subscription</a></li>
 			<li><a href="#Cancel a Subscription">Cancel a Subscription</a></li>
@@ -362,12 +359,12 @@
 		</tr>
 		<tr>
 			<th scope="row">URL Syntax</th>
-			<td><code>https://&lt;HOST&gt;:443/rest/&lt;TENANTID&gt;/ems/Offering?layout=Id,DisplayLabel,RemoteOfferingId,UserOptions,<br>
-			RemoteOfferingName,ProviderId,Status,Service&amp;filter=ProviderType='DND'</code></td>
+			<td><code>https://&lt;HOST&gt;:443/rest/&lt;TENANTID&gt;/</code>ems/Offering?layout=Id,DisplayLabel,RemoteOfferingId,UserOptions,Price,RemoteOfferingName,ProviderId,Status,Service&amp;filter=ProviderType=<br>
+			'DND' and DisplayLabel startswith('TestAPI-De')</td>
 		</tr>
 		<tr>
 			<th scope="row">Description</th>
-			<td>Replace the URL with the HOST and replace the TenantID with respective TenantID for which information is fetched</td>
+			<td>Get all the aggregated offering details based on Provider Type and name of the offering.</td>
 		</tr>
 		<tr>
 			<th scope="row">Headers</th>
@@ -437,80 +434,61 @@
 		</tr>
 		<tr>
 			<th scope="row">Sample Response Data</th>
-			<td><code>{<br>
-			&nbsp; &nbsp; "entities": [<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "properties": {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "ProviderId": "10085",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "UserOptions": "{\"complexTypeProperties\":[{\"properties\":{\"DynamicComplexTypeRefName_c\":\"Useroption298609ef8a1<br>
-			24c448c93e9e1147db5e8_c\",\"Option05244b445a895b5d5ecd510d990f41e9_c\":false,\"Option19cd6cd22067142e0977622ed71ced7d_c\":false,\"<br>
-			Option2E8493EA9AC2821929DA64FC90978A98_c\":true,\"Option31fc15b9f7ba4873c8976ba35b583cd6_c\":false,\"Option34c8d8d8403ac43361b8b80830<br>
-			04ef4a_c\":true,\"OptionSet0c6eb101a1a178c3c49c3badbc481f05_c\":\"{\\\"Option34c8d8d8403ac43361b8b8083004ef4a_c\\\":true}\",\"OptionSet<br>
-			2ee4a8f73fcd1606c1337172e8411e2a_c\":\"{\\\"Optionad52a8efe1465faa8c389ae92bf90d0c_c\\\":true}\",\"OptionSet473C6F2BE6F45DB8381664FC9097<br>
-			BE37_c\":\"{\\\"Option2E8493EA9AC2821929DA64FC90978A98_c\\\":true}\",\"Optionad52a8efe1465faa8c389ae92bf90d0c_c\":true,\"Optionfda5ee32d7d2<br>
-			4a63cb0035926c667e8b_c\":false,\"PropertyserverCount34c8d8d8403ac43361b8b8083004ef4a_c\":1,\"PropertyvmCpuCount05244b445a895b5d5ecd510d990f41<br>
-			e9_c\":1,\"PropertyvmCpuCount19cd6cd22067142e0977622ed71ced7d_c\":1,\"PropertyvmCpuCount31fc15b9f7ba4873c8976ba35b583cd6_c\":8,\"PropertyvmCp<br>
-			uCountad52a8efe1465faa8c389ae92bf90d0c_c\":4,\"PropertyvmCpuCountfda5ee32d7d24a63cb0035926c667e8b_c\":2,\"PropertyvmFolder2E8493EA9AC2821929D<br>
-			A64FC90978A98_c\":\"/\",\"PropertyvmMemorySize05244b445a895b5d5ecd510d990f41e9_c\":1024,\"PropertyvmMemorySize19cd6cd22067142e0977622ed71ced7d<br>
-			_c\":1024,\"PropertyvmMemorySize31fc15b9f7ba4873c8976ba35b583cd6_c\":8192,\"PropertyvmMemorySizead52a8efe1465faa8c389ae92bf90d0c_c\":4096,\<br>
-			"PropertyvmMemorySizefda5ee32d7d24a63cb0035926c667e8b_c\":2048,\"PropertyvmNamePrefix2E8493EA9AC2821929DA64FC90978A98_c\":\"VM\",\"changedUser<br>
-			OptionsForSimulation\":\"\"}}]}",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Description": "Deploys simple compute server from vCenter templates.",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "UserOptionsName": "Useroption298609ef8a124c448c93e9e1147db5e8_c",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "AllowPublic": "Never",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "RemoteOfferingId": "222ab12b-7a03-411c-9a6c-1b6856ad64b7",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "IsPopularity": true,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Image": "ac80e521-0e06-47a1-9905-7ce3eae6ecc3",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "DisplayLabel": "vCenter Compute - Deploy VM from Template",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "PublicScope": "Private",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "NumOfRequests": 17,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Status": "Active",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "TemplateValues": "{\"complexTypeProperties\":[{\"properties\":{\"AttributeName\":\"ExpertAssignee\",\"Value\":\"10017\"}},{\"properties\":{\"AttributeName\":\"ServiceDeskGroup\",\"Value\":\"10005\"}},{\"properties\":{\"AttributeName\":\"OwnedByPerson\",\"Value\":\"10017\"}}]}",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Service": "10084",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Promote": "Normal",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "OfferingType": "ServiceOffering",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "SubscriptionActionType": "All",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "ProviderType": "DND",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Id": "10086"<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "relatedPropertiesMap": {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Service": {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Category": "10083",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "CatalogStatus": "Active"<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "translations": null,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "entityType": "Offering",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "id": "10086",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "entityDescriptorName": "Offering",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "propertyNamesIterator": [<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "ProviderId",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "UserOptions",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Description",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "UserOptionsName",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "AllowPublic",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "RemoteOfferingId",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "IsPopularity",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Image",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "DisplayLabel",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "PublicScope",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "NumOfRequests",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Status",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "TemplateValues",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Service",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Promote",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "OfferingType",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "SubscriptionActionType",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "ProviderType",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Id"<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ],<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "relatedPropertyNamesIterator": [<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Service"<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ]<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; }<br>
-			&nbsp; &nbsp; ],<br>
-			&nbsp; &nbsp; "totalCount": 1<br>
-			}</code></td>
+			<td>
+			<p>{</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;"entities":&nbsp;[</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"entity_type":&nbsp;"Offering",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"properties":&nbsp;{</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"ProviderId":&nbsp;"10092",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Status":&nbsp;"Active",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"UserOptions":&nbsp;"{\"complexTypeProperties\":[{\"properties\":{\"DynamicComplexTypeRefName_c\":\"Useroption1c11fa9a540d4221a8c854ebb3df4029_c\",\"OptionSet6a5f5bb36d1043699b2357978be27bec_c\":\"{\\\"Optionf8846f19f0cc409ba72db29875588049_c\\\":true}\",\"OptionSet8679b3b4a42a4128978acd3c87fb7b00_c\":\"{\\\"Optiondc19fef2f4e442d886ffab79d75c46bf_c\\\":true}\",\"Optiondc19fef2f4e442d886ffab79d75c46bf_c\":true,\"Optionf18accfe15604af2abddef9bebab93e6_c\":false,\"Optionf8846f19f0cc409ba72db29875588049_c\":true,\"Property3d63ad3b386540f887d7283dcca871e1_c\":2048,\"Property416f6f6f99d54e0d8016677654d7b9c1_c\":\"22\",\"Property7349c6ede1ec4a2ca8ed27bb24be9f14_c\":\"11\",\"Property75a5466a92d44911ae9d9daccfa94701_c\":16096,\"changedUserOptionsForSimulation\":\"\"}}]}",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Price":&nbsp;"{\"priceComplexType\":[{\"CostCurrency\":null,\"BasePrice\":null,\"Group\":null,\"Type\":\"Default\",\"RecurringPeriod\":null,\"RecurringCost\":null,\"OptionValue\":true,\"Cost\":\"1\",\"OptionName\":\"Optiondc19fef2f4e442d886ffab79d75c46bf_c\",\"Location\":null,\"$$hashKey\":\"object:3400\"},{\"CostCurrency\":null,\"BasePrice\":null,\"Group\":null,\"Type\":\"Default\",\"RecurringPeriod\":null,\"RecurringCost\":null,\"OptionValue\":true,\"Cost\":\"2\",\"OptionName\":\"Optionf18accfe15604af2abddef9bebab93e6_c\",\"Location\":null,\"$$hashKey\":\"object:3403\"},{\"CostCurrency\":null,\"BasePrice\":null,\"Group\":null,\"Type\":\"Default\",\"RecurringPeriod\":null,\"RecurringCost\":null,\"OptionValue\":true,\"Cost\":null,\"OptionName\":\"Optionf8846f19f0cc409ba72db29875588049_c\",\"Location\":null,\"$$hashKey\":\"object:3406\"}]}",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"LastUpdateTime":&nbsp;1623717270631,</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"RemoteOfferingId":&nbsp;"2365c540-0275-4388-a132-6e0ec303c951",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Service":&nbsp;"10094",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Id":&nbsp;"16877",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"RemoteOfferingName":&nbsp;"TestAPI-Design&nbsp;1.0.0",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"DisplayLabel":&nbsp;"TestAPI-Design"</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"related_properties":&nbsp;{}</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;],</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;"meta":&nbsp;{</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"completion_status":&nbsp;"OK",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"total_count":&nbsp;1,</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"errorDetailsList":&nbsp;[],</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"errorDetailsMetaList":&nbsp;[],</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"query_time":&nbsp;1623717677853619</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+
+			<p>}</p>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row">Sample Response Data Description</th>
@@ -523,151 +501,7 @@
 
 <h3><span style="font-size:16pt"><span style="font-family:Calibri,sans-serif">Users</span></span></h3>
 
-<h4><span style="font-size:16pt"><span style="font-family:Calibri,sans-serif"><a id="Get the list of all users in TenantID to fetch the UserID" name="Get the list of all users in TenantID to fetch the UserID"></a>Get the list of all users in TenantID to fetch the UserID</span></span></h4>
-
-<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
-	<tbody>
-		<tr>
-			<th scope="row">Type</th>
-			<td>GET</td>
-		</tr>
-		<tr>
-			<th scope="row">URL Syntax</th>
-			<td><code>https://&lt;HOST&gt;:443/rest/&lt;TENANTID&gt;/ems/Person?filter=(IsSystemIntegration+!%3D+%27true%27+and+IsSystem+!%3D+%27true%27)&amp;layout=Id,Name,Email,Location,OrganizationalGroup,Upn,Locale,<br>
-			Avatar,Title,IsMaasUser,IsVIP,Location.Name,Location.DisplayLabel,Location.DisplayName,Location.<br>
-			FullName,Location.LocationType,Location.IsDeleted,OrganizationalGroup.Name,OrganizationalGroup.IsDeleted&amp;meta=totalCount&amp;size=250&amp;skip=0</code></td>
-		</tr>
-		<tr>
-			<th scope="row">Description</th>
-			<td>Replace the URL with the HOST and replace the TenantID with respective TenantID for which information is fetched.</td>
-		</tr>
-		<tr>
-			<th scope="row">Headers</th>
-			<td>
-			<ol>
-				<li>Content-Type : <code>application/json</code></li>
-				<li>Accept : <code>application/json</code></li>
-				<li>Cookie : <code>SMAX_AUTH_TOKEN=eyJ0eXAiOiJKV1MiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyYzkwZDBhMDc3Y2U0YjNmMDE3N2NlNzRkZGYwMDYxNyIsImlzcyI6IklkTSAxLjMxLjIiLCJj<br>
-				b20uaHBlLmlkbTp0cnVzdG9yIjpudWxsLCJleHAiOjE2MTQ2NzM4MTMsImNvbS5ocC5jbG91ZDp0ZW5hbnQiOnsiaWQiOiIyYzkwZDBhMDc3Y2U0YjNmMDE3N2NlNzQ3ZmU0MDVjZCIs<br>
-				Im5hbWUiOiI0NTQwMDIxOTkiLCJlbmFibGVkIjp0cnVlfSwicHJuIjoiQW15IiwiaWF0IjoxNjE0NjcwMjEzLCJqdGkiOiJlYWFkNzQwMy1hODExLTQ4Y2UtODYwOS00NzhjNjM4N<br>
-				GU2YjkifQ.ZEd3SNAAJBWCrX3f_KOYXi_nWuHLa7v_rmtaxmItqPM</code></li>
-				<li>TENANTID : <code>XXXXXXXXX</code></li>
-			</ol>
-			</td>
-		</tr>
-		<tr>
-			<th scope="row">Request Body Syntax</th>
-			<td>Not applicable</td>
-		</tr>
-		<tr>
-			<th scope="row">Request Body Example</th>
-			<td>Not applicable</td>
-		</tr>
-		<tr>
-			<th scope="row">Request Body Description</th>
-			<td>Not applicable</td>
-		</tr>
-		<tr>
-			<th scope="row">Sample Response Data</th>
-			<td><code>{<br>
-			&nbsp; &nbsp; "entities": [<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "entity_type": "Person",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "properties": {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Locale": "en",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Upn": "Joe",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "IsMaasUser": true,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Email": "Joe@advantageinc.com",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "LastUpdateTime": 1619154005636,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "IsVIP": false,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Id": "10015",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Avatar": "dac4dc4c-ec88-460e-8446-623c107ee5d1",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Name": "Joe, Joe"<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "related_properties": {}<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; },<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "entity_type": "Person",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "properties": {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Locale": "en",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Upn": "Jennifer",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "IsMaasUser": true,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Email": "Jennifer@advantageinc.com",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "LastUpdateTime": 1619154005799,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "IsVIP": false,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Id": "10016",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Avatar": "dac4dc4c-ec88-460e-8446-623c107ee5d1",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Name": "Jennifer, Jennifer"<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "related_properties": {}<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; },<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "entity_type": "Person",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "properties": {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Locale": "en",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Upn": "Amy",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "IsMaasUser": true,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Email": "Amy@advantageinc.com",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "LastUpdateTime": 1619154005731,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "IsVIP": false,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Id": "10017",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Avatar": "dac4dc4c-ec88-460e-8446-623c107ee5d1",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Name": "Amy, Amy"<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "related_properties": {}<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; },<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "entity_type": "Person",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "properties": {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Locale": "en",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Upn": "serviceAnywhereSurveyUser",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "IsMaasUser": false,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Email": "serviceanywheresurveyuser@hp.com",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "LastUpdateTime": 1614076811900,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "IsVIP": false,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Id": "10067",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Name": "Service Anywhere survey user"<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "related_properties": {}<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; },<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; ..............<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; ..............<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; ..............<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; ..............<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; ..............<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "entity_type": "Person",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "properties": {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Locale": "en_US",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Upn": "hiatt.michele@advantage.com",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "IsMaasUser": false,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Email": "hiatt.michele@advantage.com",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "LastUpdateTime": 1614717239937,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "IsVIP": false,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Id": "11120",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Avatar": "e83f8e22-e343-4ee4-87e4-84cbbb8183d5",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Name": "Michele Hiatt"<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "related_properties": {}<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; }<br>
-			&nbsp; &nbsp; ],<br>
-			&nbsp; &nbsp; "meta": {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; "completion_status": "OK",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; "total_count": 582,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; "errorDetailsList": [],<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; "errorDetailsMetaList": [],<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; "query_time": 1619162874818516<br>
-			&nbsp; &nbsp; }<br>
-			}</code></td>
-		</tr>
-		<tr>
-			<th scope="row">Sample Response Data Description</th>
-			<td></td>
-		</tr>
-	</tbody>
-</table>
-
-<p></p>
+<h4></h4>
 
 <h4><span style="font-size:16pt"><span style="font-family:Calibri,sans-serif"><a id="Get the specific user in TenantID to fetch the UserID" name="Get the specific user in TenantID to fetch the UserID"></a>Get the specific user in TenantID to fetch the UserID</span></span></h4>
 
@@ -968,172 +802,6 @@
 		<tr>
 			<th scope="row">Response Description</th>
 			<td>“RegisteredForSubscription” has the Subscription ID , which can be used further.</td>
-		</tr>
-		<tr>
-			<th scope="row">Sample Response Data Description</th>
-			<td></td>
-		</tr>
-	</tbody>
-</table>
-
-<p></p>
-
-<h4><span style="font-size:16pt"><span style="font-family:Calibri,sans-serif"><a id="Get the Subscription Status" name="Get the Subscription Status"></a>Get the Subscription Status</span></span></h4>
-
-<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
-	<tbody>
-		<tr>
-			<th scope="row">Type</th>
-			<td>GET</td>
-		</tr>
-		<tr>
-			<th scope="row">URL Syntax</th>
-			<td><code>https://&lt;HOST&gt;:443/rest/&lt;TENANTID&gt;/ems/Subscription?layout=Id,Status,Subscriber,DisplayLabel,SubscriptionType,ServiceInstanceProvisionResult,ServiceInstanceProvisionResultMessage,<br>
-			UUID,StartDate,ProcessId,PhaseId&amp;filter=Id='&lt;SUBSCRIPTION_ID&gt;'</code></td>
-		</tr>
-		<tr>
-			<th scope="row">Description</th>
-			<td>Replace the URL with the HOST and replace the TenantID with respective TenantID for which information is fetched.</td>
-		</tr>
-		<tr>
-			<th scope="row">Headers</th>
-			<td>
-			<ol>
-				<li>Content-Type : <code>application/json</code></li>
-				<li>Accept : <code>application/json</code></li>
-				<li>Cookie : <code>SMAX_AUTH_TOKEN=eyJ0eXAiOiJKV1MiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyYzkwZDBhMDc3Y2U0YjNmMDE3N2NlNzRkZGYwMDYxNyIsImlzcyI6IklkTSAxLjMxLjIiLCJjb20uaHBlLmlkbTp<br>
-				0cnVzdG9yIjpudWxsLCJleHAiOjE2MTQ2NzM4MTMsImNvbS5ocC5jbG91ZDp0ZW5hbnQiOnsiaWQiOiIyYzkwZDBhMDc3Y2U0YjNmMDE3N2NlNzQ3ZmU0MDVjZCIsIm5hbWUiOiI0NTQwMDIxOTkiLCJlb<br>
-				mFibGVkIjp0cnVlfSwicHJuIjoiQW15IiwiaWF0IjoxNjE0NjcwMjEzLCJqdGkiOiJlYWFkNzQwMy1hODExLTQ4Y2UtODYwOS00NzhjNjM4NGU2YjkifQ.ZEd3SNAAJBWCrX3f_KOYXi_nWuHLa7v_r<br>
-				mtaxmItqPM4. </code></li>
-				<li>TENANTID : <code>45400219</code></li>
-			</ol>
-			</td>
-		</tr>
-		<tr>
-			<th scope="row">Request Body Syntax</th>
-			<td>Not applicable</td>
-		</tr>
-		<tr>
-			<th scope="row">Request Body Example</th>
-			<td>Not applicable</td>
-		</tr>
-		<tr>
-			<th scope="row">Request Body Description</th>
-			<td>Not applicable</td>
-		</tr>
-		<tr>
-			<th scope="row">Sample Response Data</th>
-			<td><code>{<br>
-			&nbsp; &nbsp; "entities": [<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "entity_type": "<strong>Subscription</strong>",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "properties": {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Status": "<strong>Active</strong>",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "StartDate": 1617877026000,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "SubscriptionType": "SubscriptionLifecycle",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "PhaseId": "pActive",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "ServiceInstanceProvisionResult": "<strong>ACTIVE</strong>",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Subscriber": "10016",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "LastUpdateTime": 1617878651517,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Id": "19225",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "ProcessId": "SubscriptionLifecycle",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "ServiceInstanceProvisionResultMessage": "<strong>Your service has been provisioned successfully. To view the details, go to the \"Services and Assets\" page to find your subscription</strong>."<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "related_properties": {}<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; }<br>
-			&nbsp; &nbsp; ],<br>
-			&nbsp; &nbsp; "meta": {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; "completion_status": "OK",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; "total_count": 0,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; "errorDetailsList": [],<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; "errorDetailsMetaList": [],<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; "query_time": 1617879142824354<br>
-			&nbsp; &nbsp; }<br>
-			}</code></td>
-		</tr>
-		<tr>
-			<th scope="row">Response Description</th>
-			<td><strong>ServiceInstanceProvisionResult</strong> provides the Subscription results. <strong>PhaseID </strong>explains the status of the Stage in which the subscription is there.</td>
-		</tr>
-		<tr>
-			<th scope="row">Sample Response Data Description</th>
-			<td></td>
-		</tr>
-	</tbody>
-</table>
-
-<p></p>
-
-<h4><span style="font-size:16pt"><span style="font-family:Calibri,sans-serif"><a id="Get Service Instance ID from Subscription ID" name="Get Service Instance ID from Subscription ID"></a>Get Service Instance ID from Subscription ID</span></span></h4>
-
-<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
-	<tbody>
-		<tr>
-			<th scope="row">Type</th>
-			<td>GET</td>
-		</tr>
-		<tr>
-			<th scope="row">URL Syntax</th>
-			<td><code>https://&lt;HOST&gt;:443/rest/&lt;TENANTID&gt;/ems/Subscription?layout=Id,InitiatedByOffering,RemoteServiceInstanceID&amp;filter=Id='&lt;Subscription_ID&gt;'</code></td>
-		</tr>
-		<tr>
-			<th scope="row">Description</th>
-			<td>Replace the URL with the HOST and replace the TenantID with respective TenantID for which information is fetched.</td>
-		</tr>
-		<tr>
-			<th scope="row">Headers</th>
-			<td>
-			<ol>
-				<li>Content-Type : <code>application/json</code></li>
-				<li>Accept : <code>application/json</code></li>
-				<li>Cookie : <code>SMAX_AUTH_TOKEN=eyJ0eXAiOiJKV1MiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyYzkwZDBhMDc3Y2U0YjNmMDE3N2NlNzRkZGYwMDYxNyIsImlzcyI6IklkTSAxLjMxLjIiL<br>
-				CJjb20uaHBlLmlkbTp0cnVzdG9yIjpudWxsLCJleHAiOjE2MTQ2NzM4MTMsImNvbS5ocC5jbG91ZDp0ZW5hbnQiOnsiaWQiOiIyYzkwZDBhMDc3Y2U0YjNmMDE3N2NlNzQ3ZmU0MD<br>
-				VjZCIsIm5hbWUiOiI0NTQwMDIxOTkiLCJlbmFibGVkIjp0cnVlfSwicHJuIjoiQW15IiwiaWF0IjoxNjE0NjcwMjEzLCJqdGkiOiJlYWFkNzQwMy1hODExLTQ4Y2UtODYwOS00Nzh<br>
-				jNjM4NGU2YjkifQ.ZEd3SNAAJBWCrX3f_KOYXi_nWuHLa7v_rmtaxmItqPM4</code>.</li>
-				<li>TENANTID : <code>XXXXXXXXX</code></li>
-			</ol>
-			</td>
-		</tr>
-		<tr>
-			<th scope="row">Request Body Syntax</th>
-			<td>Not applicable</td>
-		</tr>
-		<tr>
-			<th scope="row">Request Body Example</th>
-			<td>Not applicable</td>
-		</tr>
-		<tr>
-			<th scope="row">Request Body Description</th>
-			<td>Not applicable</td>
-		</tr>
-		<tr>
-			<th scope="row">Sample Response Data</th>
-			<td><code>{<br>
-			&nbsp; &nbsp; "entities": [<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "entity_type": "Subscription",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "properties": {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "LastUpdateTime": 1617880392501,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "InitiatedByOffering": "10086",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "<strong>RemoteServiceInstanceID</strong>": "<strong>2c90e790788d4ee80178b10fe2431b0e</strong>",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Id": "19225"<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "related_properties": {}<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; }<br>
-			&nbsp; &nbsp; ],<br>
-			&nbsp; &nbsp; "meta": {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; "completion_status": "OK",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; "total_count": 0,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; "errorDetailsList": [],<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; "errorDetailsMetaList": [],<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; "query_time": 1617881142434455<br>
-			&nbsp; &nbsp; }<br>
-			}</code></td>
-		</tr>
-		<tr>
-			<th scope="row">Response Description</th>
-			<td>RemoteServiceInstanceID provides the Service Instance ID for the subscription. Using this ID, we can use another API call, that will help in getting the details Instance details<br>
-			like CPU, Memory, Hostname, IP Address , etc., results.</td>
 		</tr>
 		<tr>
 			<th scope="row">Sample Response Data Description</th>
