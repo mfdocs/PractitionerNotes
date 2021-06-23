@@ -764,15 +764,19 @@
 		</tr>
 		<tr>
 			<th scope="row">URL Syntax</th>
-			<td><code>https://&lt;HOST&gt;:443/rest/&lt;TENANTID&gt;/ems/bulk</code></td>
+			<td><code>https://&lt;HOST&gt;:443/rest/&lt;TENANTID&gt;/ems/Request?layout=Id,Description,RegisteredForSubscription.Id,RegisteredForSubscription.Status,RegisteredForSubscription.ServiceInstanceProvisionResult,<br>
+			RegisteredForSubscription.ServiceInstanceProvisionResultMessage,RegisteredForSubscription.RemoteServiceInstanceID,Status,Solution,RequestType,<br>
+			RequestsOffering,RequestedByPerson,RequestedByPerson.Name,AssignedToPerson.Name,RequestedForPerson,RequestedForPerson.Name,AssignedToPerson,AssignedToGroup,Cost,RecurringCost,ResolvedByPerson,UserOptions,ApprovalStatus&amp;filter=Id eq 16892</code></td>
 		</tr>
 		<tr>
 			<th scope="row">Description</th>
-			<td>Replace the URL with the HOST and replace the TenantID with respective TenantID for which information is fetched</td>
+			<td>Get the Service Request status and details, approval details if any, the associated subscription details, and also the DND service instance ID("RemoteServiceInstanceID").<br>
+			The Approval Status will be displayed "Pending" if the request is pending approval. Once the request is fulfilled, the subscription status will be "Active" and<br>
+			the RemoteServiceInstanceID of DND will be displayed.</td>
 		</tr>
 		<tr>
 			<th scope="row">URL Example</th>
-			<td><code>https://&lt;HOST&gt;:443/rest/XXXXXXXXX/ems/bulk</code></td>
+			<td><code>https://&lt;HOST&gt;:443/rest/&lt;TENANTID&gt;/ems/bulk</code></td>
 		</tr>
 		<tr>
 			<th scope="row">Headers</th>
@@ -802,26 +806,105 @@
 		</tr>
 		<tr>
 			<th scope="row">Sample Response Data</th>
-			<td><code><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">{<br>
-			&nbsp; &nbsp; "entities": [<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "entity_type": "Request",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "properties": {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "LastUpdateTime": 1617877325803,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "RegisteredForSubscription": "19218",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Id": "19216"<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "related_properties": {}<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; }<br>
-			&nbsp; &nbsp; ],<br>
-			&nbsp; &nbsp; "meta": {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; "completion_status": "OK",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; "total_count": 0,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; "errorDetailsList": [],<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; "errorDetailsMetaList": [],<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; "query_time": 1617877458056553<br>
-			&nbsp; &nbsp; }<br>
-			}</span></span></span></span></code></td>
+			<td>
+			<p>{</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;"entities":&nbsp;[</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"entity_type":&nbsp;"Request",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"properties":&nbsp;{</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Status":&nbsp;"RequestStatusReady",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"UserOptions":&nbsp;"{\"complexTypeProperties\":[{\"properties\":{\"DynamicComplexTypeRefName_c\":\"Useroption1c11fa9a540d4221a8c854ebb3df4029_c\",\"OptionSet6a5f5bb36d1043699b2357978be27bec_c\":\"{\\\"Optionf8846f19f0cc409ba72db29875588049_c\\\":true}\",\"OptionSet8679b3b4a42a4128978acd3c87fb7b00_c\":\"{\\\"Optiondc19fef2f4e442d886ffab79d75c46bf_c\\\":true}\",\"Optiondc19fef2f4e442d886ffab79d75c46bf_c\":true,\"Optionf18accfe15604af2abddef9bebab93e6_c\":false,\"Optionf8846f19f0cc409ba72db29875588049_c\":true,\"Property3d63ad3b386540f887d7283dcca871e1_c\":2048,\"Property416f6f6f99d54e0d8016677654d7b9c1_c\":\"22\",\"Property7349c6ede1ec4a2ca8ed27bb24be9f14_c\":\"11\",\"Property75a5466a92d44911ae9d9daccfa94701_c\":16096,\"changedUserOptionsForSimulation\":\"\"}}]}",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Description":&nbsp;"&lt;p&gt;Kishore&nbsp;subscription&lt;/p&gt;\n&lt;br&nbsp;/&gt;",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"RequestedForPerson":&nbsp;"10015",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Cost":&nbsp;6,</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"ApprovalStatus":&nbsp;"Approved",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"RequestedByPerson":&nbsp;"10015",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"RecurringCost":&nbsp;5,</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"AssignedToPerson":&nbsp;"10015",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"LastUpdateTime":&nbsp;1623720759303,</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Id":&nbsp;"16879",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"AssignedToGroup":&nbsp;"10903",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Solution":&nbsp;"Your&nbsp;service&nbsp;has&nbsp;been&nbsp;provisioned&nbsp;successfully.&nbsp;To&nbsp;view&nbsp;the&nbsp;details,&nbsp;go&nbsp;to&nbsp;the&nbsp;\"Services&nbsp;and&nbsp;Assets\"&nbsp;page&nbsp;to&nbsp;find&nbsp;your&nbsp;subscription.",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"RequestType":&nbsp;"ServiceRequest",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"RequestsOffering":&nbsp;"16877"</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"related_properties":&nbsp;{</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"RequestedByPerson":&nbsp;{</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Name":&nbsp;"dndadmin611523289,&nbsp;dndadmin611523289"</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"AssignedToPerson":&nbsp;{</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Name":&nbsp;"dndadmin611523289,&nbsp;dndadmin611523289"</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"RegisteredForSubscription":&nbsp;{</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Status":&nbsp;"Active",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"ServiceInstanceProvisionResult":&nbsp;"ACTIVE",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"RemoteServiceInstanceID":&nbsp;"2c9083ab79f16348017a0d4bb6d7651c",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Id":&nbsp;"16882",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"ServiceInstanceProvisionResultMessage":&nbsp;"Your&nbsp;service&nbsp;has&nbsp;been&nbsp;provisioned&nbsp;successfully.&nbsp;To&nbsp;view&nbsp;the&nbsp;details,&nbsp;go&nbsp;to&nbsp;the&nbsp;\"Services&nbsp;and&nbsp;Assets\"&nbsp;page&nbsp;to&nbsp;find&nbsp;your&nbsp;subscription."</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"RequestedForPerson":&nbsp;{</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Name":&nbsp;"dndadmin611523289,&nbsp;dndadmin611523289"</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;],</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;"meta":&nbsp;{</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"completion_status":&nbsp;"OK",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"total_count":&nbsp;0,</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"errorDetailsList":&nbsp;[],</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"errorDetailsMetaList":&nbsp;[],</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"query_time":&nbsp;1623734003455771</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+
+			<p>}</p>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row">Response Description</th>
