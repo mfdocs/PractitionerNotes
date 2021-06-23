@@ -48,15 +48,22 @@
 		</tr>
 		<tr>
 			<th scope="row">URL Syntax</th>
-			<td><code>https://&lt;HCMX URL&gt;:443/auth/authentication-endpoint/authenticate/token?TENANTID=&lt;TENANTID&gt;</code></td>
+			<td><code>https://&lt;HOST&gt;:443/auth/authentication-endpoint/authenticate/token?TENANTID=&lt;TENANTID&gt;</code></td>
 		</tr>
 		<tr>
 			<th scope="row">Description</th>
-			<td>Replace the URL with the HCMX URL and replace the TenantID with respective TenantID for which information is fetched.</td>
+			<td>
+			<p>Replace the Host and Tenant ID. It is recommended to use the tenant admin user for this API. Specify the user name and password of the user (preferably any user with DND Admin role) to retrieve the Authentication token for this user. This authentication will be used as cookie headers to invoke the subsequent APIs mentioned in the document.&nbsp;Set this authentication token as a Cookie Header.</p>
+
+			<ol>
+				<li>SMAX_AUTH_TOKEN cookie for ESM and ESS APIs</li>
+				<li>X-Auth-Token cookie for DND APIs</li>
+			</ol>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row">URL Example</th>
-			<td><code>https://&lt;HCMX URL&gt;:443/auth/authentication-endpoint/authenticate/token?TENANTID=XXXXXXXXX</code></td>
+			<td><code>https://&lt;HOST&gt;:443/auth/authentication-endpoint/authenticate/token?TENANTID=XXXXXXXXX</code></td>
 		</tr>
 		<tr>
 			<th scope="row">Headers&nbsp;&nbsp; &nbsp;</th>
@@ -88,6 +95,10 @@
 			YyNTcyLCJqdGkiOiIzNmM1MmVmZC04YzA0LTQ0N2UtYmYwYi0wODAzYWUwNWEzYjQifQ.ZL6ily4Fm<br>
 			SYLbbDlH1YmE2Ea0qJP1YElCatbqpQl1Ng</td>
 		</tr>
+		<tr>
+			<th scope="row">Sample Response Data Description</th>
+			<td></td>
+		</tr>
 	</tbody>
 </table>
 
@@ -105,15 +116,15 @@
 		</tr>
 		<tr>
 			<th scope="row">URL Syntax</th>
-			<td><code>https://&lt;HCMX URL&gt;:443/&lt;TENANTID&gt;/dnd/api/resource/provider/?isAssociateOfferings=false</code></td>
+			<td><code>https://&lt;HOST&gt;:443/&lt;TENANTID&gt;/dnd/api/resource/provider/?isAssociateOfferings=false</code></td>
 		</tr>
 		<tr>
 			<th scope="row">Description</th>
-			<td>Replace the URL with the HCMX URL and replace the TenantID with the respective TenantID for which information is fetched.&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</td>
+			<td>Replace the URL with the HOST and replace the TenantID with the respective TenantID for which information is fetched.&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</td>
 		</tr>
 		<tr>
 			<th scope="row">URL Example</th>
-			<td><code>https://&lt;HCMX URL&gt;:443/XXXXXXXXX/dnd/api/resource/provider/?isAssociateOfferings=false</code></td>
+			<td><code>https://&lt;HOST&gt;:443/XXXXXXXXX/dnd/api/resource/provider/?isAssociateOfferings=false</code></td>
 		</tr>
 		<tr>
 			<th scope="row">Headers</th>
@@ -184,6 +195,10 @@
 			}</code></p>
 			</td>
 		</tr>
+		<tr>
+			<th scope="row">Sample Response Data Description</th>
+			<td></td>
+		</tr>
 	</tbody>
 </table>
 
@@ -199,15 +214,15 @@
 		</tr>
 		<tr>
 			<th scope="row">URL Syntax</th>
-			<td><code>https://&lt;HCMX URL&gt;:443/&lt;TENANTID&gt;/dnd/api/resource/provider/?isAssociateOfferings=false</code></td>
+			<td><code>https://&lt;HOST&gt;:443/&lt;TENANTID&gt;/dnd/api/resource/provider/?isAssociateOfferings=false</code></td>
 		</tr>
 		<tr>
 			<th scope="row">Description</th>
-			<td>Replace the URL with the HCMX URL and replace the TenantID with respective TenantID for which information is fetched</td>
+			<td>Replace the URL with the HOST and replace the TenantID with respective TenantID for which information is fetched</td>
 		</tr>
 		<tr>
 			<th scope="row">URL Example</th>
-			<td><code>https://&lt;HCMX URL&gt;:443/XXXXXXXXX</code><code>/dnd/api/resource/provider/?isAssociateOfferings=false</code></td>
+			<td><code>https://&lt;HOST&gt;:443/XXXXXXXXX</code><code>/dnd/api/resource/provider/?isAssociateOfferings=false</code></td>
 		</tr>
 		<tr>
 			<th scope="row">Headers</th>
@@ -322,6 +337,10 @@
 			<p style="margin-bottom:11px"><code><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">&nbsp;&nbsp;&nbsp; }</span></span></span></span></span></code></p>
 			<code><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">}</span></span></span></span></code></td>
 		</tr>
+		<tr>
+			<th scope="row">Sample Response Data Description</th>
+			<td></td>
+		</tr>
 	</tbody>
 </table>
 
@@ -341,16 +360,16 @@
 		</tr>
 		<tr>
 			<th scope="row">URL Syntax</th>
-			<td><code>https://&lt;HCMX URL&gt;:443/rest/&lt;TENANTID&gt;/ems/Offering?layout=Id,DisplayLabel,RemoteOfferingId,UserOptions,<br>
+			<td><code>https://&lt;HOST&gt;:443/rest/&lt;TENANTID&gt;/ems/Offering?layout=Id,DisplayLabel,RemoteOfferingId,UserOptions,<br>
 			RemoteOfferingName,ProviderId,Status,Service&amp;filter=ProviderType='DND'</code></td>
 		</tr>
 		<tr>
 			<th scope="row">Description</th>
-			<td>Replace the URL with the HCMX URL and replace the TenantID with respective TenantID for which information is fetched</td>
+			<td>Replace the URL with the HOST and replace the TenantID with respective TenantID for which information is fetched</td>
 		</tr>
 		<tr>
 			<th scope="row">URL Example</th>
-			<td><code>https://&lt;HCMX URL&gt;:443/rest/XXXXXXXXX</code><code>/ems/Offering?layout=Id,DisplayLabel,RemoteOfferingId,<br>
+			<td><code>https://&lt;HOST&gt;:443/rest/XXXXXXXXX</code><code>/ems/Offering?layout=Id,DisplayLabel,RemoteOfferingId,<br>
 			UserOptions,RemoteOfferingName,ProviderId,Status,Service&amp;filter=ProviderType='DND'</code></td>
 		</tr>
 		<tr>
@@ -496,6 +515,10 @@
 			&nbsp; &nbsp; "totalCount": 1<br>
 			}</code></td>
 		</tr>
+		<tr>
+			<th scope="row">Sample Response Data Description</th>
+			<td></td>
+		</tr>
 	</tbody>
 </table>
 
@@ -519,11 +542,11 @@
 		</tr>
 		<tr>
 			<th scope="row">Description</th>
-			<td>Replace the URL with the HCMX URL and replace the TenantID with respective TenantID for which information is fetched.</td>
+			<td>Replace the URL with the HOST and replace the TenantID with respective TenantID for which information is fetched.</td>
 		</tr>
 		<tr>
 			<th scope="row">URL Example</th>
-			<td><code>https://&lt;HCMX URL&gt;:443/rest/XXXXXXXXX/ems/Person?filter=(IsSystemIntegration+!%3D+%27true%27+and+IsSystem+!%3D+%27true%27)&amp;layout=Id,Name,Email,<br>
+			<td><code>https://&lt;HOST&gt;:443/rest/XXXXXXXXX/ems/Person?filter=(IsSystemIntegration+!%3D+%27true%27+and+IsSystem+!%3D+%27true%27)&amp;layout=Id,Name,Email,<br>
 			Location,OrganizationalGroup,Upn,Locale,Avatar,Title,IsMaasUser,IsVIP,Location.Name,Location.DisplayLabel,Location.DisplayName,Location.FullName,Location.LocationType,<br>
 			Location.IsDeleted,OrganizationalGroup.Name,OrganizationalGroup.IsDeleted&amp;meta=totalCount&amp;size=250&amp;skip=0</code></td>
 		</tr>
@@ -646,6 +669,10 @@
 			&nbsp; &nbsp; }<br>
 			}</code></td>
 		</tr>
+		<tr>
+			<th scope="row">Sample Response Data Description</th>
+			<td></td>
+		</tr>
 	</tbody>
 </table>
 
@@ -668,7 +695,7 @@
 		</tr>
 		<tr>
 			<th scope="row">Description</th>
-			<td>Replace the URL with the HCMX URL and replace the TenantID with respective TenantID for which information is fetched</td>
+			<td>Replace the URL with the HOST and replace the TenantID with respective TenantID for which information is fetched</td>
 		</tr>
 		<tr>
 			<th scope="row">URL Example</th>
@@ -732,6 +759,10 @@
 			&nbsp; &nbsp; }<br>
 			}</code></td>
 		</tr>
+		<tr>
+			<th scope="row">Sample Response Data Description</th>
+			<td></td>
+		</tr>
 	</tbody>
 </table>
 
@@ -747,15 +778,15 @@
 		</tr>
 		<tr>
 			<th scope="row">URL Syntax</th>
-			<td><code>https://&lt;HCMX URL&gt;:443/rest/&lt;TENANTID&gt;/ems/bulk</code></td>
+			<td><code>https://&lt;HOST&gt;:443/rest/&lt;TENANTID&gt;/ems/bulk</code></td>
 		</tr>
 		<tr>
 			<th scope="row">Description</th>
-			<td>Replace the URL with the HCMX URL and replace the TenantID with respective TenantID for which information is fetched.</td>
+			<td>Replace the URL with the HOST and replace the TenantID with respective TenantID for which information is fetched.</td>
 		</tr>
 		<tr>
 			<th scope="row">URL Example</th>
-			<td><code>https://&lt;HCMX URL&gt;:443/rest/XXXXXXXXX/ems/bulk</code></td>
+			<td><code>https://&lt;HOST&gt;:443/rest/XXXXXXXXX/ems/bulk</code></td>
 		</tr>
 		<tr>
 			<th scope="row">Headers</th>
@@ -874,6 +905,10 @@
 			&nbsp; &nbsp; }<br>
 			}</code></td>
 		</tr>
+		<tr>
+			<th scope="row">Sample Response Data Description</th>
+			<td></td>
+		</tr>
 	</tbody>
 </table>
 
@@ -889,15 +924,15 @@
 		</tr>
 		<tr>
 			<th scope="row">URL Syntax</th>
-			<td><code>https://&lt;HCMX URL&gt;:443/rest/&lt;TENANTID&gt;/ems/bulk</code></td>
+			<td><code>https://&lt;HOST&gt;:443/rest/&lt;TENANTID&gt;/ems/bulk</code></td>
 		</tr>
 		<tr>
 			<th scope="row">Description</th>
-			<td>Replace the URL with the HCMX URL and replace the TenantID with respective TenantID for which information is fetched</td>
+			<td>Replace the URL with the HOST and replace the TenantID with respective TenantID for which information is fetched</td>
 		</tr>
 		<tr>
 			<th scope="row">URL Example</th>
-			<td><code>https://&lt;HCMX URL&gt;:443/rest/XXXXXXXXX/ems/bulk</code></td>
+			<td><code>https://&lt;HOST&gt;:443/rest/XXXXXXXXX/ems/bulk</code></td>
 		</tr>
 		<tr>
 			<th scope="row">Headers</th>
@@ -952,6 +987,10 @@
 			<th scope="row">Response Description</th>
 			<td>“RegisteredForSubscription” has the Subscription ID , which can be used further.</td>
 		</tr>
+		<tr>
+			<th scope="row">Sample Response Data Description</th>
+			<td></td>
+		</tr>
 	</tbody>
 </table>
 
@@ -967,16 +1006,16 @@
 		</tr>
 		<tr>
 			<th scope="row">URL Syntax</th>
-			<td><code>https://&lt;HCMX URL&gt;:443/rest/&lt;TENANTID&gt;/ems/Subscription?layout=Id,Status,Subscriber,DisplayLabel,SubscriptionType,ServiceInstanceProvisionResult,ServiceInstanceProvisionResultMessage,<br>
+			<td><code>https://&lt;HOST&gt;:443/rest/&lt;TENANTID&gt;/ems/Subscription?layout=Id,Status,Subscriber,DisplayLabel,SubscriptionType,ServiceInstanceProvisionResult,ServiceInstanceProvisionResultMessage,<br>
 			UUID,StartDate,ProcessId,PhaseId&amp;filter=Id='&lt;SUBSCRIPTION_ID&gt;'</code></td>
 		</tr>
 		<tr>
 			<th scope="row">Description</th>
-			<td>Replace the URL with the HCMX URL and replace the TenantID with respective TenantID for which information is fetched.</td>
+			<td>Replace the URL with the HOST and replace the TenantID with respective TenantID for which information is fetched.</td>
 		</tr>
 		<tr>
 			<th scope="row">URL Example</th>
-			<td><code>https://&lt;HCMX URL&gt;:443/rest/XXXXXXXXX/ems/Subscription?layout=Id,Status,Subscriber,DisplayLabel,SubscriptionType,ServiceInstanceProvisionResult,ServiceInstanceProvisionResultMessage,U<br>
+			<td><code>https://&lt;HOST&gt;:443/rest/XXXXXXXXX/ems/Subscription?layout=Id,Status,Subscriber,DisplayLabel,SubscriptionType,ServiceInstanceProvisionResult,ServiceInstanceProvisionResultMessage,U<br>
 			UID,StartDate,ProcessId,PhaseId&amp;filter=Id='19254'</code></td>
 		</tr>
 		<tr>
@@ -1039,6 +1078,10 @@
 			<th scope="row">Response Description</th>
 			<td><strong>ServiceInstanceProvisionResult</strong> provides the Subscription results. <strong>PhaseID </strong>explains the status of the Stage in which the subscription is there.</td>
 		</tr>
+		<tr>
+			<th scope="row">Sample Response Data Description</th>
+			<td></td>
+		</tr>
 	</tbody>
 </table>
 
@@ -1054,15 +1097,15 @@
 		</tr>
 		<tr>
 			<th scope="row">URL Syntax</th>
-			<td><code>https://&lt;HCMX URL&gt;:443/rest/&lt;TENANTID&gt;/ems/Subscription?layout=Id,InitiatedByOffering,RemoteServiceInstanceID&amp;filter=Id='&lt;Subscription_ID&gt;'</code></td>
+			<td><code>https://&lt;HOST&gt;:443/rest/&lt;TENANTID&gt;/ems/Subscription?layout=Id,InitiatedByOffering,RemoteServiceInstanceID&amp;filter=Id='&lt;Subscription_ID&gt;'</code></td>
 		</tr>
 		<tr>
 			<th scope="row">Description</th>
-			<td>Replace the URL with the HCMX URL and replace the TenantID with respective TenantID for which information is fetched.</td>
+			<td>Replace the URL with the HOST and replace the TenantID with respective TenantID for which information is fetched.</td>
 		</tr>
 		<tr>
 			<th scope="row">URL Example</th>
-			<td><code>https://&lt;HCMX URL&gt;:443/rest/XXXXXXXXX/ems/Subscription?layout=Id,InitiatedByOffering,RemoteServiceInstanceID&amp;filter=Id='19225'</code></td>
+			<td><code>https://&lt;HOST&gt;:443/rest/XXXXXXXXX/ems/Subscription?layout=Id,InitiatedByOffering,RemoteServiceInstanceID&amp;filter=Id='19225'</code></td>
 		</tr>
 		<tr>
 			<th scope="row">Headers</th>
@@ -1119,6 +1162,10 @@
 			<td>RemoteServiceInstanceID provides the Service Instance ID for the subscription. Using this ID, we can use another API call, that will help in getting the details Instance details<br>
 			like CPU, Memory, Hostname, IP Address , etc., results.</td>
 		</tr>
+		<tr>
+			<th scope="row">Sample Response Data Description</th>
+			<td></td>
+		</tr>
 	</tbody>
 </table>
 
@@ -1134,7 +1181,7 @@
 		</tr>
 		<tr>
 			<th scope="row">URL Syntax</th>
-			<td>https://&lt;HCMX URL&gt;:443/&lt;TENANTID&gt;/dnd/api/v1/instance/&lt;INSTANCE_ID&gt;?OnBehalfOfUser=&lt;USER_NAME&gt;</td>
+			<td>https://&lt;HOST&gt;:443/&lt;TENANTID&gt;/dnd/api/v1/instance/&lt;INSTANCE_ID&gt;?OnBehalfOfUser=&lt;USER_NAME&gt;</td>
 		</tr>
 		<tr>
 			<th scope="row">Description</th>
@@ -1142,7 +1189,7 @@
 		</tr>
 		<tr>
 			<th scope="row">URL Example</th>
-			<td>https://&lt;HCMX URL&gt;:443/XXXXXXXXX/dnd/api/v1/instance/2c90e790788d4ee80178b10fe2431b0e?OnBehalfOfUser=Amy</td>
+			<td>https://&lt;HOST&gt;:443/XXXXXXXXX/dnd/api/v1/instance/2c90e790788d4ee80178b10fe2431b0e?OnBehalfOfUser=Amy</td>
 		</tr>
 		<tr>
 			<th scope="row">Authorization</th>
@@ -1494,6 +1541,10 @@
 			<th scope="row">Response Description</th>
 			<td>In this response data, we can trace the Specific Node from which we can find out the Deployed Server Details and extract the Public Action ID and Property ID as required for further activity like triggering a Public User Actions.</td>
 		</tr>
+		<tr>
+			<th scope="row">Sample Response Data Description</th>
+			<td></td>
+		</tr>
 	</tbody>
 </table>
 
@@ -1509,15 +1560,15 @@
 		</tr>
 		<tr>
 			<th scope="row">URL Syntax</th>
-			<td><code>https://&lt;HCMX URL&gt;:443/&lt;TENANTID&gt;/dnd/api/v1/instance/&lt;INSTANCE_ID&gt;/topology/&lt;NODE_ID&gt;/publicAction/execute?OnBehalfOfUser=&lt;USER_NAME&gt;</code></td>
+			<td><code>https://&lt;HOST&gt;:443/&lt;TENANTID&gt;/dnd/api/v1/instance/&lt;INSTANCE_ID&gt;/topology/&lt;NODE_ID&gt;/publicAction/execute?OnBehalfOfUser=&lt;USER_NAME&gt;</code></td>
 		</tr>
 		<tr>
 			<th scope="row">Description</th>
-			<td>Replace the HCMX_URL, TENANT_ID, NODE_ID, USER_NAME with the HCMX URL and replace the TenantID with respective TenantID for which information is fetched</td>
+			<td>Replace the HCMX_URL, TENANT_ID, NODE_ID, USER_NAME with the HOST and replace the TenantID with respective TenantID for which information is fetched</td>
 		</tr>
 		<tr>
 			<th scope="row">URL Example</th>
-			<td>https://&lt;HCMX URL&gt;:443/XXXXXXXXX/dnd/api/v1/instance/2c90e790788d4ee80178b10fe2431b0e/topology/2c90e790788d4ee80178b10ff70b1cc1/publicAction/execute<br>
+			<td>https://&lt;HOST&gt;:443/XXXXXXXXX/dnd/api/v1/instance/2c90e790788d4ee80178b10fe2431b0e/topology/2c90e790788d4ee80178b10ff70b1cc1/publicAction/execute<br>
 			?OnBehalfOfUser=Amy</td>
 		</tr>
 		<tr>
@@ -1571,7 +1622,7 @@
 		</tr>
 		<tr>
 			<th scope="row">URL Syntax</th>
-			<td>https://&lt;HCMX URL&gt;:443/rest/&lt;TENANTID&gt;/ems/bulk</td>
+			<td>https://&lt;HOST&gt;:443/rest/&lt;TENANTID&gt;/ems/bulk</td>
 		</tr>
 		<tr>
 			<th scope="row">Description</th>
@@ -1579,7 +1630,7 @@
 		</tr>
 		<tr>
 			<th scope="row">URL Example</th>
-			<td>&nbsp;&nbsp; &nbsp;https://&lt;HCMX URL&gt;:443/rest/XXXXXXXXX/ems/bulk</td>
+			<td>&nbsp;&nbsp; &nbsp;https://&lt;HOST&gt;:443/rest/XXXXXXXXX/ems/bulk</td>
 		</tr>
 		<tr>
 			<th scope="row">Headers</th>
@@ -1666,6 +1717,10 @@
 			&nbsp; &nbsp; &nbsp; &nbsp; "completion_status": "OK"<br>
 			&nbsp; &nbsp; }<br>
 			}</td>
+		</tr>
+		<tr>
+			<th scope="row">Sample Response Data Description</th>
+			<td></td>
 		</tr>
 	</tbody>
 </table>
