@@ -513,14 +513,11 @@
 		</tr>
 		<tr>
 			<th scope="row">URL Syntax</th>
-			<td><code>https://&lt;HOST&gt;:443/rest/XXXXXXXXX/ems/Person?filter=((IsSystemIntegration+!%3D+%27true%27+and+IsSystem+!%3D+%27<br>
-			true%27)+and+FirstName+startswith+(%27&lt;SEARCH_NAME&gt;%27))&amp;layout=Id,Name,Email,Location,OrganizationalGroup,Upn,Locale,Avatar,Title,IsMaasUser,IsVIP,Location.Name,<br>
-			Location.DisplayLabel,Location.DisplayName,Location.FullName,Location.LocationType,Location.IsDeleted,OrganizationalGroup.Name,Organizational<br>
-			Group.IsDeleted&amp;meta=totalCount&amp;size=250&amp;skip=0</code></td>
+			<td><code>https://&lt;HOST&gt;:443/rest/&lt;TENANTID&gt;/ems/</code>Person?layout=Id,Name&amp;filter=FirstName startswith('dnd')</td>
 		</tr>
 		<tr>
 			<th scope="row">Description</th>
-			<td>Replace the URL with the HOST and replace the TenantID with respective TenantID for which information is fetched</td>
+			<td>Obtain the details of specific user ID for a set of users starting with the given name in the filter.</td>
 		</tr>
 		<tr>
 			<th scope="row">Headers</th>
@@ -552,32 +549,55 @@
 		</tr>
 		<tr>
 			<th scope="row">Sample Response Data</th>
-			<td><code>{<br>
-			&nbsp; &nbsp; "entities": [<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "entity_type": "Person",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "properties": {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Locale": "en",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Upn": "Amy",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "IsMaasUser": true,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Email": "Amy@advantageinc.com",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "LastUpdateTime": 1614657604017,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "IsVIP": false,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Id": "10017",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Avatar": "dac4dc4c-ec88-460e-8446-623c107ee5d1",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "Name": "<strong>Amy,</strong> Amy"<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "related_properties": {}<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; }<br>
-			&nbsp; &nbsp; ],<br>
-			&nbsp; &nbsp; "meta": {<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; "completion_status": "OK",<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; "total_count": 1,<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; "errorDetailsList": [],<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; "errorDetailsMetaList": [],<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; "query_time": 1614670369140730<br>
-			&nbsp; &nbsp; }<br>
-			}</code></td>
+			<td>
+			<pre><code><code>{
+&nbsp;&nbsp;"entities":&nbsp;[
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"entity_type":&nbsp;"Person",
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"properties":&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"LastUpdateTime":&nbsp;1623263402549,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Id":&nbsp;"10015",
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Name":&nbsp;"dndadmin611523289,&nbsp;dndadmin611523289"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"related_properties":&nbsp;{}
+&nbsp;&nbsp;&nbsp;&nbsp;},
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"entity_type":&nbsp;"Person",
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"properties":&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"LastUpdateTime":&nbsp;1623263402551,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Id":&nbsp;"10016",
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Name":&nbsp;"dndTransportUser611523289,&nbsp;dndTransportUser611523289"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"related_properties":&nbsp;{}
+&nbsp;&nbsp;&nbsp;&nbsp;},
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"entity_type":&nbsp;"Person",
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"properties":&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"LastUpdateTime":&nbsp;1623256204037,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Id":&nbsp;"10017",
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Name":&nbsp;"dndooadmin611523289,&nbsp;dndooadmin611523289"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"related_properties":&nbsp;{}
+&nbsp;&nbsp;&nbsp;&nbsp;},
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"entity_type":&nbsp;"Person",
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"properties":&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"LastUpdateTime":&nbsp;1623256203177,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Id":&nbsp;"10219",
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Name":&nbsp;"dndReportingUser_611523289,&nbsp;dndReportingUser_611523289"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"related_properties":&nbsp;{}
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;],
+&nbsp;&nbsp;"meta":&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;"completion_status":&nbsp;"OK",
+&nbsp;&nbsp;&nbsp;&nbsp;"total_count":&nbsp;4,
+&nbsp;&nbsp;&nbsp;&nbsp;"errorDetailsList":&nbsp;[],
+&nbsp;&nbsp;&nbsp;&nbsp;"errorDetailsMetaList":&nbsp;[],
+&nbsp;&nbsp;&nbsp;&nbsp;"query_time":&nbsp;1623718499448110
+&nbsp;&nbsp;}
+}</code></code></pre>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row">Sample Response Data Description</th>
@@ -602,7 +622,9 @@
 		</tr>
 		<tr>
 			<th scope="row">Description</th>
-			<td>Replace the URL with the HOST and replace the TenantID with respective TenantID for which information is fetched.</td>
+			<td>Create a Service request and subscription for a specific offering as mentioned in Request Offering. The Offering ID can be obtained by Get Aggregated Offering API<br>
+			and the Person IDs can be obtained by the Get Specific User Details API. The Service Request is a long-running async process.<br>
+			Hence note down the Request Id (Id) returned in the response body.</td>
 		</tr>
 		<tr>
 			<th scope="row">Headers</th>
@@ -647,52 +669,54 @@
 		<tr>
 			<th scope="row">Request Body Example</th>
 			<td>
-			<p style="margin-bottom:11px"><code><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">{</span></span></span></span></span></code></p>
+			<p>{</p>
 
-			<p style="margin-bottom:11px"><code><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">"entities": [</span></span></span></span></span></code></p>
+			<p>"entities": [</p>
 
-			<p style="margin-bottom:11px"><code><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">{</span></span></span></span></span></code></p>
+			<p>{</p>
 
-			<p style="margin-bottom:11px"><code><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">"entity_type": "Request",</span></span></span></span></span></code></p>
+			<p>"entity_type": "Request",</p>
 
-			<p style="margin-bottom:11px"><code><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">"properties": {</span></span></span></span></span></code></p>
+			<p>"properties": {</p>
 
-			<p style="margin-bottom:11px"><code><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">"SubscriptionActionType": "Create",</span></span></span></span></span></code></p>
+			<p>"SubscriptionActionType": "Create",</p>
 
-			<p style="margin-bottom:11px"><code><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">"RequestedForPerson":"10017",</span></span></span></span></span></code></p>
+			<p>"RequestedForPerson":"10015",</p>
 
-			<p style="margin-bottom:11px"><code><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">"StartDate":1617877026000,</span></span></span></span></span></code></p>
+			<p>"StartDate":1623633067000,</p>
 
-			<p style="margin-bottom:11px"><code><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">"RequestsOffering":"10086",</span></span></span></span></span></code></p>
+			<p>"RequestsOffering":"16877",</p>
 
-			<p style="margin-bottom:11px"><code><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">"RequestedByPerson":"10017",</span></span></span></span></span></code></p>
+			<p>"RequestedByPerson":"10015",</p>
 
-			<p style="margin-bottom:11px"><code><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">"AssignedToPerson":"10017", //This is required to move to fullfilment</span></span></span></span></span></code></p>
+			<p>"AssignedToPerson":"10015", //This is required to move to fullfilment</p>
 
-			<p style="margin-bottom:11px"><code><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">"DataDomains":[</span></span></span></span></span></code></p>
+			<p>"DataDomains":[</p>
 
-			<p style="margin-bottom:11px"><code><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">"Public"</span></span></span></span></span></code></p>
+			<p>"Public"</p>
 
-			<p style="margin-bottom:11px"><code><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">],</span></span></span></span></span></code></p>
+			<p>],</p>
 
-			<p style="margin-bottom:11px"><code><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">"UserOptions":"{\"complexTypeProperties\":[{\"properties\":{\"OptionSet0c6eb101a1a178c3c49c3badbc481f05_c\":{\"Option34c8d8d8403ac43361b8b8083004ef4a_c\":true},\"OptionSet2ee4a8f73fcd1606c1337172e8411e2a_c\":{\"Optionad52a8efe1465faa8c389ae92bf90d0c_c\":true},\"OptionSet473C6F2BE6F45DB8381664FC9097BE37_c\":{\"Option2E8493EA9AC2821929DA64FC90978A98_c\":true},\"changedUserOptionsForSimulation\":\"PropertyvmNamePrefix2E8493EA9AC2821929DA64FC90978A98_c&amp;\",\"PropertyproviderId2E8493EA9AC2821929DA64FC90978A98_c\":\"2c90d0ac77ce7ec30177cfed671c6176\",\"PropertydatacenterName2E8493EA9AC2821929DA64FC90978A98_c\":\"HCM-CLOUD\",\"PropertyvirtualMachine2E8493EA9AC2821929DA64FC90978A98_c\":\"centos74***CentOS 4/5 or later (64-bit)\",\"PropertycustomizationTemplateName2E8493EA9AC2821929DA64FC90978A98_c\":\"usevmname_linux_hod\",\"PropertyvmNamePrefix2E8493EA9AC2821929DA64FC90978A98_c\":\"SampleTest2\"}}]}",</span></span></span></span></span></code></p>
+			<p>"UserOptions":"{\"complexTypeProperties\":[{\"properties\":{\"DynamicComplexTypeRefName_c\":\"Useroption1c11fa9a540d4221a8c854ebb3df4029_c\",\"OptionSet6a5f5bb36d1043699b2357978be27bec_c\":\"{\\\"Optionf8846f19f0cc409ba72db29875588049_c\\\":true}\",\"OptionSet8679b3b4a42a4128978acd3c87fb7b00_c\":\"{\\\"Optiondc19fef2f4e442d886ffab79d75c46bf_c\\\":true}\",\"Optiondc19fef2f4e442d886ffab79d75c46bf_c\":true,\"Optionf18accfe15604af2abddef9bebab93e6_c\":false,\"Optionf8846f19f0cc409ba72db29875588049_c\":true,\"Property3d63ad3b386540f887d7283dcca871e1_c\":2048,\"Property416f6f6f99d54e0d8016677654d7b9c1_c\":\"22\",\"Property7349c6ede1ec4a2ca8ed27bb24be9f14_c\":\"11\",\"Property75a5466a92d44911ae9d9daccfa94701_c\":16096,\"changedUserOptionsForSimulation\":\"\"}}]}",</p>
 
-			<p style="margin-bottom:11px"><code><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">"Description":"&lt;p&gt;SampleSubscriptionDescription&lt;/p&gt;",</span></span></span></span></span></code></p>
+			<p>"Description":"&lt;p&gt;Kishore subscription&lt;/p&gt;",</p>
 
-			<p style="margin-bottom:11px"><code><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">"EndDate":1617877046000,</span></span></span></span></span></code></p>
+			<p>"EndDate":1623892267000,</p>
 
-			<p style="margin-bottom:11px"><code><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">"RequestAttachments":"{\"complexTypeProperties\":[]}",</span></span></span></span></span></code></p>
+			<p>"RequestAttachments":"{\"complexTypeProperties\":[]}",</p>
 
-			<p style="margin-bottom:11px"><code><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">"DisplayLabel":"Request: vCenter Compute - Deploy VM from Template RESTAPI"</span></span></span></span></span></code></p>
+			<p>"DisplayLabel":"Request: vCenter Compute - Deploy VM from Template RESTAPI"</p>
 
-			<p style="margin-bottom:11px"><code><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">}</span></span></span></span></span></code></p>
+			<p>}</p>
 
-			<p style="margin-bottom:11px"><code><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">}</span></span></span></span></span></code></p>
+			<p>}</p>
 
-			<p style="margin-bottom:11px"><code><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">],</span></span></span></span></span></code></p>
+			<p>],</p>
 
-			<p style="margin-bottom:11px"><code><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">"operation": "CREATE"</span></span></span></span></span></code></p>
-			<code><span style="font-size:11.0pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri Light&quot;,sans-serif"><span style="color:black">}</span></span></span></span></code></td>
+			<p>"operation": "CREATE"</p>
+
+			<p>}</p>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row">Request Body Description</th>
