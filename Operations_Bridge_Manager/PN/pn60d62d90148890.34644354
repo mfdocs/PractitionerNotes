@@ -1,1 +1,67 @@
- 
+<html><p>Do no use this procedure on more than 200 agent nodes at once</p>
+
+<ol>
+	<li>Copy the agent ISO install media to OBM</li>
+	<li>SSH to OBM</li>
+	<li>Check if OBM is already working. It takes about 15 minutes to start after the initial boot
+	<ol>
+		<li>Run this command
+		<p><strong>/opt/HP/BSM/opr/support/opr-status.py</strong></p>
+		</li>
+		<li>If not all services are started, wait about 5 minutes and try again<br>
+		<img src="https://mf-te.com/wp-content/uploads/2021/04/493.png"></li>
+	</ol>
+	</li>
+	<li>Mount the agent ISO to the local file system
+	<ol>
+		<li>create a folder for mounting<br>
+		<strong>mkdir /mnt/oa</strong></li>
+		<li>mount the ISO file<br>
+		<strong>mount /root/Operations_Agent_12.15_for_all_supported_architectures_OA_12.15.iso /mnt/oa<br>
+		<img src="https://mf-te.com/wp-content/uploads/2021/03/391-2.png"></strong></li>
+	</ol>
+	</li>
+	<li>Run the package manager script to upload the agent installation packages
+	<ol>
+		<li>Enter the script directory<br>
+		<strong>cd /opt/HP/BSM/opr/bin</strong></li>
+		<li>Run the script to start uploading the packages. (the OVO-Agent.xml file comes from the ISO file in the packages directory, the package manager script will find it and use the data to upload the packages corresponding to it. Each OS version package has the OVO-Agent.xml of its own. The command we use does not specify what OS we want so the script will grab all of them)<br>
+		<strong>./opr-package-manager.sh -username admin -password Hel1um34_Ale2 -upload_packages OVO-Agent.xml -input /mnt/oa/packages/<br>
+		<img src="https://mf-te.com/wp-content/uploads/2021/03/267.png"></strong></li>
+	</ol>
+	</li>
+	<li>Update the agent on the agent monitored host
+	<ol>
+		<li>Optional - Validate the agent version on agent monitored host
+		<ol>
+			<li>SSH to agent monitored host</li>
+			<li>Run this command to get the version - any version below the current one is suitable<br>
+			<strong>/opt/OV/bin/ovc -version</strong><br>
+			<img src="https://mf-te.com/wp-content/uploads/2021/03/529-1.png"></li>
+		</ol>
+		</li>
+		<li>Run the updater from OBM
+		<ol>
+			<li>Login to OBM</li>
+			<li>Navigate to Administration &gt; Setup and Maintenance -&gt;monitored Nodes<br>
+			<img src="https://mf-te.com/wp-content/uploads/2021/03/858.png"></li>
+			<li>Select the "nodes with Operations Agent" list<br>
+			<img src="https://mf-te.com/wp-content/uploads/2021/03/150.png"></li>
+			<li>Select the agent monitored host server that you want to upgrade. If you see multiple servers, select the one with the lowest version<br>
+			<img src="https://mf-te.com/wp-content/uploads/2021/04/813.png"></li>
+			<li>Click the "Upgrade Operations Agent" button<br>
+			<img src="https://mf-te.com/wp-content/uploads/2021/03/903.png"></li>
+			<li>Click on "Update to Latest Version" and click the Update button<br>
+			<img src="https://mf-te.com/wp-content/uploads/2021/04/839.png"></li>
+			<li>Click on OK<br>
+			<img src="https://mf-te.com/wp-content/uploads/2021/03/465.png"></li>
+			<li>The agent will be upgraded in the background. It will take some time.</li>
+			<li>Please continue to the next exercise. You can check the status of the update from time to time by checking the "monitored nodes" list in OBM or checking the agent version on the agent monitored host server itself<br>
+			<img src="https://mf-te.com/wp-content/uploads/2021/03/446.png"></li>
+			<li>Wait about 5 minutes, the version changed but the upgrade is not done for a few more minutes</li>
+		</ol>
+		</li>
+	</ol>
+	</li>
+</ol>
+</html>
