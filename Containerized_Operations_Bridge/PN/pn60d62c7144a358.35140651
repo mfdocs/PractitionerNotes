@@ -1,1 +1,52 @@
- 
+<html><ol>
+	<li>SSH to OBM</li>
+	<li>Check if OBM is already working. It takes about 15 minutes to start after the initial boot
+	<ol>
+		<li>Run this command
+		<pre><code class="language-bash">/opt/HP/BSM/opr/support/opr-status.py</code></pre>
+
+		<p></p>
+		</li>
+		<li>If not all services are started, wait about 5 minutes and try again<br>
+		<img src="https://mf-te.com/wp-content/uploads/2021/04/493.png"></li>
+	</ol>
+	</li>
+	<li>Mount the agent ISO to the local file system
+	<ol>
+		<li>create a folder for mounting<br>
+		<strong>mkdir /mnt/oa</strong></li>
+		<li>mount the ISO file<br>
+		<strong>mount /root/Operations_Agent_12.15_for_all_supported_architectures_OA_12.15.iso /mnt/oa<br>
+		<img src="https://mf-te.com/wp-content/uploads/2021/03/391-2.png"></strong></li>
+	</ol>
+	</li>
+	<li>Run the package manager script to upload the agent installation packages
+	<ol>
+		<li>Enter the script directory<br>
+		<strong>cd /opt/HP/BSM/opr/bin</strong></li>
+		<li>Run the script to start uploading the packages. (the OVO-Agent.xml file comes from the ISO file in the packages directory, the package manager script will find it and use the data to upload the packages corresponding to it. Each OS version package has the OVO-Agent.xml of its own. The command we use does not specify what OS we want so the script will grab all of them)<br>
+		<strong>./opr-package-manager.sh -username admin -password Hel1um34_Ale2 -upload_packages OVO-Agent.xml -input /mnt/oa/packages/<br>
+		<img src="https://mf-te.com/wp-content/uploads/2021/03/267.png"></strong></li>
+	</ol>
+	</li>
+	<li>Update the agent on AOS1 server
+	<ol>
+		<li>Validate the agent version on AOS1
+		<ol>
+			<li>SSH to AOS1</li>
+			<li>Run this command to get the version - any version below 12.15 is great!<br>
+			<strong>/opt/OV/bin/ovc -version</strong><br>
+			<img src="https://mf-te.com/wp-content/uploads/2021/03/529-1.png"></li>
+		</ol>
+		</li>
+		<li>Run the updater from OBM
+		<ol>
+			<li>Login to OBM</li>
+			<li>Navigate to Administration &gt; Setup and Maintenance -&gt;monitored Nodes<br>
+			<img src="https://mf-te.com/wp-content/uploads/2021/03/858.png"></li>
+		</ol>
+		</li>
+	</ol>
+	</li>
+</ol>
+</html>
