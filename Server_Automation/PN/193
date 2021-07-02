@@ -1,12 +1,12 @@
-<p>This service provide the ability audits more important it allows you to schedule an audit to execute against a server.</p>
+<html><p>This service provides the ability audits more important it allows you to schedule an audit to execute against a server.</p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Start an Audit job</h2>
 
 <p>To start an Audit immediately we run the following. The setup of the TS has been omitted for brevity.</p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <pre>AuditTaskService = ts.compliance.sco.AuditTaskService
 auditRef = ts.search.SearchService.findObjRefs(
@@ -16,46 +16,46 @@ jobRef = AuditTaskService.startAudit(auditRef, userTag, None, None)
 print "Submitted job: %s" % jobRef
 </pre>
 
-<p>You will note that a list of servers to the run against was not provided as the Audit Task is defined with this information.</p>
+<p>You will note that a list of servers to run against was not provided as the Audit Task is defined with this information.</p>
 
 <p><img src="./mediawiki/images/PN/AuditTasks-location.png"><img src="./mediawiki/images/PN/AuditTasks.png"></p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <p>Execution:</p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <pre>[root@dc1 AuditTaskService]# ./startAudit.py
 Submitted job: Audit Servers with audit task "RedHat 5 audit" (JobRef:114310001)</pre>
 
-<p>&nbsp;</p>
+<p></p>
 
 <p><img src="./mediawiki/images/PN/AuditTasks-job.png"></p>
 
-<p>&nbsp;</p>
+<p></p>
 
-<p>&nbsp;</p>
+<p></p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <h2>Script to Audit</h2>
 
-<p>Create a simple audit from a shell script using the scripts exit code for success/failure of the custom check. It maybe helpful to use this relationship diagram to understand how the classes related to each other when reading the code. The relationship diagram uses Crow's foot notation (also Martin notation).</p>
+<p>Create a simple audit from a shell script using the scripts exit code for success/failure of the custom check. It may be helpful to use this relationship diagram to understand how the classes related to each other when reading the code. The relationship diagram uses Crow's foot notation (also Martin notation).</p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <p><img src="./mediawiki/images/PN/graphviz1397582284742532212.png"></p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <p>You may notice in the diagram that a task can have many policies however the assignment would indicate this is a 1:1 relationship.</p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <pre>at_vo.policy = ap</pre>
 
-<p>This form is used as the AuditPolicyVO has not been created and and there is no Ref available. The API designer realized this problem and to avoid having to save half the object before saving the rest a&nbsp;<tt>setPolicy()</tt>&nbsp;method was introduced. Indeed there is a 1:M method call but the AuditPolicy instance has no Ref(erence) until its saved.</p>
+<p>This form is used as the AuditPolicyVO has not been created and there is no Ref available. The API designer realized this problem and to avoid having to save half the object before saving the rest a&nbsp;<tt>setPolicy()</tt>&nbsp;method was introduced. Indeed there is a 1:M method call but the AuditPolicy instance has no Ref(erence) until it's saved.</p>
 
 <pre>at_vo.policyRefs = [ap.ref]</pre>
 
@@ -131,12 +131,13 @@ test -f /tmp/hello.txt</pre>
 <pre>[root@dc1 AuditTaskService]# ./script2audit.py hasTmpHello 91190001 hasTmpHello.sh
 created new audit, ID = 1220001</pre>
 
-<p>&nbsp;</p>
+<p></p>
 
 <p><img src="./mediawiki/images/PN/hasTmpHelloAudit.png"></p>
 
-<p>&nbsp;</p>
+<p></p>
 
 <p><img src="./mediawiki/images/PN/hasTmpHelloAudit-target.png"></p>
 
-<p>&nbsp;</p>
+<p></p>
+</html>
