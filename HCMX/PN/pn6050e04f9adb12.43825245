@@ -564,10 +564,15 @@
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_60182427ed92b3.19212809.png" style="width:605px; height:255px"></span></span></span></p>
 
-<h3>Copy vCenter's  CA certificate</h3>
+<h3>Copy vCenter's CA certificate</h3>
+
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">If your vCenter is using a self-signed certificate or your vCenter is trusted by a CA that is not one of the standard CAs, follow the steps below to copy vCenter's CA certificate </span></span></span></p>
+
 <ol start="1">
-	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Export vCenter's root CA including the intermediate CA's certificate</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Export vCenter's root CA including any intermediate CA's certificate. If there is both intermediate and root CA in the certificate chain, prepare a new certificate with intermediate CA certificate contents followed by root CA certificate contents.&nbsp;</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Copy the exported (Prepared certificate with both intermediate and root CA certificates if vCenter's certificate is signed by an intermediate CA) certificate to the following directory on NFS:&nbsp;/var/vols/itom/itsma/global-volume/certificate/dnd/&lt;TENANTID&gt;/source</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px">Restart DND deployment with the following commands:</li>
+	<li style="margin-bottom:11px; margin-left:8px">Restart OO deployment with the following commands:</li>
 </ol>
 
 <h3>Sync deployment provider resources</h3>
