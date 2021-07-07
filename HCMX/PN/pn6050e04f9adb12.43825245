@@ -570,22 +570,21 @@
 
 <ol start="1">
 	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Export vCenter's root CA including any intermediate CA's certificate. If there is both intermediate and root CA in the certificate chain, prepare a new certificate with intermediate CA certificate contents followed by root CA certificate contents.&nbsp;</span></span></span></li>
-	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Copy the exported (Prepared certificate with both intermediate and root CA certificates if vCenter's certificate is signed by an intermediate CA) certificate to the following directory on NFS:&nbsp;/var/vols/itom/itsma/global-volume/certificate/dnd/&lt;TENANTID&gt;/source</span></span></span></li>
-	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Restart the DND deployment with the following commands:
-	<pre><code>cd &lt;ITOM_CORE_VOLUME&gt;/suite-install/itsma/output/&lt;RELEASENUMBER&gt;/itom-dnd-&lt;RELEASENUMBER&gt;/yamls
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Copy the exported (Prepared certificate with both intermediate and root CA certificates if vCenter's certificate is signed by an intermediate CA) certificate to the following directory on NFS: &lt;global-volume-mount&gt;/certificate/dnd/&lt;TENANTID&gt;/source</span></span></span></li>
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Restart the DND deployment with the following commands: </span></span></span>
+	<pre><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><code>cd &lt;ITOM_CORE_VOLUME&gt;/suite-install/itsma/output/&lt;RELEASENUMBER&gt;/itom-dnd-&lt;RELEASENUMBER&gt;/yamls
 kubectl delete -f itom-dnd-controller-&lt;TENANTID&gt;-deployment.yaml
-kubectl create -f itom-dnd-controller-&lt;TENANTID&gt;-deployment.yaml</code></pre>
-
-	<p></p>
-	/span&gt;</span></span></span></li>
+kubectl create -f itom-dnd-controller-&lt;TENANTID&gt;-deployment.yaml</code></span></span></span></pre>
+	<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"> </span></span></span></li>
 	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Verify that DND pod is fully up and running.</span></span></span></li>
-	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Restart OO deployment with the following commands:
-	<pre><code>cd &lt;ITOM_CORE_VOLUME&gt;/suite-install/itsma/output/&lt;RELEASENUMBER&gt;/itom-dnd-&lt;RELEASENUMBER&gt;/yamls
+	<li style="margin-bottom:11px; margin-left:8px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif">Restart OO deployment with the following commands: </span></span></span>
+	<pre><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"><code>cd &lt;ITOM_CORE_VOLUME&gt;/suite-install/itsma/output/&lt;RELEASENUMBER&gt;/itom-dnd-&lt;RELEASENUMBER&gt;/yamls
 kubectl delete -f itom-oo-&lt;TENANTID&gt;-deployment.yaml
-kubectl create -f itom-oo-&lt;TENANTID&gt;-deployment.yaml</code></pre>
+kubectl create -f itom-oo-&lt;TENANTID&gt;-deployment.yaml</code></span></span></span></pre>
+	<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"> </span></span></span>
 
 	<p></p>
-	</span></span></span></li>
+	<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:Calibri,sans-serif"> </span></span></span></li>
 </ol>
 
 <h3>Sync deployment provider resources</h3>
