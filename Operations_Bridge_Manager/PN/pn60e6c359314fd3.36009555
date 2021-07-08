@@ -1,8 +1,8 @@
-<html><p><strong>Problem:</strong>&nbsp;Whenever an artifact is assigned to a CI, there will be an entry created in 'cfg_at_assignment_ci' table which maps ci id with assignment id. When we try to delete all assignments whose CI is already deleted, for a few assignments somehow that mapping entry is missing and deletion of such assignments fail as it considers that there is no such entry in DB. As a result events with ‘Deleting assignments failed during auto assignment. ‘ are getting logged.</p>
+<html><p><strong>Problem:</strong>&nbsp;Whenever an artifact is assigned to a CI, there will be an entry created in 'cfg_at_assignment_ci' table which maps CI id with assignment id. When we try to delete all assignments whose CI is already deleted, for a few assignments somehow that mapping entry is missing and deletion of such assignments fails as it considers that there is no such entry in the DB. As a result events with ‘Deleting assignments failed during auto assignment. ‘ are getting logged.</p>
 
-<p><strong>Work around :</strong>&nbsp;As we saw above the deletion fails because of missing entry in mapping table, so, as a work around we will fetch all problematic assignments from logs and get its assignment id and ci id from Database and add the mapping entry into 'cfg_at_assignment_ci' table so that deletion of unused assignments go smooth.</p>
+<p><strong>Work around :</strong>&nbsp;As we saw above, the deletion fails because of missing entry in mapping table, so, as a work around we will fetch all problematic assignments from logs and get its assignment id and CI id from Database and add the mapping entry into 'cfg_at_assignment_ci' table so that deletion of unused assignments go smooth.</p>
 
-<p><strong>Steps to achieve work around (Queries are Oracle DB Compatible) :</strong></p>
+<p><strong>Steps to achieve work around (Queries are Oracle DB Compatible):</strong></p>
 
 <p>1) Check if you got event with below mentioned error message, if the message is not same then this work around would not help you.<br>
 ‘Deleting assignments failed during auto assignment.‘</p>
@@ -46,9 +46,8 @@ id needs to be generated, please generate new UUID and provide it to the query.<
 <p>You will have as many insert queries as output records from step3. Run all those insert queries on 'event' DB schema.<br>
 Perform ‘commit’.</p>
 
-<p><br>
-Now after these steps mapping entries will be created in cfg_at_assignment_ci for all problematic assignments and as a result all the unused assignments can be deleted.</p>
+<p>Now after these steps mapping entries will be created in cfg_at_assignment_ci for all problematic assignments and as a result all the unused assignments can be deleted.</p>
 
-<p><strong>Validation to check if work around works :</strong><br>
+<p><strong>Validation to check if work around works:</strong><br>
 Every 12 hours (by default) Topo scan will run which will delete all assignments whose CI's are already deleted. That topo scan should go smooth without any errors. You also can change the Infrastructure setting ‘ Time interval to scan for changed topology ’ to 5 mins to cross check the fix immediately. After you confirm the fix works please revert value back to its previous value.</p>
 </html>
