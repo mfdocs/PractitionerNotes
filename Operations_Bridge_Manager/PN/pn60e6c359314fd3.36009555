@@ -1,58 +1,63 @@
 <html><h3><strong>Problem</strong></h3>
 
-<p>Whenever an artifact is assigned to a CI, there will be an entry created in 'cfg_at_assignment_ci' table which maps CI id with assignment id. When we try to delete all assignments whose CI is already deleted, for a few assignments somehow that mapping entry is missing and deletion of such assignments fails as it considers that there is no such entry in the DB. As a result events with ‘Deleting assignments failed during auto assignment. ‘ are getting logged.</p>
+<p>Whenever an artifact is assigned to a CI, there will be an entry created in ‘cfg_at_assignment_ci' table that maps CI id to the assignment id. When you try to delete all the assignments whose CI is already deleted, for a few of the assignments the &nbsp;mapping entry is missing and deletion of such assignments fail as it considers that there is no matching entry in the DB. As a result, events with ‘Deleting assignments failed during auto-assignment.‘ message are getting logged.</p>
 
 <h3><strong>Work around </strong></h3>
 
-<p>As we saw above, the deletion fails because of missing entry in mapping table, so, as a work around we will fetch all problematic assignments from logs and get its assignment id and CI id from Database and add the mapping entry into 'cfg_at_assignment_ci' table so that deletion of unused assignments go smooth.</p>
+<p><span style="font-size:11pt"><span style="background:white"><span style="line-height:normal"><span style="font-family:Calibri,sans-serif"><span style="font-size:10.5pt"><span style="font-family:&quot;Segoe UI&quot;,sans-serif"><span style="color:#172b4d">As described above, the deletion fails due to the missing entry in mapping table. As a workaround, you need to fetch all problematic assignments from the logs and get their assignment id and CI id from database and add the mapping entry into 'cfg_at_assignment_ci' table so that deletion of unused assignments can be successful.</span></span></span></span></span></span></span></p>
 
 <h3><strong>Steps to achieve workaround (Queries are Oracle DB Compatible)</strong></h3>
 
-<p>1) Check if you got event with below mentioned error message, if the message is not same then this work around would not help you.<br>
-‘Deleting assignments failed during auto assignment.‘</p>
+<ol>
+	<li>Check if you got event with below-mentioned error message, if the message is not the same then this workaround would not help you.
+	<p>‘Deleting assignments failed during auto-assignment.‘</p>
 
-<p>OR</p>
+	<p>OR</p>
 
-<p>If you are getting below mentioned error message on selecting an assignment then that qualifies for the workaround.</p>
+	<p>If you are getting below mentioned error message on selecting an assignment then that qualifies for the workaround.</p>
 
-<p>No &lt;artifact&gt; with id: "&lt;assignment_type&gt;:&lt;artifact version id&gt;:&lt;ci id&gt;" found.<br>
-Eg : No TemplateAssignment with id: "TemplateAssignment:c610e770-4812-b49d-c18d-5b7d35e951d7:40f8e0cd6c1c03739632cec8ad9011c5" found.</p>
+	<p>No <code>&lt;artifact&gt;</code> with id: "<code>&lt;assignment_type&gt;:&lt;artifact version id&gt;:&lt;ci id&gt;</code>" found.<br>
+	<strong>Example</strong>: No TemplateAssignment with id: "<code>TemplateAssignment:c610e770-4812-b49d-c18d-5b7d35e951d7:40f8e0cd6c1c03739632cec8ad9011c5</code>" found.</p>
+	</li>
+</ol>
 
-<p>2) Look for log messages starting with 'caught unexpected exception when deleting assignment' in &lt;OBM&gt;\log\jboss\opr-configserver.log.* of DPS. Also make sure only those assignments for which you got the failing event&nbsp; / got UI error message&nbsp; only those assignment's logs are to be considered. The logs will have a string like below.</p>
+<ol start="2">
+	<li>Look for log messages starting with 'caught unexpected exception when deleting assignment' in &lt;OBM&gt;\log\jboss\opr-configserver.log.* of DPS. Also make sure only those assignments for which you got the failing event&nbsp; or the UI error message are considered. The logs will have a string like below.
+	<p>ManagementTemplateAssignment:84413803-d4aa-4470-8c3b-571987929bbd:decafc0ffeefacedbabef00ddeadbeef</p>
 
-<p>ManagementTemplateAssignment:84413803-d4aa-4470-8c3b-571987929bbd:decafc0ffeefacedbabef00ddeadbeef</p>
+	<p>The string has 3 parts :<br>
+	ManagementTemplateAssignment: Type of assignment(ManagementTemplateAssignment/AspectAssignment/TemplateAssignment)<br>
+	Artifact version id: <code>84413803-d4aa-4470-8c3b-571987929bbd</code><br>
+	CI Id: <code>decafc0ffeefacedbabef00ddeadbeef</code></p>
 
-<p>The String has 3 parts :<br>
-ManagementTemplateAssignment - Type of assignment(ManagementTemplateAssignment/AspectAssignment/TemplateAssignment)<br>
-84413803-d4aa-4470-8c3b-571987929bbd - artifact version id<br>
-decafc0ffeefacedbabef00ddeadbeef - ci id</p>
+	<p><strong>Example:</strong><br>
+	ERROR AssignmentService.call(?) - caught unexpected exception when deleting assignment ManagementTemplateAssignment:84413803-d4aa-4470-8c3b-571987929bbd:decafc0ffeefacedbabef00ddeadbeef</p>
+	</li>
+</ol>
 
-<p>Eg:<br>
-ERROR AssignmentService.call(?) - caught unexpected exception when deleting assignment ManagementTemplateAssignment:84413803-d4aa-4470-8c3b-571987929bbd:decafc0ffeefacedbabef00ddeadbeef</p>
+<ol start="3">
+	<li>Prepare SQL queries (refer below syntax) for all assignment IDs which are captured in step2. These queries are to be run on ‘event’ schema.
+	<p><code>select ci_id,direct_assignment_id from &lt;schema&gt;.cfg_at_assignment_ci where direct_assignment_id = (SELECT id FROM cfg_directassignment where ci_id='&lt;ci id&gt;' and version_object_id=’&lt;artifact version id&gt;') and ci_id != '&lt;ci id&gt;'</code></p>
 
-<p><br>
-3) Prepare SQL queries (refer below syntax) for all assignment IDs which are captured in step2. These queries are to be run on ‘event’ schema.</p>
+	<p>Execute the queries on ‘event’ DB schema.</p>
 
-<p><strong>select ci_id,direct_assignment_id from &lt;schema&gt;.cfg_at_assignment_ci where direct_assignment_id = (SELECT id FROM cfg_directassignment where ci_id='&lt;ci id&gt;' and version_object_id=’&lt;artifact version id&gt;') and ci_id != '&lt;ci id&gt;')</strong></p>
+	<p>And for whichever query we get the output (ci_id , direct_assignment_id) only those assignment details are to be considered for next step. Here we just double check that there is a missing entry in mapping table and fetch its direct_assignment_id.</p>
+	</li>
+</ol>
 
-<p>Execute the queries on ‘event’ DB schema.</p>
+<ol start="4">
+	<li><span id="cke_bm_1231C" style="display: none;">&nbsp;</span>Insert missing records into cfg_at_assignment_ci table for entries received in step3.
 
-<p>And for whichever query we get the output (ci_id , direct_assignment_id) only those assignment details are to be considered for next step. Here we just double check that there is a missing entry in mapping table and fetch its direct_assignment_id.</p>
+	<p>Insert query will look like this:<br>
+	<code>INSERT INTO &lt;schema&gt;.cfg_at_assignment_ci ("id", "ci_id", "direct_assignment_id") values (‘&lt;id&gt;','&lt;ci id&gt;','&lt;artefact version id&gt;')</code></p>
 
-<p>4) Insert missing records into cfg_at_assignment_ci table for entries received in step3.</p>
+	<p>The ‘ci_id and direct_assignment_id’ will be taken from the query output in Step3. The ID needs to be generated. You need to generate new UUID and provide it to the query.<br>
+	You will have as many insert queries as output records from Step 3. Run all those insert queries on 'event' DB schema. Perform ‘commit.’</p>
 
-<p>Insert query will look like this:<br>
-<strong>INSERT INTO &lt;schema&gt;.cfg_at_assignment_ci ("id", "ci_id", "direct_assignment_id") values (‘&lt;id&gt;','&lt;ci id&gt;','&lt;artefact version id&gt;')</strong></p>
+	<p>Once you perform all of the above steps, the mapping entries will be created in ‘cfg_at_assignment_ci’ for all the problematic assignments and as a result, you will be able to delete all the unused assignments.</p>
+	</li>
+</ol>
+<strong style="color: rgb(0, 0, 0); font-family: Roboto, sans-serif; font-size: 20px;">Validation to check if workaround works</strong>
 
-<p>ci_id and direct_assignment_id will be taken from step3's query output.<br>
-id needs to be generated, please generate new UUID and provide it to the query.</p>
-
-<p>You will have as many insert queries as output records from step3. Run all those insert queries on 'event' DB schema.<br>
-Perform ‘commit’.</p>
-
-<p>Now after these steps mapping entries will be created in cfg_at_assignment_ci for all problematic assignments and as a result all the unused assignments can be deleted.</p>
-
-<h3><strong>Validation to check if work around works</strong></h3>
-
-<p>Every 12 hours (by default) Topo scan will run which will delete all assignments whose CI's are already deleted. That topo scan should go smooth without any errors. You also can change the Infrastructure setting ‘ Time interval to scan for changed topology ’ to 5 mins to cross check the fix immediately. After you confirm the fix works please revert value back to its previous value.</p>
+<p>By default, Topo scan will run for every 12 hours which will delete all assignments whose CI's are already deleted. To validate whether the Topo scan runs without any errors, you can change the Infrastructure setting ‘ Time interval to scan for changed topology ’ to 5 mins to cross-check the fix immediately. After you confirm the fix works, please revert time interval value back to its previous value.</p>
 </html>
