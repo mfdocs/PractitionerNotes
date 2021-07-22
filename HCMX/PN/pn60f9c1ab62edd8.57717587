@@ -1,1 +1,41 @@
- 
+<html><p>Situation:</p>
+
+<p>Recent releases of Linux operating systems now include a service that supplements traditional Domain Name Service (DNS) functionality.  The service <i>systemd-resolved </i> provides a slightly different name resolution service.   This service can cause issues with kubernetes, ITOM platform and suites.  Customers upgrading to RHEL8.X are likely to encounter this issue.</p>
+
+<p><i>The service systemd-resolved </i>has been added to enhance DNS security and performance, but it can affect services that have been using <i>/etc/resolv.conf</i>.</p>
+
+
+<p>The configuration of this service can also affect routing decisions, and can even disable the existing entries in the /etc/hosts file.  With this service enabled, the local hostname is resolved to either a) all configured IP addresses, or b) 127.0.0.2 (if no addresses have been configured).</p>
+
+
+<p>If systemd-resolvd is running, then the file /etc/resolv.conf will probably not contain the names or addresses of your actual name servers.  Instead, it will contain a single entry:127.0.0.53 (the local caching/validating name service). </p>
+
+<p>During a default  CDF startup, kubelet reads this DNS information, and pass it on to kube-dns.  Kube-dns then passes the DNS information on to the pods.  The pods will then generate errors about unresponsive endpoints.</p>
+
+<p>It is possible to correct this behavior by setting a kubelet environment variable:</p>
+
+<p>1. Edit the file /root/.kube/config</p>
+<p>2. Add this line:</p>
+<p>Environment="KUBELET_EXTRA_ARGS=--resolv-conf=/run/systemd/resolve/resolv.conf"</p>
+<p></p>
+
+<p>3. Run this command to apply the changes to the service configuration:</p>
+<p>     # systemctl daemon-reload </p>
+
+<p>4. Restart kubelet : </p>
+<p>     # systemctl restart kubelet</p>
+
+<p>5. Remove or restart all the coredns pods:</p>
+
+<p>     # kubectl rollout restart ds coredns -n kube-system</p>
+
+<p>Note that the above procedure needs to be performed on each kubernetes node.</p>
+
+<p>See Also</p>
+
+<p><a data-auth="NotApplicable" data-linkindex="0" href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_and_managing_networking/manually-configuring-the-etc-resolv-conf-file_configuring-and-managing-networking" rel="noopener noreferrer" target="_blank">https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_and_managing_networking/manually-configuring-the-etc-resolv-conf-file_configuring-and-managing-networking</a></p>
+
+<p><a data-auth="NotApplicable" data-linkindex="1" href="https://www.freedesktop.org/software/systemd/man/systemd-resolved.service.html" rel="noopener noreferrer" target="_blank">https://www.freedesktop.org/software/systemd/man/systemd-resolved.service.html</a></p>
+
+<p> OCTIM19S1360204</p>
+</html>
