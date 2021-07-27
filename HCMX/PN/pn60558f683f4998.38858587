@@ -788,12 +788,14 @@
 			</td>
 		</tr>
 		<tr>
-			<th scope="row">Response Description</th>
-			<td>“RegisteredForSubscription” has the Subscription ID, which can be used further.</td>
-		</tr>
-		<tr>
 			<th scope="row">Sample Response Data Description</th>
-			<td></td>
+			<td>
+			<p>The “RegisteredForSubscription” attribute has the Subscription ID in the ID attribute. Example:&nbsp;&nbsp;"Id":&nbsp;"16882".</p>
+
+			<p>The service instance ID in DND is present in the "RemoteServiceInstanceID" attribute. Example:&nbsp;"RemoteServiceInstanceID":&nbsp;"2c9083ab79f16348017a0d4bb6d7651c"</p>
+
+			<p>The status of the subscription is present in the "Status" attribute. Example:&nbsp;&nbsp;&nbsp;"Status":&nbsp;"Active"</p>
+			</td>
 		</tr>
 	</tbody>
 </table>
@@ -814,7 +816,7 @@
 		</tr>
 		<tr>
 			<th scope="row">Description</th>
-			<td>Replace the HOST, TENANT_ID, INSTANCE_ID, USER_NAME with respective information from previous API calls.&nbsp;</td>
+			<td>Replace the HOST, TENANT_ID, INSTANCE_ID, USER_NAME with respective information from previous API calls. The INSTANCE_ID is the DND service instance ID.</td>
 		</tr>
 		<tr>
 			<th scope="row">Authorization</th>
@@ -1159,19 +1161,14 @@
 			}</code></td>
 		</tr>
 		<tr>
-			<th scope="row">Response Description</th>
-			<td>In this response data, we can trace the Specific Node from which we can find out the Deployed Server Details and extract the Public Action ID and Property ID as required for further activity like triggering a Public User Actions.</td>
-		</tr>
-		<tr>
 			<th scope="row">Sample Response Data Description</th>
-			<td></td>
+			<td>This API response contains the specific node or component IDs for the service instance. You can also obtain the public action ID and property ID for each of the nodes or components belonging to the service instance.</td>
 		</tr>
 	</tbody>
 </table>
 
-<p></p>
-
-<h4><span style="font-size:16pt"><span style="font-family:Calibri,sans-serif"><a id="Execute Public Action on a Specific Service Instance Node for a Subscription" name="Execute Public Action on a Specific Service Instance Node for a Subscription"></a>Execute Public Action on a Specific Service Instance Node for a Subscription</span></span></h4>
+<h4><br>
+<span style="font-size:16pt"><span style="font-family:Calibri,sans-serif"><a id="Execute Public Action on a Specific Service Instance Node for a Subscription" name="Execute Public Action on a Specific Service Instance Node for a Subscription"></a>Execute Public Action on a Specific Service Instance Node for a Subscription</span></span></h4>
 
 <table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
 	<tbody>
@@ -1185,7 +1182,7 @@
 		</tr>
 		<tr>
 			<th scope="row">Description</th>
-			<td>Replace the HCMX_URL, TENANT_ID, NODE_ID, USER_NAME with the HOST and replace the TenantID with respective TenantID for which information is fetched</td>
+			<td>Execute the public action on a specific component within the service instance.&nbsp; Replace the HCMX_URL, TENANT_ID, INSTANCE_ID (service instance ID), NODE_ID, USER_NAME with the HOST and replace the TenantID with the respective TenantID for which information is fetched</td>
 		</tr>
 		<tr>
 			<th scope="row">Headers</th>
@@ -1209,7 +1206,7 @@
 		</tr>
 		<tr>
 			<th scope="row">Request Body Description</th>
-			<td>Fill in the respective 'actionId' , 'actionPropertyId' &amp; 'value' for the action input</td>
+			<td>Fill in the respective 'actionId' , 'actionPropertyId' and 'value' for the action input. You can obtain these IDs from the above API (Get Service Node ID for the specific Service Instance ID).</td>
 		</tr>
 		<tr>
 			<th scope="row">Sample Response Data</th>
@@ -1238,7 +1235,7 @@
 		</tr>
 		<tr>
 			<th scope="row">Description</th>
-			<td>Replace the HOST, TENANT_ID, REQUEST_ID,OFFERING_ID USER_ID where ever required including the Body.&nbsp;You must be a Service Portal User to access this API.</td>
+			<td>Use this API to cancel a subscription. Replace the HOST, TENANT_ID, wherever required including the Body.&nbsp;You must be a Service Portal User to access this API.</td>
 		</tr>
 		<tr>
 			<th scope="row">Headers</th>
@@ -1277,7 +1274,7 @@
 		</tr>
 		<tr>
 			<th scope="row">Request Body Description</th>
-			<td>Fill in the SubscriptionID, User_ID &amp; Offering _ID in the Body as required</td>
+			<td>Fill in the SubscriptionID, User_ID &amp; Offering _ID in the Body as required. You can obtain these IDs from the above API (Execute Public Action)</td>
 		</tr>
 		<tr>
 			<th scope="row">Sample Response Data</th>
@@ -1304,7 +1301,7 @@
 		</tr>
 		<tr>
 			<th scope="row">Sample Response Data Description</th>
-			<td></td>
+			<td>Returns the service request ID that has been created. Example:&nbsp;<code>"Id": "19248"</code></td>
 		</tr>
 	</tbody>
 </table>
