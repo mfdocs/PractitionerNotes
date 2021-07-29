@@ -1,14 +1,18 @@
-<html><p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">Ansible is a popular IT automation engine that automates configuration management.&nbsp; MF Network Automation (NA) is a market leading solution for network configuration, change, and compliance management.&nbsp; Together MF NA and Ansible provide a combined/complementary solution for implementing powerful automation use cases.</span></span></p>
-
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">In this whitepaper, we examine the details of implementing Ansible playbooks as an advanced scripting language in NA.&nbsp; (Note:&nbsp; This document includes information about Ansible Engine and does not discuss Ansible Tower.)</span></span></p>
-
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>Example MF NA/Ansible setup:</b></span></span></p>
+<html><p><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:20.0pt" lang="EN-US">MF Network Automation Ansible Integration</span></b></span></span></p>
 
 <p style="text-align:justify"></p>
 
-<p style="margin-left:96px; text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_5fdb6a7636dc54.61353534.png" style="width:347px; height:241px"></span></span></p>
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">Ansible is a popular IT automation engine that automates configuration management.&nbsp; MF Network Automation (NA) is a market leading solution for network configuration, change, and compliance management that enables plug and play configuration management solutions … including Ansible.&nbsp; Together MF NA and Ansible provide a combined/complementary solution for implementing powerful automation use cases.</span></span></p>
 
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:18.0pt">Prerequisites:</span></b></span></span></p>
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">In this whitepaper, we examine the details of implementing Ansible playbooks as an advanced scripting language in NA.&nbsp; (Note:&nbsp; This document includes information about Ansible Engine only and does not discuss Ansible Tower.)</span></span></p>
+
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>Example MF NA/Ansible setup:</b></span></span></p>
+
+<p style="margin-left:96px; text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="A picture containing diagram
+
+Description automatically generated" src="/mediawiki/images/pn_images/pn_image_6102afb87b36c6.76355469.png" style="width:395px; height:245px"></span></span></p>
+
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:18.0pt" lang="EN-US">Prerequisites:</span></b></span></span></p>
 
 <ul>
 	<li><span style="font-size:11pt"><span style="tab-stops:list .5in"><span style="font-family:&quot;Calibri&quot;,sans-serif">Install Python (2.7&nbsp;or 3.4+&nbsp;version) on the NA server</span></span></span></li>
@@ -16,7 +20,7 @@
 	<li><span style="font-size:11pt"><span style="tab-stops:list .5in"><span style="font-family:&quot;Calibri&quot;,sans-serif">Install the Cisco IOS collection from galaxy.ansible.com/cisco/ios</span></span></span></li>
 </ul>
 
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:18.0pt">Configure ansible-playbook interpreter in NA:</span></b></span></span></p>
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:18.0pt" lang="EN-US">Configure ansible-playbook interpreter in NA:</span></b></span></span></p>
 
 <p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">NA needs to know the location of the ansible-playbook interpreter before executing playbooks. The location of the ansible-playbook interpreter binary, which is installed on the NA server, needs to be provided in the NA UI. The following steps illustrate how this is done.</span></span></p>
 
@@ -27,305 +31,45 @@
 	<li><span style="font-size:11pt"><span style="tab-stops:list .5in"><span style="font-family:&quot;Calibri&quot;,sans-serif">Pick any of the empty scripting language and provide the details </span></span></span>
 	<ul style="list-style-type:circle">
 		<li><span style="font-size:11pt"><span style="tab-stops:list 1.0in"><span style="font-family:&quot;Calibri&quot;,sans-serif">Scripting Language - name of the language as it needs to appear in the UI</span></span></span></li>
-		<li><span style="font-size:11pt"><span style="tab-stops:list 1.0in"><span style="font-family:&quot;Calibri&quot;,sans-serif">Path to Interpreter <i>-</i>&nbsp;location of the python binary. (For example, on Linux -&nbsp;/usr/bin/python)</span></span></span></li>
+		<li><span style="font-size:11pt"><span style="tab-stops:list 1.0in"><span style="font-family:&quot;Calibri&quot;,sans-serif">Path to Interpreter <i>-</i>&nbsp;location of the python binary. (For example, on Linux -&nbsp;/usr/bin/ansible-playbook)</span></span></span></li>
 	</ul>
 	</li>
 	<li><span style="font-size:11pt"><span style="tab-stops:list .5in"><span style="font-family:&quot;Calibri&quot;,sans-serif">Save the changes</span></span></span></li>
 </ol>
 
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_5fdb84615f4492.78387621.png" style="width:623px; height:446px"></span></span></p>
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6102afb8e82ec2.16588486.png" style="width:623px; height:446px"></span></span></p>
 
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:18.0pt">Verify the configuration:</span></b></span></span></p>
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:18.0pt" lang="EN-US">Verify the configuration:</span></b></span></span></p>
 
 <p><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">The changes made in the Server settings will result in a new option while creating a new advanced Diagnostic/Change Plan. </span></span></p>
 
 <ol>
-	<li><span style="font-size:11pt"><span style="tab-stops:list .5in"><span style="font-family:&quot;Calibri&quot;,sans-serif">Navigate to New Diagnostic page (Devices -&gt; Device Tools -&gt; Diagnostics -&gt; New Diagnostic)</span></span></span></li>
+	<li><span style="font-size:11pt"><span style="tab-stops:list .5in"><span style="font-family:&quot;Calibri&quot;,sans-serif">Navigate to New Change Plan page (Devices -&gt; Device Tools -&gt; Change Plans -&gt; New Diagnostic)</span></span></span></li>
 	<li><span style="font-size:11pt"><span style="tab-stops:list .5in"><span style="font-family:&quot;Calibri&quot;,sans-serif">Select the <b>Advanced Scripting</b> checkbox</span></span></span></li>
 	<li><span style="font-size:11pt"><span style="tab-stops:list .5in"><span style="font-family:&quot;Calibri&quot;,sans-serif">Verify that the <b>Language&nbsp;</b>drop down has the newly added scripting language.</span></span></span></li>
 </ol>
 
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_5fdb6a76dcfd71.13035774.png" style="width:608px; height:479px"></span></span></p>
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6102afb93ff0e9.32792258.png" style="width:608px; height:479px"></span></span></p>
 
 <p style="text-align:justify"></p>
 
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:14.0pt">Maintaining Dynamic NA/Ansible Inventory Sync</span></b></span></span></p>
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:14.0pt" lang="EN-US">Maintaining Dynamic NA/Ansible Inventory Sync</span></b></span></span></p>
 
 <p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">Ansible playbooks include a <i>hosts</i> parameter that tell the playbooks which inventory elements it is executing against.&nbsp; Calling playbooks from NA requires that Ansible understands the NA inventory.&nbsp; So the next step is to tell Ansible the location where it can find its inventory information.</span></span></p>
 
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">Edit the ansible configuration file and set the “inventory” variable to the location where the inventory will be stored.&nbsp; We will then copy the Micro Focus dynamic inventory script na.pl (discussed next) to that location.</span></span></p>
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">(Note: The method shown below is an updated method to the previously documented dynamic script method that used excessive compute resources for continual inventory synchronization.&nbsp; If Ansible access to the NA inventory outside of NA is desired, the dynamic script can still be run to update a hosts file in the Ansible inventory using the NA event system as device/group add/delete events are generated.&nbsp; This avoids excessive use of compute resources.)</span></span></p>
 
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:12.0pt">Example ansible.cfg inventory configuration:</span></b></span></span></p>
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">Using this method, we add individual hosts to the Ansible inventory as NA executes against the devices at runtime.&nbsp; This method is much more efficient.</span></span></p>
 
-<pre><code class="language-bash">centos# more /etc/ansible/ansible.cfg
-[defaults]
-inventory            = /etc/ansible/hosts
-centos# ls /etc/ansible/hosts
-na.pl      group_vars         host_vars</code></pre>
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">In the example below, notice that we add a play at the front of the playbooks to run a task to add the NA device to the inventory using the ansible-playbook add_host command.&nbsp; All subsequent plays in the playbook are handled normally.</span></span></p>
 
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">The dynamic inventory script (na.pl) is an NA advanced Perl API script that retrieves the NA inventory using API calls, and syncs Ansible/NA inventories by providing the JSON formatted inventory that Ansible expects.&nbsp; The script can be downloaded from the Micro Focus ITOM Marketplace. (URL?)</span></span></p>
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="Graphical user interface, text, application
 
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">After downloading the na.pl script, edit the file and modify the values for the NA user/pass variables from “admin”/”password” as appropriate to allow access to the NA API.&nbsp; Note that the NA core will also serve as the Ansible control node, which is simply a Linux server with ansible-playbook installed. The NA server variable will typically be “localhost”.&nbsp; Once the values have been updated, the script can be tested by running with the “--list” option.&nbsp; Note:&nbsp; You may need to chmod +x to make the file executable, and you will not see empty groups with zero devices listed.</span></span></p>
+Description automatically generated" src="/mediawiki/images/pn_images/pn_image_6102afb9810069.15488925.png" width="512" height="530"></span></span></p>
 
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>Example invocation of NA inventory connector:</b></span></span></p>
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:16.0pt" lang="EN-US">NA Advanced Change Plan (ex. ansible-playbook, python script, etc.)</span></b></span></span></p>
 
-<pre><code class="language-bash">centos# ./na.pl --list</code></pre>
-
-<p style="text-align:justify"></p>
-
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>na.pl Perl Code</b></span></span></p>
-
-<pre><code class="language-perl">#!/usr/bin/perl
-###########################################################################
-# na.pl
-#
-# This perl script queries the NA inventory api, and returns the NA 
-# inventory in a JSON format compatible with Ansible dynamic inventories
-#
-# Notes:
-# 1) Only inventory groups/devices are returned 
-# 2) No Ansible vars are returned (use other var setting methods)
-# 3) Empty NA device groups are not included in the returned inventory
-# 4) Ansible: --list option should return JSON inventory
-# 5) Ansible: --host option should return host vars
-#    (--host returns empty dictionary since no vars are set)
-# 
-# Options:
-#
-#    --help                 This help message
-#    --server=IP|Name       The NAS Server HOST (default: localhost)
-#    --user=Name            A user on the NAS server (default: admin)
-#    --pass="secret"        The password for the user (no default)
-#    --list		   List the JSON formatted inventory
-#    --host=IP|Name	   List the Ansible host vars for the given host
-#
-# Playbook usage:
-# # ansible-playbook example.yml -i na.pl
-#
-###########################################################################
-
-use lib qw(blib lib);
-use strict;
-use warnings;
-use Getopt::Long;
-use Pod::Usage;
-use Data::Dumper;
-use List::MoreUtils qw(uniq);
-
-use JSON;
-
-use Opsware::NAS::Client;
-
-my($user,$pass,$server,$list,$host) = ('admin', 'password', 'localhost', '', '');
-my $help = 0;
-my $test = 0;
-
-unless( GetOptions("user=s" =&gt; \$user,
-                   "pass=s" =&gt; \$pass,
-                   "server=s" =&gt; \$server,
-                   "list" =&gt; \$list,
-                   "test" =&gt; \$test,
-		   "host=s" =&gt; \$host,
-                   "help|h|?" =&gt; \$help) ) {
-  pod2usage(2);
-}
-
-pod2usage(1) if $help;
-
-
-my $inventory;
-my $nas;
-my $res;
-
-######################################################################
-#
-#  build_inventory
-#
-#  This subroutine enumerates the NA inventory and builds a Perl
-#  Hash structure that will be returned as JSON and is compatible
-#  with Ansible dynamic inventory requirements
-#
-######################################################################
-sub build_inventory {
-  my $parent;
-  my @allDevices;
-  my @allGroups;
-
-  # return a list of all NA device groups
-  $res = $nas-&gt;list_groups(type =&gt; "device");
-
-  unless ($res-&gt;ok()) {
-    printf STDERR ("*** error: %s\n", $res-&gt;error_message());
-    exit(1);
-  }
-
-    # Loop for each of the groups returned above
-    foreach my $parent ($res-&gt;result()) {
-    my @children = ();
-    my @devices = ();
-    my $tmpGroup = "";
-
-	    $tmpGroup = $parent-&gt;deviceGroupName;
-	    $tmpGroup =~ tr/[ ]/_/;
-
-    # For the Inventory group, and child groups with devices, build a list
-    # of devices
-    if ($parent-&gt;deviceCount != "0") {
-        if ($parent-&gt;isParent == "0" || $parent-&gt;deviceGroupName eq "Inventory") {
-    
-            $res = $nas-&gt;list_device( group =&gt; $parent-&gt;deviceGroupName );
-    
-            unless ($res-&gt;ok()) {
-              printf STDERR ("*** error: %s\n", $res-&gt;error_message());
-              exit(1);
-            }
-    
-            foreach my $device ($res-&gt;result()) {
-                  push @devices, $device-&gt;hostName;	
-                  push @allDevices, $device-&gt;hostName;	
-            }
-        }
-    }
-    
-    # For Inventory group, and parent groups that contain child groups
-    # with devices, build a list of child groups
-    if ($parent-&gt;isParent == "1" || $parent-&gt;deviceGroupName eq "Inventory") {
-      if ($parent-&gt;deviceCount != "0") {
-
-printf("LIST GROUP %s\n", $parent-&gt;deviceGroupName) if ($test == 1);
-
-          $res = $nas-&gt;list_device_group(parent =&gt; $parent-&gt;deviceGroupName );
-      
-          unless ($res-&gt;ok()) {
-            printf STDERR ("*** error: %s\n", $res-&gt;error_message());
-            exit(1);
-          }
-
-          foreach my $group ($res-&gt;result()) {
-	    my $tmpGroup2 = $group-&gt;name;
-	    $tmpGroup2 =~ tr/[ ]/_/;
-	    if ( $tmpGroup2 ne "Inventory") {
-                push @children, $tmpGroup2;	
-                push @allGroups, $tmpGroup2;	
-	    };
-            #push @children, $group-&gt;name;	
-            #push @allGroups, $group-&gt;namre;	
-          }
-      } 
-    }        
-    # For non-empty device lists, add "hosts" key/value pair to group
-    # key (ex. { hosts =&gt; (device1, device2, etc.) }
-    if (@devices) {
-       $inventory-&gt;{$tmpGroup}{hosts} = \@devices;
-       #push(@{$inventory-&gt;{$parent-&gt;deviceGroupName}},{hosts=&gt;\@devices});
-#exit;
-    }
-
-    # For non-empty child group lists, add "children" key/value pair to group
-    # key (ex. { children =&gt; (group1, group2, etc.) }
-    if (@children) {
-       $inventory-&gt;{$tmpGroup}{children} = \@children;
-       #push(@{$inventory-&gt;{$parent-&gt;deviceGroupName}},{children=&gt;\@children});
-#exit;
-    }
-
-  }
-  # For non-empty lists of all inventory devices, add "hosts" key/value pair to group
-  # key (ex. { hosts =&gt; (device1, device2, etc.) }
-  if (@allDevices) {
-     my @uniqueDevices = uniq @allDevices;
-     $inventory-&gt;{"all"}{hosts} = \@uniqueDevices;
-     #push(@{$inventory-&gt;{"all"}},{hosts=&gt;\@uniqueDevices});
-  }
-
-  # For non-empty child group lists, add "children" key/value pair to group
-  # key (ex. { children =&gt; (group1, group2, etc.) }
-  if (@allGroups) {
-     my @uniqueGroups = uniq @allGroups;
-     $inventory-&gt;{"all"}{children} = \@uniqueGroups;
-     #push(@{$inventory-&gt;{"all"}},{children=&gt;\@uniqueGroups});
-  }
-  return $inventory;
-}
-
-###################################################################
-# Main
-#
-# Call subroutine recurse_groups() to build perl hash structure
-# containing NA inventory structure
-#
-###################################################################
-
-# Initialize NA API client session
-$nas = Opsware::NAS::Client-&gt;new();
-$res = $nas-&gt;login(-user =&gt; $user, -pass =&gt; $pass, -host =&gt; $server);
-
-unless ($res-&gt;ok()) {
-  printf STDERR ("*** error: %s\n", $res-&gt;error_message());
-  printf STDERR ("Did you supply valid HOST/USER/PASS arguments?\n");
-  printf STDERR ("re-run this script with '--help' for assistance.\n");
-  exit(1);
-}
-
-$inventory = { "_meta" =&gt; { "hostvars" =&gt; { } } };
-
-if ($list) {
-
-    build_inventory( );
-    
-    # Encode perl Inventory hash as JSON
-    my $inventory_json = encode_json $inventory;
-    
-    # Return NA JSON formatted Inventory to Ansible dynamic inventory 
-    print JSON-&gt;new-&gt;ascii-&gt;pretty-&gt;encode(decode_json join '', $inventory_json);
-}
- 
-if ($host) {
-
-    # Return NA JSON formatted Inventory to Ansible dynamic inventory 
-    print JSON-&gt;new-&gt;ascii-&gt;pretty-&gt;encode(decode_json join '', "{ }");
-}
-
-
-$nas-&gt;logout();
-undef $nas;
-
-exit;
-__END__
-
-=head1 NAME
-
-na.pl -- NA API script returns Ansible dynamic inventory compatible JSON
-
-=head1 SYNOPSIS
-
-na.pl [options]
-
- Options:
-
-    --help                 This help message
-    --server=IP|Name       The NAS Server HOST (default: localhost)
-    --user=Name            A user on the NAS server (default: admin)
-    --pass="secret"        The password for the user (no default)
-    --list		   List the JSON formatted inventory
-    --host=IP|Name	   List the Ansible host vars for the given host
-
-Playbook usage:
-# ansible-playbook example.yml -i na.pl
-
-=head1 DESCRIPTION
-
-NA API script returns Ansible dynamic inventory compatible JSON
-
-=cut
-
-</code></pre>
-
-<p style="text-align:justify"></p>
-
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:16.0pt">NA Advanced Change Plan (ex. ansible-playbook, python script, etc.)</span></b></span></span></p>
-
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:14.0pt">Create Advanced Change Plan</span></b></span></span></p>
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:14.0pt" lang="EN-US">Create an NA Advanced Change Plan</span></b></span></span></p>
 
 <p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">Once the steps above have been completed, the user is ready to create NA Change Plans that run Ansible playbooks.</span></span></p>
 
@@ -333,72 +77,70 @@ NA API script returns Ansible dynamic inventory compatible JSON
 
 <p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>Configure the ansible-playbook interpreter:</b></span></span></p>
 
+<p style="margin-left:144px; text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6102afb9e252e0.69591164.png" width="265" height="368"></span></span></p>
+
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:14.0pt" lang="EN-US">Define Change Plan</span></b></span></span></p>
+
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:12.0pt" lang="EN-US">Hosts</span></b></span></span></p>
+
 <p style="text-align:justify"></p>
-
-<p style="margin-left:144px; text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_5fdb6a77350f32.84999689.png" style="width:210px; height:291px"></span></span></p>
-
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:14.0pt">Define Change Plan</span></b></span></span></p>
-
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:12.0pt">Groups</span></b></span></span></p>
-
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">One thing that needs to be discussed is the idea of device groups.&nbsp; Device groups are synchronized via the dynamic inventory connector described above. </span></span></p>
-
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">There is a subtle difference in the way playbooks are executed against device groups in NA vs Ansible. While an Ansible playbook can be run against a group defined using the Ansible “hosts” parameter, when running playbooks in NA, NA handles device group execution.&nbsp; NA does this by kicking off child tasks for each individual device in the device group.&nbsp; If a change plan is run against a group of devices in NA, the NA parent task creates child tasks that run the change plan/playbook against one device per child task, for each device in the NA group.</span></span></p>
-
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:12.0pt">Hosts</span></b></span></span></p>
 
 <p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">For the “hosts” definition in the ansible-playbook, we need to use the built-in NA runtime variables (ex. “$tc_device_hostname$).&nbsp; This field will be filled in at runtime with the hostname of the device the NA task is executing against.&nbsp; So, when executing playbooks from NA, the “hosts” value in the playbook will always be “$tc_device_hostname$”.</span></span></p>
 
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:12.0pt">Device credentials</span></b></span></span></p>
+<p style="text-align:justify"></p>
 
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">Device credentials used to access managed devices are centrally configured as NA password rules that include username/password/SNMP credentials for devices and device groups. NA references these password rules when it is attempting to access devices, and remembers the correct rule for future reference. &nbsp;NA securely stores these credentials, and these credentials can be accesses by NA runtime variables just like the device hostname information described above.&nbsp; (ex. $tc_device_username$ and $tc_device_password$).&nbsp; There is no need to store NA credentials in Ansible Vault, although externally defined vault variables could still be referenced inside of the playbook definitions. </span></span></p>
-<span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>Example NA Change Plan using Ansible Playbook:</b></span></span>
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:12.0pt" lang="EN-US">Device credentials</span></b></span></span></p>
 
-<p style="margin-left:48px; text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_5fdb6a77c89542.91176807.png" style="width:512px; height:450px"></span></span></p>
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">NA handles all device credential management.&nbsp; There is no need to use Ansible Vault.</span></span></p>
 
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:14.0pt">Setup Test/Modify Device</span></b></span></span></p>
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">Device credentials used to access managed devices are centrally configured as NA Device Password Rules that include username/password/SNMP credentials for devices and device groups. NA references these password rules when it is attempting to access devices and remembers the correct rule for future reference. &nbsp;</span></span></p>
+
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">NA securely stores these credentials, and these credentials can be accesses by NA runtime variables just like the device hostname information described above.&nbsp; (ex. $tc_device_username$ and $tc_device_password$).&nbsp; There is no need to store NA credentials in Ansible Vault, although externally defined vault variables could still be referenced inside of the playbook definitions. </span></span></p>
+
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>Example NA Change Plan using Ansible Playbook:</b></span></span></p>
+
+<p style="margin-left:48px; text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6102afba4f0326.29620346.png" width="591" height="519"></span></span></p>
+
+<p style="margin-left:48px; text-align:justify"></p>
+
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:14.0pt" lang="EN-US">Setup Test/Modify Device</span></b></span></span></p>
 
 <p style="text-align:justify"><span style="font-size:11pt"><span style="tab-stops:191.15pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">In the putty session below, we first remove the ios banner login so we can show the device config after the playbook has run and added the banner back to the device configuration.</span></span></span></p>
-<span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>Break the device configuration:</b></span></span>
 
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_5fdb6a784e8b60.43983700.png" style="width:420px; height:431px"></span></span></p>
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>Break the device configuration:</b></span></span></p>
 
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">We will add an SNMP configuration line that should not be present, and remove an SNMP configuration line that is expected to be present.</span></span></p>
-<span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:14.0pt">Prepare Change Plan Task</span></b></span></span>
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6102afbaafbb55.15777727.png" style="width:420px; height:431px"></span></span></p>
+
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:14.0pt" lang="EN-US">Prepare Change Plan Task</span></b></span></span></p>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Now that we’ve setup our test device by modifying the SNMP configuration on the device, lets setup our change plan task to run our change plan containing the playbook to set the SNMP configuration.</span></span></span></p>
 
 <p style="margin-bottom:11px"><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif">Select the change plan to run, and enter the hostname/IP address, and select the “Change Plan to Deploy” as shown below.&nbsp; Then select “Save” to execute the change plan.</span></span></span></p>
+<span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>Example NA Change Plan Task:</b></span></span>
 
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>Example NA Change Plan Task:</b></span></span></p>
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6102afbaf21792.67823758.png" width="655" height="621"></span></span></p>
 
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_5fdb6a7897f3e0.63886963.png" style="width:543px; height:515px"></span></span></p>
+<p style="text-align:justify"></p>
 
-<p></p>
-
-<p><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:14.0pt">Deploy Change Plan</span></b></span></span></p>
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:14.0pt" lang="EN-US">Deploy Change Plan</span></b></span></span></p>
 
 <p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">When the change plan completes, review the “Result Details” as shown below.&nbsp; Confirm that the each of the tasks for the play are completed successfully, and that the expected configuration commands are added/removed.</span></span></p>
+<span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>Sample NA Change Plan Task Result showing playbook output:</b></span></span>
 
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>Sample NA Change Plan Task Result showing playbook output:</b></span></span></p>
-
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_5fdb6a790ad107.58944615.png" style="width:604px; height:394px"></span></span></p>
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6102afbb338162.95992354.png" width="695" height="453"></span></span></p>
 
 <p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">As you can see above, our change plan has executed each of the tasks defined for the single play defined in our playbook.</span></span></p>
 
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">The playbook detected the removal of our expected good command and has added it back to the device configuration (snmp-server community public RO).&nbsp; Also, the playbook detected the addition of our bogus command, and has removed it from the device configuration. (no snmp-server community bogus RW).</span></span></p>
-
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">Additionally, this example has highlighted the concept of Ansible “idempotency”, which is to say that no unnecessary commands were sent to the device.&nbsp; In fact, if we re-run the playbook, we should expect to see that no commands are sent to the device, as the configuration has already been updated.</span></span></p>
-
-<p><span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:14.0pt"><span style="line-height:107%">Re-Deploy Change Plan</span></span></b></span></span></span></p>
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">Additionally, with this integration, NA benefits from the Ansible concept of “idempotency”, which is to say that no unnecessary commands are sent to the device.&nbsp; In fact, if we re-run the playbook, we should expect to see that no commands are sent to the device, as the configuration has already been updated.</span></span></p>
+<span style="font-size:11pt"><span style="line-height:107%"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:14.0pt" lang="EN-US"><span style="line-height:107%">Re-Deploy Change Plan</span></span></b></span></span></span>
 
 <p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b>Re-running the NA Change Plan highlights the concept of idempotence:</b></span></span></p>
 
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_5fdb6a7956a1b3.51829470.png" style="width:614px; height:231px"></span></span></p>
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img src="/mediawiki/images/pn_images/pn_image_6102afbb65e435.33305249.png" style="width:614px; height:231px"></span></span></p>
 
 <p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">Sure enough.&nbsp; No new commands were sent because we have already configured the device to its declared state.&nbsp; This shows the concept of idempotency … only update the device when required.&nbsp; Otherwise, do not change anything, and re-running the playbook did not.</span></span></p>
 
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:18.0pt">Conclusion:</span></b></span></span></p>
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><b><span style="font-size:18.0pt" lang="EN-US">Conclusion:</span></b></span></span></p>
 
 <p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">We have shown how to configure and run ansible-playbooks inside of NA Change Plans.&nbsp; In this case, we were defining the YAML code within the Change Plan itself.&nbsp; Look for another whitepaper on calling YAML playbooks checked out from Git in place from NA, instead of defining the YAML inside of NA.</span></span></p>
 
