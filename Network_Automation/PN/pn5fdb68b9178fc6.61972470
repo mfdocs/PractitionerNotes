@@ -59,9 +59,27 @@ Description automatically generated" src="/mediawiki/images/pn_images/pn_image_6
 
 <p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">(Note: The method shown below is an updated method to the previously documented dynamic script method that used excessive compute resources for continual inventory synchronization.&nbsp; If Ansible access to the NA inventory outside of NA is desired, the dynamic script can still be run to update a hosts file in the Ansible inventory using the NA event system as device/group add/delete events are generated.&nbsp; This avoids excessive use of compute resources.)</span></span></p>
 
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">Using this method, we add individual hosts to the Ansible inventory as NA executes against the devices at runtime.&nbsp; This method is much more efficient.</span></span></p>
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">Using this method, we add individual hosts to the Ansible inventory as NA executes against the devices at runtime.&nbsp; This method is much more efficient. </span></span></p>
 
-<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">In the example below, notice that we add a play at the front of the playbooks to run a task to add the NA device to the inventory using the ansible-playbook add_host command.&nbsp; All subsequent plays in the playbook are handled normally.</span></span></p>
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">The first thing to do is to make sure the local Ansible engine knows about the localhost (127.0.0.1) since each play will begin on the localhost before switching over to the device being managed.&nbsp; At a minimum, localhost is a requirement.</span></span></p>
+
+<p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">On the MF NA core ...</span></span></p>
+
+<div style="text-align: justify;"><code><strong># grep -i "inventory" /etc/ansible/ansible.cfg</strong>&nbsp;&nbsp;&nbsp; (check where Ansible is looking for inventory)</code></div>
+
+<div style="text-align: justify;"><code>inventory&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /etc/ansible/hosts</code></div>
+
+<div style="text-align: justify;"><code><strong># cat /etc/ansible/hosts</strong></code></div>
+
+<div style="text-align: justify;"><code>all:</code></div>
+
+<div style="text-align: justify;"><code>&nbsp; hosts:</code></div>
+
+<div style="text-align: justify;"><code>&nbsp;&nbsp;&nbsp; localhost:</code></div>
+
+<div style="text-align: justify;"><code><strong>#</strong></code></div>
+
+<p><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">In the example below, notice that we add a play at the front of the playbooks to run a task to add the NA device to the inventory using the ansible-playbook <strong>add_host</strong> command.&nbsp; All subsequent plays in the playbook are handled normally.&nbsp; <strong>(Note: always test ssh access from the NA core system CLI to be sure that ssh fingerprints are stored, proper credentials are being used, etc.)</strong>&nbsp; If you can't access devices from the NA core CLI, you won't be able to access devices from playbooks run inside the NA UI either.</span></span></p>
 
 <p style="text-align:justify"><span style="font-size:11pt"><span style="font-family:&quot;Calibri&quot;,sans-serif"><img alt="Graphical user interface, text, application
 
