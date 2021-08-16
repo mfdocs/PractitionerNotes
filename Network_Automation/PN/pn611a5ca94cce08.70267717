@@ -53,11 +53,11 @@
 
 <p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Here is an example of a query to get index definitions in PostgreSQL database:</span></span></p>
 
-<p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif"><strong><i>SELECT indexdef FROM pg_indexes where schemaname='nas';</i></strong></span></span></p>
+<pre style="margin-left: 48px;"><code><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">SELECT indexdef FROM pg_indexes where schemaname='nas';</span></span></code></pre>
 
 <p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Also note down the index count in PostgreSQL database before migration, using the query:</span></span></p>
 
-<p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif"><strong><i>select count(*) from pg_indexes where schemaname='nas';</i></strong></span></span></p>
+<pre style="margin-left: 48px;"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">select count(*) from pg_indexes where schemaname='nas';</span></span></pre>
 
 <ol start="8">
 	<li style="margin-left:8px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Drop indexes for faster data migration. Data migration from Oracle database to PostgreSQL database can be done with the indexes in place but data migration may take more time.</span></span></li>
@@ -82,7 +82,7 @@
 	<li style="margin-left:8px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Run the index count query again, to make sure that the index count after re-creating indexes matches the count obtained in previous step.</span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif"><strong><i>select count(*) from pg_indexes where schemaname='nas';</i></strong></span></span></p>
+<pre style="margin-left: 48px;"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">select count(*) from pg_indexes where schemaname='nas';</span></span></pre>
 
 <ol start="13">
 	<li style="margin-left:8px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">On PostgreSQL database, enable the foreign key constraints, if you had disabled them before data migration.</span></span></li>
@@ -91,17 +91,17 @@
 
 <p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">PostgreSQL query to get the table and the respective row count:</span></span></p>
 
-<p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif"><strong><i>select&nbsp;c.relname as table_name,&nbsp;c.reltuples as count<br>
-from pg_class c<br>
-join pg_namespace n on n.oid = c.relnamespace<br>
-where c.relkind = 'r'&nbsp;and n.nspname='nas'&nbsp;and c.relname like 'rn_%'<br>
-order by c.reltuples desc;</i></strong></span></span></p>
+<pre style="margin-left: 48px;"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">select c.relname as table_name, c.reltuples as count
+from pg_class c
+join pg_namespace n on n.oid = c.relnamespace
+where c.relkind = 'r' and n.nspname='nas' and c.relname like 'rn_%'
+order by c.reltuples desc;</span></span></pre>
 
 <p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Oracle query to get the table and the respective row count:</span></span></p>
 
-<p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif"><strong><i>select table_name, to_number(extractvalue(xmltype(dbms_xmlgen.getxml('select count(*) c from '||owner||'.'||table_name)),'/ROWSET/ROW/C')) as&nbsp;count<br>
-from all tables<br>
-where owner = 'USER_NAME' and table_name like 'RN_%'</i></strong></span></span></p>
+<pre style="margin-left: 48px;"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">select table_name, to_number(extractvalue(xmltype(dbms_xmlgen.getxml('select count(*) c from '||owner||'.'||table_name)),'/ROWSET/ROW/C')) as count
+from all tables
+where owner = 'USER_NAME' and table_name like 'RN_%'</span></span></pre>
 
 <p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Here, replace<span style="color:#172b4d"> <i>USER_NAME</i> </span>with the NA Oracle database username.</span></span></p>
 
@@ -151,11 +151,11 @@ where owner = 'USER_NAME' and table_name like 'RN_%'</i></strong></span></span><
 
 <p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Here is an example of a query to get index definitions in PostgreSQL database:</span></span></p>
 
-<p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif"><strong><i>SELECT indexdef FROM pg_indexes where schemaname='nas';</i></strong></span></span></p>
+<pre style="margin-left: 48px;"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">SELECT indexdef FROM pg_indexes where schemaname='nas';</span></span></pre>
 
 <p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Also note down the index count in PostgreSQL database before migration, using the query:</span></span></p>
 
-<p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif"><strong><i>select count(*) from pg_indexes where schemaname='nas';</i></strong></span></span></p>
+<pre style="margin-left: 48px;"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">select count(*) from pg_indexes where schemaname='nas';</span></span></pre>
 
 <ol start="9">
 	<li style="margin-left:8px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Drop indexes for faster data migration. Data migration from Oracle database to PostgreSQL database can be done with the indexes in place but data migration may take more time.</span></span></li>
@@ -175,7 +175,7 @@ where owner = 'USER_NAME' and table_name like 'RN_%'</i></strong></span></span><
 	<li style="margin-left:8px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Run the index count query again, to make sure that the index count after re-creating indexes matches the count obtained in previous step.</span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif"><strong><i>select count(*) from pg_indexes where schemaname='nas';</i></strong></span></span></p>
+<pre style="margin-left: 48px;"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">select count(*) from pg_indexes where schemaname='nas';</span></span></pre>
 
 <ol start="14">
 	<li style="margin-left:8px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">On PostgreSQL database, enable the foreign key constraints, if you had disabled them before data migration.</span></span></li>
@@ -207,22 +207,22 @@ where owner = 'USER_NAME' and table_name like 'RN_%'</i></strong></span></span><
 	<li style="margin-left:8px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">PostgreSQL query to get the table and the respective row count:</span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif"><strong><i>select&nbsp;c.relname as table_name,&nbsp;c.reltuples as count<br>
-from pg_class c<br>
-join pg_namespace n on n.oid = c.relnamespace<br>
-where c.relkind = 'r'&nbsp;and n.nspname='nas'&nbsp;and c.relname like 'rn_%'<br>
-order by c.reltuples desc;</i></strong></span></span></p>
+<pre style="margin-left: 48px;"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">select c.relname as table_name, c.reltuples as count
+from pg_class c
+join pg_namespace n on n.oid = c.relnamespace
+where c.relkind = 'r' and n.nspname='nas' and c.relname like 'rn_%'
+order by c.reltuples desc;</span></span></pre>
 
 <p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Oracle query to get the table and the respective row count:</span></span></p>
 
-<p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif"><strong><i>select table_name, to_number(extractvalue(xmltype(dbms_xmlgen.getxml('select count(*) c from '||owner||'.'||table_name)),'/ROWSET/ROW/C')) as&nbsp;count<br>
-from all_tables<br>
-where owner = 'USER_NAME' and table_name like 'RN_%'</i></strong></span></span></p>
+<pre style="margin-left: 48px;"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">select table_name, to_number(extractvalue(xmltype(dbms_xmlgen.getxml('select count(*) c from '||owner||'.'||table_name)),'/ROWSET/ROW/C')) as count
+from all_tables
+where owner = 'USER_NAME' and table_name like 'RN_%'</span></span></pre>
 
 <p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Here, replace <strong><i>USER_NAME</i></strong> with the NA Oracle database username.</span></span></p>
 
 <ol start="18">
 	<li style="margin-left:8px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Compare the table's row count of both Oracle database and PostgreSQL database for every table to see that it matches.</span></span></li>
-	<li style="margin-left:8px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Start NA services on the NA which is connected to PostgreSQL database.<a name="_Example_of_data"></a></span></span></li>
+	<li style="margin-left:8px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Start NA services on the NA which is connected to PostgreSQL database.</span></span></li>
 </ol>
 </html>
