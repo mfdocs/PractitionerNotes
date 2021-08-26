@@ -9,4 +9,29 @@
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; step3: Start the Sitescope service. Once it's started, import the valid license.</p>
 
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; step4: Now change the value _suspendMonitors=false in master.config and restart the service.</p>
+
+<p><strong>Problem:&nbsp;Upgrading from 11.24 to 11.50 but stuck at 11.33IP5</strong></p>
+
+<p><strong>Solution:</strong></p>
+
+<p></p>
+
+<ol>
+	<li>Install 11.33 IP5 version on any VM.</li>
+	<li>Stop SiteScope Service and import OSI based license.</li>
+	<li>Start and verify the service.</li>
+	<li>Stop SiteScope Service.</li>
+	<li>Run config.bat tool and import 11.24 configuration.</li>
+	<li>After import done successfully open master.config file and modify _use112xLicense and _restartTimeout as below:</li>
+</ol>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;_use112xLicense=false</p>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;_restartTimeout=60</p>
+
+<ol start="7">
+	<li>Start the SiteScope service.</li>
+</ol>
+
+<p></p>
 </html>
