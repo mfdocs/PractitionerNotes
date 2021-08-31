@@ -52,10 +52,10 @@
 	<code>INSERT INTO &lt;schema&gt;.cfg_at_assignment_ci ("id", "ci_id", "direct_assignment_id") values (‘&lt;id&gt;','&lt;ci id&gt;','&lt;artefact version id&gt;')</code></p>
 
 	<p>The '<strong>direct_assignment_id</strong>’ will be taken from the query output in Step3. The <b>id</b>&nbsp;needs to be generated. You need to generate new UUID and provide it to the query. For <strong>ci_id</strong> put the ci_id you got from error string(Eg: ManagementTemplateAssignment:84413803-d4aa-4470-8c3b-571987929bbd:decafc0ffeefacedbabef00ddeadbeef, 3rd part here will be ci_id which is - decafc0ffeefacedbabef00ddeadbeef).</p>
+
+	<p>You will have as many insert queries as output records from Step 3. Run all those insert queries on 'event' DB schema. Perform ‘commit'. Once you perform all of the above steps, the mapping entries will be created in ‘cfg_at_assignment_ci’ for all the problematic assignments and as a result, you will be able to delete all the unused assignments.</p>
 	</li>
 </ol>
-
-<p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;You will have as many insert queries as output records from Step 3. Run all those insert queries on 'event' DB schema. Perform ‘commit'. Once you perform all of the above steps, the mapping entries will be created in ‘cfg_at_assignment_ci’ for all the problematic assignments and as a result, you will be able to delete all the unused assignments.</p>
 <strong style="color: rgb(0, 0, 0); font-family: Roboto, sans-serif; font-size: 20px;">Validation to check if workaround works</strong>
 
 <p>By default, Topo scan will run for every 12 hours which will delete all assignments whose CI's are already deleted. To validate whether the Topo scan runs without any errors, you can change the Infrastructure setting ‘ Time interval to scan for changed topology ’ to 5 mins to cross-check the fix immediately. After you confirm the fix works, please revert time interval value back to its previous value.</p>
