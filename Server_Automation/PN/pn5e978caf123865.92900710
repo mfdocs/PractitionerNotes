@@ -154,56 +154,61 @@ chown twist /var/opt/opsware/crypto/twist/masterTwist</pre>
 
 <pre>%word_uploads
 build_id: opsware_70.0.74585.0
-state:  incomplete</pre>
-
-<p>We need to create the word_uploads directory along with the missing crypto:</p>
-
-<pre>.../SAS_10.60-70.0.74585.0/T8900-15067-GA/T8900-15067-primary/disk001/opsware_installer/hpsa_install.sh -c /var/opt/opsware/install_opsware/cdf/cdf.xml</pre>
-
-<p>As you can see its missing and the primary core normally has this installed as it uploaded all the Word content being the 1st core.</p>
-
-<pre>Install components
-==================
-
-Components to be Installed
--------------------------
-Software Repository - Content (install once per mesh)
-
-
-Up-to-date Components (will not install)
-----------------------------------------
-Oracle RDBMS for SAS
-Model Repository, First Core
-Multimaster Infrastructure Components
-Software Repository Storage
-Slice
-OS Provisioning Media Server
-OS Provisioning Boot Server, Slice version
-
-Enter one of the following directives
-(&lt;c&gt;ontinue, &lt;p&gt;revious, &lt;h&gt;elp, &lt;q&gt;uit): c</pre>
-
-<p>You don't need to do the actual&nbsp;upload just the get to this part as that means the component has been installed.&nbsp; <em>This step is hokey but I don't know a better way to do this.</em></p>
-
-<pre>[Mar-22-2019 15:46:07] &gt;&gt;&gt;&gt;Installing component Software Repository - Content (install once per mesh)
-....^CWARNING: an error was detected while running an external
-command or script.  The output follows:
-Traceback (most recent call last):
-  File "./tools/get_platform.py", line 21, in &lt;module&gt;
-  File "./spinwrapper.py", line 7, in &lt;module&gt;
-
-[Mar-22-2019 15:46:30] Component installation script encountered an error (exit status 999)
-[Mar-22-2019 15:46:30] Exiting Opsware Installer.
-
-For more details, please see the following file:
-/var/log/opsware/install_opsware/192.168.4.98-install-word_uploads-2019-03-22.15:45:51.verbose.log
-
-Local log file: /var/tmp/HPSA_INSTALLER/logfiles/install_word_uploads_error/192.168.4.98-install-word_uploads-2019-03-22.15:45:51.verbose.log
-*********************************
-Install of word_uploads failed on 192.168.4.98
+state:  complete
+script: pre
+script: post
 </pre>
 
+<p>Create the following</p>
+
+<pre>mkdir /tmp/word_uploads /var/opt/opsware/crypto/word_uploads
+cd /tmp/word_uploads
+touch admin-ca.crt agent-ca.crt opsware-ca.crt wordbot.srv spin.srv spog.pkcs8
+</pre>
+
+<p>Run this from the installation media.&nbsp; &nbsp;<strong>crypto </strong>is the password to the .db.e file.</p>
+
+<pre>cd ... SAS_10.70-75.0.790007/T8900-15069-primrary/disk001/opsware_installer/tools
+./check_crypto.sh /tmp/word_upload crypto admin-ca.crt agent-ca.crt opsware-ca.crt wordbot.srv spin.srv spog.pkcs8
+</pre>
+
+<p>This will create a bunch of certificates in the /tmp/word_uploads directory<em>.</em></p>
+
+<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"># ls -l /tmp/word_uploads</span></span></p>
+
+<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">total 48</span></span></p>
+
+<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 1858 Sep 14 19:46 admin-ca.crt</span></span></p>
+
+<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 1544 Sep 14 19:46 admin-ca.p12</span></span></p>
+
+<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 1862 Sep 14 19:46 agent-ca.crt</span></span></p>
+
+<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 1544 Sep 14 19:46 agent-ca.p12</span></span></p>
+
+<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 1870 Sep 14 19:46 opsware-ca.crt</span></span></p>
+
+<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 1552 Sep 14 19:46 opsware-ca.p12</span></span></p>
+
+<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 2893 Sep 14 19:46 spin.p12</span></span></p>
+
+<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 3480 Sep 14 19:46 spin.srv</span></span></p>
+
+<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 2893 Sep 14 19:46 spog.p12</span></span></p>
+
+<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 3505 Sep 14 19:46 spog.pkcs8</span></span></p>
+
+<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 2893 Sep 14 19:46 wordbot.p12</span></span></p>
+
+<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 3484 Sep 14 19:46 wordbot.srv</span></span></p>
+
 <p>To mark it as installed:</p>
+
+<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Copy those we require and delete the rest.</span></span></p>
+
+<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"># cp spin.p12 spog.p12 wordbot.p12 /var/opt/opsware/crypto/word_uploads</span></span></p>
+
+<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"># rm -rf /tmp/word_uploads</span></span></p>
 
 <pre>%word_uploads
 build_id: opsware_70.0.74585.0
