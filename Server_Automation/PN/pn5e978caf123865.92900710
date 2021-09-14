@@ -172,49 +172,28 @@ touch admin-ca.crt agent-ca.crt opsware-ca.crt wordbot.srv spin.srv spog.pkcs8
 ./check_crypto.sh /tmp/word_upload crypto admin-ca.crt agent-ca.crt opsware-ca.crt wordbot.srv spin.srv spog.pkcs8
 </pre>
 
-<p>This will create a bunch of certificates in the /tmp/word_uploads directory<em>.</em></p>
+<p>This will create a bunch of certificates in the /tmp/word_uploads directory<em>.</em><br>
+&nbsp;</p>
 
-<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"># ls -l /tmp/word_uploads</span></span></p>
+<pre><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"># ls -l /tmp/word_uploads</span></span>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">total 48</span></span>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 1858 Sep 14 19:46 admin-ca.crt</span></span>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 1544 Sep 14 19:46 admin-ca.p12</span></span>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 1862 Sep 14 19:46 agent-ca.crt</span></span>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 1544 Sep 14 19:46 agent-ca.p12</span></span>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 1870 Sep 14 19:46 opsware-ca.crt</span></span>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 1552 Sep 14 19:46 opsware-ca.p12</span></span>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 2893 Sep 14 19:46 spin.p12</span></span>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 3480 Sep 14 19:46 spin.srv</span></span>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 2893 Sep 14 19:46 spog.p12</span></span>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 3505 Sep 14 19:46 spog.pkcs8</span></span>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 2893 Sep 14 19:46 wordbot.p12</span></span>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 3484 Sep 14 19:46 wordbot.srv</span></span></pre>
 
-<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">total 48</span></span></p>
+<p><span style="font-family: Calibri, sans-serif; font-size: 11pt;">Copy those we require and delete the rest.</span></p>
 
-<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 1858 Sep 14 19:46 admin-ca.crt</span></span></p>
-
-<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 1544 Sep 14 19:46 admin-ca.p12</span></span></p>
-
-<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 1862 Sep 14 19:46 agent-ca.crt</span></span></p>
-
-<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 1544 Sep 14 19:46 agent-ca.p12</span></span></p>
-
-<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 1870 Sep 14 19:46 opsware-ca.crt</span></span></p>
-
-<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 1552 Sep 14 19:46 opsware-ca.p12</span></span></p>
-
-<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 2893 Sep 14 19:46 spin.p12</span></span></p>
-
-<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 3480 Sep 14 19:46 spin.srv</span></span></p>
-
-<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 2893 Sep 14 19:46 spog.p12</span></span></p>
-
-<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 3505 Sep 14 19:46 spog.pkcs8</span></span></p>
-
-<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 2893 Sep 14 19:46 wordbot.p12</span></span></p>
-
-<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 3484 Sep 14 19:46 wordbot.srv</span></span></p>
-
-<p>To mark it as installed:</p>
-
-<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">Copy those we require and delete the rest.</span></span></p>
-
-<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"># cp spin.p12 spog.p12 wordbot.p12 /var/opt/opsware/crypto/word_uploads</span></span></p>
-
-<p><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"># rm -rf /tmp/word_uploads</span></span></p>
-
-<pre>%word_uploads
-build_id: opsware_70.0.74585.0
-state:  complete
-script: pre
-script: post</pre>
+<pre><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"># cp spin.p12 spog.p12 wordbot.p12 /var/opt/opsware/crypto/word_uploads</span></span>
+<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"># rm -rf /tmp/word_uploads</span></span></pre>
 
 <p>This has now created and populate this directory with crypto:</p>
 
