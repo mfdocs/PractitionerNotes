@@ -163,25 +163,19 @@ script: post
 
 <pre>mkdir /tmp/word_uploads /var/opt/opsware/crypto/word_uploads
 cd /tmp/word_uploads
-touch admin-ca.crt agent-ca.crt opsware-ca.crt wordbot.srv spin.srv spog.pkcs8
+touch wordbot.srv spin.srv spog.pkcs8
 </pre>
 
 <p>Run this from the installation media.&nbsp; &nbsp;<strong>crypto </strong>is the password to the .db.e file.</p>
 
 <pre>cd ... SAS_10.70-75.0.790007/T8900-15069-primrary/disk001/opsware_installer/tools
-./check_crypto.sh /tmp/word_uploads crypto admin-ca.crt agent-ca.crt opsware-ca.crt wordbot.srv spin.srv spog.pkcs8
+./check_crypto.sh /tmp/word_uploads crypto wordbot.srv spin.srv spog.pkcs8
 </pre>
 
 <p>This will create a bunch of certificates in the /tmp/word_uploads directory<em>.</em></p>
 
 <pre><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"># ls -l /tmp/word_uploads</span></span>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">total 48</span></span>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 1858 Sep 14 19:46 admin-ca.crt</span></span>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 1544 Sep 14 19:46 admin-ca.p12</span></span>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 1862 Sep 14 19:46 agent-ca.crt</span></span>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 1544 Sep 14 19:46 agent-ca.p12</span></span>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 1870 Sep 14 19:46 opsware-ca.crt</span></span>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 1552 Sep 14 19:46 opsware-ca.p12</span></span>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 2893 Sep 14 19:46 spin.p12</span></span>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 3480 Sep 14 19:46 spin.srv</span></span>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">-rw-r--r-- 1 root root 2893 Sep 14 19:46 spog.p12</span></span>
