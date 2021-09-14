@@ -172,8 +172,7 @@ touch admin-ca.crt agent-ca.crt opsware-ca.crt wordbot.srv spin.srv spog.pkcs8
 ./check_crypto.sh /tmp/word_upload crypto admin-ca.crt agent-ca.crt opsware-ca.crt wordbot.srv spin.srv spog.pkcs8
 </pre>
 
-<p>This will create a bunch of certificates in the /tmp/word_uploads directory<em>.</em><br>
-&nbsp;</p>
+<p>This will create a bunch of certificates in the /tmp/word_uploads directory<em>.</em></p>
 
 <pre><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"># ls -l /tmp/word_uploads</span></span>
 <span style="font-size:11pt"><span style="font-family:Calibri,sans-serif">total 48</span></span>
@@ -192,10 +191,11 @@ touch admin-ca.crt agent-ca.crt opsware-ca.crt wordbot.srv spin.srv spog.pkcs8
 
 <p><span style="font-family: Calibri, sans-serif; font-size: 11pt;">Copy those we require and delete the rest.</span></p>
 
-<pre><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"># cp spin.p12 spog.p12 wordbot.p12 /var/opt/opsware/crypto/word_uploads</span></span>
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"># rm -rf /tmp/word_uploads</span></span></pre>
+<pre>cp spin.p12 spog.p12 wordbot.p12 /var/opt/opsware/crypto/word_uploads/
+rm -rf /tmp/word_uploads
+</pre>
 
-<p>This has now created and populate this directory with crypto:</p>
+<p>This has now created and populates this directory with crypto:</p>
 
 <pre>[root@dc1 word_uploads]# ls -l /var/opt/opsware/crypto/word_uploads/
 total 12
