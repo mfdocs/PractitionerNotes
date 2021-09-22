@@ -273,9 +273,60 @@ if serverRefs and customerRefs:
     for serverRef in serverRefs:
         ts.server.ServerService.setCustomer(serverRef, customerRefs[0])</pre>
 
-<h1 id="Compliance_report">Compliance report</h1>
+<h2 id="Compliance_report">Compliance report</h2>
 
 <p>The GUI provide an interface to view the compliance status of various policies attached to a server</p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/4/4f/Screenshot_2021-09-20_115553.jpg" height="341" hspace="0" src="/mediawiki/images/pn_images/pn_image_614b317856f3b5.73464506.jpeg" style="width: 800px; height: 341px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
+<p>The following code reproduced that output</p>
+
+<pre># Print Server compliance scan results
+
+import pytwist
+from pytwist.com.opsware.server import ServerRef
+from pytwist.com.opsware.swmgmt import SoftwarePolicyRef, GenericPatchPolicyRef, PatchPolicyRef
+from pytwist.com.opsware.compliance.sco import AuditTaskRef
+from collections import defaultdict, namedtuple
+
+ts = pytwist.twistserver.TwistServer()
+SS = ts.server.ServerService
+ts.authenticate('brett','opsware')
+s = ServerRef(20001)
+Node = namedtuple('Node',['name', 'failed', 'total', 'code'])
+
+results=defaultdict(list)
+for i in SS.getComplianceScanSummaries(s,SS.getComplianceScans(s)):
+    failed, total = i.failedRuleCount,i.totalRuleCount
+    if isinstance(i.complianceScan,AuditTaskRef):
+        results['Audit Policy'].append(Node(i.complianceScanResult.name, failed, total, i.resultCode))
+    elif isinstance(i.complianceScan,PatchPolicyRef) or isinstance(i.complianceScan,GenericPatchPolicyRef):
+        results['Patch Policy'].append(Node(i.complianceScan.name, failed, total, i.resultCode))
+    elif isinstance(i.complianceScan,SoftwarePolicyRef):
+        results['Software'].append(Node(i.complianceScan.name, failed, total, i.resultCode))
+
+maxNameLen = max(len(item.name) for sub_list in results.values() for item in sub_list)
+
+for heading, policies in results.items():
+    print(heading)
+    for n in policies:
+        if n.code == 'Failed':
+            print("\t{0:&lt;{1}s} ({2} of {3} Rules out of Compliance)".format(n.name, maxNameLen, n.failed, n.total))
+        elif n.code == 'Passed':
+            print("\t{0:&lt;{1}s} ({2} Rules in Compliance)".format(n.name, maxNameLen, n.total))
+        else:
+            print("\t{0:&lt;{1}s} ({2})".format(n.name, maxNameLen, n.code))</pre>
+
+<p>Execution output</p>
+
+<pre>Patch Policy
+        New Dynamic Patch Policy  (No Rules)
+Audit Policy
+        Test Audit                (168 of 331 Rules out of Compliance)
+        PCI Compliance Audit      (28 of 190 Rules out of Compliance)
+Software
+        Python Opsware API Access (2 of 2 Rules out of Compliance)
+        ISMtool                   (2 Rules in Compliance)</pre>
 
 <p></p>
 </html>
