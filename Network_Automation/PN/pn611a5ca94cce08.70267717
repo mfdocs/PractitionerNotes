@@ -205,9 +205,10 @@ where owner = 'USER_NAME' and table_name like 'RN_%'</span></span></pre>
 <p style="margin-left:144px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">For Example, if NA with the Oracle database was installed on hosts (core1 and core2) and for migration, NA is installed on different hosts&nbsp; (core 3 and core 4), then in RN_CORE table, update the ‘corehostname’ column of ‘core1’ to ‘core3’ and ‘core2’ to ‘core4’</span></span></p>
 
 <ol start="16">
-	<li style="margin-left:8px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Make sure that the data migration is complete and valid. Run the following queries on the Oracle and PostgreSQL databases to get the table and the respective row count.</span></span>&nbsp; &nbsp;</li>
-	<li style="margin-left:8px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">The PostgreSQL query to get the table and the respective row count is:</span></span></li>
+	<li style="margin-left:8px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Make sure that the data migration is complete and valid. Run the following queries on the Oracle and PostgreSQL databases to get the table and the respective row count.</span></span></li>
 </ol>
+
+<p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">The PostgreSQL query to get the table and the respective row count is:</span></span></p>
 
 <pre style="margin-left: 48px;"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">select c.relname as table_name, c.reltuples as count
 from pg_class c
@@ -218,12 +219,12 @@ order by c.reltuples desc;</span></span></pre>
 <p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">The Oracle query to get the table and the respective row count is:</span></span></p>
 
 <pre style="margin-left: 48px;"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">select table_name, to_number(extractvalue(xmltype(dbms_xmlgen.getxml('select count(*) c from '||owner||'.'||table_name)),'/ROWSET/ROW/C')) as count
-from all_tables
+from all tables
 where owner = 'USER_NAME' and table_name like 'RN_%'</span></span></pre>
 
-<p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Here, replace <strong>USER_NAME</strong> with the NA Oracle database username.</span></span></p>
+<p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Here, replace<span style="color:#172b4d"> <strong>USER_NAME </strong></span>with the NA Oracle database username.</span></span></p>
 
-<ol start="18">
+<ol start="17">
 	<li style="margin-left:8px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Compare the table's row count of both the Oracle and PostgreSQL databases for every table to see that it matches.</span></span></li>
 	<li style="margin-left:8px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Start NA services on the NA which is connected to the PostgreSQL database.</span></span></li>
 </ol>
