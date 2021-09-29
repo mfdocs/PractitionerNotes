@@ -37,7 +37,7 @@
 	<li style="margin-left:8px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Connect to NA's PostgreSQL database and make sure to drop all the data from all the tables.</span></span></li>
 </ol>
 
-<p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif"><strong>Note:</strong> If the data is not correctly deleted from all the tables, then after migration NA will be in an inconsistent state.</span></span></p>
+<p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif"><strong>Note:</strong> If the data is not correctly deleted from all the tables, then after migration, NA will be in an inconsistent state.</span></span></p>
 
 <ol start="6">
 	<li style="margin-left:8px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Disable all the foreign key constraints on all the PostgreSQL tables.</span></span></li>
@@ -48,7 +48,7 @@
 <p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Another way to disable foreign keys is to disable triggers in all the tables.</span></span></p>
 
 <ol start="7">
-	<li style="margin-left:8px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Take a backup of the index definitions for all the NA tables from PostgreSQL database. You will need these index definition to re-create them after data migration, if you choose to disable indexes during data migration. </span></span></li>
+	<li style="margin-left:8px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Make a backup of the index definitions for all the NA tables from the PostgreSQL database. You will need these index definitions to re-create them after data migration, if you choose to disable indexes during data migration. </span></span></li>
 </ol>
 
 <p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Here is an example of a query to get index definitions in PostgreSQL database:</span></span></p>
@@ -60,7 +60,7 @@
 <pre style="margin-left: 48px;"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">select count(*) from pg_indexes where schemaname='nas';</span></span></pre>
 
 <ol start="8">
-	<li style="margin-left:8px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Drop indexes for faster data migration. Data migration from an Oracle database to a PostgreSQL database can be done with the indexes in place but data migration may take more time.</span></span></li>
+	<li style="margin-left:8px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Drop indexes for faster data migration. Data migration from an Oracle database to a PostgreSQL database can be done with the indexes in place, but data migration may take more time.</span></span></li>
 	<li style="margin-left:8px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Use any database tool to do the actual data migration from the Oracle database to the PostgreSQL database.</span></span></li>
 </ol>
 
@@ -72,7 +72,7 @@
 </ul>
 
 <ol start="10">
-	<li style="margin-left:8px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Import the sequences from Oracle database to PostgreSQL database only if the version of NA supports COSO reporting on PostgreSQL database. </span></span></li>
+	<li style="margin-left:8px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif">Import the sequences from the Oracle database to the PostgreSQL database only if your version of NA supports COSO / OPTIC reporting against the PostgreSQL database. </span></span></li>
 </ol>
 
 <p style="margin-left:48px"><span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif"><b>Note:</b> </span><span style="line-height:107%"><span style="font-family:&quot;Times New Roman&quot;,serif"><span style="color:black">The sequence of&nbsp;the <b>rn_repl_conflict&nbsp;</b>table does not need </span></span></span><span style="line-height:107%"><span style="font-family:&quot;Times New Roman&quot;,serif"><span style="color:black">to be migrated</span></span></span><span style="font-family:&quot;Times New Roman&quot;,serif">.</span></span></p>
