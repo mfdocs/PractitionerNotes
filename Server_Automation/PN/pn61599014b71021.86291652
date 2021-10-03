@@ -2,7 +2,7 @@
 
 <p>To optimize the G1 behavior, the following Twist configuration is recommended:</p>
 
-<pre><code class="language-bash">GC_ARGS="-XX:+UseG1GC -XX:MaxGCPauseMillis=1000 -XX:+UnlockExperimentalVMOptions -XX:ConcGCThreads=&lt;ParallelGCThreads&gt; -XX:G1MixedGCCountTarget=4 -XX:G1OldCSetRegionThresholdPercent=20"</code></pre>
+<pre><code class="language-bash">GC_ARGS="-XX:+UseG1GC -XX:MaxGCPauseMillis=1000 -XX:+UnlockExperimentalVMOptions -XX:ConcGCThreads=#ParallelGCThreads# -XX:G1MixedGCCountTarget=4 -XX:G1OldCSetRegionThresholdPercent=20"</code></pre>
 
 <p>To set these parameters, edit <code>/opt/opsware/twist/twist.sh</code> and update the definition of the "GC_ARGS" variable as above. In order to determine the value of&nbsp;<code>&lt;ParallelGCThreads&gt;</code> execute the following command:</p>
 
