@@ -1,16 +1,20 @@
-<html><p>The Twist JVM uses Garbage First (G1) garbage collection algorithm. When Twist is configured with large Java heaps (8GB or above) and the default G1 configuration, the garbage collector might struggle to keep up with the application allocation rates under heavy load. This results in Full GC events that usually pause the application threads for longer than the target pause time of 1000ms. When G1 algorithm is used, Full GC events should be avoided as much as possible.</p>
+<html><p>The Twist JVM uses Garbage First (G1) garbage collection algorithm. When Twist is configured with large Java heaps (8GB or above), the garbage collector might struggle to keep up with the application allocation rates under heavy load. This results in Full GC events that usually pause the application threads for longer than the target pause time of 1000ms. When G1 algorithm is used, Full GC events should be avoided as much as possible.</p>
 
 <p>To optimize the G1 behavior, the following Twist configuration is recommended:</p>
 
-<pre><code class="language-bash">GC_ARGS="-XX:+UseG1GC -XX:MaxGCPauseMillis=1000 -XX:+UnlockExperimentalVMOptions -XX:ConcGCThreads=[ParallelGCThreads] -XX:G1MixedGCCountTarget=4 -XX:G1OldCSetRegionThresholdPercent=20"</code></pre>
+<div aria-label="code snippet widget" contenteditable="false" role="region" tabindex="-1">
+<pre data-widget="codeSnippet"><code class="language-bash hljs">GC_ARGS<span class="token operator">=</span><span class="token string">"-XX:+UseG1GC -XX:MaxGCPauseMillis=1000 -XX:+UnlockExperimentalVMOptions -XX:ConcGCThreads=[ParallelGCThreads] -XX:G1MixedGCCountTarget=4 -XX:G1OldCSetRegionThresholdPercent=20"</span></code></pre>
+<img src="/mediawiki/images/pn_images/pn_image_615ab7dd9d9d98.13161488.gif"><span style="background: url(&quot;https://docs.microfocus.com/assets/vendor/ckeditor/plugins/widget/images/handle.png&quot;) rgba(220, 220, 220, 0.5); top: -15px; left: 0px;"><img height="15" role="presentation" src="/mediawiki/images/pn_images/pn_image_615ab7de0c0966.33070074.gif" title="Click and drag to move" width="15"></span></div>
 
 <p>To set these parameters, edit <code>/opt/opsware/twist/twist.sh</code> and update the definition of the "GC_ARGS" variable as above. In order to determine the value of <code>[ParallelGCThreads]</code>&nbsp;execute the following command:</p>
 
-<pre><code class="language-bash"># /opt/opsware/openjdk/bin/java -XX:+UnlockDiagnosticVMOptions -XX:+UnlockExperimentalVMOptions -XX:+PrintFlagsFinal -version 2&gt;/dev/null | grep ParallelGCThreads
-     uint ParallelGCThreads                        = 10                                        {product} {default}</code></pre>
+<div aria-label="code snippet widget" contenteditable="false" role="region" tabindex="-1">
+<pre data-widget="codeSnippet"><code class="language-bash hljs"><span class="token comment" spellcheck="true"># /opt/opsware/openjdk/bin/java -XX:+UnlockDiagnosticVMOptions -XX:+UnlockExperimentalVMOptions -XX:+PrintFlagsFinal -version 2&gt;/dev/null | grep ParallelGCThreads</span>
+     uint ParallelGCThreads                        <span class="token operator">=</span> 10                                        <span class="token punctuation">{</span>product<span class="token punctuation">}</span> <span class="token punctuation">{</span>default<span class="token punctuation">}</span></code></pre>
+<img src="/mediawiki/images/pn_images/pn_image_615ab7de754aa2.30585141.gif"><span style="background: url(&quot;https://docs.microfocus.com/assets/vendor/ckeditor/plugins/widget/images/handle.png&quot;) rgba(220, 220, 220, 0.5); top: -15px; left: 0px;"><img height="15" role="presentation" src="/mediawiki/images/pn_images/pn_image_615ab7ded89ba6.18730657.gif" title="Click and drag to move" width="15"></span></div>
 
 <p>In the above example the value of <code>[ParallelGCThreads]</code>&nbsp;is 10. This is the number of parallel garbage collection threads used by G1 GC. This number is determined by the JVM based on the number of available CPU cores on the machine. The same value should be used to set the&nbsp;<code>ConcGCThreads</code> parameter for the Twist JVM. <code>ConcGCThreads&nbsp;</code>controls the number of concurrent garbage collection threads used by G1 GC. With the default configuration, the JVM sets&nbsp;<code>ConcGCThreads</code>&nbsp;to a value lower than <code>ParallelGCThreads</code>. Increasing the value of&nbsp;<code>ConcGCThreads</code>&nbsp;helps in reducing the probability of a Full GC event under heavy load.</p>
 
 <div class="Admonition_Note"><span class="autonumber">Note</span><br>
-These settings will be overridden during the next SA upgrade. Consult the documentation of the upgraded SA version to determine if these settings need to be reapplied.</div>
+These settings will be overridden during the next SA upgrade. Consult the documentation of the upgraded SA version to determine if these settings need to be reapplied (check this page in the documentation of the new SA version).</div>
 </html>
