@@ -1,1 +1,602 @@
- 
+<html><h2>Get an option model</h2>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>GET</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/option-model/&lt;option model id&gt;</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Invalid inputs<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the response data in JSON format:
+
+<pre>{
+  "@self": "/12345/dnd/api/option-model/2c908cb97353331f01735921a50c01eb",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:option-model",
+  "name": null,
+  "description": null,
+  "ext": {
+    "csa_name_key": "AAA"
+  },
+  "@created": "2020-07-16T19:37:23.980Z",
+  "@modified": "2020-07-16T19:37:23.995Z",
+  "@content_version": 1,
+  "icon": null,
+  "isCriticalUpgradeObject": false,
+  "artifact": {
+    "@self": "/12345/dnd/api/artifact/2c908cb97353331f01735921a50c01ec",
+    "name": "AAA"
+  },
+  "option_sets": [
+    {
+      "@self": "/12345/dnd/api/option-model/option-set/2c908cb97353331f01735d976275030e",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:option-model:option-set",
+      "name": "Option Set 1",
+      "description": "",
+      "ext": {
+        "csa_name_key": "9578daa2-2673-f802-8f5c-9be76cf73d14"
+      },
+      "@created": "2020-07-17T16:24:29.045Z",
+      "@modified": "2020-07-17T16:24:29.045Z",
+      "@content_version": 1,
+      "icon": "/12345/dnd/api/blobstore/default.png?tag=library",
+      "published": true,
+      "locked": false,
+      "isCriticalUpgradeObject": false,
+      "initial_order_only": true,
+      "multi_select": false,
+      "options": [
+        {
+          "@self": "/12345/dnd/api/option-model/option/2c908cb97353331f01735d976275030f",
+          "@type": "urn:x-hp:2012:software:cloud:data_model:option-model:option",
+          "name": "Option 1",
+          "description": "",
+          "ext": {
+            "csa_name_key": "abf6c24d-e779-6764-b6e2-d09036714709"
+          },
+          "@created": "2020-07-17T16:24:29.045Z",
+          "@modified": "2020-07-17T16:24:29.045Z",
+          "@content_version": 1,
+          "icon": "",
+          "published": true,
+          "locked": false,
+          "isCriticalUpgradeObject": false,
+          "selected": true,
+          "properties": [
+            {
+              "@self": "/12345/dnd/api/option-model/property/2c908cb97353331f01735d9762760310",
+              "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel:property",
+              "name": "AProperty",
+              "description": "",
+              "ext": {
+                "csa_name_key": "aProperty",
+                "csa_confidential": false
+              },
+              "@created": "2020-07-17T16:24:29.046Z",
+              "@modified": "2020-07-17T16:24:29.046Z",
+              "@content_version": 1,
+              "published": true,
+              "locked": false,
+              "isCriticalUpgradeObject": false,
+              "editable": null,
+              "property_type": "STRING",
+              "property_value": "",
+              "input_type": "INPUT",
+              "constraints": [
+                {
+                  "@type": "urn:x-hp:2012:software:cloud:data_model:property:constraint:string:min-length",
+                  "min_length": 0,
+                  "validate": true
+                },
+                {
+                  "@type": "urn:x-hp:2012:software:cloud:data_model:property:constraint:string:max-length",
+                  "max_length": 4000,
+                  "validate": true
+                },
+                {
+                  "@type": "urn:x-hp:2012:software:cloud:data_model:property:constraint:value:required",
+                  "required": false,
+                  "validate": true
+                }
+              ]
+            }
+          ],
+          "option_sets": []
+        }
+      ]
+    }
+  ]
+}
+</pre>
+
+<h2>Save the option model</h2>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>PATCH</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/option-model/&lt;option model id&gt;</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>See example</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the request data in JSON format:
+
+<div class="Admonition_Caution"><span class="autonumber">Note</span> The following json is in truncated form</div>
+&nbsp;
+
+<pre>{
+  "@self": "/12345/dnd/api/option-model/2c908cb97353331f0173585241230177",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:option-model",
+  "@content_version": 1,
+  "ext": {
+    "csa_name_key": "AAA"
+  },
+  "name": null,
+  "description": null,
+  "icon": null,
+  "option_sets": [
+    {
+      "@self": "/12345/dnd/api/option-model/option-set/2c908cb97353331f0173585973d2017e",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:option-model:option-set",
+      "@content_version": 1,
+      "ext": {
+        "csa_name_key": "a9274a54-fb44-8298-cdad-f9f0c75d16f3"
+      },
+      "name": "Option Set 1",
+      "description": "This is option set 1",
+      "icon": "/12345/dnd/api/blobstore/default.png?tag=library",
+      "published": true,
+      "locked": false,
+      "isCriticalUpgradeObject": false,
+      "initial_order_only": true,
+      "multi_select": false,
+      "options": [
+        {
+          "@self": "/12345/dnd/api/option-model/option/2c908cb97353331f0173585973d5018c",
+          "@content_version": 1,
+          "ext": {
+            "csa_name_key": "0548dae5-51e4-b582-9053-ced339e9ee05"
+          },
+          "name": "Option 1",
+          "description": "",
+          "icon": "",
+          "selected": true,
+          "isCriticalUpgradeObject": false,
+          "published": true,
+          "locked": false,
+          "option_sets": [],
+          "properties": [
+            {
+              "@self": "/12345/dnd/api/option-model/property/2c908cb97353331f0173585973d70190",
+              "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel:property",
+              "@content_version": 1,
+              "ext": {
+                "csa_name_key": "aStringProperty",
+                "csa_confidential": false
+              },
+              "name": "A String Property",
+              "description": "",
+              "editable": null,
+              "modifiable": false,
+              "locked": false,
+              "published": true,
+              "isCriticalUpgradeObject": false,
+              "bindings": [],
+              "validation_script": {
+                "name": null,
+                "parameters": null
+              },
+              "property_value": "my default value",
+              "property_type": "STRING",
+              "input_type": "INPUT",
+              "constraints": [
+                {
+                  "validate": true,
+                  "max_length": 4000,
+                  "@type": "urn:x-hp:2012:software:cloud:data_model:property:constraint:string:max-length"
+                },
+                {
+                  "validate": true,
+                  "min_length": 0,
+                  "@type": "urn:x-hp:2012:software:cloud:data_model:property:constraint:string:min-length"
+                },
+                {
+                  "validate": true,
+                  "required": false,
+                  "@type": "urn:x-hp:2012:software:cloud:data_model:property:constraint:value:required"
+                }
+              ]
+            },
+...
+    {
+      "@self": "/12345/dnd/api/option-model/option-set/2c908cb97353331f0173585974480195",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:option-model:option-set",
+      "@content_version": 1,
+      "ext": {
+        "csa_name_key": "20520b0b-6e9e-7fa8-e6b7-d8227f05d7e0"
+      },
+      "name": "Option Set 2",
+      "description": "This is option set 2",
+      "icon": "/12345/dnd/api/blobstore/default.png?tag=library",
+      "published": true,
+      "locked": false,
+      "isCriticalUpgradeObject": false,
+      "initial_order_only": true,
+      "multi_select": false,
+      "options": [
+        {
+          "@self": "/12345/dnd/api/option-model/option/2c908cb97353331f0173585974490196",
+          "@content_version": 1,
+          "ext": {
+            "csa_name_key": "f3039d33-d0c0-3364-6986-8b6e1b90e137"
+          },
+          "name": "Option 1",
+          "description": "",
+          "icon": "",
+          "selected": true,
+          "isCriticalUpgradeObject": false,
+          "published": true,
+          "locked": false,
+          "option_sets": [],
+          "properties": [
+            {
+              "@self": "/12345/dnd/api/option-model/property/2c908cb97353331f0173585974490197",
+              "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel:property",
+              "@content_version": 1,
+              "ext": {
+                "csa_name_key": "anotherStringProperty",
+                "csa_confidential": false
+              },
+              "name": "AnotherStringProperty",
+              "description": "",
+              "editable": null,
+              "modifiable": false,
+              "locked": false,
+              "published": true,
+              "isCriticalUpgradeObject": false,
+              "bindings": [],
+              "validation_script": {
+                "name": null,
+                "parameters": null
+              },
+              "property_value": "hello",
+              "property_type": "STRING",
+              "input_type": "INPUT",
+              "constraints": [
+                {
+                  "validate": true,
+                  "max_length": 10,
+                  "@type": "urn:x-hp:2012:software:cloud:data_model:property:constraint:string:max-length"
+                },
+                {
+                  "validate": true,
+                  "min_length": 0,
+                  "@type": "urn:x-hp:2012:software:cloud:data_model:property:constraint:string:min-length"
+                },
+                {
+                  "validate": true,
+                  "required": false,
+                  "@type": "urn:x-hp:2012:software:cloud:data_model:property:constraint:value:required"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+</pre>
+The following is an example of the structure of the response data in JSON format:
+
+<div class="Admonition_Caution"><span class="autonumber">Note</span> The following json is in truncated form</div>
+&nbsp;
+
+<pre>{
+  "@self": "/12345/dnd/api/option-model/2c908cb97353331f0173585241230177",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:option-model",
+  "name": null,
+  "description": null,
+  "ext": {
+    "csa_name_key": "AAA"
+  },
+  "@created": "2020-07-16T15:50:52.451Z",
+  "@modified": "2020-07-16T15:50:52.466Z",
+  "@content_version": 1,
+  "icon": null,
+  "isCriticalUpgradeObject": false,
+  "artifact": {
+    "@self": "/12345/dnd/api/artifact/2c908cb97353331f0173585241220176",
+    "name": "AAA"
+  },
+  "option_sets": [
+    {
+      "@self": "/12345/dnd/api/option-model/option-set/2c908cb97353331f0173585973d2017e",
+	}
+...
+}
+</pre>
+
+<h2>Save the option model (example with property binding)</h2>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>PATCH</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/option-model/&lt;option model id&gt;</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>See example</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the request data in JSON format:
+
+<pre>{
+  "@self": "/12345/dnd/api/option-model/2c90a2b9735e9f8401735eaf7fb70004",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:option-model",
+  "@content_version": 1,
+  "ext": {
+    "csa_name_key": "AAA"
+  },
+  "name": null,
+  "description": null,
+  "icon": null,
+  "option_sets": [
+    {
+      "@self": "/12345/dnd/api/option-model/option-set/2c90a2b9735e9f8401735eb6e4910023",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:option-model:option-set",
+      "@content_version": 1,
+      "ext": {
+        "csa_name_key": "ce2aba8d-ba00-32a9-ddb6-57d9db41b979"
+      },
+      "name": "Option Set 1",
+      "description": "",
+      "icon": "/12345/dnd/api/blobstore/default.png?tag=library",
+      "published": true,
+      "locked": false,
+      "isCriticalUpgradeObject": false,
+      "initial_order_only": true,
+      "multi_select": false,
+      "options": [
+        {
+          "@self": "/12345/dnd/api/option-model/option/2c90a2b9735e9f8401735eb6e4910024",
+          "@content_version": 1,
+          "ext": {
+            "csa_name_key": "2831b415-2671-5b22-cdf0-5b21dc63cfd5"
+          },
+          "name": "Option 1",
+          "description": "",
+          "icon": "",
+          "selected": true,
+          "isCriticalUpgradeObject": false,
+          "published": true,
+          "locked": false,
+          "option_sets": [],
+          "properties": [
+            {
+              "@self": "/12345/dnd/api/option-model/property/2c90a2b9735e9f8401735eb6e4920025",
+              "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel:property",
+              "@content_version": 1,
+              "ext": {
+                "csa_name_key": "osName",
+                "csa_confidential": false
+              },
+              "name": "OperatingSystemName",
+              "description": "",
+              "editable": null,
+              "modifiable": false,
+              "locked": false,
+              "published": true,
+              "isCriticalUpgradeObject": false,
+              "bindings": [
+                {
+                  "isCriticalUpgradeObject": false,
+                  "artifactPropertyName": "osName",
+                  "artifactPropertyDisplayName": "OS Name",
+                  "artifact": {
+                    "@self": "/12345/dnd/api/artifact/2c90a2b9735e9f8401735eafb07a0008",
+                    "displayName": "Blank Infrastructure Service"
+                  },
+                  "property": {
+                    "id": "osName",
+                    "displayName": "OperatingSystemName"
+                  }
+                }
+              ],
+              "validation_script": {
+                "name": null,
+                "parameters": null
+              },
+              "property_value": "",
+              "property_type": "STRING",
+              "input_type": "INPUT",
+              "constraints": [
+                {
+                  "validate": true,
+                  "max_length": 4000,
+                  "@type": "urn:x-hp:2012:software:cloud:data_model:property:constraint:string:max-length"
+                },
+                {
+                  "validate": true,
+                  "min_length": 0,
+                  "@type": "urn:x-hp:2012:software:cloud:data_model:property:constraint:string:min-length"
+                },
+                {
+                  "validate": true,
+                  "required": false,
+                  "@type": "urn:x-hp:2012:software:cloud:data_model:property:constraint:value:required"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+</pre>
+<br>
+The following is an example of the structure of the response data in JSON format:
+<pre>{
+  "@self": "/12345/dnd/api/option-model/2c90a2b9735e9f8401735eaf7fb70004",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:option-model",
+  "name": null,
+  "description": null,
+  "ext": {
+    "csa_name_key": "AAA"
+  },
+  "@created": "2020-07-17T21:30:26.615Z",
+  "@modified": "2020-07-17T21:30:26.632Z",
+  "@content_version": 1,
+  "icon": null,
+  "isCriticalUpgradeObject": false,
+  "artifact": {
+    "@self": "/12345/dnd/api/artifact/2c90a2b9735e9f8401735eaf7fb80005",
+    "name": "AAA"
+  },
+  "option_sets": [
+    {
+      "@self": "/12345/dnd/api/option-model/option-set/2c90a2b9735e9f8401735eb6e4910023",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:option-model:option-set",
+      "name": "Option Set 1",
+      "description": "",
+      "ext": {
+        "csa_name_key": "ce2aba8d-ba00-32a9-ddb6-57d9db41b979"
+      },
+      "@created": "2020-07-17T21:38:31.185Z",
+      "@modified": "2020-07-17T21:38:31.185Z",
+      "@content_version": 1,
+      "icon": "/12345/dnd/api/blobstore/default.png?tag=library",
+      "published": true,
+      "locked": false,
+      "isCriticalUpgradeObject": false,
+      "initial_order_only": true,
+      "multi_select": false,
+      "options": [
+        {
+          "@self": "/12345/dnd/api/option-model/option/2c90a2b9735e9f8401735eb6e4910024",
+          "@type": "urn:x-hp:2012:software:cloud:data_model:option-model:option",
+          "name": "Option 1",
+          "description": "",
+          "ext": {
+            "csa_name_key": "2831b415-2671-5b22-cdf0-5b21dc63cfd5"
+          },
+          "@created": "2020-07-17T21:38:31.185Z",
+          "@modified": "2020-07-17T21:38:31.185Z",
+          "@content_version": 1,
+          "icon": "",
+          "published": true,
+          "locked": false,
+          "isCriticalUpgradeObject": false,
+          "selected": true,
+          "properties": [
+            {
+              "@self": "/12345/dnd/api/option-model/property/2c90a2b9735e9f8401735eb6e4920025",
+              "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel:property",
+              "name": "OperatingSystemName",
+              "description": "",
+              "ext": {
+                "csa_name_key": "osName",
+                "csa_confidential": false
+              },
+              "@created": "2020-07-17T21:38:31.186Z",
+              "@modified": "2020-07-17T21:38:31.186Z",
+              "@content_version": 1,
+              "published": true,
+              "locked": false,
+              "isCriticalUpgradeObject": false,
+              "editable": null,
+              "property_type": "STRING",
+              "property_value": "",
+              "bindings": [
+                {
+                  "@self": "/12345/dnd/api/property/binding/2c90a2b9735e9f8401735eb84823002c",
+                  "@type": "urn:x-hp:2012:software:cloud:data_model:property:binding",
+                  "artifactPropertyName": "osName",
+                  "artifactPropertyDisplayName": "OS Name",
+                  "isCriticalUpgradeObject": false,
+                  "artifact": {
+                    "@self": "/12345/dnd/api/artifact/2c90a2b9735e9f8401735eafb07a0008",
+                    "displayName": "Blank Infrastructure Service"
+                  }
+                }
+              ],
+              "input_type": "INPUT",
+              "constraints": [
+                {
+                  "@type": "urn:x-hp:2012:software:cloud:data_model:property:constraint:string:min-length",
+                  "min_length": 0,
+                  "validate": true
+                },
+                {
+                  "@type": "urn:x-hp:2012:software:cloud:data_model:property:constraint:string:max-length",
+                  "max_length": 4000,
+                  "validate": true
+                },
+                {
+                  "@type": "urn:x-hp:2012:software:cloud:data_model:property:constraint:value:required",
+                  "required": false,
+                  "validate": true
+                }
+              ]
+            }
+          ],
+          "option_sets": []
+        }
+      ]
+    }
+  ]
+}
+</pre>
+</html>
