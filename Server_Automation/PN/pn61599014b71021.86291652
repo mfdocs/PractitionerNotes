@@ -2,11 +2,11 @@
 
 <p>To optimize the G1 behavior, the following Twist configuration is recommended:</p>
 
-<pre><code class="language-bash">GC_ARGS="-XX:+UseG1GC -XX:MaxGCPauseMillis=1000 -XX:+UnlockExperimentalVMOptions -XX:ConcGCThreads=[ParallelGCThreads] -XX:G1MixedGCCountTarget=4 -XX:G1OldCSetRegionThresholdPercent=20"</code></pre>
+<pre><code>GC_ARGS="-XX:+UseG1GC -XX:MaxGCPauseMillis=1000 -XX:+UnlockExperimentalVMOptions -XX:ConcGCThreads=[ParallelGCThreads] -XX:G1MixedGCCountTarget=4 -XX:G1OldCSetRegionThresholdPercent=20"</code></pre>
 
 <p>To set these parameters, edit <code>/opt/opsware/twist/twist.sh</code> and update the definition of the "GC_ARGS" variable as above. In order to determine the value of <code>[ParallelGCThreads]</code>&nbsp;execute the following command:</p>
 
-<pre><code class="language-bash"># /opt/opsware/openjdk/bin/java -XX:+UnlockDiagnosticVMOptions -XX:+UnlockExperimentalVMOptions -XX:+PrintFlagsFinal -version 2&gt;/dev/null | grep ParallelGCThreads
+<pre><code># /opt/opsware/openjdk/bin/java -XX:+UnlockDiagnosticVMOptions -XX:+UnlockExperimentalVMOptions -XX:+PrintFlagsFinal -version 2&gt;/dev/null | grep ParallelGCThreads
      uint ParallelGCThreads                = 10            {product}{default}</code></pre>
 
 <p>In the above example the value of <code>[ParallelGCThreads]</code>&nbsp;is 10. This is the number of parallel garbage collection threads used by G1 GC. This number is determined by the JVM based on the number of available CPU cores on the machine. The same value should be used to set the&nbsp;<code>ConcGCThreads</code> parameter for the Twist JVM. <code>ConcGCThreads&nbsp;</code>controls the number of concurrent garbage collection threads used by G1 GC. With the default configuration, the JVM sets&nbsp;<code>ConcGCThreads</code>&nbsp;to a value lower than <code>ParallelGCThreads</code>. Increasing the value of&nbsp;<code>ConcGCThreads</code>&nbsp;helps in reducing the probability of a Full GC event under heavy load.</p>
