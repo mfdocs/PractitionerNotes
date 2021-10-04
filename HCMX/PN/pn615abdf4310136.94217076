@@ -1,1 +1,3077 @@
- 
+<html><h2>Get a design</h2>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>GET</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/service/design/&lt;design id&gt;</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Invalid inputs<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the response data in JSON format:
+
+<pre>{
+  "@self": "/12345/dnd/api/service/design/2c908cb97353331f01735921a50c01ec",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:blueprint",
+  "@content_version": "4.0",
+  "@created": "2020-07-16T19:37:23.981Z",
+  "@modified": "2020-07-16T19:37:24.198Z",
+  "global_id": "2c908cb97353331f01735921a50c01ec",
+  "name": "AAA",
+  "description": "This is a new design",
+  "icon": "/12345/dnd/api/blobstore/IT_infrastructure.png?tag=library",
+  "ext": {
+    "csa_name_key": "7abaf726-f565-4fc2-93ff-62f1fcb94d4b",
+    "csa_critical_system_object": false
+  },
+  "url": "",
+  "version": "1.0.0",
+  "published": false,
+  "containerId": "2c908cb97353331f01735921a22001ea",
+  "optionModel": {
+    "@self": "/12345/dnd/api/option-model/2c908cb97353331f01735921a50c01eb"
+  },
+  "type": "sequence",
+  "upgrades_from": [],
+  "upgrades_to": []
+}
+</pre>
+
+<h2>List component types in the component palette for a given design</h2>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>GET</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/designs/design/&lt;design id&gt;/metamodel</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Invalid inputs<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the response data in JSON format:<br>
+&nbsp;
+<div class="Admonition_Caution"><span class="autonumber">Note</span> The following json is in truncated form</div>
+
+<pre>{
+  "@self": "/12345/dnd/api/designs/design/2c908cb97353331f01735921a50c01ec/metamodel",
+  "palettes": [
+    {
+      "id": "2c908cb37352b9ed017352ba22710000",
+      "name": "HPE_CSA_CI_TYPE_BASED",
+      "description": "This palette contains new Micro Focus CSA component types that are modeled against Micro Focus UCMDB's CI Type system. Components of the types contained in this palette will be visible in Micro Focus UCMDB when services in CSA become active.",
+      "displayName": "CMS Palette",
+      "icon": "/12345/dnd/api/blobstore/brand_logo_minimal.png?tag=library"
+    }
+  ],
+  "componentTypes": [
+    {
+      "id": "2c908cb37352b9ed017352ba6793007c",
+      "name": "CI_TYPE_AMAZON_EBS",
+      "description": "Amazon Elastic Block Store (Amazon EBS) provides persistent block storage volumes for use with Amazon EC2 instances in the AWS Cloud",
+      "displayName": "Amazon EBS",
+      "icon": "/12345/dnd/api/blobstore/amazon_ec2.png?tag=library",
+      "tags": [
+        "CONSUMER_VISIBLE"
+      ],
+      "types": [
+        {
+          "id": "2c908cb37352b9ed017352ba6793007c",
+          "name": "CI_TYPE_AMAZON_EBS"
+        },
+        {
+          "id": "2c908cb37352b9ed017352ba5397005a",
+          "name": "CI_TYPE_AWS_RESOURCE"
+        },
+        {
+          "id": "2c908cb37352b9ed017352ba508e004e",
+          "name": "CI_TYPE_APPLICATIONRESOURCE"
+        },
+        {
+          "id": "2c908cb37352b9ed017352ba2d48000e",
+          "name": "CI_TYPE_INFRASTRUCTURE_ELEMENT"
+        },
+        {
+          "id": "2c908cb37352b9ed017352ba26d60006",
+          "name": "CI_TYPE_CONFIGURATION_ITEM"
+        }
+      ],
+      "paletteIds": [
+        "2c908cb37352b9ed017352ba22710000"
+      ]
+    },
+...
+    {
+      "id": "2c908cb37352b9ed017352ba3a800032",
+      "name": "CI_TYPE_SERVER",
+      "description": "A Server represents a general purpose machine which has an IP address, such as Windows or Unix servers.",
+      "displayName": "Server",
+      "icon": "/12345/dnd/api/blobstore/server.png?tag=library",
+      "tags": [
+        "CONSUMER_VISIBLE"
+      ],
+      "types": [
+        {
+          "id": "2c908cb37352b9ed017352ba3a800032",
+          "name": "CI_TYPE_SERVER"
+        },
+        {
+          "id": "2c908cb37352b9ed017352ba321f0019",
+          "name": "CI_TYPE_NODE"
+        },
+        {
+          "id": "2c908cb37352b9ed017352ba2d48000e",
+          "name": "CI_TYPE_INFRASTRUCTURE_ELEMENT"
+        },
+        {
+          "id": "2c908cb37352b9ed017352ba26d60006",
+          "name": "CI_TYPE_CONFIGURATION_ITEM"
+        }
+      ],
+      "paletteIds": [
+        "2c908cb37352b9ed017352ba22710000"
+      ]
+    },
+...
+    {
+      "id": "2c908cb37352b9ed017352bbee4202e7",
+      "name": "CHILD__CI_TYPE_SERVER__AND__CI_TYPE_APPLICATION_SYSTEM",
+      "displayName": "Child",
+      "type": "CHILD",
+      "description": "CHILD__CI_TYPE_SERVER__AND__CI_TYPE_APPLICATION_SYSTEM",
+      "minOccursOnSource": 0,
+      "maxOccursOnSource": 2147483647,
+      "minOccursOnTarget": 0,
+      "maxOccursOnTarget": 1,
+      "sourceType": {
+        "id": "2c908cb37352b9ed017352ba3a800032",
+        "name": "CI_TYPE_SERVER"
+      },
+      "sourceTypes": [
+        {
+          "id": "2c908cb37352b9ed017352ba3a800032",
+          "name": "CI_TYPE_SERVER"
+        }
+      ],
+      "targetType": {
+        "id": "2c908cb37352b9ed017352bb54890225",
+        "name": "CI_TYPE_APPLICATION_SYSTEM"
+      },
+      "targetTypes": [
+        {
+          "id": "2c908cb37352b9ed017352bb54890225",
+          "name": "CI_TYPE_APPLICATION_SYSTEM"
+        },
+        {
+          "id": "2c908cb37352b9ed017352bb5d0a023a",
+          "name": "CI_TYPE_HANA_DB"
+        },
+        {
+          "id": "2c908cb37352b9ed017352bb56d10230",
+          "name": "CI_TYPE_SAP_SYSTEM"
+        }
+      ]
+    },
+...
+  ]
+}
+</pre>
+
+<h2>List component templates for a component type (Server Group)</h2>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>GET</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/node/type/&lt;component type id&gt;/template</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Invalid inputs<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the response data in JSON format:
+
+<pre>{
+  "@self": "/12345/dnd/api/node/type/2c908cb37352b9ed017352ba48b90047/template",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:node_template:collection",
+  "@total_results": 4,
+  "members": [
+    {
+      "@self": "/12345/dnd/api/node/template/2c908cb37352b8a8017352c649ca07f4",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:node_template",
+      "created": "2020-07-15T13:59:53.546Z",
+      "@created": "2020-07-15T13:59:53.546Z",
+      "global_id": "2c908cb37352b8a8017352c649ca07f4",
+      "name": "Generic Server Group Template 18.0.0",
+      "description": "This template provides default settings for the properties like server count, life-cycle actions, and resource offerings.",
+      "icon": "/12345/dnd/api/blobstore/server_group.png?tag=library",
+      "ext": {
+        "csa_name_key": "CI_TYPE_SERVER_GROUP__Sun Mar 19 23:24:47 PDT 2017__Thu Nov 09 22:05:42 PST 2017__Fri Mar 01 03:33:55 PST 2019",
+        "csa_critical_system_object": false,
+        "csa_pattern": false,
+        "csa_consumer_visible": true
+      },
+      "ancestor": {
+        "@self": "/12345/dnd/api/node/type/2c908cb37352b9ed017352ba48b90047",
+        "@type": "urn:x-hp:2012:software:cloud:data_model:node_type",
+        "global_id": "2c908cb37352b9ed017352ba48b90047",
+        "name": "Server Group",
+        "description": "A component type that represents a server group which contains one or more servers.",
+        "icon": "/12345/dnd/api/blobstore/server_group.png?tag=library",
+        "ext": {
+          "csa_name_key": "CI_TYPE_SERVER_GROUP",
+          "csa_critical_system_object": false,
+          "csa_parent": null,
+          "csa_pattern": false,
+          "csa_consumer_visible": true,
+          "csa_designer_visible": true
+        }
+      }
+    },
+    {
+      "@self": "/12345/dnd/api/node/template/2c908cb37352b8a8017352cbdea52810",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:node_template",
+      "created": "2020-07-15T14:05:59.333Z",
+      "@created": "2020-07-15T14:05:59.333Z",
+      "global_id": "2c908cb37352b8a8017352cbdea52810",
+      "name": "Hyper-V Server Group Template 18.0.0",
+      "description": "This Hyper-V server group component template has customized settings for the properties, lifecycle actions, and resource offerings that provide initial settings for Hyper-V.",
+      "icon": "/12345/dnd/api/blobstore/scvmm.png?tag=library",
+      "ext": {
+        "csa_name_key": "CI_TYPE_SERVER_GROUP__Tue Apr 16 03:59:36 PDT 2019",
+        "csa_critical_system_object": false,
+        "csa_pattern": false,
+        "csa_consumer_visible": true
+      },
+      "ancestor": {
+        "@self": "/12345/dnd/api/node/type/2c908cb37352b9ed017352ba48b90047",
+        "@type": "urn:x-hp:2012:software:cloud:data_model:node_type",
+        "global_id": "2c908cb37352b9ed017352ba48b90047",
+        "name": "Server Group",
+        "description": "A component type that represents a server group which contains one or more servers.",
+        "icon": "/12345/dnd/api/blobstore/server_group.png?tag=library",
+        "ext": {
+          "csa_name_key": "CI_TYPE_SERVER_GROUP",
+          "csa_critical_system_object": false,
+          "csa_parent": null,
+          "csa_pattern": false,
+          "csa_consumer_visible": true,
+          "csa_designer_visible": true
+        }
+      }
+    },
+    {
+      "@self": "/12345/dnd/api/node/template/2c908cb37352b8a8017352cc76e12f5a",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:node_template",
+      "created": "2020-07-15T14:06:38.305Z",
+      "@created": "2020-07-15T14:06:38.305Z",
+      "global_id": "2c908cb37352b8a8017352cc76e12f5a",
+      "name": "vCenter Server Group Advanced Template 18.1.0",
+      "description": "This vCenter server group advanced component template has customized settings for the properties, lifecycle actions and resource offerings that provide initial settings for vCenter.",
+      "icon": "/12345/dnd/api/blobstore/vmware_vcenter.png?tag=library",
+      "ext": {
+        "csa_name_key": "CI_TYPE_SERVER_GROUP__Wed Apr 15 07:21:09 PDT 2020",
+        "csa_critical_system_object": false,
+        "csa_pattern": false,
+        "csa_consumer_visible": true
+      },
+      "ancestor": {
+        "@self": "/12345/dnd/api/node/type/2c908cb37352b9ed017352ba48b90047",
+        "@type": "urn:x-hp:2012:software:cloud:data_model:node_type",
+        "global_id": "2c908cb37352b9ed017352ba48b90047",
+        "name": "Server Group",
+        "description": "A component type that represents a server group which contains one or more servers.",
+        "icon": "/12345/dnd/api/blobstore/server_group.png?tag=library",
+        "ext": {
+          "csa_name_key": "CI_TYPE_SERVER_GROUP",
+          "csa_critical_system_object": false,
+          "csa_parent": null,
+          "csa_pattern": false,
+          "csa_consumer_visible": true,
+          "csa_designer_visible": true
+        }
+      }
+    },
+    {
+      "@self": "/12345/dnd/api/node/template/2c908cb37352b8a8017352cc7fda2fe5",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:node_template",
+      "created": "2020-07-15T14:06:40.602Z",
+      "@created": "2020-07-15T14:06:40.602Z",
+      "global_id": "2c908cb37352b8a8017352cc7fda2fe5",
+      "name": "vCenter Server Group Basic Template 18.1.0",
+      "description": "This Basic vCenter server group component template has customized settings for the properties, lifecycle actions, and resource offerings that provide initial settings for vCenter Basic.",
+      "icon": "/12345/dnd/api/blobstore/vmware_vcenter.png?tag=library",
+      "ext": {
+        "csa_name_key": "CI_TYPE_SERVER_GROUP__Wed Apr 15 07:33:06 PDT 2020",
+        "csa_critical_system_object": false,
+        "csa_pattern": false,
+        "csa_consumer_visible": true
+      },
+      "ancestor": {
+        "@self": "/12345/dnd/api/node/type/2c908cb37352b9ed017352ba48b90047",
+        "@type": "urn:x-hp:2012:software:cloud:data_model:node_type",
+        "global_id": "2c908cb37352b9ed017352ba48b90047",
+        "name": "Server Group",
+        "description": "A component type that represents a server group which contains one or more servers.",
+        "icon": "/12345/dnd/api/blobstore/server_group.png?tag=library",
+        "ext": {
+          "csa_name_key": "CI_TYPE_SERVER_GROUP",
+          "csa_critical_system_object": false,
+          "csa_parent": null,
+          "csa_pattern": false,
+          "csa_consumer_visible": true,
+          "csa_designer_visible": true
+        }
+      }
+    }
+  ]
+}
+</pre>
+
+<h2>Add the component template to the design graph (Blank Server Group)</h2>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>PUT</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/designs/graph/&lt;design id&gt;</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>See example</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the request data in JSON format:
+
+<pre>{
+  "nodes": [
+    {
+      "id": null,
+      "name": "a21a7b83-04a2-cd1c-726d-fd2c999d28fa",
+      "displayName": "Blank Server Group",
+      "description": "A component type that represents a server group which contains one or more servers.",
+      "icon": "/12345/dnd/api/blobstore/server_group.png?tag=library",
+      "typeId": "2c908cb37352b9ed017352ba48b90047",
+      "orderIndex": 1,
+      "x": 95,
+      "y": 107,
+      "tags": [
+        "CONSUMER_VISIBLE"
+      ]
+    }
+  ],
+  "relationships": [],
+  "groups": []
+}
+</pre>
+<br>
+The following is an example of the structure of the response data in JSON format:
+<pre>{
+  "@self": "/12345/dnd/api/designs/graph/2c908cb97353331f01735921a50c01ec",
+  "nodes": [
+    {
+      "id": "2c908cb97353331f0173594af723023b",
+      "name": "a21a7b83-04a2-cd1c-726d-fd2c999d28fa",
+      "displayName": "Blank Server Group",
+      "description": "A component type that represents a server group which contains one or more servers.",
+      "icon": "/12345/dnd/api/blobstore/server_group.png?tag=library",
+      "orderIndex": 1,
+      "typeId": "2c908cb37352b9ed017352ba48b90047",
+      "tags": [
+        "CONSUMER_VISIBLE"
+      ],
+      "x": 95,
+      "y": 107
+    }
+  ],
+  "relationships": [],
+  "statusMessages": []
+}
+</pre>
+
+<h2>List component templates for a component type (Server)</h2>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>GET</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/node/type/&lt;component type id&gt;/template</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Invalid inputs<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the response data in JSON format:
+
+<pre>{
+  "@self": "/12345/dnd/api/node/type/2c908cb37352b9ed017352ba3a800032/template",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:node_template:collection",
+  "@total_results": 7,
+  "members": [
+    {
+      "@self": "/12345/dnd/api/node/template/2c908cb37352b8a8017352c655bf0896",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:node_template",
+      "created": "2020-07-15T13:59:56.607Z",
+      "@created": "2020-07-15T13:59:56.607Z",
+      "global_id": "2c908cb37352b8a8017352c655bf0896",
+      "name": "Google Server Template 1.1.0",
+      "description": "Google Server Template",
+      "icon": "/12345/dnd/api/blobstore/google_cloud_platform.png?tag=library",
+      "ext": {
+        "csa_name_key": "CI_TYPE_SERVER__Wed Mar 11 19:17:39 PDT 2020",
+        "csa_critical_system_object": false,
+        "csa_pattern": true,
+        "csa_consumer_visible": true
+      },
+      "ancestor": {
+        "@self": "/12345/dnd/api/node/type/2c908cb37352b9ed017352ba3a800032",
+        "@type": "urn:x-hp:2012:software:cloud:data_model:node_type",
+        "global_id": "2c908cb37352b9ed017352ba3a800032",
+        "name": "Server",
+        "description": "A Server represents a general purpose machine which has an IP address, such as Windows or Unix servers.",
+        "icon": "/12345/dnd/api/blobstore/server.png?tag=library",
+        "ext": {
+          "csa_name_key": "CI_TYPE_SERVER",
+          "csa_critical_system_object": false,
+          "csa_parent": null,
+          "csa_pattern": false,
+          "csa_consumer_visible": true,
+          "csa_designer_visible": true
+        }
+      }
+    },
+    {
+      "@self": "/12345/dnd/api/node/template/2c908cb37352b8a8017352c84de21568",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:node_template",
+      "created": "2020-07-15T14:02:05.666Z",
+      "@created": "2020-07-15T14:02:05.666Z",
+      "global_id": "2c908cb37352b8a8017352c84de21568",
+      "name": "Amazon Server Spot Instance Template 1.0.0",
+      "description": "This Amazon server component template has customized settings for the properties, lifecycle actions, and resource offerings that provide initial settings for Amazon spot instance service design.",
+      "icon": "/12345/dnd/api/blobstore/amazon_ec2.png?tag=library",
+      "ext": {
+        "csa_name_key": "CI_TYPE_SERVER__Tue Feb 11 23:09:52 PST 2020",
+        "csa_critical_system_object": false,
+        "csa_pattern": true,
+        "csa_consumer_visible": true
+      },
+      "ancestor": {
+        "@self": "/12345/dnd/api/node/type/2c908cb37352b9ed017352ba3a800032",
+        "@type": "urn:x-hp:2012:software:cloud:data_model:node_type",
+        "global_id": "2c908cb37352b9ed017352ba3a800032",
+        "name": "Server",
+        "description": "A Server represents a general purpose machine which has an IP address, such as Windows or Unix servers.",
+        "icon": "/12345/dnd/api/blobstore/server.png?tag=library",
+        "ext": {
+          "csa_name_key": "CI_TYPE_SERVER",
+          "csa_critical_system_object": false,
+          "csa_parent": null,
+          "csa_pattern": false,
+          "csa_consumer_visible": true,
+          "csa_designer_visible": true
+        }
+      }
+    },
+    {
+      "@self": "/12345/dnd/api/node/template/2c908cb37352b8a8017352c862e61672",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:node_template",
+      "created": "2020-07-15T14:02:11.046Z",
+      "@created": "2020-07-15T14:02:11.046Z",
+      "global_id": "2c908cb37352b8a8017352c862e61672",
+      "name": "Amazon Server Template 18.2.1",
+      "description": "This template provides default settings for the properties like IP address, life-cycle actions, resource offerings.",
+      "icon": "/12345/dnd/api/blobstore/amazon_ec2.png?tag=library",
+      "ext": {
+        "csa_name_key": "CI_TYPE_SERVER__Mon Feb 10 22:36:53 PST 2020__Thu Jul 09 10:00:13 PDT 2020",
+        "csa_critical_system_object": false,
+        "csa_pattern": true,
+        "csa_consumer_visible": true
+      },
+      "ancestor": {
+        "@self": "/12345/dnd/api/node/type/2c908cb37352b9ed017352ba3a800032",
+        "@type": "urn:x-hp:2012:software:cloud:data_model:node_type",
+        "global_id": "2c908cb37352b9ed017352ba3a800032",
+        "name": "Server",
+        "description": "A Server represents a general purpose machine which has an IP address, such as Windows or Unix servers.",
+        "icon": "/12345/dnd/api/blobstore/server.png?tag=library",
+        "ext": {
+          "csa_name_key": "CI_TYPE_SERVER",
+          "csa_critical_system_object": false,
+          "csa_parent": null,
+          "csa_pattern": false,
+          "csa_consumer_visible": true,
+          "csa_designer_visible": true
+        }
+      }
+    },
+    {
+      "@self": "/12345/dnd/api/node/template/2c908cb37352b8a8017352cbe2e02849",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:node_template",
+      "created": "2020-07-15T14:06:00.417Z",
+      "@created": "2020-07-15T14:06:00.417Z",
+      "global_id": "2c908cb37352b8a8017352cbe2e02849",
+      "name": "Hyper-V Server Template 18.0.0",
+      "description": "This Hyper-V server component template has customized settings for the properties, lifecycle actions, and resource offerings that provide initial settings for Hyper-V.",
+      "icon": "/12345/dnd/api/blobstore/scvmm.png?tag=library",
+      "ext": {
+        "csa_name_key": "CI_TYPE_SERVER__Tue Apr 16 04:18:12 PDT 2019",
+        "csa_critical_system_object": false,
+        "csa_pattern": true,
+        "csa_consumer_visible": true
+      },
+      "ancestor": {
+        "@self": "/12345/dnd/api/node/type/2c908cb37352b9ed017352ba3a800032",
+        "@type": "urn:x-hp:2012:software:cloud:data_model:node_type",
+        "global_id": "2c908cb37352b9ed017352ba3a800032",
+        "name": "Server",
+        "description": "A Server represents a general purpose machine which has an IP address, such as Windows or Unix servers.",
+        "icon": "/12345/dnd/api/blobstore/server.png?tag=library",
+        "ext": {
+          "csa_name_key": "CI_TYPE_SERVER",
+          "csa_critical_system_object": false,
+          "csa_parent": null,
+          "csa_pattern": false,
+          "csa_consumer_visible": true,
+          "csa_designer_visible": true
+        }
+      }
+    },
+    {
+      "@self": "/12345/dnd/api/node/template/2c908cb37352b8a8017352cc7bdd2fa3",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:node_template",
+      "created": "2020-07-15T14:06:39.581Z",
+      "@created": "2020-07-15T14:06:39.581Z",
+      "global_id": "2c908cb37352b8a8017352cc7bdd2fa3",
+      "name": "vCenter Server Basic Template 18.2.0",
+      "description": "This vCenter server component template  has customized settings for the properties, lifecycle actions and resource offerings that provide initial settings for vCenter Basic Compute.",
+      "icon": "/12345/dnd/api/blobstore/vmware_vcenter.png?tag=library",
+      "ext": {
+        "csa_name_key": "CI_TYPE_SERVER__Thu May 28 07:03:06 PDT 2020",
+        "csa_critical_system_object": false,
+        "csa_pattern": true,
+        "csa_consumer_visible": true
+      },
+      "ancestor": {
+        "@self": "/12345/dnd/api/node/type/2c908cb37352b9ed017352ba3a800032",
+        "@type": "urn:x-hp:2012:software:cloud:data_model:node_type",
+        "global_id": "2c908cb37352b9ed017352ba3a800032",
+        "name": "Server",
+        "description": "A Server represents a general purpose machine which has an IP address, such as Windows or Unix servers.",
+        "icon": "/12345/dnd/api/blobstore/server.png?tag=library",
+        "ext": {
+          "csa_name_key": "CI_TYPE_SERVER",
+          "csa_critical_system_object": false,
+          "csa_parent": null,
+          "csa_pattern": false,
+          "csa_consumer_visible": true,
+          "csa_designer_visible": true
+        }
+      }
+    },
+    {
+      "@self": "/12345/dnd/api/node/template/2c908cb37352b8a8017352cc8844306e",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:node_template",
+      "created": "2020-07-15T14:06:42.757Z",
+      "@created": "2020-07-15T14:06:42.757Z",
+      "global_id": "2c908cb37352b8a8017352cc8844306e",
+      "name": "vCenter Server Advanced Template 18.1.0",
+      "description": "This vCenter server component template has customized settings for the properties, lifecycle actions and resource offerings that provide initial settings for vCenter.",
+      "icon": "/12345/dnd/api/blobstore/vmware_vcenter.png?tag=library",
+      "ext": {
+        "csa_name_key": "CI_TYPE_SERVER__Thu May 28 05:29:29 PDT 2020",
+        "csa_critical_system_object": false,
+        "csa_pattern": true,
+        "csa_consumer_visible": true
+      },
+      "ancestor": {
+        "@self": "/12345/dnd/api/node/type/2c908cb37352b9ed017352ba3a800032",
+        "@type": "urn:x-hp:2012:software:cloud:data_model:node_type",
+        "global_id": "2c908cb37352b9ed017352ba3a800032",
+        "name": "Server",
+        "description": "A Server represents a general purpose machine which has an IP address, such as Windows or Unix servers.",
+        "icon": "/12345/dnd/api/blobstore/server.png?tag=library",
+        "ext": {
+          "csa_name_key": "CI_TYPE_SERVER",
+          "csa_critical_system_object": false,
+          "csa_parent": null,
+          "csa_pattern": false,
+          "csa_consumer_visible": true,
+          "csa_designer_visible": true
+        }
+      }
+    },
+    {
+      "@self": "/12345/dnd/api/node/template/2c908cb37352b8a8017352ce6a804a11",
+      "@type": "urn:x-hp:2012:software:cloud:data_model:node_template",
+      "created": "2020-07-15T14:08:46.208Z",
+      "@created": "2020-07-15T14:08:46.208Z",
+      "global_id": "2c908cb37352b8a8017352ce6a804a11",
+      "name": "Microsoft Azure Server Template 18.4.1",
+      "description": "This template provides default settings for the properties like IP address, life-cycle actions, and resource offerings.",
+      "icon": "/12345/dnd/api/blobstore/windows.png?tag=library",
+      "ext": {
+        "csa_name_key": "CI_TYPE_SERVER__Sun Mar 03 21:01:28 PST 2019__Wed Sep 18 14:16:18 PDT 2019__Fri Nov 15 00:41:12 PST 2019",
+        "csa_critical_system_object": false,
+        "csa_pattern": true,
+        "csa_consumer_visible": true
+      },
+      "ancestor": {
+        "@self": "/12345/dnd/api/node/type/2c908cb37352b9ed017352ba3a800032",
+        "@type": "urn:x-hp:2012:software:cloud:data_model:node_type",
+        "global_id": "2c908cb37352b9ed017352ba3a800032",
+        "name": "Server",
+        "description": "A Server represents a general purpose machine which has an IP address, such as Windows or Unix servers.",
+        "icon": "/12345/dnd/api/blobstore/server.png?tag=library",
+        "ext": {
+          "csa_name_key": "CI_TYPE_SERVER",
+          "csa_critical_system_object": false,
+          "csa_parent": null,
+          "csa_pattern": false,
+          "csa_consumer_visible": true,
+          "csa_designer_visible": true
+        }
+      }
+    }
+  ]
+}
+</pre>
+
+<h2>Add the component template to the design graph (Blank Server)</h2>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>PUT</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/designs/graph/&lt;design id&gt;</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>See example</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the request data in JSON format:
+
+<pre>{
+  "nodes": [
+    {
+      "id": "2c908cb97353331f0173594af723023b",
+      "name": "a21a7b83-04a2-cd1c-726d-fd2c999d28fa",
+      "displayName": "Blank Server Group",
+      "description": "A component type that represents a server group which contains one or more servers.",
+      "icon": "/12345/dnd/api/blobstore/server_group.png?tag=library",
+      "typeId": "2c908cb37352b9ed017352ba48b90047",
+      "orderIndex": 1,
+      "x": 95,
+      "y": 107,
+      "tags": [
+        "CONSUMER_VISIBLE"
+      ]
+    },
+    {
+      "id": null,
+      "name": "4d2ead58-45f9-6c5a-dd45-308a2b4c4e9f",
+      "displayName": "Blank Server",
+      "description": "A Server represents a general purpose machine which has an IP address, such as Windows or Unix servers.",
+      "icon": "/12345/dnd/api/blobstore/server.png?tag=library",
+      "typeId": "2c908cb37352b9ed017352ba3a800032",
+      "orderIndex": 1,
+      "x": 373,
+      "y": 203,
+      "tags": [
+        "CONSUMER_VISIBLE"
+      ]
+    }
+  ],
+  "relationships": [],
+  "groups": []
+}
+</pre>
+<br>
+The following is an example of the structure of the response data in JSON format:
+<pre>{
+  "@self": "/12345/dnd/api/designs/graph/2c908cb97353331f01735921a50c01ec",
+  "nodes": [
+    {
+      "id": "2c908cb97353331f0173594d41350247",
+      "name": "4d2ead58-45f9-6c5a-dd45-308a2b4c4e9f",
+      "displayName": "Blank Server",
+      "description": "A Server represents a general purpose machine which has an IP address, such as Windows or Unix servers.",
+      "icon": "/12345/dnd/api/blobstore/server.png?tag=library",
+      "orderIndex": 1,
+      "typeId": "2c908cb37352b9ed017352ba3a800032",
+      "tags": [
+        "CONSUMER_VISIBLE"
+      ],
+      "x": 373,
+      "y": 203
+    },
+    {
+      "id": "2c908cb97353331f0173594af723023b",
+      "name": "a21a7b83-04a2-cd1c-726d-fd2c999d28fa",
+      "displayName": "Blank Server Group",
+      "description": "A component type that represents a server group which contains one or more servers.",
+      "icon": "/12345/dnd/api/blobstore/server_group.png?tag=library",
+      "orderIndex": 1,
+      "typeId": "2c908cb37352b9ed017352ba48b90047",
+      "tags": [
+        "CONSUMER_VISIBLE"
+      ],
+      "x": 95,
+      "y": 107
+    }
+  ],
+  "relationships": [],
+  "statusMessages": []
+}
+</pre>
+
+<h2>Creating a relationship (Blank Server Group to Blank Server)</h2>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>PUT</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/designs/graph/&lt;design id&gt;</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>See example</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the request data in JSON format:
+
+<pre>{
+  "nodes": [
+    {
+      "id": "2c908cb97353331f0173594af723023b",
+      "name": "a21a7b83-04a2-cd1c-726d-fd2c999d28fa",
+      "displayName": "Blank Server Group",
+      "description": "A component type that represents a server group which contains one or more servers.",
+      "icon": "/12345/dnd/api/blobstore/server_group.png?tag=library",
+      "typeId": "2c908cb37352b9ed017352ba48b90047",
+      "orderIndex": 1,
+      "x": 95,
+      "y": 107,
+      "tags": [
+        "CONSUMER_VISIBLE"
+      ]
+    },
+    {
+      "id": "2c908cb97353331f0173594d41350247",
+      "name": "4d2ead58-45f9-6c5a-dd45-308a2b4c4e9f",
+      "displayName": "Blank Server",
+      "description": "A Server represents a general purpose machine which has an IP address, such as Windows or Unix servers.",
+      "icon": "/12345/dnd/api/blobstore/server.png?tag=library",
+      "typeId": "2c908cb37352b9ed017352ba3a800032",
+      "orderIndex": 1,
+      "x": 373,
+      "y": 203,
+      "tags": [
+        "CONSUMER_VISIBLE"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "id": null,
+      "name": "8e4a706a-4011-3373-782b-04a272833ffd",
+      "displayName": "Child",
+      "relationshipTypeId": "2c908cb37352b9ed017352bbf55d02e9",
+      "source": {
+        "id": null,
+        "name": "a21a7b83-04a2-cd1c-726d-fd2c999d28fa"
+      },
+      "target": {
+        "id": null,
+        "name": "4d2ead58-45f9-6c5a-dd45-308a2b4c4e9f"
+      }
+    }
+  ],
+  "groups": []
+}
+</pre>
+<br>
+The following is an example of the structure of the response data in JSON format:
+<pre>{
+  "@self": "/12345/dnd/api/designs/graph/2c908cb97353331f01735921a50c01ec",
+  "nodes": [
+    {
+      "id": "2c908cb97353331f0173594d41350247",
+      "name": "4d2ead58-45f9-6c5a-dd45-308a2b4c4e9f",
+      "displayName": "Blank Server",
+      "description": "A Server represents a general purpose machine which has an IP address, such as Windows or Unix servers.",
+      "icon": "/12345/dnd/api/blobstore/server.png?tag=library",
+      "orderIndex": 1,
+      "typeId": "2c908cb37352b9ed017352ba3a800032",
+      "tags": [
+        "CONSUMER_VISIBLE"
+      ],
+      "x": 373,
+      "y": 203
+    },
+    {
+      "id": "2c908cb97353331f0173594af723023b",
+      "name": "a21a7b83-04a2-cd1c-726d-fd2c999d28fa",
+      "displayName": "Blank Server Group",
+      "description": "A component type that represents a server group which contains one or more servers.",
+      "icon": "/12345/dnd/api/blobstore/server_group.png?tag=library",
+      "orderIndex": 1,
+      "typeId": "2c908cb37352b9ed017352ba48b90047",
+      "tags": [
+        "CONSUMER_VISIBLE"
+      ],
+      "x": 95,
+      "y": 107
+    }
+  ],
+  "relationships": [
+    {
+      "id": "2c908cb97353331f0173594ec876025e",
+      "name": "8e4a706a-4011-3373-782b-04a272833ffd",
+      "relationshipTypeId": "2c908cb37352b9ed017352bbf55d02e9",
+      "type": "CHILD__CI_TYPE_SERVER_GROUP__AND__CI_TYPE_SERVER",
+      "source": {
+        "id": "2c908cb97353331f0173594af723023b",
+        "name": "a21a7b83-04a2-cd1c-726d-fd2c999d28fa"
+      },
+      "target": {
+        "id": "2c908cb97353331f0173594d41350247",
+        "name": "4d2ead58-45f9-6c5a-dd45-308a2b4c4e9f"
+      },
+      "statusMessages": []
+    }
+  ],
+  "statusMessages": []
+}
+</pre>
+
+<h2>List nodes in the design hierarchy</h2>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>GET</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/designs/graph/&lt;design id&gt;</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Invalid inputs<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the response data in JSON format:
+
+<pre>{
+  "@self": "/12345/dnd/api/designs/graph/2c908cb97353331f01735921a50c01ec",
+  "nodes": [
+    {
+      "id": "2c908cb97353331f0173593841350216",
+      "name": "ef805c38-6fd2-8a40-b33b-1a12034d270e",
+      "displayName": "Blank Server Group",
+      "description": "A component type that represents a server group which contains one or more servers.",
+      "icon": "/12345/dnd/api/blobstore/server_group.png?tag=library",
+      "orderIndex": 1,
+      "typeId": "2c908cb37352b9ed017352ba48b90047",
+      "tags": [
+        "CONSUMER_VISIBLE"
+      ],
+      "x": 107,
+      "y": 138
+    },
+    {
+      "id": "2c908cb97353331f0173593841710221",
+      "name": "dd63d93e-993b-1613-141e-edea974dea52",
+      "displayName": "Blank Server",
+      "description": "A Server represents a general purpose machine which has an IP address, such as Windows or Unix servers.",
+      "icon": "/12345/dnd/api/blobstore/server.png?tag=library",
+      "orderIndex": 1,
+      "typeId": "2c908cb37352b9ed017352ba3a800032",
+      "tags": [
+        "CONSUMER_VISIBLE"
+      ],
+      "x": 182,
+      "y": 336
+    }
+  ],
+  "relationships": [
+    {
+      "id": "2c908cb97353331f0173593841e90237",
+      "name": "772351b6-b48b-a110-6554-78854a7f99a1",
+      "relationshipTypeId": "2c908cb37352b9ed017352bbf55d02e9",
+      "type": "CHILD__CI_TYPE_SERVER_GROUP__AND__CI_TYPE_SERVER",
+      "source": {
+        "id": "2c908cb97353331f0173593841350216",
+        "name": "ef805c38-6fd2-8a40-b33b-1a12034d270e"
+      },
+      "target": {
+        "id": "2c908cb97353331f0173593841710221",
+        "name": "dd63d93e-993b-1613-141e-edea974dea52"
+      },
+      "statusMessages": []
+    }
+  ],
+  "statusMessages": []
+}
+</pre>
+
+<h2>List properties for a node in the design hierarchy</h2>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>GET</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/designs/graph/&lt;design id&gt;/component/&lt;node id&gt;/properties</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Invalid inputs<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the response data in JSON format:<br>
+&nbsp;
+<div class="Admonition_Caution"><span class="autonumber">Note</span> The following json is in truncated form</div>
+
+<pre>{
+  "members": [
+    {
+      "id": "2c908cb97353331f0173594d4136024a",
+      "name": "snmp_sys_name",
+      "displayName": "SNMP System Name",
+      "description": "The name reported by an SNMP agent on a device. It is different from a DNS name.",
+      "type": "string",
+      "confidentialData": false,
+      "minOccurs": 0,
+      "maxOccurs": 1,
+      "modifiableDuringPackageDeploy": false,
+      "modifiableDuringPackageRedeploy": false,
+      "supportsModifyLifecycleAction": false,
+      "measurableUnits": null,
+      "measurableType": null,
+      "visibleWhenDeployDesign": true,
+      "requiredWhenDeployDesign": false,
+      "optionReferenceCount": 0,
+      "lifecycleActionReferenceCount": 0,
+      "componentReferenceCount": 0,
+      "userOperationReferenceCount": 0,
+      "resourceOfferingPropertyMappingReferenceCount": 0,
+      "resourceOfferingMeasurablePropertyReferenceCount": 0,
+      "resourceOfferingProviderSelectionActionReferenceCount": 0,
+      "serviceDesignReferenceCount": 0,
+      "componentTemplateReferenceCount": 0,
+      "value": null,
+      "constraints": [
+        {
+          "@type": "urn:x-hp:2012:software:cloud:data_model:property:constraint:string:max-length",
+          "max_length": 4000,
+          "validate": true
+        }
+      ]
+    },
+    {
+      "id": "2c908cb97353331f0173594d41380252",
+      "name": "primary_mac_address",
+      "displayName": "MAC Address",
+      "description": "Represents the primary MAC address of the server",
+      "type": "string",
+      "confidentialData": false,
+      "minOccurs": 0,
+      "maxOccurs": 1,
+      "modifiableDuringPackageDeploy": false,
+      "modifiableDuringPackageRedeploy": false,
+      "supportsModifyLifecycleAction": false,
+      "measurableUnits": null,
+      "measurableType": null,
+      "visibleWhenDeployDesign": true,
+      "requiredWhenDeployDesign": false,
+      "optionReferenceCount": 0,
+      "lifecycleActionReferenceCount": 0,
+      "componentReferenceCount": 0,
+      "userOperationReferenceCount": 0,
+      "resourceOfferingPropertyMappingReferenceCount": 0,
+      "resourceOfferingMeasurablePropertyReferenceCount": 0,
+      "resourceOfferingProviderSelectionActionReferenceCount": 0,
+      "serviceDesignReferenceCount": 0,
+      "componentTemplateReferenceCount": 0,
+      "value": null,
+      "constraints": [
+        {
+          "@type": "urn:x-hp:2012:software:cloud:data_model:property:constraint:string:max-length",
+          "max_length": 4000,
+          "validate": true
+        }
+      ]
+    },
+...
+{
+      "id": "2c908cb97353331f0173594d4139025b",
+      "name": "domain_name",
+      "displayName": "Domain Name",
+      "description": "The name of the domain to which the server belongs",
+      "type": "string",
+      "confidentialData": false,
+      "minOccurs": 0,
+      "maxOccurs": 1,
+      "modifiableDuringPackageDeploy": false,
+      "modifiableDuringPackageRedeploy": false,
+      "supportsModifyLifecycleAction": false,
+      "measurableUnits": null,
+      "measurableType": null,
+      "visibleWhenDeployDesign": true,
+      "requiredWhenDeployDesign": false,
+      "optionReferenceCount": 0,
+      "lifecycleActionReferenceCount": 0,
+      "componentReferenceCount": 0,
+      "userOperationReferenceCount": 0,
+      "resourceOfferingPropertyMappingReferenceCount": 0,
+      "resourceOfferingMeasurablePropertyReferenceCount": 0,
+      "resourceOfferingProviderSelectionActionReferenceCount": 0,
+      "serviceDesignReferenceCount": 0,
+      "componentTemplateReferenceCount": 0,
+      "value": "",
+      "constraints": [
+        {
+          "@type": "urn:x-hp:2012:software:cloud:data_model:property:constraint:string:max-length",
+          "max_length": 4000,
+          "validate": true
+        }
+      ]
+    }
+  ]
+}
+</pre>
+
+<h2>List lifecycle actions for a node in the design hierarchy</h2>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>GET</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/artifact/&lt;node id&gt;/lifecycleactions</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Invalid inputs<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the response data in JSON format:
+
+<pre>{
+  "members": [
+    {
+      "@self": "/12345/dnd/api/action/2c908cb97353331f0173598364710281",
+      "name": "d79ee062-2f98-4177-8b35-8b691e98236b",
+      "displayName": "CSA Email Notification",
+      "description": "",
+      "artifactId": "2c908cb97353331f0173594d41350247",
+      "state": {
+        "name": "DEPLOYING",
+        "displayName": "Deploying",
+        "description": "Deploying",
+        "icon": "/12345/dnd/api/blobstore/deploying.png?tag=categories&amp;tag=lifecycle_state"
+      },
+      "substate": {
+        "name": "TRANSITION",
+        "displayName": "Transition",
+        "description": "Transition",
+        "icon": "/12345/dnd/api/blobstore/transition.png?tag=categories&amp;tag=lifecycle_substate"
+      },
+      "orderIndex": 1,
+      "processEngine": {
+        "@self": "/12345/dnd/api/processengine/2c908cb37352b8a8017352b9a9da013b",
+        "name": "default_oo_engine",
+        "displayName": "Default OO Engine",
+        "description": "OO Engine created during product installation.",
+        "type": "HP_OO",
+        "icon": "/12345/dnd/api/blobstore/hp_oo.png?tag=categories&amp;tag=process_engine_type"
+      },
+      "actionSource": {
+        "@self": "/12345/dnd/api/processengine/2c908cb37352b8a8017352b9a9da013b/actionSource/54471abc-dfce-43f4-a6d6-ece9248c8954",
+        "id": "54471abc-dfce-43f4-a6d6-ece9248c8954",
+        "type": "ACTION_SOURCE",
+        "locator": "/Library/CSA Content Pack/Email Notification/Actions/CSA Email Notification",
+        "processEngineId": "2c908cb37352b8a8017352b9a9da013b",
+        "displayName": "CSA Email Notification",
+        "description": ""
+      },
+      "consumerVisible": false,
+      "failOnError": true,
+      "pauseOnCompletion": false,
+      "errorOnTimeout": true,
+      "upgradeLocked": false,
+      "timeout": 3600
+    }
+  ]
+}
+</pre>
+
+<h2>List public actions for a node in the design hierarchy</h2>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>GET</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/artifact/&lt;node id&gt;/publicactions</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Invalid inputs<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the response data in JSON format:
+
+<pre>{
+  "members": [
+    {
+      "@self": "/12345/dnd/api/action/2c908cb97353331f01735983b94702d6",
+      "name": "f50ab4dc-1b56-4d53-9340-e1e31a784048",
+      "displayName": "Test and Send Email",
+      "description": "",
+      "artifactId": "2c908cb97353331f0173594d41350247",
+      "state": {
+        "name": "DEPLOYED",
+        "displayName": "Deployed",
+        "description": "Deployed",
+        "icon": "/12345/dnd/api/blobstore/deployed.png?tag=categories&amp;tag=lifecycle_state"
+      },
+      "orderIndex": 1,
+      "processEngine": {
+        "@self": "/12345/dnd/api/processengine/2c908cb37352b8a8017352b9a9da013b",
+        "name": "default_oo_engine",
+        "displayName": "Default OO Engine",
+        "description": "OO Engine created during product installation.",
+        "type": "HP_OO",
+        "icon": "/12345/dnd/api/blobstore/hp_oo.png?tag=categories&amp;tag=process_engine_type"
+      },
+      "actionSource": {
+        "@self": "/12345/dnd/api/processengine/2c908cb37352b8a8017352b9a9da013b/actionSource/d8952f61-58c6-4ee8-9a0c-6ebebaed90fe",
+        "id": "d8952f61-58c6-4ee8-9a0c-6ebebaed90fe",
+        "type": "ACTION_SOURCE",
+        "locator": "/Library/Operations/Email/Test and Send Email",
+        "processEngineId": "2c908cb37352b8a8017352b9a9da013b",
+        "displayName": "Test and Send Email",
+        "description": ""
+      },
+      "consumerVisible": true,
+      "failOnError": true,
+      "pauseOnCompletion": false,
+      "errorOnTimeout": true,
+      "upgradeLocked": false,
+      "timeout": 3600
+    }
+  ]
+}
+</pre>
+
+<h2>Create a property on a node in the design hierarchy</h2>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>POST</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/property</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>See example</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>201 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the request data in JSON format:
+
+<pre>{
+  "global_id": "",
+  "@type": "",
+  "name": "AProperty",
+  "description": "This is a property",
+  "property_type": "STRING",
+  "property_value": "hello",
+  "ownership": null,
+  "owner": {
+    "global_id": "2c908cb97353331f0173594af723023b"
+  },
+  "upgradeLocked": false,
+  "bindings": [],
+  "ext": {
+    "csa_critical_system_object": false,
+    "csa_name_key": "aProperty",
+    "csa_consumer_visible": true,
+    "csa_confidential": false
+  },
+  "visibleWhenDeployDesign": true,
+  "requiredWhenDeployDesign": false
+}
+</pre>
+<br>
+The following is an example of the structure of the response data in JSON format:
+<pre>{
+  "@created": "2020-07-17T16:30:44.985Z",
+  "@modified": "2020-07-17T16:30:44.985Z",
+  "global_id": "2c908cb97353331f01735d9d1ef90316",
+  "name": "AProperty",
+  "description": "This is a property",
+  "icon": "/12345/dnd/api/blobstore/string.png?tag=categories&amp;tag=value_type",
+  "ext": {
+    "csa_name_key": "aProperty",
+    "csa_critical_system_object": false,
+    "csa_confidential": false,
+    "csa_consumer_visible": true
+  },
+  "@self": "/12345/dnd/api/property/2c908cb97353331f01735d9d1ef90316",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel:property",
+  "property_type": "STRING",
+  "property_value": "hello",
+  "upgradeLocked": false,
+  "visibleWhenDeployDesign": true,
+  "requiredWhenDeployDesign": false,
+  "bindings": [],
+  "property_measure": {
+    "enabled": false,
+    "type": null,
+    "unit": null
+  },
+  "ownership": "OWNED",
+  "owner": {
+    "@self": "/12345/dnd/api/service/component/2c908cb97353331f0173594af723023b",
+    "@type": "urn:x-hp:2012:software:cloud:data_model:service-component",
+    "@created": "2020-07-16T20:22:31.972Z",
+    "@modified": "2020-07-17T16:29:39.307Z",
+    "global_id": "2c908cb97353331f0173594af723023b",
+    "name": "Blank Server Group",
+    "description": "A component type that represents a server group which contains one or more servers.",
+    "icon": "/12345/dnd/api/blobstore/server_group.png?tag=library",
+    "ext": {
+      "csa_name_key": "a21a7b83-04a2-cd1c-726d-fd2c999d28fa",
+      "csa_critical_system_object": false,
+      "csa_parent": null,
+      "csa_pattern": false,
+      "csa_consumer_visible": true,
+      "csa_designer_visible": true
+    }
+  }
+}
+</pre>
+
+<h2>Update a property on a node in the design hierarchy</h2>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>PUT</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/property/&lt;property id&gt;</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>See example</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the request data in JSON format:
+
+<pre>{
+  "global_id": "2c908cb97353331f01735d9d1ef90316",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel:property",
+  "name": "AProperty",
+  "description": "This is a property (updated)",
+  "property_type": "STRING",
+  "property_value": "goodbye",
+  "ownership": "OWNED",
+  "owner": {
+    "global_id": "2c908cb97353331f0173594af723023b"
+  },
+  "upgradeLocked": false,
+  "bindings": null,
+  "ext": {
+    "csa_critical_system_object": false,
+    "csa_name_key": "aProperty",
+    "csa_consumer_visible": true,
+    "csa_confidential": false
+  },
+  "visibleWhenDeployDesign": true,
+  "requiredWhenDeployDesign": false
+}
+</pre>
+<br>
+The following is an example of the structure of the response data in JSON format:
+<pre>{
+  "@created": "2020-07-17T16:30:44.985Z",
+  "@modified": "2020-07-17T16:32:03.008Z",
+  "global_id": "2c908cb97353331f01735d9d1ef90316",
+  "name": "AProperty",
+  "description": "This is a property (updated)",
+  "icon": "/12345/dnd/api/blobstore/string.png?tag=categories&amp;tag=value_type",
+  "ext": {
+    "csa_name_key": "aProperty",
+    "csa_critical_system_object": false,
+    "csa_confidential": false,
+    "csa_consumer_visible": true
+  },
+  "@self": "/12345/dnd/api/property/2c908cb97353331f01735d9d1ef90316",
+  "@type": "urn:x-hp:2012:software:cloud:data_model:metamodel:property",
+  "property_type": "STRING",
+  "property_value": "goodbye",
+  "upgradeLocked": false,
+  "visibleWhenDeployDesign": true,
+  "requiredWhenDeployDesign": false,
+  "bindings": [],
+  "property_measure": {
+    "enabled": false,
+    "type": null,
+    "unit": null
+  },
+  "ownership": "OWNED",
+  "owner": {
+    "@self": "/12345/dnd/api/service/component/2c908cb97353331f0173594af723023b",
+    "@type": "urn:x-hp:2012:software:cloud:data_model:service-component",
+    "@created": "2020-07-16T20:22:31.972Z",
+    "@modified": "2020-07-17T16:29:39.307Z",
+    "global_id": "2c908cb97353331f0173594af723023b",
+    "name": "Blank Server Group",
+    "description": "A component type that represents a server group which contains one or more servers.",
+    "icon": "/12345/dnd/api/blobstore/server_group.png?tag=library",
+    "ext": {
+      "csa_name_key": "a21a7b83-04a2-cd1c-726d-fd2c999d28fa",
+      "csa_critical_system_object": false,
+      "csa_parent": null,
+      "csa_pattern": false,
+      "csa_consumer_visible": true,
+      "csa_designer_visible": true
+    }
+  }
+}
+</pre>
+
+<h2>Create a lifecycle action on a node in the design hierarchy</h2>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>POST</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/action</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>See example</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the request data in JSON format:
+
+<pre>{
+  "artifactId": "2c90a2b9735e9f8401735eafb07a0008",
+  "displayName": "ParamMappingIO",
+  "description": "",
+  "orderIndex": 1,
+  "failOnError": true,
+  "errorOnTimeout": true,
+  "pauseOnCompletion": false,
+  "timeout": 3600,
+  "processEngine": {
+    "type": "HP_OO",
+    "name": "default_oo_engine",
+    "displayName": "Default OO Engine",
+    "description": "OO Engine created during product installation.",
+    "icon": "/csa/images/categories/process_engine_type/hp_oo.png",
+    "@self": "/12345/dnd/api/processengine/2c90a2b4735e756501735e766b6b013b"
+  },
+  "state": {
+    "name": "DEPLOYING"
+  },
+  "substate": {
+    "name": "TRANSITION"
+  },
+  "inputParameters": [
+    {
+      "name": "ACTION_EXECUTION_RETRY",
+      "displayName": "ACTION_EXECUTION_RETRY",
+      "description": "",
+      "type": "STRING",
+      "state": "",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": "[TOKEN:ACTION_EXECUTION_RETRY]"
+        }
+      ],
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "validation_script": {
+        "name": null,
+        "parameters": null
+      }
+    },
+    {
+      "name": "CSA_PROCESS_ID",
+      "displayName": "CSA_PROCESS_ID",
+      "description": "",
+      "type": "STRING",
+      "state": "",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": "[TOKEN:CSA_PROCESS_ID]"
+        }
+      ],
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "validation_script": {
+        "name": null,
+        "parameters": null
+      }
+    },
+    {
+      "name": "myInputParameter",
+      "displayName": "myInputParameter",
+      "description": "",
+      "type": "STRING",
+      "state": "",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": null
+        }
+      ],
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "validation_script": {
+        "name": null,
+        "parameters": null
+      }
+    }
+  ],
+  "outputParameters": [
+    {
+      "name": "myOutputParameter",
+      "displayName": "myOutputParameter",
+      "description": "",
+      "type": "STRING",
+      "state": "",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": null
+        }
+      ]
+    },
+    {
+      "name": "Result",
+      "displayName": "Result",
+      "description": "",
+      "type": "STRING",
+      "state": "",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": null
+        }
+      ]
+    }
+  ],
+  "actionSource": {
+    "id": "faabe877-b28e-4c62-bd69-5b7c1ea9138a",
+    "type": "ACTION_SOURCE",
+    "displayName": "ParamMappingIO",
+    "description": "",
+    "processEngineId": "2c90a2b4735e756501735e766b6b013b",
+    "locator": "Library/QA/ParamMappingIO.xml",
+    "@self": "/12345/dnd/api/processengine/2c90a2b4735e756501735e766b6b013b/actionsource/faabe877-b28e-4c62-bd69-5b7c1ea9138a"
+  },
+  "@self": "/12345/dnd/api/action/"
+}
+</pre>
+<br>
+The following is an example of the structure of the response data in JSON format:
+<pre>{
+  "@self": "/12345/dnd/api/action/2c90a2b9735e9f8401735eb010340017",
+  "name": "ceea56ac-471e-4be1-ac33-ec7e1c7c0d1c",
+  "displayName": "ParamMappingIO",
+  "description": "",
+  "artifactId": "2c90a2b9735e9f8401735eafb07a0008",
+  "state": {
+    "name": "DEPLOYING",
+    "displayName": "Deploying",
+    "description": "Deploying",
+    "icon": "/12345/dnd/api/blobstore/deploying.png?tag=categories&amp;tag=lifecycle_state"
+  },
+  "substate": {
+    "name": "TRANSITION",
+    "displayName": "Transition",
+    "description": "Transition",
+    "icon": "/12345/dnd/api/blobstore/transition.png?tag=categories&amp;tag=lifecycle_substate"
+  },
+  "orderIndex": 1,
+  "processEngine": {
+    "@self": "/12345/dnd/api/processengine/2c90a2b4735e756501735e766b6b013b",
+    "name": "default_oo_engine",
+    "displayName": "Default OO Engine",
+    "description": "OO Engine created during product installation.",
+    "type": "HP_OO",
+    "icon": null
+  },
+  "actionSource": {
+    "@self": "/12345/dnd/api/processengine/2c90a2b4735e756501735e766b6b013b/actionSource/faabe877-b28e-4c62-bd69-5b7c1ea9138a",
+    "id": "faabe877-b28e-4c62-bd69-5b7c1ea9138a",
+    "type": "ACTION_SOURCE",
+    "locator": "/Library/QA/ParamMappingIO",
+    "processEngineId": "2c90a2b4735e756501735e766b6b013b",
+    "displayName": "ParamMappingIO",
+    "description": ""
+  },
+  "consumerVisible": false,
+  "failOnError": true,
+  "pauseOnCompletion": false,
+  "errorOnTimeout": true,
+  "upgradeLocked": false,
+  "timeout": 3600,
+  "inputParameters": [
+    {
+      "id": "2c90a2b9735e9f8401735eb01036001d",
+      "name": "CSA_PROCESS_ID",
+      "displayName": "CSA_PROCESS_ID",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": "[TOKEN:CSA_PROCESS_ID]",
+          "displayName": null,
+          "selected": true,
+          "rawValue": "[TOKEN:CSA_PROCESS_ID]"
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    },
+    {
+      "id": "2c90a2b9735e9f8401735eb01037001f",
+      "name": "myInputParameter",
+      "displayName": "myInputParameter",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": null,
+          "displayName": null,
+          "selected": true,
+          "rawValue": null
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    },
+    {
+      "id": "2c90a2b9735e9f8401735eb010380021",
+      "name": "ACTION_EXECUTION_RETRY",
+      "displayName": "ACTION_EXECUTION_RETRY",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": "[TOKEN:ACTION_EXECUTION_RETRY]",
+          "displayName": null,
+          "selected": true,
+          "rawValue": "[TOKEN:ACTION_EXECUTION_RETRY]"
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    }
+  ],
+  "outputParameters": [
+    {
+      "id": "2c90a2b9735e9f8401735eb010350019",
+      "name": "myOutputParameter",
+      "displayName": "myOutputParameter",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": true,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": null,
+          "displayName": null,
+          "selected": true,
+          "rawValue": null
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    },
+    {
+      "id": "2c90a2b9735e9f8401735eb01036001b",
+      "name": "Result",
+      "displayName": "Result",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": true,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": null,
+          "displayName": null,
+          "selected": true,
+          "rawValue": null
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    }
+  ]
+}
+</pre>
+
+<h2>Update a lifecycle action on a node in the design hierarchy</h2>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>PUT</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/action/&lt;action id&gt;</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>See example</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the request data in JSON format:
+
+<pre>{
+  "artifactId": "2c908cb97353331f0173594af723023b",
+  "name": "ef27ab25-a3ff-49b4-87d7-774bd9483f12",
+  "displayName": "ParamMappingIO",
+  "description": "This is an updated description",
+  "orderIndex": 1,
+  "failOnError": true,
+  "errorOnTimeout": true,
+  "pauseOnCompletion": false,
+  "timeout": 3600,
+  "processEngine": {
+    "type": "HP_OO",
+    "name": "default_oo_engine",
+    "displayName": "Default OO Engine",
+    "description": "OO Engine created during product installation.",
+    "icon": "/12345/dnd/api/blobstore/hp_oo.png?tag=categories&amp;tag=process_engine_type",
+    "@self": "/12345/dnd/api/processengine/2c908cb37352b8a8017352b9a9da013b"
+  },
+  "state": {
+    "name": "DEPLOYING"
+  },
+  "substate": {
+    "name": "TRANSITION"
+  },
+  "inputParameters": [
+    {
+      "id": "2c908cb97353331f01735dae193a037c",
+      "name": "myInputParameter",
+      "displayName": "myInputParameter",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": false,
+      "state": "UNMODIFIED",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": null
+        }
+      ],
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "sourceBinding": {
+        "propertyName": "myInputParameter"
+      },
+      "validation_script": {
+        "name": null,
+        "parameters": null
+      }
+    },
+    {
+      "id": "2c908cb97353331f01735dae19390376",
+      "name": "ACTION_EXECUTION_RETRY",
+      "displayName": "ACTION_EXECUTION_RETRY",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "state": "UNMODIFIED",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": "[TOKEN:ACTION_EXECUTION_RETRY]"
+        }
+      ],
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "validation_script": {
+        "name": null,
+        "parameters": null
+      }
+    },
+    {
+      "id": "2c908cb97353331f01735dae19390372",
+      "name": "SGNewInput",
+      "displayName": "SGNewInput",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "state": "UNMODIFIED",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": null
+        }
+      ],
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "validation_script": {
+        "name": null,
+        "parameters": null
+      }
+    },
+    {
+      "id": "2c908cb97353331f01735dae193a037a",
+      "name": "CSA_PROCESS_ID",
+      "displayName": "CSA_PROCESS_ID",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "state": "UNMODIFIED",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": "[TOKEN:CSA_PROCESS_ID]"
+        }
+      ],
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "validation_script": {
+        "name": null,
+        "parameters": null
+      }
+    }
+  ],
+  "outputParameters": [
+    {
+      "id": "2c908cb97353331f01735dae193a0378",
+      "name": "myOutputParameter",
+      "displayName": "myOutputParameter",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": false,
+      "state": "UNMODIFIED",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": null
+        }
+      ],
+      "targetBinding": {
+        "propertyName": "myOutputParameter"
+      }
+    },
+    {
+      "id": "2c908cb97353331f01735dae19390374",
+      "name": "Result",
+      "displayName": "Result",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "state": "UNMODIFIED",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": null
+        }
+      ]
+    }
+  ],
+  "actionSource": {
+    "id": "faabe877-b28e-4c62-bd69-5b7c1ea9138a",
+    "type": "ACTION_SOURCE",
+    "displayName": "ParamMappingIO",
+    "description": "",
+    "processEngineId": "2c908cb37352b8a8017352b9a9da013b",
+    "locator": "/Library/QA/ParamMappingIO",
+    "@self": "/12345/dnd/api/processengine/2c908cb37352b8a8017352b9a9da013b/actionSource/faabe877-b28e-4c62-bd69-5b7c1ea9138a"
+  },
+  "@self": "/12345/dnd/api/action/2c908cb97353331f01735dae19390370"
+}
+</pre>
+<br>
+The following is an example of the structure of the response data in JSON format:
+<pre>{
+  "@self": "/12345/dnd/api/action/2c908cb97353331f01735dae19390370",
+  "name": "ef27ab25-a3ff-49b4-87d7-774bd9483f12",
+  "displayName": "ParamMappingIO",
+  "description": "This is an updated description",
+  "artifactId": "2c908cb97353331f0173594af723023b",
+  "state": {
+    "name": "DEPLOYING",
+    "displayName": "Deploying",
+    "description": "Deploying",
+    "icon": "/12345/dnd/api/blobstore/deploying.png?tag=categories&amp;tag=lifecycle_state"
+  },
+  "substate": {
+    "name": "TRANSITION",
+    "displayName": "Transition",
+    "description": "Transition",
+    "icon": "/12345/dnd/api/blobstore/transition.png?tag=categories&amp;tag=lifecycle_substate"
+  },
+  "orderIndex": 1,
+  "processEngine": {
+    "@self": "/12345/dnd/api/processengine/2c908cb37352b8a8017352b9a9da013b",
+    "name": "default_oo_engine",
+    "displayName": "Default OO Engine",
+    "description": "OO Engine created during product installation.",
+    "type": "HP_OO",
+    "icon": "/12345/dnd/api/blobstore/hp_oo.png?tag=categories&amp;tag=process_engine_type"
+  },
+  "actionSource": {
+    "@self": "/12345/dnd/api/processengine/2c908cb37352b8a8017352b9a9da013b/actionSource/faabe877-b28e-4c62-bd69-5b7c1ea9138a",
+    "id": "faabe877-b28e-4c62-bd69-5b7c1ea9138a",
+    "type": "ACTION_SOURCE",
+    "locator": "/Library/QA/ParamMappingIO",
+    "processEngineId": "2c908cb37352b8a8017352b9a9da013b",
+    "displayName": "ParamMappingIO",
+    "description": ""
+  },
+  "consumerVisible": false,
+  "failOnError": true,
+  "pauseOnCompletion": false,
+  "errorOnTimeout": true,
+  "upgradeLocked": false,
+  "timeout": 3600,
+  "inputParameters": [
+    {
+      "id": "2c908cb97353331f01735dae193a037c",
+      "name": "myInputParameter",
+      "displayName": "myInputParameter",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": false,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": null,
+          "displayName": null,
+          "selected": true,
+          "rawValue": null
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": [],
+      "sourceBinding": {
+        "id": "2c908cb97353331f01735dcdd4c60392",
+        "propertyName": "myInputParameter"
+      }
+    },
+    {
+      "id": "2c908cb97353331f01735dae193a037a",
+      "name": "CSA_PROCESS_ID",
+      "displayName": "CSA_PROCESS_ID",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": "[TOKEN:CSA_PROCESS_ID]",
+          "displayName": null,
+          "selected": true,
+          "rawValue": "[TOKEN:CSA_PROCESS_ID]"
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    },
+    {
+      "id": "2c908cb97353331f01735dae19390376",
+      "name": "ACTION_EXECUTION_RETRY",
+      "displayName": "ACTION_EXECUTION_RETRY",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": "[TOKEN:ACTION_EXECUTION_RETRY]",
+          "displayName": null,
+          "selected": true,
+          "rawValue": "[TOKEN:ACTION_EXECUTION_RETRY]"
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    },
+    {
+      "id": "2c908cb97353331f01735dae19390372",
+      "name": "SGNewInput",
+      "displayName": "SGNewInput",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": null,
+          "displayName": null,
+          "selected": true,
+          "rawValue": null
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    }
+  ],
+  "outputParameters": [
+    {
+      "id": "2c908cb97353331f01735dae19390374",
+      "name": "Result",
+      "displayName": "Result",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": true,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": null,
+          "displayName": null,
+          "selected": true,
+          "rawValue": null
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    },
+    {
+      "id": "2c908cb97353331f01735dae193a0378",
+      "name": "myOutputParameter",
+      "displayName": "myOutputParameter",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": false,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": true,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": null,
+          "displayName": null,
+          "selected": true,
+          "rawValue": null
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": [],
+      "targetBinding": {
+        "id": "2c908cb97353331f01735dcdd4c5038f",
+        "propertyName": "myOutputParameter"
+      }
+    }
+  ]
+}
+</pre>
+
+<h2>Create a public action on a node in the design hierarchy</h2>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>POST</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/action</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>See example</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the request data in JSON format:
+
+<pre>{
+  "artifactId": "2c908cb97353331f0173594d41350247",
+  "displayName": "ParamMappingIO",
+  "description": "",
+  "orderIndex": 1,
+  "failOnError": true,
+  "errorOnTimeout": true,
+  "pauseOnCompletion": false,
+  "timeout": 3600,
+  "processEngine": {
+    "type": "HP_OO",
+    "name": "default_oo_engine",
+    "displayName": "Default OO Engine",
+    "description": "OO Engine created during product installation.",
+    "icon": "/csa/images/categories/process_engine_type/hp_oo.png",
+    "@self": "/12345/dnd/api/processengine/2c908cb37352b8a8017352b9a9da013b"
+  },
+  "state": {
+    "name": "DEPLOYED"
+  },
+  "inputParameters": [
+    {
+      "name": "ACTION_EXECUTION_RETRY",
+      "displayName": "ACTION_EXECUTION_RETRY",
+      "description": "",
+      "type": "STRING",
+      "state": "",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": "[TOKEN:ACTION_EXECUTION_RETRY]"
+        }
+      ],
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "validation_script": {
+        "name": null,
+        "parameters": null
+      }
+    },
+    {
+      "name": "SGNewInput",
+      "displayName": "SGNewInput",
+      "description": "",
+      "type": "STRING",
+      "state": "",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": null
+        }
+      ],
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "validation_script": {
+        "name": null,
+        "parameters": null
+      }
+    },
+    {
+      "name": "CSA_PROCESS_ID",
+      "displayName": "CSA_PROCESS_ID",
+      "description": "",
+      "type": "STRING",
+      "state": "",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": "[TOKEN:CSA_PROCESS_ID]"
+        }
+      ],
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "validation_script": {
+        "name": null,
+        "parameters": null
+      }
+    },
+    {
+      "name": "myInputParameter",
+      "displayName": "myInputParameter",
+      "description": "",
+      "type": "STRING",
+      "state": "",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": null
+        }
+      ],
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "validation_script": {
+        "name": null,
+        "parameters": null
+      }
+    }
+  ],
+  "outputParameters": [
+    {
+      "name": "myOutputParameter",
+      "displayName": "myOutputParameter",
+      "description": "",
+      "type": "STRING",
+      "state": "",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": null
+        }
+      ]
+    },
+    {
+      "name": "Result",
+      "displayName": "Result",
+      "description": "",
+      "type": "STRING",
+      "state": "",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": null
+        }
+      ]
+    }
+  ],
+  "actionSource": {
+    "id": "faabe877-b28e-4c62-bd69-5b7c1ea9138a",
+    "type": "ACTION_SOURCE",
+    "displayName": "ParamMappingIO",
+    "description": "",
+    "processEngineId": "2c908cb37352b8a8017352b9a9da013b",
+    "locator": "Library/QA/ParamMappingIO.xml",
+    "@self": "/12345/dnd/api/processengine/2c908cb37352b8a8017352b9a9da013b/actionsource/faabe877-b28e-4c62-bd69-5b7c1ea9138a"
+  },
+  "@self": "/12345/dnd/api/action/"
+}
+</pre>
+<br>
+The following is an example of the structure of the response data in JSON format:
+<pre>{
+  "@self": "/12345/dnd/api/action/2c908cb97353331f01735dd008e203a0",
+  "name": "8464d7a4-cc9e-4393-8906-6c38a7a189f2",
+  "displayName": "ParamMappingIO",
+  "description": "",
+  "artifactId": "2c908cb97353331f0173594d41350247",
+  "state": {
+    "name": "DEPLOYED",
+    "displayName": "Deployed",
+    "description": "Deployed",
+    "icon": "/12345/dnd/api/blobstore/deployed.png?tag=categories&amp;tag=lifecycle_state"
+  },
+  "orderIndex": 1,
+  "processEngine": {
+    "@self": "/12345/dnd/api/processengine/2c908cb37352b8a8017352b9a9da013b",
+    "name": "default_oo_engine",
+    "displayName": "Default OO Engine",
+    "description": "OO Engine created during product installation.",
+    "type": "HP_OO",
+    "icon": "/12345/dnd/api/blobstore/hp_oo.png?tag=categories&amp;tag=process_engine_type"
+  },
+  "actionSource": {
+    "@self": "/12345/dnd/api/processengine/2c908cb37352b8a8017352b9a9da013b/actionSource/faabe877-b28e-4c62-bd69-5b7c1ea9138a",
+    "id": "faabe877-b28e-4c62-bd69-5b7c1ea9138a",
+    "type": "ACTION_SOURCE",
+    "locator": "/Library/QA/ParamMappingIO",
+    "processEngineId": "2c908cb37352b8a8017352b9a9da013b",
+    "displayName": "ParamMappingIO",
+    "description": ""
+  },
+  "consumerVisible": true,
+  "failOnError": true,
+  "pauseOnCompletion": false,
+  "errorOnTimeout": true,
+  "upgradeLocked": false,
+  "timeout": 3600,
+  "inputParameters": [
+    {
+      "id": "2c908cb97353331f01735dd008e203a2",
+      "name": "ACTION_EXECUTION_RETRY",
+      "displayName": "ACTION_EXECUTION_RETRY",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": "[TOKEN:ACTION_EXECUTION_RETRY]",
+          "displayName": null,
+          "selected": true,
+          "rawValue": "[TOKEN:ACTION_EXECUTION_RETRY]"
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    },
+    {
+      "id": "2c908cb97353331f01735dd008e203a4",
+      "name": "SGNewInput",
+      "displayName": "SGNewInput",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": null,
+          "displayName": null,
+          "selected": true,
+          "rawValue": null
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    },
+    {
+      "id": "2c908cb97353331f01735dd008e303a8",
+      "name": "myInputParameter",
+      "displayName": "myInputParameter",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": null,
+          "displayName": null,
+          "selected": true,
+          "rawValue": null
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    },
+    {
+      "id": "2c908cb97353331f01735dd008e303aa",
+      "name": "CSA_PROCESS_ID",
+      "displayName": "CSA_PROCESS_ID",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": "[TOKEN:CSA_PROCESS_ID]",
+          "displayName": null,
+          "selected": true,
+          "rawValue": "[TOKEN:CSA_PROCESS_ID]"
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    }
+  ],
+  "outputParameters": [
+    {
+      "id": "2c908cb97353331f01735dd008e303a6",
+      "name": "myOutputParameter",
+      "displayName": "myOutputParameter",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": true,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": null,
+          "displayName": null,
+          "selected": true,
+          "rawValue": null
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    },
+    {
+      "id": "2c908cb97353331f01735dd008e403ac",
+      "name": "Result",
+      "displayName": "Result",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": true,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": null,
+          "displayName": null,
+          "selected": true,
+          "rawValue": null
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    }
+  ]
+}
+</pre>
+
+<h2>Update a public action on a node in the design hierarchy</h2>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>PUT</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>/dnd/api/action/&lt;action id&gt;</td>
+		</tr>
+		<tr>
+			<td>Request body</td>
+			<td>See example</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response body</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+The following is an example of the structure of the request data in JSON format:
+
+<pre>{
+  "artifactId": "2c908cb97353331f0173594d41350247",
+  "name": "8464d7a4-cc9e-4393-8906-6c38a7a189f2",
+  "displayName": "ParamMappingIO",
+  "description": "This description has been updated",
+  "orderIndex": 1,
+  "failOnError": true,
+  "errorOnTimeout": true,
+  "pauseOnCompletion": false,
+  "timeout": 3600,
+  "processEngine": {
+    "type": "HP_OO",
+    "name": "default_oo_engine",
+    "displayName": "Default OO Engine",
+    "description": "OO Engine created during product installation.",
+    "icon": "/12345/dnd/api/blobstore/hp_oo.png?tag=categories&amp;tag=process_engine_type",
+    "@self": "/12345/dnd/api/processengine/2c908cb37352b8a8017352b9a9da013b"
+  },
+  "state": {
+    "name": "DEPLOYED"
+  },
+  "inputParameters": [
+    {
+      "id": "2c908cb97353331f01735dd008e203a4",
+      "name": "SGNewInput",
+      "displayName": "SGNewInput",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "state": "UNMODIFIED",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": null
+        }
+      ],
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "validation_script": {
+        "name": null,
+        "parameters": null
+      }
+    },
+    {
+      "id": "2c908cb97353331f01735dd008e303aa",
+      "name": "CSA_PROCESS_ID",
+      "displayName": "CSA_PROCESS_ID",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "state": "UNMODIFIED",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": "[TOKEN:CSA_PROCESS_ID]"
+        }
+      ],
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "validation_script": {
+        "name": null,
+        "parameters": null
+      }
+    },
+    {
+      "id": "2c908cb97353331f01735dd008e203a2",
+      "name": "ACTION_EXECUTION_RETRY",
+      "displayName": "ACTION_EXECUTION_RETRY",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "state": "UNMODIFIED",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": "[TOKEN:ACTION_EXECUTION_RETRY]"
+        }
+      ],
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "validation_script": {
+        "name": null,
+        "parameters": null
+      }
+    },
+    {
+      "id": "2c908cb97353331f01735dd008e303a8",
+      "name": "myInputParameter",
+      "displayName": "myInputParameter",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": false,
+      "state": "UNMODIFIED",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": null
+        }
+      ],
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "sourceBinding": {
+        "propertyName": "myInputParameter"
+      },
+      "validation_script": {
+        "name": null,
+        "parameters": null
+      }
+    }
+  ],
+  "outputParameters": [
+    {
+      "id": "2c908cb97353331f01735dd008e303a6",
+      "name": "myOutputParameter",
+      "displayName": "myOutputParameter",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": false,
+      "state": "UNMODIFIED",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": null
+        }
+      ],
+      "targetBinding": {
+        "propertyName": "myOutputParameter"
+      }
+    },
+    {
+      "id": "2c908cb97353331f01735dd008e403ac",
+      "name": "Result",
+      "displayName": "Result",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "state": "UNMODIFIED",
+      "modification": [],
+      "values": [
+        {
+          "rawValue": null
+        }
+      ]
+    }
+  ],
+  "actionSource": {
+    "id": "faabe877-b28e-4c62-bd69-5b7c1ea9138a",
+    "type": "ACTION_SOURCE",
+    "displayName": "ParamMappingIO",
+    "description": "",
+    "processEngineId": "2c908cb37352b8a8017352b9a9da013b",
+    "locator": "/Library/QA/ParamMappingIO",
+    "@self": "/12345/dnd/api/processengine/2c908cb37352b8a8017352b9a9da013b/actionSource/faabe877-b28e-4c62-bd69-5b7c1ea9138a"
+  },
+  "@self": "/12345/dnd/api/action/2c908cb97353331f01735dd008e203a0"
+}
+</pre>
+<br>
+The following is an example of the structure of the response data in JSON format:
+<pre>{
+  "@self": "/12345/dnd/api/action/2c908cb97353331f01735dd008e203a0",
+  "name": "8464d7a4-cc9e-4393-8906-6c38a7a189f2",
+  "displayName": "ParamMappingIO",
+  "description": "This description has been updated",
+  "artifactId": "2c908cb97353331f0173594d41350247",
+  "state": {
+    "name": "DEPLOYED",
+    "displayName": "Deployed",
+    "description": "Deployed",
+    "icon": "/12345/dnd/api/blobstore/deployed.png?tag=categories&amp;tag=lifecycle_state"
+  },
+  "orderIndex": 1,
+  "processEngine": {
+    "@self": "/12345/dnd/api/processengine/2c908cb37352b8a8017352b9a9da013b",
+    "name": "default_oo_engine",
+    "displayName": "Default OO Engine",
+    "description": "OO Engine created during product installation.",
+    "type": "HP_OO",
+    "icon": "/12345/dnd/api/blobstore/hp_oo.png?tag=categories&amp;tag=process_engine_type"
+  },
+  "actionSource": {
+    "@self": "/12345/dnd/api/processengine/2c908cb37352b8a8017352b9a9da013b/actionSource/faabe877-b28e-4c62-bd69-5b7c1ea9138a",
+    "id": "faabe877-b28e-4c62-bd69-5b7c1ea9138a",
+    "type": "ACTION_SOURCE",
+    "locator": "/Library/QA/ParamMappingIO",
+    "processEngineId": "2c908cb37352b8a8017352b9a9da013b",
+    "displayName": "ParamMappingIO",
+    "description": ""
+  },
+  "consumerVisible": true,
+  "failOnError": true,
+  "pauseOnCompletion": false,
+  "errorOnTimeout": true,
+  "upgradeLocked": false,
+  "timeout": 3600,
+  "inputParameters": [
+    {
+      "id": "2c908cb97353331f01735dd008e303a8",
+      "name": "myInputParameter",
+      "displayName": "myInputParameter",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": false,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": null,
+          "displayName": null,
+          "selected": true,
+          "rawValue": null
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": [],
+      "sourceBinding": {
+        "id": "2c908cb97353331f01735dd302b603c0",
+        "propertyName": "myInputParameter"
+      }
+    },
+    {
+      "id": "2c908cb97353331f01735dd008e303aa",
+      "name": "CSA_PROCESS_ID",
+      "displayName": "CSA_PROCESS_ID",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": "[TOKEN:CSA_PROCESS_ID]",
+          "displayName": null,
+          "selected": true,
+          "rawValue": "[TOKEN:CSA_PROCESS_ID]"
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    },
+    {
+      "id": "2c908cb97353331f01735dd008e203a4",
+      "name": "SGNewInput",
+      "displayName": "SGNewInput",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": null,
+          "displayName": null,
+          "selected": true,
+          "rawValue": null
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    },
+    {
+      "id": "2c908cb97353331f01735dd008e203a2",
+      "name": "ACTION_EXECUTION_RETRY",
+      "displayName": "ACTION_EXECUTION_RETRY",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": false,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": "[TOKEN:ACTION_EXECUTION_RETRY]",
+          "displayName": null,
+          "selected": true,
+          "rawValue": "[TOKEN:ACTION_EXECUTION_RETRY]"
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    }
+  ],
+  "outputParameters": [
+    {
+      "id": "2c908cb97353331f01735dd008e303a6",
+      "name": "myOutputParameter",
+      "displayName": "myOutputParameter",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": false,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": true,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": null,
+          "displayName": null,
+          "selected": true,
+          "rawValue": null
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": [],
+      "targetBinding": {
+        "id": "2c908cb97353331f01735dd302b603be",
+        "propertyName": "myOutputParameter"
+      }
+    },
+    {
+      "id": "2c908cb97353331f01735dd008e403ac",
+      "name": "Result",
+      "displayName": "Result",
+      "description": "",
+      "type": "STRING",
+      "consumerVisible": false,
+      "editable": true,
+      "manualEntry": true,
+      "constraints": {
+        "multi_select": true,
+        "required": false,
+        "confidential": false
+      },
+      "values": [
+        {
+          "id": null,
+          "displayName": null,
+          "selected": true,
+          "rawValue": null
+        }
+      ],
+      "state": "UNMODIFIED",
+      "modification": []
+    }
+  ]
+}
+</pre>
+</html>
