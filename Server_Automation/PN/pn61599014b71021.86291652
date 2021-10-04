@@ -1,4 +1,4 @@
-<html><p>The Twist JVM uses Garbage First (G1) garbage collection algorithm. When Twist is configured with large Java heaps (8GB or above) and the default G1 configuration, the garbage collection might struggle to keep up with the application allocation rates under heavy load. This results in Full GC events that usually pause the application threads for longer than the target pause time of 1000ms. When G1 algorithm is used, Full GC events should be avoided as much as possible.</p>
+<html><p>The Twist JVM uses Garbage First (G1) garbage collection algorithm. When Twist is configured with large Java heaps (8GB or above) and the default G1 configuration, the garbage collector might struggle to keep up with the application allocation rates under heavy load. This results in Full GC events that usually pause the application threads for longer than the target pause time of 1000ms. When G1 algorithm is used, Full GC events should be avoided as much as possible.</p>
 
 <p>To optimize the G1 behavior, the following Twist configuration is recommended:</p>
 
@@ -10,4 +10,7 @@
      uint ParallelGCThreads                        = 10                                        {product} {default}</code></pre>
 
 <p>In the above example the value of <code>[ParallelGCThreads]</code>&nbsp;is 10. This is the number of parallel garbage collection threads used by G1 GC. This number is determined by the JVM based on the number of available CPU cores on the machine. The same value should be used to set the&nbsp;<code>ConcGCThreads</code> parameter for the Twist JVM. <code>ConcGCThreads&nbsp;</code>controls the number of concurrent garbage collection threads used by G1 GC. With the default configuration, the JVM sets&nbsp;<code>ConcGCThreads</code>&nbsp;to a value lower than <code>ParallelGCThreads</code>. Increasing the value of&nbsp;<code>ConcGCThreads</code>&nbsp;helps in reducing the probability of a Full GC event under heavy load.</p>
+
+<div class="Admonition_Note"><strong>Note</strong><br>
+These settings will be overridden during the next SA upgrade. Consult the documentation of the upgraded SA version to determine if these settings need to be reapplied.</div>
 </html>
