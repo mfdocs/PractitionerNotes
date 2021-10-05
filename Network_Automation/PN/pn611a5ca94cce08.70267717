@@ -1,0 +1,230 @@
+<html><p>This document contains recommended steps to migrate NA database from Oracle to PostgreSQL when NA is installed in standalone environment or horizontally scalable environment.</p>
+
+<p>Work with your DBA to perform the steps in this document.</p>
+
+<p><strong>Notes: &nbsp;</strong></p>
+
+<ul>
+	<li>Migration from NA Oracle database to PostgreSQL database is not supported for Multi-master environment.</li>
+	<li>Migration from NA Oracle database to PostgreSQL database is horizontal migration. The NA version will remain same after migration. NA version will not be upgraded as part of this migration.</li>
+	<li>The time zone configured in PostgreSQL database should be the same as in NA Oracle database. Similarly the NA cores should be in the same time zone as PostgreSQL database.</li>
+</ul>
+
+<p>Before you perform the steps in this document, refer the release notes and support matrix for the particular NA version. Also, if COSO is currently used, then make sure that the NA version you have supports COSO Reporting with&nbsp;PostgreSQL database.</p>
+
+<p><strong>Steps to migrate NA database from Oracle to PostgreSQL in NA standalone environment</strong></p>
+
+<ol>
+	<li>Stop Network Automation (NA) services on the NA which is connected to Oracle database.</li>
+	<li>Install NA with PostgreSQL database following the instructions provided in the NA online documentation.
+	<ol>
+		<li>To install on the existing NA machine connected to Oracle database, uninstall NA and re-install with PostgreSQL database.</li>
+		<li>To install on a different machine, install NA with PostgreSQL database.</li>
+	</ol>
+	</li>
+</ol>
+
+<p><strong>Notes:</strong></p>
+
+<ul>
+	<li>While installing NA with PostgreSQL, use the username and password given for NA with Oracle installation.</li>
+	<li>Before uninstalling NA on a machine, take a backup of all the configuration files, as these will be needed post reinstall.</li>
+</ul>
+
+<ol start="3">
+	<li>Verify that the installation of NA with PostgreSQL database is working correctly.</li>
+	<li>Stop Network Automation (NA) services on the NA which is connected to PostgreSQL database.</li>
+	<li>Connect to NA's PostgreSQL database and make sure to drop all the data from all the tables.</li>
+</ol>
+
+<p><strong>Note:</strong> If the data is not correctly deleted from all the tables, then after migration NA will be in an inconsistent state.</p>
+
+<ol start="6">
+	<li>Disable all the foreign key constraints on all the PostgreSQL tables.</li>
+</ol>
+
+<p>You can disable the foreign key checks by having the&nbsp;session parameter <strong>session_replication_role </strong>set&nbsp;to <strong>replica </strong>during data migration.&nbsp;</p>
+
+<p>Another way to disable foreign keys is to disable triggers in all tables.</p>
+
+<ol start="7">
+	<li>Take a backup of the index definitions for all the NA tables from PostgreSQL database. You will need these index definition to re-create them after data migration, if you choose to disable indexes during data migration.</li>
+</ol>
+
+<p>Here is an example of a query to get index definitions in PostgreSQL database:</p>
+
+<pre><code>SELECT indexdef FROM pg_indexes where schemaname='nas';</code></pre>
+
+<p>Also note down the index count in PostgreSQL database before migration, using the query:</p>
+
+<pre>select count(*) from pg_indexes where schemaname='nas';</pre>
+
+<ol start="8">
+	<li>Drop indexes for faster data migration. Data migration from Oracle database to PostgreSQL database can be done with the indexes in place but data migration may take more time.</li>
+	<li>Use any database tool to do the actual data migration from Oracle database to PostgreSQL database.</li>
+</ol>
+
+<p><strong>Notes:</strong></p>
+
+<ul>
+	<li>Data of <strong>rn_repl_conflict&nbsp;</strong>table should not be migrated.</li>
+	<li>Before starting the migration, ensure that the existing NA that is connected to Oracle is stopped.</li>
+</ul>
+
+<ol start="10">
+	<li>Import the sequences from Oracle database to PostgreSQL database only if the version of NA supports COSO reporting on PostgreSQL database.</li>
+</ol>
+
+<p><b>Note:</b> Sequence of <strong>rn_repl_conflict </strong>table need not be migrated.</p>
+
+<ol start="11">
+	<li>If you had dropped indexes in the previous step, re-create them on PostgreSQL database from the backed-up index definitions.</li>
+	<li>Run the index count query again, to make sure that the index count after re-creating indexes matches the count obtained in previous step.</li>
+</ol>
+
+<pre>select count(*) from pg_indexes where schemaname='nas';</pre>
+
+<ol start="13">
+	<li>On PostgreSQL database, enable the foreign key constraints, if you had disabled them before data migration.</li>
+	<li>Make sure that the data migration is complete and valid. Run the following queries on Oracle database and PostgreSQL database to get the table and the respective row count.</li>
+</ol>
+
+<p>PostgreSQL query to get the table and the respective row count:</p>
+
+<pre>select c.relname as table_name, c.reltuples as count
+from pg_class c
+join pg_namespace n on n.oid = c.relnamespace
+where c.relkind = 'r' and n.nspname='nas' and c.relname like 'rn_%'
+order by c.reltuples desc;</pre>
+
+<p>Oracle query to get the table and the respective row count:</p>
+
+<pre>select table_name, to_number(extractvalue(xmltype(dbms_xmlgen.getxml('select count(*) c from '||owner||'.'||table_name)),'/ROWSET/ROW/C')) as count
+from all tables
+where owner = 'USER_NAME' and table_name like 'RN_%'</pre>
+
+<p>Here, replace <strong>USER_NAME </strong>with the NA Oracle database username.</p>
+
+<ol start="15">
+	<li>Compare the table's row count of both Oracle database and PostgreSQL database for every table to see that it matches.</li>
+	<li>Start NA services on the NA which is connected to PostgreSQL database.</li>
+</ol>
+
+<h2><strong>Steps to migrate NA database from Oracle to PostgreSQL in a horizontally scalable environment</strong></h2>
+
+<p>For database migration, you will need to install NA with PostgreSQL database.</p>
+
+<p>In horizontally scalable environment, install NA with PostgreSQL with the same number of cores as the NA installation with Oracle database. For example, if existing NA is in a Horizontal Scalability environment with 2 cores in Oracle database, then new installation should also be NA in a Horizontal Scalability environment with 2 cores in PostgreSQL database.</p>
+
+<ol>
+	<li>Stop Network Automation (NA) services on the NA which is connected to Oracle database. (All HS cores need to be stopped)</li>
+	<li>Install NA on the first NA core with PostgreSQL database as part of setting up NA Horizontal Scalability.</li>
+</ol>
+
+<p><strong>Note:</strong> While installing NA with PostgreSQL, use the username and password given for NA with Oracle installation.</p>
+
+<ol start="3">
+	<li>On the rest of the cores, install NA separately and provide the same database details provided while installing the first core (as in step 2 above).</li>
+</ol>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <strong>Note:</strong> DO NOT execute the .sql scripts to add cores to HS, as during data migration the core registration details will also be migrated</p>
+
+<p><strong>Note:</strong> While installing NA with PostgreSQL, use the username and password given for NA with Oracle installation.</p>
+
+<ol start="4">
+	<li>Verify that the installation of NA with PostgreSQL database is working correctly.</li>
+	<li>Stop Network Automation (NA) services on the NA which is connected to PostgreSQL database.</li>
+	<li>Connect to NA's PostgreSQL database and make sure to drop all the data from all the tables.</li>
+</ol>
+
+<p><strong>Note:</strong> If the data is not correctly deleted from all the tables, then after migration NA will be in an inconsistent state.</p>
+
+<ol start="7">
+	<li>Disable all the foreign key constraints on all the PostgreSQL tables.</li>
+</ol>
+
+<p>You can disable the foreign key checks by having the&nbsp;session parameter <strong>session_replication_role </strong>set&nbsp;to <strong>replica </strong>during data migration.</p>
+
+<p>Another way to disable foreign keys is to disable triggers in all tables.</p>
+
+<ol start="8">
+	<li>Take a backup of the index definitions for all the NA tables from PostgreSQL database. You will need these indexes to re-create them after data migration.</li>
+</ol>
+
+<p>Here is an example of a query to get index definitions in PostgreSQL database:</p>
+
+<pre>SELECT indexdef FROM pg_indexes where schemaname='nas';</pre>
+
+<p>Also note down the index count in PostgreSQL database before migration, using the query:</p>
+
+<pre>select count(*) from pg_indexes where schemaname='nas';</pre>
+
+<ol start="9">
+	<li>Drop indexes for faster data migration. Data migration from Oracle database to PostgreSQL database can be done with the indexes in place but data migration may take more time.</li>
+	<li>Use any database tool to do the actual data migration from Oracle database to PostgreSQL database.</li>
+</ol>
+
+<p><strong>Note:</strong> Data related to&nbsp;<strong>rn_repl_conflict&nbsp;</strong>should not be migrated.</p>
+
+<ol start="11">
+	<li>Import the sequences from Oracle database to PostgreSQL database only if the version of NA supports COSO reporting on PostgreSQL database.</li>
+</ol>
+
+<p><b>Note</b>: Sequence of <strong>rn_repl_confict </strong>table should not be migrated</p>
+
+<ol start="12">
+	<li>If you had dropped indexes in the previous step, re-create them on PostgreSQL database from the backed-up index definitions.</li>
+	<li>Run the index count query again, to make sure that the index count after re-creating indexes matches the count obtained in previous step.</li>
+</ol>
+
+<pre>select count(*) from pg_indexes where schemaname='nas';</pre>
+
+<ol start="14">
+	<li>On PostgreSQL database, enable the foreign key constraints, if you had disabled them before data migration.</li>
+	<li>Connect to NA PostgreSQL database and update the table entries of RN_CORE.
+	<ul>
+		<li>If NA cores with PostgreSQL is installed on same server as NA cores with Oracle (i.e. if the servers hosting NA cores are the same before and after migration), update the following table entries:
+		<ol>
+			<li>All the rows of RN_CORE table, 'databaseidentifier' column with PostgreSQL server database name</li>
+			<li>All the rows of RN_CORE table, 'databasehostname' column with PostgreSQL server hostname</li>
+			<li>All the rows of RN_CORE table, 'databaseport' column with PostgreSQL server port number</li>
+		</ol>
+		</li>
+		<li>If NA cores with PostgreSQL database is installed on a different server as NA cores with Oracle (i.e. the servers hosting NA cores are the different before and after migration), update the following entries:
+		<ol>
+			<li>All the rows of RN_CORE table, 'databaseidentifier' column with PostgreSQL server database name</li>
+			<li>All the rows of RN_CORE table, 'databasehostname' column with PostgreSQL server hostname</li>
+			<li>All the rows of RN_CORE table, 'databaseport' column with PostgreSQL server port number</li>
+			<li>Each row of 'corehostname' column with actual NA core hostnames.</li>
+		</ol>
+		</li>
+	</ul>
+	</li>
+</ol>
+
+<p>For Example, if NA with Oracle database was installed on hosts (core1 and core2) and for migration NA is installed on different hosts&nbsp; (core 3 and core 4), then in RN_CORE table, update the ‘corehostname’ column of ‘core1’ to ‘core3’ and ‘core2’ to ‘core4’</p>
+
+<ol start="16">
+	<li>Make sure that the data migration is complete and valid. Run the following queries on Oracle database and PostgreSQL database to get the table and the respective row count.</li>
+	<li>PostgreSQL query to get the table and the respective row count:</li>
+</ol>
+
+<pre>select c.relname as table_name, c.reltuples as count
+from pg_class c
+join pg_namespace n on n.oid = c.relnamespace
+where c.relkind = 'r' and n.nspname='nas' and c.relname like 'rn_%'
+order by c.reltuples desc;</pre>
+
+<p>Oracle query to get the table and the respective row count:</p>
+
+<pre>select table_name, to_number(extractvalue(xmltype(dbms_xmlgen.getxml('select count(*) c from '||owner||'.'||table_name)),'/ROWSET/ROW/C')) as count
+from all_tables
+where owner = 'USER_NAME' and table_name like 'RN_%'</pre>
+
+<p>Here, replace <strong>USER_NAME</strong> with the NA Oracle database username.</p>
+
+<ol start="18">
+	<li>Compare the table's row count of both Oracle database and PostgreSQL database for every table to see that it matches.</li>
+	<li>Start NA services on the NA which is connected to PostgreSQL database.</li>
+</ol>
+</html>
