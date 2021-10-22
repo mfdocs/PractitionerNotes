@@ -210,4 +210,12 @@ print SPP.startRemediate(prja)
 <pre># ./remediatePolicy.py
 Remediate Policies (JobRef:17140001)
 </pre>
+
+<p>This can also be accomplished with fewer lines of code if we use the RemediateNow API.</p>
+
+<pre>serverRefs = findRefs('ServerVO.hostName = ebd93380bc0f','device')
+policyRefs = findRefs('SoftwarePolicyVO.name = "Python Opsware API Access"','software_policy')
+SPP.attachToPolicies(policyRefs, serverRefs)
+SPP.startRemediateNow(policyRefs, serverRefs)
+</pre>
 </html>
