@@ -1,2 +1,62 @@
-<html><p>The HCMX DND capability enables customers to create service designs, offerings, and automate the provisioning and management of hybrid and multi-cloud resources. The HCMX DND service designs provide the way to describe the deployment blueprint, and there will be multiple user inputs required in order to fulfill the service design. The user input is defined as options in the "Configuration Options" tab on the service design. The user input property types supported by HCMX are Boolean, Integer, String, and List. With the List input type, there can be a static list that you can define in the option itself or there can be a dynamic list that get populated by executing the JavaScript in DND.</p>
+<html><p>The HCMX DND capability enables customers to create service designs, offerings, and automate the provisioning and management of hybrid and multi-cloud resources. The HCMX DND service designs provide the way to describe the deployment blueprint, and there will be multiple user inputs required in order to fulfill the service design. The user input is defined as options in the "Configuration Options" tab on the service design. The user input property types supported by HCMX are Boolean, Integer, String, and List. With the List input type, there can be a static list that you can define in the option itself or there can be a dynamic list that gets populated by executing the JavaScript in DND.</p>
+
+<h2>Creating Dynamic List property</h2>
+
+<p>To create the dynamic list property on a service design, follow the below steps;</p>
+
+<ol>
+	<li>On the service design, go to "Configuration Options".</li>
+	<li>Select the Option Set on which want to create the Dynamic List user input, if there are none then create a new option set.</li>
+	<li>Click on "Add Property" to add a new user inputs option
+	<ol type="a">
+		<li>Select the Property Type as List</li>
+		<li>Enter the name and display name for the property</li>
+		<li>Click on "Switch to Dynamic Entry" to change the property from static to dynamic</li>
+		<li>Select the existing JS script from the list again the List Items, or create a new one as described in the section "Creating a new Dynamic JS script".</li>
+		<li>Click Done and Save</li>
+	</ol>
+	</li>
+	<li>Now this property will list the items by executing the Dynamic JS which you have selected</li>
+</ol>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/b/b3/addProperty.png" height="500" hspace="0" src="/mediawiki/images/pn_images/pn_image_6176921335f3a6.64769126.png" style="width: 686.834px; height: 800px; margin: 0px; border: 0px solid black;" vspace="0" width="486.8335146898803"></p>
+
+<h2>Sample Content of Dynamic JS Script</h2>
+
+<p>To load a Dynamic list of key-value pairs like (key1, name1) or (key2, name2) into the option property, the script needs to wrap the key-value pairs in XML as shown below. The script must write this XML to its standard output (body of HTTP response).</p>
+
+<pre>// Dynamic list response.
+// You can start with typing help.
+
+availableValues = [{
+	'value' : 'value 1',
+	'displayName' : 'Item 1',
+	'description' : 'JavaScript generated value',
+	'initialPrice' : '1',
+	'recurringPrice' : '2'
+},
+{
+	'value' : 'value 2',
+	'displayName' : 'Item 2',
+	'description' : 'JavaScript generated value',
+	'initialPrice' : '2',
+	'recurringPrice' : '3'
+}];
+</pre>
+
+<div class="Admonition_Note"><b>Note</b>&nbsp; &nbsp; The initialPrice and recurringPrice properties in the XML are not yet supported in HCMX.</div>
+
+<p>The script creates a variable availableValues with a value containing an array of objects where each object contains some of these keys: value, displayName, description, initialPrice, recurringPrice with strings as values. Each availableValues tag describes one item in the list of the dynamic list property. The tags value, displayName and description describe how the value is processed and displayed.</p>
+
+<h2>Creating a new Dynamic JS script</h2>
+
+<p>To create new Dynamic JS script follow the below steps;</p>
+
+<ol>
+	<li>Edit the property for which you want to create the JS script for,</li>
+</ol>
+
+<h2>Server tokens</h2>
+
+<p>DND supports passing artifact IDs/token IDs as HTTP request parameters into the JavaScript. The value of each parameter takes the form of [CLIENT:&lt;token_name&gt;], [TOKEN:&lt;token_name&gt;], or [PORTAL:&lt;token_name&gt;]. To choose a supported token, click the Select Token button to the right of the parameter to open the list of supported tokens, and select the token you want.</p>
 </html>
