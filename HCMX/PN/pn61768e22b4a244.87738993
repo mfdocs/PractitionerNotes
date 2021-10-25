@@ -91,13 +91,35 @@ availableValues = [{
 
 <p>To change the subscriber option to serve these different choices, you can create a new version of the design for the modifications, or you can edit the existing design. Add a new <em>List </em>property by name ostype, and add the List items as shown below:</p>
 
-<p><img alt="" border="0" height="520" hspace="0" src="/mediawiki/images/pn_images/pn_image_6176c483519812.17252031.png" style="width:500px;height:520px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="500"></p>
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_6176c7a268b6d2.27570010.png" height="520" hspace="0" src="/mediawiki/images/pn_images/pn_image_6176c7a268b6d2.27570010.png" style="width:500px;height:520px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="500"></p>
 
-<p></p>
+<p>The Server Edition property is dependent on the Operating System to list its values. Therefore, the Server Edition needs the value of the Operating System property to be passed to its script. To pass the selected value from one property to another, use a HTTP request parameter. The value of the parameter is in the form of [CLIENT:&lt;name_of_property&gt;] where &lt;name_of_property&gt; is the property whose value controls the selection of the value in the dynamic property. It is the Name field of the property, not Display Name.</p>
 
-<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/5d/osTypeList2.PNG" height="800" hspace="0" src="/mediawiki/images/pn_images/pn_image_6176c7a268b6d2.27570010.png" style="width: 769.903px; height: 800px; margin: 0px; border: 0px solid black;" vspace="0" width="769.9029126213592"></p>
+<p>In this example, the property Server Edition uses the parameter ostype and the passed value is [CLIENT:ostype] as shown below – to open the dialog click on Configure Parameters next to List Items dropdown. Modify the Server Edition property and click Done. Click Save to save the subscriber options.</p>
 
-<p></p>
+<pre>function value(osName, edition) {
+    return {
+        'value': edition,
+        'displayName': edition,
+        'description': osName+' '+edition
+    };
+}
+
+availableValues = []; 
+osName = request.ostype;
+
+switch (osName) {
+    case 'Windows':
+        availableValues.push(value(osName, 'Standard'));
+        availableValues.push(value(osName, 'Enterprise'));
+        break;
+
+    case 'RHEL':
+        availableValues.push(value(osName, 'Server'));
+        availableValues.push(value(osName, 'Desktop'));
+        break;
+}
+</pre>
 
 <div class="Admonition_Note"><b>Note</b>&nbsp; &nbsp;The option values can be passed from the parent to the child list within an option set. You cannot pass option values across option sets.</div>
 
