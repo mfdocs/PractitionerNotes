@@ -66,11 +66,32 @@ availableValues = [{
 
 <h2>Cascading Options</h2>
 
-<p>Consider an offering for an infrastructure service where the choices for Server Edition are different for each of the choices for the Operating System (OS). For example, for this scenario, the OS choices are Windows and RHEL. You will offer the choices of Standard or Enterprise for Windows, and Server or Desktop for RHEL.<br>
-The Server Edition list should be filtered based on the OS selected.<br>
-The following table summarizes the subscriber options to be displayed:</p>
+<p>Consider an offering for an infrastructure service where the choices for Server Edition are different for each of the choices for the Operating System (OS). For example, for this scenario, the OS choices are Windows and RHEL. You will offer the choices of Standard or Enterprise for Windows, and Server or Desktop for RHEL.</p>
 
-<p>Here you need to change the script and the subscriber option properties. To change the subscriber option to serve these different choices, you must modify the osProperties.js script and the properties. You can create a new version of the design for the modifications, or you can edit the existing design. However, for this scenario, these values will be updated as described below.</p>
+<p>The Server Edition list should be filtered based on the OS selected. The following table summarizes the subscriber options to be displayed:</p>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<thead>
+		<tr>
+			<th scope="col">Operating System</th>
+			<th scope="col">Server Edition</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Windows</td>
+			<td>Standard, Enterprise</td>
+		</tr>
+		<tr>
+			<td>RHEL</td>
+			<td>Server, Desktop</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>To change the subscriber option to serve these different choices, you can create a new version of the design for the modifications, or you can edit the existing design. Add a new <em>List </em>property by name ostype, and add the List items as shown below:</p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/b/b8/osTypeList.PNG" height="800" hspace="0" src="/mediawiki/images/pn_images/pn_image_6176c483519812.17252031.png" style="width: 766.91px; height: 800px; margin: 0px; border: 0px solid black;" vspace="0" width="766.9099756690998"></p>
 
 <div class="Admonition_Note"><b>Note</b>&nbsp; &nbsp;The option values can be passed from the parent to the child list within an option set. You cannot pass option values across option sets.</div>
 
@@ -130,6 +151,7 @@ Use the following SQL Client entry in the resource_alias.xml
 </pre>
 
 <h3>Dynamic JS script with Postgresql (ssl)</h3>
+Use the following SQL Client entry in the resource_alias.xml
 
 <pre>&lt;entry name='dnddb'&gt;
 &nbsp; &nbsp;&lt;username&gt;postgres&lt;/username&gt;
@@ -139,9 +161,14 @@ Use the following SQL Client entry in the resource_alias.xml
 &lt;/entry&gt;
 </pre>
 
-<h3>Dynamic JS script with MSSQL</h3>
+<p>Copy the Postgresql certificate into the DND Certificate folder on NFS: <code>&lt;global-volume&gt;/certificate/dnd/&lt;tenantid&gt;/source</code></p>
 
-<pre>&lt;entry name='dnddb'&gt;
+<p>The class name for sslfactory parameter is <code>org.postgresql.ssl.DefaultJavaSSLFactory</code>, refer to <a href="https://jdbc.postgresql.org/documentation/head/ssl-client.html">document </a>for more details on the Postgresql SSL connection parameters.</p>
+
+<h3>Dynamic JS script with MSSQL</h3>
+Use the following SQL Client entry in the resource_alias.xml
+
+<pre>&lt;entry name='mssqldb'&gt;
 &nbsp; &nbsp;&lt;username&gt;sa&lt;/username&gt;
 &nbsp; &nbsp;&lt;requiredProtocol&gt;jdbc&lt;/requiredProtocol&gt;
 &nbsp; &nbsp;&lt;baseURL&gt;jdbc:jtds:sqlserver://[hostname]:1433/[databasename]&lt;/baseURL&gt;
@@ -150,7 +177,7 @@ Use the following SQL Client entry in the resource_alias.xml
 </pre>
 
 <h3>JS Script for using the SQL Client connection</h3>
-Create a new script to use the postgres SQL Client connection, an example JS script to read the provider types from the DND database;
+Create a new script to use the Postgresql SQL Client connection, an example JS script to read the provider types from the DND database;
 
 <pre>var client = new SQLClient (new ResourceAlias('dnddb'));
 var response = client.call('select uuid, display_name from dnd_996484741.csa_category where discriminator like ?', ['%PROVIDER%']);
