@@ -59,4 +59,41 @@ availableValues = [{
 <h2>Server tokens</h2>
 
 <p>DND supports passing artifact IDs/token IDs as HTTP request parameters into the JavaScript. The value of each parameter takes the form of [CLIENT:&lt;token_name&gt;], [TOKEN:&lt;token_name&gt;], or [PORTAL:&lt;token_name&gt;]. To choose a supported token, click the Select Token button to the right of the parameter to open the list of supported tokens, and select the token you want.</p>
+
+<h2>Testing the Dynamic JS script</h2>
+
+<p>Execute the JavaScript in Service Designer’s JavaScript editor. To execute the JavaScript in JavaScript editor, click the refresh button in the JavaScript editor. In the sample screenshot below, the js-example-debug.js script has been modified to include debug functions. For details on debugging the Dynamic JS Script, refer to the document <a href="https://docs.microfocus.com/itom/HCMX:2021.08/PN/pn60c8a98ecba9c7.92975234">here</a></p>
+
+<h2>Cascading Options</h2>
+
+<p>Consider an offering for an infrastructure service where the choices for Server Edition are different for each of the choices for the Operating System (OS). For example, for this scenario, the OS choices are Windows and RHEL. You will offer the choices of Standard or Enterprise for Windows, and Server or Desktop for RHEL.<br>
+The Server Edition list should be filtered based on the OS selected.<br>
+The following table summarizes the subscriber options to be displayed:</p>
+
+<p>Here you need to change the script and the subscriber option properties. To change the subscriber option to serve these different choices, you must modify the osProperties.js script and the properties. You can create a new version of the design for the modifications, or you can edit the existing design. However, for this scenario, these values will be updated as described below.</p>
+
+<div class="Admonition_Note"><b>Note</b>&nbsp; &nbsp;The option values can be passed from the parent to the child list within an option set. You cannot pass option values across option sets.</div>
+
+<h2>Secure access to various resources using ResourceAlias</h2>
+
+<p>The dynamic list property can be populated by capturing data from an external source like a file or a database. The list property is associated with a JavaScript (JS) file which embeds the logic to capture data from an external source and wraps the data as XML. DND provides a framework to execute JavaScript returns XML as an HTTP response Object ResourceAlias: used to refer to entries in resource-alias.xml, which holds various configurations for resources such as database connection, filesystem access, credentials. A Sample Resource entry in resource-alias.xml may look like below</p>
+
+<pre>&lt;entry name='myuser for servername'&gt;
+&nbsp; &nbsp;&lt;username&gt;myuser&lt;/username&gt;
+&nbsp; &nbsp;&lt;requiredProtocol&gt;https&lt;/requiredProtocol&gt;
+&nbsp; &nbsp;&lt;requiredURLPrefix&gt;https://servername/somepath/&lt;/requiredURLPrefix&gt;
+&nbsp; &nbsp;&lt;password&gt;ENC(3oKr9eADA7bE53Zk2t9wIA==)&lt;/password&gt;
+&lt;/entry&gt;
+</pre>
+
+<p>Resource alias is consumed by HTTP/S client, JDBC database access, Filesystem access functions.</p>
+
+<p>All the tags inside the entry are optional. In this case, an entry is specified (using requiredProtocol tag) to be usable with only https (to specify both http and https, the requiredProtocol tag may be duplicated with other values). Tag requiredURLPrefix specifies any URL with which it is used has to start with this prefix. If multiple tag requiredURLPrefix are specified the actual URL must match it prefix with at least one of them. Prefix matching does not allow the actual URL to use path components like ".." to go outside of the prefix. As an alternative, the URL may be restricted using the tag requiredURL. In that case, exact equality is required. Multiple tags requiredURL are possible. Username and password in the HTTP/S client are interpreted as HTTP Basic authentication credentials. Passwords allow encryption (same encryption as the passwords in the csa.properties file). They can also use syntax ${property.name} to refer to properties in csa.properties file. Tag baseURL (not visible in the example above) allows administrator to specify URL that is validated in the same way as a single occurrence of tag requiredURLPrefix, but changes the meaning of actual URL parameter passed to client libraries so that it is only relative to this baseURL (useful to avoid repeating hostname in the configuration and in the script).</p>
+
+<p>Other protocols that are recognized:</p>
+
+<ul>
+	<li>jdbc - when used with SQLClient.</li>
+	<li>file - when used with FileStorage.</li>
+</ul>
 </html>
