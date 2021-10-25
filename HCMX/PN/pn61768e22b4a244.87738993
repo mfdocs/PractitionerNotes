@@ -96,4 +96,31 @@ The following table summarizes the subscriber options to be displayed:</p>
 	<li>jdbc - when used with SQLClient.</li>
 	<li>file - when used with FileStorage.</li>
 </ul>
+
+<h2>SQL Client</h2>
+
+<p>SQL client is accessible through object SQLClient which provides a single function named "call". Initialization of SQL client has one parameter. This parameter represents the ResourceAlias instance. This alias is located at the resource-alias.xml file in the same directory as a dynamic property javascript file. This alias instance must be JDBC type and should contain the username (mandatory), base URL (mandatory), and password (optional). Resource Alias example:</p>
+
+<pre>&lt;entry name='postgres database'&gt;
+&nbsp; &nbsp;&lt;username&gt;csa&lt;/username&gt;
+&nbsp; &nbsp;&lt;requiredProtocol&gt;jdbc&lt;/requiredProtocol&gt;
+&nbsp; &nbsp;&lt;baseURL&gt;jdbc:postgresql://localhost:5432/csa&lt;/baseURL&gt;
+&nbsp; &nbsp;&lt;password&gt;ENC(3oKr9eADA7bE53Zk2t9wIA==)&lt;/password&gt;
+&lt;/entry&gt;
+</pre>
+
+<p>SQL initialization example: <code>var client = new SQLClient (new ResourceAlias(' postgres database'));</code></p>
+
+<p>The 'call' function can execute only select query. If the query parameter contains insert or update query, the method throws an error. The function has two parameters. The first parameter is SQL query in JDBC PreparedStatement format (values of query parameters should be replaced by a question mark). The second parameter is an array of parameter values in order that should be placed to the query. These values will be placed into the query before execution. If you need to use Date, Time, or Timestamp objects, you have to use SQLDate, SQLTime or SQLTimestamp object instead.</p>
+
+<p>Query execution example:</p>
+<code>var response = client.call('SELECT * FROM csa_action where artifact_id = ? and consumer_visible = ? and version_number = ? and updated_on &gt; ?', [ '8fe9ce204ffeb8b4014ffebc521d09f6', true, 1, new SQLTimestamp('2015-09-24 11:00:00.000') ]);</code>
+
+<p>Executing query returns a response object. This object contains objects metadata, rows (number of returned rows), and data. Metadata is a HashMap object containing column name as key and column type as value. Rows contain returned rows count. Data is an array with the size of return rows count and contains HashMap objects. Every map contains column name as key and column value as value.</p>
+
+<h2>Using Postgresql (non-ssl)</h2>
+
+<h2>Using Postgresql (ssl)</h2>
+
+<h2>Using MSSQL</h2>
 </html>
