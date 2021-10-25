@@ -421,9 +421,9 @@
 
 <p></p>
 
-<h3><span style="font-size:16pt"><span style="font-family:Calibri,sans-serif">Offerings PART</span></span></h3>
+<h3><span style="font-size:16pt"><span style="font-family:Calibri,sans-serif">Offerings</span></span></h3>
 
-<h4><span style="font-size:16pt"><span style="font-family:Calibri,sans-serif"><a id="Get all aggregated offerings details" name="Get all aggregated offerings details"></a>Get all aggregated offerings details</span></span></h4>
+<h4><span style="font-size:16pt"><span style="font-family:Calibri,sans-serif"><a id="Get all aggregated offerings details" name="Get all aggregated offerings details"></a>Get User Option Metadata</span></span></h4>
 
 <table style="width: 500px;" cellspacing="1" cellpadding="1" border="1">
 	<tbody>
@@ -433,12 +433,13 @@
 		</tr>
 		<tr>
 			<th scope="row">URL Syntax</th>
-			<td><code>https://&lt;HOST&gt;:443/rest/&lt;TENANTID&gt;/</code>ems/Offering?layout=Id,DisplayLabel,RemoteOfferingId,UserOptions,Price,RemoteOfferingName,ProviderId,Status,Service&amp;filter=ProviderType=<br>
-			'DND' and DisplayLabel startswith('TestAPI-De')</td>
+			<td><code>https://&lt;HOST&gt;:443/rest/&lt;TENANTID&gt;/</code>user-options/metadata/ui/dynamic/complex-type-descriptors/Offering/&lt;offeringID&gt;</td>
 		</tr>
 		<tr>
 			<th scope="row">Description</th>
-			<td>Get all the aggregated offering details based on Provider Type and name of the offering. You need the Catalog Administrator permission to use this API.</td>
+			<td>
+			<p>This Get API can be used to obtain the metadata of the user option properties within a specific Offering. The input is the Offering ID and the output of this API is the Metadata of all the user options in that API. Users can use this API to correlate the IDs of the properties (the group and section to which it belongs) to the actual name and the type of the User Option properties within the offering.</p>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row">Headers</th>
@@ -463,65 +464,81 @@
 		</tr>
 		<tr>
 			<th scope="row">Sample Response Data</th>
-			<td>
-			<p>{</p>
-
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;"entities":&nbsp;[</p>
-
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</p>
-
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"entity_type":&nbsp;"Offering",</p>
-
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"properties":&nbsp;{</p>
-
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"ProviderId":&nbsp;"10092",</p>
-
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Status":&nbsp;"Active",</p>
-
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"UserOptions":&nbsp;"{\"complexTypeProperties\":[{\"properties\":{\"DynamicComplexTypeRefName_c\":\"Useroption1c11fa9a540d4221a8c854ebb3df4029_c\",\"OptionSet6a5f5bb36d1043699b2357978be27bec_c\":\"{\\\"Optionf8846f19f0cc409ba72db29875588049_c\\\":true}\",\"OptionSet8679b3b4a42a4128978acd3c87fb7b00_c\":\"{\\\"Optiondc19fef2f4e442d886ffab79d75c46bf_c\\\":true}\",\"Optiondc19fef2f4e442d886ffab79d75c46bf_c\":true,\"Optionf18accfe15604af2abddef9bebab93e6_c\":false,\"Optionf8846f19f0cc409ba72db29875588049_c\":true,\"Property3d63ad3b386540f887d7283dcca871e1_c\":2048,\"Property416f6f6f99d54e0d8016677654d7b9c1_c\":\"22\",\"Property7349c6ede1ec4a2ca8ed27bb24be9f14_c\":\"11\",\"Property75a5466a92d44911ae9d9daccfa94701_c\":16096,\"changedUserOptionsForSimulation\":\"\"}}]}",</p>
-
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Price":&nbsp;"{\"priceComplexType\":[{\"CostCurrency\":null,\"BasePrice\":null,\"Group\":null,\"Type\":\"Default\",\"RecurringPeriod\":null,\"RecurringCost\":null,\"OptionValue\":true,\"Cost\":\"1\",\"OptionName\":\"Optiondc19fef2f4e442d886ffab79d75c46bf_c\",\"Location\":null,\"$$hashKey\":\"object:3400\"},{\"CostCurrency\":null,\"BasePrice\":null,\"Group\":null,\"Type\":\"Default\",\"RecurringPeriod\":null,\"RecurringCost\":null,\"OptionValue\":true,\"Cost\":\"2\",\"OptionName\":\"Optionf18accfe15604af2abddef9bebab93e6_c\",\"Location\":null,\"$$hashKey\":\"object:3403\"},{\"CostCurrency\":null,\"BasePrice\":null,\"Group\":null,\"Type\":\"Default\",\"RecurringPeriod\":null,\"RecurringCost\":null,\"OptionValue\":true,\"Cost\":null,\"OptionName\":\"Optionf8846f19f0cc409ba72db29875588049_c\",\"Location\":null,\"$$hashKey\":\"object:3406\"}]}",</p>
-
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"LastUpdateTime":&nbsp;1623717270631,</p>
-
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"RemoteOfferingId":&nbsp;"2365c540-0275-4388-a132-6e0ec303c951",</p>
-
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Service":&nbsp;"10094",</p>
-
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Id":&nbsp;"16877",</p>
-
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"RemoteOfferingName":&nbsp;"TestAPI-Design&nbsp;1.0.0",</p>
-
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"DisplayLabel":&nbsp;"TestAPI-Design"</p>
-
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},</p>
-
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"related_properties":&nbsp;{}</p>
-
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</p>
-
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;],</p>
-
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;"meta":&nbsp;{</p>
-
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"completion_status":&nbsp;"OK",</p>
-
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"total_count":&nbsp;1,</p>
-
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"errorDetailsList":&nbsp;[],</p>
-
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"errorDetailsMetaList":&nbsp;[],</p>
-
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"query_time":&nbsp;1623717677853619</p>
-
-			<p>&nbsp;&nbsp;&nbsp;&nbsp;}</p>
-
-			<p>}</p>
-			</td>
+			<td><br>
+			{<br>
+			&nbsp;&nbsp;&nbsp; "name": "SelectPCUserOptionsType_c",<br>
+			&nbsp;&nbsp;&nbsp; "localized_label_key": "SelectPCUserOptionsType-Key",<br>
+			&nbsp;&nbsp;&nbsp; "localized_label": "SelectPCUserOptionsType",<br>
+			&nbsp;&nbsp;&nbsp; "property_descriptors": [<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "name": "ExternalMonitor_c",<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "localized_label_key": "ExternalMonitor-key",<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "localized_label": "ExternalMonitor",<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "logical_type": "BOOLEAN",<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "required": false,<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "readOnly": false,<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "groupPath": []<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "name": "ExtraBattery_c",<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "localized_label_key": "ExtraBattery-key",<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "localized_label": "ExtraBattery",<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "logical_type": "BOOLEAN",<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "required": false,<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "readOnly": false,<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "groupPath": []<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "name": "UrgentRequest_c",<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "localized_label_key": "UrgentRequest-key",<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "localized_label": "UrgentRequest",<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "logical_type": "BOOLEAN",<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "required": false,<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "readOnly": false,<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "groupPath": []<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "name": "SelectPCType_c",<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "localized_label_key": "SelectPCType-Key",<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "localized_label": "Select PC",<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "referenceName": "SelectPCTypeEnum_c",<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "logical_type": "ENUM",<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "required": false,<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "readOnly": false,<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "groupPath": [],<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "enumerationDescriptors": {<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "name": "SelectPCTypeEnum_c",<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "displayName": "Select PC",<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "values": [<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "name": "HighPerformance_c",<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "displayName": "High performance"<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "name": "TravelFriendly_c",<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "displayName": "Travel friendly"<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "name": "UrgentComment_c",<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "localized_label_key": "UrgentComment-key",<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "localized_label": "Urgent Request Justification (required)",<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "logical_type": "RICH_TEXT",<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "required": false,<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "readOnly": false,<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "groupPath": []<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+			&nbsp;&nbsp;&nbsp; ]<br>
+			}</td>
 		</tr>
 		<tr>
 			<th scope="row">Sample Response Data Description</th>
-			<td>The list of offering details matching the offering name in the filter is returned. The offering ID can be obtained from the ID attribute. Example:&nbsp;&nbsp;&nbsp;"Id":&nbsp;"16877"</td>
+			<td>
+             <p>The Metadata of the user option properties with details of the section and the group to which the properties belong. It displays the name and the type of the properties.
+              </p>
+             </td>
 		</tr>
 	</tbody>
 </table>
