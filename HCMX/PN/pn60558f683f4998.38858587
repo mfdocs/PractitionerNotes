@@ -37,7 +37,7 @@
 
 <h2><span style="font-size:16pt"><span style="font-family:Calibri,sans-serif"><a id="GenerateAuthentication" name="GenerateAuthentication"></a>Generate authentication token for all API calls</span></span></h2>
 
-<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+<table style="width: 500px;" cellspacing="1" cellpadding="1" border="1">
 	<tbody>
 		<tr>
 			<th scope="row">Type</th>
@@ -101,7 +101,7 @@
 
 <h3><span style="font-size:16pt"><span style="font-family:Calibri,sans-serif"><a id="Get all DnD resource provider details" name="Get all DnD resource provider details"></a>Get all DnD resource provider details</span></span></h3>
 
-<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+<table style="width: 500px;" cellspacing="1" cellpadding="1" border="1">
 	<tbody>
 		<tr>
 			<th scope="row">Type</th>
@@ -192,7 +192,7 @@
 
 <h3><span style="font-size:16pt"><span style="font-family:Calibri,sans-serif"><a id="Create a DnD resource provider" name="Create a DnD resource provider"></a>Create a DnD resource provider</span></span></h3>
 
-<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+<table style="width: 500px;" cellspacing="1" cellpadding="1" border="1">
 	<tbody>
 		<tr>
 			<th scope="row">Type</th>
@@ -318,7 +318,114 @@
 
 <h4><span style="font-size:16pt"><span style="font-family:Calibri,sans-serif"><a id="Get all aggregated offerings details" name="Get all aggregated offerings details"></a>Get all aggregated offerings details</span></span></h4>
 
-<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+<table style="width: 500px;" cellspacing="1" cellpadding="1" border="1">
+	<tbody>
+		<tr>
+			<th scope="row">Type</th>
+			<td>GET</td>
+		</tr>
+		<tr>
+			<th scope="row">URL Syntax</th>
+			<td><code>https://&lt;HOST&gt;:443/rest/&lt;TENANTID&gt;/</code>ems/Offering?layout=Id,DisplayLabel,RemoteOfferingId,UserOptions,Price,RemoteOfferingName,ProviderId,Status,Service&amp;filter=ProviderType=<br>
+			'DND' and DisplayLabel startswith('TestAPI-De')</td>
+		</tr>
+		<tr>
+			<th scope="row">Description</th>
+			<td>Get all the aggregated offering details based on Provider Type and name of the offering. You need the Catalog Administrator permission to use this API.</td>
+		</tr>
+		<tr>
+			<th scope="row">Headers</th>
+			<td>
+			<ol>
+				<li>Content-Type : application/json</li>
+				<li>Accept : application/json</li>
+				<li>Cookie:&nbsp;<code>SMAX_AUTH_TOKEN=eyJ0eXAiOiJKV1MiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyYzkwODBiOTc5Y2I0YmRkMDE3OWQwOThmMGY5N2I2OSIsImlzcyI6IklkTSAxLjMyLjAtY<br>
+				nVpbGQuMjM4IiwiY29tLmhwZS5pZG06dHJ1c3RvciI6bnVsbCwiZXhwIjoxNjIzMzEwNDkyLCJjb20uaHAuY2xvdWQ6dGVuYW50Ijp7ImlkIjoiMmM5MDgwYjk3OWNiNGJkZDAx<br>
+				NzlkMDk2MmFmZDdhYzEiLCJuYW1lIjoiODk2ODI4OTc1IiwiZW5hYmxlZCI6dHJ1ZX0sInBybiI6InNna2FhZG1pbiIsImlhdCI6MTYyMzMwNjg5MiwianRpIjoiMjM2YzQyMmUtO<br>
+				DY2NS00ZGE3LWJkMmItZjI3YzU2OTdlY2JlIn0.qRJUUwTFgl8qGuSZ1WmV-Fm6LVp9UHnTQCq1lfRHi7Y</code></li>
+			</ol>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">Request Body Example</th>
+			<td>Not applicable.</td>
+		</tr>
+		<tr>
+			<th scope="row">Request Body Description</th>
+			<td>Not applicable.</td>
+		</tr>
+		<tr>
+			<th scope="row">Sample Response Data</th>
+			<td>
+			<p>{</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;"entities":&nbsp;[</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"entity_type":&nbsp;"Offering",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"properties":&nbsp;{</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"ProviderId":&nbsp;"10092",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Status":&nbsp;"Active",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"UserOptions":&nbsp;"{\"complexTypeProperties\":[{\"properties\":{\"DynamicComplexTypeRefName_c\":\"Useroption1c11fa9a540d4221a8c854ebb3df4029_c\",\"OptionSet6a5f5bb36d1043699b2357978be27bec_c\":\"{\\\"Optionf8846f19f0cc409ba72db29875588049_c\\\":true}\",\"OptionSet8679b3b4a42a4128978acd3c87fb7b00_c\":\"{\\\"Optiondc19fef2f4e442d886ffab79d75c46bf_c\\\":true}\",\"Optiondc19fef2f4e442d886ffab79d75c46bf_c\":true,\"Optionf18accfe15604af2abddef9bebab93e6_c\":false,\"Optionf8846f19f0cc409ba72db29875588049_c\":true,\"Property3d63ad3b386540f887d7283dcca871e1_c\":2048,\"Property416f6f6f99d54e0d8016677654d7b9c1_c\":\"22\",\"Property7349c6ede1ec4a2ca8ed27bb24be9f14_c\":\"11\",\"Property75a5466a92d44911ae9d9daccfa94701_c\":16096,\"changedUserOptionsForSimulation\":\"\"}}]}",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Price":&nbsp;"{\"priceComplexType\":[{\"CostCurrency\":null,\"BasePrice\":null,\"Group\":null,\"Type\":\"Default\",\"RecurringPeriod\":null,\"RecurringCost\":null,\"OptionValue\":true,\"Cost\":\"1\",\"OptionName\":\"Optiondc19fef2f4e442d886ffab79d75c46bf_c\",\"Location\":null,\"$$hashKey\":\"object:3400\"},{\"CostCurrency\":null,\"BasePrice\":null,\"Group\":null,\"Type\":\"Default\",\"RecurringPeriod\":null,\"RecurringCost\":null,\"OptionValue\":true,\"Cost\":\"2\",\"OptionName\":\"Optionf18accfe15604af2abddef9bebab93e6_c\",\"Location\":null,\"$$hashKey\":\"object:3403\"},{\"CostCurrency\":null,\"BasePrice\":null,\"Group\":null,\"Type\":\"Default\",\"RecurringPeriod\":null,\"RecurringCost\":null,\"OptionValue\":true,\"Cost\":null,\"OptionName\":\"Optionf8846f19f0cc409ba72db29875588049_c\",\"Location\":null,\"$$hashKey\":\"object:3406\"}]}",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"LastUpdateTime":&nbsp;1623717270631,</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"RemoteOfferingId":&nbsp;"2365c540-0275-4388-a132-6e0ec303c951",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Service":&nbsp;"10094",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Id":&nbsp;"16877",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"RemoteOfferingName":&nbsp;"TestAPI-Design&nbsp;1.0.0",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"DisplayLabel":&nbsp;"TestAPI-Design"</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"related_properties":&nbsp;{}</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;],</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;"meta":&nbsp;{</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"completion_status":&nbsp;"OK",</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"total_count":&nbsp;1,</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"errorDetailsList":&nbsp;[],</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"errorDetailsMetaList":&nbsp;[],</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"query_time":&nbsp;1623717677853619</p>
+
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+
+			<p>}</p>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">Sample Response Data Description</th>
+			<td>The list of offering details matching the offering name in the filter is returned. The offering ID can be obtained from the ID attribute. Example:&nbsp;&nbsp;&nbsp;"Id":&nbsp;"16877"</td>
+		</tr>
+	</tbody>
+</table>
+
+<p></p>
+
+<h3><span style="font-size:16pt"><span style="font-family:Calibri,sans-serif">Offerings</span></span></h3>
+
+<h4><span style="font-size:16pt"><span style="font-family:Calibri,sans-serif"><a id="Get all aggregated offerings details" name="Get all aggregated offerings details"></a>Get all aggregated offerings details</span></span></h4>
+
+<table style="width: 500px;" cellspacing="1" cellpadding="1" border="1">
 	<tbody>
 		<tr>
 			<th scope="row">Type</th>
@@ -427,7 +534,7 @@
 
 <h4><span style="font-size:16pt"><span style="font-family:Calibri,sans-serif"><a id="Get the specific user in TenantID to fetch the UserID" name="Get the specific user in TenantID to fetch the UserID"></a>Get the specific user in TenantID to fetch the UserID</span></span></h4>
 
-<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+<table style="width: 500px;" cellspacing="1" cellpadding="1" border="1">
 	<tbody>
 		<tr>
 			<th scope="row">Type</th>
@@ -526,7 +633,7 @@
 
 <h4><span style="font-size:16pt"><span style="font-family:Calibri,sans-serif">Create a Subscription Request<a id="Create a Subscription Request" name="Create a Subscription Request"></a></span></span></h4>
 
-<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+<table style="width: 500px;" cellspacing="1" cellpadding="1" border="1">
 	<tbody>
 		<tr>
 			<th scope="row">Type</th>
@@ -645,7 +752,7 @@
 
 <h4><span style="font-size:16pt"><span style="font-family:Calibri,sans-serif"><a id="Get the Subscription ID using Request ID" name="Get the Subscription ID using Request ID"></a>Get Service&nbsp;Request and&nbsp;Subscription Details</span></span></h4>
 
-<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+<table style="width: 500px;" cellspacing="1" cellpadding="1" border="1">
 	<tbody>
 		<tr>
 			<th scope="row">Type</th>
@@ -804,7 +911,7 @@
 
 <h4><span style="font-size:16pt"><span style="font-family:Calibri,sans-serif"><a id="Get Service Node ID for the specific Service Instance ID for Public Actions (also Instance Details)" name="Get Service Node ID for the specific Service Instance ID for Public Actions (also Instance Details)"></a>Get Service Node ID for the specific Service Instance ID for Public Actions (also Instance Details)</span></span></h4>
 
-<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+<table style="width: 500px;" cellspacing="1" cellpadding="1" border="1">
 	<tbody>
 		<tr>
 			<th scope="row">Type</th>
@@ -1170,7 +1277,7 @@
 <h4><br>
 <span style="font-size:16pt"><span style="font-family:Calibri,sans-serif"><a id="Execute Public Action on a Specific Service Instance Node for a Subscription" name="Execute Public Action on a Specific Service Instance Node for a Subscription"></a>Execute Public Action on a Specific Service Instance Node for a Subscription</span></span></h4>
 
-<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+<table style="width: 500px;" cellspacing="1" cellpadding="1" border="1">
 	<tbody>
 		<tr>
 			<th scope="row">Type</th>
@@ -1223,7 +1330,7 @@
 
 <h4><span style="font-size:16pt"><span style="font-family:Calibri,sans-serif"><a id="Cancel a Subscription" name="Cancel a Subscription"></a>Cancel a Subscription</span></span></h4>
 
-<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+<table style="width: 500px;" cellspacing="1" cellpadding="1" border="1">
 	<tbody>
 		<tr>
 			<th scope="row">Type</th>
