@@ -118,9 +118,40 @@ The following table summarizes the subscriber options to be displayed:</p>
 
 <p>Executing query returns a response object. This object contains objects metadata, rows (number of returned rows), and data. Metadata is a HashMap object containing column name as key and column type as value. Rows contain returned rows count. Data is an array with the size of return rows count and contains HashMap objects. Every map contains column name as key and column value as value.</p>
 
-<h2>Using Postgresql (non-ssl)</h2>
+<h3>Dynamic JS script with Postgresql (non-ssl)</h3>
+Use the following SQL Client entry in the resource_alias.xml
 
-<h2>Using Postgresql (ssl)</h2>
+<pre>&lt;entry name='csadb'&gt;
+&nbsp; &nbsp;&lt;username&gt;postgres&lt;/username&gt;
+&nbsp; &nbsp;&lt;requiredProtocol&gt;jdbc&lt;/requiredProtocol&gt;
+&nbsp; &nbsp;&lt;baseURL&gt;jdbc:postgresql://[hostname]:5432/[databasename]&lt;/baseURL&gt;
+&nbsp; &nbsp;&lt;password&gt;password&lt;/password&gt;
+&lt;/entry&gt;
+</pre>
 
-<h2>Using MSSQL</h2>
+<h3>Dynamic JS script with Postgresql (ssl)</h3>
+
+<pre>&lt;entry name='csadb'&gt;
+&nbsp; &nbsp;&lt;username&gt;postgres&lt;/username&gt;
+&nbsp; &nbsp;&lt;requiredProtocol&gt;jdbc&lt;/requiredProtocol&gt;
+&nbsp; &nbsp;&lt;baseURL&gt;jdbc:postgresql://[hostname]:5432/[databasename]?ssl=true&amp;amp;sslmode=require&amp;amp;sslfactory=org.postgresql.ssl.DefaultJavaSSLFactory&lt;/baseURL&gt;
+&nbsp; &nbsp;&lt;password&gt;password&lt;/password&gt;
+&lt;/entry&gt;
+</pre>
+
+<h3>Dynamic JS script with MSSQL</h3>
+
+<pre>&lt;entry name='csadb'&gt;
+&nbsp; &nbsp;&lt;username&gt;sa&lt;/username&gt;
+&nbsp; &nbsp;&lt;requiredProtocol&gt;jdbc&lt;/requiredProtocol&gt;
+&nbsp; &nbsp;&lt;baseURL&gt;jdbc:jtds:sqlserver://[hostname]:1433/[databasename]&lt;/baseURL&gt;
+&nbsp; &nbsp;&lt;password&gt;password&lt;/password&gt;
+&lt;/entry&gt;
+</pre>
+
+<h3>JS Script for using the SQL Client connection</h3>
+Create a new script to use the postgres SQL Client connection, an example JS script to read the provider types from the DND database;
+
+<pre>script
+</pre>
 </html>
