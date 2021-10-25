@@ -50,10 +50,12 @@ availableValues = [{
 
 <h2>Creating a new Dynamic JS script</h2>
 
-<p>To create new Dynamic JS script follow the below steps;</p>
+<p>To create a new Dynamic JS script follow the below steps;</p>
 
 <ol>
-	<li>Edit the property for which you want to create the JS script for,</li>
+	<li>Edit the property for which you want to create the Dynamic JS script for, click on <strong>Manage Scripts</strong> against the <strong>List Items.</strong></li>
+	<li>In the Manage Script dialog, click on Create Script button to create a new Dynamic JS Script</li>
+	<li>In the Create Script dialog, type in the JS script name ending with .js extension. Example:&nbsp;dndProviderTypeFromPGDB.js</li>
 </ol>
 
 <h2>Server tokens</h2>
@@ -121,7 +123,7 @@ switch (osName) {
 }
 </pre>
 
-<div class="Admonition_Note"><b>Note</b>&nbsp; &nbsp;The option values can be passed from the parent to the child list within an option set. You cannot pass option values across option sets.</div>
+<p>The option values can be passed from the parent to the child list within an option set using the CLIENT token. Use the <b>Create Mapping</b> to map the parameter to the option value across the option set.</p>
 
 <h2>Secure access to various resources using ResourceAlias</h2>
 
@@ -137,7 +139,7 @@ switch (osName) {
 
 <p>Resource alias is consumed by HTTP/S client, JDBC database access, Filesystem access functions.</p>
 
-<p>All the tags inside the entry are optional. In this case, an entry is specified (using requiredProtocol tag) to be usable with only https (to specify both http and https, the requiredProtocol tag may be duplicated with other values). Tag requiredURLPrefix specifies any URL with which it is used has to start with this prefix. If multiple tag requiredURLPrefix are specified the actual URL must match it prefix with at least one of them. Prefix matching does not allow the actual URL to use path components like ".." to go outside of the prefix. As an alternative, the URL may be restricted using the tag requiredURL. In that case, exact equality is required. Multiple tags requiredURL are possible. Username and password in the HTTP/S client are interpreted as HTTP Basic authentication credentials. Passwords allow encryption (same encryption as the passwords in the csa.properties file). They can also use syntax ${property.name} to refer to properties in csa.properties file. Tag baseURL (not visible in the example above) allows administrator to specify URL that is validated in the same way as a single occurrence of tag requiredURLPrefix, but changes the meaning of actual URL parameter passed to client libraries so that it is only relative to this baseURL (useful to avoid repeating hostname in the configuration and in the script).</p>
+<p>All the tags inside the entry are optional. In this case, an entry is specified (using requiredProtocol tag) to be usable with only https (to specify both http and https, the requiredProtocol tag may be duplicated with other values). Tag requiredURLPrefix specifies any URL with which it is used has to start with this prefix. If multiple tag requiredURLPrefix are specified the actual URL must match it prefix with at least one of them. Prefix matching does not allow the actual URL to use path components like ".." to go outside of the prefix. As an alternative, the URL may be restricted using the tag requiredURL. In that case, exact equality is required. Multiple tags requiredURL are possible. Username and password in the HTTP/S client are interpreted as HTTP Basic authentication credentials. Passwords allow encryption (same encryption as the passwords in the csa.properties file). They can also use syntax ${property.name} to refer to properties in csa.properties file. Tag baseURL (not visible in the example above) allows the administrator to specify URL that is validated in the same way as a single occurrence of tag requiredURLPrefix, but changes the meaning of actual URL parameter passed to client libraries so that it is only relative to this baseURL (useful to avoid repeating hostname in the configuration and in the script).</p>
 
 <p>Other protocols that are recognized:</p>
 
@@ -158,16 +160,18 @@ switch (osName) {
 &lt;/entry&gt;
 </pre>
 
-<p>SQL initialization example: <code>var client = new SQLClient (new ResourceAlias(' postgres database'));</code></p>
+<p>SQL initialization example:</p>
 
-<p>The 'call' function can execute only select query. If the query parameter contains insert or update query, the method throws an error. The function has two parameters. The first parameter is SQL query in JDBC PreparedStatement format (values of query parameters should be replaced by a question mark). The second parameter is an array of parameter values in order that should be placed to the query. These values will be placed into the query before execution. If you need to use Date, Time, or Timestamp objects, you have to use SQLDate, SQLTime or SQLTimestamp object instead.</p>
+<p><code>var client = new SQLClient (new ResourceAlias('postgres database'));</code></p>
+
+<p>The 'call' function can execute only the <samp>select</samp> query. If the query parameter contains insert or update query, the method throws an error. The function has two parameters. The first parameter is SQL query in JDBC PreparedStatement format (values of query parameters should be replaced by a question mark). The second parameter is an array of parameter values in order that should be placed to the query. These values will be placed into the query before execution. If you need to use Date, Time, or Timestamp objects, you have to use SQLDate, SQLTime or SQLTimestamp object instead.</p>
 
 <p>Query execution example:</p>
 <code>var response = client.call('SELECT * FROM csa_action where artifact_id = ? and consumer_visible = ? and version_number = ? and updated_on &gt; ?', [ '8fe9ce204ffeb8b4014ffebc521d09f6', true, 1, new SQLTimestamp('2015-09-24 11:00:00.000') ]);</code>
 
 <p>Executing query returns a response object. This object contains objects metadata, rows (number of returned rows), and data. Metadata is a HashMap object containing column name as key and column type as value. Rows contain returned rows count. Data is an array with the size of return rows count and contains HashMap objects. Every map contains column name as key and column value as value.</p>
 
-<h3>Dynamic JS script with Postgresql (non-ssl)</h3>
+<h3>Dynamic JS script with Postgresql (non-SSL)</h3>
 Use the following SQL Client entry in the resource_alias.xml
 
 <pre>&lt;entry name='dnddb'&gt;
@@ -178,7 +182,7 @@ Use the following SQL Client entry in the resource_alias.xml
 &lt;/entry&gt;
 </pre>
 
-<h3>Dynamic JS script with Postgresql (ssl)</h3>
+<h3>Dynamic JS script with Postgresql (SSL)</h3>
 Use the following SQL Client entry in the resource_alias.xml
 
 <pre>&lt;entry name='dnddb'&gt;
