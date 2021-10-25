@@ -59,13 +59,20 @@ availableValues = [{
 	<li>Click <strong>Done</strong></li>
 </ol>
 
-<h2>Server tokens</h2>
-
-<p>DND supports passing artifact IDs/token IDs as HTTP request parameters into the JavaScript. The value of each parameter takes the form of [CLIENT:&lt;token_name&gt;], [TOKEN:&lt;token_name&gt;], or [PORTAL:&lt;token_name&gt;]. To choose a supported token, click the Select Token button to the right of the parameter to open the list of supported tokens, and select the token you want.</p>
-
 <h2>Testing the Dynamic JS script</h2>
 
-<p>Execute the JavaScript in Service Designer’s JavaScript editor. To execute the JavaScript in JavaScript editor, click the refresh button in the JavaScript editor. In the sample screenshot below, the js-example-debug.js script has been modified to include debug functions. For details on debugging the Dynamic JS Script, refer to the document <a href="https://docs.microfocus.com/itom/HCMX:2021.08/PN/pn60c8a98ecba9c7.92975234">here</a></p>
+<p>Execute the JavaScript in Service Designer’s JavaScript editor. To execute the JavaScript in JavaScript editor, click the refresh button in the JavaScript editor. To test the Dynamic JS follow the below steps;</p>
+
+<p>Edit the property for which you want to test the Dynamic JS script for, click on Configure Parameter against the List Items.<br>
+Click on the Refresh button to execute the script</p>
+
+<p>In case of error while executing the script, detail logs are available in the csa.log in the DND log folder: &lt;global-volume&gt;/logs/dnd/&lt;tenant&gt;/&lt;itsma-namespace&gt;/&lt;pod&gt;__csa/csa.log</p>
+
+<p>For details on debugging the Dynamic JS Script, refer to the document <a href="https://docs.microfocus.com/itom/HCMX:2021.08/PN/pn60c8a98ecba9c7.92975234">here</a></p>
+
+<h2>Server tokens</h2>
+
+<p>DND supports passing artifact IDs/token IDs as HTTP request parameters into the JavaScript. The value of each parameter takes the form of [CLIENT:&lt;token_name&gt;], [TOKEN:&lt;token_name&gt;], or [PORTAL:&lt;token_name&gt;]. To choose a supported token,&nbsp;from the <em>Configure Parameters</em> dialog,&nbsp;click the <strong>Select Token</strong> button to the right of the parameter to open the list of supported tokens, and select the token you want.</p>
 
 <h2>Cascading Options</h2>
 
@@ -96,7 +103,7 @@ availableValues = [{
 
 <p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/pn_images/pn_image_6176c7a268b6d2.27570010.png" height="520" hspace="0" src="/mediawiki/images/pn_images/pn_image_6176c7a268b6d2.27570010.png" style="width:500px;height:520px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;border:0px solid black;" vspace="0" width="500"></p>
 
-<p>The Server Edition property is dependent on the Operating System to list its values. Therefore, the Server Edition needs the value of the Operating System property to be passed to its script. To pass the selected value from one property to another, use a HTTP request parameter. The value of the parameter is in the form of [CLIENT:&lt;name_of_property&gt;] where &lt;name_of_property&gt; is the property whose value controls the selection of the value in the dynamic property. It is the Name field of the property, not Display Name.</p>
+<p>The Server Edition property is dependent on the Operating System to list its values. Therefore, the Server Edition needs the value of the Operating System property to be passed to its script. To pass the selected value from one property to another, use a HTTP request parameter. The value of the parameter is in the form of [CLIENT:&lt;name_of_property&gt;] where &lt;name_of_property&gt; is the property whose value controls the selection of the value in the dynamic property. It is the Name field of the property, not the Display Name.</p>
 
 <p>In this example, the property Server Edition uses the parameter ostype and the passed value is [CLIENT:ostype] as shown below – to open the dialog click on Configure Parameters next to List Items dropdown. Modify the Server Edition property and click Done. Click Save to save the subscriber options.</p>
 
