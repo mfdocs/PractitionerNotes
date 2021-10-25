@@ -121,7 +121,7 @@ The following table summarizes the subscriber options to be displayed:</p>
 <h3>Dynamic JS script with Postgresql (non-ssl)</h3>
 Use the following SQL Client entry in the resource_alias.xml
 
-<pre>&lt;entry name='csadb'&gt;
+<pre>&lt;entry name='dnddb'&gt;
 &nbsp; &nbsp;&lt;username&gt;postgres&lt;/username&gt;
 &nbsp; &nbsp;&lt;requiredProtocol&gt;jdbc&lt;/requiredProtocol&gt;
 &nbsp; &nbsp;&lt;baseURL&gt;jdbc:postgresql://[hostname]:5432/[databasename]&lt;/baseURL&gt;
@@ -131,7 +131,7 @@ Use the following SQL Client entry in the resource_alias.xml
 
 <h3>Dynamic JS script with Postgresql (ssl)</h3>
 
-<pre>&lt;entry name='csadb'&gt;
+<pre>&lt;entry name='dnddb'&gt;
 &nbsp; &nbsp;&lt;username&gt;postgres&lt;/username&gt;
 &nbsp; &nbsp;&lt;requiredProtocol&gt;jdbc&lt;/requiredProtocol&gt;
 &nbsp; &nbsp;&lt;baseURL&gt;jdbc:postgresql://[hostname]:5432/[databasename]?ssl=true&amp;amp;sslmode=require&amp;amp;sslfactory=org.postgresql.ssl.DefaultJavaSSLFactory&lt;/baseURL&gt;
@@ -141,7 +141,7 @@ Use the following SQL Client entry in the resource_alias.xml
 
 <h3>Dynamic JS script with MSSQL</h3>
 
-<pre>&lt;entry name='csadb'&gt;
+<pre>&lt;entry name='dnddb'&gt;
 &nbsp; &nbsp;&lt;username&gt;sa&lt;/username&gt;
 &nbsp; &nbsp;&lt;requiredProtocol&gt;jdbc&lt;/requiredProtocol&gt;
 &nbsp; &nbsp;&lt;baseURL&gt;jdbc:jtds:sqlserver://[hostname]:1433/[databasename]&lt;/baseURL&gt;
@@ -152,6 +152,22 @@ Use the following SQL Client entry in the resource_alias.xml
 <h3>JS Script for using the SQL Client connection</h3>
 Create a new script to use the postgres SQL Client connection, an example JS script to read the provider types from the DND database;
 
-<pre>script
+<pre>var client = new SQLClient (new ResourceAlias('dnddb'));
+var response = client.call('select uuid, display_name from dnd_996484741.csa_category where discriminator like ?', ['%PROVIDER%']);
+
+var availableValues = [];
+
+for(var row in response.data) {
+
+    appName = response.data[row].get('display_name');
+    appValue = response.data[row].get('uuid');
+
+    var availableRow = {
+        'value' : appValue,
+        'displayName' : appName
+    };
+
+    availableValues.push(availableRow);
+}
 </pre>
 </html>
