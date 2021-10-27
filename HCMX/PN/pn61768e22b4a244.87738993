@@ -162,6 +162,8 @@ switch (osName) {
 	<li>file - when used with FileStorage.</li>
 </ul>
 
+<p>The password field in the XML accepts either the plain text or the encrypted string. To encrypt the password you need to use the <em><strong>passwordUtil </strong></em>tool which is made available through the support ticket, please contact MicroFocus support to get the passwordUtil tool.</p>
+
 <h2>SQL Client</h2>
 
 <p>SQL client is accessible through object SQLClient which provides a single function named "call". Initialization of SQL client has one parameter. This parameter represents the ResourceAlias instance. This alias is located at the resource-alias.xml file in the same directory as a dynamic property javascript file. This alias instance must be JDBC type and should contain the username (mandatory), base URL (mandatory), and password (optional). Resource Alias example:</p>
@@ -185,7 +187,7 @@ switch (osName) {
 
 <p>Executing query returns a response object. This object contains objects metadata, rows (number of returned rows), and data. Metadata is a HashMap object containing column name as key and column type as value. Rows contain returned rows count. Data is an array with the size of return rows count and contains HashMap objects. Every map contains column name as key and column value as value.</p>
 
-<h3>Dynamic JS script with Postgresql (non-SSL)</h3>
+<h3>ResourceAlias entry for Postgresql (non-SSL)</h3>
 Use the following SQL Client entry in the resource_alias.xml
 
 <pre>&lt;entry name='dnddb'&gt;
@@ -196,7 +198,7 @@ Use the following SQL Client entry in the resource_alias.xml
 &lt;/entry&gt;
 </pre>
 
-<h3>Dynamic JS script with Postgresql (SSL)</h3>
+<h3>ResourceAlias entry for Postgresql (SSL)</h3>
 Use the following SQL Client entry in the resource_alias.xml
 
 <pre>&lt;entry name='dnddb'&gt;
@@ -211,7 +213,7 @@ Use the following SQL Client entry in the resource_alias.xml
 
 <p>The class name for sslfactory parameter is <code>org.postgresql.ssl.DefaultJavaSSLFactory</code>, refer to <a href="https://jdbc.postgresql.org/documentation/head/ssl-client.html">document </a>for more details on the Postgresql SSL connection parameters.</p>
 
-<h3>Dynamic JS script with MSSQL</h3>
+<h3>ResourceAlias entry for MSSQL</h3>
 Use the following SQL Client entry in the resource_alias.xml
 
 <pre>&lt;entry name='mssqldb'&gt;
@@ -222,7 +224,7 @@ Use the following SQL Client entry in the resource_alias.xml
 &lt;/entry&gt;
 </pre>
 
-<h3>JS Script for using the SQL Client connection</h3>
+<h3>Dynamic JS Script for using the SQL Client connection</h3>
 Create a new script to use the Postgresql SQL Client connection, an example JS script to read the provider types from the DND database;
 
 <pre>var client = new SQLClient (new ResourceAlias('dnddb'));
