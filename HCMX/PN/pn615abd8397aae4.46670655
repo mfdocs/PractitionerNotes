@@ -169,7 +169,79 @@ The following is an example of the structure of the response data in JSON format
 }
 </pre>
 
+<h2>Removing remote reference</h2>
+
+Before removing the remote reference, you need to get the RemoteOfferingId for the corresponding 
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>HTTP method</td>
+			<td>GET</td>
+		</tr>
+		<tr>
+			<td>REST API</td>
+			<td>rest/&lt;TENANT&gt;/ems/Offering?layout=Id,RemoteOfferingId,Service,Description,DisplayLabel,ProviderId&amp;filter=(Id='&lt;offering_id&gt;')</td>
+		</tr>
+		<tr>
+			<td>Returns</td>
+			<td>200 - Success<br>
+			<br>
+			400 - Error response<br>
+			403 - Unauthorized or invalid user</td>
+		</tr>
+		<tr>
+			<td>Response</td>
+			<td>See example</td>
+		</tr>
+	</tbody>
+</table>
+
 <h2>Delete a version of a design</h2>
+
+<div class="Admonition_Note"><span class="autonumber">Note&nbsp;</span>You cannot delete the design when its in published, its is not recommended to do so. If you still want to cleanup, then you need to remove the remote reference created to the SMAX offering and then delete the design</div>
+
+The following is an example of the structure of the response data in JSON format:
+
+<pre>{
+  "@self" : "/12345/dnd/api/container/sequence/2c908cb97353331f017353344e660003",
+  "@type" : "urn:x-hp:2012:software:cloud:data_model:blueprint:collection",
+  "@created" : "2020-07-15T16:00:03.686Z",
+  "@modified" : "2020-07-16T15:23:00.057Z",
+  "global_id" : "2c908cb97353331f017353344e660003",
+  "name" : "AAA",
+  "description" : "",
+  "icon" : "/12345/dnd/api/blobstore/IT_infrastructure.png?tag=library",
+  "ext" : {
+    "csa_name_key" : "bc7b6bae-548c-44e6-9c33-055a1c7f5add",
+    "csa_critical_system_object" : false
+  },
+  "container_type" : "SEQUENCE_ARTIFACT_CONTAINER",
+  "tags" : [ ],
+  "members" : [ {
+    "@self" : "/12345/dnd/api/service/design/2c908cb97353331f01735334531c0005",
+    "@type" : "urn:x-hp:2012:software:cloud:data_model:blueprint",
+    "@created" : "2020-07-15T16:00:04.892Z",
+    "description" : "",
+    "published" : false,
+    "version" : "1.0.0",
+    "upgrade_available" : false,
+    "designId" : "2c908cb97353331f01735334531c0005"
+  }, {
+    "@self" : "/12345/dnd/api/service/design/2c908cb97353331f01735838bc59011a",
+    "@type" : "urn:x-hp:2012:software:cloud:data_model:blueprint",
+    "@created" : "2020-07-16T15:23:00.057Z",
+    "description" : "AAA July 16, 2020 3:22:59 PM UTC",
+    "published" : false,
+    "version" : "2.0.0",
+    "upgrade_available" : false,
+    "designId" : "2c908cb97353331f01735838bc59011a"
+  } ],
+  "@total_results" : 2,
+  "@items_per_page" : 2,
+  "@start_index" : 0
+}
+</pre>
 
 <table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
 	<tbody>
