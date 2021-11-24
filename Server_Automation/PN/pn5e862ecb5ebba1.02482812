@@ -1,8 +1,8 @@
-<p>This document will show how one can re-balance the routes on satellites such that a different core is considered the primary route. In this example a pair of satellites in the OX1 realm will be resigned such that the IXNAY core becomes the lowest cost route.</p>
+<html><p>This document will show how one can re-balance the routes on satellites such that a different core is considered the primary route. In this example a pair of satellites in the OX1 realm will be resigned such that the IXNAY core becomes the lowest cost route.</p>
 
 <p><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e862ef29374c8.08631642.png" style="border:0px solid black; height:500px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:669px" vspace="0"></p>
 
-<p>The first step to reweighing satellites is planning and understand what has to be done. The above diagram can be obtained by the use of the cora tool shipped in the OPSWtool support bundle. MeshHardware is gathered so that the primary core can be highlighted on the mesh gateway diagram.</p>
+<p>The first step to reweighing satellites is planning and understand what has to be done. The above diagram can be obtained by the use of the cora tool shipped in the <a href="http://portal.microfocus.com/s/article/KM000001427?language=en_US" target="_blank">OPSWtool </a>support bundle. MeshHardware is gathered so that the primary core can be highlighted on the mesh gateway diagram.</p>
 
 <pre>[root@wfs0 ~]# cora -c MeshGateways,MeshHardware -i -v server
 Gathering
@@ -39,7 +39,7 @@ opswgw.properties:opswgw.TunnelSrc=192.168.210.51:2001:100:0:/var/opt/opsware/cr
 
 <p>The significance of this is that on an upgrade the opswgw.properties file will be reset with the parent_gw.ip as defined in the /var/opt/opsware/install_opsware/cdf/cdf.xml file.</p>
 
-<pre>       <opswareparameter name="satellite.parentgw.ip" value="192.168.210.51" ttl="3600" dc="2017-06-24T00:30:24Z"></opswareparameter></pre>
+<pre>       <opswareparameter dc="2017-06-24T00:30:24Z" name="satellite.parentgw.ip" ttl="3600" value="192.168.210.51"></opswareparameter></pre>
 
 <p>Which means if you modify opsgw.properties and switch IP addresses to re-balance you also need to adjust the CDF file lest on an upgrade it reverts and cause you a problem as you'll have multiple routes at different weight to the same root gateway and no fail over.</p>
 
@@ -54,7 +54,7 @@ vi /etc/opt/opsware/opswgw-ox1-1/opsgw.properties
 opswgw.TunnelSrc=192.168.210.53:2001:100:0:/var/opt/opsware/crypto/opswgw-ox1-1/opswgw.pem
 
 vi /var/opt/opsware/install_opsware/cdf/cdf.xml
-<opswareparameter name="satellite.parentgw.ip" value="192.168.210.53" ttl="3600" dc="2017-06-24T00:30:24Z"></opswareparameter></pre>
+<opswareparameter dc="2017-06-24T00:30:24Z" name="satellite.parentgw.ip" ttl="3600" value="192.168.210.53"></opswareparameter></pre>
 
 <p>Making the changes on ox1-2 gateway</p>
 
@@ -65,10 +65,11 @@ vi /etc/opt/opsware/opswgw-ox1-2/opsgw.properties
 opswgw.properties:opswgw.TunnelSrc=192.168.210.53:2001:100:0:/var/opt/opsware/crypto/opswgw-ox1-2/opswgw.pem
 
 vi /var/opt/opsware/install_opsware/cdf/cdf.xml
-<opswareparameter name="satellite.parentgw.ip" value="192.168.210.53" ttl="3600" dc="2017-06-24T00:30:24Z"></opswareparameter></pre>
+<opswareparameter dc="2017-06-24T00:30:24Z" name="satellite.parentgw.ip" ttl="3600" value="192.168.210.53"></opswareparameter></pre>
 
 <p>After a restart the gateways on each satellite can be verified to have re-weighted using the CORA tool</p>
 
 <p><img alt="" border="0" hspace="0" src="/mediawiki/images/pn_images/pn_image_5e862ef2c51d50.44884733.png" style="border:0px solid black; height:387px; margin-bottom:0px; margin-left:0px; margin-right:0px; margin-top:0px; width:512px" vspace="0"></p>
 
 <p>Observe that the two satellites now have a preference for the IXNAY core as their lowest cost route.</p>
+</html>
