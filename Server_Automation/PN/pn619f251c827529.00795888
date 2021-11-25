@@ -1,1 +1,55 @@
- 
+<html><p id="SA_Database_connectivity">When setting up an SA environment with more than one core, the primary core will need the ability to connect to all the other cores databases. This is required to drive the Multimaster state diagram in the GUI interface and to allow database conflicts to be resolved. Conflict resolution requires that the&nbsp;<tt>Spin</tt>&nbsp;can see inside the database to understand why the data is different.</p>
+
+<p>Considerations for the tunnels vs direct.</p>
+
+<ul>
+	<li>All traffic to the database is in cleartext.</li>
+	<li>
+	<p>Database synchronization tools such as those in&nbsp;<tt>/opt/opsware/support/bin/I_T</tt>&nbsp;communicate with the database and produce a lot of traffic. Over the gateways, this may not be desirable for throughput reasons.</p>
+	</li>
+</ul>
+
+<p>Tunnelled DB communication</p>
+
+<p>By default, SA will configure itself to make a connection to the remote database via the gateways.</p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/3/3f/graphviz-G-98e336aec1223bc8ead60f35d02d3a1f609d05ea.png" height="312" hspace="0" src="https://docs.microfocus.com/mediawiki/images/3/3f/graphviz-G-98e336aec1223bc8ead60f35d02d3a1f609d05ea.png" vspace="0" width="634"></p>
+
+<p>This is accomplished by having mgwA forward connections to the remote database. An entry such as this will appear in the gateway configuration file&nbsp;<tt>/etc/opt/opsware/opsw-mgw-coreA/opsgw.custom</tt>&nbsp;for mgwA. This line of configuration tells the MGW to listen on port 20001 for a connection and forward traffic to CoreB and then onto a server call dbB on port 1521.</p>
+
+<pre>opswgw.ForwardTCP=20001:coreB-mm:dbB:1521</pre>
+
+<p>On each secondary core, we have an egress rule that allows the port Forward from CoreA to exit, aka egress, the CoreB mgw if the connection was established by the MMSPIN component. MMSPIN stands for Multimaster Spin and its the designation given to the Spin that resides on the primary core of a mesh. This configuration will be in the file&nbsp;<tt>/etc/opt/opsware/opsw-mgw-coreB/opsgw.custom</tt></p>
+
+<pre>opswgw.EgressFilter=tcp:*:1521:MMSPIN:COREA-mm</pre>
+
+<p>For spinA to access the remote database dbB it must connect via this port forward in the&nbsp;<tt>/var/opt/oracle/tnsnames.ora</tt>&nbsp;file.</p>
+
+<pre>DBB =
+  (DESCRIPTION =
+    (ADDRESS_LIST =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 20001))
+  )
+  (CONNECT_DATA = (SID = DBB) (SERVER = DEDICATED)
+ )
+)</pre>
+
+<h2 id="Direct_DB_communication">Direct DB communication</h2>
+
+<p>It is possible for CoreA to connect directly to dbB</p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/b/be/graphviz-G-402d268e7ba28c94066a4fa742653dfcca2eff99.png" height="397" hspace="0" src="https://docs.microfocus.com/mediawiki/images/b/be/graphviz-G-402d268e7ba28c94066a4fa742653dfcca2eff99.png" vspace="0" width="470"></p>
+
+<p>This configuration requires that COREA communicate directly with the DB itself instead of the MGW TCP port Forward.</p>
+
+<pre>DBB =
+  (DESCRIPTION =
+    (ADDRESS_LIST =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = dbB)(PORT = 1521))
+  )
+  (CONNECT_DATA = (SID = DBB) (SERVER = DEDICATED)
+ )
+)</pre>
+
+<p>In this mode, the MGW is not required and no special configuration of them is required.</p>
+</html>
