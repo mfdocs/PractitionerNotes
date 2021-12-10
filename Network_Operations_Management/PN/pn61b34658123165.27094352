@@ -1,1 +1,263 @@
+<html><p>A load balancer is used to route traffic from outside the cluster to the services hosted in a cluster. It balances the traffic to the internal services which would be accessed by all nodes of the cluster. Usually, these services aren't accessible for users outside of the cluster.&nbsp;&nbsp;</p>
+
+<h2 id="Configure_an_internal_load_balancer">Configure the load balancer</h2>
+
+<p>The following sections use NGINX configuration<strong>&nbsp;</strong>as an example to demonstrate how to configure a load balancer for NOM. This page assumes that NGINX is already installed as a load balancer and is configured to receive traffic from users and external applications.</p>
+
+<h3 id="Configure_an_external&nbsp;load_balancer">Configure SSL CIPHERS</h3>
+
+<p>CDF only supports the following SSL cipher list for inbound connections.</p>
+
+<ul>
+	<li>ECDHE-RSA-AES128-GCM-SHA256</li>
+	<li>ECDHE-RSA-AES256-GCM-SHA384</li>
+	<li>ECDHE-RSA-AES128-SHA256</li>
+	<li>ECDHE-RSA-AES256-SHA384</li>
+	<li>ECDHE-ECDSA-AES128-GCM-SHA256</li>
+	<li>ECDHE-ECDSA-AES256-GCM-SHA384</li>
+	<li>ECDHE-ECDSA-AES128-SHA256</li>
+	<li>ECDHE-ECDSA-AES256-SHA384</li>
+</ul>
+
+<p>Make sure the load balancer supports at least one of the listed ciphers.</p>
+
+<h3>Configure NGINX for CDF ingress</h3>
+
+<p>Add the following block in the load balancer configuration file for incoming requests on port 5443 to the node port of <code>portal-ingress-controller-svc</code> in the CDF core namespace. Specify the IP address of all the worker nodes in your OpenShift cluster in the upstream section.</p>
+
+<pre><code>server { # Listen to CDF traffic and proxy incoming to apphub-ingress-https
+    listen 5443;                        # Port using which you will login
+    proxy_pass apphub-ingress-https;    # apphub-ingress-https is the name of the upstream section that will define the worker nodes in the cluster
+}
  
+upstream apphub-ingress-https {         # upstream block defines all the worker nodes that should receive the incoming request and forward to the specified port
+    server &lt;IP address of worker node 1&gt;:&lt;node port of portal-ingress-controller-svc&gt;;
+    server &lt;IP address of worker node 2&gt;:&lt;node port of portal-ingress-controller-svc&gt;;
+    server &lt;IP address of worker node 3&gt;:&lt;node port of portal-ingress-controller-svc&gt;;
+}</code></pre>
+
+<h3>Configure NGINX for NOM</h3>
+
+<p>Using the following table update the server section and the upstream section.</p>
+
+<p><strong>For mixed mode deployment</strong></p>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<thead>
+		<tr>
+			<th scope="col">Service name</th>
+			<th scope="col">Default incoming port</th>
+			<th scope="col">Default outgoing port</th>
+			<th scope="col">NGINX frontend configuration</th>
+			<th scope="col">NGINX backend configuration</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>itom-ingress-controller-svc</td>
+			<td>The external Access port of the suite</td>
+			<td>Nodeport of the itom-ingress-controller-svc service</td>
+			<td>server {&nbsp;<br>
+			&nbsp; &nbsp; listen &lt;External Access port of the suite&gt;; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>
+			&nbsp; &nbsp; proxy_pass nom-ingress-https; &nbsp;&nbsp;<br>
+			}</td>
+			<td>upstream nom-ingress-https { &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br>
+			&nbsp; &nbsp; server &lt;IP address of worker node 1&gt;:&lt;node port of itom-ingress-controller-svc&gt;;<br>
+			&nbsp; &nbsp; server &lt;IP address of worker node 2&gt;:&lt;node port of itom-ingress-controller-svc&gt;;<br>
+			&nbsp; &nbsp; server &lt;IP address of worker node 3&gt;:&lt;node port of itom-ingress-controller-svc&gt;;<br>
+			}</td>
+		</tr>
+		<tr>
+			<td>itomdipulsar-proxy</td>
+			<td>31001</td>
+			<td>31001</td>
+			<td>server {&nbsp;<br>
+			&nbsp; &nbsp; listen 31001; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>
+			&nbsp; &nbsp; proxy_pass itomdipulsar-proxy; &nbsp;&nbsp;<br>
+			}</td>
+			<td>upstream itomdipulsar-proxy { &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br>
+			&nbsp; &nbsp; server &lt;IP address of worker node 1&gt;:31001;<br>
+			&nbsp; &nbsp; server &lt;IP address of worker node 2&gt;:31001;<br>
+			&nbsp; &nbsp; server &lt;IP address of worker node 3&gt;:31001;<br>
+			}</td>
+		</tr>
+		<tr>
+			<td>itom-di-minio-nodeport</td>
+			<td>30006</td>
+			<td>30006</td>
+			<td>server {&nbsp;<br>
+			&nbsp; &nbsp; listen 30006; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>
+			&nbsp; &nbsp; proxy_pass itom-di-minio-nodeport; &nbsp;&nbsp;<br>
+			}</td>
+			<td>upstream itom-di-minio-nodeport { &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br>
+			&nbsp; &nbsp; server &lt;IP address of worker node 1&gt;:30006;<br>
+			&nbsp; &nbsp; server &lt;IP address of worker node 2&gt;:30006;<br>
+			&nbsp; &nbsp; server &lt;IP address of worker node 3&gt;:30006;<br>
+			}</td>
+		</tr>
+	</tbody>
+</table>
+
+<p><strong>For containerized mode deployment</strong></p>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<thead>
+		<tr>
+			<th scope="col">Service name</th>
+			<th scope="col">Default incoming port</th>
+			<th scope="col">Default outgoing port</th>
+			<th scope="col">NGINX frontend configuration</th>
+			<th scope="col">NGINX backend configuration</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>itom-ingress-controller-svc</td>
+			<td>The external Access port of the suite</td>
+			<td>Nodeport of the itom-ingress-controller-svc service</td>
+			<td>server {&nbsp;<br>
+			&nbsp; &nbsp; listen &lt;External Access port of the suite&gt;; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>
+			&nbsp; &nbsp; proxy_pass nom-ingress-https; &nbsp;&nbsp;<br>
+			}</td>
+			<td>upstream nom-ingress-https { &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;server &lt;IP address of worker node 1&gt;:&lt;node port of itom-ingress-controller-svc&gt;;<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;server &lt;IP address of worker node 2&gt;:&lt;node port of itom-ingress-controller-svc&gt;;<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;server &lt;IP address of worker node 3&gt;:&lt;node port of itom-ingress-controller-svc&gt;;<br>
+			}</td>
+		</tr>
+		<tr>
+			<td>itom-nom-na-proxy (SSH)</td>
+			<td>22</td>
+			<td>Nodeport of ssh-port in the itom-nom-na-proxy service</td>
+			<td>server {&nbsp;<br>
+			&nbsp;&nbsp; &nbsp;listen 22;<br>
+			&nbsp;&nbsp; &nbsp;proxy_pass nom-ssh;<br>
+			}</td>
+			<td>
+			<p>upstream nom-ssh {<br>
+			&nbsp;&nbsp; &nbsp;server &lt;IP address of worker node 1&gt;:&lt;Nodeport of itom-nom-na-proxy for port 22&gt;;<br>
+			&nbsp;&nbsp; &nbsp;server &lt;IP address of worker node 2&gt;:&lt;Nodeport of itom-nom-na-proxy for port 22&gt;;<br>
+			&nbsp;&nbsp; &nbsp;server &lt;IP address of worker node 3&gt;:&lt;Nodeport of itom-nom-na-proxy for port 22&gt;;</p>
+
+			<p>}</p>
+			</td>
+		</tr>
+		<tr>
+			<td>itom-nom-na-proxy (Telnet)</td>
+			<td>23</td>
+			<td>Nodeport of telnet-port in the itom-nom-na-proxy service</td>
+			<td>server {&nbsp;<br>
+			&nbsp;&nbsp; &nbsp;listen 23;<br>
+			&nbsp;&nbsp; &nbsp;proxy_pass nom-telnet;<br>
+			}</td>
+			<td>
+			<p>upstream nom-telnet {<br>
+			&nbsp;&nbsp; &nbsp;server &lt;IP address of worker node 1&gt;:&lt;Nodeport of itom-nom-na-proxy for port 23&gt;;<br>
+			&nbsp;&nbsp; &nbsp;server &lt;IP address of worker node 2&gt;:&lt;Nodeport of itom-nom-na-proxy for port 23&gt;;<br>
+			&nbsp;&nbsp; &nbsp;server &lt;IP address of worker node 3&gt;:&lt;Nodeport of itom-nom-na-proxy for port 23&gt;;</p>
+
+			<p>}</p>
+			</td>
+		</tr>
+		<tr>
+			<td>itom-nom-na-proxy (UI proxy)</td>
+			<td>
+			<p>Nodeport of ui-proxy-server-port in the itom-nom-na-proxy service.</p>
+
+			<p>The default value is 32324</p>
+			</td>
+			<td>Nodeport of ui-proxy-server-port in the itom-nom-na-proxy service</td>
+			<td>server {&nbsp;<br>
+			&nbsp;&nbsp; &nbsp;listen &lt;Node port of NA UI proxy&gt;;<br>
+			&nbsp;&nbsp; &nbsp;proxy_pass nom-uiproxy;<br>
+			}</td>
+			<td>
+			<p>upstream nom-uiproxy {<br>
+			&nbsp;&nbsp; &nbsp;server &lt;IP address of worker node 1&gt;:&lt;Nodeport of itom-nom-na-proxy for ui-proxy-server-port&gt;;<br>
+			&nbsp;&nbsp; &nbsp;server &lt;IP address of worker node 2&gt;:&lt;Nodeport of itom-nom-na-proxy for ui-proxy-server-port&gt;;<br>
+			&nbsp;&nbsp; &nbsp;server &lt;IP address of worker node 3&gt;:&lt;Nodeport of itom-nom-na-proxy for ui-proxy-server-port&gt;;</p>
+
+			<p>}</p>
+			</td>
+		</tr>
+		<tr>
+			<td>itom-nom-na-syslog</td>
+			<td>514</td>
+			<td>Nodeport of the itom-nom-na-syslog service</td>
+			<td>server {&nbsp;<br>
+			&nbsp;&nbsp; &nbsp;listen 514 udp;<br>
+			&nbsp;&nbsp; &nbsp;proxy_pass nom-syslog;<br>
+			}</td>
+			<td>
+			<p>upstream nom-syslog {<br>
+			&nbsp;&nbsp; &nbsp;server &lt;IP address of worker node 1&gt;:&lt;Nodeport of itom-nom-na-syslog&gt;;&nbsp;<br>
+			&nbsp;&nbsp; &nbsp;server &lt;IP address of worker node 2&gt;:&lt;Nodeport of itom-nom-na-syslog&gt;;<br>
+			&nbsp;&nbsp; &nbsp;server &lt;IP address of worker node 3&gt;:&lt;Nodeport of itom-nom-na-syslog&gt;;&nbsp;</p>
+
+			<p>}</p>
+			</td>
+		</tr>
+		<tr>
+			<td>itom-nom-ftpd</td>
+			<td>21</td>
+			<td>Nodeport of the itom-nom-ftpd service</td>
+			<td>server {&nbsp;<br>
+			&nbsp;&nbsp; &nbsp;listen 21;<br>
+			&nbsp;&nbsp; &nbsp;proxy_pass nom-tftp;<br>
+			}</td>
+			<td>
+			<p>upstream nom-ftpd {<br>
+			&nbsp;&nbsp; &nbsp;server &lt;IP address of worker node 1&gt;:&lt;Nodeport of itom-nom-ftpd&gt;;<br>
+			&nbsp;&nbsp; &nbsp;server &lt;IP address of worker node 2&gt;:&lt;Nodeport of itom-nom-ftpd&gt;;<br>
+			&nbsp;&nbsp; &nbsp;server &lt;IP address of worker node 3&gt;:&lt;Nodeport of itom-nom-ftpd&gt;;</p>
+
+			<p>}</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>itom-nom-ftpd-pasv</p>
+			</td>
+			<td>Port range 31350-31369</td>
+			<td>Port range 31350-31369</td>
+			<td>
+			<p>server {&nbsp;<br>
+			listen 31350;&nbsp;<br>
+			proxy_pass nom-tftp-31350;&nbsp;<br>
+			}</p>
+
+			<p>Repeat for each port in the&nbsp;31350-31369 range.</p>
+			</td>
+			<td>
+			<p>upstream nom-tftp-31350 {&nbsp;<br>
+			server &lt;IP address of worker node 1&gt;:&lt;Nodeport of itom-nom-tftpd for port 31350&gt;;<br>
+			server &lt;IP address of worker node 2&gt;:&lt;Nodeport of itom-nom-tftpd for port 31350&gt;;<br>
+			server &lt;IP address of worker node 3&gt;:&lt;Nodeport of itom-nom-tftpd for port 31350&gt;;</p>
+
+			<p>}</p>
+
+			<p>Repeat for each port in the&nbsp;31350-31369 range.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>trapd-external</td>
+			<td>162</td>
+			<td>Nodeport of the trapd-external service</td>
+			<td>server {&nbsp;<br>
+			listen 162 udp;&nbsp;<br>
+			proxy_pass trapd-external;&nbsp;<br>
+			}</td>
+			<td>
+			<p>upstream trapd-external {&nbsp;<br>
+			server &lt;IP address of worker node 1&gt;:&lt;Nodeport of the trapd-external service&gt;;<br>
+			server &lt;IP address of worker node 2&gt;:&lt;Nodeport of the trapd-external service&gt;;<br>
+			server &lt;IP address of worker node 3&gt;:&lt;Nodeport of the trapd-external service&gt;;</p>
+
+			<p>}</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>NOM supports TFTP, however in this example configuring TFTP is not covered.</p>
+</html>
