@@ -67,6 +67,148 @@ sa1080ct8c1          | NON_COMPLIANT  |               0 |                 310 | 
 
 <p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/c/cd/image2021-3-16_13-44-9.png" height="314" hspace="0" src="/mediawiki/images/pn_images/pn_image_6050fdbc953cf6.31908906.png" style="width: 800px; height: 314px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
 
+<h2>Building a custom HTML Audit Result report</h2>
+
+<p>SA provides the ability to export the Audit Results as an HTML report.&nbsp; What if you don't like that report format or you want to include additional information?<br>
+The following code will accept a JOB number and if it's an Audit extract the results as XML, just like we can in the user interface.</p>
+
+<pre>#!/opt/opsware/bin/python
+import sys
+from pytwist import twistserver
+from pytwist.com.opsware.job import JobRef
+from pytwist.com.opsware.common import NotFoundException
+from pytwist.com.opsware.compliance.sco import SCOJobResult
+FORMAT_XML = 1
+FORMAT_JSON = 2
+FORMAT_CSV = 3
+FORMAT_HTML = 4
+
+def main(jobid):
+&nbsp; &nbsp; ts = twistserver.TwistServer()
+&nbsp; &nbsp; ts.authenticate('user','password')
+&nbsp; &nbsp; AuditResultService = ts.compliance.sco.AuditResultService
+&nbsp; &nbsp; try:
+&nbsp; &nbsp; &nbsp; &nbsp; jobRef = ts.job.JobService.getResult(JobRef(jobid))
+&nbsp; &nbsp; &nbsp; &nbsp; if not isinstance(jobRef, SCOJobResult):
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; print("Job %s is not an Audit" % jobid)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sys.exit(1)
+&nbsp; &nbsp; &nbsp; &nbsp; auditResultRef = jobRef.result
+&nbsp; &nbsp; &nbsp; &nbsp; vo = AuditResultService.getAuditResultVO(auditResultRef)
+&nbsp; &nbsp; &nbsp; &nbsp; results = AuditResultService.getAuditResult(auditResultRef, vo.targets, FORMAT_XML)
+&nbsp; &nbsp; &nbsp; &nbsp; print(results.replace('xmlns="http://www.hp.com/SAS/AuditResult"',''))
+&nbsp; &nbsp; except NotFoundException:
+&nbsp; &nbsp; &nbsp; &nbsp; print("Job %s not found" % jobid)
+&nbsp; &nbsp; &nbsp; &nbsp; sys.exit(1)
+
+if __name__ == "__main__":
+&nbsp; &nbsp; if len(sys.argv) &lt; 2:
+&nbsp; &nbsp; &nbsp; &nbsp; print "Usage: %s &lt;jobid&gt;" % sys.argv[0]
+&nbsp; &nbsp; &nbsp; &nbsp; sys.exit(1)
+&nbsp; &nbsp; main(sys.argv[1])
+</pre>
+
+<p>Now we have an XML file we can perform an XLST transform on this data to convert it into the HTML report format required.</p>
+
+<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"&gt;
+
+&lt;xsl:template match="/"&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+html {
+&nbsp; font-family: sans-serif;
+}
+body {
+&nbsp; &nbsp; color: #555;
+&nbsp; &nbsp; font-size: 10pt;
+}
+h1 {
+&nbsp; font-size: 2em;
+&nbsp; margin: 0.67em 0;
+}
+h2 {
+&nbsp; font-weight: 300;
+&nbsp; padding: 0;
+&nbsp; margin-top: 0;
+}
+.footer {
+&nbsp; &nbsp; font-size: 87.5%;
+&nbsp; &nbsp; border-top: 1px solid #eee;
+&nbsp; &nbsp; margin-top: 3.4286em;
+&nbsp; &nbsp; padding: 1.1429em;
+&nbsp; &nbsp; background: rgb(250, 250, 250);
+}
+.styled-table {
+&nbsp; &nbsp; border-collapse: collapse;
+&nbsp; &nbsp; margin: 25px 0;
+&nbsp; &nbsp; min-width: 400px;
+&nbsp; &nbsp; font-size: 0.9em;
+&nbsp; &nbsp; box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+.styled-table thead tr {
+&nbsp; &nbsp; background-color: #009879;
+&nbsp; &nbsp; color: #ffffff;
+&nbsp; &nbsp; text-align: left;
+}
+.styled-table th,
+.styled-table td {
+&nbsp; &nbsp; padding: 12px 15px;
+}
+.styled-table tbody tr {
+&nbsp; &nbsp; border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+&nbsp; &nbsp; background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+&nbsp; &nbsp; border-bottom: 2px solid #009879;
+}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&nbsp; &lt;xsl:apply-templates select="AuditResult"/&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template match="AuditResult"&gt;
+&nbsp; &lt;h1&gt;&lt;xsl:value-of select="DisplayName"/&gt;&lt;/h1&gt;
+&nbsp; &lt;xsl:for-each select="TargetResults"&gt;
+&nbsp; &nbsp; &lt;xsl:apply-templates select="TargetResult[TargetStatus/text()='Non-Compliant']"/&gt;
+&nbsp; &lt;/xsl:for-each&gt;
+&nbsp; &lt;div class="footer"&gt;&lt;xsl:value-of select="@date"/&gt;&lt;/div&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template match="TargetResult"&gt;
+&nbsp; &lt;h2&gt;&lt;xsl:value-of select="Target/Server/Name"/&gt;&lt;/h2&gt;
+&nbsp; &lt;xsl:apply-templates select="Results"/&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template match="Results"&gt;
+&nbsp; &lt;table class="styled-table"&gt;
+&nbsp; &lt;thead&gt;&lt;th&gt;Rule&lt;/th&gt;&lt;th&gt;ActualValue&lt;/th&gt;&lt;/thead&gt;&lt;tbody&gt;
+&nbsp; &lt;xsl:for-each select="Result"&gt;
+&nbsp; &nbsp; &lt;tr&gt;
+&nbsp; &nbsp; &nbsp; &lt;td&gt;&lt;xsl:value-of select="ResultDetails/DisplayName"/&gt;&lt;/td&gt;
+&nbsp; &nbsp; &nbsp; &lt;td&gt;&lt;pre&gt;&lt;xsl:value-of select="ResultDetails/ActualValue"/&gt;&lt;/pre&gt;&lt;/td&gt;
+&nbsp; &nbsp; &lt;/tr&gt;
+&nbsp; &lt;/xsl:for-each&gt;
+&nbsp; &lt;/tbody&gt;&lt;/table&gt;
+&lt;/xsl:template&gt;
+
+</pre>
+
+<p>Running the extract and the format as a pipeline an HTML report will be produced.</p>
+
+<pre>./auditResultsXML.py 16110001 | xsltproc report.xsl - &gt; report.html</pre>
+
+<p>Resulting report</p>
+
+<p><img alt="" border="0" file="https://docs.microfocus.com/mediawiki/images/5/5c/Screenshot_2021-12-20_101027.jpg" height="446" hspace="0" src="/mediawiki/images/pn_images/pn_image_61c09d3a3ddae7.83975122.jpeg" style="width: 800px; height: 446px; margin: 0px; border: 0px solid black;" vspace="0" width="800"></p>
+
 <h2>Remediate Audit Findings</h2>
 
 <p>Remediates all the remediable audit check rules that need fixing on a server. &nbsp;One rule per job.</p>
