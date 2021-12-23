@@ -64,7 +64,8 @@ This defect will occur using SA 2018.08&nbsp;and SA 10.60 satellites.</p>
 <pre># ls /var/opt/opsware/spin/cadb/realm/opsware/certs | wc -l
 100</pre>
 
-<p>Recommend increasing the size of this cache and restarting the Spin on the infrastructure slice of each core so it takes effect. There is no upper limit to the number except filesystem limitation for files in a directory. The parameter may be examined and adjusted use&nbsp;<tt>/opt/opsware/support/bin/sa_config_checkfix</tt></p>
+<p><b>With rollup 2018.08.013 and&nbsp;2020.11.005&nbsp;or higher installed performance improvements were made to the certificate generation, increasing the cache this large is not required (500) will suffice.</b><br>
+Recommend increasing the size of this cache and restarting the Spin on the infrastructure slice of each core so it takes effect. There is no upper limit to the number except filesystem limitation for files in a directory. The parameter may be examined and adjusted use&nbsp;<tt>/opt/opsware/support/bin/sa_config_checkfix</tt></p>
 
 <pre># sa_config_checkfix -k spin.cogbot.crypto_highwater -v 5000 --set</pre>
 
