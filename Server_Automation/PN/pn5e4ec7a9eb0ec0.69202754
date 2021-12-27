@@ -36,15 +36,13 @@
 
 <p>The other reason to set this duration low is that the&nbsp;<strong>recertCora</strong>&nbsp;tool graphs a phases' throughput based on the job results. These are only saved when a job completes. If you are running 24hr you get no results until the&nbsp;<strong>success_rate</strong>&nbsp;has been reached and the job naturally terminates.</p>
 
-<p></p>
-
 <h2>Mesh Topology</h2>
 
 <p>It's not called out in big letters but it should be.</p>
 
 <p><span style="color:#c0392b;"><strong>Do not change the mesh topology while recertification is underway</strong></span></p>
 
-<p>The reason being is that phase 1 performs a discover mesh and caches how the environment looked when then process began. If you change the topology the recertification won't know about it and anything you add will be skipped.&nbsp; Topological changes include adding Cores, Slices or Satellites during recertification.</p>
+<p>The reason being is that phase 1 performs a discover mesh and caches how the environment looked when the process began. If you change the topology the recertification won't know about it and anything you add will be skipped.&nbsp; Topological changes include adding Cores, Slices or Satellites during recertification.</p>
 
 <p>Its also important that the versions of the Gateway are consistent.&nbsp; That is to say that all satellites in the environment have been upgraded to be the latest major version.&nbsp; The major versioning follows the same internal numbering as the "Agent Version" (see&nbsp;the table is presented below).&nbsp; The CORA tool provides an easy way to check all satellite gateway versions under the "Versions" tab of&nbsp;the&nbsp;"Mesh Gateways" page.<br>
 <br>
@@ -55,7 +53,7 @@ This defect will occur using SA 2018.08&nbsp;and SA 10.60 satellites.</p>
 	<li>OCTCR19L1211104&nbsp;Full Core Recert is failing in Phase 1 for 10.60 Satellites as OCT cannot be invoked</li>
 </ul>
 
-<p><span style="color:#c0392b;"><strong>It's important that all satellites are upgraded before starting phase 1</strong></span>.&nbsp; A check was introduced in various rollups 2020.11.002, 2018.08.011, if these are not installed the recertification will proceed and if older satellites are found the process will crash with a difficult recovery.</p>
+<p><span style="color:#c0392b;"><strong>It's important that all satellites are upgraded before starting phase 1</strong></span>.&nbsp; A check was introduced in various rollups <a href="https://kmviewer.saas.microfocus.com/#/patch/PH_194470">2020.11.002</a>, <a href="https://kmviewer.saas.microfocus.com/#/SRVA_00327">2018.08.011</a>, if these are not installed the recertification will proceed and if older satellites are found the process will crash with a difficult recovery.</p>
 
 <ul>
 	<li>OCTCL19L1250122 - Full Core Recert should fail if there are outdated satellites in the mesh</li>
@@ -167,7 +165,7 @@ ORA-04088: error during execution of trigger 'TRUTH.AUDIT_EVENTS_RTRG'' during '
 
 <p><span style="color: rgb(0, 115, 231); font-family: Roboto, sans-serif; font-size: 24px;">Phase 4 : Windows agents fail to restart</span></p>
 
-<p>Due to a defect in SA 2018.08, it's imperative that patch 2018.08.11 or higher is applied.</p>
+<p>Due to a defect in SA 2018.08, it's imperative that patch <a href="https://kmviewer.saas.microfocus.com/#/SRVA_00327">2018.08.11</a> or higher is applied.</p>
 
 <ul>
 	<li>OCTCR19L1154115 - Windows Agent restart fails in Phase 4 of Core Recertification</li>
