@@ -2,6 +2,19 @@
 
 <p>You cannot access job information using core authentication. That is you must make an&nbsp;<tt>authenticate(user,pass)</tt>&nbsp;call.</p>
 
+<h2>Finding the latest job based on its description</h2>
+
+<p>We have a recurring Audit that runs every day.&nbsp; We want to export the Audit Results and need to know the last job executed for an Audit.&nbsp; &nbsp;The name of the Audit will become the description of the job once executed, we will search on this field.&nbsp; Note: If the Audit has never run max() will throw a ValueError exception, error handling is not included in the sample.</p>
+
+<pre>#!/opt/opsware/bin/python
+from pytwist.twistserver import TwistServer
+ts = TwistServer()
+ts.authenticate("user","password")
+SS = ts.search.SearchService
+jobRef = max(SS.findObjRefs('(JobInfoVO.description CONTAINS "Check CVE-2021-44228") &amp; (job_type = server.audit.create)','job'))
+print(jobRef)
+</pre>
+
 <h2>Display communication test results</h2>
 
 <p>Textual representation of what is displayed in the GUI interface</p>
