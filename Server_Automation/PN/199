@@ -11,8 +11,8 @@ from pytwist.twistserver import TwistServer
 ts = TwistServer()
 ts.authenticate("user","password")
 SS = ts.search.SearchService
-jobRef = max(SS.findObjRefs('(JobInfoVO.description CONTAINS "Check CVE-2021-44228") &amp; (job_type = server.audit.create)','job'))
-print(jobRef)
+<span style="font-size:11.0pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">vos = ts.job.JobService.getJobInfoVOs( SS.findObjRefs('(JobInfoVO.description CONTAINS "CVE-2021-44228") &amp; (job_type = server.audit.create)','job') </span></span>)
+<span style="font-size:12pt"><span style="font-family:&quot;Times New Roman&quot;,serif"><span style="font-size:11.0pt"><span style="font-family:&quot;Calibri&quot;,sans-serif">print(max((vo.startDate, vo.ref) for vo in vos)[-1])</span></span></span></span>
 </pre>
 
 <h2>Display communication test results</h2>
