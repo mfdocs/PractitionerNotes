@@ -61,22 +61,30 @@ This defect will occur using SA 2018.08&nbsp;and SA 10.60 satellites.</p>
 
 <h2>Phase 8 : Agent certificate cache exhaustion</h2>
 
-<p>As a large number of agents are going to be issued new crypto material in a short space of time it's possible to run the certificate cache dry. If this happens agents will no longer be issued certificates and the process will start failing (silently). The default cache size is 100 certificates. Generating new crypto happens at a rate of 1 PEM file approx. every 4 seconds. To generate 400 certificates takes about 23min.</p>
+<p><b>With rollup 2018.08.015 and&nbsp;2020.11.005&nbsp;or higher installed performance improvements were made to the certificate generation, increasing the cache this large is not required.&nbsp; The defect below improves performance.</b></p>
+
+<ul>
+	<li>OCTCR19L1456410&nbsp;-&nbsp;<label>Certificate generation performance degrades over time and may lead to Spin DB connection exhaustion</label></li>
+</ul>
+
+<p><span style="color:#c0392b;"><strong>These notes remain as a reference for systems that don't have the above defect fixed.</strong></span><br>
+As a large number of agents are going to be issued new crypto material in a short space of time it's possible to run the certificate cache dry. If this happens agents will no longer be issued certificates and the process will start failing (silently). The default cache size is 100 certificates. Generating new crypto happens at a rate of 1 PEM file approx. every 4 seconds. To generate 400 certificates takes about 23min.</p>
 
 <p>You can see how many are in the cache like this</p>
 
 <pre># ls /var/opt/opsware/spin/cadb/realm/opsware/certs | wc -l
 100</pre>
 
-<p><b>With rollup 2018.08.015 and&nbsp;2020.11.005&nbsp;or higher installed performance improvements were made to the certificate generation, increasing the cache this large is not required (500) will suffice.</b><br>
-Recommend increasing the size of this cache and restarting the Spin on the infrastructure slice of each core so it takes effect. There is no upper limit to the number except filesystem limitation for files in a directory. The parameter may be examined and adjusted use&nbsp;<tt>/opt/opsware/support/bin/sa_config_checkfix</tt></p>
+<p>Recommend increasing the size of this cache and restarting the Spin on the infrastructure slice of each core so it takes effect. There is no upper limit to the number except filesystem limitation for files in a directory. The parameter may be examined and adjusted use&nbsp;<tt>/opt/opsware/support/bin/sa_config_checkfix</tt></p>
 
 <pre># sa_config_checkfix -k spin.cogbot.crypto_highwater -v 5000 --set</pre>
 
 <p>This increase will take about 4hr before the cache is full.</p>
 
-<p>Once the recertification (Phase 8) is complete the parameter should be reduced back to 100 with Spin restarts appropriately.&nbsp;The cached PEM files may be deleted and the Spin will simply repopulate it to the current highwater setting.&nbsp; Failure to do this will result in Spin performance issues later on during normal usage as the directory of agent certificates is being scanned once every second to detect usage and population.&nbsp;<br>
-&nbsp;</p>
+<p>Once the recertification (Phase 8) is complete the parameter should be reduced back to 100 with Spin restarts appropriately.&nbsp;The cached PEM files may be deleted and the Spin will simply repopulate it to the current highwater<br>
+setting.&nbsp; Failure to do this will result in Spin performance issues later on during normal usage as the directory of agent certificates is being scanned once every second to detect usage and population.&nbsp;<br>
+<br>
+<span style="color:#c0392b;"><strong>Split-brain job handling can cause phase 8 to never complete</strong></span></p>
 
 <p>A change in the job handing behaviour in 10.22 when the <strong>Job Split-Brain</strong> problem was addressed introduced an issue for Phase 8 that can cause it to hang. The default setting of -1 will make Phase 8 wait indefinitely for a response instead of failing with a timeout if an agent does not restart and report back after recertification.</p>
 
